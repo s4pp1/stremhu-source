@@ -10,24 +10,27 @@ import { createAxios } from 'src/trackers/common/create-axios';
 import { TrackerCredentialsService } from 'src/trackers/credentials/tracker-credentials.service';
 import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
 
-import { NCORE_LOGIN_PATH } from './ncore.constants';
-import { NcoreLoginRequest } from './ncore.types';
+import { BITHUMEN_LOGIN_PATH } from './bithumen.constants';
+import { BithumenLoginRequest } from './bithumen.types';
 
 @Injectable()
-export class NcoreClientFactory {
-  private readonly logger = new Logger(NcoreClientFactory.name);
-  private readonly ncoreBaseUrl: string;
+export class BithumenClientFactory {
+  private readonly logger = new Logger(BithumenClientFactory.name);
+  private readonly bithumenBaseUrl: string;
 
   private jar = new CookieJar();
   private axios: AxiosInstance = createAxios(this.jar);
   private loginInProgress: Promise<void> | null = null;
 
+  userId: string | null;
+
   constructor(
     private configService: ConfigService,
     private trackerCredentialsService: TrackerCredentialsService,
   ) {
-    this.ncoreBaseUrl =
-      this.configService.getOrThrow<string>('tracker.ncore-url');
+    this.bithumenBaseUrl = this.configService.getOrThrow<string>(
+      'tracker.bithumen-url',
+    );
 
     this.initInterceptors();
   }
@@ -36,43 +39,55 @@ export class NcoreClientFactory {
     return this.axios;
   }
 
-  async login(payload: NcoreLoginRequest) {
+  async login(payload: BithumenLoginRequest) {
     const { username, password } = payload;
 
-    const url = new URL(NCORE_LOGIN_PATH, this.ncoreBaseUrl).toString();
+    const url = new URL(BITHUMEN_LOGIN_PATH, this.bithumenBaseUrl).toString();
 
     const form = new URLSearchParams();
-    form.set('nev', username);
-    form.set('pass', password);
-    form.set('submitted', '1');
+    form.set('username', username);
+    form.set('password', password);
+    form.set('returnto', '/');
 
-    await this.axios.post(url, form, {
+    const response = await this.axios.post(url, form, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Referer: url,
       },
     });
+
+    if (typeof response.data !== 'string') {
+      throw new ForbiddenException();
+    }
+
+    const $ = load(response.data);
+    const userDetailPath = $('#status a[href*="/userdetails.php?"]')
+      .first()
+      .attr('href');
+
+    if (!userDetailPath) {
+      throw new ForbiddenException();
+    }
+
+    const userDetailUrl = new URL(userDetailPath, this.bithumenBaseUrl);
+    const userId = userDetailUrl.searchParams.get('id');
+    this.userId = userId;
   }
 
   private initInterceptors() {
     this.axios.interceptors.response.use(
       async (res) => {
         const requestPath = _.get(res.request, ['path']) as string | undefined;
-        const isLoginPath = requestPath?.includes(NCORE_LOGIN_PATH);
 
-        let hasLoginForm = false;
+        const checkPaths = ['/login.php', BITHUMEN_LOGIN_PATH];
 
-        if (typeof res.data === 'string') {
-          const $ = load(res.data);
-          const hasUsername = $('input[name="nev"]').length > 0;
-          const hasPassword = $('input[name="pass"]').length > 0;
-          hasLoginForm = hasUsername && hasPassword;
-        }
+        const isLoginPath = checkPaths.some((checkPath) =>
+          requestPath?.includes(checkPath),
+        );
 
-        if (isLoginPath || hasLoginForm) {
+        if (isLoginPath) {
           if (res.config._retry) {
             throw new ForbiddenException(
-              'Sikertelen bejelentkezés az nCore fiókba, frissítsd az adatokat!',
+              'Sikertelen bejelentkezés a BitHUmen fiókba, frissítsd az adatokat!',
             );
           }
 
@@ -127,15 +142,15 @@ export class NcoreClientFactory {
   }
 
   private async doRelogin() {
-    this.logger.log('🔄 nCore session frissítése');
+    this.logger.log('🔄 bitHUmen session frissítése');
 
     const credential = await this.trackerCredentialsService.findOne(
-      TrackerEnum.NCORE,
+      TrackerEnum.BITHUMEN,
     );
 
     if (!credential) {
       throw new ForbiddenException(
-        'nCore hitelesítése információk nincsenek megadva',
+        'bitHUmen hitelesítése információk nincsenek megadva',
       );
     }
 

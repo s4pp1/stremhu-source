@@ -6,9 +6,8 @@ import { TorrentCacheCoreModule } from 'src/torrent-cache/core/torrent-cache-cor
 import { UsersModule } from 'src/users/users.module';
 import { WebTorrentModule } from 'src/web-torrent/web-torrent.module';
 
-import { NcoreAdapter } from './adapters/ncore/ncore.adapter';
-import { NcoreClient } from './adapters/ncore/ncore.client';
-import { NcoreClientFactory } from './adapters/ncore/ncore.client-factory';
+import { BithumenModule } from './adapters/bithumen/bithumen.module';
+import { NcoreModule } from './adapters/ncore/ncore.module';
 import { TrackerCredentialsModule } from './credentials/tracker-credentials.module';
 import { TrackersController } from './trackers.controller';
 import { TrackersService } from './trackers.service';
@@ -21,8 +20,10 @@ import { TrackersService } from './trackers.service';
     TorrentCacheCoreModule,
     WebTorrentModule,
     SettingsCoreModule,
+    NcoreModule,
+    BithumenModule,
   ],
-  providers: [TrackersService, NcoreAdapter, NcoreClient, NcoreClientFactory],
+  providers: [TrackersService],
   controllers: [TrackersController],
   exports: [TrackersService],
 })

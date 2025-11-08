@@ -1,7 +1,7 @@
-import { Resolution } from '@ctrl/video-filename-parser';
 import { Injectable } from '@nestjs/common';
 
 import { LanguageEnum } from 'src/common/enums/language.enum';
+import { ResolutionEnum } from 'src/common/enums/resolution.enum';
 
 import { TrackerEnum } from '../../enums/tracker.enum';
 import {
@@ -46,7 +46,7 @@ export class NcoreAdapter implements TrackerAdapter {
     });
   }
 
-  async findOneTorrent(torrentId: string): Promise<AdapterTorrentId> {
+  async findOne(torrentId: string): Promise<AdapterTorrentId> {
     return this.ncoreClient.findOneTorrent(torrentId);
   }
 
@@ -60,19 +60,19 @@ export class NcoreAdapter implements TrackerAdapter {
 
   private resolveTorrentResolution(
     category: NcoreMovieCategoryEnum | NcoreSeriesCategoryEnum,
-  ): Resolution {
+  ): ResolutionEnum {
     switch (category) {
       case NcoreMovieCategoryEnum.SD:
       case NcoreMovieCategoryEnum.SD_HUN:
       case NcoreSeriesCategoryEnum.SD:
       case NcoreSeriesCategoryEnum.SD_HUN:
-        return Resolution.R480P;
+        return ResolutionEnum.R480P;
 
       case NcoreMovieCategoryEnum.HD:
       case NcoreMovieCategoryEnum.HD_HUN:
       case NcoreSeriesCategoryEnum.HD:
       case NcoreSeriesCategoryEnum.HD_HUN:
-        return Resolution.R720P;
+        return ResolutionEnum.R720P;
     }
   }
 

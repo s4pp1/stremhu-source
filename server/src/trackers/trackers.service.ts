@@ -14,6 +14,7 @@ import {
   AdapterParsedTorrent,
   AdapterTorrentId,
 } from './adapters/adapters.types';
+import { BithumenAdapter } from './adapters/bithumen/bithumen.adapter';
 import { NcoreAdapter } from './adapters/ncore/ncore.adapter';
 import { TrackerCredentialsService } from './credentials/tracker-credentials.service';
 import { TrackerEnum } from './enums/tracker.enum';
@@ -31,13 +32,14 @@ export class TrackersService implements OnApplicationBootstrap {
 
   constructor(
     ncoreAdapter: NcoreAdapter,
+    bithumenAdapter: BithumenAdapter,
     private readonly schedulerRegistry: SchedulerRegistry,
     private trackerCredentialsService: TrackerCredentialsService,
     private torrentCacheStore: TorrentCacheStore,
     private webTorrentService: WebTorrentService,
     private settingsStore: SettingsStore,
   ) {
-    this.adapters = [ncoreAdapter];
+    this.adapters = [ncoreAdapter, bithumenAdapter];
   }
 
   async onApplicationBootstrap() {
@@ -61,7 +63,8 @@ export class TrackersService implements OnApplicationBootstrap {
 
   async findTorrents(query: TrackerSearchQuery): Promise<TrackerTorrent[]> {
     const results = await Promise.all(
-      this.adapters.map((adapter) => this.findTrackerTorrents(adapter, query)),
+      // this.adapters.map((adapter) => this.findTrackerTorrents(adapter, query)),
+      [this.findTrackerTorrents(this.adapters[1], query)],
     );
 
     return results.flat();
@@ -73,7 +76,7 @@ export class TrackersService implements OnApplicationBootstrap {
   ): Promise<TrackerTorrentId> {
     const adapter = this.getAdapter(tracker);
 
-    const torrent = await adapter.findOneTorrent(torrentId);
+    const torrent = await adapter.findOne(torrentId);
     const torrentCache = await this.torrentCacheStore.findOne(torrent);
 
     if (torrentCache) {

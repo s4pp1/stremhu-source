@@ -7,5 +7,6 @@ export type SettingDto = {
     endpoint: string;
     uploadLimit: number;
     hitAndRun: boolean;
+    cacheRetention: Record<string, any> | null;
 };
 

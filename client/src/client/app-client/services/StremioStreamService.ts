@@ -30,28 +30,28 @@ export class StremioStreamService {
         });
     }
     /**
+     * @param imdbId
      * @param tracker
      * @param torrentId
-     * @param infoHash
      * @param fileIdx
      * @param token Stremio addon token
      * @returns any
      * @throws ApiError
      */
     public stremioStreamControllerPlayStream(
-        tracker: 'ncore',
+        imdbId: string,
+        tracker: 'ncore' | 'bithumen',
         torrentId: string,
-        infoHash: string,
         fileIdx: number,
         token: string,
     ): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/api/{token}/stream/play/{tracker}/{torrentId}/{infoHash}/{fileIdx}',
+            url: '/api/{token}/stream/play/{imdbId}/{tracker}/{torrentId}/{fileIdx}',
             path: {
+                'imdbId': imdbId,
                 'tracker': tracker,
                 'torrentId': torrentId,
-                'infoHash': infoHash,
                 'fileIdx': fileIdx,
                 'token': token,
             },

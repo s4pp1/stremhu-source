@@ -46,7 +46,7 @@ export interface TrackerAdapter {
 
   find(query: TrackerSearchQuery): Promise<AdapterTorrent[]>;
 
-  findOneTorrent(torrentId: string): Promise<AdapterTorrentId>;
+  findOne(torrentId: string): Promise<AdapterTorrentId>;
 
   download(payload: AdapterTorrentId): Promise<AdapterParsedTorrent>;
 

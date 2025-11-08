@@ -39,7 +39,7 @@ export class TrackersService {
      * @throws ApiError
      */
     public trackersControllerDeleteTracker(
-        tracker: 'ncore',
+        tracker: 'ncore' | 'bithumen',
     ): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'DELETE',
