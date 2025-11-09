@@ -2,7 +2,7 @@
 
 Self-hostolható Stremio addon, amellyel **közvetlenül magyar trackeroldalakról** streamelhetsz.
 
-**Támogatott trackerek:** nCore
+**Támogatott trackerek:** nCore, BitHUmen
 
 > [!NOTE]
 > Ez egy szabadidős projekt! Hibajelentéseket és fejlesztési ötleteket szívesen fogadok kultúráltan "issue"-k formájában.

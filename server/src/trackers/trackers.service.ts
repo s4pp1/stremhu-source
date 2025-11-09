@@ -1,9 +1,12 @@
 import {
   BadRequestException,
+  HttpException,
   Injectable,
+  NotImplementedException,
   OnApplicationBootstrap,
 } from '@nestjs/common';
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
+import { isAxiosError } from 'axios';
 import _ from 'lodash';
 
 import { SettingsStore } from 'src/settings/core/settings.store';
@@ -14,6 +17,7 @@ import {
   AdapterParsedTorrent,
   AdapterTorrentId,
 } from './adapters/adapters.types';
+import { BithumenAdapter } from './adapters/bithumen/bithumen.adapter';
 import { NcoreAdapter } from './adapters/ncore/ncore.adapter';
 import { TrackerCredentialsService } from './credentials/tracker-credentials.service';
 import { TrackerEnum } from './enums/tracker.enum';
@@ -23,6 +27,7 @@ import {
   TrackerSearchQuery,
   TrackerTorrent,
   TrackerTorrentId,
+  TrackerTorrentStatusEnum,
 } from './tracker.types';
 
 @Injectable()
@@ -30,14 +35,15 @@ export class TrackersService implements OnApplicationBootstrap {
   private readonly adapters: TrackerAdapter[];
 
   constructor(
-    ncoreAdapter: NcoreAdapter,
     private readonly schedulerRegistry: SchedulerRegistry,
+    ncoreAdapter: NcoreAdapter,
+    bithumenAdapter: BithumenAdapter,
     private trackerCredentialsService: TrackerCredentialsService,
     private torrentCacheStore: TorrentCacheStore,
     private webTorrentService: WebTorrentService,
     private settingsStore: SettingsStore,
   ) {
-    this.adapters = [ncoreAdapter];
+    this.adapters = [ncoreAdapter, bithumenAdapter];
   }
 
   async onApplicationBootstrap() {
@@ -50,18 +56,46 @@ export class TrackersService implements OnApplicationBootstrap {
   }
 
   async login(tracker: TrackerEnum, payload: LoginRequest): Promise<void> {
-    const adapter = this.getAdapter(tracker);
+    try {
+      const adapter = this.getAdapter(tracker);
+      await adapter.login(payload);
+      await this.trackerCredentialsService.create({
+        tracker,
+        ...payload,
+      });
+    } catch (error: unknown) {
+      if (error instanceof HttpException && error.getStatus() === 401) {
+        throw new BadRequestException('Hibás felhasználónév, vagy jelszó!');
+      }
 
-    await adapter.login(payload);
-    await this.trackerCredentialsService.create({
-      tracker,
-      ...payload,
-    });
+      if (isAxiosError(error) && error.response?.status === 401) {
+        throw new BadRequestException('Hibás felhasználónév, vagy jelszó!');
+      }
+
+      throw new NotImplementedException(
+        `${tracker} bejelentkezés közben hiba történt, ellenőrizd az oldal elérhetőségét.`,
+      );
+    }
   }
 
   async findTorrents(query: TrackerSearchQuery): Promise<TrackerTorrent[]> {
+    const credentials = await this.trackerCredentialsService.find();
+
+    if (credentials.length === 0) {
+      return [
+        {
+          status: TrackerTorrentStatusEnum.ERROR,
+          message:
+            '[StremHU | Source] Használat előtt konfigurálnod kell tracker bejelentkezést.',
+        },
+      ];
+    }
+
     const results = await Promise.all(
-      this.adapters.map((adapter) => this.findTrackerTorrents(adapter, query)),
+      credentials.map((credential) => {
+        const adapter = this.getAdapter(credential.tracker);
+        return this.findTrackerTorrents(adapter, query);
+      }),
     );
 
     return results.flat();
@@ -73,7 +107,7 @@ export class TrackersService implements OnApplicationBootstrap {
   ): Promise<TrackerTorrentId> {
     const adapter = this.getAdapter(tracker);
 
-    const torrent = await adapter.findOneTorrent(torrentId);
+    const torrent = await adapter.findOne(torrentId);
     const torrentCache = await this.torrentCacheStore.findOne(torrent);
 
     if (torrentCache) {
@@ -97,7 +131,7 @@ export class TrackersService implements OnApplicationBootstrap {
     };
   }
 
-  async setHitAndRunCron(enabled: boolean) {
+  async setHitAndRunCron(enabled: boolean): Promise<void> {
     const job = this.schedulerRegistry.getCronJob('cleanupTorrents');
 
     if (enabled && !job.isActive) {
@@ -110,9 +144,13 @@ export class TrackersService implements OnApplicationBootstrap {
   }
 
   @Cron(CronExpression.EVERY_DAY_AT_4AM, { name: 'cleanupTorrents' })
-  async cleanupHitAndRun() {
+  async cleanupHitAndRun(): Promise<void> {
+    const credentials = await this.trackerCredentialsService.find();
     await Promise.all(
-      this.adapters.map((adapter) => this.cleanupHitAndRunTracker(adapter)),
+      credentials.map((credential) => {
+        const adapter = this.getAdapter(credential.tracker);
+        return this.cleanupHitAndRunTracker(adapter);
+      }),
     );
   }
 
@@ -136,42 +174,67 @@ export class TrackersService implements OnApplicationBootstrap {
     adapter: TrackerAdapter,
     query: TrackerSearchQuery,
   ): Promise<TrackerTorrent[]> {
-    const { imdbId } = query;
+    try {
+      const { imdbId } = query;
 
-    const torrents = await adapter.find(query);
-    const cachedTorrents = await this.torrentCacheStore.find({
-      imdbId,
-      tracker: adapter.tracker,
-    });
+      const torrents = await adapter.find(query);
+      const cachedTorrents = await this.torrentCacheStore.find({
+        imdbId,
+        tracker: adapter.tracker,
+      });
 
-    const notCachedTorrents = _.differenceWith(
-      torrents,
-      cachedTorrents,
-      (torrent, cachedTorrent) => torrent.torrentId === cachedTorrent.torrentId,
-    );
-    const torrentParsedFiles = await this.downloads(adapter, notCachedTorrents);
+      const notCachedTorrents = _.differenceWith(
+        torrents,
+        cachedTorrents,
+        (torrent, cachedTorrent) =>
+          torrent.torrentId === cachedTorrent.torrentId,
+      );
+      const torrentParsedFiles = await this.downloads(
+        adapter,
+        notCachedTorrents,
+      );
 
-    const notAvailableTorrents = _.differenceWith(
-      cachedTorrents,
-      torrents,
-      (cachedTorrent, torrent) => torrent.torrentId === cachedTorrent.torrentId,
-    );
-    await this.torrentCacheStore.delete(
-      notAvailableTorrents.map(
-        (notAvailableTorrent) => notAvailableTorrent.path,
-      ),
-    );
+      const notAvailableTorrents = _.differenceWith(
+        cachedTorrents,
+        torrents,
+        (cachedTorrent, torrent) =>
+          torrent.torrentId === cachedTorrent.torrentId,
+      );
+      await this.torrentCacheStore.delete(
+        notAvailableTorrents.map(
+          (notAvailableTorrent) => notAvailableTorrent.path,
+        ),
+      );
 
-    const allTorrent = [...cachedTorrents, ...torrentParsedFiles];
+      const allTorrent = [...cachedTorrents, ...torrentParsedFiles];
 
-    const allTorrentMap = _.keyBy(allTorrent, 'torrentId');
+      const allTorrentMap = _.keyBy(allTorrent, 'torrentId');
 
-    return torrents.map((torrent) => {
-      return {
-        ...torrent,
-        parsed: allTorrentMap[torrent.torrentId].parsed,
-      };
-    });
+      return torrents.map((torrent) => {
+        return {
+          ...torrent,
+          status: TrackerTorrentStatusEnum.SUCCESS,
+          parsed: allTorrentMap[torrent.torrentId].parsed,
+        };
+      });
+    } catch (error) {
+      let message = 'Hiba történt';
+
+      if (
+        _.isObject(error) &&
+        'message' in error &&
+        typeof error.message === 'string'
+      ) {
+        message = error.message;
+      }
+
+      return [
+        {
+          status: TrackerTorrentStatusEnum.ERROR,
+          message,
+        },
+      ];
+    }
   }
 
   private async downloads(

@@ -43,7 +43,7 @@ export class NcoreClient {
   }
 
   login(payload: NcoreLoginRequest) {
-    return this.ncoreClientFactory.login(payload);
+    return this.ncoreClientFactory.login(payload, true);
   }
 
   async getTorrents(query: NcoreSearchQuery): Promise<NcoreTorrents> {
@@ -130,15 +130,13 @@ export class NcoreClient {
   async findOneTorrent(torrentId: string): Promise<AdapterTorrentId> {
     const url = new URL(
       NCORE_DOWNLOAD_PATH.replace(
-        '{NCORE_TORRENT_ID}',
+        '{TORRENT_ID}',
         encodeURIComponent(torrentId),
       ),
       this.ncoreBaseUrl,
     ).toString();
 
-    const response = await this.ncoreClientFactory.client.get<string>(url, {
-      responseType: 'text',
-    });
+    const response = await this.ncoreClientFactory.client.get<string>(url);
 
     const $ = load(response.data);
 

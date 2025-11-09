@@ -5,8 +5,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import type { AxiosInstance, AxiosResponse } from 'axios';
+import type { AxiosInstance } from 'axios';
 import { AxiosError, AxiosHeaders } from 'axios';
+import { load } from 'cheerio';
 import _ from 'lodash';
 import { CookieJar } from 'tough-cookie';
 
@@ -14,24 +15,27 @@ import { createAxios } from 'src/trackers/common/create-axios';
 import { TrackerCredentialsService } from 'src/trackers/credentials/tracker-credentials.service';
 import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
 
-import { NCORE_LOGIN_PATH } from './ncore.constants';
-import { NcoreLoginRequest } from './ncore.types';
+import { BITHUMEN_LOGIN_PATH } from './bithumen.constants';
+import { BithumenLoginRequest } from './bithumen.types';
 
 @Injectable()
-export class NcoreClientFactory {
-  private readonly logger = new Logger(NcoreClientFactory.name);
-  private readonly ncoreBaseUrl: string;
+export class BithumenClientFactory {
+  private readonly logger = new Logger(BithumenClientFactory.name);
+  private readonly bithumenBaseUrl: string;
 
   private jar = new CookieJar();
   private axios: AxiosInstance = createAxios(this.jar);
   private loginInProgress: Promise<void> | null = null;
 
+  userId: string = '';
+
   constructor(
     private configService: ConfigService,
     private trackerCredentialsService: TrackerCredentialsService,
   ) {
-    this.ncoreBaseUrl =
-      this.configService.getOrThrow<string>('tracker.ncore-url');
+    this.bithumenBaseUrl = this.configService.getOrThrow<string>(
+      'tracker.bithumen-url',
+    );
 
     this.initInterceptors();
   }
@@ -40,16 +44,17 @@ export class NcoreClientFactory {
     return this.axios;
   }
 
-  async login(payload: NcoreLoginRequest, firstLogin: boolean = false) {
+  async login(payload: BithumenLoginRequest, firstLogin: boolean = false) {
     const { username, password } = payload;
 
     const axios = firstLogin ? createAxios(this.jar) : this.axios;
 
-    const url = new URL(NCORE_LOGIN_PATH, this.ncoreBaseUrl).toString();
+    const url = new URL(BITHUMEN_LOGIN_PATH, this.bithumenBaseUrl).toString();
 
     const form = new URLSearchParams();
-    form.set('nev', username);
-    form.set('pass', password);
+    form.set('username', username);
+    form.set('password', password);
+    form.set('returnto', '/');
 
     const response = await axios.post(url, form, {
       headers: {
@@ -57,47 +62,55 @@ export class NcoreClientFactory {
       },
     });
 
-    if (firstLogin) {
-      const isAuthError = this.isAuthError(response);
-      if (isAuthError) {
-        throw new UnauthorizedException();
-      }
+    if (typeof response.data !== 'string') {
+      throw new UnauthorizedException();
     }
-  }
 
-  private isAuthError(res: AxiosResponse) {
-    const requestPath = _.get(res.request, ['path']) as string | undefined;
-    const isLoginPath = requestPath?.includes(NCORE_LOGIN_PATH);
+    const $ = load(response.data);
+    const userDetailPath = $('#status a[href*="/userdetails.php?"]')
+      .first()
+      .attr('href');
 
-    return isLoginPath;
+    if (!userDetailPath) {
+      throw new UnauthorizedException();
+    }
+
+    const userDetailUrl = new URL(userDetailPath, this.bithumenBaseUrl);
+    const userId = userDetailUrl.searchParams.get('id') || '';
+    this.userId = userId;
   }
 
   private initInterceptors() {
     this.axios.interceptors.response.use(
       async (res) => {
-        const isAuthError = this.isAuthError(res);
+        const requestPath = _.get(res.request, ['path']) as string | undefined;
+        const checkPaths = ['/login.php', BITHUMEN_LOGIN_PATH];
 
-        if (!isAuthError) {
-          return res;
+        const isLoginPath = checkPaths.some((checkPath) =>
+          requestPath?.includes(checkPath),
+        );
+
+        if (isLoginPath) {
+          if (res.config._retry) {
+            throw new ForbiddenException(
+              'Sikertelen bejelentkezés a BitHUmen fiókba, frissítsd az adatokat!',
+            );
+          }
+
+          await this.relogin();
+
+          if (res.config.headers) {
+            const headers = AxiosHeaders.from(res.config.headers);
+            headers.delete('cookie');
+            res.config.headers = headers;
+          }
+
+          res.config._retry = true;
+
+          return this.axios.request(res.config);
         }
 
-        if (res.config._retry) {
-          throw new ForbiddenException(
-            'Sikertelen bejelentkezés az nCore fiókba, frissítsd az adatokat!',
-          );
-        }
-
-        await this.relogin();
-
-        if (res.config.headers) {
-          const headers = AxiosHeaders.from(res.config.headers);
-          headers.delete('cookie');
-          res.config.headers = headers;
-        }
-
-        res.config._retry = true;
-
-        return this.axios.request(res.config);
+        return res;
       },
       async (error: AxiosError) => {
         const { response, config } = error;
@@ -135,15 +148,15 @@ export class NcoreClientFactory {
   }
 
   private async doRelogin() {
-    this.logger.log('🔄 nCore session frissítése');
+    this.logger.log('🔄 bitHUmen session frissítése');
 
     const credential = await this.trackerCredentialsService.findOne(
-      TrackerEnum.NCORE,
+      TrackerEnum.BITHUMEN,
     );
 
     if (!credential) {
       throw new ForbiddenException(
-        'nCore hitelesítése információk nincsenek megadva',
+        'bitHUmen hitelesítése információk nincsenek megadva',
       );
     }
 
