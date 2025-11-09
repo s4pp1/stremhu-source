@@ -1,4 +1,9 @@
-import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { AxiosInstance } from 'axios';
 import { AxiosError, AxiosHeaders } from 'axios';
@@ -39,8 +44,10 @@ export class BithumenClientFactory {
     return this.axios;
   }
 
-  async login(payload: BithumenLoginRequest) {
+  async login(payload: BithumenLoginRequest, firstLogin: boolean = false) {
     const { username, password } = payload;
+
+    const axios = firstLogin ? createAxios(this.jar) : this.axios;
 
     const url = new URL(BITHUMEN_LOGIN_PATH, this.bithumenBaseUrl).toString();
 
@@ -49,14 +56,14 @@ export class BithumenClientFactory {
     form.set('password', password);
     form.set('returnto', '/');
 
-    const response = await this.axios.post(url, form, {
+    const response = await axios.post(url, form, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
 
     if (typeof response.data !== 'string') {
-      throw new ForbiddenException();
+      throw new UnauthorizedException();
     }
 
     const $ = load(response.data);
@@ -65,7 +72,7 @@ export class BithumenClientFactory {
       .attr('href');
 
     if (!userDetailPath) {
-      throw new ForbiddenException();
+      throw new UnauthorizedException();
     }
 
     const userDetailUrl = new URL(userDetailPath, this.bithumenBaseUrl);
@@ -77,7 +84,6 @@ export class BithumenClientFactory {
     this.axios.interceptors.response.use(
       async (res) => {
         const requestPath = _.get(res.request, ['path']) as string | undefined;
-
         const checkPaths = ['/login.php', BITHUMEN_LOGIN_PATH];
 
         const isLoginPath = checkPaths.some((checkPath) =>

@@ -1,8 +1,12 @@
-import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import type { AxiosInstance } from 'axios';
+import type { AxiosInstance, AxiosResponse } from 'axios';
 import { AxiosError, AxiosHeaders } from 'axios';
-import { load } from 'cheerio';
 import _ from 'lodash';
 import { CookieJar } from 'tough-cookie';
 
@@ -36,60 +40,64 @@ export class NcoreClientFactory {
     return this.axios;
   }
 
-  async login(payload: NcoreLoginRequest) {
+  async login(payload: NcoreLoginRequest, firstLogin: boolean = false) {
     const { username, password } = payload;
+
+    const axios = firstLogin ? createAxios(this.jar) : this.axios;
 
     const url = new URL(NCORE_LOGIN_PATH, this.ncoreBaseUrl).toString();
 
     const form = new URLSearchParams();
     form.set('nev', username);
     form.set('pass', password);
-    form.set('submitted', '1');
 
-    await this.axios.post(url, form, {
+    const response = await axios.post(url, form, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Referer: url,
       },
     });
+
+    if (firstLogin) {
+      const isAuthError = this.isAuthError(response);
+      if (isAuthError) {
+        throw new UnauthorizedException();
+      }
+    }
+  }
+
+  private isAuthError(res: AxiosResponse) {
+    const requestPath = _.get(res.request, ['path']) as string | undefined;
+    const isLoginPath = requestPath?.includes(NCORE_LOGIN_PATH);
+
+    return isLoginPath;
   }
 
   private initInterceptors() {
     this.axios.interceptors.response.use(
       async (res) => {
-        const requestPath = _.get(res.request, ['path']) as string | undefined;
-        const isLoginPath = requestPath?.includes(NCORE_LOGIN_PATH);
+        const isAuthError = this.isAuthError(res);
 
-        let hasLoginForm = false;
-
-        if (typeof res.data === 'string') {
-          const $ = load(res.data);
-          const hasUsername = $('input[name="nev"]').length > 0;
-          const hasPassword = $('input[name="pass"]').length > 0;
-          hasLoginForm = hasUsername && hasPassword;
+        if (!isAuthError) {
+          return res;
         }
 
-        if (isLoginPath || hasLoginForm) {
-          if (res.config._retry) {
-            throw new ForbiddenException(
-              'Sikertelen bejelentkezés az nCore fiókba, frissítsd az adatokat!',
-            );
-          }
-
-          await this.relogin();
-
-          if (res.config.headers) {
-            const headers = AxiosHeaders.from(res.config.headers);
-            headers.delete('cookie');
-            res.config.headers = headers;
-          }
-
-          res.config._retry = true;
-
-          return this.axios.request(res.config);
+        if (res.config._retry) {
+          throw new ForbiddenException(
+            'Sikertelen bejelentkezés az nCore fiókba, frissítsd az adatokat!',
+          );
         }
 
-        return res;
+        await this.relogin();
+
+        if (res.config.headers) {
+          const headers = AxiosHeaders.from(res.config.headers);
+          headers.delete('cookie');
+          res.config.headers = headers;
+        }
+
+        res.config._retry = true;
+
+        return this.axios.request(res.config);
       },
       async (error: AxiosError) => {
         const { response, config } = error;

@@ -35,7 +35,7 @@ export class BithumenClient {
   }
 
   login(payload: BithumenLoginRequest) {
-    return this.bithumenClientFactory.login(payload);
+    return this.bithumenClientFactory.login(payload, true);
   }
 
   find(payload: BithumenTorrentsQuery) {

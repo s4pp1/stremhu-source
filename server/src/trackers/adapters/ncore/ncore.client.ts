@@ -43,7 +43,7 @@ export class NcoreClient {
   }
 
   login(payload: NcoreLoginRequest) {
-    return this.ncoreClientFactory.login(payload);
+    return this.ncoreClientFactory.login(payload, true);
   }
 
   async getTorrents(query: NcoreSearchQuery): Promise<NcoreTorrents> {

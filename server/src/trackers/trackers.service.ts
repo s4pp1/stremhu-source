@@ -1,10 +1,13 @@
 import {
   BadRequestException,
   ForbiddenException,
+  HttpException,
   Injectable,
+  NotImplementedException,
   OnApplicationBootstrap,
 } from '@nestjs/common';
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
+import { isAxiosError } from 'axios';
 import _ from 'lodash';
 
 import { SettingsStore } from 'src/settings/core/settings.store';
@@ -53,13 +56,26 @@ export class TrackersService implements OnApplicationBootstrap {
   }
 
   async login(tracker: TrackerEnum, payload: LoginRequest): Promise<void> {
-    const adapter = this.getAdapter(tracker);
+    try {
+      const adapter = this.getAdapter(tracker);
+      await adapter.login(payload);
+      await this.trackerCredentialsService.create({
+        tracker,
+        ...payload,
+      });
+    } catch (error: unknown) {
+      if (error instanceof HttpException && error.getStatus() === 401) {
+        throw new BadRequestException('Hibás felhasználónév, vagy jelszó!');
+      }
 
-    await adapter.login(payload);
-    await this.trackerCredentialsService.create({
-      tracker,
-      ...payload,
-    });
+      if (isAxiosError(error) && error.response?.status === 401) {
+        throw new BadRequestException('Hibás felhasználónév, vagy jelszó!');
+      }
+
+      throw new NotImplementedException(
+        `${tracker} bejelentkezés közben hiba történt, ellenőrizd az oldal elérhetőségét.`,
+      );
+    }
   }
 
   async findTorrents(query: TrackerSearchQuery): Promise<TrackerTorrent[]> {
