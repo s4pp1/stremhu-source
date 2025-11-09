@@ -3,7 +3,7 @@ import { TrackerOption } from './tracker.types';
 
 export const TRACKER_OPTIONS: TrackerOption[] = [
   { value: TrackerEnum.NCORE, label: 'nCore' },
-  { value: TrackerEnum.BITHUMEN, label: 'bitHUmen' },
+  { value: TrackerEnum.BITHUMEN, label: 'BitHUmen' },
 ];
 
 export const TRACKER_LABEL_MAP = TRACKER_OPTIONS.reduce(
