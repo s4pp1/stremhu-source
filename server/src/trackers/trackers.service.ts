@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ForbiddenException,
   HttpException,
   Injectable,
   NotImplementedException,
@@ -28,6 +27,7 @@ import {
   TrackerSearchQuery,
   TrackerTorrent,
   TrackerTorrentId,
+  TrackerTorrentStatusEnum,
 } from './tracker.types';
 
 @Injectable()
@@ -82,9 +82,13 @@ export class TrackersService implements OnApplicationBootstrap {
     const credentials = await this.trackerCredentialsService.find();
 
     if (credentials.length === 0) {
-      throw new ForbiddenException(
-        '[StremHU | Source] Nincs konfigurálva tracker hitelesítési adat.',
-      );
+      return [
+        {
+          status: TrackerTorrentStatusEnum.ERROR,
+          message:
+            '[StremHU | Source] Használat előtt konfigurálnod kell tracker bejelentkezést.',
+        },
+      ];
     }
 
     const results = await Promise.all(
@@ -170,42 +174,67 @@ export class TrackersService implements OnApplicationBootstrap {
     adapter: TrackerAdapter,
     query: TrackerSearchQuery,
   ): Promise<TrackerTorrent[]> {
-    const { imdbId } = query;
+    try {
+      const { imdbId } = query;
 
-    const torrents = await adapter.find(query);
-    const cachedTorrents = await this.torrentCacheStore.find({
-      imdbId,
-      tracker: adapter.tracker,
-    });
+      const torrents = await adapter.find(query);
+      const cachedTorrents = await this.torrentCacheStore.find({
+        imdbId,
+        tracker: adapter.tracker,
+      });
 
-    const notCachedTorrents = _.differenceWith(
-      torrents,
-      cachedTorrents,
-      (torrent, cachedTorrent) => torrent.torrentId === cachedTorrent.torrentId,
-    );
-    const torrentParsedFiles = await this.downloads(adapter, notCachedTorrents);
+      const notCachedTorrents = _.differenceWith(
+        torrents,
+        cachedTorrents,
+        (torrent, cachedTorrent) =>
+          torrent.torrentId === cachedTorrent.torrentId,
+      );
+      const torrentParsedFiles = await this.downloads(
+        adapter,
+        notCachedTorrents,
+      );
 
-    const notAvailableTorrents = _.differenceWith(
-      cachedTorrents,
-      torrents,
-      (cachedTorrent, torrent) => torrent.torrentId === cachedTorrent.torrentId,
-    );
-    await this.torrentCacheStore.delete(
-      notAvailableTorrents.map(
-        (notAvailableTorrent) => notAvailableTorrent.path,
-      ),
-    );
+      const notAvailableTorrents = _.differenceWith(
+        cachedTorrents,
+        torrents,
+        (cachedTorrent, torrent) =>
+          torrent.torrentId === cachedTorrent.torrentId,
+      );
+      await this.torrentCacheStore.delete(
+        notAvailableTorrents.map(
+          (notAvailableTorrent) => notAvailableTorrent.path,
+        ),
+      );
 
-    const allTorrent = [...cachedTorrents, ...torrentParsedFiles];
+      const allTorrent = [...cachedTorrents, ...torrentParsedFiles];
 
-    const allTorrentMap = _.keyBy(allTorrent, 'torrentId');
+      const allTorrentMap = _.keyBy(allTorrent, 'torrentId');
 
-    return torrents.map((torrent) => {
-      return {
-        ...torrent,
-        parsed: allTorrentMap[torrent.torrentId].parsed,
-      };
-    });
+      return torrents.map((torrent) => {
+        return {
+          ...torrent,
+          status: TrackerTorrentStatusEnum.SUCCESS,
+          parsed: allTorrentMap[torrent.torrentId].parsed,
+        };
+      });
+    } catch (error) {
+      let message = 'Hiba történt';
+
+      if (
+        _.isObject(error) &&
+        'message' in error &&
+        typeof error.message === 'string'
+      ) {
+        message = error.message;
+      }
+
+      return [
+        {
+          status: TrackerTorrentStatusEnum.ERROR,
+          message,
+        },
+      ];
+    }
   }
 
   private async downloads(

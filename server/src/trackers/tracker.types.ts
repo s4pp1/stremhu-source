@@ -16,6 +16,12 @@ export interface TrackerOption {
   label: string;
 }
 
+// TODO: Hibamegjelenítés a Stremio appban
+export enum TrackerTorrentStatusEnum {
+  SUCCESS = 'success',
+  ERROR = 'error',
+}
+
 export interface TrackerTorrentId {
   tracker: TrackerEnum;
   torrentId: string;
@@ -23,11 +29,19 @@ export interface TrackerTorrentId {
   parsed: ParsedTorrent;
 }
 
-export interface TrackerTorrent extends TrackerTorrentId {
+export interface TrackerTorrentSuccess extends TrackerTorrentId {
+  status: TrackerTorrentStatusEnum.SUCCESS;
   language: LanguageEnum;
   resolution: Resolution;
   seeders: number;
 }
+
+export interface TrackerTorrentError {
+  status: TrackerTorrentStatusEnum.ERROR;
+  message: string;
+}
+
+export type TrackerTorrent = TrackerTorrentSuccess | TrackerTorrentError;
 
 export interface LoginRequest {
   username: string;

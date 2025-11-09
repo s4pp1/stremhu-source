@@ -10,7 +10,11 @@ import { LanguageEnum } from 'src/common/enums/language.enum';
 import { ParsedFile } from 'src/common/utils/parse-torrent.util';
 import { SettingsStore } from 'src/settings/core/settings.store';
 import { TorrentCacheStore } from 'src/torrent-cache/core/torrent-cache.store';
-import { TrackerTorrent } from 'src/trackers/tracker.types';
+import {
+  TrackerTorrentError,
+  TrackerTorrentStatusEnum,
+  TrackerTorrentSuccess,
+} from 'src/trackers/tracker.types';
 import { TRACKER_LABEL_MAP } from 'src/trackers/trackers.constants';
 import { TrackersService } from 'src/trackers/trackers.service';
 import { User } from 'src/users/entities/user.entity';
@@ -52,9 +56,28 @@ export class StremioStreamService {
       imdbId: imdbId,
     });
 
-    const videoFiles = this.findVideoFilesWithRank(torrents, series);
+    const torrentErrors: TrackerTorrentError[] = [];
+    const torrentSuccesses: TrackerTorrentSuccess[] = [];
+
+    torrents.forEach((torrent) => {
+      if (torrent.status === TrackerTorrentStatusEnum.ERROR) {
+        return torrentErrors.push(torrent);
+      }
+      return torrentSuccesses.push(torrent);
+    });
+
+    const videoFiles = this.findVideoFilesWithRank(torrentSuccesses, series);
     const filteredVideoFiles = this.filterVideoFiles(videoFiles, user);
     const sortedVideoFiles = this.sortVideoFiles(filteredVideoFiles);
+
+    const streamErrors: StreamDto[] = torrentErrors.map((torrentError) => ({
+      name: '❗ H I B A ❗',
+      description: `❗ ${torrentError.message} ❗`,
+      url: 'http://nincs.tracker.konfiguralva',
+      behaviorHints: {
+        notWebReady: true,
+      },
+    }));
 
     const streams: StreamDto[] = sortedVideoFiles.map((videoFile) => {
       const nameArray = _.compact([
@@ -81,7 +104,7 @@ export class StremioStreamService {
       };
     });
 
-    return streams;
+    return [...streams, ...streamErrors];
   }
 
   async playStream(
@@ -146,7 +169,7 @@ export class StremioStreamService {
   }
 
   private findVideoFilesWithRank(
-    torrents: TrackerTorrent[],
+    torrents: TrackerTorrentSuccess[],
     series?: ParsedStreamIdSeries,
   ): VideoFileWithRank[] {
     const torrentByFiles: VideoFileWithRank[] = [];
