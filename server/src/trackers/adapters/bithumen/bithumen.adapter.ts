@@ -73,7 +73,7 @@ export class BithumenAdapter implements TrackerAdapter {
   }
 
   async seedRequirement(): Promise<string[]> {
-    return [];
+    return this.bithumenClient.hitnrun();
   }
 
   private resolveTorrentResolution(

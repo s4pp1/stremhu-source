@@ -10,6 +10,7 @@ import { AdapterParsedTorrent, AdapterTorrentId } from '../adapters.types';
 import { BithumenClientFactory } from './bithumen.client-factory';
 import {
   BITHUMEN_DOWNLOAD_PATH,
+  BITHUMEN_HIT_N_RUN_PATH,
   BITHUMEN_TORRENTS_PATH,
 } from './bithumen.constants';
 import {
@@ -121,6 +122,39 @@ export class BithumenClient {
     const parsed = await parseTorrent(bytes);
 
     return { torrentId, parsed };
+  }
+
+  /**
+   * Visszaadja a “hit & run” nCore torrentek azonosítóit.
+   */
+  async hitnrun(): Promise<string[]> {
+    const url = new URL(
+      BITHUMEN_HIT_N_RUN_PATH.replace(
+        '{USER_ID}',
+        this.bithumenClientFactory.userId,
+      ),
+      this.bithumenBaseUrl,
+    ).toString();
+
+    const response = await this.bithumenClientFactory.client.get<unknown>(url);
+
+    if (typeof response.data !== 'string') {
+      return [];
+    }
+
+    const $ = load(response.data);
+
+    const hitnrunTorrents = $('td a[href*="/details.php?id="')
+      .map((_, el) => $(el).attr('href'))
+      .get();
+
+    const sourceIds = hitnrunTorrents.map((hitnrunTorrent) => {
+      const url = new URL(hitnrunTorrent, this.bithumenBaseUrl);
+      const idParam = url.searchParams.get('id');
+      return idParam;
+    });
+
+    return _.compact(sourceIds);
   }
 
   private processTorrentsHtml(html: unknown): BithumenTorrents {

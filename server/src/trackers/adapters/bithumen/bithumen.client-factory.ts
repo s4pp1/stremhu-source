@@ -22,7 +22,7 @@ export class BithumenClientFactory {
   private axios: AxiosInstance = createAxios(this.jar);
   private loginInProgress: Promise<void> | null = null;
 
-  userId: string | null;
+  userId: string = '';
 
   constructor(
     private configService: ConfigService,
@@ -69,7 +69,7 @@ export class BithumenClientFactory {
     }
 
     const userDetailUrl = new URL(userDetailPath, this.bithumenBaseUrl);
-    const userId = userDetailUrl.searchParams.get('id');
+    const userId = userDetailUrl.searchParams.get('id') || '';
     this.userId = userId;
   }
 
