@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Resolution as ResolutionEnum } from '@ctrl/video-filename-parser';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { LanguageEnum } from 'src/common/enums/language.enum';
-import { ResolutionEnum } from 'src/common/enums/resolution.enum';
 
 import { TrackerEnum } from '../../enums/tracker.enum';
 import {
@@ -13,15 +13,17 @@ import {
   AdapterParsedTorrent,
   AdapterTorrent,
   AdapterTorrentId,
+  TRACKER_TOKEN,
 } from '../adapters.types';
 import { NcoreClient } from './ncore.client';
 import { NcoreMovieCategoryEnum, NcoreSeriesCategoryEnum } from './ncore.types';
 
 @Injectable()
 export class NcoreAdapter implements TrackerAdapter {
-  readonly tracker = TrackerEnum.NCORE;
-
-  constructor(private ncoreClient: NcoreClient) {}
+  constructor(
+    @Inject(TRACKER_TOKEN) readonly tracker: TrackerEnum,
+    private ncoreClient: NcoreClient,
+  ) {}
 
   async login(payload: LoginRequest): Promise<void> {
     await this.ncoreClient.login(payload);

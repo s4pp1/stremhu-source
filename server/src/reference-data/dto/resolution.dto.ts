@@ -1,7 +1,6 @@
+import { Resolution as ResolutionEnum } from '@ctrl/video-filename-parser';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsString } from 'class-validator';
-
-import { ResolutionEnum } from 'src/common/enums/resolution.enum';
 
 export class ResolutionDto {
   @IsEnum(ResolutionEnum)

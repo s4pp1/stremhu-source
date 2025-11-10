@@ -16,7 +16,9 @@ export function DialogsRoot() {
         showCloseButton={false}
         onEscapeKeyDown={handleClose}
       >
-        {options?.dialog === DialogEnum.ADD_TRACKER && <AddTrackerContent />}
+        {options?.dialog === DialogEnum.ADD_TRACKER && (
+          <AddTrackerContent activeTrackers={options.options.activeTrackers} />
+        )}
         {options?.dialog === DialogEnum.CHANGE_USERNAME_DIALOG && (
           <ChangeUsernameContent user={options.options?.user} />
         )}

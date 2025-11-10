@@ -58,6 +58,10 @@ export function Trackers() {
     })
   }
 
+  const activeTrackers: Array<TrackerEnum> = trackers.map(
+    (tracker) => tracker.tracker,
+  )
+
   return (
     <Card>
       <CardHeader>
@@ -112,7 +116,7 @@ export function Trackers() {
                 onClick={() =>
                   handleOpen({
                     dialog: DialogEnum.ADD_TRACKER,
-                    options: { activeTrackers: [] },
+                    options: { activeTrackers },
                   })
                 }
               >

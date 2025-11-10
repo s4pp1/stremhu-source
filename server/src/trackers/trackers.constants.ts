@@ -13,3 +13,5 @@ export const TRACKER_LABEL_MAP = TRACKER_OPTIONS.reduce(
   }),
   {} as Record<TrackerEnum, string>,
 );
+
+export const LOGIN_ERROR_MESSAGE = 'Hibás felhasználónév, vagy jelszó!';

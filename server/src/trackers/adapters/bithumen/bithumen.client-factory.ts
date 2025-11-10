@@ -1,5 +1,6 @@
 import {
   ForbiddenException,
+  Inject,
   Injectable,
   Logger,
   UnauthorizedException,
@@ -15,6 +16,12 @@ import { createAxios } from 'src/trackers/common/create-axios';
 import { TrackerCredentialsService } from 'src/trackers/credentials/tracker-credentials.service';
 import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
 
+import { TRACKER_TOKEN } from '../adapters.types';
+import {
+  getTrackerCredentialErrorMessage,
+  getTrackerLoginErrorMessage,
+  getTrackerRefreshMessage,
+} from '../adapters.utils';
 import { BITHUMEN_LOGIN_PATH } from './bithumen.constants';
 import { BithumenLoginRequest } from './bithumen.types';
 
@@ -30,6 +37,7 @@ export class BithumenClientFactory {
   userId: string = '';
 
   constructor(
+    @Inject(TRACKER_TOKEN) private readonly tracker: TrackerEnum,
     private configService: ConfigService,
     private trackerCredentialsService: TrackerCredentialsService,
   ) {
@@ -93,7 +101,7 @@ export class BithumenClientFactory {
         if (isLoginPath) {
           if (res.config._retry) {
             throw new ForbiddenException(
-              'Sikertelen bejelentkezés a BitHUmen fiókba, frissítsd az adatokat!',
+              getTrackerLoginErrorMessage(this.tracker),
             );
           }
 
@@ -148,15 +156,15 @@ export class BithumenClientFactory {
   }
 
   private async doRelogin() {
-    this.logger.log('🔄 bitHUmen session frissítése');
+    this.logger.log(getTrackerRefreshMessage(this.tracker));
 
     const credential = await this.trackerCredentialsService.findOne(
-      TrackerEnum.BITHUMEN,
+      this.tracker,
     );
 
     if (!credential) {
       throw new ForbiddenException(
-        'bitHUmen hitelesítése információk nincsenek megadva',
+        getTrackerCredentialErrorMessage(this.tracker),
       );
     }
 

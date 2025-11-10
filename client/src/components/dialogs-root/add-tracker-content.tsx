@@ -31,13 +31,19 @@ import { getReferenceData } from '@/queries/reference-data'
 import { useLoginTracker } from '@/queries/trackers'
 import { useDialogsStore } from '@/store/dialogs-store'
 
+interface AddTrackerContentProps {
+  activeTrackers: Array<TrackerEnum>
+}
+
 const schema = z.object({
   tracker: z.enum(TrackerEnum),
   trackerUsn: z.string().nonempty('A felhasználónév kitöltése kötelező'),
   trackerPwd: z.string().nonempty('A jelszó kitöltése kötelező'),
 })
 
-export function AddTrackerContent() {
+export function AddTrackerContent(props: AddTrackerContentProps) {
+  const { activeTrackers } = props
+
   const { handleClose } = useDialogsStore()
 
   const { data: referenceData } = useQuery(getReferenceData)
@@ -50,9 +56,13 @@ export function AddTrackerContent() {
     labelMap,
   } = referenceData
 
+  const inactiveTrackers = trackers.filter(
+    (tracker) => !activeTrackers.includes(tracker.value),
+  )
+
   const form = useForm({
     defaultValues: {
-      tracker: TrackerEnum.NCORE,
+      tracker: inactiveTrackers[0].value,
       trackerUsn: '',
       trackerPwd: '',
     },
@@ -114,7 +124,7 @@ export function AddTrackerContent() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {trackers.map((tracker) => (
+                  {inactiveTrackers.map((tracker) => (
                     <SelectItem key={tracker.value} value={tracker.value}>
                       {tracker.label}
                     </SelectItem>

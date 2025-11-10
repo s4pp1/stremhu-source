@@ -29,6 +29,7 @@ import {
   TrackerTorrentId,
   TrackerTorrentStatusEnum,
 } from './tracker.types';
+import { LOGIN_ERROR_MESSAGE } from './trackers.constants';
 
 @Injectable()
 export class TrackersService implements OnApplicationBootstrap {
@@ -65,11 +66,11 @@ export class TrackersService implements OnApplicationBootstrap {
       });
     } catch (error: unknown) {
       if (error instanceof HttpException && error.getStatus() === 401) {
-        throw new BadRequestException('Hibás felhasználónév, vagy jelszó!');
+        throw new BadRequestException(LOGIN_ERROR_MESSAGE);
       }
 
       if (isAxiosError(error) && error.response?.status === 401) {
-        throw new BadRequestException('Hibás felhasználónév, vagy jelszó!');
+        throw new BadRequestException(LOGIN_ERROR_MESSAGE);
       }
 
       throw new NotImplementedException(

@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Resolution as ResolutionEnum } from '@ctrl/video-filename-parser';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { LanguageEnum } from 'src/common/enums/language.enum';
-import { ResolutionEnum } from 'src/common/enums/resolution.enum';
 import { StreamMediaTypeEnum } from 'src/stremio/enums/stream-media-type.enum';
 import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
 import {
@@ -14,6 +14,7 @@ import {
   AdapterParsedTorrent,
   AdapterTorrent,
   AdapterTorrentId,
+  TRACKER_TOKEN,
 } from '../adapters.types';
 import { BithumenClient } from './bithumen.client';
 import {
@@ -27,9 +28,10 @@ import {
 
 @Injectable()
 export class BithumenAdapter implements TrackerAdapter {
-  readonly tracker = TrackerEnum.BITHUMEN;
-
-  constructor(private bithumenClient: BithumenClient) {}
+  constructor(
+    @Inject(TRACKER_TOKEN) readonly tracker: TrackerEnum,
+    private bithumenClient: BithumenClient,
+  ) {}
 
   async login(payload: LoginRequest): Promise<void> {
     await this.bithumenClient.login(payload);

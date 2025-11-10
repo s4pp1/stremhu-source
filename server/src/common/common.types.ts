@@ -1,7 +1,8 @@
+import { Resolution as ResolutionEnum } from '@ctrl/video-filename-parser';
+
 import { UserRoleEnum } from 'src/users/enums/user-role.enum';
 
 import { LanguageEnum } from './enums/language.enum';
-import { ResolutionEnum } from './enums/resolution.enum';
 
 export interface UserRoleOption {
   value: UserRoleEnum;

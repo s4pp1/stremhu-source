@@ -1,3 +1,5 @@
+import { Resolution as ResolutionEnum } from '@ctrl/video-filename-parser';
+
 import { UserRoleEnum } from 'src/users/enums/user-role.enum';
 
 import {
@@ -6,7 +8,6 @@ import {
   UserRoleOption,
 } from './common.types';
 import { LanguageEnum } from './enums/language.enum';
-import { ResolutionEnum } from './enums/resolution.enum';
 
 export const GLOBAL_ID = 'global';
 

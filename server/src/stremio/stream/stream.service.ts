@@ -1,4 +1,9 @@
-import { Resolution, filenameParse } from '@ctrl/video-filename-parser';
+import {
+  Resolution as ResolutionEnum,
+  Source as SourceEnum,
+  VideoCodec as VideoCodecEnum,
+  filenameParse,
+} from '@ctrl/video-filename-parser';
 import { Injectable } from '@nestjs/common';
 import { filesize } from 'filesize';
 import isVideo from 'is-video';
@@ -23,6 +28,8 @@ import { WebTorrentService } from 'src/web-torrent/web-torrent.service';
 import { StreamDto } from './dto/stremio-stream.dto';
 import { ParsedStreamIdSeries } from './pipe/stream-id.pipe';
 import {
+  AudioCodecConst,
+  AudioCodecEnum,
   FindStreams,
   PlayStream,
   SelectVideoOptions,
@@ -73,17 +80,23 @@ export class StremioStreamService {
     const streamErrors: StreamDto[] = torrentErrors.map((torrentError) => ({
       name: '❗ H I B A ❗',
       description: `❗ ${torrentError.message} ❗`,
-      url: 'http://nincs.tracker.konfiguralva',
+      url: 'http://hiba.tortent',
       behaviorHints: {
-        notWebReady: true,
+        notWebReady: false,
       },
     }));
 
     const streams: StreamDto[] = sortedVideoFiles.map((videoFile) => {
       const nameArray = _.compact([
         [videoFile.language.emoji, videoFile.resolution.label].join(' | '),
-        videoFile.audio,
+        videoFile.audioCodec,
       ]);
+
+      const isCamSource = videoFile.sources.includes(SourceEnum.CAM);
+
+      if (isCamSource) {
+        nameArray.push('📹 CAM');
+      }
 
       const fileSize = `💾 ${filesize(videoFile.fileSize)}`;
       const seeders = `🔼 ${videoFile.seeders}`;
@@ -93,13 +106,20 @@ export class StremioStreamService {
         [fileSize, seeders, videoFile.language.label].join(' | '),
       ]);
 
+      const bingeGroup = [
+        videoFile.tracker,
+        videoFile.resolution.value.toLowerCase(),
+        videoFile.language.value.toLowerCase(),
+      ].join('-');
+
       return {
-        name: nameArray.join('\n'),
+        name: nameArray.join(' | '),
         description: descriptionArray.join('\n'),
         url: `${setting.endpoint}/api/${user.stremioToken}/stream/play/${videoFile.imdbId}/${videoFile.tracker}/${videoFile.torrentId}/${videoFile.fileIndex}`,
         behaviorHints: {
-          notWebReady: true,
-          bingeGroup: videoFile.infoHash,
+          notWebReady: videoFile.notWebReady,
+          bingeGroup,
+          filename: videoFile.fileName,
         },
       };
     });
@@ -177,8 +197,12 @@ export class StremioStreamService {
     for (const torrent of torrents) {
       if (!torrent.parsed.name) continue;
 
-      const { resolution: torrentResolution, audioCodec: torrentAudioCodec } =
-        filenameParse(torrent.parsed.name);
+      const {
+        sources: torrentSources,
+        videoCodec: torrentVideoCodec,
+        resolution: torrentResolution,
+        audioCodec: torrentAudioCodec,
+      } = filenameParse(torrent.parsed.name);
 
       const videoFile = this.selectVideoFile({
         files: torrent.parsed.files,
@@ -187,11 +211,19 @@ export class StremioStreamService {
 
       if (!videoFile) continue;
 
-      const { resolution: fileResolution, audioCodec: fileAudioCodec } =
-        filenameParse(videoFile.file.name);
+      const {
+        sources: fileSources,
+        videoCodec: fileVideoCodec,
+        resolution: fileResolution,
+        audioCodec: fileAudioCodec,
+      } = filenameParse(videoFile.file.name);
 
+      const videoCodec = torrentVideoCodec ?? fileVideoCodec;
       const resolution = torrentResolution ?? fileResolution;
-      const audio = torrentAudioCodec ?? fileAudioCodec;
+      const audioCodec = torrentAudioCodec ?? fileAudioCodec;
+      const sources = torrentSources ?? fileSources;
+
+      const notWebReady = this.notWebReady(videoCodec, audioCodec);
 
       const torrentByFile: VideoFileWithRank = {
         imdbId: torrent.imdbId,
@@ -206,13 +238,58 @@ export class StremioStreamService {
 
         language: this.toLanguageInfo(torrent.language),
         resolution: this.toResolutionInfo(resolution || torrent.resolution),
-        audio: audio,
+        audioCodec,
+        videoCodec,
+        sources,
+        notWebReady,
       };
 
       torrentByFiles.push(torrentByFile);
     }
 
     return torrentByFiles;
+  }
+
+  private notWebReady(
+    videoCodec: VideoCodecEnum | undefined,
+    audioCodec: AudioCodecEnum | undefined,
+  ): boolean {
+    const notWebReadyVideoCodec = this.notWebReadyVideoCodec(videoCodec);
+    const notWebReadyAudioCodec = this.notWebReadyAudioCodec(audioCodec);
+
+    return notWebReadyVideoCodec || notWebReadyAudioCodec;
+  }
+
+  private notWebReadyVideoCodec(
+    videoCodec: VideoCodecEnum | undefined,
+  ): boolean {
+    if (!videoCodec) return false;
+
+    const notSupportedCodecs = [
+      VideoCodecEnum.H265,
+      VideoCodecEnum.X265,
+      VideoCodecEnum.WMV,
+      VideoCodecEnum.XVID,
+      VideoCodecEnum.DVDR,
+    ];
+
+    return notSupportedCodecs.includes(videoCodec);
+  }
+
+  private notWebReadyAudioCodec(audioCodec: AudioCodecEnum | undefined) {
+    if (!audioCodec) return false;
+
+    const notSupportedCodecs = [
+      AudioCodecConst.FLAC,
+      AudioCodecConst.MP2,
+      AudioCodecConst.DOLBY,
+      AudioCodecConst.EAC3,
+      AudioCodecConst.DTS,
+      AudioCodecConst.DTSHD,
+      AudioCodecConst.TRUEHD,
+    ] as AudioCodecEnum[];
+
+    return notSupportedCodecs.includes(audioCodec);
   }
 
   private sortVideoFiles(videoFiles: VideoFileWithRank[]): VideoFileWithRank[] {
@@ -324,39 +401,39 @@ export class StremioStreamService {
     return videoFileLanguage;
   }
 
-  private toResolutionInfo(resolution: Resolution): VideoFileResolution {
+  private toResolutionInfo(resolution: ResolutionEnum): VideoFileResolution {
     switch (resolution) {
-      case Resolution.R2160P:
+      case ResolutionEnum.R2160P:
         return {
           label: RESOLUTION_LABEL_MAP[resolution],
           value: resolution,
           rank: 1,
         };
-      case Resolution.R1080P:
+      case ResolutionEnum.R1080P:
         return {
           label: RESOLUTION_LABEL_MAP[resolution],
           value: resolution,
           rank: 2,
         };
-      case Resolution.R720P:
+      case ResolutionEnum.R720P:
         return {
           label: RESOLUTION_LABEL_MAP[resolution],
           value: resolution,
           rank: 3,
         };
-      case Resolution.R576P:
+      case ResolutionEnum.R576P:
         return {
           label: RESOLUTION_LABEL_MAP[resolution],
           value: resolution,
           rank: 4,
         };
-      case Resolution.R540P:
+      case ResolutionEnum.R540P:
         return {
           label: RESOLUTION_LABEL_MAP[resolution],
           value: resolution,
           rank: 5,
         };
-      case Resolution.R480P:
+      case ResolutionEnum.R480P:
         return {
           label: RESOLUTION_LABEL_MAP[resolution],
           value: resolution,

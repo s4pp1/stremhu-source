@@ -5,6 +5,8 @@ import { ParsedTorrent } from 'src/common/utils/parse-torrent.util';
 
 import { TrackerEnum } from '../enums/tracker.enum';
 
+export const TRACKER_TOKEN = Symbol('TRACKER_TOKEN');
+
 export interface AdapterTorrentId {
   tracker: TrackerEnum;
   torrentId: string;

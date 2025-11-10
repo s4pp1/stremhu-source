@@ -1,4 +1,4 @@
-import { Resolution } from '@ctrl/video-filename-parser';
+import { Resolution as ResolutionEnum } from '@ctrl/video-filename-parser';
 
 import { LanguageEnum } from 'src/common/enums/language.enum';
 import { ParsedTorrent } from 'src/common/utils/parse-torrent.util';
@@ -16,7 +16,6 @@ export interface TrackerOption {
   label: string;
 }
 
-// TODO: Hibamegjelenítés a Stremio appban
 export enum TrackerTorrentStatusEnum {
   SUCCESS = 'success',
   ERROR = 'error',
@@ -32,7 +31,7 @@ export interface TrackerTorrentId {
 export interface TrackerTorrentSuccess extends TrackerTorrentId {
   status: TrackerTorrentStatusEnum.SUCCESS;
   language: LanguageEnum;
-  resolution: Resolution;
+  resolution: ResolutionEnum;
   seeders: number;
 }
 

@@ -1,4 +1,9 @@
-import { ParsedFilename, Resolution } from '@ctrl/video-filename-parser';
+import {
+  ParsedFilename,
+  Resolution as ResolutionEnum,
+  Source as SourceEnum,
+  VideoCodec as VideoCodecEnum,
+} from '@ctrl/video-filename-parser';
 
 import { LanguageEnum } from 'src/common/enums/language.enum';
 import { ParsedFile } from 'src/common/utils/parse-torrent.util';
@@ -28,11 +33,27 @@ export interface CalculatedRangeDetails {
 
 export type CalculatedRange = CalculatedRangeDetails | RangeErrorEnum;
 
-export type AudioCodec = ParsedFilename['audioCodec'];
+export type AudioCodecEnum = NonNullable<ParsedFilename['audioCodec']>;
+
+export const AudioCodecConst = {
+  MP3: 'MP3',
+  MP2: 'MP2',
+  DOLBY: 'Dolby Digital',
+  EAC3: 'Dolby Digital Plus',
+  AAC: 'AAC',
+  FLAC: 'FLAC',
+  DTS: 'DTS',
+  DTSHD: 'DTS-HD',
+  TRUEHD: 'Dolby TrueHD',
+  OPUS: 'Opus',
+  VORBIS: 'Vorbis',
+  PCM: 'PCM',
+  LPCM: 'LPCM',
+} as const;
 
 export interface VideoFileResolution {
   label: string;
-  value: Resolution;
+  value: ResolutionEnum;
   rank: number;
 }
 
@@ -56,7 +77,10 @@ export interface VideoFileWithRank {
 
   resolution: VideoFileResolution;
   language: VideoFileLanguage;
-  audio?: AudioCodec;
+  videoCodec?: VideoCodecEnum;
+  audioCodec?: AudioCodecEnum;
+  sources: SourceEnum[];
+  notWebReady: boolean;
 }
 
 export interface FindStreams {

@@ -1,5 +1,6 @@
 import {
   ForbiddenException,
+  Inject,
   Injectable,
   Logger,
   UnauthorizedException,
@@ -14,6 +15,12 @@ import { createAxios } from 'src/trackers/common/create-axios';
 import { TrackerCredentialsService } from 'src/trackers/credentials/tracker-credentials.service';
 import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
 
+import { TRACKER_TOKEN } from '../adapters.types';
+import {
+  getTrackerCredentialErrorMessage,
+  getTrackerLoginErrorMessage,
+  getTrackerRefreshMessage,
+} from '../adapters.utils';
 import { NCORE_LOGIN_PATH } from './ncore.constants';
 import { NcoreLoginRequest } from './ncore.types';
 
@@ -27,6 +34,7 @@ export class NcoreClientFactory {
   private loginInProgress: Promise<void> | null = null;
 
   constructor(
+    @Inject(TRACKER_TOKEN) private readonly tracker: TrackerEnum,
     private configService: ConfigService,
     private trackerCredentialsService: TrackerCredentialsService,
   ) {
@@ -83,7 +91,7 @@ export class NcoreClientFactory {
 
         if (res.config._retry) {
           throw new ForbiddenException(
-            'Sikertelen bejelentkezés az nCore fiókba, frissítsd az adatokat!',
+            getTrackerLoginErrorMessage(this.tracker),
           );
         }
 
@@ -135,15 +143,15 @@ export class NcoreClientFactory {
   }
 
   private async doRelogin() {
-    this.logger.log('🔄 nCore session frissítése');
+    this.logger.log(getTrackerRefreshMessage(this.tracker));
 
     const credential = await this.trackerCredentialsService.findOne(
-      TrackerEnum.NCORE,
+      this.tracker,
     );
 
     if (!credential) {
       throw new ForbiddenException(
-        'nCore hitelesítése információk nincsenek megadva',
+        getTrackerCredentialErrorMessage(this.tracker),
       );
     }
 
