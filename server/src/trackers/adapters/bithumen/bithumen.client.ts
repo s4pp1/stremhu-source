@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { load } from 'cheerio';
 import _ from 'lodash';
@@ -6,7 +6,11 @@ import _ from 'lodash';
 import { parseTorrent } from 'src/common/utils/parse-torrent.util';
 import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
 
-import { AdapterParsedTorrent, AdapterTorrentId } from '../adapters.types';
+import {
+  AdapterParsedTorrent,
+  AdapterTorrentId,
+  TRACKER_TOKEN,
+} from '../adapters.types';
 import { BithumenClientFactory } from './bithumen.client-factory';
 import {
   BITHUMEN_DOWNLOAD_PATH,
@@ -26,6 +30,7 @@ export class BithumenClient {
   private readonly bithumenBaseUrl: string;
 
   constructor(
+    @Inject(TRACKER_TOKEN) readonly tracker: TrackerEnum,
     private configService: ConfigService,
     private bithumenClientFactory: BithumenClientFactory,
   ) {
@@ -101,7 +106,7 @@ export class BithumenClient {
     const downloadUrl = new URL(downloadPath, this.bithumenBaseUrl).toString();
 
     return {
-      tracker: TrackerEnum.BITHUMEN,
+      tracker: this.tracker,
       torrentId,
       imdbId,
       downloadUrl,
