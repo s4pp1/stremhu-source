@@ -33,6 +33,7 @@ export class WebTorrentController {
       }
 
       const response = {
+        tracker: torrent.tracker,
         name: torrent.name,
         uploadSpeed: uploadSpeed,
         progress: `${_.floor(torrent.progress * 100, 2)}%`,

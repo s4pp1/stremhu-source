@@ -29,12 +29,13 @@ function ProtectedLayout() {
   if (!me) throw new Error(`A 'me' nincs a cache-ben.`)
 
   return (
-    <div className="pt-14">
+    <div className="pt-18 pb-4">
       <div className="fixed flex justify-center items-center w-full h-14 top-0 left-0 bg-card border-b border-b-background z-50">
         <div className="flex justify-between items-center w-full max-w-3xl px-4">
-          <div className="font-medium text-lg antialiased">
-            Strem<span className="font-bold">HU</span>
-          </div>
+          <Link to="/" className="flex items-center gap-2 font-medium">
+            <img src="/logo.png" alt="StremHU" className="h-8 w-auto" />
+            Source
+          </Link>
           <div className="flex gap-2 items-center">
             <Button asChild variant="ghost" size="sm">
               <Link

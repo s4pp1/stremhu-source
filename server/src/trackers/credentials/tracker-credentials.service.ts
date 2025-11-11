@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 
+import { WebTorrentService } from 'src/web-torrent/web-torrent.service';
+
 import { TrackerEnum } from '../enums/tracker.enum';
 import { TrackerCredential } from './entities/tracker-credential.entity';
 import { TrackerCredentialToCreate } from './tracker-credentials.types';
@@ -11,6 +13,7 @@ export class TrackerCredentialsService {
   constructor(
     @InjectRepository(TrackerCredential)
     private trackerCredentialRepository: Repository<TrackerCredential>,
+    private webTorrentService: WebTorrentService,
   ) {}
 
   protected getRepository(
@@ -57,5 +60,7 @@ export class TrackerCredentialsService {
 
     const repository = this.getRepository(manager);
     await repository.remove(credential);
+
+    await this.webTorrentService.deleteAllByTracker(tracker);
   }
 }
