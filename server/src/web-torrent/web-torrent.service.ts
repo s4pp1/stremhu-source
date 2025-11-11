@@ -198,7 +198,7 @@ export class WebTorrentService
     this.client.throttleUpload(uploadLimit);
   }
 
-  async delete(infoHash: string) {
+  async delete(infoHash: string): Promise<void> {
     const torrent = await this.getTorrent(infoHash);
 
     if (!torrent) {
@@ -222,6 +222,20 @@ export class WebTorrentService
 
     this.logger.log(
       `✅ Torrent és a könyvtára sikeresen törölve lett: ${torrent.name}`,
+    );
+  }
+
+  async deleteAllByTracker(tracker: TrackerEnum): Promise<void> {
+    const torrentRuns = await this.webTorrentRunsService.find();
+
+    const trackerTorrentRuns = torrentRuns.filter(
+      (torrentRun) => torrentRun.tracker === tracker,
+    );
+
+    await Promise.all(
+      trackerTorrentRuns.map((trackerTorrentRun) =>
+        this.delete(trackerTorrentRun.infoHash),
+      ),
     );
   }
 }

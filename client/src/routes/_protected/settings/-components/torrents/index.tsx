@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { CircleCheckBigIcon } from 'lucide-react'
 
+import { DefaultLoading } from '@/components/default-loading'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { torrentsOptions } from '@/queries/torrents'
 
@@ -10,7 +11,7 @@ export function Torrents() {
   const { isPending, isError, data } = useQuery(torrentsOptions())
 
   if (isPending) {
-    return <div>Loading</div>
+    return <DefaultLoading message="Torrentek betöltése" />
   }
 
   if (isError) {

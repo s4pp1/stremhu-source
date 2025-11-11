@@ -18,6 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { useReferenceDataOptionLabel } from '@/hooks/use-reference-data-option-label'
 import { useDeleteTorrent } from '@/queries/torrents'
 import { useConfirmDialog } from '@/store/confirm-dialog-store'
 
@@ -36,7 +37,7 @@ function TorrentDetail(props: TorrentDetailProps) {
   return (
     <div className="flex gap-2 items-center text-muted-foreground text-sm font-normal [&_svg:not([class*='size-'])]:size-4">
       {icon}
-      <span className="font-bold font-mono">{value}</span>
+      <span className="font-medium">{value}</span>
     </div>
   )
 }
@@ -44,13 +45,15 @@ function TorrentDetail(props: TorrentDetailProps) {
 export function Torrent(props: TorrentProps) {
   const { torrent } = props
 
+  const { getTrackerLabel } = useReferenceDataOptionLabel()
+
   const confirmDialog = useConfirmDialog()
   const { mutateAsync: deleteTorrent } = useDeleteTorrent()
 
   async function handleDelete() {
     await confirmDialog({
       title: `Biztosan törlöd?`,
-      description: `A(z) ${torrent.name} eltávolítása a kliensből tölri az adatokat is a merevlemeztől.`,
+      description: `A(z) ${torrent.name} törlésével az adatok is törlésre kerülnek.`,
       confirmText: 'Törlés',
       onConfirm: async () => {
         try {
@@ -67,8 +70,8 @@ export function Torrent(props: TorrentProps) {
   return (
     <Card key={torrent.infoHash} className="gap-0">
       <CardHeader>
-        <CardTitle className="font-mono font-medium line-clamp-2">
-          {torrent.name}
+        <CardTitle className="leading-5 line-clamp-2 break-all">
+          [{getTrackerLabel(torrent.tracker)}] {torrent.name}
         </CardTitle>
         <CardAction>
           <Button

@@ -34,6 +34,16 @@ export class TrackersService {
         });
     }
     /**
+     * @returns any
+     * @throws ApiError
+     */
+    public trackersControllerCleanupHitAndRun(): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'DELETE',
+            url: '/api/trackers/hit-and-run',
+        });
+    }
+    /**
      * @param tracker
      * @returns any
      * @throws ApiError
@@ -47,16 +57,6 @@ export class TrackersService {
             path: {
                 'tracker': tracker,
             },
-        });
-    }
-    /**
-     * @returns any
-     * @throws ApiError
-     */
-    public trackersControllerCleanupHitAndRun(): CancelablePromise<any> {
-        return this.httpRequest.request({
-            method: 'DELETE',
-            url: '/api/trackers/hit-and-run',
         });
     }
 }
