@@ -74,15 +74,12 @@ export class BithumenClient {
   }
 
   async findOne(torrentId: string): Promise<AdapterTorrentId> {
-    const url = new URL(
-      BITHUMEN_DOWNLOAD_PATH.replace(
-        '{TORRENT_ID}',
-        encodeURIComponent(torrentId),
-      ),
-      this.bithumenBaseUrl,
-    ).toString();
+    const url = new URL(BITHUMEN_DOWNLOAD_PATH, this.bithumenBaseUrl);
+    url.searchParams.append('id', torrentId);
 
-    const response = await this.bithumenClientFactory.client.get<string>(url);
+    const response = await this.bithumenClientFactory.client.get<string>(
+      url.toString(),
+    );
 
     const $ = load(response.data);
 
@@ -128,27 +125,25 @@ export class BithumenClient {
    * Visszaadja a “hit & run” nCore torrentek azonosítóit.
    */
   async hitnrun(): Promise<string[]> {
-    const url = new URL(
-      BITHUMEN_HIT_N_RUN_PATH.replace(
-        '{USER_ID}',
-        this.bithumenClientFactory.userId,
-      ),
-      this.bithumenBaseUrl,
-    ).toString();
+    const userId = await this.bithumenClientFactory.getUserId();
+    const url = new URL(BITHUMEN_HIT_N_RUN_PATH, this.bithumenBaseUrl);
 
-    const response = await this.bithumenClientFactory.client.get<unknown>(url);
+    url.searchParams.append('id', userId);
+    url.searchParams.append('hnr', '1');
+
+    const response = await this.bithumenClientFactory.client.get<unknown>(
+      url.toString(),
+    );
 
     if (typeof response.data !== 'string') {
       return [];
     }
 
     const $ = load(response.data);
+    const hitnrunTorrents = $('td a[href*="/details.php?id="]');
+    const torrentIds = hitnrunTorrents.map((_, el) => $(el).attr('href')).get();
 
-    const hitnrunTorrents = $('td a[href*="/details.php?id="')
-      .map((_, el) => $(el).attr('href'))
-      .get();
-
-    const sourceIds = hitnrunTorrents.map((hitnrunTorrent) => {
+    const sourceIds = torrentIds.map((hitnrunTorrent) => {
       const url = new URL(hitnrunTorrent, this.bithumenBaseUrl);
       const idParam = url.searchParams.get('id');
       return idParam;

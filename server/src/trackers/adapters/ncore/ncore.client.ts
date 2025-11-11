@@ -128,15 +128,14 @@ export class NcoreClient {
   }
 
   async findOneTorrent(torrentId: string): Promise<AdapterTorrentId> {
-    const url = new URL(
-      NCORE_DOWNLOAD_PATH.replace(
-        '{TORRENT_ID}',
-        encodeURIComponent(torrentId),
-      ),
-      this.ncoreBaseUrl,
-    ).toString();
+    const url = new URL(NCORE_DOWNLOAD_PATH, this.ncoreBaseUrl);
 
-    const response = await this.ncoreClientFactory.client.get<string>(url);
+    url.searchParams.append('action', 'details');
+    url.searchParams.append('id', torrentId);
+
+    const response = await this.ncoreClientFactory.client.get<string>(
+      url.toString(),
+    );
 
     const $ = load(response.data);
 
