@@ -22,7 +22,7 @@ import {
   getTrackerLoginErrorMessage,
   getTrackerRefreshMessage,
 } from '../adapters.utils';
-import { BITHUMEN_LOGIN_PATH } from './bithumen.constants';
+import { BITHUMEN_INDEX_PATH, BITHUMEN_LOGIN_PATH } from './bithumen.constants';
 import { BithumenLoginRequest } from './bithumen.types';
 
 @Injectable()
@@ -34,7 +34,7 @@ export class BithumenClientFactory {
   private axios: AxiosInstance = createAxios(this.jar);
   private loginInProgress: Promise<void> | null = null;
 
-  userId: string = '';
+  private userId: string | undefined;
 
   constructor(
     @Inject(TRACKER_TOKEN) private readonly tracker: TrackerEnum,
@@ -86,6 +86,32 @@ export class BithumenClientFactory {
     const userDetailUrl = new URL(userDetailPath, this.bithumenBaseUrl);
     const userId = userDetailUrl.searchParams.get('id') || '';
     this.userId = userId;
+  }
+
+  async getUserId(): Promise<string> {
+    if (this.userId) return this.userId;
+
+    const url = new URL(BITHUMEN_INDEX_PATH, this.bithumenBaseUrl).toString();
+    const response = await this.client.get(url);
+
+    if (typeof response.data !== 'string') {
+      throw new UnauthorizedException();
+    }
+
+    const $ = load(response.data);
+    const userDetailPath = $('#status a[href*="/userdetails.php?"]')
+      .first()
+      .attr('href');
+
+    if (!userDetailPath) {
+      throw new UnauthorizedException();
+    }
+
+    const userDetailUrl = new URL(userDetailPath, this.bithumenBaseUrl);
+    const userId = userDetailUrl.searchParams.get('id') || '';
+    this.userId = userId;
+
+    return userId;
   }
 
   private initInterceptors() {

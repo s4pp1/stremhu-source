@@ -48,6 +48,12 @@ export class TrackersController {
     );
   }
 
+  @ApiResponse({ status: 200 })
+  @Delete('/hit-and-run')
+  async cleanupHitAndRun() {
+    return this.trackersService.cleanupHitAndRun();
+  }
+
   @ApiParam({
     name: 'tracker',
     enum: TrackerEnum,
@@ -58,11 +64,5 @@ export class TrackersController {
     @Param('tracker', new ParseEnumPipe(TrackerEnum)) tracker: TrackerEnum,
   ) {
     await this.trackerCredentialsService.delete(tracker);
-  }
-
-  @ApiResponse({ status: 200 })
-  @Delete('/hit-and-run')
-  async cleanupHitAndRun() {
-    return this.trackersService.cleanupHitAndRun();
   }
 }
