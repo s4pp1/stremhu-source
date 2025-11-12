@@ -1,30 +1,32 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { load } from 'cheerio';
 import _ from 'lodash';
 
 import { parseTorrent } from 'src/common/utils/parse-torrent.util';
-import { StreamMediaTypeEnum } from 'src/stremio/enums/stream-media-type.enum';
 import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
 
-import { AdapterParsedTorrent, AdapterTorrentId } from '../adapters.types';
+import {
+  AdapterParsedTorrent,
+  AdapterTorrentId,
+  TRACKER_TOKEN,
+} from '../adapters.types';
+import { getTrackerStructureErrorMessage } from '../adapters.utils';
 import { NcoreClientFactory } from './ncore.client-factory';
+import { NCORE_HIT_N_RUN_PATH, NCORE_TORRENTS_PATH } from './ncore.constants';
 import {
-  NCORE_DOWNLOAD_PATH,
-  NCORE_HIT_N_RUN_PATH,
-  NCORE_MOVIE_CATEGORY_FILTERS,
-  NCORE_SERIES_CATEGORY_FILTERS,
-  NCORE_TORRENTS_PATH,
-} from './ncore.constants';
-import {
-  NcoreCategory,
   NcoreDownloadRequest,
+  NcoreFindQuery,
   NcoreLoginRequest,
   NcoreOrderByEnum,
   NcoreOrderDirectionEnum,
   NcoreSearchByEnum,
   NcoreSearchParams,
-  NcoreSearchQuery,
   NcoreSearchTypeEnum,
   NcoreTorrent,
   NcoreTorrents,
@@ -32,9 +34,11 @@ import {
 
 @Injectable()
 export class NcoreClient {
+  private readonly logger = new Logger(NcoreClient.name);
   private readonly ncoreBaseUrl: string;
 
   constructor(
+    @Inject(TRACKER_TOKEN) private readonly tracker: TrackerEnum,
     private configService: ConfigService,
     private ncoreClientFactory: NcoreClientFactory,
   ) {
@@ -43,23 +47,21 @@ export class NcoreClient {
   }
 
   login(payload: NcoreLoginRequest) {
-    return this.ncoreClientFactory.login(payload, true);
+    return this.ncoreClientFactory.login(payload);
   }
 
-  async getTorrents(query: NcoreSearchQuery): Promise<NcoreTorrents> {
-    const { mediaType, imdbId, page = 1 } = query;
+  async find(payload: NcoreFindQuery): Promise<NcoreTorrent[]> {
+    return this.findAll(payload);
+  }
 
-    const url = new URL(NCORE_TORRENTS_PATH, this.ncoreBaseUrl).toString();
+  private async findAll(
+    payload: NcoreFindQuery,
+    page: number = 1,
+    accumulator: NcoreTorrent[] = [],
+  ): Promise<NcoreTorrent[]> {
+    const { imdbId, categories } = payload;
 
-    let kivalasztott_tipus: Array<NcoreCategory> = [];
-
-    if (mediaType === StreamMediaTypeEnum.MOVIE) {
-      kivalasztott_tipus = NCORE_MOVIE_CATEGORY_FILTERS;
-    }
-
-    if (mediaType === StreamMediaTypeEnum.SERIES) {
-      kivalasztott_tipus = NCORE_SERIES_CATEGORY_FILTERS;
-    }
+    const torrentsUrl = new URL(NCORE_TORRENTS_PATH, this.ncoreBaseUrl);
 
     const searchParams: NcoreSearchParams = {
       oldal: page,
@@ -68,47 +70,76 @@ export class NcoreClient {
       miszerint: NcoreOrderByEnum.SEEDERS,
       hogyan: NcoreOrderDirectionEnum.DESC,
       tipus: NcoreSearchTypeEnum.SELECTED,
-      kivalasztott_tipus,
+      kivalasztott_tipus: categories,
       jsons: true,
     };
 
-    const response = await this.ncoreClientFactory.client.get<
-      NcoreTorrents | string
-    >(url, {
-      params: searchParams,
-    });
+    const response = await this.ncoreClientFactory.client.get<NcoreTorrents>(
+      torrentsUrl.href,
+      {
+        params: searchParams,
+      },
+    );
 
-    if (typeof response.data === 'string') {
-      return {
-        total_results: '0',
-        onpage: 0,
-        perpage: '0',
-        results: [],
-      };
-    }
+    accumulator = [...accumulator, ...response.data.results];
 
-    return response.data;
-  }
-
-  async torrents(
-    query: NcoreSearchQuery,
-    accumulator: NcoreTorrent[] = [],
-  ): Promise<NcoreTorrent[]> {
-    const response = await this.getTorrents(query);
-    accumulator = [...accumulator, ...response.results];
-
-    const { page = 1 } = query;
-
-    const total = Number(response.total_results);
-    const limit = Number(response.perpage);
+    const total = Number(response.data.total_results);
+    const limit = Number(response.data.perpage);
     const lastPage = Math.ceil(total / limit);
 
     if (lastPage > page) {
-      query.page = page + 1;
-      return this.torrents(query, accumulator);
+      return this.findAll(payload, page + 1, accumulator);
     }
 
     return accumulator;
+  }
+
+  async findOne(torrentId: string): Promise<AdapterTorrentId> {
+    try {
+      const detailsUrl = new URL(NCORE_TORRENTS_PATH, this.ncoreBaseUrl);
+
+      detailsUrl.searchParams.append('action', 'details');
+      detailsUrl.searchParams.append('id', torrentId);
+
+      const response = await this.ncoreClientFactory.client.get<string>(
+        detailsUrl.href,
+      );
+
+      const $ = load(response.data);
+
+      const downloadPath = $(
+        `.download a[href*="torrents.php?action=download&id=${torrentId}"]`,
+      )
+        .first()
+        .attr('href');
+
+      const imdbUrl = $(
+        'a[href*=https://dereferer.me/?https://imdb.com/title/]',
+      )
+        .first()
+        .text();
+
+      const imdbId = _.last(imdbUrl.split('/'));
+
+      if (!downloadPath || !imdbId) {
+        throw new Error(
+          `"downloadPath": ${downloadPath} vagy "imdbId": ${imdbId} nem található`,
+        );
+      }
+
+      const downloadUrl = new URL(downloadPath, this.ncoreBaseUrl);
+
+      return {
+        tracker: this.tracker,
+        torrentId,
+        imdbId,
+        downloadUrl: downloadUrl.href,
+      };
+    } catch (error) {
+      const errorMessage = getTrackerStructureErrorMessage(this.tracker);
+      this.logger.error(errorMessage, error);
+      throw new ServiceUnavailableException(errorMessage);
+    }
   }
 
   async download(payload: NcoreDownloadRequest): Promise<AdapterParsedTorrent> {
@@ -127,69 +158,37 @@ export class NcoreClient {
     return { torrentId, parsed };
   }
 
-  async findOneTorrent(torrentId: string): Promise<AdapterTorrentId> {
-    const url = new URL(NCORE_DOWNLOAD_PATH, this.ncoreBaseUrl);
-
-    url.searchParams.append('action', 'details');
-    url.searchParams.append('id', torrentId);
-
-    const response = await this.ncoreClientFactory.client.get<string>(
-      url.toString(),
-    );
-
-    const $ = load(response.data);
-
-    const ncoreDownloadPath = $('.download').first().find('a').attr('href');
-    const imdbUrl = $('.inforbar_txt tr')
-      .filter((_, el) => $(el).text().includes('IMDb link:'))
-      .first()
-      .find('td')
-      .eq(1)
-      .find('a')
-      .text();
-
-    const imdbId = _.last(imdbUrl.split('/'));
-
-    if (!ncoreDownloadPath || !imdbId) {
-      throw new NotFoundException('nCore torrent adatlapja nem található');
-    }
-
-    const downloadUrl = new URL(
-      ncoreDownloadPath,
-      this.ncoreBaseUrl,
-    ).toString();
-
-    return {
-      tracker: TrackerEnum.NCORE,
-      torrentId,
-      imdbId,
-      downloadUrl,
-    };
-  }
-
-  /**
-   * Visszaadja a “hit & run” nCore torrentek azonosítóit.
-   */
   async hitnrun(): Promise<string[]> {
-    const url = new URL(NCORE_HIT_N_RUN_PATH, this.ncoreBaseUrl).toString();
+    try {
+      const hitAndRunUrl = new URL(NCORE_HIT_N_RUN_PATH, this.ncoreBaseUrl);
+      hitAndRunUrl.searchParams.append('showall', 'false');
 
-    const response = await this.ncoreClientFactory.client.get<string>(url, {
-      responseType: 'text',
-    });
+      const response = await this.ncoreClientFactory.client.get<string>(
+        hitAndRunUrl.href,
+        {
+          responseType: 'text',
+        },
+      );
 
-    const $ = load(response.data);
+      const $ = load(response.data);
 
-    const hitnrunTorrents = $('.box_torrent_all')
-      .find('.hnr_torrents a')
-      .map((_, el) => $(el).attr('href'))
-      .get();
+      const hitnrunTorrents = $(
+        '.box_torrent_all a[href*="torrents.php?action=details&id="',
+      )
+        .map((_, el) => $(el).attr('href'))
+        .get();
 
-    const sourceIds = hitnrunTorrents.map((hitnrunTorrent) => {
-      const url = new URL(hitnrunTorrent, this.ncoreBaseUrl);
-      const idParam = url.searchParams.get('id');
-      return idParam;
-    });
+      const sourceIds = hitnrunTorrents.map((hitnrunTorrent) => {
+        const url = new URL(hitnrunTorrent, this.ncoreBaseUrl);
+        const idParam = url.searchParams.get('id');
+        return idParam;
+      });
 
-    return _.compact(sourceIds);
+      return _.compact(sourceIds);
+    } catch (error) {
+      const errorMessage = getTrackerStructureErrorMessage(this.tracker);
+      this.logger.error(errorMessage, error);
+      throw new ServiceUnavailableException(errorMessage);
+    }
   }
 }

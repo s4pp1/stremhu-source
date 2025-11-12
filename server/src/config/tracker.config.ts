@@ -14,6 +14,10 @@ export default registerAs('tracker', () => {
       value: process.env.BITHUMEN_URL ?? 'https://bithumen.be',
       zod: z.string().trim().nonempty(),
     },
+    'majomparade-url': {
+      value: process.env.MAJOMPARADE_URL ?? 'https://majomparade.eu',
+      zod: z.string().trim().nonempty(),
+    },
   };
 
   return ZodUtil.validate<TrackerConfig>(configs);

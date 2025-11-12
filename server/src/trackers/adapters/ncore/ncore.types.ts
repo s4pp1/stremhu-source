@@ -1,5 +1,3 @@
-import { TrackerSearchQuery } from 'src/trackers/tracker.types';
-
 export enum NcoreMovieCategoryEnum {
   SD_HUN = 'xvid_hun',
   SD = 'xvid',
@@ -62,8 +60,9 @@ export interface NcoreSearchParams {
   jsons: boolean;
 }
 
-export interface NcoreSearchQuery extends TrackerSearchQuery {
-  page?: number;
+export interface NcoreFindQuery {
+  imdbId: string;
+  categories: NcoreCategory[];
 }
 
 export interface NcoreTorrents {

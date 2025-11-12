@@ -4,6 +4,7 @@ import { TrackerOption } from './tracker.types';
 export const TRACKER_OPTIONS: TrackerOption[] = [
   { value: TrackerEnum.NCORE, label: 'nCore' },
   { value: TrackerEnum.BITHUMEN, label: 'BitHUmen' },
+  { value: TrackerEnum.MAJOMPARADE, label: 'Majomparádé' },
 ];
 
 export const TRACKER_LABEL_MAP = TRACKER_OPTIONS.reduce(

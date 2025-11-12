@@ -102,7 +102,7 @@ export class StremioStreamService {
       const seeders = `🔼 ${videoFile.seeders}`;
 
       const descriptionArray = _.compact([
-        `[${TRACKER_LABEL_MAP[videoFile.tracker]}]${videoFile.fileName}`,
+        `🧲 ${TRACKER_LABEL_MAP[videoFile.tracker]} | ${videoFile.fileName}`,
         [fileSize, seeders, videoFile.language.label].join(' | '),
       ]);
 

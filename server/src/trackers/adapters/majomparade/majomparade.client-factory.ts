@@ -8,7 +8,7 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import type { AxiosInstance, AxiosResponse } from 'axios';
+import type { AxiosInstance } from 'axios';
 import { AxiosHeaders, isAxiosError } from 'axios';
 import { load } from 'cheerio';
 import _ from 'lodash';
@@ -25,27 +25,25 @@ import {
   getTrackerRefreshMessage,
   getTrackerStructureErrorMessage,
 } from '../adapters.utils';
-import { BITHUMEN_INDEX_PATH, BITHUMEN_LOGIN_PATH } from './bithumen.constants';
-import { BithumenLoginRequest } from './bithumen.types';
+import { MAJOMPARADE_LOGIN_PATH } from './majomparade.constants';
+import { MajomparadeLoginRequest } from './majomparade.types';
 
 @Injectable()
-export class BithumenClientFactory {
-  private readonly logger = new Logger(BithumenClientFactory.name);
-  private readonly bithumenBaseUrl: string;
+export class MajomparadeClientFactory {
+  private readonly logger = new Logger(MajomparadeClientFactory.name);
+  private readonly majomparadeBaseUrl: string;
 
   private jar = new CookieJar();
   private axios: AxiosInstance = createAxios(this.jar);
   private loginInProgress: Promise<void> | null = null;
-
-  private userId: string | undefined;
 
   constructor(
     @Inject(TRACKER_TOKEN) private readonly tracker: TrackerEnum,
     private configService: ConfigService,
     private trackerCredentialsService: TrackerCredentialsService,
   ) {
-    this.bithumenBaseUrl = this.configService.getOrThrow<string>(
-      'tracker.bithumen-url',
+    this.majomparadeBaseUrl = this.configService.getOrThrow<string>(
+      'tracker.majomparade-url',
     );
 
     this.initInterceptors();
@@ -55,9 +53,9 @@ export class BithumenClientFactory {
     return this.axios;
   }
 
-  async login(payload?: BithumenLoginRequest) {
+  async login(payload?: MajomparadeLoginRequest) {
     try {
-      let credential: BithumenLoginRequest | undefined;
+      let credential: MajomparadeLoginRequest | undefined;
 
       if (payload) {
         credential = payload;
@@ -83,22 +81,33 @@ export class BithumenClientFactory {
       await this.jar.removeAllCookies();
       const axios = createAxios(this.jar);
 
-      const loginUrl = new URL(BITHUMEN_LOGIN_PATH, this.bithumenBaseUrl);
+      const loginUrl = new URL(MAJOMPARADE_LOGIN_PATH, this.majomparadeBaseUrl);
+
+      const loginResponse = await axios.get<string>(loginUrl.href, {
+        responseType: 'text',
+      });
+
+      const $login = load(loginResponse.data);
+      const getUnique = $login('.rejtett_input[name="getUnique"]')
+        .first()
+        .attr('value');
+
+      if (!getUnique) {
+        throw new Error('getUnique nem található');
+      }
 
       const form = new URLSearchParams();
-      form.set('username', username);
-      form.set('password', password);
-      form.set('returnto', '/');
+      form.set('nev', username);
+      form.set('jelszo', password);
+      form.set('getUnique', getUnique);
 
-      const response = await axios.post<string>(loginUrl.href, form, {
-        responseType: 'text',
+      const response = await axios.post(`${loginUrl.href}?belepes`, form, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
 
-      const isAuthError = this.isAuthError(response);
-      if (isAuthError) {
+      if (response.data !== 'location="index.php";') {
         throw new UnprocessableEntityException(
           getTrackerLoginErrorMessage(this.tracker),
         );
@@ -114,58 +123,13 @@ export class BithumenClientFactory {
     }
   }
 
-  async getUserId(): Promise<string> {
-    try {
-      if (this.userId) return this.userId;
-
-      const indexUrl = new URL(BITHUMEN_INDEX_PATH, this.bithumenBaseUrl);
-      const response = await this.client.get<string>(indexUrl.href, {
-        responseType: 'text',
-      });
-
-      const $ = load(response.data);
-      const userDetailPath = $('#status a[href*="/userdetails.php?"]')
-        .first()
-        .attr('href');
-
-      if (!userDetailPath) {
-        throw new Error(`"userDetailPath": ${userDetailPath} nem található`);
-      }
-
-      const userDetailUrl = new URL(userDetailPath, this.bithumenBaseUrl);
-      const userId = userDetailUrl.searchParams.get('id');
-
-      if (!userId) {
-        throw new Error(`"userId": ${userId} nem található`);
-      }
-
-      this.userId = userId;
-
-      return userId;
-    } catch (error) {
-      const errorMessage = getTrackerStructureErrorMessage(this.tracker);
-      this.logger.error(errorMessage, error);
-      throw new ServiceUnavailableException(errorMessage);
-    }
-  }
-
-  private isAuthError(res: AxiosResponse) {
-    const requestPath = _.get(res.request, ['path']) as string | undefined;
-    const checkPaths = ['/login.php', BITHUMEN_LOGIN_PATH];
-
-    const isLoginPath = checkPaths.some((checkPath) =>
-      requestPath?.includes(checkPath),
-    );
-
-    return isLoginPath;
-  }
-
   private initInterceptors() {
     this.axios.interceptors.response.use(
       async (res) => {
-        const isAuthError = this.isAuthError(res);
+        const requestPath = _.get(res.request, ['path']) as string | undefined;
+        const isLoginPath = requestPath?.includes(MAJOMPARADE_LOGIN_PATH);
 
-        if (isAuthError) {
+        if (isLoginPath) {
           await this.relogin();
 
           if (res.config.headers) {
@@ -213,7 +177,7 @@ export class BithumenClientFactory {
     );
   }
 
-  private async relogin() {
+  private async relogin(): Promise<void> {
     if (this.loginInProgress) {
       return this.loginInProgress;
     }

@@ -40,7 +40,7 @@ export class StremioStreamService {
      */
     public stremioStreamControllerPlayStream(
         imdbId: string,
-        tracker: 'ncore' | 'bithumen',
+        tracker: 'ncore' | 'bithumen' | 'majomparade',
         torrentId: string,
         fileIdx: number,
         token: string,

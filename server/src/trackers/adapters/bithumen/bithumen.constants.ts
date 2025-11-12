@@ -13,5 +13,5 @@ export const BITHUMEN_SERIES_CATEGORY_FILTERS = Object.values(
 export const BITHUMEN_INDEX_PATH = '/index.php';
 export const BITHUMEN_LOGIN_PATH = '/takelogin.php';
 export const BITHUMEN_TORRENTS_PATH = '/browse.php';
-export const BITHUMEN_DOWNLOAD_PATH = '/details.php';
+export const BITHUMEN_DETAILS_PATH = '/details.php';
 export const BITHUMEN_HIT_N_RUN_PATH = '/userdetails.php';

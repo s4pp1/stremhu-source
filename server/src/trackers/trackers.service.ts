@@ -6,7 +6,6 @@ import {
   OnApplicationBootstrap,
 } from '@nestjs/common';
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
-import { isAxiosError } from 'axios';
 import _ from 'lodash';
 
 import { SettingsStore } from 'src/settings/core/settings.store';
@@ -18,6 +17,7 @@ import {
   AdapterTorrentId,
 } from './adapters/adapters.types';
 import { BithumenAdapter } from './adapters/bithumen/bithumen.adapter';
+import { MajomparadeAdapter } from './adapters/majomparade/majomparade.adapter';
 import { NcoreAdapter } from './adapters/ncore/ncore.adapter';
 import { TrackerCredentialsService } from './credentials/tracker-credentials.service';
 import { TrackerEnum } from './enums/tracker.enum';
@@ -39,12 +39,13 @@ export class TrackersService implements OnApplicationBootstrap {
     private readonly schedulerRegistry: SchedulerRegistry,
     ncoreAdapter: NcoreAdapter,
     bithumenAdapter: BithumenAdapter,
+    majomparadeAdapter: MajomparadeAdapter,
     private trackerCredentialsService: TrackerCredentialsService,
     private torrentCacheStore: TorrentCacheStore,
     private webTorrentService: WebTorrentService,
     private settingsStore: SettingsStore,
   ) {
-    this.adapters = [ncoreAdapter, bithumenAdapter];
+    this.adapters = [ncoreAdapter, bithumenAdapter, majomparadeAdapter];
   }
 
   async onApplicationBootstrap() {
@@ -64,17 +65,17 @@ export class TrackersService implements OnApplicationBootstrap {
         tracker,
         ...payload,
       });
-    } catch (error: unknown) {
-      if (error instanceof HttpException && error.getStatus() === 401) {
-        throw new BadRequestException(LOGIN_ERROR_MESSAGE);
-      }
+    } catch (error) {
+      if (error instanceof HttpException) {
+        if (error.getStatus() === 422) {
+          throw new BadRequestException(LOGIN_ERROR_MESSAGE);
+        }
 
-      if (isAxiosError(error) && error.response?.status === 401) {
-        throw new BadRequestException(LOGIN_ERROR_MESSAGE);
+        throw error;
       }
 
       throw new NotImplementedException(
-        `${tracker} bejelentkezés közben hiba történt, ellenőrizd az oldal elérhetőségét.`,
+        `Bejelentkezés közben hiba történt, próbáld újra!`,
       );
     }
   }

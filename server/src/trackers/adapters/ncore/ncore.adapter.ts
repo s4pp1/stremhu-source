@@ -2,6 +2,7 @@ import { Resolution as ResolutionEnum } from '@ctrl/video-filename-parser';
 import { Inject, Injectable } from '@nestjs/common';
 
 import { LanguageEnum } from 'src/common/enums/language.enum';
+import { StreamMediaTypeEnum } from 'src/stremio/enums/stream-media-type.enum';
 
 import { TrackerEnum } from '../../enums/tracker.enum';
 import {
@@ -16,7 +17,15 @@ import {
   TRACKER_TOKEN,
 } from '../adapters.types';
 import { NcoreClient } from './ncore.client';
-import { NcoreMovieCategoryEnum, NcoreSeriesCategoryEnum } from './ncore.types';
+import {
+  NCORE_MOVIE_CATEGORY_FILTERS,
+  NCORE_SERIES_CATEGORY_FILTERS,
+} from './ncore.constants';
+import {
+  NcoreCategory,
+  NcoreMovieCategoryEnum,
+  NcoreSeriesCategoryEnum,
+} from './ncore.types';
 
 @Injectable()
 export class NcoreAdapter implements TrackerAdapter {
@@ -30,7 +39,19 @@ export class NcoreAdapter implements TrackerAdapter {
   }
 
   async find(query: TrackerSearchQuery): Promise<AdapterTorrent[]> {
-    const torrents = await this.ncoreClient.torrents(query);
+    const { imdbId, mediaType } = query;
+
+    let categories: NcoreCategory[] = [];
+
+    if (mediaType === StreamMediaTypeEnum.MOVIE) {
+      categories = NCORE_MOVIE_CATEGORY_FILTERS;
+    }
+
+    if (mediaType === StreamMediaTypeEnum.SERIES) {
+      categories = NCORE_SERIES_CATEGORY_FILTERS;
+    }
+
+    const torrents = await this.ncoreClient.find({ imdbId, categories });
 
     return torrents.map((torrent) => {
       const resolution = this.resolveTorrentResolution(torrent.category);
@@ -49,7 +70,7 @@ export class NcoreAdapter implements TrackerAdapter {
   }
 
   async findOne(torrentId: string): Promise<AdapterTorrentId> {
-    return this.ncoreClient.findOneTorrent(torrentId);
+    return this.ncoreClient.findOne(torrentId);
   }
 
   async download(payload: AdapterTorrentId): Promise<AdapterParsedTorrent> {

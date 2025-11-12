@@ -7,6 +7,7 @@ import { UsersModule } from 'src/users/users.module';
 import { WebTorrentModule } from 'src/web-torrent/web-torrent.module';
 
 import { BithumenModule } from './adapters/bithumen/bithumen.module';
+import { MajomparadeModule } from './adapters/majomparade/majomparade.module';
 import { NcoreModule } from './adapters/ncore/ncore.module';
 import { TrackerCredentialsModule } from './credentials/tracker-credentials.module';
 import { TrackersController } from './trackers.controller';
@@ -22,6 +23,7 @@ import { TrackersService } from './trackers.service';
     SettingsCoreModule,
     NcoreModule,
     BithumenModule,
+    MajomparadeModule,
   ],
   providers: [TrackersService],
   controllers: [TrackersController],

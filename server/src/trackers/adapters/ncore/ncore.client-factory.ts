@@ -1,13 +1,15 @@
 import {
-  ForbiddenException,
+  BadRequestException,
+  HttpException,
   Inject,
   Injectable,
   Logger,
-  UnauthorizedException,
+  ServiceUnavailableException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { AxiosInstance, AxiosResponse } from 'axios';
-import { AxiosError, AxiosHeaders } from 'axios';
+import { AxiosHeaders, isAxiosError } from 'axios';
 import _ from 'lodash';
 import { CookieJar } from 'tough-cookie';
 
@@ -20,6 +22,7 @@ import {
   getTrackerCredentialErrorMessage,
   getTrackerLoginErrorMessage,
   getTrackerRefreshMessage,
+  getTrackerStructureErrorMessage,
 } from '../adapters.utils';
 import { NCORE_LOGIN_PATH } from './ncore.constants';
 import { NcoreLoginRequest } from './ncore.types';
@@ -48,28 +51,61 @@ export class NcoreClientFactory {
     return this.axios;
   }
 
-  async login(payload: NcoreLoginRequest, firstLogin: boolean = false) {
-    const { username, password } = payload;
+  async login(payload?: NcoreLoginRequest) {
+    try {
+      let credential: NcoreLoginRequest | undefined;
 
-    const axios = firstLogin ? createAxios(this.jar) : this.axios;
+      if (payload) {
+        credential = payload;
+      } else {
+        const response = await this.trackerCredentialsService.findOne(
+          this.tracker,
+        );
 
-    const url = new URL(NCORE_LOGIN_PATH, this.ncoreBaseUrl).toString();
+        if (!response) {
+          throw new BadRequestException(
+            getTrackerCredentialErrorMessage(this.tracker),
+          );
+        }
 
-    const form = new URLSearchParams();
-    form.set('nev', username);
-    form.set('pass', password);
+        credential = {
+          username: response.username,
+          password: response.password,
+        };
+      }
 
-    const response = await axios.post(url, form, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
+      const { username, password } = credential;
 
-    if (firstLogin) {
+      await this.jar.removeAllCookies();
+      const axios = createAxios(this.jar);
+
+      const loginUrl = new URL(NCORE_LOGIN_PATH, this.ncoreBaseUrl);
+
+      const form = new URLSearchParams();
+      form.set('nev', username);
+      form.set('pass', password);
+
+      const response = await axios.post<string>(loginUrl.href, form, {
+        responseType: 'text',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
       const isAuthError = this.isAuthError(response);
       if (isAuthError) {
-        throw new UnauthorizedException();
+        throw new UnprocessableEntityException(
+          getTrackerLoginErrorMessage(this.tracker),
+        );
       }
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      const errorMessage = getTrackerStructureErrorMessage(this.tracker);
+      this.logger.error(errorMessage, error);
+      throw new ServiceUnavailableException(errorMessage);
     }
   }
 
@@ -85,43 +121,50 @@ export class NcoreClientFactory {
       async (res) => {
         const isAuthError = this.isAuthError(res);
 
-        if (!isAuthError) {
-          return res;
+        if (isAuthError) {
+          await this.relogin();
+
+          if (res.config.headers) {
+            const headers = AxiosHeaders.from(res.config.headers);
+            headers.delete('cookie');
+            res.config.headers = headers;
+          }
+
+          return this.axios.request(res.config);
         }
 
-        if (res.config._retry) {
-          throw new ForbiddenException(
-            getTrackerLoginErrorMessage(this.tracker),
-          );
-        }
-
-        await this.relogin();
-
-        if (res.config.headers) {
-          const headers = AxiosHeaders.from(res.config.headers);
-          headers.delete('cookie');
-          res.config.headers = headers;
-        }
-
-        res.config._retry = true;
-
-        return this.axios.request(res.config);
+        return res;
       },
-      async (error: AxiosError) => {
-        const { response, config } = error;
-
-        const sessionExpired =
-          response?.status === 401 || response?.status === 403;
-
-        if (!sessionExpired || !config || config._retry) {
-          return Promise.reject(error);
+      async (error) => {
+        if (error instanceof HttpException) {
+          throw error;
         }
 
-        await this.relogin();
+        if (isAxiosError(error)) {
+          const authErrorStatus = [401, 403];
 
-        config._retry = true;
+          const isAuthError = error.status
+            ? authErrorStatus.includes(error.status)
+            : false;
 
-        return this.axios.request(config);
+          const { config } = error;
+
+          if (!isAuthError || !config) {
+            throw error;
+          }
+
+          await this.relogin();
+
+          if (config.headers) {
+            const headers = AxiosHeaders.from(config.headers);
+            headers.delete('cookie');
+            config.headers = headers;
+          }
+
+          return this.axios.request(config);
+        }
+
+        throw error;
       },
     );
   }
@@ -131,30 +174,13 @@ export class NcoreClientFactory {
       return this.loginInProgress;
     }
 
-    this.loginInProgress = this.doRelogin();
+    this.loginInProgress = this.login();
 
     try {
+      this.logger.log(getTrackerRefreshMessage(this.tracker));
       await this.loginInProgress;
     } finally {
       this.loginInProgress = null;
     }
-
-    return this.loginInProgress;
-  }
-
-  private async doRelogin() {
-    this.logger.log(getTrackerRefreshMessage(this.tracker));
-
-    const credential = await this.trackerCredentialsService.findOne(
-      this.tracker,
-    );
-
-    if (!credential) {
-      throw new ForbiddenException(
-        getTrackerCredentialErrorMessage(this.tracker),
-      );
-    }
-
-    await this.login(credential);
   }
 }
