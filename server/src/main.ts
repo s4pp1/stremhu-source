@@ -45,7 +45,6 @@ async function bootstrap() {
       proxy: isProduction,
       cookie: {
         httpOnly: true,
-        secure: isProduction,
         sameSite: 'lax',
         maxAge: THIRTY_DAYS_MS,
         path: '/',

@@ -4,7 +4,4 @@ declare module 'axios' {
   interface AxiosRequestConfig {
     jar?: CookieJar;
   }
-  interface InternalAxiosRequestConfig {
-    _retry?: boolean;
-  }
 }
