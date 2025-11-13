@@ -14,6 +14,8 @@ services:
     ports:
       - target: 3000
         published: 3000
+      - target: 3443
+        published: 3443
       - target: 6881
         published: 6881
     volumes:

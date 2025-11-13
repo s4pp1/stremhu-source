@@ -1,6 +1,6 @@
 {
   "name": "@stremhu/source",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Magyar forrásokból elérhető streamek Stremio-hoz: WebTorrent‑alapú lejátszás, felbontás/nyelv beállítások és saját tracker‑hitelesítés.",
   "author": "Benedek Bálint",
   "license": "MIT",
