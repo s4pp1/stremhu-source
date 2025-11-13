@@ -183,7 +183,7 @@ export class MajomparadeClient {
 
       const $ = load(response.data);
 
-      const hitnrunTorrents = $('.also td a[href*="details.php?id="')
+      const hitnrunTorrents = $('.also td a[href*="details.php?id="]')
         .map((_, el) => $(el).attr('href'))
         .get();
 

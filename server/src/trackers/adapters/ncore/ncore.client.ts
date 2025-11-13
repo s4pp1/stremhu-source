@@ -173,7 +173,7 @@ export class NcoreClient {
       const $ = load(response.data);
 
       const hitnrunTorrents = $(
-        '.box_torrent_all a[href*="torrents.php?action=details&id="',
+        '.box_torrent_all a[href*="torrents.php?action=details&id="]',
       )
         .map((_, el) => $(el).attr('href'))
         .get();
