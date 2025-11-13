@@ -90,12 +90,10 @@ export function LoginForm({ className, ...props }: ComponentProps<'form'>) {
             </Field>
           )}
         </form.Field>
-        <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
-        >
-          {([canSubmit, isSubmitting]) => (
-            <Button type="submit" disabled={!canSubmit}>
-              {isSubmitting ? '...' : 'Bejelentkezés'}
+        <form.Subscribe selector={(state) => [state.isSubmitting]}>
+          {([isSubmitting]) => (
+            <Button type="submit" disabled={isSubmitting}>
+              Bejelentkezés
             </Button>
           )}
         </form.Subscribe>

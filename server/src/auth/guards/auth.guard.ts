@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
     }
 
     if (!user) {
-      throw new UnauthorizedException('Nincs jogosultságos');
+      throw new UnauthorizedException('Kérjük, jelentkezz be a folytatáshoz.');
     }
 
     request['user'] = user;

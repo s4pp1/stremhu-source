@@ -1,5 +1,5 @@
 import { useForm } from '@tanstack/react-form'
-import { useQuery } from '@tanstack/react-query'
+import { useQueries } from '@tanstack/react-query'
 import _ from 'lodash'
 import {
   CopyIcon,
@@ -41,6 +41,7 @@ import {
 } from '@/components/ui/select'
 import { useIntegrationDomain } from '@/hooks/use-integration-domain'
 import { useReferenceDataOptionLabel } from '@/hooks/use-reference-data-option-label'
+import { getMe } from '@/queries/me'
 import { getReferenceData } from '@/queries/reference-data'
 import { useDeleteUser, useUpdateProfile } from '@/queries/users'
 import { useConfirmDialogStore } from '@/store/confirm-dialog-store'
@@ -57,8 +58,11 @@ const schema = z.object({
 export function UserProfile(props: UserProfileProps) {
   const { user } = props
 
-  const { data: referenceData } = useQuery(getReferenceData)
+  const [{ data: referenceData }, { data: me }] = useQueries({
+    queries: [getReferenceData, getMe],
+  })
   if (!referenceData) throw new Error(`Nincs "referenceData" a cache-ben`)
+  if (!me) throw new Error(`Nincs "me" a cache-ben`)
 
   const { getUserRoleLabel } = useReferenceDataOptionLabel()
   const { confirm } = useConfirmDialogStore()
@@ -133,16 +137,18 @@ export function UserProfile(props: UserProfileProps) {
               {getUserRoleLabel(user.userRole)} jogosultság
             </ItemDescription>
           </ItemContent>
-          <ItemActions>
-            <Button
-              size="icon-sm"
-              variant="destructive"
-              className="rounded-full"
-              onClick={handleDeleteUser}
-            >
-              <TrashIcon />
-            </Button>
-          </ItemActions>
+          {user.id !== me.id && (
+            <ItemActions>
+              <Button
+                size="icon-sm"
+                variant="destructive"
+                className="rounded-full"
+                onClick={handleDeleteUser}
+              >
+                <TrashIcon />
+              </Button>
+            </ItemActions>
+          )}
         </Item>
         <Item variant="default" className="p-0">
           <ItemMedia variant="icon">
@@ -222,7 +228,7 @@ export function UserProfile(props: UserProfileProps) {
         <Field>
           <FieldLabel htmlFor="stremioToken">Stremio addon URL</FieldLabel>
           <InputGroup>
-            <InputGroupInput name="stremioToken" value={urlEndpoint} />
+            <InputGroupInput name="stremioToken" readOnly value={urlEndpoint} />
             <InputGroupAddon align="inline-end">
               <InputGroupButton
                 variant="ghost"

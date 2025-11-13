@@ -15,13 +15,17 @@ export class StremioTokenGuard implements CanActivate {
   async canActivate(ctx: ExecutionContext): Promise<boolean> {
     const req = ctx.switchToHttp().getRequest<Request>();
     const token = req.params?.token;
-    if (!token) throw new UnauthorizedException('Missing token');
+    if (!token) {
+      throw new UnauthorizedException('Hiányzik a Stremio Token!');
+    }
 
     const user = await this.usersService.findOne((qb) =>
       qb.where('stremio_token = :token', { token }),
     );
 
-    if (!user) throw new UnauthorizedException('Invalid token');
+    if (!user) {
+      throw new UnauthorizedException('Érvénytelen Stremio Token!');
+    }
 
     req.user = user;
     return true;

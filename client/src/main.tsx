@@ -5,6 +5,7 @@ import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 
 import { queryClient } from './client'
+import { DefaultError } from './components/default-error.tsx'
 import { DefaultLoading } from './components/default-loading.tsx'
 import reportWebVitals from './reportWebVitals.ts'
 import { routeTree } from './routeTree.gen'
@@ -37,6 +38,7 @@ if (rootElement && !rootElement.innerHTML) {
       <QueryClientProvider client={queryClient}>
         <RouterProvider
           defaultPendingComponent={() => <DefaultLoading />}
+          defaultErrorComponent={DefaultError}
           router={router}
           context={{ queryClient }}
         />

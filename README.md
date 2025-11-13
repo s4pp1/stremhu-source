@@ -2,10 +2,17 @@
 
 Self-hostolható Stremio addon, amellyel **közvetlenül magyar trackeroldalakról** streamelhetsz.
 
-**Támogatott trackerek:** nCore, BitHUmen
-
 > [!NOTE]
-> Ez egy szabadidős projekt! Hibajelentéseket és fejlesztési ötleteket szívesen fogadok kultúráltan "issue"-k formájában.
+> Ez egy szabadidős projekt! Hibajelentéseket és fejlesztési ötleteket szívesen fogadok kulturáltan "issue"-k formájában.
+
+### Támogatott trackerek
+
+- **nCore**
+- **BitHUmen**
+- **Majomparádé**
+
+> [!CAUTION]
+> A Majomparádé Hit'n'Run szabályzata szerint a teljes torrentet le kell tölteni. **A StremHU Source NEM tölti le a teljes torrentet!**
 
 ### Funkciók
 

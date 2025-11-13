@@ -92,6 +92,7 @@ export function WebTorrent() {
                 </FieldDescription>
                 <InputGroup>
                   <InputGroupInput
+                    placeholder="Nincs limitálva"
                     inputMode="numeric"
                     id={field.name}
                     name={field.name}
@@ -111,7 +112,9 @@ export function WebTorrent() {
                     <InputGroupText>Mbit/s</InputGroupText>
                   </InputGroupAddon>
                 </InputGroup>
-                <FieldError errors={field.state.meta.errors} />
+                {field.state.meta.isTouched && (
+                  <FieldError errors={field.state.meta.errors} />
+                )}
               </Field>
             )}
           </form.Field>
