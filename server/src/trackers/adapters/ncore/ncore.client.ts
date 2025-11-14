@@ -59,39 +59,55 @@ export class NcoreClient {
     page: number = 1,
     accumulator: NcoreTorrent[] = [],
   ): Promise<NcoreTorrent[]> {
-    const { imdbId, categories } = payload;
+    try {
+      const { imdbId, categories } = payload;
 
-    const torrentsUrl = new URL(NCORE_TORRENTS_PATH, this.ncoreBaseUrl);
+      const torrentsUrl = new URL(NCORE_TORRENTS_PATH, this.ncoreBaseUrl);
 
-    const searchParams: NcoreSearchParams = {
-      oldal: page,
-      miben: NcoreSearchByEnum.IMDB,
-      mire: imdbId,
-      miszerint: NcoreOrderByEnum.SEEDERS,
-      hogyan: NcoreOrderDirectionEnum.DESC,
-      tipus: NcoreSearchTypeEnum.SELECTED,
-      kivalasztott_tipus: categories,
-      jsons: true,
-    };
+      const searchParams: NcoreSearchParams = {
+        oldal: page,
+        miben: NcoreSearchByEnum.IMDB,
+        mire: imdbId,
+        miszerint: NcoreOrderByEnum.SEEDERS,
+        hogyan: NcoreOrderDirectionEnum.DESC,
+        tipus: NcoreSearchTypeEnum.SELECTED,
+        kivalasztott_tipus: categories,
+        jsons: true,
+      };
 
-    const response = await this.ncoreClientFactory.client.get<NcoreTorrents>(
-      torrentsUrl.href,
-      {
+      const response = await this.ncoreClientFactory.client.get<
+        NcoreTorrents | string
+      >(torrentsUrl.href, {
         params: searchParams,
-      },
-    );
+      });
 
-    accumulator = [...accumulator, ...response.data.results];
+      if (typeof response.data === 'string') {
+        const $ = load(response.data);
+        const errorText = $('.lista_mini_error').first().text();
 
-    const total = Number(response.data.total_results);
-    const limit = Number(response.data.perpage);
-    const lastPage = Math.ceil(total / limit);
+        if (errorText === 'Nincs találat!') {
+          return accumulator;
+        }
 
-    if (lastPage > page) {
-      return this.findAll(payload, page + 1, accumulator);
+        throw new Error(errorText);
+      }
+
+      accumulator = [...accumulator, ...response.data.results];
+
+      const total = Number(response.data.total_results);
+      const limit = Number(response.data.perpage);
+      const lastPage = Math.ceil(total / limit);
+
+      if (lastPage > page) {
+        return this.findAll(payload, page + 1, accumulator);
+      }
+
+      return accumulator;
+    } catch (error) {
+      const errorMessage = getTrackerStructureErrorMessage(this.tracker);
+      this.logger.error(errorMessage, error);
+      throw new ServiceUnavailableException(errorMessage);
     }
-
-    return accumulator;
   }
 
   async findOne(torrentId: string): Promise<AdapterTorrentId> {
