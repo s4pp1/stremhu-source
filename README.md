@@ -31,9 +31,11 @@ Self-hostolható Stremio addon, amellyel **közvetlenül magyar trackeroldalakr�
 - Docker + Docker Compose.
 - Távoli eléréshez saját domain (ajánlott) és megfelelő hálózati beállítások.
 
-### StremHU | Source konfigurálása
+### StremHU | Source beüzemelési segédletek
 
-- [Docker Compose beállítási lehetőségek](./docs/docker-compose-beallitasi-lehetosegek.md)
+- ["StremHU | Source beüzemelése otthon"](./docs/stremhu-source-beuzemelese-otthon.md)
+- ["StremHU | Source elérése az internetről"](./docs/stremhu-source-elerese-az-internetrol.md)
+- ["Docker Compose beállítási lehetőségek"](./docs/docker-compose-beallitasi-lehetosegek.md)
 
 ### GYIK
 

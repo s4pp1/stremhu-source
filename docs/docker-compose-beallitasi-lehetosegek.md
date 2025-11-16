@@ -43,4 +43,4 @@ networks:
 | `MAJOMPARADE_URL`  | Majomparádé weboldal URL módósítása esetén van lehetőség a módosításra.                                        | https://majomparade.euo |
 
 > [!NOTE]
-> Ha a beállításoknál nem a `Hozzáférés otthoni hálózaton` van kiválasztva, akkor a `HTTPS_PORT` nem érhető el. Ha szeretnéd elérhetővé tenni az interneten, akkor használd a `HTTP_PORT`-ot és erre mutasson a `Reverse Proxy` (használd például a [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/)-t).
+> Ha a beállításoknál nem a `Hozzáférés otthoni hálózaton` van kiválasztva, akkor a `HTTPS_PORT` nem érhető el. Ha szeretnéd elérhetővé tenni az interneten, akkor nézd meg a következő útmutatót: ["StremHU | Source elérése az internetről"](./stremhu-source-elerese-az-internetrol.md)
