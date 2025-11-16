@@ -113,7 +113,12 @@ export function ChangePasswordContent(props: ChangePasswordContentProps) {
       <form.Subscribe selector={(state) => [state.isSubmitting]}>
         {([isSubmitting]) => (
           <DialogFooter>
-            <Button variant="outline" disabled={isSubmitting} onClick={onClose}>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isSubmitting}
+              onClick={onClose}
+            >
               Mégsem
             </Button>
             <Button type="submit" disabled={isSubmitting}>

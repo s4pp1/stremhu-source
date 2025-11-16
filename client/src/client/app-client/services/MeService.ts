@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { ChangePasswordDto } from '../models/ChangePasswordDto';
 import type { ChangeUsernameDto } from '../models/ChangeUsernameDto';
+import type { MeUserDto } from '../models/MeUserDto';
 import type { UpdateMePreferencesDto } from '../models/UpdateMePreferencesDto';
 import type { UserDto } from '../models/UserDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -11,10 +12,10 @@ import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class MeService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
-     * @returns UserDto
+     * @returns MeUserDto
      * @throws ApiError
      */
-    public usersMeControllerMe(): CancelablePromise<UserDto> {
+    public usersMeControllerMe(): CancelablePromise<MeUserDto> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/me',

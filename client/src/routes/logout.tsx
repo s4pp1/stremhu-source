@@ -10,9 +10,9 @@ export const Route = createFileRoute('/logout')({
   beforeLoad: async ({ context }) => {
     const queryClient = context.queryClient
 
-    try {
-      await queryClient.ensureQueryData(getMe)
-    } catch (error) {
+    const me = await queryClient.ensureQueryData(getMe)
+
+    if (me === null) {
       throw redirect({ to: '/login' })
     }
   },

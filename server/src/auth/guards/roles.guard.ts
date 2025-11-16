@@ -3,14 +3,14 @@ import {
   ExecutionContext,
   ForbiddenException,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
-
 import { Reflector } from '@nestjs/core';
-
-import { ROLES_KEY } from '../decorators/roles.decorator';
+import { Request } from 'express';
 
 import { UserRoleEnum } from 'src/users/enums/user-role.enum';
-import { Request } from 'express';
+
+import { ROLES_KEY } from '../decorators/roles.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -28,11 +28,11 @@ export class RolesGuard implements CanActivate {
     const { user } = req;
 
     if (!user) {
-      throw new ForbiddenException('Nincs jogosultság');
+      throw new UnauthorizedException('Kérjük, jelentkezz be a folytatáshoz.');
     }
 
     if (!required.includes(user.userRole)) {
-      throw new ForbiddenException('Nincs megfelelő szerepkör');
+      throw new ForbiddenException('Ehhez a funkcióhoz nincs jogosultságod.');
     }
 
     return true;

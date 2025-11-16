@@ -15,13 +15,11 @@ export const Route = createFileRoute('/login/')({
   beforeLoad: async ({ context }) => {
     const queryClient = context.queryClient
 
-    try {
-      await queryClient.ensureQueryData(getMe)
-    } catch (error) {
-      return
-    }
+    const me = await queryClient.ensureQueryData(getMe)
 
-    throw redirect({ to: '/' })
+    if (me !== null) {
+      throw redirect({ to: '/' })
+    }
   },
   component: LoginRoute,
 })

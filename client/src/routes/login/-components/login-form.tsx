@@ -6,14 +6,19 @@ import * as z from 'zod'
 
 import { parseApiError } from '@/common/utils'
 import { Button } from '@/components/ui/button'
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { useLogin } from '@/queries/auth'
 
 const schema = z.object({
-  username: z.string(),
-  password: z.string(),
+  username: z.string().trim().nonempty('A felhasználónév kitöltése kötelező'),
+  password: z.string().trim().nonempty('A jelszó kitöltése kötelező'),
 })
 
 type DefaultValues = z.infer<typeof schema>
@@ -72,6 +77,9 @@ export function LoginForm({ className, ...props }: ComponentProps<'form'>) {
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
+              {field.state.meta.isTouched && (
+                <FieldError errors={field.state.meta.errors} />
+              )}
             </Field>
           )}
         </form.Field>
@@ -87,15 +95,16 @@ export function LoginForm({ className, ...props }: ComponentProps<'form'>) {
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
+              {field.state.meta.isTouched && (
+                <FieldError errors={field.state.meta.errors} />
+              )}
             </Field>
           )}
         </form.Field>
-        <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
-        >
-          {([canSubmit, isSubmitting]) => (
-            <Button type="submit" disabled={!canSubmit}>
-              {isSubmitting ? '...' : 'Bejelentkezés'}
+        <form.Subscribe selector={(state) => [state.isSubmitting]}>
+          {([isSubmitting]) => (
+            <Button type="submit" disabled={isSubmitting}>
+              Bejelentkezés
             </Button>
           )}
         </form.Subscribe>

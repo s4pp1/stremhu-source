@@ -16,8 +16,8 @@ import { getUsers } from './users'
 export const getMe = queryOptions({
   queryKey: ['me'],
   queryFn: async () => {
-    const user = await appClient.me.usersMeControllerMe()
-    return user
+    const response = await appClient.me.usersMeControllerMe()
+    return response.me
   },
 })
 

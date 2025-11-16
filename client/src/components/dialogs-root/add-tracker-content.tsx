@@ -37,8 +37,8 @@ interface AddTrackerContentProps {
 
 const schema = z.object({
   tracker: z.enum(TrackerEnum),
-  trackerUsn: z.string().nonempty('A felhasználónév kitöltése kötelező'),
-  trackerPwd: z.string().nonempty('A jelszó kitöltése kötelező'),
+  trackerUsn: z.string().trim().nonempty('A felhasználónév kitöltése kötelező'),
+  trackerPwd: z.string().trim().nonempty('A jelszó kitöltése kötelező'),
 })
 
 export function AddTrackerContent(props: AddTrackerContentProps) {
@@ -173,7 +173,12 @@ export function AddTrackerContent(props: AddTrackerContentProps) {
       <form.Subscribe selector={(state) => [state.isSubmitting]}>
         {([isSubmitting]) => (
           <DialogFooter>
-            <Button variant="outline" disabled={isSubmitting} onClick={onClose}>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isSubmitting}
+              onClick={onClose}
+            >
               Mégsem
             </Button>
             <Button type="submit" disabled={isSubmitting}>

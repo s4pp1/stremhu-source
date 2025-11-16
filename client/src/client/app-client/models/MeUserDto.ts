@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type StatusDto = {
-    version: string;
-    configured: boolean;
+import type { UserDto } from './UserDto';
+export type MeUserDto = {
+    me: UserDto | null;
 };
 

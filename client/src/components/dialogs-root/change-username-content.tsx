@@ -28,7 +28,7 @@ interface ChangeUsernameContentProps {
 }
 
 const schema = z.object({
-  username: z.string().trim().nonempty('A felhasználónéb kitöltése kötelező'),
+  username: z.string().trim().nonempty('A felhasználónév kitöltése kötelező'),
 })
 
 export function ChangeUsernameContent(props: ChangeUsernameContentProps) {
@@ -113,7 +113,12 @@ export function ChangeUsernameContent(props: ChangeUsernameContentProps) {
       <form.Subscribe selector={(state) => [state.isSubmitting]}>
         {([isSubmitting]) => (
           <DialogFooter>
-            <Button variant="outline" disabled={isSubmitting} onClick={onClose}>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isSubmitting}
+              onClick={onClose}
+            >
               Mégsem
             </Button>
             <Button type="submit" disabled={isSubmitting}>

@@ -2,14 +2,17 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   Param,
   ParseUUIDPipe,
   Post,
   Put,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import type { Request } from 'express';
 
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
@@ -105,8 +108,13 @@ export class UsersController {
   @ApiResponse({ status: 200 })
   @Delete('/:userId')
   async deleteOne(
+    @Req() req: Request,
     @Param('userId', new ParseUUIDPipe()) userId: string,
   ): Promise<void> {
+    if (req.user!.id === userId) {
+      throw new ForbiddenException('Saját fiókod törlésére nincs lehetőség!');
+    }
+
     await this.usersService.deleteOrThrow(userId);
   }
 }

@@ -41,6 +41,55 @@ export class TorrentCacheService implements OnApplicationBootstrap {
     }
   }
 
+  async deleteAllByTracker(tracker: TrackerEnum) {
+    const activeTorrents = await this.webTorrentService.getTorrents();
+
+    const imdbDirents = await this.torrentCacheStore.findImdbDirents();
+
+    for (const imdbDirent of imdbDirents) {
+      const isDirectory = imdbDirent.isDirectory();
+      if (!isDirectory) continue;
+
+      const trackerDirents = await this.torrentCacheStore.findTrackerDirents(
+        imdbDirent.name,
+      );
+
+      for (const trackerDirent of trackerDirents) {
+        const isDirectory = trackerDirent.isDirectory();
+        const isTargetTracker = trackerDirent.name === tracker.toString();
+        if (!isDirectory || !isTargetTracker) continue;
+
+        const trackerDir = this.torrentCacheStore.buildTrackerDirPath(
+          imdbDirent.name,
+          tracker,
+        );
+
+        const hasRunTorrent = activeTorrents.some(
+          (activeTorrent) =>
+            activeTorrent.imdbId === imdbDirent.name &&
+            activeTorrent.tracker.toString() === trackerDirent.name,
+        );
+
+        if (!hasRunTorrent) {
+          await rm(trackerDir, { recursive: true, force: true });
+        }
+      }
+
+      const remainingTrackerDirs =
+        await this.torrentCacheStore.findTrackerDirents(imdbDirent.name);
+      const hasTrackerDirs = remainingTrackerDirs.some((dir) =>
+        dir.isDirectory(),
+      );
+
+      if (!hasTrackerDirs) {
+        const trackerDirPath = this.torrentCacheStore.buildImdbIdDirPath(
+          imdbDirent.name,
+        );
+        await rm(trackerDirPath, { recursive: true, force: true });
+      }
+    }
+  }
+
   @Cron(CronExpression.EVERY_DAY_AT_5AM, { name: 'cleanupCache' })
   async cleanup() {
     const { cacheRetention } = await this.settingsStore.findOneOrThrow();

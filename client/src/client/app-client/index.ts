@@ -20,6 +20,7 @@ export type { LanguageDto } from './models/LanguageDto';
 export { LanguageEnum } from './models/LanguageEnum';
 export type { LoginTrackerDto } from './models/LoginTrackerDto';
 export type { ManifestDto } from './models/ManifestDto';
+export type { MeUserDto } from './models/MeUserDto';
 export type { ReferenceDataDto } from './models/ReferenceDataDto';
 export type { ResolutionDto } from './models/ResolutionDto';
 export { ResolutionEnum } from './models/ResolutionEnum';
