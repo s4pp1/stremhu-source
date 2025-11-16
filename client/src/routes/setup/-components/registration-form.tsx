@@ -107,7 +107,7 @@ export function RegistrationForm({
         <form.Subscribe selector={(state) => [state.isSubmitting]}>
           {([isSubmitting]) => (
             <Button type="submit" disabled={isSubmitting}>
-              Regisztráció
+              Létrehozás
             </Button>
           )}
         </form.Subscribe>

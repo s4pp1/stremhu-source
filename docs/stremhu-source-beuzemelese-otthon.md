@@ -1,41 +1,41 @@
-## StremHU Source beüzemelése otthon
+## StremHU | Source beüzemelése otthon
 
-Lépésről lépésre útmutató, hogy otthonról, a helyi hálózatodon tudd használni a StremHU Source-ot.
+Lépésről lépésre útmutató, hogy otthon, a helyi hálózatodon tudd használni a StremHU | Source-ot.
 
 ### Mit érünk el a végére?
 
-- A StremHU Source egy Docker konténerként fog futni a gépeden/NAS-on.
+- A StremHU | Source egy Docker konténerként fog futni a gépen/NAS-on.
 - Csak az otthoni hálózatodon lesz elérhető.
-- A végén a Stremióban hozzá tudod adni, mint kiegészítőt.
+- A Stremio-ban hozzá tudod adni, mint kiegészítőt.
 
 > [!NOTE]
-> Ha azt szeretnéd, hogy az internetről is elérhető legyen (pl. mobilnetről), arról egy külön fejezet/útmutató szól: „StremHU Source elérése az internetről
+> Ha azt szeretnéd, hogy az internetről is elérhető legyen (pl. mobilnetről), arról egy külön fejezet/útmutató szól: [„StremHU | Source elérése az internetről"](./stremhu-source-elerese-az-internetrol.md)
 
 ### 1. Amire szükséged lesz (előfeltételek)
 
-- Egy számítógép vagy NAS, amin fut a Docker
+- Egy számítógép vagy NAS, amin fut a Docker.
   (pl. Docker Desktop Windows/Mac-en, vagy Container Manager Synology-n).
 - Egy Stremio fiók és a Stremio alkalmazás - [https://www.stremio.com/](https://www.stremio.com/).
-- StremHU Source által támogatott tracker hozzáférés.
+- StremHU | Source által támogatott tracker hozzáférés.
 
-### 2. Külön mappa létrehozása a StremHU Source-nak
+### 2. Külön mappa létrehozása a StremHU | Source számára
 
-Először hozz létre egy mappát, ahova a StremHU Source „csomagja” kerül.
+Először hozz létre egy mappát, ahova a StremHU | Source „csomagja” kerül.
 
 - Windows-on például:
-  C:\stremhu-source
+  `C:\stremhu-source`
 
 - Mac / Linux alatt például:
-  ~/stremhu-source
+  `~/stremhu-source`
 
 A további lépésekben feltételezzük, hogy ebbe a mappába dolgozol.
 
-### 3. A docker-compose.yml fájl elhelyezése
+### 3. A docker-compose.yaml fájl elhelyezése
 
-Ebben a mappában hozz létre egy új fájlt docker-compose.yml néven, és másold bele az alábbi tartalmat:
+Az előző lépésben létrehozott mappában hozz létre egy új fájlt `docker-compose.yaml` néven, és másold bele az alábbi tartalmat:
 
 > [!NOTE]
-> Az alábbi csak példa – nyugodtan igazítsd a saját image nevedhez, portjaidhoz, ENV változóidhoz.
+> Ez egy alap példa. Ha szeretnél rajta változtatni (image név, portok, ENV változók), nézd meg a részletes útmutatót: [Docker Compose beállítási lehetőségek](./docker-compose-beallitasi-lehetosegek.md)
 
 ```yaml
 services:
@@ -67,7 +67,7 @@ networks:
 - Mac: „Terminal” alkalmazás
 - Linux: bármelyik terminál
 
-1. Lépj be abba a mappába, ahova a docker-compose.yml fájlt mentetted.
+1. Lépj be abba a mappába, ahova a `docker-compose.yaml` fájlt mentetted.
 
    - Windows például:
 
@@ -102,9 +102,9 @@ http://GEP_IP_CIME:3000
 
 Példák:
 
-- Ha azon a gépen ülsz, ahol fut a Docker, sokszor működik:
+- Ha saját gépeden fut a Docker, sokszor működik:
   - `http://localhost:3000`
-- Ha NAS-on vagy másik gépen fut, akkor annak az IP címét használd, például:<br>
+- Ha NAS-on vagy másik gépen fut, akkor annak az IP címét használd, például:
   - `http://192.168.1.100:3000`
 
 Mit kell látnod?
@@ -114,15 +114,15 @@ Mit kell látnod?
 
 ### 5. Tracker és URL beállítása
 
-- A fiók létrehozása után hozzá kell adni a trackert, amit használni szeretnél a `Beállítások - Trackerek` résznél.
+- A fiók létrehozása után hozzá kell adni a tracker-t, amit használni szeretnél a `Beállítások - Trackerek` résznél.
 
 - A Stremio használatához be kell állítani az `Addon URL`-t a `Beállítások - Hozzáférés` résznél.
   - A `Hozzáférés otthoni hálózaton` legyen kiválaszva.
-  - Ha az IP címed a `192.168.1.100` akkor következőképpen töltsd ki az `Addon URL`-t: `https://192-168-1-100.local-ip.medicmobile.org:3443`
+  - Ha az IP címed a `192.168.1.100` akkor következőképpen töltsd ki az `Addon URL`-t: `https://192-168-1-100.local-ip.medicmobile.org:3443` - Ezen az URL-en az addon felülete is elérhető.
 
-Ezzel azt érted el, hogy a StremHU Source ilyen URL-el rendelkező információkat küld majd a Stremio-nak, amit el is fog fogadni.
+Ezzel azt érted el, hogy a StremHU | Source ezzel az URL-el rendelkező információkat küld majd a Stremio-nak, amit el is fog fogadni.
 
-### 6. StremHU Source hozzáadása a Stremio-hoz
+### 6. StremHU | Source hozzáadása a Stremio-hoz
 
 Nincs más dolgod, mint a `Fiókom` menüpontban a Stremio integráció a `Stremio integráció` résznél választani egy lehetőséget.
 
