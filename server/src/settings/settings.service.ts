@@ -50,7 +50,7 @@ export class SettingsService implements OnModuleInit {
     const prevState = _.isString(setting.cacheRetention);
     const updateState = _.isString(payload.cacheRetention);
     if (hasCacheRetention && prevState !== updateState) {
-      await this.torrentCacheService.setCleanupCacheCron(updateState);
+      await this.torrentCacheService.setRetentionCleanupCron(updateState);
     }
 
     // Web Torrent feltöltés beállítása

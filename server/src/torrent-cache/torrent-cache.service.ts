@@ -22,15 +22,15 @@ export class TorrentCacheService implements OnApplicationBootstrap {
 
   async onApplicationBootstrap() {
     const setting = await this.settingsStore.findOneOrThrow();
-    const job = this.schedulerRegistry.getCronJob('cleanupCache');
+    const job = this.schedulerRegistry.getCronJob('retentionCleanup');
 
     if (!setting.cacheRetention) {
       await job.stop();
     }
   }
 
-  async setCleanupCacheCron(enabled: boolean) {
-    const job = this.schedulerRegistry.getCronJob('cleanupCache');
+  async setRetentionCleanupCron(enabled: boolean) {
+    const job = this.schedulerRegistry.getCronJob('retentionCleanup');
 
     if (enabled && !job.isActive) {
       job.start();
@@ -90,8 +90,8 @@ export class TorrentCacheService implements OnApplicationBootstrap {
     }
   }
 
-  @Cron(CronExpression.EVERY_DAY_AT_5AM, { name: 'cleanupCache' })
-  async cleanup() {
+  @Cron(CronExpression.EVERY_DAY_AT_5AM, { name: 'retentionCleanup' })
+  async runRetentionCleanup() {
     const { cacheRetention } = await this.settingsStore.findOneOrThrow();
     if (!cacheRetention) return;
 

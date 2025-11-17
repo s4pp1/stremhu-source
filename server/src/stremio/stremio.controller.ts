@@ -3,6 +3,7 @@ import {
   ApiParam,
   ApiPermanentRedirectResponse,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import type { Response } from 'express';
 
@@ -13,6 +14,7 @@ import { StremioService } from './stremio.service';
 
 @UseGuards(StremioTokenGuard)
 @Controller('/:token')
+@ApiTags('Stremio')
 @ApiParam({
   name: 'token',
   required: true,

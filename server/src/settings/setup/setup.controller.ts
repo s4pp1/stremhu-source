@@ -11,7 +11,7 @@ import { StatusDto } from './dto/status.dto';
 import { SetupService } from './setup.service';
 
 @Controller('settings/setup')
-@ApiTags('Settings / Setup')
+@ApiTags('Settings')
 export class SetupController {
   constructor(
     private configService: ConfigService,

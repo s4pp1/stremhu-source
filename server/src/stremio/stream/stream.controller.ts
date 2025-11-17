@@ -9,7 +9,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiParam } from '@nestjs/swagger';
+import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 import * as mime from 'mime-types';
 import { Readable, pipeline } from 'node:stream';
@@ -31,6 +31,7 @@ import {
 
 @UseGuards(StremioTokenGuard)
 @Controller('/:token/stream')
+@ApiTags('Stremio / Stream')
 @ApiParam({
   name: 'token',
   required: true,

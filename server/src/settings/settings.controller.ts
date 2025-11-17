@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { toDto } from 'src/common/utils/to-dto';
+import { TorrentCacheService } from 'src/torrent-cache/torrent-cache.service';
 import { UserRoleEnum } from 'src/users/enums/user-role.enum';
 
 import { SettingsStore } from './core/settings.store';
@@ -20,6 +21,7 @@ export class SettingsController {
   constructor(
     private settingsStore: SettingsStore,
     private settingsService: SettingsService,
+    private torrentsCache: TorrentCacheService,
   ) {}
 
   @ApiResponse({ status: 200, type: SettingDto })
@@ -33,5 +35,11 @@ export class SettingsController {
   @Put('/')
   async update(@Body() body: UpdateSettingDto): Promise<SettingDto> {
     return this.settingsService.update(body);
+  }
+
+  @ApiResponse({ status: 200 })
+  @Post('/cache/torrents/retention-cleanup')
+  async cacheTorrentsCleanup(): Promise<void> {
+    return this.torrentsCache.runRetentionCleanup();
   }
 }
