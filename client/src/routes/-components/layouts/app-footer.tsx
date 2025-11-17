@@ -9,7 +9,7 @@ export function AppFooter() {
   return (
     <div className="bg-card border-t shadow-sm">
       <div className="container mx-auto max-w-3xl p-4">
-        <div className="flex justify-between items-center text-muted-foreground text-sm">
+        <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center text-muted-foreground text-sm">
           <p>StremHU | Source · v{data.version}</p>
           <p>
             Hibát találtál?{' '}
