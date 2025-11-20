@@ -10,6 +10,7 @@ import isVideo from 'is-video';
 import _ from 'lodash';
 import { Torrent, TorrentFile } from 'webtorrent';
 
+import { CatalogClientService } from 'src/catalog-client/catalog-client.service';
 import { RESOLUTION_LABEL_MAP } from 'src/common/common.constant';
 import { LanguageEnum } from 'src/common/enums/language.enum';
 import { ParsedFile } from 'src/common/utils/parse-torrent.util';
@@ -51,10 +52,19 @@ export class StremioStreamService {
     private trackersService: TrackersService,
     private webTorrentService: WebTorrentService,
     private settingsStore: SettingsStore,
+    private catalogClientService: CatalogClientService,
   ) {}
 
   async streams(payload: FindStreams): Promise<StreamDto[]> {
-    const { user, mediaType, imdbId, series } = payload;
+    const { user, mediaType, series } = payload;
+
+    const imdbId = series
+      ? await this.catalogClientService.getEpisodeImdbId({
+          imdbId: payload.imdbId,
+          season: series.season,
+          episode: series.episode,
+        })
+      : payload.imdbId;
 
     const setting = await this.settingsStore.findOneOrThrow();
 

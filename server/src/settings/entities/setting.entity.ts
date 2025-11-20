@@ -23,4 +23,7 @@ export class Setting {
 
   @Column({ name: 'cache_retention', type: 'text', nullable: true })
   cacheRetention!: string | null;
+
+  @Column({ name: 'catalog_token', type: 'text', nullable: true })
+  catalogToken!: string | null;
 }

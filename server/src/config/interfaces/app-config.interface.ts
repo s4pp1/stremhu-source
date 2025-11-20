@@ -8,4 +8,5 @@ export interface AppConfig {
   'openapi-dir': string;
   version: string;
   description: string;
+  'stremhu-catalog-url': string;
 }

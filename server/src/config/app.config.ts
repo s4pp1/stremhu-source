@@ -55,6 +55,10 @@ export default registerAs('app', () => {
       value: description,
       zod: z.string(),
     },
+    'stremhu-catalog-url': {
+      value: process.env.STREMHU_CATALOG_URL ?? 'https://catalog.stremhu.app',
+      zod: z.string(),
+    },
   };
 
   return ZodUtil.validate<AppConfig>(configs);

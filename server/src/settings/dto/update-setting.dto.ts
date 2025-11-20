@@ -8,6 +8,7 @@ import {
   Validate,
 } from 'class-validator';
 
+import { IsNullable } from 'src/common/validators/is-nullable';
 import { NoPathDomain } from 'src/common/validators/no-path-domain';
 
 export class UpdateSettingDto {
@@ -40,7 +41,14 @@ export class UpdateSettingDto {
   hitAndRun: boolean;
 
   @IsOptional()
+  @IsNullable()
   @IsString()
   @ApiProperty({ nullable: true, required: false })
   cacheRetention?: string | null;
+
+  @IsOptional()
+  @IsNullable()
+  @IsString()
+  @ApiProperty({ nullable: true, required: false })
+  catalogToken?: string | null;
 }

@@ -8,6 +8,7 @@ import { Database } from 'better-sqlite3';
 import { join } from 'path';
 
 import { AuthModule } from './auth/auth.module';
+import { CatalogClientModule } from './catalog-client/catalog-client.module';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import appConfig from './config/app.config';
 import authConfig from './config/auth.config';
@@ -78,6 +79,7 @@ import { WebTorrentModule } from './web-torrent/web-torrent.module';
     WebTorrentModule,
     TrackersModule,
     StremioModule,
+    CatalogClientModule,
   ],
   providers: [
     {

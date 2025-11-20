@@ -37,4 +37,8 @@ export class SettingDto {
   @IsString()
   @ApiProperty({ nullable: true })
   cacheRetention: string | null;
+
+  @IsString()
+  @ApiProperty({ nullable: true })
+  catalogToken: string | null;
 }
