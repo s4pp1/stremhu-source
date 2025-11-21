@@ -2,7 +2,8 @@ import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import type { Request } from 'express';
 
-import { AuthGuard, OptionalAuth } from 'src/auth/guards/auth.guard';
+import { OptionalAuth } from 'src/auth/decorators/optional-auth.decorator';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { toDto } from 'src/common/utils/to-dto';
 
 import { ChangePasswordDto } from '../dto/change-password';

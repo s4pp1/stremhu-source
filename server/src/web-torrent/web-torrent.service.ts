@@ -24,6 +24,7 @@ export class WebTorrentService
 {
   private readonly logger = new Logger(WebTorrentService.name);
   private readonly downloadsDir: string;
+  private readonly storeCacheSlots: number;
 
   private client: import('webtorrent').Instance;
 
@@ -35,6 +36,9 @@ export class WebTorrentService
   ) {
     this.downloadsDir = this.configService.getOrThrow<string>(
       'web-torrent.downloads-dir',
+    );
+    this.storeCacheSlots = this.configService.getOrThrow<number>(
+      'web-torrent.store-cache-slots',
     );
   }
 
@@ -75,7 +79,7 @@ export class WebTorrentService
 
       this.client.add(
         torrentCache.parsed,
-        { path: this.downloadsDir, storeCacheSlots: 0 },
+        { path: this.downloadsDir, storeCacheSlots: this.storeCacheSlots },
         (torrent) => {
           this.logger.log(`🔼 .torrent fájl betöltve: ${torrent.name}`);
 
@@ -159,7 +163,7 @@ export class WebTorrentService
     return new Promise((resolve, reject) => {
       const torrent = this.client.add(
         parsed,
-        { path: this.downloadsDir, storeCacheSlots: 0 },
+        { path: this.downloadsDir, storeCacheSlots: this.storeCacheSlots },
         async (torrent) => {
           torrent.deselect(0, torrent.pieces.length - 1, 0);
           await this.webTorrentRunsService.create({
