@@ -2,7 +2,6 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  SetMetadata,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
@@ -11,8 +10,7 @@ import { Request } from 'express';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 
-export const OPTIONAL_AUTH_KEY = 'auth:optional';
-export const OptionalAuth = () => SetMetadata(OPTIONAL_AUTH_KEY, true);
+import { OPTIONAL_AUTH_KEY } from '../decorators/optional-auth.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
