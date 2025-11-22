@@ -10,8 +10,8 @@ import ZodUtil, { ZodConfig } from './utils/zod-util';
 
 export default registerAs('app', () => {
   const packageSchema = z.object({
-    version: z.string(),
-    description: z.string(),
+    version: z.string().trim().nonempty().optional(),
+    description: z.string().trim().nonempty(),
   });
 
   const packageJsonRaw = readFileSync(
@@ -19,8 +19,13 @@ export default registerAs('app', () => {
     'utf8',
   );
   const parsed = packageSchema.safeParse(JSON.parse(packageJsonRaw));
-  const version = parsed.success && parsed.data.version;
-  const description = parsed.success && parsed.data.description;
+
+  if (!parsed.success) {
+    throw new Error('package.json parse hiba');
+  }
+
+  const version = parsed.data.version ?? '0.0.0';
+  const description = parsed.data.description;
 
   const httpPort = process.env.HTTP_PORT && _.parseInt(process.env.HTTP_PORT);
   const httpsPort =
@@ -33,7 +38,7 @@ export default registerAs('app', () => {
     },
     'client-path': {
       value: join(process.cwd(), '../client/dist'),
-      zod: z.string(),
+      zod: z.string().trim().nonempty(),
     },
     'http-port': {
       value: httpPort || 3000,
@@ -45,19 +50,19 @@ export default registerAs('app', () => {
     },
     'openapi-dir': {
       value: join(process.cwd(), '/openapi'),
-      zod: z.string(),
+      zod: z.string().trim().nonempty(),
     },
     version: {
       value: version,
-      zod: z.string(),
+      zod: z.string().trim().nonempty(),
     },
     description: {
       value: description,
-      zod: z.string(),
+      zod: z.string().trim().nonempty(),
     },
     'stremhu-catalog-url': {
       value: process.env.STREMHU_CATALOG_URL ?? 'https://catalog.stremhu.app',
-      zod: z.string(),
+      zod: z.string().trim().nonempty(),
     },
   };
 
