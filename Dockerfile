@@ -1,9 +1,14 @@
 # ---- Build ----
 FROM node:22.21.1-slim AS build
 
+ARG APP_VERSION=0.0.0
+
 # Server build
 WORKDIR /app/server
 COPY server ./
+
+RUN node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));p.version='${APP_VERSION}';fs.writeFileSync('package.json', JSON.stringify(p,null,2));"
+
 RUN npm ci
 RUN npm run build
 RUN npm prune --omit=dev
@@ -31,7 +36,7 @@ WORKDIR /app/server
 ENV NODE_ENV=production
 
 EXPOSE 3000/tcp
-EXPOSE 3050/tcp
+EXPOSE 3443/tcp
 EXPOSE 6881/tcp
 
 CMD ["node", "dist/main.js"]
