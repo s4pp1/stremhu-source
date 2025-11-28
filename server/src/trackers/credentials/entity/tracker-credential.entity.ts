@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 @Entity('tracker_credentials')
 export class TrackerCredential {

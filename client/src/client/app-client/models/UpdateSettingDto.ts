@@ -4,7 +4,7 @@
 /* eslint-disable */
 export type UpdateSettingDto = {
     enebledlocalIp?: boolean;
-    endpoint?: string;
+    address?: string;
     downloadLimit?: number;
     uploadLimit?: number;
     hitAndRun?: boolean;

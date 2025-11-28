@@ -6,7 +6,7 @@ import { ResolutionDto } from './resolution.dto';
 import { TrackerDto } from './tracker.dto';
 import { UserRoleDto } from './user-role.dto';
 
-export class ReferenceDataDto {
+export class MetadataDto {
   @IsArray()
   @ApiProperty({ type: UserRoleDto, isArray: true })
   userRoles: UserRoleDto[];
@@ -26,4 +26,8 @@ export class ReferenceDataDto {
   @IsString()
   @ApiProperty()
   endpoint: string;
+
+  @IsString()
+  @ApiProperty()
+  version: string;
 }

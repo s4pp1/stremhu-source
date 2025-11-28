@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { LanguageEnum } from 'src/common/enums/language.enum';
 import { StreamMediaTypeEnum } from 'src/stremio/enums/stream-media-type.enum';
-import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import {
   LoginRequest,
   TrackerAdapter,

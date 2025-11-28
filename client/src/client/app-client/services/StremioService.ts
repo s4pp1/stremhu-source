@@ -12,7 +12,7 @@ export class StremioService {
      * @returns void
      * @throws ApiError
      */
-    public stremioControllerConfigure(
+    public configure(
         token: string,
     ): CancelablePromise<void> {
         return this.httpRequest.request({
@@ -31,7 +31,7 @@ export class StremioService {
      * @returns ManifestDto
      * @throws ApiError
      */
-    public stremioControllerManifest(
+    public manifest(
         token: string,
     ): CancelablePromise<ManifestDto> {
         return this.httpRequest.request({

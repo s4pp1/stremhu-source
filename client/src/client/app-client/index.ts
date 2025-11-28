@@ -20,8 +20,8 @@ export type { LanguageDto } from './models/LanguageDto';
 export { LanguageEnum } from './models/LanguageEnum';
 export type { LoginTrackerDto } from './models/LoginTrackerDto';
 export type { ManifestDto } from './models/ManifestDto';
+export type { MetadataDto } from './models/MetadataDto';
 export type { MeUserDto } from './models/MeUserDto';
-export type { ReferenceDataDto } from './models/ReferenceDataDto';
 export type { ResolutionDto } from './models/ResolutionDto';
 export { ResolutionEnum } from './models/ResolutionEnum';
 export type { SettingDto } from './models/SettingDto';
@@ -41,7 +41,7 @@ export { UserRoleEnum } from './models/UserRoleEnum';
 
 export { AuthenticationService } from './services/AuthenticationService';
 export { MeService } from './services/MeService';
-export { ReferenceDataService } from './services/ReferenceDataService';
+export { MetadataService } from './services/MetadataService';
 export { SettingsService } from './services/SettingsService';
 export { StremioService } from './services/StremioService';
 export { StremioStreamService } from './services/StremioStreamService';

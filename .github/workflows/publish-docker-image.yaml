@@ -72,7 +72,7 @@ jobs:
         id: version
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.version }}" ]; then
-            echo "value=${{ inputs.version }}" >> "$GITHUB_OUTPUT"
+            echo "value=v${{ inputs.version }}" >> "$GITHUB_OUTPUT"
           else
             echo "value=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
           fi

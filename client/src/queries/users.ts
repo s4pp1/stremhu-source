@@ -17,7 +17,7 @@ import { getMe } from './me'
 export const getUsers = queryOptions({
   queryKey: ['users'],
   queryFn: async () => {
-    const users = await appClient.users.usersControllerFind()
+    const users = await appClient.users.find()
     return users
   },
 })
@@ -26,7 +26,7 @@ export function useAddUser() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (payload: CreateUserDto) => {
-      const user = await appClient.users.usersControllerCreate(payload)
+      const user = await appClient.users.create(payload)
       return user
     },
     onSuccess: () => {
@@ -39,7 +39,7 @@ export function useDeleteUser() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (userId: string) => {
-      await appClient.users.usersControllerDeleteOne(userId)
+      await appClient.users.deleteOne(userId)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getUsers.queryKey })
@@ -55,10 +55,7 @@ export function useChangeUsername() {
       payload: ChangeUsernameDto
     }) => {
       const { userId, payload } = data
-      const user = await appClient.users.usersControllerChangeUsername(
-        userId,
-        payload,
-      )
+      const user = await appClient.users.changeUsername(userId, payload)
       return user
     },
     onSuccess: (updated) => {
@@ -79,10 +76,7 @@ export function useChangePassword() {
       payload: ChangePasswordDto
     }) => {
       const { userId, payload } = data
-      const user = await appClient.users.usersControllerChangePassword(
-        userId,
-        payload,
-      )
+      const user = await appClient.users.changePassword(userId, payload)
       return user
     },
   })
@@ -92,8 +86,7 @@ export function useChangeStremioToken() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (userId: string) => {
-      const user =
-        await appClient.users.usersControllerChangeStremioToken(userId)
+      const user = await appClient.users.changeStremioToken(userId)
       return user
     },
     onSuccess: (updated) => {
@@ -112,10 +105,7 @@ export function useUpdateProfile() {
   return useMutation({
     mutationFn: async (data: { userId: string; payload: UpdateUserDto }) => {
       const { userId, payload } = data
-      const user = await appClient.users.usersControllerUpdateOne(
-        userId,
-        payload,
-      )
+      const user = await appClient.users.updateOne(userId, payload)
       return user
     },
     onSuccess: (updated) => {

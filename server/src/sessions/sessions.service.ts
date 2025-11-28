@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 
 import { THIRTY_DAYS_MS } from 'src/app.constant';
 
-import { Session } from './entities/session.entity';
+import { Session } from './entity/session.entity';
 
 @Injectable()
 export class SessionsService extends session.Store {

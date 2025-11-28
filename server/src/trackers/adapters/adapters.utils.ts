@@ -1,4 +1,4 @@
-import { TrackerEnum } from '../enums/tracker.enum';
+import { TrackerEnum } from '../enum/tracker.enum';
 import { TRACKER_LABEL_MAP } from '../trackers.constants';
 
 export function getTrackerRefreshMessage(tracker: TrackerEnum): string {

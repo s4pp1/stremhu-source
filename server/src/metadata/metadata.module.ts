@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 
 import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
 
-import { ReferenceDataController } from './reference-data.controller';
+import { MetadataController } from './metadata.controller';
 
 @Module({
   imports: [SettingsCoreModule],
-  controllers: [ReferenceDataController],
+  controllers: [MetadataController],
 })
-export class ReferenceDataModule {}
+export class MetadataModule {}

@@ -8,7 +8,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import { useReferenceDataOptionLabel } from '@/hooks/use-reference-data-option-label'
+import { useMetadataLabel } from '@/hooks/use-metadata-label'
 import { getUsers } from '@/queries/users'
 import { DialogEnum, useDialogs } from '@/store/dialogs-store'
 
@@ -19,7 +19,7 @@ export function Users() {
   const { data: users } = useQuery(getUsers)
   if (!users) throw new Error(`Nincs "users" a cache-ben`)
 
-  const { getUserRoleLabel } = useReferenceDataOptionLabel()
+  const { getUserRoleLabel } = useMetadataLabel()
   const { handleOpen } = useDialogs()
 
   return (

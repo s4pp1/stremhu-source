@@ -11,7 +11,7 @@ import {
   parseTorrent,
   toTorrentFile,
 } from 'src/common/utils/parse-torrent.util';
-import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import { TrackerTorrentId } from 'src/trackers/tracker.types';
 
 import { MARKER_FILENAME } from '../torrent-cache.constants';

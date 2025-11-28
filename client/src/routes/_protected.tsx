@@ -2,15 +2,23 @@ import { useQuery } from '@tanstack/react-query'
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 
 import { getMe } from '@/queries/me'
+import { getSettingsStatus } from '@/queries/settings-setup'
 
 export const Route = createFileRoute('/_protected')({
   beforeLoad: async ({ context }) => {
     const queryClient = context.queryClient
 
     const me = await queryClient.ensureQueryData(getMe)
+    const { hasAddress } = await queryClient.ensureQueryData(getSettingsStatus)
 
     if (me === null) {
       throw redirect({ to: '/login' })
+    }
+
+    const onSetup = location.pathname.startsWith('/setup/address')
+
+    if (!hasAddress && !onSetup) {
+      throw redirect({ to: '/setup/address' })
     }
   },
   component: ProtectedLayout,

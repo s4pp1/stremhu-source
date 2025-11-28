@@ -8,12 +8,12 @@ export class Setting {
   @Column({
     name: 'enebled_local_ip',
     type: 'boolean',
-    default: false,
+    default: true,
   })
   enebledlocalIp!: boolean;
 
-  @Column({ type: 'text' })
-  endpoint!: string;
+  @Column({ type: 'text', nullable: true, default: null })
+  address!: string | null;
 
   @Column({ name: 'download_limit', type: 'integer', default: -1 })
   downloadLimit!: number;
@@ -21,7 +21,7 @@ export class Setting {
   @Column({ name: 'upload_limit', type: 'integer', default: -1 })
   uploadLimit!: number;
 
-  @Column({ name: 'hit_and_run', type: 'boolean', default: true })
+  @Column({ name: 'hit_and_run', type: 'boolean', default: false })
   hitAndRun!: boolean;
 
   @Column({ name: 'cache_retention', type: 'text', nullable: true })

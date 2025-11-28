@@ -20,28 +20,26 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
-import { useReferenceDataOptionLabel } from '@/hooks/use-reference-data-option-label'
-import { getReferenceData } from '@/queries/reference-data'
+import { useMetadataLabel } from '@/hooks/use-metadata-label'
+import { getMetadata } from '@/queries/metadata'
 import { getTrackers, useDeleteTracker } from '@/queries/trackers'
 import { useConfirmDialog } from '@/store/confirm-dialog-store'
 import { DialogEnum, useDialogs } from '@/store/dialogs-store'
 
 export function Trackers() {
   const { data: trackers } = useQuery(getTrackers)
-  const { data: referenceData } = useQuery(getReferenceData)
+  const { data: metadata } = useQuery(getMetadata)
 
-  if (!referenceData) throw new Error(`Nincs "reference-data" a cache-ben`)
+  if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
   if (!trackers) throw new Error(`Nincs "trackers" a cache-ben`)
 
   const { handleOpen } = useDialogs()
   const confirmDialog = useConfirmDialog()
-  const { getTrackerLabel } = useReferenceDataOptionLabel()
+  const { getTrackerLabel } = useMetadataLabel()
 
   const { mutateAsync: deleteTracker } = useDeleteTracker()
 
-  const { option } = referenceData
-
-  const renderTrackerLogin = option.trackers.length !== trackers.length
+  const renderTrackerLogin = metadata.trackers.length !== trackers.length
 
   const handleDeleteTracker = async (tracker: TrackerEnum) => {
     await confirmDialog({

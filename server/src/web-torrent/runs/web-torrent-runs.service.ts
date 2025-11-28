@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, Repository } from 'typeorm';
 
-import { WebTorrentRun } from './entities/web-torrent-run.entity';
+import { WebTorrentRun } from './entity/web-torrent-run.entity';
 import { WebTorrentRunToCreate } from './web-torrent-runs.types';
 
 @Injectable()

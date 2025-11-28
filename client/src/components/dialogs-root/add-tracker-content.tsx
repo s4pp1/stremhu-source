@@ -27,7 +27,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { getReferenceData } from '@/queries/reference-data'
+import { useMetadataLabel } from '@/hooks/use-metadata-label'
+import { getMetadata } from '@/queries/metadata'
 import { useLoginTracker } from '@/queries/trackers'
 import { useDialogsStore } from '@/store/dialogs-store'
 
@@ -46,15 +47,13 @@ export function AddTrackerContent(props: AddTrackerContentProps) {
 
   const { handleClose } = useDialogsStore()
 
-  const { data: referenceData } = useQuery(getReferenceData)
-  if (!referenceData) throw new Error(`Nincs "reference-data" a cache-ben`)
+  const { data: metadata } = useQuery(getMetadata)
+  const { getTrackerLabel } = useMetadataLabel()
+  if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
 
   const { mutateAsync: loginTracker } = useLoginTracker()
 
-  const {
-    option: { trackers },
-    labelMap,
-  } = referenceData
+  const { trackers } = metadata
 
   const inactiveTrackers = trackers.filter(
     (tracker) => !activeTrackers.includes(tracker.value),
@@ -77,7 +76,7 @@ export function AddTrackerContent(props: AddTrackerContentProps) {
           password: value.trackerPwd,
         })
         toast.success(
-          `Sikeres csatlakozás az ${labelMap.tracker[value.tracker]}-hez.`,
+          `Sikeres csatlakozás az ${getTrackerLabel(value.tracker)}-hez.`,
         )
         handleClose()
       } catch (error) {

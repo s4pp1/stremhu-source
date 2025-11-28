@@ -1,30 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsNumber,
-  IsString,
-  IsUrl,
-  Validate,
-} from 'class-validator';
-
-import { NoPathDomain } from 'src/common/validators/no-path-domain';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class SettingDto {
   @IsBoolean()
   @ApiProperty()
   enebledlocalIp: boolean;
 
-  @IsUrl({
-    protocols: ['https'],
-    require_protocol: true,
-    require_valid_protocol: true,
-    require_host: true,
-    allow_fragments: false,
-    allow_query_components: false,
-  })
-  @Validate(NoPathDomain)
+  @IsString()
   @ApiProperty()
-  endpoint: string;
+  address: string;
 
   @IsNumber()
   @ApiProperty()

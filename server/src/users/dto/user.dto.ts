@@ -13,7 +13,7 @@ import {
 
 import { LanguageEnum } from 'src/common/enums/language.enum';
 
-import { UserRoleEnum } from '../enums/user-role.enum';
+import { UserRoleEnum } from '../enum/user-role.enum';
 
 export class UserDto {
   @IsUUID()

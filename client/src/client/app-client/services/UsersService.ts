@@ -16,7 +16,7 @@ export class UsersService {
      * @returns UserDto
      * @throws ApiError
      */
-    public usersControllerCreate(
+    public create(
         requestBody: CreateUserDto,
     ): CancelablePromise<UserDto> {
         return this.httpRequest.request({
@@ -30,7 +30,7 @@ export class UsersService {
      * @returns UserDto
      * @throws ApiError
      */
-    public usersControllerFind(): CancelablePromise<Array<UserDto>> {
+    public find(): CancelablePromise<Array<UserDto>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/users',
@@ -41,7 +41,7 @@ export class UsersService {
      * @returns UserDto
      * @throws ApiError
      */
-    public usersControllerFindOne(
+    public findOne(
         userId: string,
     ): CancelablePromise<UserDto> {
         return this.httpRequest.request({
@@ -58,7 +58,7 @@ export class UsersService {
      * @returns UserDto
      * @throws ApiError
      */
-    public usersControllerUpdateOne(
+    public updateOne(
         userId: string,
         requestBody: UpdateUserDto,
     ): CancelablePromise<UserDto> {
@@ -77,7 +77,7 @@ export class UsersService {
      * @returns any
      * @throws ApiError
      */
-    public usersControllerDeleteOne(
+    public deleteOne(
         userId: string,
     ): CancelablePromise<any> {
         return this.httpRequest.request({
@@ -94,7 +94,7 @@ export class UsersService {
      * @returns UserDto
      * @throws ApiError
      */
-    public usersControllerChangeUsername(
+    public changeUsername(
         userId: string,
         requestBody: ChangeUsernameDto,
     ): CancelablePromise<UserDto> {
@@ -114,7 +114,7 @@ export class UsersService {
      * @returns UserDto
      * @throws ApiError
      */
-    public usersControllerChangePassword(
+    public changePassword(
         userId: string,
         requestBody: ChangePasswordDto,
     ): CancelablePromise<UserDto> {
@@ -133,7 +133,7 @@ export class UsersService {
      * @returns UserDto
      * @throws ApiError
      */
-    public usersControllerChangeStremioToken(
+    public changeStremioToken(
         userId: string,
     ): CancelablePromise<UserDto> {
         return this.httpRequest.request({

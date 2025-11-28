@@ -8,9 +8,9 @@ import { SortableContext } from '@dnd-kit/sortable'
 import { useQuery } from '@tanstack/react-query'
 
 import type { ResolutionEnum } from '@/client/app-client'
-import { useReferenceDataOptionLabel } from '@/hooks/use-reference-data-option-label'
+import { useMetadataLabel } from '@/hooks/use-metadata-label'
 import { cn } from '@/lib/utils'
-import { getReferenceData } from '@/queries/reference-data'
+import { getMetadata } from '@/queries/metadata'
 
 import { SelectorItem } from '../selector-item'
 import { SortableSelectorItem } from '../sortable-selector-item'
@@ -27,12 +27,12 @@ export function ResolutionsSelector(props: ResolutionSelectorProps) {
   const { items, onAdd, onDelete, onSortableDragEnd, className, ...rest } =
     props
 
-  const { data: referenceData } = useQuery(getReferenceData)
-  if (!referenceData) throw new Error(`Nincs "referenceData" a cache-ben`)
+  const { data: metadata } = useQuery(getMetadata)
+  if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
 
-  const { getResolutionLabel } = useReferenceDataOptionLabel()
+  const { getResolutionLabel } = useMetadataLabel()
 
-  const inactiveResolutions = referenceData.option.resolutions.filter(
+  const inactiveResolutions = metadata.resolutions.filter(
     (resolution) => !items.includes(resolution.value),
   )
   const hasInactiveResolution = inactiveResolutions.length > 0

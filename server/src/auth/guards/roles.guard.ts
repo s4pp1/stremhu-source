@@ -8,7 +8,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 
-import { UserRoleEnum } from 'src/users/enums/user-role.enum';
+import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
 import { ROLES_KEY } from '../decorators/roles.decorator';
 

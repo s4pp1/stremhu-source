@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Item, ItemContent, ItemTitle } from '@/components/ui/item'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { getReferenceData } from '@/queries/reference-data'
+import { getMetadata } from '@/queries/metadata'
 import { useUpdateProfile } from '@/queries/users'
 
 interface UserPreferencesProps {
@@ -22,8 +22,8 @@ interface UserPreferencesProps {
 export function UserPreferences(props: UserPreferencesProps) {
   const { user } = props
 
-  const { data: referenceData } = useQuery(getReferenceData)
-  if (!referenceData) throw new Error(`Nincs "referenceData" a cache-ben`)
+  const { data: metadata } = useQuery(getMetadata)
+  if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
 
   const { mutateAsync: updateProfile } = useUpdateProfile()
 

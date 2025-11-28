@@ -1,4 +1,4 @@
-import { TrackerEnum } from '../enums/tracker.enum';
+import { TrackerEnum } from '../enum/tracker.enum';
 
 export interface TrackerCredentialToCreate {
   tracker: TrackerEnum;

@@ -4,7 +4,7 @@ import ms from 'ms';
 import { rm } from 'node:fs/promises';
 
 import { SettingsStore } from 'src/settings/core/settings.store';
-import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import { WebTorrentService } from 'src/web-torrent/web-torrent.service';
 
 import { TorrentCacheStore } from './core/torrent-cache.store';

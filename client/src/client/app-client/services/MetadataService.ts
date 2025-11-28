@@ -2,19 +2,19 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ReferenceDataDto } from '../models/ReferenceDataDto';
+import type { MetadataDto } from '../models/MetadataDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-export class ReferenceDataService {
+export class MetadataService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
-     * @returns ReferenceDataDto
+     * @returns MetadataDto
      * @throws ApiError
      */
-    public referenceDataControllerReferenceData(): CancelablePromise<ReferenceDataDto> {
+    public metadata(): CancelablePromise<MetadataDto> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/api/reference-data',
+            url: '/api/metadata',
         });
     }
 }

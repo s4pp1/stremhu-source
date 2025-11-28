@@ -14,7 +14,7 @@ export class StremioStreamService {
      * @returns StreamsResponseDto
      * @throws ApiError
      */
-    public stremioStreamControllerStreams(
+    public streams(
         mediaType: 'series' | 'movie',
         id: string,
         token: string,
@@ -38,7 +38,7 @@ export class StremioStreamService {
      * @returns any
      * @throws ApiError
      */
-    public stremioStreamControllerPlayStream(
+    public playStream(
         imdbId: string,
         tracker: 'ncore' | 'bithumen' | 'majomparade',
         torrentId: string,

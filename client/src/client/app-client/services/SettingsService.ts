@@ -15,7 +15,7 @@ export class SettingsService {
      * @returns SettingDto
      * @throws ApiError
      */
-    public settingsControllerFindOne(): CancelablePromise<SettingDto> {
+    public findOne(): CancelablePromise<SettingDto> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/settings',
@@ -26,7 +26,7 @@ export class SettingsService {
      * @returns SettingDto
      * @throws ApiError
      */
-    public settingsControllerUpdate(
+    public update(
         requestBody: UpdateSettingDto,
     ): CancelablePromise<SettingDto> {
         return this.httpRequest.request({
@@ -40,7 +40,7 @@ export class SettingsService {
      * @returns any
      * @throws ApiError
      */
-    public settingsControllerCacheTorrentsCleanup(): CancelablePromise<any> {
+    public cacheTorrentsCleanup(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/settings/cache/torrents/retention-cleanup',
@@ -51,7 +51,7 @@ export class SettingsService {
      * @returns UserDto
      * @throws ApiError
      */
-    public setupControllerCreate(
+    public create(
         requestBody: CreateSetupDto,
     ): CancelablePromise<UserDto> {
         return this.httpRequest.request({
@@ -65,7 +65,7 @@ export class SettingsService {
      * @returns StatusDto
      * @throws ApiError
      */
-    public setupControllerStatus(): CancelablePromise<StatusDto> {
+    public status(): CancelablePromise<StatusDto> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/settings/setup/status',

@@ -15,9 +15,9 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { toDto } from 'src/common/utils/to-dto';
 import { TrackerCredentialsService } from 'src/trackers/credentials/tracker-credentials.service';
-import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import { TrackersService } from 'src/trackers/trackers.service';
-import { UserRoleEnum } from 'src/users/enums/user-role.enum';
+import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
 import { TrackerCredentialDto } from './credentials/dto/tracker-credential.dto';
 import { LoginTrackerDto } from './dto/login-tracker.dto';

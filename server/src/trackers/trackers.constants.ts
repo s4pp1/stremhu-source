@@ -1,4 +1,4 @@
-import { TrackerEnum } from './enums/tracker.enum';
+import { TrackerEnum } from './enum/tracker.enum';
 import { TrackerOption } from './tracker.types';
 
 export const TRACKER_OPTIONS: TrackerOption[] = [

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { TrackerCredentialsModule } from 'src/trackers/credentials/tracker-credentials.module';
-import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { TRACKER_TOKEN } from '../adapters.types';
 import { BithumenAdapter } from './bithumen.adapter';

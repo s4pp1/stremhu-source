@@ -8,27 +8,26 @@ import { Toaster } from 'sonner'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { DialogsRoot } from '@/components/dialogs-root'
 import type { RouterContext } from '@/main'
-import { getReferenceData } from '@/queries/reference-data'
-import { getSettingsSetupStatus } from '@/queries/settings-setup'
+import { getMetadata } from '@/queries/metadata'
+import { getSettingsStatus } from '@/queries/settings-setup'
 
 import { AppLayout } from './-components/layouts/app-layout'
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   beforeLoad: async ({ context, location }) => {
     const { queryClient } = context
-    await queryClient.ensureQueryData(getReferenceData)
+    await queryClient.ensureQueryData(getMetadata)
 
-    const { configured } = await queryClient.ensureQueryData(
-      getSettingsSetupStatus,
-    )
+    const { hasAdminUser } =
+      await queryClient.ensureQueryData(getSettingsStatus)
 
-    const onSetup = location.pathname.startsWith('/setup')
+    const onSetup = location.pathname.startsWith('/setup/user')
 
-    if (!configured && !onSetup) {
-      throw redirect({ to: '/setup' })
+    if (!hasAdminUser && !onSetup) {
+      throw redirect({ to: '/setup/user' })
     }
 
-    if (configured && onSetup) {
+    if (hasAdminUser && onSetup) {
       throw redirect({ to: '/' })
     }
   },

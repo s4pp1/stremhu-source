@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TorrentCacheModule } from 'src/torrent-cache/torrent-cache.module';
 import { WebTorrentModule } from 'src/web-torrent/web-torrent.module';
 
-import { TrackerCredential } from './entities/tracker-credential.entity';
+import { TrackerCredential } from './entity/tracker-credential.entity';
 import { TrackerCredentialsService } from './tracker-credentials.service';
 
 @Module({

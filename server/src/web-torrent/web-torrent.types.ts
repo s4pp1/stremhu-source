@@ -1,5 +1,5 @@
 import { ParsedTorrent } from 'src/common/utils/parse-torrent.util';
-import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 export interface WebTorrentToAdd {
   imdbId: string;

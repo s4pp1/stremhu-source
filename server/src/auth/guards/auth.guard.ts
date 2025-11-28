@@ -7,7 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 
-import { User } from 'src/users/entities/user.entity';
+import { User } from 'src/users/entity/user.entity';
 import { UsersService } from 'src/users/users.service';
 
 import { OPTIONAL_AUTH_KEY } from '../decorators/optional-auth.decorator';

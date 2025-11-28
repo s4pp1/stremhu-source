@@ -6,7 +6,7 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { toDto } from 'src/common/utils/to-dto';
 import { TorrentCacheService } from 'src/torrent-cache/torrent-cache.service';
-import { UserRoleEnum } from 'src/users/enums/user-role.enum';
+import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
 import { SettingsStore } from './core/settings.store';
 import { SettingDto } from './dto/setting.dto';
@@ -34,7 +34,11 @@ export class SettingsController {
   @ApiResponse({ status: 200, type: SettingDto })
   @Put('/')
   async update(@Body() body: UpdateSettingDto): Promise<SettingDto> {
-    return this.settingsService.update(body);
+    const setting = await this.settingsService.update(body);
+    return {
+      ...setting,
+      address: setting.address || '',
+    };
   }
 
   @ApiResponse({ status: 200 })

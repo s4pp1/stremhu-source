@@ -1,16 +1,18 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isUndefined, omitBy } from 'lodash';
 import { EntityManager, Repository } from 'typeorm';
 
 import { GLOBAL_ID } from 'src/common/common.constant';
 
-import { Setting } from '../entities/setting.entity';
+import { Setting } from '../entity/setting.entity';
 import { SettingToCreate, SettingToUpdate } from '../settings.types';
 
 @Injectable()
 export class SettingsStore {
   constructor(
+    private readonly configService: ConfigService,
     @InjectRepository(Setting)
     private readonly settingRepository: Repository<Setting>,
   ) {}
@@ -57,5 +59,26 @@ export class SettingsStore {
     await repository.update({ id: GLOBAL_ID }, updateData);
 
     return { ...setting, ...updateData };
+  }
+
+  async getEndpoint() {
+    const setting = await this.findOneOrThrow();
+
+    let endpoint = this.buildLocalUrl('127.0.0.1');
+
+    if (setting.enebledlocalIp && setting.address) {
+      endpoint = this.buildLocalUrl(setting.address);
+    }
+
+    if (!setting.enebledlocalIp && setting.address) {
+      endpoint = setting.address;
+    }
+
+    return endpoint;
+  }
+
+  private buildLocalUrl(ipAddress: string) {
+    const httpsPort = this.configService.getOrThrow<number>('app.https-port');
+    return `https://${ipAddress.split('.').join('-')}.local-ip.medicmobile.org:${httpsPort}`;
   }
 }

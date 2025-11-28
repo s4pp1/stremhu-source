@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn, Unique } from 'typeorm';
 
-import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 @Entity('web_torrent_runs')
 @Unique('unique_web_torrent_run_tracker_torrent', ['tracker', 'torrentId'])

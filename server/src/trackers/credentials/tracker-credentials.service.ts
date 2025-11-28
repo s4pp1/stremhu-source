@@ -5,8 +5,8 @@ import { EntityManager, Repository } from 'typeorm';
 import { TorrentCacheService } from 'src/torrent-cache/torrent-cache.service';
 import { WebTorrentService } from 'src/web-torrent/web-torrent.service';
 
-import { TrackerEnum } from '../enums/tracker.enum';
-import { TrackerCredential } from './entities/tracker-credential.entity';
+import { TrackerEnum } from '../enum/tracker.enum';
+import { TrackerCredential } from './entity/tracker-credential.entity';
 import { TrackerCredentialToCreate } from './tracker-credentials.types';
 
 @Injectable()

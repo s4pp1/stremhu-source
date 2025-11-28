@@ -17,7 +17,7 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
-import { useReferenceDataOptionLabel } from '@/hooks/use-reference-data-option-label'
+import { useMetadataLabel } from '@/hooks/use-metadata-label'
 import { getMe } from '@/queries/me'
 import { DialogEnum, useDialogs } from '@/store/dialogs-store'
 
@@ -25,7 +25,7 @@ export function LoginAndSecurity() {
   const { data: me } = useQuery(getMe)
   if (!me) throw new Error(`Nincs "me" a cache-ben`)
 
-  const { getUserRoleLabel } = useReferenceDataOptionLabel()
+  const { getUserRoleLabel } = useMetadataLabel()
   const { handleOpen } = useDialogs()
 
   return (

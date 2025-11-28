@@ -85,7 +85,7 @@ export function Access() {
 
   const form = useForm({
     defaultValues: {
-      endpoint: setting.endpoint,
+      endpoint: '',
       enebledlocalIp: setting.enebledlocalIp,
     },
     validators: {

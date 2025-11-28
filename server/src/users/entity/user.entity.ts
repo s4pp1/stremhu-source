@@ -3,7 +3,7 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 import { LanguageEnum } from 'src/common/enums/language.enum';
 
-import { UserRoleEnum } from '../enums/user-role.enum';
+import { UserRoleEnum } from '../enum/user-role.enum';
 
 @Entity('users')
 export class User {

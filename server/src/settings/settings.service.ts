@@ -1,6 +1,5 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { internalIpV4 } from 'internal-ip';
 import _ from 'lodash';
 import { EntityManager } from 'typeorm';
 
@@ -11,7 +10,7 @@ import { TrackersService } from 'src/trackers/trackers.service';
 import { WebTorrentService } from 'src/web-torrent/web-torrent.service';
 
 import { SettingsStore } from './core/settings.store';
-import { Setting } from './entities/setting.entity';
+import { Setting } from './entity/setting.entity';
 import { SettingToUpdate } from './settings.types';
 
 @Injectable()
@@ -92,15 +91,10 @@ export class SettingsService implements OnModuleInit {
 
     this.logger.log('⚙️ Beállítások konfigurálása első indítással');
 
-    const internalIp = (await internalIpV4()) ?? '127.0.0.1';
-    const httpsPort = this.configService.getOrThrow<number>('app.https-port');
-    const localIp = `https://${internalIp.split('.').join('-')}.local-ip.medicmobile.org:${httpsPort}`;
-
     await this.settingsStore.create({
       id: GLOBAL_ID,
       hitAndRun: false,
       enebledlocalIp: true,
-      endpoint: localIp,
       downloadLimit: 12500000,
       uploadLimit: 12500000,
       cacheRetention: '14d',

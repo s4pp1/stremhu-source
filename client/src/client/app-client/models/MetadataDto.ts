@@ -6,11 +6,12 @@ import type { LanguageDto } from './LanguageDto';
 import type { ResolutionDto } from './ResolutionDto';
 import type { TrackerDto } from './TrackerDto';
 import type { UserRoleDto } from './UserRoleDto';
-export type ReferenceDataDto = {
+export type MetadataDto = {
     userRoles: Array<UserRoleDto>;
     resolutions: Array<ResolutionDto>;
     languages: Array<LanguageDto>;
     trackers: Array<TrackerDto>;
     endpoint: string;
+    version: string;
 };
 

@@ -16,7 +16,7 @@ import databaseConfig from './config/database.config';
 import trackerConfig from './config/tracker.config';
 import webTorrentConfig from './config/web-torrent.config';
 import { LocalIpModule } from './local-ip/local-ip.module';
-import { ReferenceDataModule } from './reference-data/reference-data.module';
+import { MetadataModule } from './metadata/metadata.module';
 import { SessionsModule } from './sessions/sessions.module';
 import { SettingsModule } from './settings/settings.module';
 import { StremioModule } from './stremio/stremio.module';
@@ -74,7 +74,7 @@ import { WebTorrentModule } from './web-torrent/web-torrent.module';
     AuthModule,
     SessionsModule,
     UsersModule,
-    ReferenceDataModule,
+    MetadataModule,
     TorrentCacheModule,
     WebTorrentModule,
     TrackersModule,

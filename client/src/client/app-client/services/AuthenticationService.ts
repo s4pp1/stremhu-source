@@ -13,7 +13,7 @@ export class AuthenticationService {
      * @returns UserDto
      * @throws ApiError
      */
-    public authControllerLogin(
+    public login(
         requestBody: AuthLoginDto,
     ): CancelablePromise<UserDto> {
         return this.httpRequest.request({
@@ -27,7 +27,7 @@ export class AuthenticationService {
      * @returns any
      * @throws ApiError
      */
-    public authControllerLogout(): CancelablePromise<any> {
+    public logout(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/auth/logout',

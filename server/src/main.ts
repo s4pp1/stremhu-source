@@ -43,6 +43,7 @@ async function bootstrap() {
       saveUninitialized: false,
       rolling: true,
       proxy: isProduction,
+      name: 'stremhu.source',
       cookie: {
         httpOnly: true,
         sameSite: 'lax',
@@ -59,7 +60,9 @@ async function bootstrap() {
       .setVersion('1.0.0')
       .build();
 
-    const document = SwaggerModule.createDocument(app, config);
+    const document = SwaggerModule.createDocument(app, config, {
+      operationIdFactory: (_controllerKey, methodKey) => methodKey,
+    });
     SwaggerModule.setup('api/docs', app, document);
 
     await mkdir(openapiDir, { recursive: true });

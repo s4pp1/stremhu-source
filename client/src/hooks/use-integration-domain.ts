@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { getReferenceData } from '@/queries/reference-data'
+import { getMetadata } from '@/queries/metadata'
 
 interface UseIntegrationDomainProps {
   stremioToken: string
@@ -9,10 +9,10 @@ interface UseIntegrationDomainProps {
 export function useIntegrationDomain(props: UseIntegrationDomainProps) {
   const { stremioToken } = props
 
-  const { data: referenceData } = useQuery(getReferenceData)
-  if (!referenceData) throw new Error(`Nincs "reference-data" a cache-ben`)
+  const { data: metadata } = useQuery(getMetadata)
+  if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
 
-  const endpointHost = new URL(referenceData.endpoint).host
+  const endpointHost = new URL(metadata.endpoint).host
   const endpoint = `${endpointHost}/api/${stremioToken}/manifest.json`
 
   const appEndpoint = `stremio://${endpoint}`
