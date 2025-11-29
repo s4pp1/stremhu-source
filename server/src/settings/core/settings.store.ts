@@ -77,7 +77,7 @@ export class SettingsStore {
     return endpoint;
   }
 
-  private buildLocalUrl(ipAddress: string) {
+  buildLocalUrl(ipAddress: string) {
     const httpsPort = this.configService.getOrThrow<number>('app.https-port');
     return `https://${ipAddress.split('.').join('-')}.local-ip.medicmobile.org:${httpsPort}`;
   }

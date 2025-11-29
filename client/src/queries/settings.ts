@@ -8,6 +8,7 @@ import { appClient } from '@/client'
 import type { UpdateSettingDto } from '@/client/app-client'
 
 import { getMetadata } from './metadata'
+import { getSettingsStatus } from './settings-setup'
 
 export const getSettings = queryOptions({
   queryKey: ['settings'],
@@ -61,9 +62,12 @@ export function useUpdateSetting() {
       })
       return setting
     },
-    onSuccess: (updated) => {
+    onSuccess: async (updated) => {
       queryClient.setQueryData(['settings'], updated)
-      queryClient.invalidateQueries({ queryKey: getMetadata.queryKey })
+      await Promise.all([
+        queryClient.fetchQuery({ ...getSettingsStatus, staleTime: 0 }),
+        queryClient.fetchQuery({ ...getMetadata, staleTime: 0 }),
+      ])
     },
   })
 }

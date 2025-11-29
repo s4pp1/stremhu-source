@@ -1,19 +1,30 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 
+import { getSettings } from '@/queries/settings'
 import { getSettingsStatus } from '@/queries/settings-setup'
+
+import { NetworkAccess } from '../../../../components/network-access'
 
 export const Route = createFileRoute('/_protected/setup/address/')({
   beforeLoad: async ({ context }) => {
-    const queryClient = context.queryClient
-    const { hasAddress } = await queryClient.ensureQueryData(getSettingsStatus)
+    const [{ hasAddress }] = await Promise.all([
+      context.queryClient.ensureQueryData(getSettingsStatus),
+      context.queryClient.ensureQueryData(getSettings),
+    ])
 
     if (hasAddress) {
       throw redirect({ to: '/' })
     }
   },
-  component: RouteComponent,
+  component: SetupAddressRoute,
 })
 
-function RouteComponent() {
-  return <div>Hello "/setup/address/"!</div>
+function SetupAddressRoute() {
+  return (
+    <div className="flex flex-col items-center py-10">
+      <div className="w-sm">
+        <NetworkAccess />
+      </div>
+    </div>
+  )
 }

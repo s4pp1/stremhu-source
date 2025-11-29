@@ -1,12 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsString } from 'class-validator';
 
+import { HealthDto } from 'src/common/dto/health.dto';
+
 import { LanguageDto } from './language.dto';
 import { ResolutionDto } from './resolution.dto';
 import { TrackerDto } from './tracker.dto';
 import { UserRoleDto } from './user-role.dto';
 
-export class MetadataDto {
+export class MetadataDto extends HealthDto {
   @IsArray()
   @ApiProperty({ type: UserRoleDto, isArray: true })
   userRoles: UserRoleDto[];
@@ -26,8 +28,4 @@ export class MetadataDto {
   @IsString()
   @ApiProperty()
   endpoint: string;
-
-  @IsString()
-  @ApiProperty()
-  version: string;
 }

@@ -1,6 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
-import { PencilIcon, ShieldUserIcon, UserIcon, UserPenIcon } from 'lucide-react'
+import {
+  KeyRoundIcon,
+  PencilIcon,
+  RotateCcwKeyIcon,
+  ShieldUserIcon,
+  UserIcon,
+  UserPenIcon,
+} from 'lucide-react'
+import { toast } from 'sonner'
 
+import { parseApiError } from '@/common/utils'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -17,8 +26,10 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item'
+import { Separator } from '@/components/ui/separator'
 import { useMetadataLabel } from '@/hooks/use-metadata-label'
-import { getMe } from '@/queries/me'
+import { getMe, useChangeMeStremioToken } from '@/queries/me'
+import { useConfirmDialog } from '@/store/confirm-dialog-store'
 import { DialogEnum, useDialogs } from '@/store/dialogs-store'
 
 export function LoginAndSecurity() {
@@ -27,6 +38,27 @@ export function LoginAndSecurity() {
 
   const { getUserRoleLabel } = useMetadataLabel()
   const { handleOpen } = useDialogs()
+
+  const confirmDialog = useConfirmDialog()
+  const { mutateAsync: changeStremioToken } = useChangeMeStremioToken()
+
+  const handleChangeToken = async () => {
+    await confirmDialog({
+      title: 'Biztos generálsz új Stremio kulcsot?',
+      description:
+        'A Stremio kulcs generálása után az addont újra kell telepítened.',
+      onConfirm: async () => {
+        try {
+          await changeStremioToken()
+          toast.success('Új Stremio kulcs generálása elkészült.')
+        } catch (error) {
+          const message = parseApiError(error)
+          toast.error(message)
+          throw error
+        }
+      },
+    })
+  }
 
   return (
     <Card>
@@ -91,6 +123,27 @@ export function LoginAndSecurity() {
               }
             >
               <PencilIcon />
+            </Button>
+          </ItemActions>
+        </Item>
+        <Separator />
+        <Item variant="default" className="p-0">
+          <ItemMedia variant="icon">
+            <KeyRoundIcon />
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>Új kulcs generálása</ItemTitle>
+            <ItemDescription>
+              A régi kulcs törlésre kerül, így az addont újra kell telepíteni!
+            </ItemDescription>
+          </ItemContent>
+          <ItemActions onClick={handleChangeToken}>
+            <Button
+              size="icon-sm"
+              variant="destructive"
+              className="rounded-full"
+            >
+              <RotateCcwKeyIcon />
             </Button>
           </ItemActions>
         </Item>

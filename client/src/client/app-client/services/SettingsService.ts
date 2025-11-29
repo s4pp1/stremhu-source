@@ -3,6 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateSetupDto } from '../models/CreateSetupDto';
+import type { LocalUrlDto } from '../models/LocalUrlDto';
+import type { LocalUrlRequestDto } from '../models/LocalUrlRequestDto';
 import type { SettingDto } from '../models/SettingDto';
 import type { StatusDto } from '../models/StatusDto';
 import type { UpdateSettingDto } from '../models/UpdateSettingDto';
@@ -32,6 +34,21 @@ export class SettingsService {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/api/settings',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @param requestBody
+     * @returns LocalUrlDto
+     * @throws ApiError
+     */
+    public buildLocalUrl(
+        requestBody: LocalUrlRequestDto,
+    ): CancelablePromise<LocalUrlDto> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: '/api/settings/local-url',
             body: requestBody,
             mediaType: 'application/json',
         });

@@ -1,4 +1,5 @@
-import { Access } from './access'
+import { NetworkAccess } from '@/components/network-access'
+
 import { Trackers } from './trackers'
 import { WebTorrent } from './web-torrent'
 
@@ -16,7 +17,7 @@ export function Settings() {
           <WebTorrent />
         </div>
         <div className="break-inside-avoid mb-4">
-          <Access />
+          <NetworkAccess />
         </div>
       </div>
     </div>

@@ -11,23 +11,20 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { getSettings, useUpdateSetting } from '@/queries/settings'
+
+import { Separator } from '../ui/separator'
+import { UrlConfiguration } from './url-configuration'
 
 const accessOptions = [
   {
     label: 'Hozzáférés otthoni hálózaton',
     description: (
       <>
-        Otthoni hálózaton eléri a Stremio az addont a{' '}
+        Csak a helyi hálózaton használod. A Stremio egy biztonságos HTTPS címet
+        generál a helyi IP-dhez a{' '}
         <a
           className="underline italic "
           href="https://local-ip.medicmobile.org/"
@@ -41,17 +38,20 @@ const accessOptions = [
     value: 'true',
   },
   {
-    label: 'Távoli hozzáférés egyedi domain-al',
+    label: 'Távoli elérés saját domainnel',
     description: (
       <>
-        Saját domain használata, biztosítva a https kapcsolat.{' '}
+        Használd ezt, ha az internetről is el szeretnéd érni a StremHU |
+        Source-ot. Adj meg egy olyan domaint (pl. DDNS-szolgáltatóval, mint a{' '}
         <a
           className="underline italic "
-          href="https://www.noip.com/"
+          href="https://noip.com/"
           target="_blank"
         >
-          https://www.noip.com/
+          https://noip.com
         </a>
+        ), amely a StremHU | Source-ot futtató eszközre mutat, és biztosítja a
+        HTTPS-kapcsolatot.
       </>
     ),
     value: 'false',
@@ -59,25 +59,10 @@ const accessOptions = [
 ]
 
 const schema = z.object({
-  endpoint: z
-    .url({ protocol: /^https$/, error: 'Csak HTTPS engedélyezett' })
-    .superRefine((value, ctx) => {
-      const parseUrl = new URL(value)
-      const lastCharacter = value.substring(value.length - 1)
-
-      const noPath = parseUrl.pathname === '/' && lastCharacter !== '/'
-
-      if (!noPath || parseUrl.search || parseUrl.hash) {
-        ctx.addIssue({
-          code: 'custom',
-          message: 'Nem tartalmazhat elérési utat, query-t vagy fragmentet',
-        })
-      }
-    }),
   enebledlocalIp: z.boolean(),
 })
 
-export function Access() {
+export function NetworkAccess() {
   const { data: setting } = useQuery(getSettings)
   if (!setting) throw new Error(`Nincs "settings" a cache-ben`)
 
@@ -85,16 +70,17 @@ export function Access() {
 
   const form = useForm({
     defaultValues: {
-      endpoint: '',
       enebledlocalIp: setting.enebledlocalIp,
     },
     validators: {
       onChange: schema,
     },
     listeners: {
-      onChangeDebounceMs: 2000,
+      onChangeDebounceMs: 1000,
       onChange: ({ formApi }) => {
-        if (formApi.state.isValid) {
+        const { isValid } = formApi.store.state
+
+        if (isValid) {
           formApi.handleSubmit()
         }
       },
@@ -102,7 +88,6 @@ export function Access() {
     onSubmit: async ({ value, formApi }) => {
       try {
         await updateSetting(value)
-        toast.success('Módosítások elmentve')
       } catch (error) {
         formApi.reset()
         const message = parseApiError(error)
@@ -112,15 +97,16 @@ export function Access() {
   })
 
   return (
-    <form name="setting">
-      <Card>
-        <CardHeader>
-          <CardTitle>Hozzáférés</CardTitle>
-          <CardDescription>
-            A Stremio csak HTTPS kapcsolatot fogad el az addon telepítéshez. A
-            Stremio integráció az itt beállított domain-t használja.
-          </CardDescription>
-        </CardHeader>
+    <Card>
+      <CardHeader>
+        <CardTitle>Elérés beállítása</CardTitle>
+        <CardDescription>
+          A Stremio csak biztonságos (HTTPS) kapcsolaton keresztül tud addont
+          telepíteni. Itt adhatod meg, milyen címen érje el a StremHU |
+          Source-ot.
+        </CardDescription>
+      </CardHeader>
+      <form name="setting">
         <CardContent className="grid gap-4">
           <form.Field name="enebledlocalIp">
             {(field) => (
@@ -153,33 +139,10 @@ export function Access() {
               </RadioGroup>
             )}
           </form.Field>
-          <form.Field name="endpoint">
-            {(field) => (
-              <Field>
-                <FieldLabel>Addon URL</FieldLabel>
-                <Input
-                  name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => {
-                    field.handleChange(e.target.value)
-                  }}
-                  placeholder="https://stremhu.yourdomain.com"
-                />
-                <FieldDescription>
-                  Otthoni hálózat esetén példál:{' '}
-                  <span className="font-mono font-bold">
-                    https://192-168-1-5.local-ip.medicmobile.org:3443
-                  </span>
-                </FieldDescription>
-                {field.state.meta.isTouched && (
-                  <FieldError errors={field.state.meta.errors} />
-                )}
-              </Field>
-            )}
-          </form.Field>
+          <Separator />
         </CardContent>
-      </Card>
-    </form>
+      </form>
+      <UrlConfiguration />
+    </Card>
   )
 }

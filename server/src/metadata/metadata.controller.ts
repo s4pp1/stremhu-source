@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import {
   LANGUAGE_OPTIONS,
@@ -13,6 +13,7 @@ import { TRACKER_OPTIONS } from 'src/trackers/trackers.constants';
 import { MetadataDto } from './dto/metadata.dto';
 
 @Controller('/metadata')
+@ApiTags('Metadata')
 export class MetadataController {
   constructor(
     private readonly configService: ConfigService,

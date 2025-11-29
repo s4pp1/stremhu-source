@@ -11,9 +11,9 @@ import { Users } from './-components/users'
 export const Route = createFileRoute('/_protected/settings/')({
   beforeLoad: async ({ context }) => {
     await Promise.all([
-      await context.queryClient.ensureQueryData(getSettings),
-      await context.queryClient.ensureQueryData(getTrackers),
-      await context.queryClient.ensureQueryData(getUsers),
+      context.queryClient.ensureQueryData(getSettings),
+      context.queryClient.ensureQueryData(getTrackers),
+      context.queryClient.ensureQueryData(getUsers),
     ])
   },
   component: SettingsRoute,

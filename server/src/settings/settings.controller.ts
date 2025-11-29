@@ -9,6 +9,8 @@ import { TorrentCacheService } from 'src/torrent-cache/torrent-cache.service';
 import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
 import { SettingsStore } from './core/settings.store';
+import { LocalUrlRequestDto } from './dto/local-url-request.dto';
+import { LocalUrlDto } from './dto/local-url.dto';
 import { SettingDto } from './dto/setting.dto';
 import { UpdateSettingDto } from './dto/update-setting.dto';
 import { SettingsService } from './settings.service';
@@ -38,6 +40,16 @@ export class SettingsController {
     return {
       ...setting,
       address: setting.address || '',
+    };
+  }
+
+  @ApiResponse({ status: 200, type: LocalUrlDto })
+  @Post('/local-url')
+  buildLocalUrl(@Body() body: LocalUrlRequestDto): LocalUrlDto {
+    const localUrl = this.settingsStore.buildLocalUrl(body.ipv4);
+
+    return {
+      localUrl,
     };
   }
 
