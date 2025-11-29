@@ -1,11 +1,9 @@
-import { useForm } from '@tanstack/react-form'
-import type { FormEventHandler, MouseEventHandler } from 'react'
+import type { FormEventHandler } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
 import type { ChangeUsernameDto, UserDto } from '@/client/app-client'
 import { parseApiError } from '@/common/utils'
-import { Button } from '@/components/ui/button'
 import {
   DialogContent,
   DialogDescription,
@@ -13,13 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+import { useAppForm } from '@/contexts/form-context'
 import { useChangeMeUsername } from '@/queries/me'
 import { useChangeUsername } from '@/queries/users'
 import { useDialogsStore } from '@/store/dialogs-store'
@@ -35,7 +27,7 @@ const schema = z.object({
 export function ChangeUsernameContent(props: ChangeUsernameContentProps) {
   const { user } = props
 
-  const { handleClose } = useDialogsStore()
+  const dialogsStore = useDialogsStore()
 
   const { mutateAsync: changeUsername } = useChangeUsername()
   const { mutateAsync: changeMeUsername } = useChangeMeUsername()
@@ -55,7 +47,7 @@ export function ChangeUsernameContent(props: ChangeUsernameContentProps) {
       changeUsername({ userId: user.id, payload })
   }
 
-  const form = useForm({
+  const form = useAppForm({
     defaultValues: {
       username: '',
     },
@@ -66,7 +58,7 @@ export function ChangeUsernameContent(props: ChangeUsernameContentProps) {
       try {
         await dialogConfig.mutate(value)
         toast.success(`Sikeresen módosítva: ${value.username}`)
-        handleClose()
+        dialogsStore.handleClose()
       } catch (error) {
         const message = parseApiError(error)
         toast.error(message)
@@ -74,66 +66,48 @@ export function ChangeUsernameContent(props: ChangeUsernameContentProps) {
     },
   })
 
-  const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     e.stopPropagation()
     await form.handleSubmit()
   }
 
-  const onClose: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleClose: FormEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    handleClose()
+    dialogsStore.handleClose()
   }
 
   return (
     <DialogContent
       className="sm:max-w-md"
       showCloseButton={false}
-      onEscapeKeyDown={handleClose}
+      onEscapeKeyDown={dialogsStore.handleClose}
     >
-      <form name="change-username" className="grid gap-4" onSubmit={onSubmit}>
-        <DialogHeader>
-          <DialogTitle>{dialogConfig.title}</DialogTitle>
-          <DialogDescription>{dialogConfig.description}</DialogDescription>
-        </DialogHeader>
-        <FieldGroup>
-          <form.Field name="username">
-            {(field) => (
-              <Field>
-                <FieldLabel htmlFor={field.name}>Új felhasználónév</FieldLabel>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-                {field.state.meta.isTouched && (
-                  <FieldError errors={field.state.meta.errors} />
-                )}
-              </Field>
+      <form.AppForm>
+        <form
+          name="change-username"
+          className="grid gap-4"
+          onSubmit={handleSubmit}
+        >
+          <DialogHeader>
+            <DialogTitle>{dialogConfig.title}</DialogTitle>
+            <DialogDescription>{dialogConfig.description}</DialogDescription>
+          </DialogHeader>
+          <form.AppField
+            name="username"
+            children={(field) => (
+              <field.AppTextField label="Új felhasználónév" />
             )}
-          </form.Field>
-        </FieldGroup>
-        <form.Subscribe selector={(state) => [state.isSubmitting]}>
-          {([isSubmitting]) => (
-            <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                disabled={isSubmitting}
-                onClick={onClose}
-              >
-                Mégsem
-              </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                Módosítás
-              </Button>
-            </DialogFooter>
-          )}
-        </form.Subscribe>
-      </form>
+          />
+          <DialogFooter>
+            <form.SubscribeButton variant="outline" onClick={handleClose}>
+              Mégsem
+            </form.SubscribeButton>
+            <form.SubscribeButton type="submit">Módosítás</form.SubscribeButton>
+          </DialogFooter>
+        </form>
+      </form.AppForm>
     </DialogContent>
   )
 }

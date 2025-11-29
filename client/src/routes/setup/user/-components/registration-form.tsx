@@ -1,18 +1,10 @@
-import { useForm } from '@tanstack/react-form'
 import { useNavigate } from '@tanstack/react-router'
 import type { ComponentProps, FormEventHandler } from 'react'
 import { toast } from 'sonner'
 import z from 'zod/v4'
 
 import { parseApiError } from '@/common/utils'
-import { Button } from '@/components/ui/button'
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+import { useAppForm } from '@/contexts/form-context'
 import { cn } from '@/lib/utils'
 import { useRegistration } from '@/queries/auth'
 
@@ -36,7 +28,7 @@ export function RegistrationForm({
 
   const { mutateAsync: registration } = useRegistration()
 
-  const form = useForm({
+  const form = useAppForm({
     defaultValues,
     validators: {
       onChange: schema,
@@ -62,56 +54,25 @@ export function RegistrationForm({
   }
 
   return (
-    <form
-      name="login"
-      onSubmit={onSubmit}
-      className={cn('flex flex-col gap-6', className)}
-      {...props}
-    >
-      <FieldGroup>
-        <form.Field name="username">
-          {(field) => (
-            <Field>
-              <FieldLabel htmlFor={field.name}>Felhasználónév</FieldLabel>
-              <Input
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-              {field.state.meta.isTouched && (
-                <FieldError errors={field.state.meta.errors} />
-              )}
-            </Field>
+    <form.AppForm>
+      <form
+        name="registration"
+        onSubmit={onSubmit}
+        className={cn('grid gap-4', className)}
+        {...props}
+      >
+        <form.AppField
+          name="username"
+          children={(field) => <field.AppTextField label="Felhasználónév" />}
+        />
+        <form.AppField
+          name="password"
+          children={(field) => (
+            <field.AppTextField label="Jelszó" type="password" />
           )}
-        </form.Field>
-        <form.Field name="password">
-          {(field) => (
-            <Field>
-              <FieldLabel htmlFor={field.name}>Jelszó</FieldLabel>
-              <Input
-                type="password"
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-              {field.state.meta.isTouched && (
-                <FieldError errors={field.state.meta.errors} />
-              )}
-            </Field>
-          )}
-        </form.Field>
-        <form.Subscribe selector={(state) => [state.isSubmitting]}>
-          {([isSubmitting]) => (
-            <Button type="submit" disabled={isSubmitting}>
-              Létrehozás
-            </Button>
-          )}
-        </form.Subscribe>
-      </FieldGroup>
-    </form>
+        />
+        <form.SubscribeButton type="submit">Létrehozás</form.SubscribeButton>
+      </form>
+    </form.AppForm>
   )
 }

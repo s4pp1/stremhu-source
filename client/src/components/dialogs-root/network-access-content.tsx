@@ -15,13 +15,13 @@ import {
 } from '../network-access'
 
 export function NetworkAccessContent() {
-  const { handleClose } = useDialogsStore()
+  const dialogsStore = useDialogsStore()
 
   return (
     <DialogContent
       className="sm:max-w-md"
       showCloseButton={false}
-      onEscapeKeyDown={handleClose}
+      onEscapeKeyDown={dialogsStore.handleClose}
     >
       <DialogHeader>
         <DialogTitle>{NETWORK_ACCESS_HEADER.TITLE}</DialogTitle>
@@ -29,9 +29,9 @@ export function NetworkAccessContent() {
           {NETWORK_ACCESS_HEADER.DESCRIPTION}
         </DialogDescription>
       </DialogHeader>
-      <NetworkAccess onSuccess={handleClose} />
+      <NetworkAccess onSuccess={dialogsStore.handleClose} />
       <DialogFooter>
-        <Button type="button" variant="link" onClick={handleClose}>
+        <Button type="button" variant="link" onClick={dialogsStore.handleClose}>
           Mégsem
         </Button>
         <Button type="submit" form={NETWORK_ACCESS_FORM_ID}>

@@ -1,11 +1,9 @@
-import { useForm } from '@tanstack/react-form'
 import { isEmpty } from 'lodash'
 import type { FormEventHandler, MouseEventHandler } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
 import { parseApiError } from '@/common/utils'
-import { Button } from '@/components/ui/button'
 import {
   DialogContent,
   DialogDescription,
@@ -13,13 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+import { useAppForm } from '@/contexts/form-context'
 import { useAddUser } from '@/queries/users'
 import { useDialogsStore } from '@/store/dialogs-store'
 
@@ -29,11 +21,11 @@ const schema = z.object({
 })
 
 export function AddUserContent() {
-  const { handleClose } = useDialogsStore()
+  const dialogsStore = useDialogsStore()
 
   const { mutateAsync: addUser } = useAddUser()
 
-  const form = useForm({
+  const form = useAppForm({
     defaultValues: {
       username: '',
       password: '',
@@ -48,7 +40,7 @@ export function AddUserContent() {
           password: isEmpty(value.password) ? null : value.password,
         })
         toast.success(`${value.username} sikeresen létrehozva!`)
-        handleClose()
+        dialogsStore.handleClose()
       } catch (error) {
         const message = parseApiError(error)
         toast.error(message)
@@ -62,84 +54,49 @@ export function AddUserContent() {
     await form.handleSubmit()
   }
 
-  const onClose: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleClose: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    handleClose()
+    dialogsStore.handleClose()
   }
 
   return (
     <DialogContent
       className="sm:max-w-md"
       showCloseButton={false}
-      onEscapeKeyDown={handleClose}
+      onEscapeKeyDown={dialogsStore.handleClose}
     >
-      <form name="add-user" className="grid gap-4" onSubmit={onSubmit}>
-        <DialogHeader>
-          <DialogTitle>Új fiók létrehozása</DialogTitle>
-          <DialogDescription>
-            Jelszó nélküli fiók létrehozása is lehetséges! Az ilyen fiókkal
-            nincs lehetőség az addon felületére bejelentkezni, de a Stremio
-            csatlakozás működik.
-          </DialogDescription>
-        </DialogHeader>
-        <FieldGroup>
-          <form.Field name="username">
-            {(field) => (
-              <Field>
-                <FieldLabel htmlFor={field.name}>Felhasználónév</FieldLabel>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-                {field.state.meta.isTouched && (
-                  <FieldError errors={field.state.meta.errors} />
-                )}
-              </Field>
+      <form.AppForm>
+        <form name="add-user" className="grid gap-4" onSubmit={onSubmit}>
+          <DialogHeader>
+            <DialogTitle>Új fiók létrehozása</DialogTitle>
+            <DialogDescription>
+              Jelszó nélküli fiók létrehozása is lehetséges! Az ilyen fiókkal
+              nincs lehetőség az addon felületére bejelentkezni, de a Stremio
+              csatlakozás működik.
+            </DialogDescription>
+          </DialogHeader>
+          <form.AppField
+            name="username"
+            children={(field) => <field.AppTextField label="Felhasználónév" />}
+          />
+          <form.AppField
+            name="password"
+            children={(field) => (
+              <field.AppTextField label="Jelszó" type="password" />
             )}
-          </form.Field>
-        </FieldGroup>
-        <FieldGroup>
-          <form.Field name="password">
-            {(field) => (
-              <Field>
-                <FieldLabel htmlFor={field.name}>Jelszó</FieldLabel>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  type="password"
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
-                {field.state.meta.isTouched && (
-                  <FieldError errors={field.state.meta.errors} />
-                )}
-              </Field>
-            )}
-          </form.Field>
-        </FieldGroup>
-        <form.Subscribe selector={(state) => [state.isSubmitting]}>
-          {([isSubmitting]) => (
-            <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                disabled={isSubmitting}
-                onClick={onClose}
-              >
-                Mégsem
-              </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                Létrehozás
-              </Button>
-            </DialogFooter>
-          )}
-        </form.Subscribe>
-      </form>
+          />
+
+          <DialogFooter>
+            <form.SubscribeButton variant="outline" onClick={handleClose}>
+              Mégsem
+            </form.SubscribeButton>
+            <form.SubscribeButton type="submit">
+              Létrehozás
+            </form.SubscribeButton>
+          </DialogFooter>
+        </form>
+      </form.AppForm>
     </DialogContent>
   )
 }

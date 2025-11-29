@@ -173,7 +173,7 @@ export function WebTorrent() {
                     Hit'n'Run ellenőrzés
                   </p>
                   <p className="text-muted-foreground text-sm">
-                    Minden nap 04:00-kor ellenőrizzük a torrenteket. A Hit’n’Run
+                    Minden nap 04:00-kor ellenőrizzük a torrenteket. A Hit'n'Run
                     feltételt teljesítők automatikusan törlődnek.
                   </p>
                 </div>

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Field, FieldError } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
+import { withForm } from '@/contexts/form-context'
 import { getSettings } from '@/queries/settings'
 
 import {
@@ -17,7 +18,7 @@ import {
   ItemTitle,
 } from '../ui/item'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip'
-import { defaultValues, withForm } from './network-access-form-context'
+import { networkAccessDefaultValues } from './network-access.defaults'
 
 const addressMap = {
   ip: {
@@ -50,7 +51,7 @@ const networkCheckMap = {
 }
 
 export const UrlConfiguration = withForm({
-  defaultValues,
+  defaultValues: networkAccessDefaultValues,
   render: ({ form }) => {
     const { data: setting } = useQuery(getSettings)
     assertExists(setting)

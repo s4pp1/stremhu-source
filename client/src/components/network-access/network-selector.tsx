@@ -1,7 +1,8 @@
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { withForm } from '@/contexts/form-context'
 
-import { defaultValues, withForm } from './network-access-form-context'
+import { networkAccessDefaultValues } from './network-access.defaults'
 
 const accessOptions = [
   {
@@ -44,7 +45,7 @@ const accessOptions = [
 ]
 
 export const NetworkSelector = withForm({
-  defaultValues,
+  defaultValues: networkAccessDefaultValues,
   render: ({ form }) => {
     return (
       <form.Field name="enebledlocalIp">

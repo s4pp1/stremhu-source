@@ -6,14 +6,17 @@ import * as z from 'zod'
 
 import { assertExists } from '@/common/assert'
 import { parseApiError } from '@/common/utils'
+import { useAppForm } from '@/contexts/form-context'
 import { getHealth, useBuildLocalUrl } from '@/queries/app'
 import { getSettings, useUpdateSetting } from '@/queries/settings'
 import { useConfirmDialog } from '@/store/confirm-dialog-store'
 
 import { Separator } from '../ui/separator'
-import { defaultValues, useAppForm } from './network-access-form-context'
+import { networkAccessDefaultValues } from './network-access.defaults'
 import { NetworkSelector } from './network-selector'
 import { UrlConfiguration } from './url-configuration'
+
+export { networkAccessDefaultValues } from './network-access.defaults'
 
 export const NETWORK_ACCESS_FORM_ID = 'network-access-form'
 export const NETWORK_ACCESS_HEADER = {
@@ -95,7 +98,7 @@ export function NetworkAccess(props: NetworkAccessProps) {
 
   const form = useAppForm({
     defaultValues: {
-      ...defaultValues,
+      ...networkAccessDefaultValues,
       enebledlocalIp: setting.enebledlocalIp,
       address: setting.address || '',
     },
