@@ -1,4 +1,4 @@
-import { Access } from './access'
+import { NetworkAccessInfo } from './network-access-info'
 import { Trackers } from './trackers'
 import { WebTorrent } from './web-torrent'
 
@@ -13,10 +13,10 @@ export function Settings() {
           <Trackers />
         </div>
         <div className="break-inside-avoid mb-4">
-          <WebTorrent />
+          <NetworkAccessInfo />
         </div>
         <div className="break-inside-avoid mb-4">
-          <Access />
+          <WebTorrent />
         </div>
       </div>
     </div>

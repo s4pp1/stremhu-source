@@ -3,7 +3,7 @@ import { Resolution } from '@ctrl/video-filename-parser';
 import { LanguageEnum } from 'src/common/enums/language.enum';
 import { ParsedTorrent } from 'src/common/utils/parse-torrent.util';
 
-import { TrackerEnum } from '../enums/tracker.enum';
+import { TrackerEnum } from '../enum/tracker.enum';
 
 export const TRACKER_TOKEN = Symbol('TRACKER_TOKEN');
 

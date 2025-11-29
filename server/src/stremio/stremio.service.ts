@@ -24,7 +24,7 @@ export class StremioService {
     const description =
       this.configService.getOrThrow<string>('app.description');
 
-    const setting = await this.settingsStore.findOneOrThrow();
+    const endpoint = await this.settingsStore.getEndpoint();
 
     let id = 'hu.stremhu-source.addon';
     let name = 'StremHU | Source';
@@ -47,7 +47,7 @@ export class StremioService {
         configurable: true,
         configurationRequired: false,
       },
-      logo: `${setting.endpoint}/logo.png`,
+      logo: `${endpoint}/logo.png`,
     };
 
     return manifest;

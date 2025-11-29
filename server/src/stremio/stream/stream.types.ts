@@ -7,8 +7,8 @@ import {
 
 import { LanguageEnum } from 'src/common/enums/language.enum';
 import { ParsedFile } from 'src/common/utils/parse-torrent.util';
-import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
-import { User } from 'src/users/entities/user.entity';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
+import { User } from 'src/users/entity/user.entity';
 
 import { StreamMediaTypeEnum } from '../enums/stream-media-type.enum';
 import { ParsedStreamIdSeries } from './pipe/stream-id.pipe';

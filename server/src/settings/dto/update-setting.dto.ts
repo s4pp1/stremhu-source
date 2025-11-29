@@ -6,8 +6,10 @@ import {
   IsString,
   IsUrl,
   Validate,
+  ValidateIf,
 } from 'class-validator';
 
+import { IsIPv4 } from 'src/common/validators/is-ip-v4';
 import { IsNullable } from 'src/common/validators/is-nullable';
 import { NoPathDomain } from 'src/common/validators/no-path-domain';
 
@@ -18,6 +20,7 @@ export class UpdateSettingDto {
   enebledlocalIp: boolean;
 
   @IsOptional()
+  @ValidateIf((setting: UpdateSettingDto) => setting.enebledlocalIp === false)
   @IsUrl({
     protocols: ['https'],
     require_protocol: true,
@@ -27,8 +30,10 @@ export class UpdateSettingDto {
     allow_query_components: false,
   })
   @Validate(NoPathDomain)
+  @ValidateIf((setting: UpdateSettingDto) => setting.enebledlocalIp === true)
+  @Validate(IsIPv4)
   @ApiProperty({ required: false })
-  endpoint: string;
+  address: string;
 
   @IsOptional()
   @IsNumber()

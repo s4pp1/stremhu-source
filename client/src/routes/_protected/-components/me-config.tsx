@@ -1,14 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import {
-  AppWindowIcon,
-  LinkIcon,
-  PlayIcon,
-  PlusIcon,
-  RotateCcwKeyIcon,
-} from 'lucide-react'
-import { toast } from 'sonner'
+import { AppWindowIcon, LinkIcon, PlusIcon } from 'lucide-react'
 
-import { parseApiError } from '@/common/utils'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -32,37 +24,15 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { useIntegrationDomain } from '@/hooks/use-integration-domain'
-import { getMe, useChangeMeStremioToken } from '@/queries/me'
-import { useConfirmDialog } from '@/store/confirm-dialog-store'
+import { getMe } from '@/queries/me'
 
 export function MeConfig() {
-  const confirmDialog = useConfirmDialog()
-  const { mutateAsync: changeStremioToken } = useChangeMeStremioToken()
-
   const { data: me } = useQuery(getMe)
   if (!me) throw new Error(`Nincs "me" a cache-ben`)
 
   const { appEndpoint, webEndpoint, urlEndpoint } = useIntegrationDomain({
     stremioToken: me.stremioToken,
   })
-
-  const handleChangeToken = async () => {
-    await confirmDialog({
-      title: 'Biztos generálsz új Stremio kulcsot?',
-      description:
-        'A Stremio kulcs generálása után az addont újra kell telepítened.',
-      onConfirm: async () => {
-        try {
-          await changeStremioToken()
-          toast.success('Új Stremio kulcs generálása elkészült.')
-        } catch (error) {
-          const message = parseApiError(error)
-          toast.error(message)
-          throw error
-        }
-      },
-    })
-  }
 
   return (
     <Card>
@@ -116,26 +86,6 @@ export function MeConfig() {
               <a href={webEndpoint} target="_blank">
                 <PlusIcon />
               </a>
-            </Button>
-          </ItemActions>
-        </Item>
-        <Item variant="default" className="p-0">
-          <ItemMedia variant="icon">
-            <PlayIcon />
-          </ItemMedia>
-          <ItemContent>
-            <ItemTitle>Új Stremio kulcs generálása</ItemTitle>
-            <ItemDescription>
-              A régi kulcs törlésre kerül, így az addont újra kell telepíteni!
-            </ItemDescription>
-          </ItemContent>
-          <ItemActions onClick={handleChangeToken}>
-            <Button
-              size="icon-sm"
-              variant="destructive"
-              className="rounded-full"
-            >
-              <RotateCcwKeyIcon />
             </Button>
           </ItemActions>
         </Item>

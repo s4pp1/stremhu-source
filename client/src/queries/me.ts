@@ -16,7 +16,7 @@ import { getUsers } from './users'
 export const getMe = queryOptions({
   queryKey: ['me'],
   queryFn: async () => {
-    const response = await appClient.me.usersMeControllerMe()
+    const response = await appClient.me.me()
     return response.me
   },
 })
@@ -25,7 +25,7 @@ export function useChangeMeUsername() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (payload: ChangeUsernameDto) => {
-      const me = await appClient.me.usersMeControllerChangeUsername(payload)
+      const me = await appClient.me.changeUsername(payload)
       return me
     },
     onSuccess: (updated) => {
@@ -38,7 +38,7 @@ export function useChangeMeUsername() {
 export function useChangeMePassword() {
   return useMutation({
     mutationFn: async (payload: ChangePasswordDto) => {
-      const me = await appClient.me.usersMeControllerChangePassword(payload)
+      const me = await appClient.me.changePassword(payload)
       return me
     },
   })
@@ -48,7 +48,7 @@ export function useChangeMeStremioToken() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async () => {
-      const me = await appClient.me.usersMeControllerChangeStremioToken()
+      const me = await appClient.me.changeStremioToken()
       return me
     },
     onSuccess: (updated) => {
@@ -62,7 +62,7 @@ export function useUpdateMePreferences() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (payload: UpdateMePreferencesDto) => {
-      const me = await appClient.me.usersMeControllerUpdateMe(payload)
+      const me = await appClient.me.updateMe(payload)
       return me
     },
     onSuccess: (updated) => {

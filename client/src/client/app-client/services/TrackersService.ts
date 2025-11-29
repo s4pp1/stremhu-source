@@ -13,7 +13,7 @@ export class TrackersService {
      * @returns any
      * @throws ApiError
      */
-    public trackersControllerLoginTracker(
+    public loginTracker(
         requestBody: LoginTrackerDto,
     ): CancelablePromise<any> {
         return this.httpRequest.request({
@@ -27,7 +27,7 @@ export class TrackersService {
      * @returns TrackerCredentialDto
      * @throws ApiError
      */
-    public trackersControllerTrackers(): CancelablePromise<Array<TrackerCredentialDto>> {
+    public trackers(): CancelablePromise<Array<TrackerCredentialDto>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/trackers',
@@ -37,7 +37,7 @@ export class TrackersService {
      * @returns any
      * @throws ApiError
      */
-    public trackersControllerCleanupHitAndRun(): CancelablePromise<any> {
+    public cleanupHitAndRun(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/trackers/hit-and-run',
@@ -48,7 +48,7 @@ export class TrackersService {
      * @returns any
      * @throws ApiError
      */
-    public trackersControllerDeleteTracker(
+    public deleteTracker(
         tracker: 'ncore' | 'bithumen' | 'majomparade',
     ): CancelablePromise<any> {
         return this.httpRequest.request({

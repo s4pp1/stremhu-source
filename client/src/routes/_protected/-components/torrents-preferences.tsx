@@ -24,14 +24,14 @@ import {
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { getMe, useUpdateMePreferences } from '@/queries/me'
-import { getReferenceData } from '@/queries/reference-data'
+import { getMetadata } from '@/queries/metadata'
 
 export function TorrentsPreferences() {
-  const [{ data: me }, { data: referenceData }] = useQueries({
-    queries: [getMe, getReferenceData],
+  const [{ data: me }, { data: metadata }] = useQueries({
+    queries: [getMe, getMetadata],
   })
 
-  if (!referenceData) throw new Error(`Nincs "reference-data" a cache-ben`)
+  if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
   if (!me) throw new Error(`Nincs "me" a cache-ben`)
 
   const { mutateAsync: updatePreferences } = useUpdateMePreferences()

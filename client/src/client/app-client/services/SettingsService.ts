@@ -3,6 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateSetupDto } from '../models/CreateSetupDto';
+import type { LocalUrlDto } from '../models/LocalUrlDto';
+import type { LocalUrlRequestDto } from '../models/LocalUrlRequestDto';
 import type { SettingDto } from '../models/SettingDto';
 import type { StatusDto } from '../models/StatusDto';
 import type { UpdateSettingDto } from '../models/UpdateSettingDto';
@@ -15,7 +17,7 @@ export class SettingsService {
      * @returns SettingDto
      * @throws ApiError
      */
-    public settingsControllerFindOne(): CancelablePromise<SettingDto> {
+    public findOne(): CancelablePromise<SettingDto> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/settings',
@@ -26,7 +28,7 @@ export class SettingsService {
      * @returns SettingDto
      * @throws ApiError
      */
-    public settingsControllerUpdate(
+    public update(
         requestBody: UpdateSettingDto,
     ): CancelablePromise<SettingDto> {
         return this.httpRequest.request({
@@ -37,10 +39,25 @@ export class SettingsService {
         });
     }
     /**
+     * @param requestBody
+     * @returns LocalUrlDto
+     * @throws ApiError
+     */
+    public buildLocalUrl(
+        requestBody: LocalUrlRequestDto,
+    ): CancelablePromise<LocalUrlDto> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: '/api/settings/local-url',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
      * @returns any
      * @throws ApiError
      */
-    public settingsControllerCacheTorrentsCleanup(): CancelablePromise<any> {
+    public cacheTorrentsCleanup(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/settings/cache/torrents/retention-cleanup',
@@ -51,7 +68,7 @@ export class SettingsService {
      * @returns UserDto
      * @throws ApiError
      */
-    public setupControllerCreate(
+    public create(
         requestBody: CreateSetupDto,
     ): CancelablePromise<UserDto> {
         return this.httpRequest.request({
@@ -65,7 +82,7 @@ export class SettingsService {
      * @returns StatusDto
      * @throws ApiError
      */
-    public setupControllerStatus(): CancelablePromise<StatusDto> {
+    public status(): CancelablePromise<StatusDto> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/settings/setup/status',

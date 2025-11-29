@@ -6,9 +6,11 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { toDto } from 'src/common/utils/to-dto';
 import { TorrentCacheService } from 'src/torrent-cache/torrent-cache.service';
-import { UserRoleEnum } from 'src/users/enums/user-role.enum';
+import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
 import { SettingsStore } from './core/settings.store';
+import { LocalUrlRequestDto } from './dto/local-url-request.dto';
+import { LocalUrlDto } from './dto/local-url.dto';
 import { SettingDto } from './dto/setting.dto';
 import { UpdateSettingDto } from './dto/update-setting.dto';
 import { SettingsService } from './settings.service';
@@ -34,7 +36,21 @@ export class SettingsController {
   @ApiResponse({ status: 200, type: SettingDto })
   @Put('/')
   async update(@Body() body: UpdateSettingDto): Promise<SettingDto> {
-    return this.settingsService.update(body);
+    const setting = await this.settingsService.update(body);
+    return {
+      ...setting,
+      address: setting.address || '',
+    };
+  }
+
+  @ApiResponse({ status: 200, type: LocalUrlDto })
+  @Post('/local-url')
+  buildLocalUrl(@Body() body: LocalUrlRequestDto): LocalUrlDto {
+    const localUrl = this.settingsStore.buildLocalUrl(body.ipv4);
+
+    return {
+      localUrl,
+    };
   }
 
   @ApiResponse({ status: 200 })

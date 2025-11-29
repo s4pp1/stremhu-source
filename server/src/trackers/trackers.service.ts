@@ -20,7 +20,7 @@ import { BithumenAdapter } from './adapters/bithumen/bithumen.adapter';
 import { MajomparadeAdapter } from './adapters/majomparade/majomparade.adapter';
 import { NcoreAdapter } from './adapters/ncore/ncore.adapter';
 import { TrackerCredentialsService } from './credentials/tracker-credentials.service';
-import { TrackerEnum } from './enums/tracker.enum';
+import { TrackerEnum } from './enum/tracker.enum';
 import {
   LoginRequest,
   TrackerAdapter,

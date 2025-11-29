@@ -44,5 +44,8 @@ networks:
 | `BITHUMEN_URL`                  | BitHUmen weboldal URL módósítása esetén van lehetőség a módosításra.                                                                             |   https://bithumen.be   |
 | `MAJOMPARADE_URL`               | Majomparádé weboldal URL módósítása esetén van lehetőség a módosításra.                                                                          | https://majomparade.euo |
 
+> [!WARNING]
+> Ha a beállításoknál a `Hozzáférés otthoni hálózaton` van kiválasztva, akkor a `HTTPS_PORT`-on beállított érték legyen a `target` a `docker-compose.yaml`-ben!
+
 > [!NOTE]
 > Ha a beállításoknál nem a `Hozzáférés otthoni hálózaton` van kiválasztva, akkor a `HTTPS_PORT` nem érhető el. Ha szeretnéd elérhetővé tenni az interneten, akkor nézd meg a következő útmutatót: ["StremHU | Source elérése az internetről"](./stremhu-source-elerese-az-internetrol.md)

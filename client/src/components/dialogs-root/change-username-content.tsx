@@ -7,6 +7,7 @@ import type { ChangeUsernameDto, UserDto } from '@/client/app-client'
 import { parseApiError } from '@/common/utils'
 import { Button } from '@/components/ui/button'
 import {
+  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
@@ -86,47 +87,53 @@ export function ChangeUsernameContent(props: ChangeUsernameContentProps) {
   }
 
   return (
-    <form name="change-username" className="grid gap-4" onSubmit={onSubmit}>
-      <DialogHeader>
-        <DialogTitle>{dialogConfig.title}</DialogTitle>
-        <DialogDescription>{dialogConfig.description}</DialogDescription>
-      </DialogHeader>
-      <FieldGroup>
-        <form.Field name="username">
-          {(field) => (
-            <Field>
-              <FieldLabel htmlFor={field.name}>Új felhasználónév</FieldLabel>
-              <Input
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-              {field.state.meta.isTouched && (
-                <FieldError errors={field.state.meta.errors} />
-              )}
-            </Field>
+    <DialogContent
+      className="sm:max-w-md"
+      showCloseButton={false}
+      onEscapeKeyDown={handleClose}
+    >
+      <form name="change-username" className="grid gap-4" onSubmit={onSubmit}>
+        <DialogHeader>
+          <DialogTitle>{dialogConfig.title}</DialogTitle>
+          <DialogDescription>{dialogConfig.description}</DialogDescription>
+        </DialogHeader>
+        <FieldGroup>
+          <form.Field name="username">
+            {(field) => (
+              <Field>
+                <FieldLabel htmlFor={field.name}>Új felhasználónév</FieldLabel>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+                {field.state.meta.isTouched && (
+                  <FieldError errors={field.state.meta.errors} />
+                )}
+              </Field>
+            )}
+          </form.Field>
+        </FieldGroup>
+        <form.Subscribe selector={(state) => [state.isSubmitting]}>
+          {([isSubmitting]) => (
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={isSubmitting}
+                onClick={onClose}
+              >
+                Mégsem
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                Módosítás
+              </Button>
+            </DialogFooter>
           )}
-        </form.Field>
-      </FieldGroup>
-      <form.Subscribe selector={(state) => [state.isSubmitting]}>
-        {([isSubmitting]) => (
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              disabled={isSubmitting}
-              onClick={onClose}
-            >
-              Mégsem
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              Módosítás
-            </Button>
-          </DialogFooter>
-        )}
-      </form.Subscribe>
-    </form>
+        </form.Subscribe>
+      </form>
+    </DialogContent>
   )
 }

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 export class TorrentDto {
   @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum' })

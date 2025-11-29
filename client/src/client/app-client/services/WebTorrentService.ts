@@ -11,7 +11,7 @@ export class WebTorrentService {
      * @returns TorrentDto
      * @throws ApiError
      */
-    public webTorrentControllerFind(): CancelablePromise<Array<TorrentDto>> {
+    public find(): CancelablePromise<Array<TorrentDto>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/torrents',
@@ -22,7 +22,7 @@ export class WebTorrentService {
      * @returns any
      * @throws ApiError
      */
-    public webTorrentControllerDelete(
+    public delete(
         infoHash: string,
     ): CancelablePromise<any> {
         return this.httpRequest.request({

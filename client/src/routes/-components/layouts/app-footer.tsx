@@ -1,16 +1,16 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { getSettingsSetupStatus } from '@/queries/settings-setup'
+import { getMetadata } from '@/queries/metadata'
 
 export function AppFooter() {
-  const { data } = useQuery(getSettingsSetupStatus)
-  if (!data) throw new Error(`A 'data' nincs a cache-ben.`)
+  const { data: metadata } = useQuery(getMetadata)
+  if (!metadata) throw new Error(`A 'metadata' nincs a cache-ben.`)
 
   return (
     <div className="bg-card border-t shadow-sm">
       <div className="container mx-auto max-w-3xl p-4">
         <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-center text-muted-foreground text-sm">
-          <p>StremHU | Source · v{data.version}</p>
+          <p>StremHU | Source · {metadata.version}</p>
           <p>
             Hibát találtál?{' '}
             <a

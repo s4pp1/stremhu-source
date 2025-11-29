@@ -24,7 +24,7 @@ import { ChangeUsernameDto } from './dto/change-username';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
-import { UserRoleEnum } from './enums/user-role.enum';
+import { UserRoleEnum } from './enum/user-role.enum';
 import { UsersService } from './users.service';
 
 @UseGuards(AuthGuard, RolesGuard)

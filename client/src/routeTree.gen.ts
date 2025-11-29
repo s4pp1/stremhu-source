@@ -14,7 +14,9 @@ import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as SetupIndexRouteImport } from './routes/setup/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as ProtectedIndexRouteImport } from './routes/_protected/index'
+import { Route as SetupUserIndexRouteImport } from './routes/setup/user/index'
 import { Route as ProtectedSettingsIndexRouteImport } from './routes/_protected/settings/index'
+import { Route as ProtectedSetupAddressIndexRouteImport } from './routes/_protected/setup/address/index'
 
 const LogoutRoute = LogoutRouteImport.update({
   id: '/logout',
@@ -40,11 +42,22 @@ const ProtectedIndexRoute = ProtectedIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProtectedRoute,
 } as any)
+const SetupUserIndexRoute = SetupUserIndexRouteImport.update({
+  id: '/setup/user/',
+  path: '/setup/user/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProtectedSettingsIndexRoute = ProtectedSettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
   getParentRoute: () => ProtectedRoute,
 } as any)
+const ProtectedSetupAddressIndexRoute =
+  ProtectedSetupAddressIndexRouteImport.update({
+    id: '/setup/address/',
+    path: '/setup/address/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/logout': typeof LogoutRoute
@@ -52,6 +65,8 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginIndexRoute
   '/setup': typeof SetupIndexRoute
   '/settings': typeof ProtectedSettingsIndexRoute
+  '/setup/user': typeof SetupUserIndexRoute
+  '/setup/address': typeof ProtectedSetupAddressIndexRoute
 }
 export interface FileRoutesByTo {
   '/logout': typeof LogoutRoute
@@ -59,6 +74,8 @@ export interface FileRoutesByTo {
   '/login': typeof LoginIndexRoute
   '/setup': typeof SetupIndexRoute
   '/settings': typeof ProtectedSettingsIndexRoute
+  '/setup/user': typeof SetupUserIndexRoute
+  '/setup/address': typeof ProtectedSetupAddressIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,12 +85,28 @@ export interface FileRoutesById {
   '/login/': typeof LoginIndexRoute
   '/setup/': typeof SetupIndexRoute
   '/_protected/settings/': typeof ProtectedSettingsIndexRoute
+  '/setup/user/': typeof SetupUserIndexRoute
+  '/_protected/setup/address/': typeof ProtectedSetupAddressIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/logout' | '/' | '/login' | '/setup' | '/settings'
+  fullPaths:
+    | '/logout'
+    | '/'
+    | '/login'
+    | '/setup'
+    | '/settings'
+    | '/setup/user'
+    | '/setup/address'
   fileRoutesByTo: FileRoutesByTo
-  to: '/logout' | '/' | '/login' | '/setup' | '/settings'
+  to:
+    | '/logout'
+    | '/'
+    | '/login'
+    | '/setup'
+    | '/settings'
+    | '/setup/user'
+    | '/setup/address'
   id:
     | '__root__'
     | '/_protected'
@@ -82,6 +115,8 @@ export interface FileRouteTypes {
     | '/login/'
     | '/setup/'
     | '/_protected/settings/'
+    | '/setup/user/'
+    | '/_protected/setup/address/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -89,6 +124,7 @@ export interface RootRouteChildren {
   LogoutRoute: typeof LogoutRoute
   LoginIndexRoute: typeof LoginIndexRoute
   SetupIndexRoute: typeof SetupIndexRoute
+  SetupUserIndexRoute: typeof SetupUserIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -128,11 +164,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/setup/user/': {
+      id: '/setup/user/'
+      path: '/setup/user'
+      fullPath: '/setup/user'
+      preLoaderRoute: typeof SetupUserIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_protected/settings/': {
       id: '/_protected/settings/'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof ProtectedSettingsIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/setup/address/': {
+      id: '/_protected/setup/address/'
+      path: '/setup/address'
+      fullPath: '/setup/address'
+      preLoaderRoute: typeof ProtectedSetupAddressIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
   }
@@ -141,11 +191,13 @@ declare module '@tanstack/react-router' {
 interface ProtectedRouteChildren {
   ProtectedIndexRoute: typeof ProtectedIndexRoute
   ProtectedSettingsIndexRoute: typeof ProtectedSettingsIndexRoute
+  ProtectedSetupAddressIndexRoute: typeof ProtectedSetupAddressIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedIndexRoute: ProtectedIndexRoute,
   ProtectedSettingsIndexRoute: ProtectedSettingsIndexRoute,
+  ProtectedSetupAddressIndexRoute: ProtectedSetupAddressIndexRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
@@ -157,6 +209,7 @@ const rootRouteChildren: RootRouteChildren = {
   LogoutRoute: LogoutRoute,
   LoginIndexRoute: LoginIndexRoute,
   SetupIndexRoute: SetupIndexRoute,
+  SetupUserIndexRoute: SetupUserIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -15,7 +15,7 @@ import { CookieJar } from 'tough-cookie';
 
 import { createAxios } from 'src/trackers/common/create-axios';
 import { TrackerCredentialsService } from 'src/trackers/credentials/tracker-credentials.service';
-import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { TRACKER_TOKEN } from '../adapters.types';
 import {

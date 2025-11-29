@@ -8,9 +8,9 @@ import { SortableContext } from '@dnd-kit/sortable'
 import { useQuery } from '@tanstack/react-query'
 
 import type { LanguageEnum } from '@/client/app-client'
-import { useReferenceDataOptionLabel } from '@/hooks/use-reference-data-option-label'
+import { useMetadataLabel } from '@/hooks/use-metadata-label'
 import { cn } from '@/lib/utils'
-import { getReferenceData } from '@/queries/reference-data'
+import { getMetadata } from '@/queries/metadata'
 
 import { SelectorItem } from '../selector-item'
 import { SortableSelectorItem } from '../sortable-selector-item'
@@ -27,12 +27,12 @@ export function LanguagesSelector(props: LanguagesSelectorProps) {
   const { items, onAdd, onDelete, onSortableDragEnd, className, ...rest } =
     props
 
-  const { data: referenceData } = useQuery(getReferenceData)
-  if (!referenceData) throw new Error(`Nincs "referenceData" a cache-ben`)
+  const { data: metadata } = useQuery(getMetadata)
+  if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
 
-  const { getLanguageLabel } = useReferenceDataOptionLabel()
+  const { getLanguageLabel } = useMetadataLabel()
 
-  const inactiveItems = referenceData.option.languages.filter(
+  const inactiveItems = metadata.languages.filter(
     (resolution) => !items.includes(resolution.value),
   )
   const hasInactiveItem = inactiveItems.length > 0

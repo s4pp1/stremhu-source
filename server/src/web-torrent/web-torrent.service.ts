@@ -13,7 +13,7 @@ import type { Torrent, TorrentFile } from 'webtorrent';
 
 import { SettingsStore } from 'src/settings/core/settings.store';
 import { TorrentCacheStore } from 'src/torrent-cache/core/torrent-cache.store';
-import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { WebTorrentRunsService } from './runs/web-torrent-runs.service';
 import { ActiveTorrent, WebTorrentToAdd } from './web-torrent.types';

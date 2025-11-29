@@ -15,7 +15,7 @@ export class MeService {
      * @returns MeUserDto
      * @throws ApiError
      */
-    public usersMeControllerMe(): CancelablePromise<MeUserDto> {
+    public me(): CancelablePromise<MeUserDto> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/me',
@@ -26,7 +26,7 @@ export class MeService {
      * @returns UserDto
      * @throws ApiError
      */
-    public usersMeControllerUpdateMe(
+    public updateMe(
         requestBody: UpdateMePreferencesDto,
     ): CancelablePromise<UserDto> {
         return this.httpRequest.request({
@@ -41,7 +41,7 @@ export class MeService {
      * @returns UserDto
      * @throws ApiError
      */
-    public usersMeControllerChangeUsername(
+    public changeUsername(
         requestBody: ChangeUsernameDto,
     ): CancelablePromise<UserDto> {
         return this.httpRequest.request({
@@ -56,7 +56,7 @@ export class MeService {
      * @returns UserDto
      * @throws ApiError
      */
-    public usersMeControllerChangePassword(
+    public changePassword(
         requestBody: ChangePasswordDto,
     ): CancelablePromise<UserDto> {
         return this.httpRequest.request({
@@ -70,7 +70,7 @@ export class MeService {
      * @returns UserDto
      * @throws ApiError
      */
-    public usersMeControllerChangeStremioToken(): CancelablePromise<UserDto> {
+    public changeStremioToken(): CancelablePromise<UserDto> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/api/me/stremio-token',

@@ -4,13 +4,13 @@ import { appClient } from '@/client'
 import type { AuthLoginDto, CreateSetupDto } from '@/client/app-client'
 
 import { getMe } from './me'
-import { getSettingsSetupStatus } from './settings-setup'
+import { getSettingsStatus } from './settings-setup'
 
 export function useLogin() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (payload: AuthLoginDto) => {
-      const me = await appClient.authentication.authControllerLogin(payload)
+      const me = await appClient.authentication.login(payload)
       return me
     },
     onSuccess: async () => {
@@ -24,7 +24,7 @@ export function useLogout() {
 
   return useMutation({
     mutationFn: async () => {
-      await appClient.authentication.authControllerLogout()
+      await appClient.authentication.logout()
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: getMe.queryKey })
@@ -38,10 +38,11 @@ export function useRegistration() {
 
   return useMutation({
     mutationFn: async (payload: CreateSetupDto) => {
-      await appClient.settings.setupControllerCreate(payload)
+      await appClient.settings.create(payload)
     },
     onSuccess: async () => {
-      await queryClient.fetchQuery({ ...getSettingsSetupStatus, staleTime: 0 })
+      await queryClient.fetchQuery({ ...getMe, staleTime: 0 })
+      await queryClient.fetchQuery({ ...getSettingsStatus, staleTime: 0 })
     },
   })
 }

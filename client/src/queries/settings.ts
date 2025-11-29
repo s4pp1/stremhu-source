@@ -7,12 +7,13 @@ import {
 import { appClient } from '@/client'
 import type { UpdateSettingDto } from '@/client/app-client'
 
-import { getReferenceData } from './reference-data'
+import { getMetadata } from './metadata'
+import { getSettingsStatus } from './settings-setup'
 
 export const getSettings = queryOptions({
   queryKey: ['settings'],
   queryFn: async () => {
-    const setting = await appClient.settings.settingsControllerFindOne()
+    const setting = await appClient.settings.findOne()
     let downloadLimit: string | null = null
     let uploadLimit: string | null = null
 
@@ -54,16 +55,19 @@ export function useUpdateSetting() {
         }
       }
 
-      const setting = await appClient.settings.settingsControllerUpdate({
+      const setting = await appClient.settings.update({
         ...payload,
         downloadLimit,
         uploadLimit,
       })
       return setting
     },
-    onSuccess: (updated) => {
-      queryClient.setQueryData(['settings'], updated)
-      queryClient.invalidateQueries({ queryKey: getReferenceData.queryKey })
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.fetchQuery({ ...getSettings, staleTime: 0 }),
+        queryClient.fetchQuery({ ...getSettingsStatus, staleTime: 0 }),
+        queryClient.fetchQuery({ ...getMetadata, staleTime: 0 }),
+      ])
     },
   })
 }

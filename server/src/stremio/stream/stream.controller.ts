@@ -16,7 +16,7 @@ import { Readable, pipeline } from 'node:stream';
 import rangeParser from 'range-parser';
 
 import { StremioTokenGuard } from 'src/auth/guards/stremio-token.guard';
-import { TrackerEnum } from 'src/trackers/enums/tracker.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { StreamMediaTypeEnum } from '../enums/stream-media-type.enum';
 import { StreamsResponseDto } from './dto/stremio-stream.dto';

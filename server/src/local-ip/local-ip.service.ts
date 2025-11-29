@@ -26,7 +26,7 @@ export class LocalIpService implements OnApplicationBootstrap {
   constructor(
     private readonly configService: ConfigService,
     private readonly schedulerRegistry: SchedulerRegistry,
-    private settingsStore: SettingsStore,
+    private readonly settingsStore: SettingsStore,
   ) {}
 
   private httpsServer: https.Server | null = null;

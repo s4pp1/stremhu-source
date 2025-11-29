@@ -9,7 +9,7 @@ import {
   AdapterTorrent,
   AdapterTorrentId,
 } from './adapters/adapters.types';
-import { TrackerEnum } from './enums/tracker.enum';
+import { TrackerEnum } from './enum/tracker.enum';
 
 export interface TrackerOption {
   value: TrackerEnum;

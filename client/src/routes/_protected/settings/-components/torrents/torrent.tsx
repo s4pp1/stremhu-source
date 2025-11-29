@@ -18,7 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { useReferenceDataOptionLabel } from '@/hooks/use-reference-data-option-label'
+import { useMetadataLabel } from '@/hooks/use-metadata-label'
 import { useDeleteTorrent } from '@/queries/torrents'
 import { useConfirmDialog } from '@/store/confirm-dialog-store'
 
@@ -45,7 +45,7 @@ function TorrentDetail(props: TorrentDetailProps) {
 export function Torrent(props: TorrentProps) {
   const { torrent } = props
 
-  const { getTrackerLabel } = useReferenceDataOptionLabel()
+  const { getTrackerLabel } = useMetadataLabel()
 
   const confirmDialog = useConfirmDialog()
   const { mutateAsync: deleteTorrent } = useDeleteTorrent()

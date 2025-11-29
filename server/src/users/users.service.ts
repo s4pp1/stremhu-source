@@ -9,8 +9,9 @@ import { isUndefined, omitBy } from 'lodash';
 import { randomUUID } from 'node:crypto';
 import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
-import { User } from './entities/user.entity';
-import { UserToCreate, UserToUpdate } from './users.types';
+import { User } from './entity/user.entity';
+import { UserToCreate } from './type/user-to-create.type';
+import { UserToUpdate } from './type/user-to-update.type';
 
 @Injectable()
 export class UsersService {

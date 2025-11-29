@@ -7,6 +7,7 @@ import * as z from 'zod'
 import { parseApiError } from '@/common/utils'
 import { Button } from '@/components/ui/button'
 import {
+  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
@@ -68,71 +69,77 @@ export function AddUserContent() {
   }
 
   return (
-    <form name="add-user" className="grid gap-4" onSubmit={onSubmit}>
-      <DialogHeader>
-        <DialogTitle>Új fiók létrehozása</DialogTitle>
-        <DialogDescription>
-          Jelszó nélküli fiók létrehozása is lehetséges! Az ilyen fiókkal nincs
-          lehetőség az addon felületére bejelentkezni, de a Stremio csatlakozás
-          működik.
-        </DialogDescription>
-      </DialogHeader>
-      <FieldGroup>
-        <form.Field name="username">
-          {(field) => (
-            <Field>
-              <FieldLabel htmlFor={field.name}>Felhasználónév</FieldLabel>
-              <Input
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-              {field.state.meta.isTouched && (
-                <FieldError errors={field.state.meta.errors} />
-              )}
-            </Field>
+    <DialogContent
+      className="sm:max-w-md"
+      showCloseButton={false}
+      onEscapeKeyDown={handleClose}
+    >
+      <form name="add-user" className="grid gap-4" onSubmit={onSubmit}>
+        <DialogHeader>
+          <DialogTitle>Új fiók létrehozása</DialogTitle>
+          <DialogDescription>
+            Jelszó nélküli fiók létrehozása is lehetséges! Az ilyen fiókkal
+            nincs lehetőség az addon felületére bejelentkezni, de a Stremio
+            csatlakozás működik.
+          </DialogDescription>
+        </DialogHeader>
+        <FieldGroup>
+          <form.Field name="username">
+            {(field) => (
+              <Field>
+                <FieldLabel htmlFor={field.name}>Felhasználónév</FieldLabel>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+                {field.state.meta.isTouched && (
+                  <FieldError errors={field.state.meta.errors} />
+                )}
+              </Field>
+            )}
+          </form.Field>
+        </FieldGroup>
+        <FieldGroup>
+          <form.Field name="password">
+            {(field) => (
+              <Field>
+                <FieldLabel htmlFor={field.name}>Jelszó</FieldLabel>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  type="password"
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+                {field.state.meta.isTouched && (
+                  <FieldError errors={field.state.meta.errors} />
+                )}
+              </Field>
+            )}
+          </form.Field>
+        </FieldGroup>
+        <form.Subscribe selector={(state) => [state.isSubmitting]}>
+          {([isSubmitting]) => (
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={isSubmitting}
+                onClick={onClose}
+              >
+                Mégsem
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                Létrehozás
+              </Button>
+            </DialogFooter>
           )}
-        </form.Field>
-      </FieldGroup>
-      <FieldGroup>
-        <form.Field name="password">
-          {(field) => (
-            <Field>
-              <FieldLabel htmlFor={field.name}>Jelszó</FieldLabel>
-              <Input
-                id={field.name}
-                name={field.name}
-                type="password"
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-              />
-              {field.state.meta.isTouched && (
-                <FieldError errors={field.state.meta.errors} />
-              )}
-            </Field>
-          )}
-        </form.Field>
-      </FieldGroup>
-      <form.Subscribe selector={(state) => [state.isSubmitting]}>
-        {([isSubmitting]) => (
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              disabled={isSubmitting}
-              onClick={onClose}
-            >
-              Mégsem
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              Létrehozás
-            </Button>
-          </DialogFooter>
-        )}
-      </form.Subscribe>
-    </form>
+        </form.Subscribe>
+      </form>
+    </DialogContent>
   )
 }

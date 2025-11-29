@@ -5,9 +5,10 @@
 import type { BaseHttpRequest } from './core/BaseHttpRequest';
 import type { OpenAPIConfig } from './core/OpenAPI';
 import { FetchHttpRequest } from './core/FetchHttpRequest';
+import { AppService } from './services/AppService';
 import { AuthenticationService } from './services/AuthenticationService';
 import { MeService } from './services/MeService';
-import { ReferenceDataService } from './services/ReferenceDataService';
+import { MetadataService } from './services/MetadataService';
 import { SettingsService } from './services/SettingsService';
 import { StremioService } from './services/StremioService';
 import { StremioStreamService } from './services/StremioStreamService';
@@ -16,9 +17,10 @@ import { UsersService } from './services/UsersService';
 import { WebTorrentService } from './services/WebTorrentService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class AppClient {
+    public readonly app: AppService;
     public readonly authentication: AuthenticationService;
     public readonly me: MeService;
-    public readonly referenceData: ReferenceDataService;
+    public readonly metadata: MetadataService;
     public readonly settings: SettingsService;
     public readonly stremio: StremioService;
     public readonly stremioStream: StremioStreamService;
@@ -38,9 +40,10 @@ export class AppClient {
             HEADERS: config?.HEADERS,
             ENCODE_PATH: config?.ENCODE_PATH,
         });
+        this.app = new AppService(this.request);
         this.authentication = new AuthenticationService(this.request);
         this.me = new MeService(this.request);
-        this.referenceData = new ReferenceDataService(this.request);
+        this.metadata = new MetadataService(this.request);
         this.settings = new SettingsService(this.request);
         this.stremio = new StremioService(this.request);
         this.stremioStream = new StremioStreamService(this.request);

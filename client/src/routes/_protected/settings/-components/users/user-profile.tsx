@@ -40,9 +40,9 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useIntegrationDomain } from '@/hooks/use-integration-domain'
-import { useReferenceDataOptionLabel } from '@/hooks/use-reference-data-option-label'
+import { useMetadataLabel } from '@/hooks/use-metadata-label'
 import { getMe } from '@/queries/me'
-import { getReferenceData } from '@/queries/reference-data'
+import { getMetadata } from '@/queries/metadata'
 import { useDeleteUser, useUpdateProfile } from '@/queries/users'
 import { useConfirmDialog } from '@/store/confirm-dialog-store'
 import { DialogEnum, useDialogs } from '@/store/dialogs-store'
@@ -58,13 +58,13 @@ const schema = z.object({
 export function UserProfile(props: UserProfileProps) {
   const { user } = props
 
-  const [{ data: referenceData }, { data: me }] = useQueries({
-    queries: [getReferenceData, getMe],
+  const [{ data: metadata }, { data: me }] = useQueries({
+    queries: [getMetadata, getMe],
   })
-  if (!referenceData) throw new Error(`Nincs "referenceData" a cache-ben`)
+  if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
   if (!me) throw new Error(`Nincs "me" a cache-ben`)
 
-  const { getUserRoleLabel } = useReferenceDataOptionLabel()
+  const { getUserRoleLabel } = useMetadataLabel()
   const confirm = useConfirmDialog()
   const { handleOpen } = useDialogs()
 
@@ -164,7 +164,7 @@ export function UserProfile(props: UserProfileProps) {
               className="rounded-full"
               onClick={() =>
                 handleOpen({
-                  dialog: DialogEnum.CHANGE_USERNAME_DIALOG,
+                  dialog: DialogEnum.CHANGE_USERNAME,
                   options: { user: user },
                 })
               }
@@ -187,7 +187,7 @@ export function UserProfile(props: UserProfileProps) {
               className="rounded-full"
               onClick={() =>
                 handleOpen({
-                  dialog: DialogEnum.CHANGE_PASSWORD_DIALOG,
+                  dialog: DialogEnum.CHANGE_PASSWORD,
                   options: { user: user },
                 })
               }
@@ -211,7 +211,7 @@ export function UserProfile(props: UserProfileProps) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {referenceData.option.userRoles.map((userRole) => (
+                  {metadata.userRoles.map((userRole) => (
                     <SelectItem
                       key={userRole.value}
                       value={userRole.value}

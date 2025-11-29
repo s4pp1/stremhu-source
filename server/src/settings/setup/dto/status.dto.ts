@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsString } from 'class-validator';
+import { IsBoolean } from 'class-validator';
 
 export class StatusDto {
-  @IsString()
+  @IsBoolean()
   @ApiProperty()
-  version: string;
+  hasAdminUser: boolean;
 
   @IsBoolean()
   @ApiProperty()
-  configured: boolean;
+  hasAddress: boolean;
 }

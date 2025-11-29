@@ -23,7 +23,7 @@ import {
 } from 'src/trackers/tracker.types';
 import { TRACKER_LABEL_MAP } from 'src/trackers/trackers.constants';
 import { TrackersService } from 'src/trackers/trackers.service';
-import { User } from 'src/users/entities/user.entity';
+import { User } from 'src/users/entity/user.entity';
 import { WebTorrentService } from 'src/web-torrent/web-torrent.service';
 
 import { StreamDto } from './dto/stremio-stream.dto';
@@ -66,7 +66,7 @@ export class StremioStreamService {
         })
       : payload.imdbId;
 
-    const setting = await this.settingsStore.findOneOrThrow();
+    const endpoint = await this.settingsStore.getEndpoint();
 
     const torrents = await this.trackersService.findTorrents({
       mediaType: mediaType,
@@ -131,7 +131,7 @@ export class StremioStreamService {
       return {
         name: nameArray.join(' | '),
         description: descriptionArray.join('\n'),
-        url: `${setting.endpoint}/api/${user.stremioToken}/stream/play/${videoFile.imdbId}/${videoFile.tracker}/${videoFile.torrentId}/${videoFile.fileIndex}`,
+        url: `${endpoint}/api/${user.stremioToken}/stream/play/${videoFile.imdbId}/${videoFile.tracker}/${videoFile.torrentId}/${videoFile.fileIndex}`,
         behaviorHints: {
           notWebReady: videoFile.notWebReady,
           bingeGroup,
