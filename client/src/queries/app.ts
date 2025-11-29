@@ -1,37 +1,39 @@
-import { useMutation } from '@tanstack/react-query'
+import { queryOptions, useMutation } from '@tanstack/react-query'
 
 import { appClient } from '@/client'
 import { AppClient } from '@/client/app-client'
+import { sleep } from '@/common/utils'
 
 export interface CheckAddressRequest {
   address: string
-  enebledlocalIp: boolean
+  enebledlocalIp?: boolean
 }
 
-let inflightAppHealth: ReturnType<AppClient['app']['health']> | null = null
-
-export function useCheckAddress() {
-  return useMutation({
-    mutationFn: async (payload: CheckAddressRequest) => {
-      inflightAppHealth?.cancel()
-
-      let appUrl = payload.address
-
-      if (payload.enebledlocalIp) {
-        const { localUrl } = await appClient.settings.buildLocalUrl({
-          ipv4: payload.address,
-        })
-        appUrl = localUrl
-      }
-
+export function getHealth(appUrl: string) {
+  return queryOptions({
+    queryKey: ['app', 'health', appUrl],
+    retry: false,
+    queryFn: async () => {
       const customAppClient = new AppClient({
         BASE: appUrl,
         WITH_CREDENTIALS: true,
       })
 
-      inflightAppHealth = customAppClient.app.health()
+      await sleep(1000)
 
-      const response = await inflightAppHealth
+      const response = await customAppClient.app.health()
+      return response
+    },
+  })
+}
+
+export function useBuildLocalUrl() {
+  return useMutation({
+    retry: false,
+    mutationFn: async (ipv4: string) => {
+      const response = await appClient.settings.buildLocalUrl({
+        ipv4,
+      })
       return response
     },
   })

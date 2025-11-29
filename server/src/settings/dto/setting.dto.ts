@@ -1,14 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
+import { IsNullable } from 'src/common/validators/is-nullable';
+
 export class SettingDto {
   @IsBoolean()
   @ApiProperty()
   enebledlocalIp: boolean;
 
   @IsString()
-  @ApiProperty()
-  address: string;
+  @IsNullable()
+  @ApiProperty({ type: 'string', nullable: true })
+  address: string | null;
 
   @IsNumber()
   @ApiProperty()

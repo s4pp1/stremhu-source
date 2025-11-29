@@ -7,7 +7,16 @@ import { Address4 } from 'ip-address';
 @ValidatorConstraint({ name: 'NoPathDomain', async: false })
 export class IsIPv4 implements ValidatorConstraintInterface {
   validate(value: string) {
-    return new Address4(value).isCorrect();
+    try {
+      new Address4(value);
+      if (value.includes('/') || value.includes(':')) {
+        return false;
+      }
+
+      return true;
+    } catch {
+      return false;
+    }
   }
   defaultMessage() {
     return 'Csak IPv4 megadása lehetséges (pl.: 192.168.1.100)';

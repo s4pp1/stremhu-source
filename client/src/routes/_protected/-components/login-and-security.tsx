@@ -95,9 +95,7 @@ export function LoginAndSecurity() {
               size="icon-sm"
               variant="default"
               className="rounded-full"
-              onClick={() =>
-                handleOpen({ dialog: DialogEnum.CHANGE_USERNAME_DIALOG })
-              }
+              onClick={() => handleOpen({ dialog: DialogEnum.CHANGE_USERNAME })}
             >
               <PencilIcon />
             </Button>
@@ -118,9 +116,7 @@ export function LoginAndSecurity() {
               size="icon-sm"
               variant="default"
               className="rounded-full"
-              onClick={() =>
-                handleOpen({ dialog: DialogEnum.CHANGE_PASSWORD_DIALOG })
-              }
+              onClick={() => handleOpen({ dialog: DialogEnum.CHANGE_PASSWORD })}
             >
               <PencilIcon />
             </Button>

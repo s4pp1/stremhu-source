@@ -164,7 +164,7 @@ export function UserProfile(props: UserProfileProps) {
               className="rounded-full"
               onClick={() =>
                 handleOpen({
-                  dialog: DialogEnum.CHANGE_USERNAME_DIALOG,
+                  dialog: DialogEnum.CHANGE_USERNAME,
                   options: { user: user },
                 })
               }
@@ -187,7 +187,7 @@ export function UserProfile(props: UserProfileProps) {
               className="rounded-full"
               onClick={() =>
                 handleOpen({
-                  dialog: DialogEnum.CHANGE_PASSWORD_DIALOG,
+                  dialog: DialogEnum.CHANGE_PASSWORD,
                   options: { user: user },
                 })
               }

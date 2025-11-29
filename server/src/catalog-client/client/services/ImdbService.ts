@@ -14,7 +14,7 @@ export class ImdbService {
      * @returns ImdbResolveResponseDto
      * @throws ApiError
      */
-    public imdbResolverControllerResolveSpecial(
+    public resolveSpecial(
         token: string,
         requestBody: ImdbResolvePayloadDto,
     ): CancelablePromise<ImdbResolveResponseDto> {

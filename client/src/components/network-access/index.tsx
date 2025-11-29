@@ -1,93 +1,167 @@
-import { useForm } from '@tanstack/react-form'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { Address4 } from 'ip-address'
+import type { FormEventHandler } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
+import { assertExists } from '@/common/assert'
 import { parseApiError } from '@/common/utils'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { getHealth, useBuildLocalUrl } from '@/queries/app'
 import { getSettings, useUpdateSetting } from '@/queries/settings'
+import { useConfirmDialog } from '@/store/confirm-dialog-store'
 
 import { Separator } from '../ui/separator'
+import { defaultValues, useAppForm } from './network-access-form-context'
+import { NetworkSelector } from './network-selector'
 import { UrlConfiguration } from './url-configuration'
 
-const accessOptions = [
-  {
-    label: 'Hozzáférés otthoni hálózaton',
-    description: (
-      <>
-        Csak a helyi hálózaton használod. A Stremio egy biztonságos HTTPS címet
-        generál a helyi IP-dhez a{' '}
-        <a
-          className="underline italic "
-          href="https://local-ip.medicmobile.org/"
-          target="_blank"
-        >
-          https://local-ip.medicmobile.org/
-        </a>{' '}
-        segítségével.
-      </>
-    ),
-    value: 'true',
-  },
-  {
-    label: 'Távoli elérés saját domainnel',
-    description: (
-      <>
-        Használd ezt, ha az internetről is el szeretnéd érni a StremHU |
-        Source-ot. Adj meg egy olyan domaint (pl. DDNS-szolgáltatóval, mint a{' '}
-        <a
-          className="underline italic "
-          href="https://noip.com/"
-          target="_blank"
-        >
-          https://noip.com
-        </a>
-        ), amely a StremHU | Source-ot futtató eszközre mutat, és biztosítja a
-        HTTPS-kapcsolatot.
-      </>
-    ),
-    value: 'false',
-  },
-]
+export const NETWORK_ACCESS_FORM_ID = 'network-access-form'
+export const NETWORK_ACCESS_HEADER = {
+  TITLE: 'Elérés beállítása',
+  DESCRIPTION:
+    'A Stremio csak biztonságos (HTTPS) kapcsolaton keresztül tud  addont telepíteni. Itt adhatod meg, milyen címen érje el a StremHU | Source-ot.',
+}
 
-const schema = z.object({
-  enebledlocalIp: z.boolean(),
-})
+const schema = z
+  .object({
+    connection: z.enum(['idle', 'pending', 'success', 'error']),
+    enebledlocalIp: z.boolean(),
+    address: z.string().trim(),
+  })
+  .superRefine(({ address, enebledlocalIp }, ctx) => {
+    if (enebledlocalIp) {
+      try {
+        new Address4(address)
+        if (address.includes('/') || address.includes(':')) {
+          throw new Error()
+        }
+      } catch (error) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['address'],
+          message: 'Csak IPv4 cím adható meg (protokoll/subnet/port nélkül)',
+        })
+      }
 
-export function NetworkAccess() {
+      return
+    }
+
+    const httpsUrl = z.url({
+      protocol: /^https$/,
+      error: 'Csak HTTPS engedélyezett',
+    })
+
+    const parsedUrl = httpsUrl.safeParse(address)
+
+    if (!parsedUrl.success) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['address'],
+        message: 'Érvénytelen HTTPS URL',
+      })
+      return
+    }
+
+    const parseUrl = new URL(parsedUrl.data)
+    const lastCharacter = address.substring(address.length - 1)
+    const noPath = parseUrl.pathname === '/' && lastCharacter !== '/'
+
+    if (!noPath || parseUrl.search || parseUrl.hash) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['address'],
+        message: 'Nem tartalmazhat elérési utat, query-t vagy fragmentet',
+      })
+    }
+  })
+
+export type NetworkAccessProps = {
+  onSuccess?: () => void
+  onSkip?: () => void
+  onValidated?: (isValid: boolean) => void
+}
+
+export function NetworkAccess(props: NetworkAccessProps) {
+  const { onSuccess, onSkip, onValidated } = props
+
   const { data: setting } = useQuery(getSettings)
-  if (!setting) throw new Error(`Nincs "settings" a cache-ben`)
+  assertExists(setting)
 
+  const confirm = useConfirmDialog()
+
+  const queryClient = useQueryClient()
   const { mutateAsync: updateSetting } = useUpdateSetting()
+  const { mutateAsync: buildLocalUrl } = useBuildLocalUrl()
 
-  const form = useForm({
+  const form = useAppForm({
     defaultValues: {
+      ...defaultValues,
       enebledlocalIp: setting.enebledlocalIp,
+      address: setting.address || '',
     },
     validators: {
       onChange: schema,
     },
     listeners: {
-      onChangeDebounceMs: 1000,
-      onChange: ({ formApi }) => {
-        const { isValid } = formApi.store.state
+      onBlur: async ({ formApi }) => {
+        const { enebledlocalIp, address } = formApi.store.state.values
 
-        if (isValid) {
-          formApi.handleSubmit()
+        let appUrl = address
+
+        if (enebledlocalIp) {
+          const buildedUrl = await buildLocalUrl(appUrl)
+          appUrl = buildedUrl.localUrl
+        }
+
+        try {
+          if (onValidated) onValidated(false)
+          formApi.setFieldValue('connection', 'pending')
+          await updateSetting({ enebledlocalIp })
+          await queryClient.fetchQuery(getHealth(appUrl))
+          formApi.setFieldValue('connection', 'success')
+          if (onValidated) onValidated(true)
+        } catch (error) {
+          formApi.setFieldValue('connection', 'error')
+          if (onValidated) onValidated(false)
         }
       },
+      onChange: async ({ formApi }) => {
+        const { enebledlocalIp, address } = formApi.store.state.values
+
+        let appUrl = address
+
+        if (enebledlocalIp) {
+          const buildedUrl = await buildLocalUrl(appUrl)
+          appUrl = buildedUrl.localUrl
+        }
+
+        try {
+          if (onValidated) onValidated(false)
+          formApi.setFieldValue('connection', 'pending')
+          await updateSetting({ enebledlocalIp })
+          await queryClient.fetchQuery(getHealth(appUrl))
+          formApi.setFieldValue('connection', 'success')
+          if (onValidated) onValidated(true)
+        } catch (error) {
+          formApi.setFieldValue('connection', 'error')
+          if (onValidated) onValidated(false)
+        }
+      },
+      onChangeDebounceMs: 500,
     },
     onSubmit: async ({ value, formApi }) => {
       try {
-        await updateSetting(value)
+        const updatedSetting = await updateSetting(value)
+
+        let appUrl = updatedSetting.address || '0.0.0.0'
+
+        if (updatedSetting.enebledlocalIp) {
+          const buildedUrl = await buildLocalUrl(appUrl)
+          appUrl = buildedUrl.localUrl
+        }
+
+        await queryClient.fetchQuery(getHealth(appUrl))
+        if (onSuccess) onSuccess()
       } catch (error) {
         formApi.reset()
         const message = parseApiError(error)
@@ -96,53 +170,47 @@ export function NetworkAccess() {
     },
   })
 
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    await form.handleSubmit()
+  }
+
+  const handleSkip: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    await confirm({
+      title: 'Biztos kihagyod a beállítást?',
+      description:
+        'A lépés kihagyása után a "Beállítások" menüpont alatt tudod elvégezni a beállítást, addig az addon nem fog működni!',
+      onConfirm: async () => {
+        try {
+          await updateSetting({
+            address: '0.0.0.0',
+            enebledlocalIp: true,
+          })
+          if (onSkip) onSkip()
+        } catch (error) {
+          const message = parseApiError(error)
+          toast.error(message)
+          throw error
+        }
+      },
+    })
+  }
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Elérés beállítása</CardTitle>
-        <CardDescription>
-          A Stremio csak biztonságos (HTTPS) kapcsolaton keresztül tud addont
-          telepíteni. Itt adhatod meg, milyen címen érje el a StremHU |
-          Source-ot.
-        </CardDescription>
-      </CardHeader>
-      <form name="setting">
-        <CardContent className="grid gap-4">
-          <form.Field name="enebledlocalIp">
-            {(field) => (
-              <RadioGroup
-                value={field.state.value.toString()}
-                onValueChange={(value) => {
-                  const booleanValue = value === 'true'
-                  field.handleChange(booleanValue)
-                }}
-              >
-                {accessOptions.map((accessOption) => (
-                  <div
-                    key={accessOption.value}
-                    className="flex items-start gap-3"
-                  >
-                    <RadioGroupItem
-                      value={accessOption.value}
-                      id={accessOption.value}
-                    />
-                    <div className="grid gap-2">
-                      <Label htmlFor={accessOption.value}>
-                        {accessOption.label}
-                      </Label>
-                      <p className="text-muted-foreground text-sm">
-                        {accessOption.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </RadioGroup>
-            )}
-          </form.Field>
-          <Separator />
-        </CardContent>
+    <form.AppForm>
+      <form
+        id={NETWORK_ACCESS_FORM_ID}
+        className="grid gap-4"
+        onSubmit={handleSubmit}
+        onReset={handleSkip}
+      >
+        <NetworkSelector form={form} />
+        <Separator />
+        <UrlConfiguration form={form} />
       </form>
-      <UrlConfiguration />
-    </Card>
+    </form.AppForm>
   )
 }

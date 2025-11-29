@@ -5,16 +5,17 @@ import type { TrackerEnum, UserDto } from '@/client/app-client'
 
 export enum DialogEnum {
   ADD_TRACKER = 'add-tracker',
-  CHANGE_USERNAME_DIALOG = 'change-username-dialog',
-  CHANGE_PASSWORD_DIALOG = 'change-password-dialog',
+  CHANGE_USERNAME = 'change-username',
+  CHANGE_PASSWORD = 'change-password-dialog',
   ADD_USER = 'add-user',
+  NETWORK_ACCESS = 'network-access',
 }
 
 type AddTrackerDialogOptions = {
   activeTrackers: Array<TrackerEnum>
 }
 
-type AddTrackerDialog = {
+type AddTracker = {
   dialog: DialogEnum.ADD_TRACKER
   options: AddTrackerDialogOptions
 }
@@ -23,13 +24,13 @@ type UserDialogOption = {
   user?: UserDto
 }
 
-type ChangeUsernameDialog = {
-  dialog: DialogEnum.CHANGE_USERNAME_DIALOG
+type ChangeUsername = {
+  dialog: DialogEnum.CHANGE_USERNAME
   options?: UserDialogOption
 }
 
-type ChangePasswordDialog = {
-  dialog: DialogEnum.CHANGE_PASSWORD_DIALOG
+type ChangePassword = {
+  dialog: DialogEnum.CHANGE_PASSWORD
   options?: UserDialogOption
 }
 
@@ -37,11 +38,16 @@ type AddUser = {
   dialog: DialogEnum.ADD_USER
 }
 
+type NetworkAccess = {
+  dialog: DialogEnum.NETWORK_ACCESS
+}
+
 type DialogOptions =
-  | AddTrackerDialog
-  | ChangeUsernameDialog
-  | ChangePasswordDialog
+  | AddTracker
+  | ChangeUsername
+  | ChangePassword
   | AddUser
+  | NetworkAccess
 
 export type ConfirmOptions = {
   title: React.ReactNode

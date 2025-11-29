@@ -15,3 +15,6 @@ export function parseApiError(error: unknown): string {
 
   return message
 }
+
+export const sleep = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms))
