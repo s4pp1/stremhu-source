@@ -104,7 +104,14 @@ export function NetworkAccess(props: NetworkAccessProps) {
     },
     listeners: {
       onBlur: async ({ formApi }) => {
-        const { enebledlocalIp, address } = formApi.store.state.values
+        const { isValid, values } = formApi.state
+
+        if (!isValid) {
+          if (onValidated) onValidated(false)
+          return
+        }
+
+        const { enebledlocalIp, address } = values
 
         let appUrl = address
 
@@ -126,7 +133,14 @@ export function NetworkAccess(props: NetworkAccessProps) {
         }
       },
       onChange: async ({ formApi }) => {
-        const { enebledlocalIp, address } = formApi.store.state.values
+        const { isValid, values } = formApi.state
+
+        if (!isValid) {
+          if (onValidated) onValidated(false)
+          return
+        }
+
+        const { enebledlocalIp, address } = values
 
         let appUrl = address
 

@@ -27,14 +27,13 @@ export class CatalogClientService {
     }
 
     try {
-      const { episodeImdbId } =
-        await this.client.imdb.imdbResolverControllerResolveSpecial(
-          catalogToken,
-          {
-            episodeNumber: payload.episode,
-            imdbId: payload.imdbId,
-          },
-        );
+      const { episodeImdbId } = await this.client.imdb.resolveSpecial(
+        catalogToken,
+        {
+          episodeNumber: payload.episode,
+          imdbId: payload.imdbId,
+        },
+      );
 
       return episodeImdbId;
     } catch {

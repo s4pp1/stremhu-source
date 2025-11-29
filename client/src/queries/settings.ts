@@ -62,9 +62,9 @@ export function useUpdateSetting() {
       })
       return setting
     },
-    onSuccess: async (updated) => {
-      queryClient.setQueryData(['settings'], updated)
+    onSuccess: async () => {
       await Promise.all([
+        queryClient.fetchQuery({ ...getSettings, staleTime: 0 }),
         queryClient.fetchQuery({ ...getSettingsStatus, staleTime: 0 }),
         queryClient.fetchQuery({ ...getMetadata, staleTime: 0 }),
       ])
