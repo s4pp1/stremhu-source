@@ -37,7 +37,7 @@ export class StremioService {
     }
 
     if (validVersion === null) {
-      validVersion = '0.0.0-dev';
+      validVersion = '0.0.0';
     }
 
     const manifest: ManifestDto = {
