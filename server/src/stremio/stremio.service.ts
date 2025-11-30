@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import semver from 'semver';
 
 import { NodeEnvEnum } from 'src/config/enums/node-env.enum';
 import { SettingsStore } from 'src/settings/core/settings.store';
@@ -27,6 +28,7 @@ export class StremioService {
     const endpoint = await this.settingsStore.getEndpoint();
 
     let id = 'hu.stremhu-source.addon';
+    let validVersion = semver.clean(version);
     let name = 'StremHU | Source';
 
     if (nodeEnv !== NodeEnvEnum.PRODUCTION) {
@@ -34,9 +36,13 @@ export class StremioService {
       name = `${name} (DEV)`;
     }
 
+    if (validVersion === null) {
+      validVersion = '0.0.0-dev';
+    }
+
     const manifest: ManifestDto = {
       id,
-      version,
+      version: validVersion,
       name,
       description,
       resources: [ShortManifestResourceEnum.SRTEAM],
