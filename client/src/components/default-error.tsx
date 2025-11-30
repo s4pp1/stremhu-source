@@ -9,7 +9,7 @@ export function DefaultError(props: ErrorComponentProps) {
 
   return (
     <div className="flex justify-center py-4">
-      <Alert variant="default" className="max-w-sm">
+      <Alert variant="default" className="max-w-md">
         <AlertCircleIcon className="stroke-destructive" />
         <AlertTitle className="text-destructive">
           Hiba történt az StremHU | Source betöltése közben!
