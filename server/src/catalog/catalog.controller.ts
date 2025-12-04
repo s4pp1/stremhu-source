@@ -6,7 +6,7 @@ import { CatalogHealthDto } from './dto/catalog-health.dto';
 
 @Controller('/catalog')
 @ApiTags('StremHU | Catalog')
-export class AppController {
+export class CatalogController {
   constructor(private readonly catalogService: CatalogService) {}
 
   @Get('/health')

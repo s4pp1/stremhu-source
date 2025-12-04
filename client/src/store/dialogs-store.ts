@@ -9,6 +9,7 @@ export enum DialogEnum {
   CHANGE_PASSWORD = 'change-password-dialog',
   ADD_USER = 'add-user',
   NETWORK_ACCESS = 'network-access',
+  STREMHU_CATALOG = 'stremhu-catalog',
 }
 
 type AddTrackerDialogOptions = {
@@ -42,12 +43,17 @@ type NetworkAccess = {
   dialog: DialogEnum.NETWORK_ACCESS
 }
 
+type StremhuCatalog = {
+  dialog: DialogEnum.STREMHU_CATALOG
+}
+
 type DialogOptions =
   | AddTracker
   | ChangeUsername
   | ChangePassword
   | AddUser
   | NetworkAccess
+  | StremhuCatalog
 
 export type ConfirmOptions = {
   title: React.ReactNode

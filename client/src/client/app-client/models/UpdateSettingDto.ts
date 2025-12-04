@@ -8,7 +8,7 @@ export type UpdateSettingDto = {
     downloadLimit?: number;
     uploadLimit?: number;
     hitAndRun?: boolean;
-    cacheRetention?: Record<string, any> | null;
-    catalogToken?: Record<string, any> | null;
+    cacheRetention?: string | null;
+    catalogToken?: string | null;
 };
 

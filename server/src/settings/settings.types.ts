@@ -14,4 +14,5 @@ export interface SettingToUpdate {
   uploadLimit?: number;
   hitAndRun?: boolean;
   cacheRetention?: string | null;
+  catalogToken?: string | null;
 }

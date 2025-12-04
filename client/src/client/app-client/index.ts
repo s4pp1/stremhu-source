@@ -12,6 +12,7 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { AuthLoginDto } from './models/AuthLoginDto';
 export type { BehaviorHintsDto } from './models/BehaviorHintsDto';
+export type { CatalogHealthDto } from './models/CatalogHealthDto';
 export type { ChangePasswordDto } from './models/ChangePasswordDto';
 export type { ChangeUsernameDto } from './models/ChangeUsernameDto';
 export type { CreateSetupDto } from './models/CreateSetupDto';
@@ -47,6 +48,7 @@ export { AuthenticationService } from './services/AuthenticationService';
 export { MeService } from './services/MeService';
 export { MetadataService } from './services/MetadataService';
 export { SettingsService } from './services/SettingsService';
+export { StremHuCatalogService } from './services/StremHuCatalogService';
 export { StremioService } from './services/StremioService';
 export { StremioStreamService } from './services/StremioStreamService';
 export { TrackersService } from './services/TrackersService';

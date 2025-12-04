@@ -26,10 +26,10 @@ export class SettingDto {
   hitAndRun: boolean;
 
   @IsString()
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ type: 'string', nullable: true })
   cacheRetention: string | null;
 
   @IsString()
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ type: 'string', nullable: true })
   catalogToken: string | null;
 }

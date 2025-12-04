@@ -1,4 +1,5 @@
 import { NetworkAccessInfo } from './network-access-info'
+import { StremhuCatalogInfo } from './stremhu-catalog-info'
 import { Trackers } from './trackers'
 import { WebTorrent } from './web-torrent'
 
@@ -17,6 +18,9 @@ export function Settings() {
         </div>
         <div className="break-inside-avoid mb-4">
           <WebTorrent />
+        </div>
+        <div className="break-inside-avoid mb-4">
+          <StremhuCatalogInfo />
         </div>
       </div>
     </div>

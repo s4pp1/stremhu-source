@@ -20,10 +20,15 @@ export class CatalogService {
     private settingsStore: SettingsStore,
   ) {}
 
-  async catalogHealthCheck(): Promise<HealthDto> {
-    const { catalogToken } = await this.settingsStore.findOneOrThrow();
+  async catalogHealthCheck(catalogToken?: string): Promise<HealthDto> {
+    let token = catalogToken || null;
 
     if (!catalogToken) {
+      const setting = await this.settingsStore.findOneOrThrow();
+      token = setting.catalogToken;
+    }
+
+    if (!token) {
       throw new BadRequestException(
         'A StremHU | Catalog kulcs nincs beállítva',
       );
@@ -31,13 +36,11 @@ export class CatalogService {
 
     try {
       const healthCheck =
-        await this.client.monitoring.healthCheckWithToken(catalogToken);
+        await this.client.monitoring.healthCheckWithToken(token);
 
       return healthCheck;
     } catch {
-      throw new BadRequestException(
-        'A StremHU | Catalog kulcs nincs beállítva',
-      );
+      throw new BadRequestException('A StremHU | Catalog kulcs hibás');
     }
   }
 
