@@ -44,13 +44,13 @@ export function LoginAndSecurity() {
 
   const handleChangeToken = async () => {
     await confirmDialog({
-      title: 'Biztos generálsz új Stremio kulcsot?',
+      title: 'Biztos generálsz új kulcsot?',
       description:
-        'A Stremio kulcs generálása után az addont újra kell telepítened.',
+        'A kulcs generálása után az addont újra kell telepítened a Stremio-ban.',
       onConfirm: async () => {
         try {
           await changeStremioToken()
-          toast.success('Új Stremio kulcs generálása elkészült.')
+          toast.success('Új kulcs generálása elkészült.')
         } catch (error) {
           const message = parseApiError(error)
           toast.error(message)

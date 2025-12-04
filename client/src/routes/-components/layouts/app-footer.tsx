@@ -14,11 +14,11 @@ export function AppFooter() {
           <p>
             Hibát találtál?{' '}
             <a
-              href="https://github.com/s4pp1/stremhu-source"
+              href="https://discord.gg/jRSPPY5XaN"
               target="_blank"
               className="text-card-foreground underline underline-offset-4"
             >
-              Jelentsd GitHub-on
+              Jelentsd Discordon
             </a>
           </p>
         </div>

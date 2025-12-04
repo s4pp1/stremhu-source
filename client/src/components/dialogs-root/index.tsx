@@ -1,3 +1,4 @@
+import { StremhuCatalogDialog } from '@/features/stremhu-catalog/stremhu-catalog-dialog'
 import { DialogEnum, useDialogsStore } from '@/store/dialogs-store'
 
 import { Dialog } from '../ui/dialog'
@@ -24,6 +25,9 @@ export function DialogsRoot() {
       {options?.dialog === DialogEnum.ADD_USER && <AddUserContent />}
       {options?.dialog === DialogEnum.NETWORK_ACCESS && (
         <NetworkAccessContent />
+      )}
+      {options?.dialog === DialogEnum.STREMHU_CATALOG && (
+        <StremhuCatalogDialog />
       )}
     </Dialog>
   )

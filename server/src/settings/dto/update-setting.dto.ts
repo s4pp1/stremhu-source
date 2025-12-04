@@ -17,7 +17,7 @@ export class UpdateSettingDto {
   @IsOptional()
   @IsBoolean()
   @ApiProperty({ required: false })
-  enebledlocalIp: boolean;
+  enebledlocalIp?: boolean;
 
   @IsOptional()
   @ValidateIf((setting: UpdateSettingDto) => setting.enebledlocalIp === false)
@@ -33,32 +33,32 @@ export class UpdateSettingDto {
   @ValidateIf((setting: UpdateSettingDto) => setting.enebledlocalIp === true)
   @Validate(IsIPv4)
   @ApiProperty({ required: false })
-  address: string;
+  address?: string;
 
   @IsOptional()
   @IsNumber()
   @ApiProperty({ required: false })
-  downloadLimit: number;
+  downloadLimit?: number;
 
   @IsOptional()
   @IsNumber()
   @ApiProperty({ required: false })
-  uploadLimit: number;
+  uploadLimit?: number;
 
   @IsOptional()
   @IsBoolean()
   @ApiProperty({ required: false })
-  hitAndRun: boolean;
+  hitAndRun?: boolean;
 
   @IsOptional()
   @IsNullable()
   @IsString()
-  @ApiProperty({ nullable: true, required: false })
+  @ApiProperty({ type: 'string', nullable: true, required: false })
   cacheRetention?: string | null;
 
   @IsOptional()
   @IsNullable()
   @IsString()
-  @ApiProperty({ nullable: true, required: false })
+  @ApiProperty({ type: 'string', nullable: true, required: false })
   catalogToken?: string | null;
 }

@@ -101,6 +101,7 @@ export interface PlayStream {
 export interface SelectVideoOptions {
   files: ParsedFile[] | undefined;
   series?: ParsedStreamIdSeries;
+  isSpecial: boolean;
 }
 
 export interface SelectedVideoFile {

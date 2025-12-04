@@ -6,9 +6,11 @@ import type { BaseHttpRequest } from './core/BaseHttpRequest';
 import type { OpenAPIConfig } from './core/OpenAPI';
 import { FetchHttpRequest } from './core/FetchHttpRequest';
 import { ImdbService } from './services/ImdbService';
+import { MonitoringService } from './services/MonitoringService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class CatalogClient {
     public readonly imdb: ImdbService;
+    public readonly monitoring: MonitoringService;
     public readonly request: BaseHttpRequest;
     constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = FetchHttpRequest) {
         this.request = new HttpRequest({
@@ -23,6 +25,7 @@ export class CatalogClient {
             ENCODE_PATH: config?.ENCODE_PATH,
         });
         this.imdb = new ImdbService(this.request);
+        this.monitoring = new MonitoringService(this.request);
     }
 }
 

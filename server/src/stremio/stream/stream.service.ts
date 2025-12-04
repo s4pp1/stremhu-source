@@ -10,7 +10,7 @@ import isVideo from 'is-video';
 import _ from 'lodash';
 import { Torrent, TorrentFile } from 'webtorrent';
 
-import { CatalogClientService } from 'src/catalog-client/catalog-client.service';
+import { CatalogService } from 'src/catalog/catalog.service';
 import { RESOLUTION_LABEL_MAP } from 'src/common/common.constant';
 import { LanguageEnum } from 'src/common/enums/language.enum';
 import { ParsedFile } from 'src/common/utils/parse-torrent.util';
@@ -52,25 +52,25 @@ export class StremioStreamService {
     private trackersService: TrackersService,
     private webTorrentService: WebTorrentService,
     private settingsStore: SettingsStore,
-    private catalogClientService: CatalogClientService,
+    private catalogService: CatalogService,
   ) {}
 
   async streams(payload: FindStreams): Promise<StreamDto[]> {
     const { user, mediaType, series } = payload;
 
-    const imdbId = series
-      ? await this.catalogClientService.getEpisodeImdbId({
-          imdbId: payload.imdbId,
-          season: series.season,
-          episode: series.episode,
-        })
-      : payload.imdbId;
+    const { imdbId, originalImdbId } = await this.catalogService.resolveImdbId({
+      imdbId: payload.imdbId,
+      season: series?.season,
+      episode: series?.episode,
+    });
+
+    const isSpecial = typeof originalImdbId === 'string';
 
     const endpoint = await this.settingsStore.getEndpoint();
 
     const torrents = await this.trackersService.findTorrents({
-      mediaType: mediaType,
       imdbId: imdbId,
+      mediaType: !isSpecial ? mediaType : undefined,
     });
 
     const torrentErrors: TrackerTorrentError[] = [];
@@ -85,6 +85,7 @@ export class StremioStreamService {
 
     const videoFiles = this.findVideoFilesWithRank(
       user,
+      isSpecial,
       torrentSuccesses,
       series,
     );
@@ -206,6 +207,7 @@ export class StremioStreamService {
 
   private findVideoFilesWithRank(
     user: User,
+    isSpecial: boolean,
     torrents: TrackerTorrentSuccess[],
     series?: ParsedStreamIdSeries,
   ): VideoFileWithRank[] {
@@ -225,6 +227,7 @@ export class StremioStreamService {
       const videoFile = this.selectVideoFile({
         files: torrent.parsed.files,
         series,
+        isSpecial,
       });
 
       if (!videoFile) continue;
@@ -356,11 +359,11 @@ export class StremioStreamService {
   private selectVideoFile(
     payload: SelectVideoOptions,
   ): SelectedVideoFile | undefined {
-    const { files, series } = payload;
+    const { files, series, isSpecial } = payload;
 
     if (_.isUndefined(files) || !files.length) return;
 
-    if (series) {
+    if (series && !isSpecial) {
       let fileIndex = 0;
 
       const videoFile = files.find((mediaFile, index) => {

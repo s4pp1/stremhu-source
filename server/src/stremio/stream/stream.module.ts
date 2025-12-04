@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AuthModule } from 'src/auth/auth.module';
-import { CatalogClientModule } from 'src/catalog-client/catalog-client.module';
+import { CatalogModule } from 'src/catalog/catalog.module';
 import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
 import { TorrentCacheCoreModule } from 'src/torrent-cache/core/torrent-cache-core.module';
 import { TrackersModule } from 'src/trackers/trackers.module';
@@ -19,7 +19,7 @@ import { StremioStreamService } from './stream.service';
     WebTorrentModule,
     TrackersModule,
     TorrentCacheCoreModule,
-    CatalogClientModule,
+    CatalogModule,
   ],
   controllers: [StremioStreamController],
   providers: [StremioStreamService],

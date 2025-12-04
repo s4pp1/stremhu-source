@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AuthModule } from './auth/auth.module';
-import { CatalogClientModule } from './catalog-client/catalog-client.module';
+import { CatalogModule } from './catalog/catalog.module';
 import { LocalIpModule } from './local-ip/local-ip.module';
 import { MetadataModule } from './metadata/metadata.module';
 import { SessionsModule } from './sessions/sessions.module';
@@ -24,7 +24,7 @@ import { WebTorrentModule } from './web-torrent/web-torrent.module';
     WebTorrentModule,
     TrackersModule,
     StremioModule,
-    CatalogClientModule,
+    CatalogModule,
   ],
 })
 export class AppFeaturesModule {}

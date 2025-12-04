@@ -1,0 +1,83 @@
+import { useQuery } from '@tanstack/react-query'
+import { Edit2Icon } from 'lucide-react'
+
+import { assertExists } from '@/common/assert'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Item, ItemActions, ItemContent, ItemTitle } from '@/components/ui/item'
+import { getCatalogHealth } from '@/queries/catalog'
+import { getSettings } from '@/queries/settings'
+import { DialogEnum, useDialogs } from '@/store/dialogs-store'
+
+const networkCheckMap = {
+  pending: {
+    title: '🔎 Elérés ellenőrzése...',
+  },
+  success: {
+    title: '🟢 StremHU | Catalog csatlakoztatva',
+  },
+  error: {
+    title: '🔴 StremHU | Catalog nem érhető el vagy hibás a kulcs',
+  },
+}
+
+export function StremhuCatalogInfo() {
+  const { handleOpen } = useDialogs()
+
+  const { data: setting } = useQuery(getSettings)
+  assertExists(setting)
+
+  const catalogConfigured = !!setting.catalogToken
+
+  const { status: catalogHealth } = useQuery({
+    ...getCatalogHealth,
+    enabled: catalogConfigured,
+  })
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>StremHU | Catalog integráció</CardTitle>
+        <CardDescription>
+          A StremHU | Catalog integráció lehetővé teszi, hogy a sorozatok
+          speciális epizódjait is listázza a torrentek közzött.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Item variant="default" className="p-0">
+          <ItemContent>
+            <ItemTitle>
+              {catalogConfigured
+                ? networkCheckMap[catalogHealth].title
+                : '🔑 A StremHU | Catalog kulcs nincs megadva.'}
+            </ItemTitle>
+          </ItemContent>
+          <ItemActions>
+            <Button
+              size="icon-sm"
+              className="rounded-full"
+              onClick={() => handleOpen({ dialog: DialogEnum.STREMHU_CATALOG })}
+            >
+              <Edit2Icon />
+            </Button>
+          </ItemActions>
+        </Item>
+      </CardContent>
+      <CardContent className="flex justify-center">
+        <a
+          href="https://catalog.stremhu.app"
+          target="_blank"
+          className="text-sm font-mono tracking-tight hover:underline"
+        >
+          StremHU | Catalog
+        </a>
+      </CardContent>
+    </Card>
+  )
+}

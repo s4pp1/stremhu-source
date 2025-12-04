@@ -3,8 +3,9 @@ import { ConfigService } from '@nestjs/config';
 
 import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
 
-import { CatalogClientService } from './catalog-client.service';
 import { CATALOG_CLIENT } from './catalog-client.token';
+import { CatalogController } from './catalog.controller';
+import { CatalogService } from './catalog.service';
 import { CatalogClient } from './client';
 
 @Module({
@@ -19,8 +20,9 @@ import { CatalogClient } from './client';
         });
       },
     },
-    CatalogClientService,
+    CatalogService,
   ],
-  exports: [CatalogClientService],
+  controllers: [CatalogController],
+  exports: [CatalogService],
 })
-export class CatalogClientModule {}
+export class CatalogModule {}

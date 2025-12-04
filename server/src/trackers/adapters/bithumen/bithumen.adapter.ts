@@ -40,7 +40,10 @@ export class BithumenAdapter implements TrackerAdapter {
   async find(query: TrackerSearchQuery): Promise<AdapterTorrent[]> {
     const { imdbId, mediaType } = query;
 
-    let categories: string[] = [];
+    let categories: string[] = [
+      ...BITHUMEN_MOVIE_CATEGORY_FILTERS,
+      ...BITHUMEN_SERIES_CATEGORY_FILTERS,
+    ];
 
     switch (mediaType) {
       case StreamMediaTypeEnum.MOVIE:

@@ -20,7 +20,7 @@
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
     "migration:show": "npm run typeorm -- migration:show",
-    "generate:openapi": "openapi --input https://catalog.stremhu.app/api/docs/resolver-json --output ./src/catalog-client/client/ --name CatalogClient"
+    "generate:openapi": "openapi --input https://catalog.stremhu.app/api/docs/public-json --output ./src/catalog-client/client/ --name CatalogClient"
   },
   "dependencies": {
     "@ctrl/video-filename-parser": "5.4.1",

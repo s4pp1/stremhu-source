@@ -1,8 +1,8 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import _ from 'lodash';
 import { EntityManager } from 'typeorm';
 
+import { CatalogService } from 'src/catalog/catalog.service';
 import { GLOBAL_ID } from 'src/common/common.constant';
 import { LocalIpService } from 'src/local-ip/local-ip.service';
 import { TorrentCacheService } from 'src/torrent-cache/torrent-cache.service';
@@ -18,12 +18,12 @@ export class SettingsService implements OnModuleInit {
   private readonly logger = new Logger(SettingsService.name);
 
   constructor(
-    private configService: ConfigService,
-    private settingsStore: SettingsStore,
-    private trackersService: TrackersService,
-    private webTorrentService: WebTorrentService,
-    private localIpService: LocalIpService,
-    private torrentCacheService: TorrentCacheService,
+    private readonly settingsStore: SettingsStore,
+    private readonly trackersService: TrackersService,
+    private readonly webTorrentService: WebTorrentService,
+    private readonly localIpService: LocalIpService,
+    private readonly torrentCacheService: TorrentCacheService,
+    private readonly catalogService: CatalogService,
   ) {}
 
   async onModuleInit() {
@@ -35,6 +35,18 @@ export class SettingsService implements OnModuleInit {
     manager?: EntityManager,
   ): Promise<Setting> {
     const setting = await this.settingsStore.findOneOrThrow();
+
+    // StremHU | Catalog token
+    const { catalogToken } = payload;
+    const tokenNotUndefined = !_.isUndefined(catalogToken);
+    const tokenNotNull = catalogToken !== null;
+    if (
+      tokenNotUndefined &&
+      tokenNotNull &&
+      setting.catalogToken !== catalogToken
+    ) {
+      await this.catalogService.catalogHealthCheck(catalogToken);
+    }
 
     // Hit'n'Run Cron vezérlése
     if (

@@ -48,7 +48,7 @@ export interface LoginRequest {
 }
 
 export interface TrackerSearchQuery {
-  mediaType: StreamMediaTypeEnum;
+  mediaType?: StreamMediaTypeEnum;
   imdbId: string;
 }
 

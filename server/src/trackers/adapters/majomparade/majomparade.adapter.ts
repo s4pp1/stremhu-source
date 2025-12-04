@@ -40,7 +40,10 @@ export class MajomparadeAdapter implements TrackerAdapter {
   async find(query: TrackerSearchQuery): Promise<AdapterTorrent[]> {
     const { imdbId, mediaType } = query;
 
-    let categories: string[] = [];
+    let categories: string[] = [
+      ...MAJOMPARADE_MOVIE_CATEGORY_FILTERS,
+      ...MAJOMPARADE_SERIES_CATEGORY_FILTERS,
+    ];
 
     if (mediaType === StreamMediaTypeEnum.MOVIE) {
       categories = MAJOMPARADE_MOVIE_CATEGORY_FILTERS;

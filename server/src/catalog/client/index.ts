@@ -10,7 +10,9 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { HealthDto } from './models/HealthDto';
 export type { ImdbResolvePayloadDto } from './models/ImdbResolvePayloadDto';
 export type { ImdbResolveResponseDto } from './models/ImdbResolveResponseDto';
 
 export { ImdbService } from './services/ImdbService';
+export { MonitoringService } from './services/MonitoringService';
