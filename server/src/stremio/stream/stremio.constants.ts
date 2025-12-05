@@ -1,1 +1,1 @@
-export const ID_PREFIX = 'stremhu';
+export const ADDON_PREFIX_ID = 'stremhu:';
