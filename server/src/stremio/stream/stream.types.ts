@@ -14,7 +14,6 @@ import { StreamMediaTypeEnum } from '../enums/stream-media-type.enum';
 import { ParsedStreamIdSeries } from './pipe/stream-id.pipe';
 
 export enum RangeErrorEnum {
-  RANGE_NOT_DEFINED = 'range-not-defined',
   RANGE_NOT_SATISFIABLE = 'range-not-satisfiable',
   RANGE_MALFORMED = 'range-malformed',
 }

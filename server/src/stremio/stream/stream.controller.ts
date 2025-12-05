@@ -118,18 +118,17 @@ export class StremioStreamController {
     res.setHeader('Content-Type', contentType);
     res.setHeader('Accept-Ranges', 'bytes');
 
-    if (calculatedRange === RangeErrorEnum.RANGE_NOT_DEFINED) {
-      res.status(200);
-      res.setHeader('Content-Length', `${total}`);
-      return res.end();
-    }
-
     const { start, end, contentLength } = calculatedRange;
 
-    res.status(206);
-    res.setHeader('Content-Length', `${contentLength}`);
-    res.setHeader('Cache-Control', 'no-store, no-transform');
-    res.setHeader('Content-Range', `bytes ${start}-${end}/${total}`);
+    if (rangeHeader === undefined) {
+      res.status(200);
+      res.setHeader('Content-Length', `${total}`);
+    } else {
+      res.status(206);
+      res.setHeader('Content-Length', `${contentLength}`);
+      res.setHeader('Cache-Control', 'no-store, no-transform');
+      res.setHeader('Content-Range', `bytes ${start}-${end}/${total}`);
+    }
 
     if (req.method === 'HEAD') {
       return res.end();
@@ -154,7 +153,13 @@ export class StremioStreamController {
   private calculateRange(payload: CalculateRange): CalculatedRange {
     const { rangeHeader, total } = payload;
 
-    if (!rangeHeader) return RangeErrorEnum.RANGE_NOT_DEFINED;
+    if (!rangeHeader) {
+      return {
+        start: 0,
+        end: total - 1,
+        contentLength: total,
+      };
+    }
 
     const parsedRange = rangeParser(total, rangeHeader);
 
