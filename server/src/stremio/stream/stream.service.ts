@@ -405,8 +405,15 @@ export class StremioStreamService {
 
   private isSampleOrTrash(file: ParsedFile) {
     const isVideoFile = isVideo(file.name);
-    const isSample = file.name.includes('-sample.');
-    return !isVideoFile || isSample;
+    if (!isVideoFile) return true;
+
+    const parts = file.name.split('.');
+
+    const startWithSample = parts[0] === 'sample';
+    const endWithSample = _.nth(parts, -2) === 'sample';
+    const containSample = file.name.includes('-sample.');
+
+    return startWithSample || endWithSample || containSample;
   }
 
   private toLanguageInfo(
