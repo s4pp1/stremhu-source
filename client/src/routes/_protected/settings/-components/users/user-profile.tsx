@@ -12,18 +12,22 @@ import {
 import { toast } from 'sonner'
 import * as z from 'zod'
 
-import type { UserDto } from '@/client/app-client'
-import { UserRoleEnum } from '@/client/app-client'
-import { parseApiError } from '@/common/utils'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Field, FieldLabel } from '@/components/ui/field'
+import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
+import { useDialogs } from '@/routes/-features/dialogs/dialogs-store'
+import { Button } from '@/shared/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/shared/components/ui/card'
+import { Field, FieldLabel } from '@/shared/components/ui/field'
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from '@/components/ui/input-group'
+} from '@/shared/components/ui/input-group'
 import {
   Item,
   ItemActions,
@@ -31,21 +35,22 @@ import {
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from '@/components/ui/item'
+} from '@/shared/components/ui/item'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { useIntegrationDomain } from '@/hooks/use-integration-domain'
-import { useMetadataLabel } from '@/hooks/use-metadata-label'
-import { getMe } from '@/queries/me'
-import { getMetadata } from '@/queries/metadata'
-import { useDeleteUser, useUpdateProfile } from '@/queries/users'
-import { useConfirmDialog } from '@/store/confirm-dialog-store'
-import { DialogEnum, useDialogs } from '@/store/dialogs-store'
+} from '@/shared/components/ui/select'
+import { useIntegrationDomain } from '@/shared/hooks/use-integration-domain'
+import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
+import type { UserDto } from '@/shared/lib/source-client'
+import { UserRoleEnum } from '@/shared/lib/source-client'
+import { parseApiError } from '@/shared/lib/utils'
+import { getMe } from '@/shared/queries/me'
+import { getMetadata } from '@/shared/queries/metadata'
+import { useDeleteUser, useUpdateProfile } from '@/shared/queries/users'
 
 interface UserProfileProps {
   user: UserDto
@@ -65,8 +70,8 @@ export function UserProfile(props: UserProfileProps) {
   if (!me) throw new Error(`Nincs "me" a cache-ben`)
 
   const { getUserRoleLabel } = useMetadataLabel()
-  const confirm = useConfirmDialog()
-  const { handleOpen } = useDialogs()
+  const confirmDialog = useConfirmDialog()
+  const dialogs = useDialogs()
 
   const { urlEndpoint } = useIntegrationDomain({
     stremioToken: user.stremioToken,
@@ -112,7 +117,7 @@ export function UserProfile(props: UserProfileProps) {
   }
 
   const handleDeleteUser = async () => {
-    await confirm({
+    await confirmDialog.confirm({
       title: `Biztos törölni szeretnéd?`,
       description: `"${user.username}" törlése végleges és nem lehetséges visszaállítani!`,
       onConfirm: async () => {
@@ -163,8 +168,8 @@ export function UserProfile(props: UserProfileProps) {
               variant="default"
               className="rounded-full"
               onClick={() =>
-                handleOpen({
-                  dialog: DialogEnum.CHANGE_USERNAME,
+                dialogs.openDialog({
+                  type: 'CHANGE_USERNAME',
                   options: { user: user },
                 })
               }
@@ -186,8 +191,8 @@ export function UserProfile(props: UserProfileProps) {
               variant="default"
               className="rounded-full"
               onClick={() =>
-                handleOpen({
-                  dialog: DialogEnum.CHANGE_PASSWORD,
+                dialogs.openDialog({
+                  type: 'CHANGE_PASSWORD',
                   options: { user: user },
                 })
               }

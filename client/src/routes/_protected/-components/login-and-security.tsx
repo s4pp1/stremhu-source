@@ -9,15 +9,16 @@ import {
 } from 'lucide-react'
 import { toast } from 'sonner'
 
-import { parseApiError } from '@/common/utils'
-import { Button } from '@/components/ui/button'
+import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
+import { useDialogs } from '@/routes/-features/dialogs/dialogs-store'
+import { Button } from '@/shared/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
+} from '@/shared/components/ui/card'
 import {
   Item,
   ItemActions,
@@ -25,25 +26,24 @@ import {
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from '@/components/ui/item'
-import { Separator } from '@/components/ui/separator'
-import { useMetadataLabel } from '@/hooks/use-metadata-label'
-import { getMe, useChangeMeStremioToken } from '@/queries/me'
-import { useConfirmDialog } from '@/store/confirm-dialog-store'
-import { DialogEnum, useDialogs } from '@/store/dialogs-store'
+} from '@/shared/components/ui/item'
+import { Separator } from '@/shared/components/ui/separator'
+import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
+import { parseApiError } from '@/shared/lib/utils'
+import { getMe, useChangeMeStremioToken } from '@/shared/queries/me'
 
 export function LoginAndSecurity() {
   const { data: me } = useQuery(getMe)
   if (!me) throw new Error(`Nincs "me" a cache-ben`)
 
   const { getUserRoleLabel } = useMetadataLabel()
-  const { handleOpen } = useDialogs()
+  const dialogs = useDialogs()
 
   const confirmDialog = useConfirmDialog()
   const { mutateAsync: changeStremioToken } = useChangeMeStremioToken()
 
   const handleChangeToken = async () => {
-    await confirmDialog({
+    await confirmDialog.confirm({
       title: 'Biztos generálsz új kulcsot?',
       description:
         'A kulcs generálása után az addont újra kell telepítened a Stremio-ban.',
@@ -95,7 +95,12 @@ export function LoginAndSecurity() {
               size="icon-sm"
               variant="default"
               className="rounded-full"
-              onClick={() => handleOpen({ dialog: DialogEnum.CHANGE_USERNAME })}
+              onClick={() =>
+                dialogs.openDialog({
+                  type: 'CHANGE_USERNAME',
+                  options: {},
+                })
+              }
             >
               <PencilIcon />
             </Button>
@@ -116,7 +121,9 @@ export function LoginAndSecurity() {
               size="icon-sm"
               variant="default"
               className="rounded-full"
-              onClick={() => handleOpen({ dialog: DialogEnum.CHANGE_PASSWORD })}
+              onClick={() =>
+                dialogs.openDialog({ type: 'CHANGE_PASSWORD', options: {} })
+              }
             >
               <PencilIcon />
             </Button>

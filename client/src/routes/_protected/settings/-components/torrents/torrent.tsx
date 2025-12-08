@@ -8,19 +8,19 @@ import {
 import type { JSX } from 'react'
 import { toast } from 'sonner'
 
-import type { TorrentDto } from '@/client/app-client'
-import { parseApiError } from '@/common/utils'
-import { Button } from '@/components/ui/button'
+import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
+import { Button } from '@/shared/components/ui/button'
 import {
   Card,
   CardAction,
   CardContent,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { useMetadataLabel } from '@/hooks/use-metadata-label'
-import { useDeleteTorrent } from '@/queries/torrents'
-import { useConfirmDialog } from '@/store/confirm-dialog-store'
+} from '@/shared/components/ui/card'
+import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
+import type { TorrentDto } from '@/shared/lib/source-client'
+import { parseApiError } from '@/shared/lib/utils'
+import { useDeleteTorrent } from '@/shared/queries/torrents'
 
 interface TorrentProps {
   torrent: TorrentDto
@@ -51,7 +51,7 @@ export function Torrent(props: TorrentProps) {
   const { mutateAsync: deleteTorrent } = useDeleteTorrent()
 
   async function handleDelete() {
-    await confirmDialog({
+    await confirmDialog.confirm({
       title: `Biztosan törlöd?`,
       description: `A(z) ${torrent.name} törlésével az adatok is törlésre kerülnek.`,
       confirmText: 'Törlés',

@@ -1,16 +1,16 @@
 import { useQuery } from '@tanstack/react-query'
 import { PlusIcon } from 'lucide-react'
 
+import { useDialogs } from '@/routes/-features/dialogs/dialogs-store'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion'
-import { Button } from '@/components/ui/button'
-import { useMetadataLabel } from '@/hooks/use-metadata-label'
-import { getUsers } from '@/queries/users'
-import { DialogEnum, useDialogs } from '@/store/dialogs-store'
+} from '@/shared/components/ui/accordion'
+import { Button } from '@/shared/components/ui/button'
+import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
+import { getUsers } from '@/shared/queries/users'
 
 import { UserPreferences } from './user-preferences'
 import { UserProfile } from './user-profile'
@@ -20,7 +20,7 @@ export function Users() {
   if (!users) throw new Error(`Nincs "users" a cache-ben`)
 
   const { getUserRoleLabel } = useMetadataLabel()
-  const { handleOpen } = useDialogs()
+  const dialogs = useDialogs()
 
   return (
     <div className="grid gap-4">
@@ -29,7 +29,7 @@ export function Users() {
           <h3 className="text-2xl font-medium tracking-tight">Felhasználók</h3>
           <Button
             size="sm"
-            onClick={() => handleOpen({ dialog: DialogEnum.ADD_USER })}
+            onClick={() => dialogs.openDialog({ type: 'ADD_USER' })}
           >
             <PlusIcon />
             Új fiók

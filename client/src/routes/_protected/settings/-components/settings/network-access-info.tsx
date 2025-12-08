@@ -1,25 +1,25 @@
 import { useQuery } from '@tanstack/react-query'
 import { Edit2Icon } from 'lucide-react'
 
-import { assertExists } from '@/common/assert'
-import { Button } from '@/components/ui/button'
+import { useDialogs } from '@/routes/-features/dialogs/dialogs-store'
+import { Button } from '@/shared/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
+} from '@/shared/components/ui/card'
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemDescription,
   ItemTitle,
-} from '@/components/ui/item'
-import { getHealth } from '@/queries/app'
-import { getMetadata } from '@/queries/metadata'
-import { DialogEnum, useDialogs } from '@/store/dialogs-store'
+} from '@/shared/components/ui/item'
+import { assertExists } from '@/shared/lib/utils'
+import { getHealth } from '@/shared/queries/app'
+import { getMetadata } from '@/shared/queries/metadata'
 
 const networkCheckMap = {
   idle: {
@@ -37,7 +37,7 @@ const networkCheckMap = {
 }
 
 export function NetworkAccessInfo() {
-  const { handleOpen } = useDialogs()
+  const dialogs = useDialogs()
 
   const { data: metadata } = useQuery(getMetadata)
   assertExists(metadata)
@@ -66,7 +66,7 @@ export function NetworkAccessInfo() {
             <Button
               size="icon-sm"
               className="rounded-full"
-              onClick={() => handleOpen({ dialog: DialogEnum.NETWORK_ACCESS })}
+              onClick={() => dialogs.openDialog({ type: 'NETWORK_ACCESS' })}
             >
               <Edit2Icon />
             </Button>

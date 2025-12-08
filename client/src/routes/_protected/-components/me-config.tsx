@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 import { AppWindowIcon, LinkIcon, PlusIcon } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/shared/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
+} from '@/shared/components/ui/card'
+import { Input } from '@/shared/components/ui/input'
 import {
   Item,
   ItemActions,
@@ -17,14 +17,14 @@ import {
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from '@/components/ui/item'
+} from '@/shared/components/ui/item'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover'
-import { useIntegrationDomain } from '@/hooks/use-integration-domain'
-import { getMe } from '@/queries/me'
+} from '@/shared/components/ui/popover'
+import { useIntegrationDomain } from '@/shared/hooks/use-integration-domain'
+import { getMe } from '@/shared/queries/me'
 
 export function MeConfig() {
   const { data: me } = useQuery(getMe)

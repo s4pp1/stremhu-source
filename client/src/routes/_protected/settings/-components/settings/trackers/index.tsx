@@ -2,16 +2,16 @@ import { useQuery } from '@tanstack/react-query'
 import { CircleCheckBigIcon, LogInIcon, TrashIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
-import type { TrackerEnum } from '@/client/app-client'
-import { parseApiError } from '@/common/utils'
-import { Button } from '@/components/ui/button'
+import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
+import { useDialogs } from '@/routes/-features/dialogs/dialogs-store'
+import { Button } from '@/shared/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
+} from '@/shared/components/ui/card'
 import {
   Item,
   ItemActions,
@@ -19,12 +19,12 @@ import {
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from '@/components/ui/item'
-import { useMetadataLabel } from '@/hooks/use-metadata-label'
-import { getMetadata } from '@/queries/metadata'
-import { getTrackers, useDeleteTracker } from '@/queries/trackers'
-import { useConfirmDialog } from '@/store/confirm-dialog-store'
-import { DialogEnum, useDialogs } from '@/store/dialogs-store'
+} from '@/shared/components/ui/item'
+import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
+import type { TrackerEnum } from '@/shared/lib/source-client'
+import { parseApiError } from '@/shared/lib/utils'
+import { getMetadata } from '@/shared/queries/metadata'
+import { getTrackers, useDeleteTracker } from '@/shared/queries/trackers'
 
 export function Trackers() {
   const { data: trackers } = useQuery(getTrackers)
@@ -33,7 +33,7 @@ export function Trackers() {
   if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
   if (!trackers) throw new Error(`Nincs "trackers" a cache-ben`)
 
-  const { handleOpen } = useDialogs()
+  const dialogs = useDialogs()
   const confirmDialog = useConfirmDialog()
   const { getTrackerLabel } = useMetadataLabel()
 
@@ -42,7 +42,7 @@ export function Trackers() {
   const renderTrackerLogin = metadata.trackers.length !== trackers.length
 
   const handleDeleteTracker = async (tracker: TrackerEnum) => {
-    await confirmDialog({
+    await confirmDialog.confirm({
       title: `Biztosan törlöd a(z) ${getTrackerLabel(tracker)}-t?`,
       description: `A(z) ${getTrackerLabel(tracker)} törlésével minden aktív torrent törlésre kerül, ami ezen a trackeren fut.`,
       onConfirm: async () => {
@@ -110,8 +110,8 @@ export function Trackers() {
                 size="icon-sm"
                 className="rounded-full bg-green-700 text-white"
                 onClick={() =>
-                  handleOpen({
-                    dialog: DialogEnum.ADD_TRACKER,
+                  dialogs.openDialog({
+                    type: 'ADD_TRACKER',
                     options: { activeTrackers },
                   })
                 }

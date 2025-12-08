@@ -1,19 +1,24 @@
 import { useQuery } from '@tanstack/react-query'
 import { Edit2Icon } from 'lucide-react'
 
-import { assertExists } from '@/common/assert'
-import { Button } from '@/components/ui/button'
+import { useDialogs } from '@/routes/-features/dialogs/dialogs-store'
+import { Button } from '@/shared/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Item, ItemActions, ItemContent, ItemTitle } from '@/components/ui/item'
-import { getCatalogHealth } from '@/queries/catalog'
-import { getSettings } from '@/queries/settings'
-import { DialogEnum, useDialogs } from '@/store/dialogs-store'
+} from '@/shared/components/ui/card'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemTitle,
+} from '@/shared/components/ui/item'
+import { assertExists } from '@/shared/lib/utils'
+import { getCatalogHealth } from '@/shared/queries/catalog'
+import { getSettings } from '@/shared/queries/settings'
 
 const networkCheckMap = {
   pending: {
@@ -28,7 +33,7 @@ const networkCheckMap = {
 }
 
 export function StremhuCatalogInfo() {
-  const { handleOpen } = useDialogs()
+  const dialogs = useDialogs()
 
   const { data: setting } = useQuery(getSettings)
   assertExists(setting)
@@ -62,7 +67,7 @@ export function StremhuCatalogInfo() {
             <Button
               size="icon-sm"
               className="rounded-full"
-              onClick={() => handleOpen({ dialog: DialogEnum.STREMHU_CATALOG })}
+              onClick={() => dialogs.openDialog({ type: 'STREMHU_CATALOG' })}
             >
               <Edit2Icon />
             </Button>

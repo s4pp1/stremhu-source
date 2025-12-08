@@ -5,13 +5,12 @@ import {
 } from '@tanstack/react-router'
 import { Toaster } from 'sonner'
 
-import { ConfirmDialog } from '@/components/confirm-dialog'
-import { DialogsRoot } from '@/components/dialogs-root'
 import type { RouterContext } from '@/main'
-import { getMetadata } from '@/queries/metadata'
-import { getSettingsStatus } from '@/queries/settings-setup'
+import { getMetadata } from '@/shared/queries/metadata'
+import { getSettingsStatus } from '@/shared/queries/settings-setup'
 
-import { AppLayout } from './-components/layouts/app-layout'
+import { Dialogs } from './-features/dialogs/dialogs '
+import { AppLayout } from './-features/layout/app-layout'
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   beforeLoad: async ({ context, location }) => {
@@ -34,9 +33,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => (
     <AppLayout>
       <Outlet />
-      <ConfirmDialog />
-      <DialogsRoot />
       <Toaster position="top-center" />
+      <Dialogs />
     </AppLayout>
   ),
 })

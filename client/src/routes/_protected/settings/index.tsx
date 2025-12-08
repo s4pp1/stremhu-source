@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { getSettings } from '@/queries/settings'
-import { getTrackers } from '@/queries/trackers'
-import { getUsers } from '@/queries/users'
+import { getSettings } from '@/shared/queries/settings'
+import { getTrackers } from '@/shared/queries/trackers'
+import { getUsers } from '@/shared/queries/users'
 
 import { Settings } from './-components/settings'
 import { Torrents } from './-components/torrents'

@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 
-import { UserRoleEnum } from '@/client/app-client'
-import { getMe } from '@/queries/me'
-import { getSettingsStatus } from '@/queries/settings-setup'
+import { UserRoleEnum } from '@/shared/lib/source-client'
+import { getMe } from '@/shared/queries/me'
+import { getSettingsStatus } from '@/shared/queries/settings-setup'
 
 export const Route = createFileRoute('/_protected')({
   beforeLoad: async ({ context }) => {

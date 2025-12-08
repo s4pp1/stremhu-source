@@ -4,26 +4,30 @@ import type { MouseEventHandler } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
-import { assertExists } from '@/common/assert'
-import { parseApiError } from '@/common/utils'
-import { Button } from '@/components/ui/button'
+import { useDialogsStore } from '@/routes/-features/dialogs/dialogs-store'
+import type { OpenedDialog } from '@/routes/-features/dialogs/dialogs-store'
+import { Button } from '@/shared/components/ui/button'
 import {
   DialogContent,
   DialogFooter,
   DialogHeader,
-} from '@/components/ui/dialog'
-import { Field, FieldError } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
-import { useAppForm } from '@/contexts/form-context'
-import { getCatalogHealth } from '@/queries/catalog'
-import { getSettings, useUpdateSetting } from '@/queries/settings'
-import { useDialogsStore } from '@/store/dialogs-store'
+} from '@/shared/components/ui/dialog'
+import { Field, FieldError } from '@/shared/components/ui/field'
+import { Input } from '@/shared/components/ui/input'
+import { useAppForm } from '@/shared/contexts/form-context'
+import { assertExists, parseApiError } from '@/shared/lib/utils'
+import { getCatalogHealth } from '@/shared/queries/catalog'
+import { getSettings, useUpdateSetting } from '@/shared/queries/settings'
+
+import type { StremhuCatalogDialog } from './types'
 
 const schema = z.object({
   catalogToken: z.string().trim(),
 })
 
-export function StremhuCatalogDialog() {
+export function StremhuCatalogDialog(
+  dialog: OpenedDialog & StremhuCatalogDialog,
+) {
   const dialogsStore = useDialogsStore()
 
   const { data: setting } = useQuery(getSettings)
@@ -49,7 +53,7 @@ export function StremhuCatalogDialog() {
           await queryClient.resetQueries(getCatalogHealth)
         }
 
-        dialogsStore.handleClose()
+        dialogsStore.closeDialog(dialog.id)
       } catch (error) {
         const message = parseApiError(error)
         toast.error(message)
@@ -65,9 +69,8 @@ export function StremhuCatalogDialog() {
 
   return (
     <DialogContent
-      className="sm:max-w-md"
-      showCloseButton={false}
-      onEscapeKeyDown={dialogsStore.handleClose}
+      className="md:max-w-md"
+      onEscapeKeyDown={() => dialogsStore.closeDialog(dialog.id)}
     >
       <form.AppForm>
         <DialogHeader>
@@ -100,7 +103,7 @@ export function StremhuCatalogDialog() {
           <Button
             type="button"
             variant="link"
-            onClick={dialogsStore.handleClose}
+            onClick={() => dialogsStore.closeDialog(dialog.id)}
           >
             Mégsem
           </Button>

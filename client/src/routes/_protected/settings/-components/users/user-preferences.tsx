@@ -2,18 +2,27 @@ import { useForm } from '@tanstack/react-form'
 import { useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-import type { LanguageEnum, ResolutionEnum, UserDto } from '@/client/app-client'
-import { SEED_OPTIONS } from '@/common/constrants'
 import { userPreferencesSchema } from '@/common/schemas'
-import { parseApiError } from '@/common/utils'
-import { LanguagesSelector } from '@/components/form/languages-selector'
-import { ResolutionsSelector } from '@/components/form/resolutions-selector'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Item, ItemContent, ItemTitle } from '@/components/ui/item'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { getMetadata } from '@/queries/metadata'
-import { useUpdateProfile } from '@/queries/users'
+import { LanguagesSelector } from '@/shared/components/form/languages-selector'
+import { ResolutionsSelector } from '@/shared/components/form/resolutions-selector'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/shared/components/ui/card'
+import { Item, ItemContent, ItemTitle } from '@/shared/components/ui/item'
+import { Label } from '@/shared/components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group'
+import { SEED_OPTIONS } from '@/shared/constants'
+import type {
+  LanguageEnum,
+  ResolutionEnum,
+  UserDto,
+} from '@/shared/lib/source-client'
+import { parseApiError } from '@/shared/lib/utils'
+import { getMetadata } from '@/shared/queries/metadata'
+import { useUpdateProfile } from '@/shared/queries/users'
 
 interface UserPreferencesProps {
   user: UserDto

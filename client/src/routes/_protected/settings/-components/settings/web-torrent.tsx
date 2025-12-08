@@ -1,32 +1,33 @@
 import { useForm } from '@tanstack/react-form'
 import { useQueryClient } from '@tanstack/react-query'
 import { isEmpty } from 'lodash'
+import { TriangleAlertIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
-import { parseApiError } from '@/common/utils'
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/shared/components/ui/alert'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-} from '@/components/ui/field'
+} from '@/shared/components/ui/card'
+import { Field, FieldError, FieldLabel } from '@/shared/components/ui/field'
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
   InputGroupText,
-} from '@/components/ui/input-group'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
-import { getSettings, useUpdateSetting } from '@/queries/settings'
+} from '@/shared/components/ui/input-group'
+import { Label } from '@/shared/components/ui/label'
+import { Switch } from '@/shared/components/ui/switch'
+import { parseApiError } from '@/shared/lib/utils'
+import { getSettings, useUpdateSetting } from '@/shared/queries/settings'
 
 const schema = z.object({
   downloadLimit: z.coerce.number<string>().positive().nullable(),
@@ -87,13 +88,7 @@ export function WebTorrent() {
           <form.Field name="downloadLimit">
             {(field) => (
               <Field>
-                <FieldLabel htmlFor={field.name}>
-                  WebTorrent letöltési sebesség
-                </FieldLabel>
-                <FieldDescription>
-                  A túl magas letöltési sebesség CPU terhelést okoz! Ajánlott
-                  200 Mbit/s alatt tartani.
-                </FieldDescription>
+                <FieldLabel htmlFor={field.name}>Letöltési sebesség</FieldLabel>
                 <InputGroup>
                   <InputGroupInput
                     placeholder="Nincs limitálva"
@@ -126,12 +121,8 @@ export function WebTorrent() {
             {(field) => (
               <Field>
                 <FieldLabel htmlFor={field.name}>
-                  WebTorrent feltöltési sebesség
+                  Feltöltési sebesség
                 </FieldLabel>
-                <FieldDescription>
-                  A túl magas feltöltési sebesség CPU terhelést okoz! Ajánlott
-                  200 Mbit/s alatt tartani.
-                </FieldDescription>
                 <InputGroup>
                   <InputGroupInput
                     placeholder="Nincs limitálva"
@@ -160,6 +151,15 @@ export function WebTorrent() {
               </Field>
             )}
           </form.Field>
+          <Alert>
+            <TriangleAlertIcon />
+            <AlertTitle>Figyelmeztetés magas CPU használatra!</AlertTitle>
+            <AlertDescription>
+              A túl magas letöltési vagy feltöltési sebesség jelentősen
+              terhelheti a processzort. Javasolt a WebTorrent sebességkorlátokat
+              200 Mbit/s alatt tartani.
+            </AlertDescription>
+          </Alert>
           <form.Field name="hitAndRun">
             {(field) => (
               <Label htmlFor={field.name} className="flex items-start gap-3">

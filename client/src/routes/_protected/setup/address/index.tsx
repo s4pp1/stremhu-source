@@ -1,7 +1,7 @@
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/shared/components/ui/button'
 import {
   Card,
   CardContent,
@@ -9,15 +9,15 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { getSettings } from '@/queries/settings'
-import { getSettingsStatus } from '@/queries/settings-setup'
+} from '@/shared/components/ui/card'
+import { getSettings } from '@/shared/queries/settings'
+import { getSettingsStatus } from '@/shared/queries/settings-setup'
 
 import {
   NETWORK_ACCESS_FORM_ID,
   NETWORK_ACCESS_HEADER,
   NetworkAccess,
-} from '../../../../components/network-access'
+} from '../../../../features/network-access/network-access-form'
 
 export const Route = createFileRoute('/_protected/setup/address/')({
   beforeLoad: async ({ context }) => {

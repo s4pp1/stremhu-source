@@ -411,7 +411,12 @@ export class StremioStreamService {
 
     const startWithSample = parts[0] === 'sample';
     const endWithSample = _.nth(parts, -2) === 'sample';
-    const containSample = file.name.includes('-sample.');
+
+    let containSample = false;
+    ['-sample-', '-sample.'].forEach((smp) => {
+      const contain = file.name.includes(smp);
+      if (contain) containSample = true;
+    });
 
     return startWithSample || endWithSample || containSample;
   }

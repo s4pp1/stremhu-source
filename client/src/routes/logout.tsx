@@ -1,10 +1,15 @@
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
-import { Item, ItemContent, ItemMedia, ItemTitle } from '@/components/ui/item'
-import { Spinner } from '@/components/ui/spinner'
-import { useLogout } from '@/queries/auth'
-import { getMe } from '@/queries/me'
+import {
+  Item,
+  ItemContent,
+  ItemMedia,
+  ItemTitle,
+} from '@/shared/components/ui/item'
+import { Spinner } from '@/shared/components/ui/spinner'
+import { useLogout } from '@/shared/queries/auth'
+import { getMe } from '@/shared/queries/me'
 
 export const Route = createFileRoute('/logout')({
   beforeLoad: async ({ context }) => {
