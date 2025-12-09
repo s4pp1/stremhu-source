@@ -27,9 +27,12 @@ export default registerAs('app', () => {
   const version = parsed.data.version ?? '0.0.0';
   const description = parsed.data.description;
 
-  const httpPort = process.env.HTTP_PORT && _.parseInt(process.env.HTTP_PORT);
-  const httpsPort =
-    process.env.HTTPS_PORT && _.parseInt(process.env.HTTPS_PORT);
+  const httpPort = process.env.HTTP_PORT
+    ? _.parseInt(process.env.HTTP_PORT)
+    : undefined;
+  const httpsPort = process.env.HTTPS_PORT
+    ? _.parseInt(process.env.HTTPS_PORT)
+    : undefined;
 
   const configs: ZodConfig<AppConfig> = {
     'node-env': {
@@ -42,11 +45,11 @@ export default registerAs('app', () => {
     },
     'http-port': {
       value: httpPort || 3000,
-      zod: z.number(),
+      zod: z.number().positive(),
     },
     'https-port': {
       value: httpsPort || 3443,
-      zod: z.number(),
+      zod: z.number().positive(),
     },
     'openapi-dir': {
       value: join(process.cwd(), '/openapi'),
