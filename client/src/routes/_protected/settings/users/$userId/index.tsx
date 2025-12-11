@@ -1,15 +1,13 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQueries } from '@tanstack/react-query'
 import { createFileRoute, useParams } from '@tanstack/react-router'
 
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/shared/components/ui/card'
-import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
 import { assertExists } from '@/shared/lib/utils'
 import { getUser } from '@/shared/queries/users'
+
+import { LanguagePreferences } from './-features/language-preferences'
+import { MediaQualityPreferences } from './-features/media-quality-preferences'
+import { TorrentSeeders } from './-features/torrent-seeders'
+import { UserProfile } from './-features/user-profile'
 
 export const Route = createFileRoute('/_protected/settings/users/$userId/')({
   component: UserRoute,
@@ -18,17 +16,26 @@ export const Route = createFileRoute('/_protected/settings/users/$userId/')({
 function UserRoute() {
   const { userId } = useParams({ from: '/_protected/settings/users/$userId' })
 
-  const { data: user } = useQuery(getUser(userId))
+  const [{ data: user }] = useQueries({
+    queries: [getUser(userId)],
+  })
   assertExists(user)
 
-  const { getUserRoleLabel } = useMetadataLabel()
-
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{user.username}</CardTitle>
-        <CardDescription>{getUserRoleLabel(user.userRole)}</CardDescription>
-      </CardHeader>
-    </Card>
+    <div className="columns-1 md:columns-2 gap-4">
+      <div className="break-inside-avoid mb-4">
+        <UserProfile user={user} />
+      </div>
+
+      <div className="break-inside-avoid mb-4">
+        <LanguagePreferences user={user} />
+      </div>
+      <div className="break-inside-avoid mb-4">
+        <MediaQualityPreferences user={user} />
+      </div>
+      <div className="break-inside-avoid mb-4">
+        <TorrentSeeders user={user} />
+      </div>
+    </div>
   )
 }

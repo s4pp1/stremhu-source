@@ -1,11 +1,9 @@
 import { useForm } from '@tanstack/react-form'
 import { useQueryClient } from '@tanstack/react-query'
 import { isEmpty } from 'lodash'
-import { TriangleAlertIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
-import { Alert, AlertTitle } from '@/shared/components/ui/alert'
 import {
   Card,
   CardContent,
@@ -104,12 +102,6 @@ export function UploadSpeed() {
             </Field>
           )}
         </form.Field>
-        <Alert className="text-orange-400 *:data-[slot=alert-description]:text-orange-400 ">
-          <TriangleAlertIcon />
-          <AlertTitle className="line-clamp-2">
-            200 Mbit/s felett a kliens jelentősen terhelheti a processzort.
-          </AlertTitle>
-        </Alert>
       </CardContent>
     </Card>
   )

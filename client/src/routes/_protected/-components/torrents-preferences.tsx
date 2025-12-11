@@ -16,7 +16,7 @@ import { Label } from '@/shared/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group'
 import { SEED_OPTIONS } from '@/shared/constants'
 import type { LanguageEnum, ResolutionEnum } from '@/shared/lib/source-client'
-import { parseApiError } from '@/shared/lib/utils'
+import { assertExists, parseApiError } from '@/shared/lib/utils'
 import { getMe, useUpdateMePreferences } from '@/shared/queries/me'
 import { getMetadata } from '@/shared/queries/metadata'
 
@@ -24,9 +24,8 @@ export function TorrentsPreferences() {
   const [{ data: me }, { data: metadata }] = useQueries({
     queries: [getMe, getMetadata],
   })
-
-  if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
-  if (!me) throw new Error(`Nincs "me" a cache-ben`)
+  assertExists(me)
+  assertExists(metadata)
 
   const { mutateAsync: updatePreferences } = useUpdateMePreferences()
 
@@ -40,7 +39,7 @@ export function TorrentsPreferences() {
       onChange: userPreferencesSchema,
     },
     listeners: {
-      onChangeDebounceMs: 2000,
+      onChangeDebounceMs: 1000,
       onChange: ({ formApi }) => {
         if (formApi.state.isValid) {
           formApi.handleSubmit()
@@ -50,7 +49,6 @@ export function TorrentsPreferences() {
     onSubmit: async ({ value, formApi }) => {
       try {
         await updatePreferences(value)
-        toast.success('Módosítások elmentve')
       } catch (error) {
         formApi.reset()
         const message = parseApiError(error)
@@ -72,7 +70,6 @@ export function TorrentsPreferences() {
           <form.Field name="torrentResolutions" mode="array">
             {(field) => (
               <ResolutionsSelector
-                className="mt-2"
                 items={field.state.value}
                 onAdd={(resolution) => {
                   field.pushValue(resolution)
@@ -112,7 +109,6 @@ export function TorrentsPreferences() {
           <form.Field name="torrentLanguages" mode="array">
             {(field) => (
               <LanguagesSelector
-                className="mt-2"
                 items={field.state.value}
                 onAdd={(language) => {
                   field.pushValue(language)
@@ -153,7 +149,6 @@ export function TorrentsPreferences() {
           <form.Field name="torrentSeed">
             {(field) => (
               <RadioGroup
-                className="mt-2"
                 value={`${field.state.value}`}
                 onValueChange={(value) => {
                   const number = Number(value)

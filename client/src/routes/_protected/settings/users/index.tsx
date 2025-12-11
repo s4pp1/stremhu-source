@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQueries } from '@tanstack/react-query'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { PlusIcon, TrashIcon } from 'lucide-react'
 import type { MouseEvent } from 'react'
@@ -25,6 +25,7 @@ import { Separator } from '@/shared/components/ui/separator'
 import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
 import type { UserDto } from '@/shared/lib/source-client'
 import { assertExists } from '@/shared/lib/utils'
+import { getMe } from '@/shared/queries/me'
 import { getUsers, useDeleteUser } from '@/shared/queries/users'
 
 import { SETTINGS_USERS_NAME } from './route'
@@ -34,8 +35,11 @@ export const Route = createFileRoute('/_protected/settings/users/')({
 })
 
 function RouteComponent() {
-  const { data: users } = useQuery(getUsers)
+  const [{ data: users }, { data: me }] = useQueries({
+    queries: [getUsers, getMe],
+  })
   assertExists(users)
+  assertExists(me)
 
   const confirmDialog = useConfirmDialog()
   const dialogs = useDialogs()
@@ -75,7 +79,7 @@ function RouteComponent() {
         </CardAction>
       </CardHeader>
       <Separator />
-      <CardContent>
+      <CardContent className="grid gap-3">
         {users.map((user) => (
           <Link
             key={user.id}
@@ -92,16 +96,18 @@ function RouteComponent() {
                 </ItemTitle>
                 <ItemDescription>{user.stremioToken}</ItemDescription>
               </ItemContent>
-              <ItemActions>
-                <Button
-                  variant="destructive"
-                  size="icon-sm"
-                  className="rounded-full"
-                  onClick={handleDeleteUser(user)}
-                >
-                  <TrashIcon />
-                </Button>
-              </ItemActions>
+              {me.id !== user.id && (
+                <ItemActions>
+                  <Button
+                    variant="destructive"
+                    size="icon-sm"
+                    className="rounded-full"
+                    onClick={handleDeleteUser(user)}
+                  >
+                    <TrashIcon />
+                  </Button>
+                </ItemActions>
+              )}
             </Item>
           </Link>
         ))}

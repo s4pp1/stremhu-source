@@ -6,7 +6,6 @@ import {
   PencilIcon,
   ShieldUserIcon,
   TrashIcon,
-  UserIcon,
   UserPenIcon,
 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -17,7 +16,9 @@ import { useDialogs } from '@/routes/-features/dialogs/dialogs-store'
 import { Button } from '@/shared/components/ui/button'
 import {
   Card,
+  CardAction,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
@@ -32,7 +33,6 @@ import {
   Item,
   ItemActions,
   ItemContent,
-  ItemDescription,
   ItemMedia,
   ItemTitle,
 } from '@/shared/components/ui/item'
@@ -44,7 +44,6 @@ import {
   SelectValue,
 } from '@/shared/components/ui/select'
 import { useIntegrationDomain } from '@/shared/hooks/use-integration-domain'
-import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
 import type { UserDto } from '@/shared/lib/source-client'
 import { UserRoleEnum } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
@@ -52,7 +51,7 @@ import { getMe } from '@/shared/queries/me'
 import { getMetadata } from '@/shared/queries/metadata'
 import { useDeleteUser, useUpdateProfile } from '@/shared/queries/users'
 
-interface UserProfileProps {
+type UserProfile = {
   user: UserDto
 }
 
@@ -60,7 +59,7 @@ const schema = z.object({
   userRole: z.enum(UserRoleEnum),
 })
 
-export function UserProfile(props: UserProfileProps) {
+export function UserProfile(props: UserProfile) {
   const { user } = props
 
   const [{ data: metadata }, { data: me }] = useQueries({
@@ -69,7 +68,6 @@ export function UserProfile(props: UserProfileProps) {
   if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
   if (!me) throw new Error(`Nincs "me" a cache-ben`)
 
-  const { getUserRoleLabel } = useMetadataLabel()
   const confirmDialog = useConfirmDialog()
   const dialogs = useDialogs()
 
@@ -129,32 +127,22 @@ export function UserProfile(props: UserProfileProps) {
   return (
     <Card className="break-inside-avoid mb-4">
       <CardHeader>
-        <CardTitle>Bejelentkezés és biztonság</CardTitle>
+        <CardTitle>"{user.username}" felhasználó</CardTitle>
+        <CardDescription>Felhasználó profiljának módosítása</CardDescription>
+        {user.id !== me.id && (
+          <CardAction>
+            <Button
+              size="icon-sm"
+              variant="destructive"
+              className="rounded-full"
+              onClick={handleDeleteUser}
+            >
+              <TrashIcon />
+            </Button>
+          </CardAction>
+        )}
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
-        <Item variant="default" className="p-0">
-          <ItemMedia variant="icon">
-            <UserIcon />
-          </ItemMedia>
-          <ItemContent>
-            <ItemTitle>{user.username}</ItemTitle>
-            <ItemDescription>
-              {getUserRoleLabel(user.userRole)} jogosultság
-            </ItemDescription>
-          </ItemContent>
-          {user.id !== me.id && (
-            <ItemActions>
-              <Button
-                size="icon-sm"
-                variant="destructive"
-                className="rounded-full"
-                onClick={handleDeleteUser}
-              >
-                <TrashIcon />
-              </Button>
-            </ItemActions>
-          )}
-        </Item>
         <Item variant="default" className="p-0">
           <ItemMedia variant="icon">
             <UserPenIcon />

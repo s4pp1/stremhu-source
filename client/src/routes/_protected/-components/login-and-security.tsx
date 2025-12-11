@@ -29,12 +29,12 @@ import {
 } from '@/shared/components/ui/item'
 import { Separator } from '@/shared/components/ui/separator'
 import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
-import { parseApiError } from '@/shared/lib/utils'
+import { assertExists, parseApiError } from '@/shared/lib/utils'
 import { getMe, useChangeMeStremioToken } from '@/shared/queries/me'
 
 export function LoginAndSecurity() {
   const { data: me } = useQuery(getMe)
-  if (!me) throw new Error(`Nincs "me" a cache-ben`)
+  assertExists(me)
 
   const { getUserRoleLabel } = useMetadataLabel()
   const dialogs = useDialogs()
