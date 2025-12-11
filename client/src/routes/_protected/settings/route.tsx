@@ -22,34 +22,37 @@ function SettingsLayout() {
   assertExists(me)
 
   return (
-    <div className="grid gap-4">
-      <SettingsBreadcrumb />
-      <div className="flex gap-2 items-center bg-card border shadow-sm rounded-md p-1">
-        <Button asChild variant="ghost" size="sm">
-          <Link
-            to="/settings/system"
-            activeProps={{ className: 'bg-background' }}
-          >
-            {SETTINGS_SYSTEM_NAME}
-          </Link>
-        </Button>
-        <Button asChild variant="ghost" size="sm">
-          <Link
-            to="/settings/users"
-            activeProps={{ className: 'bg-background' }}
-          >
-            {SETTINGS_USERS_NAME}
-          </Link>
-        </Button>
-        <Button asChild variant="ghost" size="sm">
-          <Link
-            to="/settings/web-torrent"
-            activeProps={{ className: 'bg-background' }}
-          >
-            {SETTINGS_WEB_TORRENT_NAME}
-          </Link>
-        </Button>
+    <div className="grid gap-8">
+      <div className="grid gap-4">
+        <SettingsBreadcrumb />
+        <div className="flex gap-2 items-center bg-card border shadow-sm rounded-md p-1">
+          <Button asChild variant="ghost" size="sm">
+            <Link
+              to="/settings/system"
+              activeProps={{ className: 'bg-background' }}
+            >
+              {SETTINGS_SYSTEM_NAME}
+            </Link>
+          </Button>
+          <Button asChild variant="ghost" size="sm">
+            <Link
+              to="/settings/users"
+              activeProps={{ className: 'bg-background' }}
+            >
+              {SETTINGS_USERS_NAME}
+            </Link>
+          </Button>
+          <Button asChild variant="ghost" size="sm">
+            <Link
+              to="/settings/web-torrent"
+              activeProps={{ className: 'bg-background' }}
+            >
+              {SETTINGS_WEB_TORRENT_NAME}
+            </Link>
+          </Button>
+        </div>
       </div>
+
       <Outlet />
     </div>
   )

@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
@@ -19,7 +20,7 @@ export const Route = createFileRoute('/_protected/settings/web-torrent/')({
 function RouteComponent() {
   return (
     <div className="grid gap-8">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-2 gap-4">
         <DownloadSpeed />
         <UploadSpeed />
       </div>
@@ -27,6 +28,11 @@ function RouteComponent() {
       <Card>
         <CardHeader>
           <CardTitle>Aktív torrentek</CardTitle>
+          <CardDescription>
+            Az egyes torrentek alatt látható értékek sorrendben: a torrent
+            teljes mérete, az eddig letöltött adat, az összes feltöltött adat és
+            az aktuális feltöltési sebesség.
+          </CardDescription>
         </CardHeader>
         <Separator />
         <CardContent>

@@ -1,36 +1,28 @@
 import { useQuery } from '@tanstack/react-query'
 import { CircleCheckBigIcon } from 'lucide-react'
 
-import { DefaultError } from '@/shared/components/default-error'
-import { DefaultLoading } from '@/shared/components/default-loading'
 import {
   Alert,
   AlertDescription,
   AlertTitle,
 } from '@/shared/components/ui/alert'
-import { torrentsOptions } from '@/shared/queries/torrents'
+import { assertExists } from '@/shared/lib/utils'
+import { getTorrents } from '@/shared/queries/torrents'
 
 import { Torrent } from './torrent'
 
 export function Torrents() {
-  const { isPending, isError, error, data } = useQuery(torrentsOptions())
+  const { data: torrents } = useQuery(getTorrents)
+  assertExists(torrents)
 
-  if (isPending) {
-    return <DefaultLoading message="Torrentek betöltése" />
-  }
-
-  if (isError) {
-    return <DefaultError error={error} />
-  }
-
-  if (data.length === 0) {
+  if (torrents.length === 0) {
     return (
       <Alert>
         <CircleCheckBigIcon />
         <AlertTitle>Nincs aktív torrent</AlertTitle>
         <AlertDescription>
-          Amint elindítasz egy filmet vagy sorozatot, itt jelennek meg az aktív
-          torrentek.
+          Amint elindítasz egy filmet vagy sorozatot, az ahhoz tartozó aktív
+          torrentek itt jelennek meg.
         </AlertDescription>
       </Alert>
     )
@@ -38,7 +30,7 @@ export function Torrents() {
 
   return (
     <div className="grid gap-4">
-      {data.map((torrent) => (
+      {torrents.map((torrent) => (
         <Torrent key={torrent.infoHash} torrent={torrent} />
       ))}
     </div>

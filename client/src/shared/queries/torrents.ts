@@ -6,17 +6,15 @@ import {
 
 import { appClient } from '@/shared/lib/client'
 
-export function torrentsOptions() {
-  return queryOptions({
-    queryKey: ['torrents'],
-    refetchInterval: 5000,
-    queryFn: async () => {
-      const torrents = await appClient.webTorrent.find()
+export const getTorrents = queryOptions({
+  queryKey: ['torrents'],
+  refetchInterval: 5000,
+  queryFn: async () => {
+    const torrents = await appClient.webTorrent.find()
 
-      return torrents
-    },
-  })
-}
+    return torrents
+  },
+})
 
 export function useDeleteTorrent() {
   const queryClient = useQueryClient()

@@ -22,16 +22,18 @@ import {
 } from '@/shared/components/ui/item'
 import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
 import type { TrackerEnum } from '@/shared/lib/source-client'
-import { parseApiError } from '@/shared/lib/utils'
+import { assertExists, parseApiError } from '@/shared/lib/utils'
 import { getMetadata } from '@/shared/queries/metadata'
 import { getTrackers, useDeleteTracker } from '@/shared/queries/trackers'
+
+import { HitAndRun } from '../../../system/-features/hit-and-run'
 
 export function Trackers() {
   const { data: trackers } = useQuery(getTrackers)
   const { data: metadata } = useQuery(getMetadata)
 
-  if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
-  if (!trackers) throw new Error(`Nincs "trackers" a cache-ben`)
+  assertExists(metadata)
+  assertExists(trackers)
 
   const dialogs = useDialogs()
   const confirmDialog = useConfirmDialog()
@@ -121,6 +123,7 @@ export function Trackers() {
             </ItemActions>
           </Item>
         )}
+        <HitAndRun />
       </CardContent>
     </Card>
   )

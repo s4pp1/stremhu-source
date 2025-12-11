@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
-import { Separator } from '@/shared/components/ui/separator'
 import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
 import { assertExists } from '@/shared/lib/utils'
 import { getUser } from '@/shared/queries/users'
