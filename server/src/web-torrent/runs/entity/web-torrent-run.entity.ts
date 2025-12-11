@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryColumn, Unique } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryColumn,
+  Unique,
+  UpdateDateColumn,
+} from 'typeorm';
 
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
@@ -19,4 +26,10 @@ export class WebTorrentRun {
 
   @Column({ type: 'integer', default: 0 })
   uploaded: number;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 }

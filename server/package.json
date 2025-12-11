@@ -34,7 +34,7 @@
     "@nestjs/typeorm": "11.0.0",
     "@node-rs/argon2": "2.0.2",
     "axios": "1.13.2",
-    "axios-cookiejar-support": "6.0.5",
+    "http-cookie-agent": "7.0.3",
     "better-sqlite3": "12.5.0",
     "cheerio": "1.1.2",
     "class-transformer": "0.5.1",

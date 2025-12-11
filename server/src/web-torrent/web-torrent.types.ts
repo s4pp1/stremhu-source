@@ -20,4 +20,7 @@ export interface ActiveTorrent {
   imdbId: string;
   tracker: TrackerEnum;
   torrentId: string;
+
+  updatedAt: Date;
+  createdAt: Date;
 }
