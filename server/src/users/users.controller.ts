@@ -66,11 +66,22 @@ export class UsersController {
   @ApiResponse({ status: 200, type: UserDto })
   @Put('/:userId')
   async updateOne(
+    @Req() req: Request,
     @Param('userId', new ParseUUIDPipe()) userId: string,
     @Body() payload: UpdateUserDto,
   ): Promise<UserDto> {
-    const user = await this.usersService.updateOneOrThrow(userId, payload);
-    return toDto(UserDto, user);
+    const { id, userRole } = req.user || {};
+    if (id === userId && userRole !== payload.userRole) {
+      throw new ForbiddenException(
+        'Saját fiókod jogosultságát nem módosíthatod!',
+      );
+    }
+
+    const updatedUser = await this.usersService.updateOneOrThrow(
+      userId,
+      payload,
+    );
+    return toDto(UserDto, updatedUser);
   }
 
   @ApiResponse({ status: 200, type: UserDto })

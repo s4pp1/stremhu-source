@@ -196,6 +196,7 @@ export function UserProfile(props: UserProfile) {
               <Select
                 value={field.state.value}
                 name={field.name}
+                disabled={me.id === user.id}
                 onValueChange={(value: UserRoleEnum) =>
                   field.handleChange(value)
                 }

@@ -81,7 +81,7 @@ export function UserItem(props: UserItem) {
           <div className="flex gap-2 items-center">
             {user.stremioToken}
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger asChild>
                 <InputGroupButton
                   variant="ghost"
                   size="icon-sm"
