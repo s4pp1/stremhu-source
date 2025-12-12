@@ -9,7 +9,7 @@ import {
 import { assertExists } from '@/shared/lib/utils'
 import { getTorrents } from '@/shared/queries/torrents'
 
-import { Torrent } from './torrent'
+import { Torrent } from '../-components/torrent'
 
 export function Torrents() {
   const { data: torrents } = useQuery(getTorrents)

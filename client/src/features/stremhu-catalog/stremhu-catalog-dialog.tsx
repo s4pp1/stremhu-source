@@ -1,4 +1,3 @@
-import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import type { MouseEventHandler } from 'react'
 import { toast } from 'sonner'
@@ -10,8 +9,10 @@ import { Button } from '@/shared/components/ui/button'
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
 } from '@/shared/components/ui/dialog'
 import { Field, FieldError } from '@/shared/components/ui/field'
 import { Input } from '@/shared/components/ui/input'

@@ -20,13 +20,14 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/shared/components/ui/item'
+import { Separator } from '@/shared/components/ui/separator'
 import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
 import type { TrackerEnum } from '@/shared/lib/source-client'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
 import { getMetadata } from '@/shared/queries/metadata'
 import { getTrackers, useDeleteTracker } from '@/shared/queries/trackers'
 
-import { HitAndRun } from '../../../system/-features/hit-and-run'
+import { HitAndRun } from './hit-and-run'
 
 export function Trackers() {
   const { data: trackers } = useQuery(getTrackers)
@@ -123,6 +124,7 @@ export function Trackers() {
             </ItemActions>
           </Item>
         )}
+        <Separator />
         <HitAndRun />
       </CardContent>
     </Card>

@@ -7,9 +7,9 @@ import {
 } from '@/shared/components/ui/card'
 import { Separator } from '@/shared/components/ui/separator'
 
-import { LoginAndSecurity } from './-components/login-and-security'
-import { MeConfig } from './-components/me-config'
-import { TorrentsPreferences } from './-components/torrents-preferences'
+import { LoginAndSecurity } from './-features/login-and-security'
+import { MeConfig } from './-features/me-config'
+import { TorrentsPreferences } from './-features/torrents-preferences'
 
 export const Route = createFileRoute('/_protected/')({
   component: ProfileRoute,

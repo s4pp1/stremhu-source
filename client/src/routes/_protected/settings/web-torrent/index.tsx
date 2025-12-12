@@ -11,8 +11,8 @@ import {
 } from '@/shared/components/ui/card'
 import { Separator } from '@/shared/components/ui/separator'
 
-import { Torrents } from '../-components/torrents'
 import { DownloadSpeed } from './-features/download-speed'
+import { Torrents } from './-features/torrents'
 import { UploadSpeed } from './-features/upload-speed'
 
 export const Route = createFileRoute('/_protected/settings/web-torrent/')({
@@ -34,7 +34,6 @@ function RouteComponent() {
           </AlertTitle>
         </Alert>
       </div>
-
       <Separator />
       <Card>
         <CardHeader>
