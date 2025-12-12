@@ -22,6 +22,15 @@ export const getUsers = queryOptions({
   },
 })
 
+export const getUser = (userId: string) =>
+  queryOptions({
+    queryKey: ['users', userId],
+    queryFn: async () => {
+      const user = await appClient.users.findOne(userId)
+      return user
+    },
+  })
+
 export function useAddUser() {
   const queryClient = useQueryClient()
   return useMutation({

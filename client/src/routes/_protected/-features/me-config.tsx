@@ -24,11 +24,12 @@ import {
   PopoverTrigger,
 } from '@/shared/components/ui/popover'
 import { useIntegrationDomain } from '@/shared/hooks/use-integration-domain'
+import { assertExists } from '@/shared/lib/utils'
 import { getMe } from '@/shared/queries/me'
 
 export function MeConfig() {
   const { data: me } = useQuery(getMe)
-  if (!me) throw new Error(`Nincs "me" a cache-ben`)
+  assertExists(me)
 
   const { appEndpoint, webEndpoint, urlEndpoint } = useIntegrationDomain({
     stremioToken: me.stremioToken,

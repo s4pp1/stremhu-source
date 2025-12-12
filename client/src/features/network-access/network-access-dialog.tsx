@@ -38,7 +38,7 @@ export function NetworkAccessDialog(
         <DialogFooter>
           <Button
             type="button"
-            variant="link"
+            variant="outline"
             onClick={() => dialogsStore.closeDialog(dialog.id)}
           >
             Mégsem

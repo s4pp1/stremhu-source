@@ -60,6 +60,7 @@ export function ResolutionsSelector(props: ResolutionSelectorProps) {
           <Separator />
           {inactiveResolutions.map((inactiveResolution) => (
             <SelectorItem
+              key={inactiveResolution.value}
               label={inactiveResolution.label}
               value={inactiveResolution.value}
               onAdd={onAdd}

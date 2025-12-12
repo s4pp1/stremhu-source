@@ -14,9 +14,18 @@ import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as SetupIndexRouteImport } from './routes/setup/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as ProtectedIndexRouteImport } from './routes/_protected/index'
+import { Route as ProtectedSettingsRouteRouteImport } from './routes/_protected/settings/route'
 import { Route as SetupUserIndexRouteImport } from './routes/setup/user/index'
 import { Route as ProtectedSettingsIndexRouteImport } from './routes/_protected/settings/index'
+import { Route as ProtectedSettingsWebTorrentRouteRouteImport } from './routes/_protected/settings/web-torrent/route'
+import { Route as ProtectedSettingsUsersRouteRouteImport } from './routes/_protected/settings/users/route'
+import { Route as ProtectedSettingsSystemRouteRouteImport } from './routes/_protected/settings/system/route'
 import { Route as ProtectedSetupAddressIndexRouteImport } from './routes/_protected/setup/address/index'
+import { Route as ProtectedSettingsWebTorrentIndexRouteImport } from './routes/_protected/settings/web-torrent/index'
+import { Route as ProtectedSettingsUsersIndexRouteImport } from './routes/_protected/settings/users/index'
+import { Route as ProtectedSettingsSystemIndexRouteImport } from './routes/_protected/settings/system/index'
+import { Route as ProtectedSettingsUsersUserIdRouteRouteImport } from './routes/_protected/settings/users/$userId/route'
+import { Route as ProtectedSettingsUsersUserIdIndexRouteImport } from './routes/_protected/settings/users/$userId/index'
 
 const LogoutRoute = LogoutRouteImport.update({
   id: '/logout',
@@ -42,31 +51,93 @@ const ProtectedIndexRoute = ProtectedIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProtectedRoute,
 } as any)
+const ProtectedSettingsRouteRoute = ProtectedSettingsRouteRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => ProtectedRoute,
+} as any)
 const SetupUserIndexRoute = SetupUserIndexRouteImport.update({
   id: '/setup/user/',
   path: '/setup/user/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProtectedSettingsIndexRoute = ProtectedSettingsIndexRouteImport.update({
-  id: '/settings/',
-  path: '/settings/',
-  getParentRoute: () => ProtectedRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProtectedSettingsRouteRoute,
 } as any)
+const ProtectedSettingsWebTorrentRouteRoute =
+  ProtectedSettingsWebTorrentRouteRouteImport.update({
+    id: '/web-torrent',
+    path: '/web-torrent',
+    getParentRoute: () => ProtectedSettingsRouteRoute,
+  } as any)
+const ProtectedSettingsUsersRouteRoute =
+  ProtectedSettingsUsersRouteRouteImport.update({
+    id: '/users',
+    path: '/users',
+    getParentRoute: () => ProtectedSettingsRouteRoute,
+  } as any)
+const ProtectedSettingsSystemRouteRoute =
+  ProtectedSettingsSystemRouteRouteImport.update({
+    id: '/system',
+    path: '/system',
+    getParentRoute: () => ProtectedSettingsRouteRoute,
+  } as any)
 const ProtectedSetupAddressIndexRoute =
   ProtectedSetupAddressIndexRouteImport.update({
     id: '/setup/address/',
     path: '/setup/address/',
     getParentRoute: () => ProtectedRoute,
   } as any)
+const ProtectedSettingsWebTorrentIndexRoute =
+  ProtectedSettingsWebTorrentIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProtectedSettingsWebTorrentRouteRoute,
+  } as any)
+const ProtectedSettingsUsersIndexRoute =
+  ProtectedSettingsUsersIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProtectedSettingsUsersRouteRoute,
+  } as any)
+const ProtectedSettingsSystemIndexRoute =
+  ProtectedSettingsSystemIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProtectedSettingsSystemRouteRoute,
+  } as any)
+const ProtectedSettingsUsersUserIdRouteRoute =
+  ProtectedSettingsUsersUserIdRouteRouteImport.update({
+    id: '/$userId',
+    path: '/$userId',
+    getParentRoute: () => ProtectedSettingsUsersRouteRoute,
+  } as any)
+const ProtectedSettingsUsersUserIdIndexRoute =
+  ProtectedSettingsUsersUserIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProtectedSettingsUsersUserIdRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/logout': typeof LogoutRoute
+  '/settings': typeof ProtectedSettingsRouteRouteWithChildren
   '/': typeof ProtectedIndexRoute
   '/login': typeof LoginIndexRoute
   '/setup': typeof SetupIndexRoute
-  '/settings': typeof ProtectedSettingsIndexRoute
+  '/settings/system': typeof ProtectedSettingsSystemRouteRouteWithChildren
+  '/settings/users': typeof ProtectedSettingsUsersRouteRouteWithChildren
+  '/settings/web-torrent': typeof ProtectedSettingsWebTorrentRouteRouteWithChildren
+  '/settings/': typeof ProtectedSettingsIndexRoute
   '/setup/user': typeof SetupUserIndexRoute
+  '/settings/users/$userId': typeof ProtectedSettingsUsersUserIdRouteRouteWithChildren
+  '/settings/system/': typeof ProtectedSettingsSystemIndexRoute
+  '/settings/users/': typeof ProtectedSettingsUsersIndexRoute
+  '/settings/web-torrent/': typeof ProtectedSettingsWebTorrentIndexRoute
   '/setup/address': typeof ProtectedSetupAddressIndexRoute
+  '/settings/users/$userId/': typeof ProtectedSettingsUsersUserIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/logout': typeof LogoutRoute
@@ -75,29 +146,51 @@ export interface FileRoutesByTo {
   '/setup': typeof SetupIndexRoute
   '/settings': typeof ProtectedSettingsIndexRoute
   '/setup/user': typeof SetupUserIndexRoute
+  '/settings/system': typeof ProtectedSettingsSystemIndexRoute
+  '/settings/users': typeof ProtectedSettingsUsersIndexRoute
+  '/settings/web-torrent': typeof ProtectedSettingsWebTorrentIndexRoute
   '/setup/address': typeof ProtectedSetupAddressIndexRoute
+  '/settings/users/$userId': typeof ProtectedSettingsUsersUserIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_protected': typeof ProtectedRouteWithChildren
   '/logout': typeof LogoutRoute
+  '/_protected/settings': typeof ProtectedSettingsRouteRouteWithChildren
   '/_protected/': typeof ProtectedIndexRoute
   '/login/': typeof LoginIndexRoute
   '/setup/': typeof SetupIndexRoute
+  '/_protected/settings/system': typeof ProtectedSettingsSystemRouteRouteWithChildren
+  '/_protected/settings/users': typeof ProtectedSettingsUsersRouteRouteWithChildren
+  '/_protected/settings/web-torrent': typeof ProtectedSettingsWebTorrentRouteRouteWithChildren
   '/_protected/settings/': typeof ProtectedSettingsIndexRoute
   '/setup/user/': typeof SetupUserIndexRoute
+  '/_protected/settings/users/$userId': typeof ProtectedSettingsUsersUserIdRouteRouteWithChildren
+  '/_protected/settings/system/': typeof ProtectedSettingsSystemIndexRoute
+  '/_protected/settings/users/': typeof ProtectedSettingsUsersIndexRoute
+  '/_protected/settings/web-torrent/': typeof ProtectedSettingsWebTorrentIndexRoute
   '/_protected/setup/address/': typeof ProtectedSetupAddressIndexRoute
+  '/_protected/settings/users/$userId/': typeof ProtectedSettingsUsersUserIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/logout'
+    | '/settings'
     | '/'
     | '/login'
     | '/setup'
-    | '/settings'
+    | '/settings/system'
+    | '/settings/users'
+    | '/settings/web-torrent'
+    | '/settings/'
     | '/setup/user'
+    | '/settings/users/$userId'
+    | '/settings/system/'
+    | '/settings/users/'
+    | '/settings/web-torrent/'
     | '/setup/address'
+    | '/settings/users/$userId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/logout'
@@ -106,17 +199,30 @@ export interface FileRouteTypes {
     | '/setup'
     | '/settings'
     | '/setup/user'
+    | '/settings/system'
+    | '/settings/users'
+    | '/settings/web-torrent'
     | '/setup/address'
+    | '/settings/users/$userId'
   id:
     | '__root__'
     | '/_protected'
     | '/logout'
+    | '/_protected/settings'
     | '/_protected/'
     | '/login/'
     | '/setup/'
+    | '/_protected/settings/system'
+    | '/_protected/settings/users'
+    | '/_protected/settings/web-torrent'
     | '/_protected/settings/'
     | '/setup/user/'
+    | '/_protected/settings/users/$userId'
+    | '/_protected/settings/system/'
+    | '/_protected/settings/users/'
+    | '/_protected/settings/web-torrent/'
     | '/_protected/setup/address/'
+    | '/_protected/settings/users/$userId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -164,6 +270,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/settings': {
+      id: '/_protected/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof ProtectedSettingsRouteRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
     '/setup/user/': {
       id: '/setup/user/'
       path: '/setup/user'
@@ -173,10 +286,31 @@ declare module '@tanstack/react-router' {
     }
     '/_protected/settings/': {
       id: '/_protected/settings/'
-      path: '/settings'
-      fullPath: '/settings'
+      path: '/'
+      fullPath: '/settings/'
       preLoaderRoute: typeof ProtectedSettingsIndexRouteImport
-      parentRoute: typeof ProtectedRoute
+      parentRoute: typeof ProtectedSettingsRouteRoute
+    }
+    '/_protected/settings/web-torrent': {
+      id: '/_protected/settings/web-torrent'
+      path: '/web-torrent'
+      fullPath: '/settings/web-torrent'
+      preLoaderRoute: typeof ProtectedSettingsWebTorrentRouteRouteImport
+      parentRoute: typeof ProtectedSettingsRouteRoute
+    }
+    '/_protected/settings/users': {
+      id: '/_protected/settings/users'
+      path: '/users'
+      fullPath: '/settings/users'
+      preLoaderRoute: typeof ProtectedSettingsUsersRouteRouteImport
+      parentRoute: typeof ProtectedSettingsRouteRoute
+    }
+    '/_protected/settings/system': {
+      id: '/_protected/settings/system'
+      path: '/system'
+      fullPath: '/settings/system'
+      preLoaderRoute: typeof ProtectedSettingsSystemRouteRouteImport
+      parentRoute: typeof ProtectedSettingsRouteRoute
     }
     '/_protected/setup/address/': {
       id: '/_protected/setup/address/'
@@ -185,18 +319,137 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedSetupAddressIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_protected/settings/web-torrent/': {
+      id: '/_protected/settings/web-torrent/'
+      path: '/'
+      fullPath: '/settings/web-torrent/'
+      preLoaderRoute: typeof ProtectedSettingsWebTorrentIndexRouteImport
+      parentRoute: typeof ProtectedSettingsWebTorrentRouteRoute
+    }
+    '/_protected/settings/users/': {
+      id: '/_protected/settings/users/'
+      path: '/'
+      fullPath: '/settings/users/'
+      preLoaderRoute: typeof ProtectedSettingsUsersIndexRouteImport
+      parentRoute: typeof ProtectedSettingsUsersRouteRoute
+    }
+    '/_protected/settings/system/': {
+      id: '/_protected/settings/system/'
+      path: '/'
+      fullPath: '/settings/system/'
+      preLoaderRoute: typeof ProtectedSettingsSystemIndexRouteImport
+      parentRoute: typeof ProtectedSettingsSystemRouteRoute
+    }
+    '/_protected/settings/users/$userId': {
+      id: '/_protected/settings/users/$userId'
+      path: '/$userId'
+      fullPath: '/settings/users/$userId'
+      preLoaderRoute: typeof ProtectedSettingsUsersUserIdRouteRouteImport
+      parentRoute: typeof ProtectedSettingsUsersRouteRoute
+    }
+    '/_protected/settings/users/$userId/': {
+      id: '/_protected/settings/users/$userId/'
+      path: '/'
+      fullPath: '/settings/users/$userId/'
+      preLoaderRoute: typeof ProtectedSettingsUsersUserIdIndexRouteImport
+      parentRoute: typeof ProtectedSettingsUsersUserIdRouteRoute
+    }
   }
 }
 
-interface ProtectedRouteChildren {
-  ProtectedIndexRoute: typeof ProtectedIndexRoute
+interface ProtectedSettingsSystemRouteRouteChildren {
+  ProtectedSettingsSystemIndexRoute: typeof ProtectedSettingsSystemIndexRoute
+}
+
+const ProtectedSettingsSystemRouteRouteChildren: ProtectedSettingsSystemRouteRouteChildren =
+  {
+    ProtectedSettingsSystemIndexRoute: ProtectedSettingsSystemIndexRoute,
+  }
+
+const ProtectedSettingsSystemRouteRouteWithChildren =
+  ProtectedSettingsSystemRouteRoute._addFileChildren(
+    ProtectedSettingsSystemRouteRouteChildren,
+  )
+
+interface ProtectedSettingsUsersUserIdRouteRouteChildren {
+  ProtectedSettingsUsersUserIdIndexRoute: typeof ProtectedSettingsUsersUserIdIndexRoute
+}
+
+const ProtectedSettingsUsersUserIdRouteRouteChildren: ProtectedSettingsUsersUserIdRouteRouteChildren =
+  {
+    ProtectedSettingsUsersUserIdIndexRoute:
+      ProtectedSettingsUsersUserIdIndexRoute,
+  }
+
+const ProtectedSettingsUsersUserIdRouteRouteWithChildren =
+  ProtectedSettingsUsersUserIdRouteRoute._addFileChildren(
+    ProtectedSettingsUsersUserIdRouteRouteChildren,
+  )
+
+interface ProtectedSettingsUsersRouteRouteChildren {
+  ProtectedSettingsUsersUserIdRouteRoute: typeof ProtectedSettingsUsersUserIdRouteRouteWithChildren
+  ProtectedSettingsUsersIndexRoute: typeof ProtectedSettingsUsersIndexRoute
+}
+
+const ProtectedSettingsUsersRouteRouteChildren: ProtectedSettingsUsersRouteRouteChildren =
+  {
+    ProtectedSettingsUsersUserIdRouteRoute:
+      ProtectedSettingsUsersUserIdRouteRouteWithChildren,
+    ProtectedSettingsUsersIndexRoute: ProtectedSettingsUsersIndexRoute,
+  }
+
+const ProtectedSettingsUsersRouteRouteWithChildren =
+  ProtectedSettingsUsersRouteRoute._addFileChildren(
+    ProtectedSettingsUsersRouteRouteChildren,
+  )
+
+interface ProtectedSettingsWebTorrentRouteRouteChildren {
+  ProtectedSettingsWebTorrentIndexRoute: typeof ProtectedSettingsWebTorrentIndexRoute
+}
+
+const ProtectedSettingsWebTorrentRouteRouteChildren: ProtectedSettingsWebTorrentRouteRouteChildren =
+  {
+    ProtectedSettingsWebTorrentIndexRoute:
+      ProtectedSettingsWebTorrentIndexRoute,
+  }
+
+const ProtectedSettingsWebTorrentRouteRouteWithChildren =
+  ProtectedSettingsWebTorrentRouteRoute._addFileChildren(
+    ProtectedSettingsWebTorrentRouteRouteChildren,
+  )
+
+interface ProtectedSettingsRouteRouteChildren {
+  ProtectedSettingsSystemRouteRoute: typeof ProtectedSettingsSystemRouteRouteWithChildren
+  ProtectedSettingsUsersRouteRoute: typeof ProtectedSettingsUsersRouteRouteWithChildren
+  ProtectedSettingsWebTorrentRouteRoute: typeof ProtectedSettingsWebTorrentRouteRouteWithChildren
   ProtectedSettingsIndexRoute: typeof ProtectedSettingsIndexRoute
+}
+
+const ProtectedSettingsRouteRouteChildren: ProtectedSettingsRouteRouteChildren =
+  {
+    ProtectedSettingsSystemRouteRoute:
+      ProtectedSettingsSystemRouteRouteWithChildren,
+    ProtectedSettingsUsersRouteRoute:
+      ProtectedSettingsUsersRouteRouteWithChildren,
+    ProtectedSettingsWebTorrentRouteRoute:
+      ProtectedSettingsWebTorrentRouteRouteWithChildren,
+    ProtectedSettingsIndexRoute: ProtectedSettingsIndexRoute,
+  }
+
+const ProtectedSettingsRouteRouteWithChildren =
+  ProtectedSettingsRouteRoute._addFileChildren(
+    ProtectedSettingsRouteRouteChildren,
+  )
+
+interface ProtectedRouteChildren {
+  ProtectedSettingsRouteRoute: typeof ProtectedSettingsRouteRouteWithChildren
+  ProtectedIndexRoute: typeof ProtectedIndexRoute
   ProtectedSetupAddressIndexRoute: typeof ProtectedSetupAddressIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedSettingsRouteRoute: ProtectedSettingsRouteRouteWithChildren,
   ProtectedIndexRoute: ProtectedIndexRoute,
-  ProtectedSettingsIndexRoute: ProtectedSettingsIndexRoute,
   ProtectedSetupAddressIndexRoute: ProtectedSetupAddressIndexRoute,
 }
 

@@ -3,7 +3,7 @@ import {
   HardDriveDownloadIcon,
   HardDriveIcon,
   HardDriveUploadIcon,
-  XIcon,
+  TrashIcon,
 } from 'lucide-react'
 import type { JSX } from 'react'
 import { toast } from 'sonner'
@@ -11,12 +11,11 @@ import { toast } from 'sonner'
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { Button } from '@/shared/components/ui/button'
 import {
-  Card,
-  CardAction,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/shared/components/ui/card'
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemTitle,
+} from '@/shared/components/ui/item'
 import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
 import type { TorrentDto } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
@@ -68,23 +67,25 @@ export function Torrent(props: TorrentProps) {
   }
 
   return (
-    <Card key={torrent.infoHash} className="gap-0">
-      <CardHeader>
-        <CardTitle className="leading-5 line-clamp-2 break-all">
-          [{getTrackerLabel(torrent.tracker)}] {torrent.name}
-        </CardTitle>
-        <CardAction>
+    <div className="grid gap-2 border border-transparent rounded-md bg-muted/50 p-4">
+      <Item className="p-0">
+        <ItemContent>
+          <ItemTitle className="line-clamp-2 break-all">
+            [{getTrackerLabel(torrent.tracker)}] {torrent.name}
+          </ItemTitle>
+        </ItemContent>
+        <ItemActions>
           <Button
-            size="icon-sm"
             variant="destructive"
+            size="icon-sm"
             className="rounded-full"
             onClick={handleDelete}
           >
-            <XIcon />
+            <TrashIcon />
           </Button>
-        </CardAction>
-      </CardHeader>
-      <CardContent className="grid grid-cols-2 gap-2">
+        </ItemActions>
+      </Item>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <TorrentDetail icon={<HardDriveIcon />} value={torrent.total} />
         <TorrentDetail
           icon={<HardDriveDownloadIcon />}
@@ -98,7 +99,7 @@ export function Torrent(props: TorrentProps) {
           icon={<ArrowBigUpIcon className="text-destructive" />}
           value={torrent.uploadSpeed}
         />
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }

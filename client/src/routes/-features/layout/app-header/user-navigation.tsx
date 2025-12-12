@@ -28,11 +28,7 @@ export function UserNavigation() {
       </Button>
       {me.userRole === UserRoleEnum.ADMIN && (
         <Button asChild variant="ghost" size="sm">
-          <Link
-            to="/settings"
-            activeOptions={{ exact: true }}
-            activeProps={{ className: 'bg-background' }}
-          >
+          <Link to="/settings" activeProps={{ className: 'bg-background' }}>
             Beállítások
           </Link>
         </Button>

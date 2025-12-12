@@ -1,4 +1,3 @@
-import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import type { MouseEventHandler } from 'react'
 import { toast } from 'sonner'
@@ -8,9 +7,12 @@ import { useDialogsStore } from '@/routes/-features/dialogs/dialogs-store'
 import type { OpenedDialog } from '@/routes/-features/dialogs/dialogs-store'
 import { Button } from '@/shared/components/ui/button'
 import {
+  Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
 } from '@/shared/components/ui/dialog'
 import { Field, FieldError } from '@/shared/components/ui/field'
 import { Input } from '@/shared/components/ui/input'
@@ -68,48 +70,50 @@ export function StremhuCatalogDialog(
   }
 
   return (
-    <DialogContent
-      className="md:max-w-md"
-      onEscapeKeyDown={() => dialogsStore.closeDialog(dialog.id)}
-    >
-      <form.AppForm>
-        <DialogHeader>
-          <DialogTitle>StremHU | Catalog integráció</DialogTitle>
-          <DialogDescription>
-            A StremHU | Catalog integráció lehetővé teszi, hogy a sorozatok
-            speciális epizódjait is listázza a torrentek közzött.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-2">
-          <form.Field name="catalogToken">
-            {(field) => (
-              <Field>
-                <Input
-                  name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => {
-                    field.handleChange(e.target.value)
-                  }}
-                />
-                {field.state.meta.isTouched && (
-                  <FieldError errors={field.state.meta.errors} />
-                )}
-              </Field>
-            )}
-          </form.Field>
-        </div>
-        <DialogFooter>
-          <Button
-            type="button"
-            variant="link"
-            onClick={() => dialogsStore.closeDialog(dialog.id)}
-          >
-            Mégsem
-          </Button>
-          <Button onClick={handleSubmit}>Mentés</Button>
-        </DialogFooter>
-      </form.AppForm>
-    </DialogContent>
+    <Dialog open={dialog.open}>
+      <DialogContent
+        className="md:max-w-md"
+        onEscapeKeyDown={() => dialogsStore.closeDialog(dialog.id)}
+      >
+        <form.AppForm>
+          <DialogHeader>
+            <DialogTitle>StremHU | Catalog integráció</DialogTitle>
+            <DialogDescription>
+              A StremHU | Catalog integráció lehetővé teszi, hogy a sorozatok
+              speciális epizódjait is listázza a torrentek közzött.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-2">
+            <form.Field name="catalogToken">
+              {(field) => (
+                <Field>
+                  <Input
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => {
+                      field.handleChange(e.target.value)
+                    }}
+                  />
+                  {field.state.meta.isTouched && (
+                    <FieldError errors={field.state.meta.errors} />
+                  )}
+                </Field>
+              )}
+            </form.Field>
+          </div>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => dialogsStore.closeDialog(dialog.id)}
+            >
+              Mégsem
+            </Button>
+            <Button onClick={handleSubmit}>Mentés</Button>
+          </DialogFooter>
+        </form.AppForm>
+      </DialogContent>
+    </Dialog>
   )
 }
