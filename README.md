@@ -1,5 +1,7 @@
 ## StremHU | Source
 
+⭐ Ha tetszik, adj egy csillagot!
+
 [![Discord – Csatlakozz](https://img.shields.io/badge/Discord-Csatlakozz-5865F2?logo=discord&logoColor=white)](https://discord.gg/jRSPPY5XaN)
 [![Docker – Repository](https://img.shields.io/badge/Docker-Repository-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/s4pp1/stremhu-source)
 
@@ -8,7 +10,7 @@ Self-hostolható Stremio addon, amellyel **közvetlenül magyar trackeroldalakr�
 ![A StremHU | Source által betöltött torrentek a Stremio felületén.](./docs/assets/stremio-stremhu-source-list.png)
 
 > [!NOTE]
-> Ez egy szabadidős projekt! Hibajelentéseket és fejlesztési ötleteket szívesen fogadok kulturáltan "issue"-k formájában.
+> Ez egy szabadidős projekt! Hibajelentéseket és fejlesztési ötleteket szívesen fogadok kulturáltan a Discord-on!
 
 ### Támogatott trackerek
 
@@ -34,7 +36,7 @@ Self-hostolható Stremio addon, amellyel **közvetlenül magyar trackeroldalakr�
 - Érvényes fiók a támogatott tracker(ek)hez.
 - Elég tárhely a letöltésekhez.
 - Docker + Docker Compose.
-- Távoli eléréshez saját domain (ajánlott) és megfelelő hálózati beállítások.
+- Távoli eléréshez saját domain és megfelelő hálózati beállítások.
 
 ### StremHU | Source beüzemelési segédletek
 
