@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import { create } from 'zustand'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -43,7 +44,7 @@ type DialogsStore = {
 export const useDialogsStore = create<DialogsStore>((set, get) => ({
   dialogs: [],
   openDialog: (dialog) => {
-    const id = crypto.randomUUID()
+    const id = uuidv4()
 
     set((state) => ({
       dialogs: [...state.dialogs, { id, open: true, ...dialog }],
