@@ -3,10 +3,10 @@ import type { OpenedDialog } from '@/routes/-features/dialogs/dialogs-store'
 import { Button } from '@/shared/components/ui/button'
 import {
   Dialog,
-  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogScrollContent,
   DialogTitle,
 } from '@/shared/components/ui/dialog'
 
@@ -24,7 +24,7 @@ export function NetworkAccessDialog(
 
   return (
     <Dialog open={dialog.open}>
-      <DialogContent
+      <DialogScrollContent
         className="md:max-w-md"
         onEscapeKeyDown={() => dialogsStore.closeDialog(dialog.id)}
       >
@@ -47,7 +47,7 @@ export function NetworkAccessDialog(
             Mentés
           </Button>
         </DialogFooter>
-      </DialogContent>
+      </DialogScrollContent>
     </Dialog>
   )
 }

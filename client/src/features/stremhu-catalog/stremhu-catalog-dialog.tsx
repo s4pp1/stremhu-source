@@ -8,10 +8,10 @@ import type { OpenedDialog } from '@/routes/-features/dialogs/dialogs-store'
 import { Button } from '@/shared/components/ui/button'
 import {
   Dialog,
-  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogScrollContent,
   DialogTitle,
 } from '@/shared/components/ui/dialog'
 import { Field, FieldError } from '@/shared/components/ui/field'
@@ -71,7 +71,7 @@ export function StremhuCatalogDialog(
 
   return (
     <Dialog open={dialog.open}>
-      <DialogContent
+      <DialogScrollContent
         className="md:max-w-md"
         onEscapeKeyDown={() => dialogsStore.closeDialog(dialog.id)}
       >
@@ -113,7 +113,7 @@ export function StremhuCatalogDialog(
             <Button onClick={handleSubmit}>Mentés</Button>
           </DialogFooter>
         </form.AppForm>
-      </DialogContent>
+      </DialogScrollContent>
     </Dialog>
   )
 }
