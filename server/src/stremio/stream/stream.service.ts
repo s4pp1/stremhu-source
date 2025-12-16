@@ -39,6 +39,7 @@ import {
   VideoFileResolution,
   VideoFileWithRank,
 } from './stream.types';
+import { HDR_PATTERNS } from './stremio.constants';
 
 @Injectable()
 export class StremioStreamService {
@@ -102,10 +103,9 @@ export class StremioStreamService {
     }));
 
     const streams: StreamDto[] = sortedVideoFiles.map((videoFile) => {
-      const nameArray = _.compact([
-        [videoFile.language.emoji, videoFile.resolution.label].join(' | '),
-        videoFile.audioCodec,
-      ]);
+      const hdr = videoFile.isHDR ? 'HDR' : undefined;
+
+      const nameArray = _.compact([videoFile.resolution.label, hdr]);
 
       const isCamSource = videoFile.sources.includes(SourceEnum.CAM);
 
@@ -119,8 +119,9 @@ export class StremioStreamService {
       const group = videoFile.group ? `🎯 ${videoFile.group}` : undefined;
 
       const descriptionArray = _.compact([
-        _.compact([tracker, seeders, group]).join(' | '),
-        [fileSize, videoFile.language.label].join(' | '),
+        _.compact([tracker, seeders]).join(' | '),
+        _.compact([videoFile.language.label, videoFile.audioCodec]).join(' | '),
+        _.compact([fileSize, group]).join(' | '),
       ]);
 
       const bingeGroup = [
@@ -214,7 +215,8 @@ export class StremioStreamService {
     const torrentByFiles: VideoFileWithRank[] = [];
 
     for (const torrent of torrents) {
-      if (!torrent.parsed.name) continue;
+      const torrentName = torrent.parsed.name;
+      if (!torrentName) continue;
 
       const {
         sources: torrentSources,
@@ -222,7 +224,11 @@ export class StremioStreamService {
         resolution: torrentResolution,
         audioCodec: torrentAudioCodec,
         group: torrentGroup,
-      } = filenameParse(torrent.parsed.name);
+      } = filenameParse(torrentName);
+
+      const isHDR = HDR_PATTERNS.some((pattern) =>
+        torrentName.includes(pattern),
+      );
 
       const videoFile = this.selectVideoFile({
         files: torrent.parsed.files,
@@ -265,6 +271,7 @@ export class StremioStreamService {
         ),
         audioCodec,
         videoCodec,
+        isHDR,
         sources,
         notWebReady,
       };
@@ -433,15 +440,13 @@ export class StremioStreamService {
     }
 
     const videoFileLanguage: VideoFileLanguage = {
-      emoji: '🇭🇺',
-      label: '🇭🇺 magyar',
+      label: '🌍 magyar',
       rank: rank || 91,
       value: language,
     };
 
     if (language !== LanguageEnum.HU) {
-      videoFileLanguage.emoji = '🇬🇧';
-      videoFileLanguage.label = '🇬🇧 english';
+      videoFileLanguage.label = '🌍 english';
       videoFileLanguage.rank = rank || 92;
     }
 

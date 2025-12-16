@@ -57,7 +57,6 @@ export interface VideoFileResolution {
 }
 
 export interface VideoFileLanguage {
-  emoji: string;
   label: string;
   value: LanguageEnum;
   rank: number;
@@ -79,6 +78,7 @@ export interface VideoFileWithRank {
   language: VideoFileLanguage;
   videoCodec?: VideoCodecEnum;
   audioCodec?: AudioCodecEnum;
+  isHDR: boolean;
   sources: SourceEnum[];
   notWebReady: boolean;
 }
