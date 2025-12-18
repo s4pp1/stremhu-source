@@ -133,7 +133,7 @@ Ha nem Synology-t használsz (vagy saját, rugalmas megoldást szeretnél), az [
 - ingyenes SSL / Let’s Encrypt beépítve, automatikus megújítással,
 - Docker image-ként futtatható (adatbázist használ).
 
-Egyszerű példa Caddyfile-ra:
+Docker compose Nginx Proxy Manager-hez:
 
 ```yaml
 services:
