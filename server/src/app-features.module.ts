@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { LocalIpModule } from './local-ip/local-ip.module';
+import { MeModule } from './me/me.module';
 import { MetadataModule } from './metadata/metadata.module';
 import { SessionsModule } from './sessions/sessions.module';
 import { SettingsModule } from './settings/settings.module';
@@ -19,6 +20,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     SessionsModule,
     UsersModule,
+    MeModule,
     MetadataModule,
     TorrentCacheModule,
     TorrentsModule,

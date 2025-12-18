@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  HttpException,
-  Injectable,
-  NotImplementedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import _ from 'lodash';
 
 import { TorrentCacheStore } from 'src/torrent-cache/core/torrent-cache.store';
@@ -12,52 +7,27 @@ import {
   AdapterParsedTorrent,
   AdapterTorrentId,
 } from './adapters/adapters.types';
-import { TrackerCredentialsService } from './credentials/tracker-credentials.service';
+import { TrackersStore } from './core/trackers.store';
 import { TrackerTorrentStatusEnum } from './enum/tracker-torrent-status.enum';
 import { TrackerEnum } from './enum/tracker.enum';
 import { TrackerAdapterRegistry } from './tracker-adapter.registry';
 import {
-  LoginRequest,
   TrackerAdapter,
   TrackerSearchQuery,
   TrackerTorrent,
   TrackerTorrentId,
 } from './tracker.types';
-import { LOGIN_ERROR_MESSAGE } from './trackers.constants';
 
 @Injectable()
 export class TrackerDiscoveryService {
   constructor(
+    private readonly trackersStore: TrackersStore,
     private readonly trackerAdapterRegistry: TrackerAdapterRegistry,
-    private readonly trackerCredentialsService: TrackerCredentialsService,
     private readonly torrentCacheStore: TorrentCacheStore,
   ) {}
 
-  async login(tracker: TrackerEnum, payload: LoginRequest): Promise<void> {
-    try {
-      const adapter = this.trackerAdapterRegistry.get(tracker);
-      await adapter.login(payload);
-      await this.trackerCredentialsService.create({
-        tracker,
-        ...payload,
-      });
-    } catch (error) {
-      if (error instanceof HttpException) {
-        if (error.getStatus() === 422) {
-          throw new BadRequestException(LOGIN_ERROR_MESSAGE);
-        }
-
-        throw error;
-      }
-
-      throw new NotImplementedException(
-        `Bejelentkezés közben hiba történt, próbáld újra!`,
-      );
-    }
-  }
-
   async findTorrents(query: TrackerSearchQuery): Promise<TrackerTorrent[]> {
-    const credentials = await this.trackerCredentialsService.find();
+    const credentials = await this.trackersStore.find();
 
     if (credentials.length === 0) {
       return [
@@ -180,19 +150,20 @@ export class TrackerDiscoveryService {
     adapter: TrackerAdapter,
     adapterTorrents: AdapterTorrentId[],
   ): Promise<AdapterParsedTorrent[]> {
-    const adapterParsedTorrents: AdapterParsedTorrent[] = [];
+    const adapterParsedTorrents = await Promise.all(
+      adapterTorrents.map(async (adapterTorrent) => {
+        const adapterParsedTorrent = await adapter.download(adapterTorrent);
 
-    for (const adapterTorrent of adapterTorrents) {
-      const adapterParsedTorrent = await adapter.download(adapterTorrent);
-      adapterParsedTorrents.push(adapterParsedTorrent);
+        await this.torrentCacheStore.create({
+          imdbId: adapterTorrent.imdbId,
+          parsed: adapterParsedTorrent.parsed,
+          torrentId: adapterTorrent.torrentId,
+          tracker: adapterTorrent.tracker,
+        });
 
-      await this.torrentCacheStore.create({
-        imdbId: adapterTorrent.imdbId,
-        parsed: adapterParsedTorrent.parsed,
-        torrentId: adapterTorrent.torrentId,
-        tracker: adapterTorrent.tracker,
-      });
-    }
+        return adapterParsedTorrent;
+      }),
+    );
 
     return adapterParsedTorrents;
   }

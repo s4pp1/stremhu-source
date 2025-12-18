@@ -6,15 +6,15 @@ import { OptionalAuth } from 'src/auth/decorators/optional-auth.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { toDto } from 'src/common/utils/to-dto';
 
-import { UserDto } from '../dto/user.dto';
-import { UsersService } from '../users.service';
+import { UserDto } from '../users/dto/user.dto';
+import { UsersService } from '../users/users.service';
 import { MeDto } from './dto/me.dto';
 import { UpdateMeDto } from './dto/update-me.dto';
 
 @ApiTags('Me')
 @UseGuards(AuthGuard)
 @Controller('/me')
-export class UsersMeController {
+export class MeController {
   constructor(private usersService: UsersService) {}
 
   @ApiResponse({

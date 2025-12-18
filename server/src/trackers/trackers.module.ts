@@ -3,30 +3,42 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from 'src/auth/auth.module';
 import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
 import { TorrentCacheCoreModule } from 'src/torrent-cache/core/torrent-cache-core.module';
-import { UsersModule } from 'src/users/users.module';
-import { WebTorrentModule } from 'src/web-torrent/web-torrent.module';
+import { TorrentCacheModule } from 'src/torrent-cache/torrent-cache.module';
+import { TorrentsModule } from 'src/torrents/torrents.module';
 
 import { BithumenModule } from './adapters/bithumen/bithumen.module';
 import { MajomparadeModule } from './adapters/majomparade/majomparade.module';
 import { NcoreModule } from './adapters/ncore/ncore.module';
-import { TrackerCredentialsModule } from './credentials/tracker-credentials.module';
+import { TrackersCoreModule } from './core/trackers-core.module';
+import { TrackerAdapterRegistry } from './tracker-adapter.registry';
+import { TrackerDiscoveryService } from './tracker-discovery.service';
+import { TrackerMaintenanceService } from './tracker-maintenance.service';
 import { TrackersController } from './trackers.controller';
 import { TrackersService } from './trackers.service';
 
 @Module({
   imports: [
+    TrackersCoreModule,
     AuthModule,
-    UsersModule,
-    TrackerCredentialsModule,
     TorrentCacheCoreModule,
-    WebTorrentModule,
+    TorrentCacheModule,
+    TorrentsModule,
     SettingsCoreModule,
     NcoreModule,
     BithumenModule,
     MajomparadeModule,
   ],
-  providers: [TrackersService],
+  providers: [
+    TrackersService,
+    TrackerDiscoveryService,
+    TrackerMaintenanceService,
+    TrackerAdapterRegistry,
+  ],
   controllers: [TrackersController],
-  exports: [TrackersService],
+  exports: [
+    TrackersService,
+    TrackerDiscoveryService,
+    TrackerMaintenanceService,
+  ],
 })
 export class TrackersModule {}

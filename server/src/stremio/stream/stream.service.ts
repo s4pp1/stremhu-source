@@ -19,12 +19,12 @@ import { TorrentCacheStore } from 'src/torrent-cache/core/torrent-cache.store';
 import { TorrentsService } from 'src/torrents/torrents.service';
 import { Torrent } from 'src/torrents/type/torrent.type';
 import { TrackerTorrentStatusEnum } from 'src/trackers/enum/tracker-torrent-status.enum';
+import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
 import {
   TrackerTorrentError,
   TrackerTorrentSuccess,
 } from 'src/trackers/tracker.types';
 import { TRACKER_INFO } from 'src/trackers/trackers.constants';
-import { TrackersService } from 'src/trackers/trackers.service';
 import { User } from 'src/users/entity/user.entity';
 
 import { StreamDto } from './dto/stremio-stream.dto';
@@ -50,11 +50,11 @@ export class StremioStreamService {
   >();
 
   constructor(
-    private torrentCacheStore: TorrentCacheStore,
-    private trackersService: TrackersService,
-    private torrentsService: TorrentsService,
-    private settingsStore: SettingsStore,
-    private catalogService: CatalogService,
+    private readonly torrentCacheStore: TorrentCacheStore,
+    private readonly trackerDiscoveryService: TrackerDiscoveryService,
+    private readonly torrentsService: TorrentsService,
+    private readonly settingsStore: SettingsStore,
+    private readonly catalogService: CatalogService,
   ) {}
 
   async streams(payload: FindStreams): Promise<StreamDto[]> {
@@ -70,7 +70,7 @@ export class StremioStreamService {
 
     const endpoint = await this.settingsStore.getEndpoint();
 
-    const torrents = await this.trackersService.findTorrents({
+    const torrents = await this.trackerDiscoveryService.findTorrents({
       imdbId: imdbId,
       mediaType: !isSpecial ? mediaType : undefined,
     });
@@ -185,7 +185,7 @@ export class StremioStreamService {
     }
 
     if (!torrent) {
-      const torrentFile = await this.trackersService.findOneTorrent(
+      const torrentFile = await this.trackerDiscoveryService.findOneTorrent(
         tracker,
         torrentId,
       );

@@ -12,6 +12,6 @@ import { TokenGuard } from './guards/token.guard';
   imports: [UsersCoreModule],
   providers: [AuthService, AuthGuard, RolesGuard, TokenGuard],
   controllers: [AuthController],
-  exports: [AuthService, AuthGuard, RolesGuard, TokenGuard],
+  exports: [AuthService, AuthGuard, RolesGuard, TokenGuard, UsersCoreModule],
 })
 export class AuthModule {}

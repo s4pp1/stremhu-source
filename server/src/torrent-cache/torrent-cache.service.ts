@@ -4,8 +4,8 @@ import ms from 'ms';
 import { rm } from 'node:fs/promises';
 
 import { SettingsStore } from 'src/settings/core/settings.store';
+import { TorrentsService } from 'src/torrents/torrents.service';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
-import { WebTorrentService } from 'src/web-torrent/web-torrent.service';
 
 import { TorrentCacheStore } from './core/torrent-cache.store';
 
@@ -16,8 +16,8 @@ export class TorrentCacheService implements OnApplicationBootstrap {
   constructor(
     private readonly schedulerRegistry: SchedulerRegistry,
     private readonly torrentCacheStore: TorrentCacheStore,
-    private settingsStore: SettingsStore,
-    private webTorrentService: WebTorrentService,
+    private readonly settingsStore: SettingsStore,
+    private readonly torrentsService: TorrentsService,
   ) {}
 
   async onApplicationBootstrap() {
@@ -42,7 +42,7 @@ export class TorrentCacheService implements OnApplicationBootstrap {
   }
 
   async deleteAllByTracker(tracker: TrackerEnum) {
-    const activeTorrents = await this.webTorrentService.getTorrents();
+    const activeTorrents = await this.torrentsService.getTorrents();
 
     const imdbDirents = await this.torrentCacheStore.findImdbDirents();
 
@@ -97,7 +97,7 @@ export class TorrentCacheService implements OnApplicationBootstrap {
 
     const cacheRetentionMs = ms(cacheRetention as ms.StringValue);
 
-    const activeTorrents = await this.webTorrentService.getTorrents();
+    const activeTorrents = await this.torrentsService.getTorrents();
 
     const now = Date.now();
     const imdbDirents = await this.torrentCacheStore.findImdbDirents();

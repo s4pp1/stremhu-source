@@ -4,9 +4,9 @@ import { AuthModule } from 'src/auth/auth.module';
 import { CatalogModule } from 'src/catalog/catalog.module';
 import { LocalIpModule } from 'src/local-ip/local-ip.module';
 import { TorrentCacheModule } from 'src/torrent-cache/torrent-cache.module';
+import { TorrentsModule } from 'src/torrents/torrents.module';
 import { TrackersModule } from 'src/trackers/trackers.module';
 import { UsersModule } from 'src/users/users.module';
-import { WebTorrentModule } from 'src/web-torrent/web-torrent.module';
 
 import { SettingsCoreModule } from './core/settings-core.module';
 import { SettingsController } from './settings.controller';
@@ -20,7 +20,7 @@ import { SetupModule } from './setup/setup.module';
     UsersModule,
     SetupModule,
     TrackersModule,
-    WebTorrentModule,
+    TorrentsModule,
     LocalIpModule,
     TorrentCacheModule,
     CatalogModule,

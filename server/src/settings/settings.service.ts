@@ -6,8 +6,8 @@ import { CatalogService } from 'src/catalog/catalog.service';
 import { GLOBAL_ID } from 'src/common/common.constant';
 import { LocalIpService } from 'src/local-ip/local-ip.service';
 import { TorrentCacheService } from 'src/torrent-cache/torrent-cache.service';
-import { TrackersService } from 'src/trackers/trackers.service';
-import { WebTorrentService } from 'src/web-torrent/web-torrent.service';
+import { TorrentsService } from 'src/torrents/torrents.service';
+import { TrackerMaintenanceService } from 'src/trackers/tracker-maintenance.service';
 
 import { SettingsStore } from './core/settings.store';
 import { Setting } from './entity/setting.entity';
@@ -19,8 +19,8 @@ export class SettingsService implements OnModuleInit {
 
   constructor(
     private readonly settingsStore: SettingsStore,
-    private readonly trackersService: TrackersService,
-    private readonly webTorrentService: WebTorrentService,
+    private readonly trackerMaintenanceService: TrackerMaintenanceService,
+    private readonly torrentsService: TorrentsService,
     private readonly localIpService: LocalIpService,
     private readonly torrentCacheService: TorrentCacheService,
     private readonly catalogService: CatalogService,
@@ -53,7 +53,7 @@ export class SettingsService implements OnModuleInit {
       !_.isUndefined(payload.hitAndRun) &&
       setting.hitAndRun !== payload.hitAndRun
     ) {
-      await this.trackersService.setHitAndRunCron(payload.hitAndRun);
+      await this.trackerMaintenanceService.setHitAndRunCron(payload.hitAndRun);
     }
 
     // Torrent Cache Cron vezérlése
@@ -64,20 +64,18 @@ export class SettingsService implements OnModuleInit {
       await this.torrentCacheService.setRetentionCleanupCron(updateState);
     }
 
-    // Web Torrent letöltés beállítása
-    if (
-      !_.isUndefined(payload.downloadLimit) &&
-      setting.downloadLimit !== payload.downloadLimit
-    ) {
-      this.webTorrentService.updateDownloadLimit(payload.downloadLimit);
-    }
+    // Web Torrent letöltés/feltöltés beállítása
+    const downloadLimit = payload.downloadLimit;
+    const uploadLimit = payload.uploadLimit;
 
-    // Web Torrent feltöltés beállítása
     if (
-      !_.isUndefined(payload.uploadLimit) &&
-      setting.uploadLimit !== payload.uploadLimit
+      (downloadLimit && setting.downloadLimit !== downloadLimit) ||
+      (uploadLimit && uploadLimit !== setting.uploadLimit)
     ) {
-      this.webTorrentService.updateUploadLimit(payload.uploadLimit);
+      this.torrentsService.updateTorrentClient({
+        downloadLimit: downloadLimit || setting.downloadLimit,
+        uploadLimit: uploadLimit || setting.uploadLimit,
+      });
     }
 
     // Local IP vezérlés

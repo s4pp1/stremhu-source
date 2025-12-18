@@ -14,13 +14,14 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { toDto } from 'src/common/utils/to-dto';
-import { TrackerCredentialsService } from 'src/trackers/credentials/tracker-credentials.service';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import { TrackersService } from 'src/trackers/trackers.service';
 import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
+import { TrackersStore } from './core/trackers.store';
 import { TrackerCredentialDto } from './credentials/dto/tracker-credential.dto';
 import { LoginTrackerDto } from './dto/login-tracker.dto';
+import { TrackerMaintenanceService } from './tracker-maintenance.service';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Roles(UserRoleEnum.ADMIN)
@@ -28,8 +29,9 @@ import { LoginTrackerDto } from './dto/login-tracker.dto';
 @ApiTags('Trackers')
 export class TrackersController {
   constructor(
-    private trackersService: TrackersService,
-    private trackerCredentialsService: TrackerCredentialsService,
+    private readonly trackersStore: TrackersStore,
+    private readonly trackersService: TrackersService,
+    private readonly trackerMaintenanceService: TrackerMaintenanceService,
   ) {}
 
   @ApiResponse({ status: 201 })
@@ -42,16 +44,16 @@ export class TrackersController {
   @ApiResponse({ status: 200, type: TrackerCredentialDto, isArray: true })
   @Get('/')
   async trackers(): Promise<TrackerCredentialDto[]> {
-    const trackerCredentials = await this.trackerCredentialsService.find();
+    const trackerCredentials = await this.trackersStore.find();
     return trackerCredentials.map((trackerCredential) =>
       toDto(TrackerCredentialDto, trackerCredential),
     );
   }
 
   @ApiResponse({ status: 200 })
-  @Delete('/hit-and-run')
+  @Post('/hit-and-run')
   async cleanupHitAndRun() {
-    return this.trackersService.cleanupHitAndRun();
+    return this.trackerMaintenanceService.cleanupHitAndRun();
   }
 
   @ApiParam({
@@ -63,6 +65,6 @@ export class TrackersController {
   async deleteTracker(
     @Param('tracker', new ParseEnumPipe(TrackerEnum)) tracker: TrackerEnum,
   ) {
-    await this.trackerCredentialsService.delete(tracker);
+    await this.trackersService.delete(tracker);
   }
 }

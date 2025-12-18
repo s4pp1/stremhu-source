@@ -6,7 +6,6 @@ import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
 import { TorrentCacheCoreModule } from 'src/torrent-cache/core/torrent-cache-core.module';
 import { TorrentsModule } from 'src/torrents/torrents.module';
 import { TrackersModule } from 'src/trackers/trackers.module';
-import { UsersModule } from 'src/users/users.module';
 
 import { StremioStreamController } from './stream.controller';
 import { StremioStreamService } from './stream.service';
@@ -14,7 +13,6 @@ import { StremioStreamService } from './stream.service';
 @Module({
   imports: [
     AuthModule,
-    UsersModule,
     SettingsCoreModule,
     TorrentsModule,
     TrackersModule,

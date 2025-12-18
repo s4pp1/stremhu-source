@@ -7,15 +7,15 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 
+import { UsersStore } from 'src/users/core/users.store';
 import { User } from 'src/users/entity/user.entity';
-import { UsersService } from 'src/users/users.service';
 
 import { OPTIONAL_AUTH_KEY } from '../decorators/optional-auth.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    private usersService: UsersService,
+    private usersStore: UsersStore,
     private reflector: Reflector,
   ) {}
 
@@ -32,9 +32,7 @@ export class AuthGuard implements CanActivate {
     let user: User | null = null;
 
     if (userId) {
-      user = await this.usersService.findOne((qb) =>
-        qb.where('id = :userId', { userId }),
-      );
+      user = await this.usersStore.findOneById(userId);
     }
 
     if (!user && !optional) {

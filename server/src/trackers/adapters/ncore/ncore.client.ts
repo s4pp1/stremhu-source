@@ -5,6 +5,7 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import Bottleneck from 'bottleneck';
 import { load } from 'cheerio';
 import _ from 'lodash';
 
@@ -35,6 +36,14 @@ import {
 @Injectable()
 export class NcoreClient {
   private readonly logger = new Logger(NcoreClient.name);
+  private readonly limiter = new Bottleneck({
+    reservoir: 5,
+    reservoirRefreshAmount: 5,
+    reservoirRefreshInterval: 1000,
+    maxConcurrent: 5,
+    minTime: 0,
+  });
+
   private readonly ncoreBaseUrl: string;
 
   constructor(
@@ -47,7 +56,7 @@ export class NcoreClient {
   }
 
   login(payload: NcoreLoginRequest) {
-    return this.ncoreClientFactory.login(payload);
+    return this.requestLimit(() => this.ncoreClientFactory.login(payload));
   }
 
   async find(payload: NcoreFindQuery): Promise<NcoreTorrent[]> {
@@ -75,11 +84,14 @@ export class NcoreClient {
         jsons: true,
       };
 
-      const response = await this.ncoreClientFactory.client.get<
-        NcoreTorrents | string
-      >(torrentsUrl.href, {
-        params: searchParams,
-      });
+      const response = await this.requestLimit(() =>
+        this.ncoreClientFactory.client.get<NcoreTorrents | string>(
+          torrentsUrl.href,
+          {
+            params: searchParams,
+          },
+        ),
+      );
 
       if (typeof response.data === 'string') {
         const $ = load(response.data);
@@ -117,8 +129,8 @@ export class NcoreClient {
       detailsUrl.searchParams.append('action', 'details');
       detailsUrl.searchParams.append('id', torrentId);
 
-      const response = await this.ncoreClientFactory.client.get<string>(
-        detailsUrl.href,
+      const response = await this.requestLimit(() =>
+        this.ncoreClientFactory.client.get<string>(detailsUrl.href),
       );
 
       const $ = load(response.data);
@@ -161,11 +173,10 @@ export class NcoreClient {
   async download(payload: NcoreDownloadRequest): Promise<AdapterParsedTorrent> {
     const { torrentId, downloadUrl } = payload;
 
-    const response = await this.ncoreClientFactory.client.get<ArrayBuffer>(
-      downloadUrl,
-      {
+    const response = await this.requestLimit(() =>
+      this.ncoreClientFactory.client.get<ArrayBuffer>(downloadUrl, {
         responseType: 'arraybuffer',
-      },
+      }),
     );
 
     const bytes = new Uint8Array(response.data);
@@ -179,11 +190,10 @@ export class NcoreClient {
       const hitAndRunUrl = new URL(NCORE_HIT_N_RUN_PATH, this.ncoreBaseUrl);
       hitAndRunUrl.searchParams.append('showall', 'false');
 
-      const response = await this.ncoreClientFactory.client.get<string>(
-        hitAndRunUrl.href,
-        {
+      const response = await this.requestLimit(() =>
+        this.ncoreClientFactory.client.get<string>(hitAndRunUrl.href, {
           responseType: 'text',
-        },
+        }),
       );
 
       const $ = load(response.data);
@@ -206,5 +216,9 @@ export class NcoreClient {
       this.logger.error(errorMessage, error);
       throw new ServiceUnavailableException(errorMessage);
     }
+  }
+
+  private requestLimit<T>(fn: () => Promise<T>) {
+    return this.limiter.schedule(fn);
   }
 }

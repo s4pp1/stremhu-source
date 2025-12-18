@@ -7,7 +7,7 @@ import { TrackerEnum } from '../enum/tracker.enum';
 import { TrackerCoreToCreate } from '../type/tracker-core-to-create';
 
 @Injectable()
-export class TrackerStore {
+export class TrackersStore {
   constructor(
     @InjectRepository(TrackerCredential)
     private readonly trackerRepository: Repository<TrackerCredential>,
