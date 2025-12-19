@@ -87,7 +87,7 @@ export class StremioStreamController {
   ) {
     const rangeHeader = req.headers.range;
 
-    const { file } = await this.streamService.playStream({
+    const file = await this.streamService.playStream({
       imdbId,
       tracker,
       torrentId,

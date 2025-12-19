@@ -86,6 +86,14 @@ export class TorrentsStore {
     await repository.remove(item);
   }
 
+  async updateOne(payload: Torrent, manager?: EntityManager) {
+    const repository = this.getRepository(manager);
+
+    const torrent = await repository.save(payload);
+
+    return torrent;
+  }
+
   async flushUploaded(
     payload: TorrentToFlushUploaded,
     manager?: EntityManager,

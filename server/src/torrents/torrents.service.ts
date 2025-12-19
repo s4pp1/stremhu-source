@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import _ from 'lodash';
+import _, { isUndefined, omitBy } from 'lodash';
 import { mkdir } from 'node:fs/promises';
 
 import type {
@@ -20,13 +20,14 @@ import { TorrentCacheStore } from 'src/torrent-cache/core/torrent-cache.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { TorrentsStore } from './core/torrents.store';
-import { Torrent as TorrentEntity } from './entity/torrent.entity';
+import { Torrent, Torrent as TorrentEntity } from './entity/torrent.entity';
 import type {
   TorrentClient,
   TorrentClientToUpdateConfig,
 } from './ports/torrent-client.port';
 import { TorrentToAddClient } from './type/torrent-to-add-client.type';
-import { Torrent } from './type/torrent.type';
+import { TorrentToUpdate } from './type/torrent-to-update.type';
+import { MergedTorrent } from './type/torrent.type';
 
 @Injectable()
 export class TorrentsService
@@ -97,11 +98,34 @@ export class TorrentsService
     await this.torrentClient.shutdown();
   }
 
-  async getTorrents(): Promise<Torrent[]> {
+  async getTorrentOrThrow(infoHash: string): Promise<Torrent> {
+    const torrent = await this.torrentsStore.findOneByInfoHash(infoHash);
+
+    if (!torrent) {
+      throw new NotFoundException(`A(z) "${infoHash}" torrent nem található.`);
+    }
+
+    return torrent;
+  }
+
+  async updateOneOrThrow(infoHash: string, payload: TorrentToUpdate) {
+    const torrent = await this.getTorrentOrThrow(infoHash);
+
+    const updateData = omitBy(payload, isUndefined);
+
+    const updatedTorrent = this.torrentsStore.updateOne({
+      ...torrent,
+      ...updateData,
+    });
+
+    return updatedTorrent;
+  }
+
+  async getTorrents(): Promise<MergedTorrent[]> {
     const torrents = await this.torrentsStore.find();
     const clientTorrents = this.torrentClient.getTorrents();
 
-    const activeTorrents: Torrent[] = [];
+    const activeTorrents: MergedTorrent[] = [];
 
     for (const clientTorrent of clientTorrents) {
       const torrent = torrents.find(
@@ -123,7 +147,7 @@ export class TorrentsService
     return activeTorrents;
   }
 
-  async getTorrent(infoHash: string): Promise<Torrent | null> {
+  async getTorrent(infoHash: string): Promise<MergedTorrent | null> {
     const [torrent, clientTorrent] = await Promise.all([
       this.torrentsStore.findOneByInfoHash(infoHash),
       this.torrentClient.getTorrent(infoHash),
@@ -132,35 +156,6 @@ export class TorrentsService
     if (!torrent || !clientTorrent) return null;
 
     return this.mergeTorrentEntityWithTorrentClient(torrent, clientTorrent);
-  }
-
-  async addTorrent(payload: TorrentToAddClient): Promise<Torrent> {
-    const { parsedTorrent, ...rest } = payload;
-
-    const clientTorrent = await this.torrentClient.addTorrent({
-      parsedTorrent,
-    });
-
-    const torrent = await this.torrentsStore.create({
-      ...rest,
-      infoHash: clientTorrent.infoHash,
-    });
-
-    return this.mergeTorrentEntityWithTorrentClient(torrent, clientTorrent);
-  }
-
-  async getTorrentFile(
-    infoHash: string,
-    fileIndex: number,
-  ): Promise<WebTorrentFile> {
-    const clientTorrent = await this.torrentClient.getTorrent(infoHash);
-
-    if (!clientTorrent.files[fileIndex]) {
-      throw new NotFoundException(
-        `A(z) "${clientTorrent.name}-ben nincs ilyen fileIndex: ${fileIndex}. Fájlok száma: ${clientTorrent.files.length}`,
-      );
-    }
-    return clientTorrent.files[fileIndex];
   }
 
   async purgeTrackerExcept(tracker: TrackerEnum, torrentIds: string[]) {
@@ -185,13 +180,21 @@ export class TorrentsService
 
   async delete(infoHash: string): Promise<void> {
     try {
-      await this.torrentClient.deleteTorrent(infoHash);
-      await this.torrentsStore.removeByInfoHash(infoHash);
+      const webTorrentTorrent = await this.torrentClient.getTorrent(infoHash);
+
+      if (!webTorrentTorrent) {
+        throw new NotFoundException(`A(z) "${infoHash}" torrent nem található`);
+      }
+
+      await this.torrentClient.deleteTorrent(webTorrentTorrent);
+      await this.torrentsStore.removeByInfoHash(webTorrentTorrent.infoHash);
     } catch (error) {
       this.logger.error(
         `🚨 "${infoHash}" torrent törlése közben hiba történt!`,
         error,
       );
+
+      throw error;
     }
   }
 
@@ -209,10 +212,54 @@ export class TorrentsService
     );
   }
 
+  async getTorrentForStream(
+    infoHash: string,
+  ): Promise<WebTorrentTorrent | null> {
+    const webTorrentTorrent = await this.torrentClient.getTorrent(infoHash);
+
+    if (!webTorrentTorrent) {
+      return null;
+    }
+
+    await this.updateOneOrThrow(infoHash, { lastPlayedAt: new Date() });
+
+    return webTorrentTorrent;
+  }
+
+  async addTorrentForStream(
+    payload: TorrentToAddClient,
+  ): Promise<WebTorrentTorrent> {
+    const { parsedTorrent, ...rest } = payload;
+
+    const clientTorrent = await this.torrentClient.addTorrent({
+      parsedTorrent,
+    });
+
+    await this.torrentsStore.create({
+      ...rest,
+      infoHash: clientTorrent.infoHash,
+      lastPlayedAt: new Date(),
+    });
+
+    return clientTorrent;
+  }
+
+  getTorrentFileForStream(
+    webTorrentTorrent: WebTorrentTorrent,
+    fileIndex: number,
+  ): WebTorrentFile {
+    if (!webTorrentTorrent.files[fileIndex]) {
+      throw new NotFoundException(
+        `A(z) "${webTorrentTorrent.name}-ben nincs ilyen fileIndex: ${fileIndex}. Fájlok száma: ${webTorrentTorrent.files.length}`,
+      );
+    }
+    return webTorrentTorrent.files[fileIndex];
+  }
+
   private mergeTorrentEntityWithTorrentClient(
     torrentEntity: TorrentEntity,
     webTorrentTorrent: WebTorrentTorrent,
-  ): Torrent {
+  ): MergedTorrent {
     return {
       name: webTorrentTorrent.name,
       imdbId: torrentEntity.imdbId,

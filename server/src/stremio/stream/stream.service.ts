@@ -11,13 +11,13 @@ import _ from 'lodash';
 import { TorrentFile } from 'webtorrent';
 
 import { CatalogService } from 'src/catalog/catalog.service';
+import { WebTorrentTorrent } from 'src/clients/webtorrent/webtorrent.types';
 import { RESOLUTION_LABEL_MAP } from 'src/common/common.constant';
 import { LanguageEnum } from 'src/common/enum/language.enum';
 import { ParsedFile } from 'src/common/utils/parse-torrent.util';
 import { SettingsStore } from 'src/settings/core/settings.store';
 import { TorrentCacheStore } from 'src/torrent-cache/core/torrent-cache.store';
 import { TorrentsService } from 'src/torrents/torrents.service';
-import { Torrent } from 'src/torrents/type/torrent.type';
 import { TrackerTorrentStatusEnum } from 'src/trackers/enum/tracker-torrent-status.enum';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
 import {
@@ -44,10 +44,7 @@ import { HDR_PATTERNS } from './stremio.constants';
 
 @Injectable()
 export class StremioStreamService {
-  private inFlightPlay = new Map<
-    string,
-    Promise<{ file: TorrentFile; torrent: Torrent }>
-  >();
+  private inFlightPlay = new Map<string, Promise<TorrentFile>>();
 
   constructor(
     private readonly torrentCacheStore: TorrentCacheStore,
@@ -146,9 +143,7 @@ export class StremioStreamService {
     return [...streams, ...streamErrors];
   }
 
-  async playStream(
-    payload: PlayStream,
-  ): Promise<{ torrent: Torrent; file: TorrentFile }> {
+  async playStream(payload: PlayStream): Promise<TorrentFile> {
     const { imdbId, tracker, torrentId, fileIndex } = payload;
 
     const key = `${imdbId}-${tracker}-${torrentId}-${fileIndex}`;
@@ -176,10 +171,10 @@ export class StremioStreamService {
       torrentId,
     });
 
-    let torrent: Torrent | null = null;
+    let torrent: WebTorrentTorrent | null = null;
 
     if (torrentCache) {
-      torrent = await this.torrentsService.getTorrent(
+      torrent = await this.torrentsService.getTorrentForStream(
         torrentCache.parsed.infoHash,
       );
     }
@@ -190,24 +185,24 @@ export class StremioStreamService {
         torrentId,
       );
 
-      torrent = await this.torrentsService.getTorrent(
+      torrent = await this.torrentsService.getTorrentForStream(
         torrentFile.parsed.infoHash,
       );
 
       if (!torrent) {
-        torrent = await this.torrentsService.addTorrent({
+        torrent = await this.torrentsService.addTorrentForStream({
           ...torrentFile,
           parsedTorrent: torrentFile.parsed,
         });
       }
     }
 
-    const file = await this.torrentsService.getTorrentFile(
-      torrent.infoHash,
+    const file = this.torrentsService.getTorrentFileForStream(
+      torrent,
       fileIndex,
     );
 
-    return { file, torrent };
+    return file;
   }
 
   private findVideoFilesWithRank(

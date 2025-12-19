@@ -2,9 +2,10 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
-  NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { rm } from 'node:fs/promises';
+import { join } from 'node:path';
 
 import { SettingsStore } from 'src/settings/core/settings.store';
 import {
@@ -88,13 +89,13 @@ export class WebTorrentService implements TorrentClient {
     return webtorrent.torrents;
   }
 
-  async getTorrent(infoHash: string): Promise<WebTorrentTorrent> {
+  async getTorrent(infoHash: string): Promise<WebTorrentTorrent | null> {
     const webtorrent = this.getClient();
 
     const torrent = await webtorrent.get(infoHash);
 
     if (!torrent) {
-      throw new NotFoundException(`A(z) "${infoHash}" torrent nem található.`);
+      return null;
     }
 
     return torrent;
@@ -126,18 +127,21 @@ export class WebTorrentService implements TorrentClient {
     });
   }
 
-  async deleteTorrent(infoHash: string): Promise<WebTorrentTorrent> {
+  async deleteTorrent(
+    webTorrentTorrent: WebTorrentTorrent,
+  ): Promise<WebTorrentTorrent> {
     const webtorrent = this.getClient();
 
-    const torrent = await this.getTorrent(infoHash);
+    await webtorrent.remove(webTorrentTorrent.infoHash, { destroyStore: true });
 
-    await webtorrent.remove(torrent, { destroyStore: true });
+    const torrentPath = join(webTorrentTorrent.path, webTorrentTorrent.name);
+    await rm(torrentPath, { recursive: true, force: true });
 
     this.logger.log(
-      `🗑️ "${torrent.name}" nevű torrent törölve a WebTorrent-ből.`,
+      `🗑️ "${webTorrentTorrent.name}" nevű torrent törölve a WebTorrent-ből.`,
     );
 
-    return torrent;
+    return webTorrentTorrent;
   }
 
   private getClient() {

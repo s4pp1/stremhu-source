@@ -5,4 +5,5 @@ export type TorrentToCreate = {
   imdbId: string;
   tracker: TrackerEnum;
   torrentId: string;
+  lastPlayedAt: Date;
 };

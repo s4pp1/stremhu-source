@@ -38,7 +38,7 @@ export class Torrent {
     name: 'last_played_at',
     type: 'datetime',
   })
-  lastPlayedAt: Date;
+  lastPlayedAt!: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
