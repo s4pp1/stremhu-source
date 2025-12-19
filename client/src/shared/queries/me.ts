@@ -5,12 +5,8 @@ import {
 } from '@tanstack/react-query'
 
 import { appClient } from '@/shared/lib/client'
-import type {
-  ChangePasswordDto,
-  ChangeUsernameDto,
-  UpdateMePreferencesDto,
-} from '@/shared/lib/source-client'
 
+import type { UpdateMeDto } from '../lib/source-client'
 import { getUsers } from './users'
 
 export const getMe = queryOptions({
@@ -21,34 +17,11 @@ export const getMe = queryOptions({
   },
 })
 
-export function useChangeMeUsername() {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: async (payload: ChangeUsernameDto) => {
-      const me = await appClient.me.changeUsername(payload)
-      return me
-    },
-    onSuccess: (updated) => {
-      queryClient.setQueryData(['me'], updated)
-      queryClient.invalidateQueries({ queryKey: getUsers.queryKey })
-    },
-  })
-}
-
-export function useChangeMePassword() {
-  return useMutation({
-    mutationFn: async (payload: ChangePasswordDto) => {
-      const me = await appClient.me.changePassword(payload)
-      return me
-    },
-  })
-}
-
-export function useChangeMeStremioToken() {
+export function useRegenerateMeToken() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async () => {
-      const me = await appClient.me.changeStremioToken()
+      const me = await appClient.me.regenerateToken()
       return me
     },
     onSuccess: (updated) => {
@@ -58,10 +31,10 @@ export function useChangeMeStremioToken() {
   })
 }
 
-export function useUpdateMePreferences() {
+export function useUpdateMe() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (payload: UpdateMePreferencesDto) => {
+    mutationFn: async (payload: UpdateMeDto) => {
       const me = await appClient.me.updateMe(payload)
       return me
     },

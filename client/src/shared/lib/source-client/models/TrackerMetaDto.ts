@@ -3,8 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { TrackerEnum } from './TrackerEnum';
-export type TrackerCredentialDto = {
-    tracker: TrackerEnum;
-    username: string;
+export type TrackerMetaDto = {
+    value: TrackerEnum;
+    label: string;
+    requiresFullDownload: boolean;
 };
 

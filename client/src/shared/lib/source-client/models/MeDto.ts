@@ -2,7 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type ChangeUsernameDto = {
-    username: string;
+import type { UserDto } from './UserDto';
+export type MeDto = {
+    me: UserDto | null;
 };
 

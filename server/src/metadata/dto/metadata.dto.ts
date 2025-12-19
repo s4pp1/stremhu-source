@@ -5,7 +5,7 @@ import { HealthDto } from 'src/common/dto/health.dto';
 
 import { LanguageDto } from './language.dto';
 import { ResolutionDto } from './resolution.dto';
-import { TrackerDto } from './tracker.dto';
+import { TrackerMetaDto } from './tracker-meta.dto';
 import { UserRoleDto } from './user-role.dto';
 
 export class MetadataDto extends HealthDto {
@@ -22,8 +22,8 @@ export class MetadataDto extends HealthDto {
   languages: LanguageDto[];
 
   @IsArray()
-  @ApiProperty({ type: TrackerDto, isArray: true })
-  trackers: TrackerDto[];
+  @ApiProperty({ type: TrackerMetaDto, isArray: true })
+  trackers: TrackerMetaDto[];
 
   @IsString()
   @ApiProperty()

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { TrackerCredential } from '../credentials/entity/tracker-credential.entity';
+import { Tracker } from '../entity/tracker.entity';
 import { TrackersStore } from './trackers.store';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TrackerCredential])],
+  imports: [TypeOrmModule.forFeature([Tracker])],
   providers: [TrackersStore],
   exports: [TrackersStore],
 })

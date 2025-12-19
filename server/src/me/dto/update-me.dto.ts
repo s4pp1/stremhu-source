@@ -34,7 +34,12 @@ export class UpdateMeDto {
   @ArrayNotEmpty()
   @ArrayUnique()
   @IsEnum(Resolution, { each: true })
-  @ApiProperty({ enum: Resolution, enumName: 'ResolutionEnum', isArray: true })
+  @ApiProperty({
+    enum: Resolution,
+    enumName: 'ResolutionEnum',
+    isArray: true,
+    required: false,
+  })
   torrentResolutions?: Resolution[];
 
   @IsOptional()
@@ -42,11 +47,16 @@ export class UpdateMeDto {
   @ArrayNotEmpty()
   @ArrayUnique()
   @IsEnum(LanguageEnum, { each: true })
-  @ApiProperty({ enum: LanguageEnum, enumName: 'LanguageEnum', isArray: true })
+  @ApiProperty({
+    enum: LanguageEnum,
+    enumName: 'LanguageEnum',
+    isArray: true,
+    required: false,
+  })
   torrentLanguages?: LanguageEnum[];
 
   @IsOptional()
   @IsNumber()
-  @ApiProperty({ type: 'number', nullable: true })
+  @ApiProperty({ type: 'number', nullable: true, required: false })
   torrentSeed?: number | null;
 }

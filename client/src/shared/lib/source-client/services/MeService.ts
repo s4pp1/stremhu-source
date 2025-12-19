@@ -2,20 +2,18 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ChangePasswordDto } from '../models/ChangePasswordDto';
-import type { ChangeUsernameDto } from '../models/ChangeUsernameDto';
-import type { MeUserDto } from '../models/MeUserDto';
-import type { UpdateMePreferencesDto } from '../models/UpdateMePreferencesDto';
+import type { MeDto } from '../models/MeDto';
+import type { UpdateMeDto } from '../models/UpdateMeDto';
 import type { UserDto } from '../models/UserDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class MeService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
-     * @returns MeUserDto
+     * @returns MeDto
      * @throws ApiError
      */
-    public me(): CancelablePromise<MeUserDto> {
+    public me(): CancelablePromise<MeDto> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/me',
@@ -27,41 +25,11 @@ export class MeService {
      * @throws ApiError
      */
     public updateMe(
-        requestBody: UpdateMePreferencesDto,
+        requestBody: UpdateMeDto,
     ): CancelablePromise<UserDto> {
         return this.httpRequest.request({
             method: 'PUT',
-            url: '/api/me/preferences',
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-    /**
-     * @param requestBody
-     * @returns UserDto
-     * @throws ApiError
-     */
-    public changeUsername(
-        requestBody: ChangeUsernameDto,
-    ): CancelablePromise<UserDto> {
-        return this.httpRequest.request({
-            method: 'PUT',
-            url: '/api/me/username',
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-    /**
-     * @param requestBody
-     * @returns UserDto
-     * @throws ApiError
-     */
-    public changePassword(
-        requestBody: ChangePasswordDto,
-    ): CancelablePromise<UserDto> {
-        return this.httpRequest.request({
-            method: 'PUT',
-            url: '/api/me/password',
+            url: '/api/me',
             body: requestBody,
             mediaType: 'application/json',
         });
@@ -70,10 +38,10 @@ export class MeService {
      * @returns UserDto
      * @throws ApiError
      */
-    public changeStremioToken(): CancelablePromise<UserDto> {
+    public regenerateToken(): CancelablePromise<UserDto> {
         return this.httpRequest.request({
             method: 'PUT',
-            url: '/api/me/stremio-token',
+            url: '/api/me/token/regenerate',
         });
     }
 }

@@ -14,7 +14,7 @@ import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group'
 import { SEED_OPTIONS } from '@/shared/constants'
 import type { UserDto } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
-import { useUpdateProfile } from '@/shared/queries/users'
+import { useUpdateUser } from '@/shared/queries/users'
 
 type TorrentSeeders = {
   user: UserDto
@@ -23,7 +23,7 @@ type TorrentSeeders = {
 export function TorrentSeeders(props: TorrentSeeders) {
   const { user } = props
 
-  const { mutateAsync: updateProfile } = useUpdateProfile()
+  const { mutateAsync: updateUser } = useUpdateUser()
 
   const form = useForm({
     defaultValues: {
@@ -44,7 +44,7 @@ export function TorrentSeeders(props: TorrentSeeders) {
     },
     onSubmit: async ({ value, formApi }) => {
       try {
-        await updateProfile({ userId: user.id, payload: value })
+        await updateUser({ userId: user.id, payload: value })
         toast.success('Módosítások elmentve')
       } catch (error) {
         formApi.reset()

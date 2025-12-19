@@ -5,7 +5,7 @@ import { IsBoolean, IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
 import { IsNullable } from 'src/common/validators/is-nullable';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
-export class TrackerCredentialDto {
+export class TrackerDto {
   @IsEnum(TrackerEnum)
   @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum' })
   tracker: TrackerEnum;

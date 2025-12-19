@@ -8,8 +8,8 @@ import {
 
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
-@Entity('tracker_credentials')
-export class TrackerCredential {
+@Entity('trackers')
+export class Tracker {
   @PrimaryColumn({ type: 'simple-enum', enum: TrackerEnum })
   tracker!: TrackerEnum;
 

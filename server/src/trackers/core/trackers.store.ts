@@ -2,29 +2,25 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
-import { TrackerCredential } from '../credentials/entity/tracker-credential.entity';
+import { Tracker } from '../entity/tracker.entity';
 import { TrackerEnum } from '../enum/tracker.enum';
 import { TrackerCoreToCreate } from '../type/tracker-core-to-create';
 
 @Injectable()
 export class TrackersStore {
   constructor(
-    @InjectRepository(TrackerCredential)
-    private readonly trackerRepository: Repository<TrackerCredential>,
+    @InjectRepository(Tracker)
+    private readonly trackerRepository: Repository<Tracker>,
   ) {}
 
-  protected getRepository(
-    manager?: EntityManager,
-  ): Repository<TrackerCredential> {
-    return manager
-      ? manager.getRepository(TrackerCredential)
-      : this.trackerRepository;
+  protected getRepository(manager?: EntityManager): Repository<Tracker> {
+    return manager ? manager.getRepository(Tracker) : this.trackerRepository;
   }
 
   async create(
     payload: TrackerCoreToCreate,
     manager?: EntityManager,
-  ): Promise<TrackerCredential> {
+  ): Promise<Tracker> {
     const repository = this.getRepository(manager);
 
     const entity = repository.create(payload);
@@ -33,9 +29,9 @@ export class TrackersStore {
 
   async find(
     configureQuery?: (
-      queryBuilder: SelectQueryBuilder<TrackerCredential>,
-    ) => SelectQueryBuilder<TrackerCredential>,
-  ): Promise<TrackerCredential[]> {
+      queryBuilder: SelectQueryBuilder<Tracker>,
+    ) => SelectQueryBuilder<Tracker>,
+  ): Promise<Tracker[]> {
     const repository = this.getRepository();
 
     let queryBuilder = repository.createQueryBuilder('tracker');
@@ -50,9 +46,9 @@ export class TrackersStore {
 
   async findOne(
     configureQuery?: (
-      queryBuilder: SelectQueryBuilder<TrackerCredential>,
-    ) => SelectQueryBuilder<TrackerCredential>,
-  ): Promise<TrackerCredential | null> {
+      queryBuilder: SelectQueryBuilder<Tracker>,
+    ) => SelectQueryBuilder<Tracker>,
+  ): Promise<Tracker | null> {
     const repository = this.getRepository();
 
     let queryBuilder = repository.createQueryBuilder('tracker');
@@ -72,10 +68,7 @@ export class TrackersStore {
     });
   }
 
-  async remove(
-    entity: TrackerCredential,
-    manager?: EntityManager,
-  ): Promise<TrackerCredential> {
+  async remove(entity: Tracker, manager?: EntityManager): Promise<Tracker> {
     const repository = this.getRepository(manager);
     await repository.remove(entity);
     return entity;

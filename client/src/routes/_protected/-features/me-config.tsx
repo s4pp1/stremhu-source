@@ -32,7 +32,7 @@ export function MeConfig() {
   assertExists(me)
 
   const { appEndpoint, webEndpoint, urlEndpoint } = useIntegrationDomain({
-    stremioToken: me.stremioToken,
+    token: me.token,
   })
 
   return (

@@ -10,7 +10,7 @@ export const getTorrents = queryOptions({
   queryKey: ['torrents'],
   refetchInterval: 5000,
   queryFn: async () => {
-    const torrents = await appClient.webTorrent.find()
+    const torrents = await appClient.torrents.find()
 
     return torrents
   },
@@ -21,7 +21,7 @@ export function useDeleteTorrent() {
 
   return useMutation({
     mutationFn: async (infoHash: string) => {
-      await appClient.webTorrent.delete(infoHash)
+      await appClient.torrents.delete(infoHash)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['torrents'] })

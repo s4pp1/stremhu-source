@@ -5,7 +5,7 @@
 import type { TorrentDto } from '../models/TorrentDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-export class WebTorrentService {
+export class TorrentsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * @returns TorrentDto

@@ -53,7 +53,6 @@ export class TorrentsService
 
     // Torrent kliens elindítása
     await this.torrentClient.bootstrap();
-    this.logger.log('✅ WebTorrent kliens elindult');
 
     // Torrentek lekérése és visszarakása a kliensbe
     const torrents = await this.torrentsStore.find();

@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsString } from 'class-validator';
 
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
-export class TrackerDto {
+export class TrackerMetaDto {
   @IsEnum(TrackerEnum)
   @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum' })
   value: TrackerEnum;
@@ -11,4 +11,8 @@ export class TrackerDto {
   @IsString()
   @ApiProperty()
   label: string;
+
+  @IsBoolean()
+  @ApiProperty()
+  requiresFullDownload: boolean;
 }

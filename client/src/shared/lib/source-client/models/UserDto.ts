@@ -8,7 +8,7 @@ import type { UserRoleEnum } from './UserRoleEnum';
 export type UserDto = {
     id: string;
     username: string;
-    stremioToken: string;
+    token: string;
     userRole: UserRoleEnum;
     torrentResolutions: Array<ResolutionEnum>;
     torrentLanguages: Array<LanguageEnum>;

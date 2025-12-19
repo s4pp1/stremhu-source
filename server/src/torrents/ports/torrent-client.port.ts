@@ -1,5 +1,4 @@
 import type { WebTorrentTorrent as ClientTorrent } from 'src/clients/webtorrent/webtorrent.types';
-
 import { ParsedTorrent } from 'src/common/utils/parse-torrent.util';
 
 export interface TorrentClientToAddTorrent {
@@ -23,4 +22,3 @@ export interface TorrentClient {
   addTorrent(payload: TorrentClientToAddTorrent): Promise<ClientTorrent>;
   deleteTorrent(infoHash: string): Promise<ClientTorrent>;
 }
-

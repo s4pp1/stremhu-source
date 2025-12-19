@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { LoginTrackerDto } from '../models/LoginTrackerDto';
-import type { TrackerCredentialDto } from '../models/TrackerCredentialDto';
+import type { TrackerDto } from '../models/TrackerDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class TrackersService {
@@ -24,10 +24,10 @@ export class TrackersService {
         });
     }
     /**
-     * @returns TrackerCredentialDto
+     * @returns TrackerDto
      * @throws ApiError
      */
-    public trackers(): CancelablePromise<Array<TrackerCredentialDto>> {
+    public trackers(): CancelablePromise<Array<TrackerDto>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/trackers',
@@ -39,7 +39,7 @@ export class TrackersService {
      */
     public cleanupHitAndRun(): CancelablePromise<any> {
         return this.httpRequest.request({
-            method: 'DELETE',
+            method: 'POST',
             url: '/api/trackers/hit-and-run',
         });
     }

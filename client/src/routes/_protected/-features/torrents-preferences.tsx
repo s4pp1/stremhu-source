@@ -17,7 +17,7 @@ import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group'
 import { SEED_OPTIONS } from '@/shared/constants'
 import type { LanguageEnum, ResolutionEnum } from '@/shared/lib/source-client'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
-import { getMe, useUpdateMePreferences } from '@/shared/queries/me'
+import { getMe, useUpdateMe } from '@/shared/queries/me'
 import { getMetadata } from '@/shared/queries/metadata'
 
 export function TorrentsPreferences() {
@@ -27,7 +27,7 @@ export function TorrentsPreferences() {
   assertExists(me)
   assertExists(metadata)
 
-  const { mutateAsync: updatePreferences } = useUpdateMePreferences()
+  const { mutateAsync: updateMe } = useUpdateMe()
 
   const form = useForm({
     defaultValues: {
@@ -48,7 +48,7 @@ export function TorrentsPreferences() {
     },
     onSubmit: async ({ value, formApi }) => {
       try {
-        await updatePreferences(value)
+        await updateMe(value)
       } catch (error) {
         formApi.reset()
         const message = parseApiError(error)

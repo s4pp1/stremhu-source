@@ -19,8 +19,8 @@ import { TrackersService } from 'src/trackers/trackers.service';
 import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
 import { TrackersStore } from './core/trackers.store';
-import { TrackerCredentialDto } from './credentials/dto/tracker-credential.dto';
 import { LoginTrackerDto } from './dto/login-tracker.dto';
+import { TrackerDto } from './dto/tracker.dto';
 import { TrackerMaintenanceService } from './tracker-maintenance.service';
 
 @UseGuards(AuthGuard, RolesGuard)
@@ -41,12 +41,12 @@ export class TrackersController {
     await this.trackersService.login(tracker, rest);
   }
 
-  @ApiResponse({ status: 200, type: TrackerCredentialDto, isArray: true })
+  @ApiResponse({ status: 200, type: TrackerDto, isArray: true })
   @Get('/')
-  async trackers(): Promise<TrackerCredentialDto[]> {
+  async trackers(): Promise<TrackerDto[]> {
     const trackerCredentials = await this.trackersStore.find();
     return trackerCredentials.map((trackerCredential) =>
-      toDto(TrackerCredentialDto, trackerCredential),
+      toDto(TrackerDto, trackerCredential),
     );
   }
 

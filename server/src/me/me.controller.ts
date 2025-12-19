@@ -39,7 +39,7 @@ export class MeController {
 
   @ApiResponse({ status: 201, type: UserDto })
   @Put('/token/regenerate')
-  async changeStremioToken(@Req() req: Request): Promise<UserDto> {
+  async regenerateToken(@Req() req: Request): Promise<UserDto> {
     const user = await this.usersService.regenerateToken(req.user!.id);
     return toDto(UserDto, user);
   }

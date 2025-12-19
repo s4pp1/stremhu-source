@@ -2,8 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ChangePasswordDto } from '../models/ChangePasswordDto';
-import type { ChangeUsernameDto } from '../models/ChangeUsernameDto';
 import type { CreateUserDto } from '../models/CreateUserDto';
 import type { UpdateUserDto } from '../models/UpdateUserDto';
 import type { UserDto } from '../models/UserDto';
@@ -90,55 +88,15 @@ export class UsersService {
     }
     /**
      * @param userId
-     * @param requestBody
      * @returns UserDto
      * @throws ApiError
      */
-    public changeUsername(
-        userId: string,
-        requestBody: ChangeUsernameDto,
-    ): CancelablePromise<UserDto> {
-        return this.httpRequest.request({
-            method: 'PUT',
-            url: '/api/users/{userId}/username',
-            path: {
-                'userId': userId,
-            },
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-    /**
-     * @param userId
-     * @param requestBody
-     * @returns UserDto
-     * @throws ApiError
-     */
-    public changePassword(
-        userId: string,
-        requestBody: ChangePasswordDto,
-    ): CancelablePromise<UserDto> {
-        return this.httpRequest.request({
-            method: 'PUT',
-            url: '/api/users/{userId}/password',
-            path: {
-                'userId': userId,
-            },
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-    /**
-     * @param userId
-     * @returns UserDto
-     * @throws ApiError
-     */
-    public changeStremioToken(
+    public regenerateToken(
         userId: string,
     ): CancelablePromise<UserDto> {
         return this.httpRequest.request({
             method: 'PUT',
-            url: '/api/users/{userId}/stremio-token',
+            url: '/api/users/{userId}/token/regenerate',
             path: {
                 'userId': userId,
             },

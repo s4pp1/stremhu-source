@@ -30,7 +30,7 @@ import {
 import { Separator } from '@/shared/components/ui/separator'
 import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
-import { getMe, useChangeMeStremioToken } from '@/shared/queries/me'
+import { getMe, useRegenerateMeToken } from '@/shared/queries/me'
 
 export function LoginAndSecurity() {
   const { data: me } = useQuery(getMe)
@@ -40,7 +40,7 @@ export function LoginAndSecurity() {
   const dialogs = useDialogs()
 
   const confirmDialog = useConfirmDialog()
-  const { mutateAsync: changeStremioToken } = useChangeMeStremioToken()
+  const { mutateAsync: regenerateMeToken } = useRegenerateMeToken()
 
   const handleChangeToken = async () => {
     await confirmDialog.confirm({
@@ -49,7 +49,7 @@ export function LoginAndSecurity() {
         'A kulcs generálása után az addont újra kell telepítened a Stremio-ban.',
       onConfirm: async () => {
         try {
-          await changeStremioToken()
+          await regenerateMeToken()
           toast.success('Új kulcs generálása elkészült.')
         } catch (error) {
           const message = parseApiError(error)

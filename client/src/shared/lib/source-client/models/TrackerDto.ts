@@ -4,7 +4,11 @@
 /* eslint-disable */
 import type { TrackerEnum } from './TrackerEnum';
 export type TrackerDto = {
-    value: TrackerEnum;
-    label: string;
+    tracker: TrackerEnum;
+    username: string;
+    hitAndRun: boolean | null;
+    keepSeedSeconds: number | null;
+    updatedAt: string;
+    createdAt: string;
 };
 

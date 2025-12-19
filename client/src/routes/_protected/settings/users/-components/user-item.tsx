@@ -33,7 +33,7 @@ export function UserItem(props: UserItem) {
   const confirmDialog = useConfirmDialog()
 
   const { urlEndpoint } = useIntegrationDomain({
-    stremioToken: user.stremioToken,
+    token: user.token,
   })
 
   const { getUserRoleLabel } = useMetadataLabel()
@@ -79,7 +79,7 @@ export function UserItem(props: UserItem) {
             </span>
           </ItemTitle>
           <div className="flex gap-2 items-center">
-            {user.stremioToken}
+            {user.token}
             <Tooltip>
               <TooltipTrigger asChild>
                 <InputGroupButton
