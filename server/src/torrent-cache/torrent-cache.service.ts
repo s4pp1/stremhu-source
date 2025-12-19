@@ -1,6 +1,5 @@
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
-import ms from 'ms';
 import { rm } from 'node:fs/promises';
 
 import { SettingsStore } from 'src/settings/core/settings.store';
@@ -24,7 +23,7 @@ export class TorrentCacheService implements OnApplicationBootstrap {
     const setting = await this.settingsStore.findOneOrThrow();
     const job = this.schedulerRegistry.getCronJob('retentionCleanup');
 
-    if (!setting.cacheRetention) {
+    if (!setting.cacheRetentionSeconds) {
       await job.stop();
     }
   }
@@ -92,10 +91,10 @@ export class TorrentCacheService implements OnApplicationBootstrap {
 
   @Cron(CronExpression.EVERY_DAY_AT_5AM, { name: 'retentionCleanup' })
   async runRetentionCleanup() {
-    const { cacheRetention } = await this.settingsStore.findOneOrThrow();
-    if (!cacheRetention) return;
+    const { cacheRetentionSeconds } = await this.settingsStore.findOneOrThrow();
+    if (!cacheRetentionSeconds) return;
 
-    const cacheRetentionMs = ms(cacheRetention as ms.StringValue);
+    const cacheRetentionMs = cacheRetentionSeconds * 1000;
 
     const activeTorrents = await this.torrentsService.getTorrents();
 

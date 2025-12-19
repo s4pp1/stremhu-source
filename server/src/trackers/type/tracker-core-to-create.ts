@@ -5,7 +5,7 @@ export type TrackerCoreToCreate = {
   username: string;
   password: string;
   hitAndRun: boolean | null;
-  extraSeedSeconds: number | null;
+  keepSeedSeconds: number | null;
   downloadFullTorrent: boolean;
   orderIndex: number;
 };

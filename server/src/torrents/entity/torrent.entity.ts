@@ -31,6 +31,17 @@ export class Torrent {
   @Column({ type: 'integer', default: 0 })
   uploaded: number;
 
+  @Column({ name: 'is_persisted', type: 'boolean', default: false })
+  isPersisted: boolean;
+
+  @Column({
+    name: 'last_played_at',
+    type: 'datetime',
+    nullable: true,
+    default: null,
+  })
+  lastPlayedAt: Date | null;
+
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 

@@ -57,10 +57,12 @@ export class SettingsService implements OnModuleInit {
     }
 
     // Torrent Cache Cron vezérlése
-    const hasCacheRetention = _.isUndefined(payload.cacheRetention);
-    const prevState = _.isString(setting.cacheRetention);
-    const updateState = _.isString(payload.cacheRetention);
-    if (hasCacheRetention && prevState !== updateState) {
+    const hasCacheRetentionSeconds = !_.isUndefined(
+      payload.cacheRetentionSeconds,
+    );
+    const prevState = _.isNumber(setting.cacheRetentionSeconds);
+    const updateState = _.isNumber(payload.cacheRetentionSeconds);
+    if (hasCacheRetentionSeconds && prevState !== updateState) {
       await this.torrentCacheService.setRetentionCleanupCron(updateState);
     }
 
@@ -105,9 +107,9 @@ export class SettingsService implements OnModuleInit {
       id: GLOBAL_ID,
       hitAndRun: false,
       enebledlocalIp: true,
-      downloadLimit: 12500000,
-      uploadLimit: 12500000,
-      cacheRetention: '14d',
+      downloadLimit: 12_500_000,
+      uploadLimit: 12_500_000,
+      cacheRetentionSeconds: 14 * 24 * 60 * 60,
     });
   }
 }

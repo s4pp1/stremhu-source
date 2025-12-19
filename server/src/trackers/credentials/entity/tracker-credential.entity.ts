@@ -22,8 +22,8 @@ export class TrackerCredential {
   @Column({ name: 'hit_and_run', type: 'boolean', nullable: true })
   hitAndRun!: boolean | null;
 
-  @Column({ name: 'extra_seed_seconds', type: 'int', nullable: true })
-  extraSeedSeconds!: number | null;
+  @Column({ name: 'keep_seed_seconds', type: 'int', nullable: true })
+  keepSeedSeconds!: number | null;
 
   @Column({ name: 'download_full_torrent', type: 'boolean', default: false })
   downloadFullTorrent!: boolean;

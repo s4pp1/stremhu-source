@@ -40,7 +40,7 @@ export class TrackersService {
       await this.trackersStore.create({
         tracker,
         ...payload,
-        extraSeedSeconds: null,
+        keepSeedSeconds: null,
         hitAndRun: null,
         orderIndex: trackers.length,
         downloadFullTorrent: TRACKER_INFO[tracker].requiresFullDownload,

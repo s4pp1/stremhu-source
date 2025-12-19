@@ -5,7 +5,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Torrent } from 'webtorrent';
 
 import { SettingsStore } from 'src/settings/core/settings.store';
 import {
@@ -13,6 +12,8 @@ import {
   TorrentClientToAddTorrent,
   TorrentClientToUpdateConfig,
 } from 'src/torrents/ports/torrent-client.port';
+
+import type { WebTorrentTorrent } from './webtorrent.types';
 
 @Injectable()
 export class WebTorrentService implements TorrentClient {
@@ -81,13 +82,13 @@ export class WebTorrentService implements TorrentClient {
     webtorrent.throttleUpload(payload.uploadLimit);
   }
 
-  getTorrents(): Torrent[] {
+  getTorrents(): WebTorrentTorrent[] {
     const webtorrent = this.getClient();
 
     return webtorrent.torrents;
   }
 
-  async getTorrent(infoHash: string): Promise<Torrent> {
+  async getTorrent(infoHash: string): Promise<WebTorrentTorrent> {
     const webtorrent = this.getClient();
 
     const torrent = await webtorrent.get(infoHash);
@@ -99,7 +100,7 @@ export class WebTorrentService implements TorrentClient {
     return torrent;
   }
 
-  addTorrent(payload: TorrentClientToAddTorrent): Promise<Torrent> {
+  addTorrent(payload: TorrentClientToAddTorrent): Promise<WebTorrentTorrent> {
     const webtorrent = this.getClient();
 
     return new Promise((resolve, reject) => {
@@ -125,7 +126,7 @@ export class WebTorrentService implements TorrentClient {
     });
   }
 
-  async deleteTorrent(infoHash: string): Promise<Torrent> {
+  async deleteTorrent(infoHash: string): Promise<WebTorrentTorrent> {
     const webtorrent = this.getClient();
 
     const torrent = await this.getTorrent(infoHash);

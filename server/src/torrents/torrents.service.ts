@@ -10,8 +10,11 @@ import { ConfigService } from '@nestjs/config';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import _ from 'lodash';
 import { mkdir } from 'node:fs/promises';
-import { Torrent as ClientTorrent, TorrentFile } from 'webtorrent';
 
+import type {
+  WebTorrentFile,
+  WebTorrentTorrent,
+} from 'src/clients/webtorrent/webtorrent.types';
 import { safeReaddir } from 'src/common/utils/file.util';
 import { TorrentCacheStore } from 'src/torrent-cache/core/torrent-cache.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
@@ -150,7 +153,7 @@ export class TorrentsService
   async getTorrentFile(
     infoHash: string,
     fileIndex: number,
-  ): Promise<TorrentFile> {
+  ): Promise<WebTorrentFile> {
     const clientTorrent = await this.torrentClient.getTorrent(infoHash);
 
     if (!clientTorrent.files[fileIndex]) {
@@ -209,19 +212,19 @@ export class TorrentsService
 
   private mergeTorrentEntityWithTorrentClient(
     torrentEntity: TorrentEntity,
-    clientTorrent: ClientTorrent,
+    webTorrentTorrent: WebTorrentTorrent,
   ): Torrent {
     return {
-      name: clientTorrent.name,
+      name: webTorrentTorrent.name,
       imdbId: torrentEntity.imdbId,
       tracker: torrentEntity.tracker,
       torrentId: torrentEntity.torrentId,
       infoHash: torrentEntity.infoHash,
-      downloaded: clientTorrent.downloaded,
-      progress: clientTorrent.progress,
-      total: clientTorrent.length,
-      uploaded: clientTorrent.uploaded + torrentEntity.uploaded,
-      uploadSpeed: clientTorrent.uploadSpeed,
+      downloaded: webTorrentTorrent.downloaded,
+      progress: webTorrentTorrent.progress,
+      total: webTorrentTorrent.length,
+      uploaded: webTorrentTorrent.uploaded + torrentEntity.uploaded,
+      uploadSpeed: webTorrentTorrent.uploadSpeed,
       updatedAt: torrentEntity.updatedAt,
       createdAt: torrentEntity.createdAt,
     };

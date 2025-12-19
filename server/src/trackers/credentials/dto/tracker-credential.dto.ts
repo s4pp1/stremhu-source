@@ -25,7 +25,7 @@ export class TrackerCredentialDto {
   @IsNullable()
   @IsNumber()
   @ApiProperty({ type: 'integer', nullable: true })
-  extraSeedSeconds: number | null;
+  keepSeedSeconds: number | null;
 
   @IsDate()
   @ApiProperty()
