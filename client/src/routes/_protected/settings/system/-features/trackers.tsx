@@ -18,7 +18,6 @@ import { getMetadata } from '@/shared/queries/metadata'
 import { getTrackers } from '@/shared/queries/trackers'
 
 import { TrackerItem } from '../-components/tracker-item'
-import { HitAndRun } from './hit-and-run'
 
 export function Trackers() {
   const [{ data: trackers }, { data: metadata }] = useQueries({
@@ -66,8 +65,6 @@ export function Trackers() {
         {trackers.map((tracker) => (
           <TrackerItem key={tracker.tracker} tracker={tracker} />
         ))}
-        <Separator />
-        <HitAndRun />
       </CardContent>
     </Card>
   )

@@ -27,6 +27,10 @@ export class SettingDto {
 
   @IsNumber()
   @ApiProperty({ type: 'number', nullable: true })
+  keepSeedSeconds: number | null;
+
+  @IsNumber()
+  @ApiProperty({ type: 'number', nullable: true })
   cacheRetentionSeconds: number | null;
 
   @IsString()

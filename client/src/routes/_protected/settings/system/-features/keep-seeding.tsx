@@ -19,34 +19,38 @@ import {
   InputGroupInput,
   InputGroupText,
 } from '@/shared/components/ui/input-group'
+import { Label } from '@/shared/components/ui/label'
+import { Switch } from '@/shared/components/ui/switch'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
 import { getSettings, useUpdateSetting } from '@/shared/queries/settings'
 
 const schema = z.object({
-  cacheRetention: z.coerce
+  hitAndRun: z.boolean(),
+  keepSeed: z.coerce
     .number<string>('Csak szám adható meg')
     .positive('Csak pozitív szám adható meg.')
     .nullable(),
 })
 
-export function TorrentFilesCache() {
+export function KeepSeeding() {
   const { data: setting } = useQuery(getSettings)
   assertExists(setting)
 
   const { mutateAsync: updateSetting } = useUpdateSetting()
 
-  const cacheRetentionDays = useMemo(() => {
-    if (setting.cacheRetentionSeconds) {
-      const days = setting.cacheRetentionSeconds / (24 * 60 * 60)
+  const keepSeedDays = useMemo(() => {
+    if (setting.keepSeedSeconds) {
+      const days = setting.keepSeedSeconds / (24 * 60 * 60)
       return `${days}`
     }
 
     return null
-  }, [setting.cacheRetentionSeconds])
+  }, [setting.keepSeedSeconds])
 
   const form = useForm({
     defaultValues: {
-      cacheRetention: cacheRetentionDays,
+      hitAndRun: setting.hitAndRun,
+      keepSeed: keepSeedDays,
     },
     validators: {
       onChange: schema,
@@ -61,15 +65,16 @@ export function TorrentFilesCache() {
     },
     onSubmit: async ({ value, formApi }) => {
       try {
-        let cacheRetentionSeconds = null
+        let keepSeedSeconds = null
 
-        if (value.cacheRetention) {
-          const days = Number(value.cacheRetention)
-          cacheRetentionSeconds = days * 24 * 60 * 60
+        if (value.keepSeed) {
+          const days = Number(value.keepSeed)
+          keepSeedSeconds = days * 24 * 60 * 60
         }
 
         await updateSetting({
-          cacheRetentionSeconds,
+          keepSeedSeconds,
+          hitAndRun: value.hitAndRun,
         })
       } catch (error) {
         formApi.reset()
@@ -82,18 +87,39 @@ export function TorrentFilesCache() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Torrent fájlok cache kezelése</CardTitle>
+        <CardTitle>Torrent törlés feltételei</CardTitle>
         <CardDescription>
-          Add meg, mennyi idő után törlődjenek a nem használt torrent fájlok
+          A torrent és a hozzá tartozó adatok csak akkor törlődnek, ha a
+          bekapcsolt feltételek mindegyike teljesül.
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <form.Field name="cacheRetention">
+      <CardContent className="grid gap-4">
+        <form.Field name="hitAndRun">
+          {(field) => (
+            <Label htmlFor={field.name} className="flex items-start gap-3">
+              <Switch
+                id={field.name}
+                checked={field.state.value}
+                onCheckedChange={field.handleChange}
+              />
+              <div className="flex-1 grid gap-2 font-normal">
+                <p className="text-sm leading-none font-medium">
+                  Hit'n'Run ellenőrzés
+                </p>
+                <p className="text-muted-foreground text-sm">
+                  Minden nap hajnalban ellenőrzi, hogy melyik torrent
+                  teljesítette.
+                </p>
+              </div>
+            </Label>
+          )}
+        </form.Field>
+        <form.Field name="keepSeed">
           {(field) => (
             <Field>
               <InputGroup>
                 <InputGroupInput
-                  placeholder="Nincs limitálva"
+                  placeholder="Nincs automatikus megtartás"
                   inputMode="numeric"
                   id={field.name}
                   name={field.name}

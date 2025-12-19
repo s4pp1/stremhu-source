@@ -109,6 +109,7 @@ export class SettingsService implements OnModuleInit {
       enebledlocalIp: true,
       downloadLimit: 12_500_000,
       uploadLimit: 12_500_000,
+      keepSeedSeconds: null,
       cacheRetentionSeconds: 14 * 24 * 60 * 60,
     });
   }

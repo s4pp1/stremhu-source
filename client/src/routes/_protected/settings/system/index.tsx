@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Separator } from '@/shared/components/ui/separator'
 
+import { KeepSeeding } from './-features/keep-seeding'
 import { NetworkAccessInfo } from './-features/network-access-info'
 import { StremhuCatalogInfo } from './-features/stremhu-catalog-info'
 import { TorrentFilesCache } from './-features/torrent-files-cache'
@@ -23,6 +24,9 @@ function SystemRoute() {
         </div>
         <div className="break-inside-avoid mb-4">
           <TorrentFilesCache />
+        </div>
+        <div>
+          <KeepSeeding />
         </div>
       </div>
       <Separator />
