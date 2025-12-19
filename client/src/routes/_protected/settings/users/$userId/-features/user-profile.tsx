@@ -96,7 +96,6 @@ export function UserProfile(props: UserProfile) {
     onSubmit: async ({ value, formApi }) => {
       try {
         await updateUser({ userId: user.id, payload: value })
-        toast.success(`Sikeresen módosítva.`)
       } catch (error) {
         formApi.reset()
         const message = parseApiError(error)

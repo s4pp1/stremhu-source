@@ -73,7 +73,12 @@ export class UsersController {
     @Body() payload: UpdateUserDto,
   ): Promise<UserDto> {
     const { id, userRole } = req.user || {};
-    if (id === userId && userRole !== payload.userRole) {
+
+    if (
+      id === userId &&
+      payload.userRole !== undefined &&
+      userRole !== payload.userRole
+    ) {
       throw new ForbiddenException(
         'Saját fiókod jogosultságát nem módosíthatod!',
       );

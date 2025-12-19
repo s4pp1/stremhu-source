@@ -43,7 +43,6 @@ export function MediaQualityPreferences(props: MediaQualityPreferences) {
     onSubmit: async ({ value, formApi }) => {
       try {
         await updateUser({ userId: user.id, payload: value })
-        toast.success('Módosítások elmentve')
       } catch (error) {
         formApi.reset()
         const message = parseApiError(error)
