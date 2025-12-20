@@ -3,6 +3,7 @@ import {
   HardDriveDownloadIcon,
   HardDriveIcon,
   HardDriveUploadIcon,
+  PinIcon,
   TrashIcon,
 } from 'lucide-react'
 import type { JSX } from 'react'
@@ -16,6 +17,7 @@ import {
   ItemContent,
   ItemTitle,
 } from '@/shared/components/ui/item'
+import { Toggle } from '@/shared/components/ui/toggle'
 import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
 import type { TorrentDto } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
@@ -75,6 +77,9 @@ export function Torrent(props: TorrentProps) {
           </ItemTitle>
         </ItemContent>
         <ItemActions>
+          <Toggle variant="outline" className="rounded-full">
+            <PinIcon />
+          </Toggle>
           <Button
             variant="destructive"
             size="icon-sm"

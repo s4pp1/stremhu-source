@@ -16,6 +16,7 @@ import type {
   WebTorrentTorrent,
 } from 'src/clients/webtorrent/webtorrent.types';
 import { safeReaddir } from 'src/common/utils/file.util';
+import { SettingsStore } from 'src/settings/core/settings.store';
 import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
@@ -42,6 +43,7 @@ export class TorrentsService
     private readonly torrentsStore: TorrentsStore,
     @Inject('TorrentClient') private readonly torrentClient: TorrentClient,
     private readonly torrentsCacheStore: TorrentsCacheStore,
+    private readonly settingsStore: SettingsStore,
   ) {
     this.downloadsDir = this.configService.getOrThrow<string>(
       'web-torrent.downloads-dir',
@@ -159,13 +161,29 @@ export class TorrentsService
   }
 
   async purgeTrackerExcept(tracker: TrackerEnum, torrentIds: string[]) {
+    const setting = await this.settingsStore.findOne();
+    if (!setting) return;
+
     const torrents = await this.torrentsStore.find((qb) => {
-      qb.where('torrent.tracker = :tracker', { tracker });
+      qb.where(
+        'torrent.tracker = :tracker AND torrent.isPersisted = :isPersisted',
+        {
+          tracker,
+          isPersisted: false,
+        },
+      );
 
       if (torrentIds.length) {
         qb.andWhere('torrent.torrentId NOT IN (:...torrentIds)', {
           torrentIds,
         });
+      }
+
+      if (setting.cacheRetentionSeconds !== null) {
+        qb.andWhere(
+          "datetime(torrent.lastPlayedAt, '+' || :cacheRetentionSeconds || ' seconds') < datetime('now')",
+          { cacheRetentionSeconds: setting.cacheRetentionSeconds },
+        );
       }
 
       return qb;
