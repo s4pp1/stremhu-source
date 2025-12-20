@@ -395,11 +395,12 @@ export class StremioStreamService {
 
       return { file: videoFile, fileIndex };
     } else {
-      const fileSizes = files.map((file) => file.length);
-      const largestSize = _.max(fileSizes);
+      const largestFile = _.maxBy(files, (file) => file.length);
+      if (!largestFile || !isVideo(largestFile.name)) return;
+
       const largestFileIndex = _.findIndex(
         files,
-        (file) => file.length === largestSize,
+        (file) => file.name === largestFile.name,
       );
 
       return {

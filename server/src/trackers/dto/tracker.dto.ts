@@ -17,6 +17,10 @@ export class TrackerDto {
   @Exclude()
   password: string;
 
+  @IsBoolean()
+  @ApiProperty({ type: 'boolean' })
+  downloadFullTorrent: boolean;
+
   @IsNullable()
   @IsBoolean()
   @ApiProperty({ type: 'boolean', nullable: true })
