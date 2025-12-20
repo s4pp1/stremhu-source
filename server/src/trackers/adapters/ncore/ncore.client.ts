@@ -37,10 +37,10 @@ import {
 export class NcoreClient {
   private readonly logger = new Logger(NcoreClient.name);
   private readonly limiter = new Bottleneck({
-    reservoir: 5,
-    reservoirRefreshAmount: 5,
+    reservoir: 10,
+    reservoirRefreshAmount: 10,
     reservoirRefreshInterval: 1000,
-    maxConcurrent: 5,
+    maxConcurrent: 10,
     minTime: 0,
   });
 

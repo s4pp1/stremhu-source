@@ -126,7 +126,7 @@ export function KeepSeeding() {
             <ItemContent>
               <ItemTitle>Lejátszás alapú seedben tartás</ItemTitle>
               <ItemDescription>
-                Az utolsó lejátszást követően mennyi ideig tartsa seed-ben a
+                Az utolsó lejátszást követően mennyi ideig tartsa seedben a
                 torrentet?
               </ItemDescription>
             </ItemContent>
@@ -136,7 +136,7 @@ export function KeepSeeding() {
               <Field>
                 <InputGroup>
                   <InputGroupInput
-                    placeholder="Nincs seed-ben tartás"
+                    placeholder="Nincs seedben tartás"
                     inputMode="numeric"
                     id={field.name}
                     name={field.name}

@@ -27,9 +27,9 @@ export class TrackerDiscoveryService {
   ) {}
 
   async findTorrents(query: TrackerSearchQuery): Promise<TrackerTorrent[]> {
-    const credentials = await this.trackersStore.find();
+    const trackers = await this.trackersStore.find();
 
-    if (credentials.length === 0) {
+    if (trackers.length === 0) {
       return [
         {
           status: TrackerTorrentStatusEnum.ERROR,
@@ -40,8 +40,8 @@ export class TrackerDiscoveryService {
     }
 
     const results = await Promise.all(
-      credentials.map((credential) => {
-        const adapter = this.trackerAdapterRegistry.get(credential.tracker);
+      trackers.map((tracker) => {
+        const adapter = this.trackerAdapterRegistry.get(tracker.tracker);
         return this.findTrackerTorrents(adapter, query);
       }),
     );

@@ -5,6 +5,7 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import Bottleneck from 'bottleneck';
 import { load } from 'cheerio';
 import _ from 'lodash';
 
@@ -34,6 +35,14 @@ import {
 @Injectable()
 export class MajomparadeClient {
   private readonly logger = new Logger(MajomparadeClient.name);
+  private readonly limiter = new Bottleneck({
+    reservoir: 10,
+    reservoirRefreshAmount: 10,
+    reservoirRefreshInterval: 1000,
+    maxConcurrent: 10,
+    minTime: 0,
+  });
+
   private readonly majomparadeBaseUrl: string;
 
   constructor(
@@ -47,7 +56,9 @@ export class MajomparadeClient {
   }
 
   login(payload: MajomparadeLoginRequest) {
-    return this.majomparadeClientFactory.login(payload);
+    return this.requestLimit(() =>
+      this.majomparadeClientFactory.login(payload),
+    );
   }
 
   find(payload: MajomparadeTorrentsQuery) {
@@ -84,11 +95,10 @@ export class MajomparadeClient {
         torrentsUrl.searchParams.append(`category[]`, `${category}`);
       });
 
-      const response = await this.majomparadeClientFactory.client.get<string>(
-        torrentsUrl.href,
-        {
+      const response = await this.requestLimit(() =>
+        this.majomparadeClientFactory.client.get<string>(torrentsUrl.href, {
           responseType: 'text',
-        },
+        }),
       );
 
       const data = this.processTorrentsHtml(response.data);
@@ -115,11 +125,10 @@ export class MajomparadeClient {
       );
       detailsUrl.searchParams.append('id', `${torrentId}`);
 
-      const response = await this.majomparadeClientFactory.client.get<string>(
-        detailsUrl.href,
-        {
+      const response = await this.requestLimit(() =>
+        this.majomparadeClientFactory.client.get<string>(detailsUrl.href, {
           responseType: 'text',
-        },
+        }),
       );
 
       const $ = load(response.data);
@@ -156,10 +165,11 @@ export class MajomparadeClient {
   async download(payload: AdapterTorrentId): Promise<AdapterParsedTorrent> {
     const { torrentId, downloadUrl } = payload;
 
-    const response =
-      await this.majomparadeClientFactory.client.get<ArrayBuffer>(downloadUrl, {
+    const response = await this.requestLimit(() =>
+      this.majomparadeClientFactory.client.get<ArrayBuffer>(downloadUrl, {
         responseType: 'arraybuffer',
-      });
+      }),
+    );
 
     const bytes = new Uint8Array(response.data);
     const parsed = await parseTorrent(bytes);
@@ -174,11 +184,10 @@ export class MajomparadeClient {
         this.majomparadeBaseUrl,
       );
 
-      const response = await this.majomparadeClientFactory.client.get<string>(
-        hitAndRunUrl.href,
-        {
+      const response = await this.requestLimit(() =>
+        this.majomparadeClientFactory.client.get<string>(hitAndRunUrl.href, {
           responseType: 'text',
-        },
+        }),
       );
 
       const $ = load(response.data);
@@ -253,5 +262,9 @@ export class MajomparadeClient {
       results: torrents,
       hasNextPage,
     };
+  }
+
+  private requestLimit<T>(fn: () => Promise<T>) {
+    return this.limiter.schedule(fn);
   }
 }
