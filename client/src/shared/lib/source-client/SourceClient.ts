@@ -14,6 +14,7 @@ import { StremHuCatalogService } from './services/StremHuCatalogService';
 import { StremioService } from './services/StremioService';
 import { StremioStreamService } from './services/StremioStreamService';
 import { TorrentsService } from './services/TorrentsService';
+import { TorrentsCacheService } from './services/TorrentsCacheService';
 import { TrackersService } from './services/TrackersService';
 import { UsersService } from './services/UsersService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
@@ -27,6 +28,7 @@ export class SourceClient {
     public readonly stremio: StremioService;
     public readonly stremioStream: StremioStreamService;
     public readonly torrents: TorrentsService;
+    public readonly torrentsCache: TorrentsCacheService;
     public readonly trackers: TrackersService;
     public readonly users: UsersService;
     public readonly request: BaseHttpRequest;
@@ -51,6 +53,7 @@ export class SourceClient {
         this.stremio = new StremioService(this.request);
         this.stremioStream = new StremioStreamService(this.request);
         this.torrents = new TorrentsService(this.request);
+        this.torrentsCache = new TorrentsCacheService(this.request);
         this.trackers = new TrackersService(this.request);
         this.users = new UsersService(this.request);
     }

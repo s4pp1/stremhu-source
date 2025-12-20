@@ -1,5 +1,5 @@
 import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
-import { ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { filesize } from 'filesize';
 import _ from 'lodash';
 
@@ -15,6 +15,7 @@ import { TorrentsService } from './torrents.service';
 @UseGuards(AuthGuard, RolesGuard)
 @Roles(UserRoleEnum.ADMIN)
 @Controller('/torrents')
+@ApiTags('Torrents')
 export class TorrentsController {
   constructor(private readonly torrentsService: TorrentsService) {}
 

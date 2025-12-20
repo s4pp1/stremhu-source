@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import _ from 'lodash';
 
-import { TorrentCacheStore } from 'src/torrent-cache/core/torrent-cache.store';
+import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
 
 import {
   AdapterParsedTorrent,
@@ -23,7 +23,7 @@ export class TrackerDiscoveryService {
   constructor(
     private readonly trackersStore: TrackersStore,
     private readonly trackerAdapterRegistry: TrackerAdapterRegistry,
-    private readonly torrentCacheStore: TorrentCacheStore,
+    private readonly torrentsCacheStore: TorrentsCacheStore,
   ) {}
 
   async findTorrents(query: TrackerSearchQuery): Promise<TrackerTorrent[]> {
@@ -56,7 +56,7 @@ export class TrackerDiscoveryService {
     const adapter = this.trackerAdapterRegistry.get(tracker);
 
     const torrent = await adapter.findOne(torrentId);
-    const torrentCache = await this.torrentCacheStore.findOne(torrent);
+    const torrentCache = await this.torrentsCacheStore.findOne(torrent);
 
     if (torrentCache) {
       return {
@@ -66,7 +66,7 @@ export class TrackerDiscoveryService {
     }
 
     const downloaded = await adapter.download(torrent);
-    await this.torrentCacheStore.create({
+    await this.torrentsCacheStore.create({
       tracker,
       torrentId,
       imdbId: torrent.imdbId,
@@ -87,7 +87,7 @@ export class TrackerDiscoveryService {
       const { imdbId } = query;
 
       const torrents = await adapter.find(query);
-      const cachedTorrents = await this.torrentCacheStore.find({
+      const cachedTorrents = await this.torrentsCacheStore.find({
         imdbId,
         tracker: adapter.tracker,
       });
@@ -109,7 +109,7 @@ export class TrackerDiscoveryService {
         (cachedTorrent, torrent) =>
           torrent.torrentId === cachedTorrent.torrentId,
       );
-      await this.torrentCacheStore.delete(
+      await this.torrentsCacheStore.delete(
         notAvailableTorrents.map(
           (notAvailableTorrent) => notAvailableTorrent.path,
         ),
@@ -154,7 +154,7 @@ export class TrackerDiscoveryService {
       adapterTorrents.map(async (adapterTorrent) => {
         const adapterParsedTorrent = await adapter.download(adapterTorrent);
 
-        await this.torrentCacheStore.create({
+        await this.torrentsCacheStore.create({
           imdbId: adapterTorrent.imdbId,
           parsed: adapterParsedTorrent.parsed,
           torrentId: adapterTorrent.torrentId,

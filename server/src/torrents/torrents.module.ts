@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from 'src/auth/auth.module';
 import { WebTorrentModule } from 'src/clients/webtorrent/webtorrent.module';
 import { WebTorrentService } from 'src/clients/webtorrent/webtorrent.service';
-import { TorrentCacheCoreModule } from 'src/torrent-cache/core/torrent-cache-core.module';
+import { TorrentsCacheCoreModule } from 'src/torrents-cache/core/torrents-cache-core.module';
 
 import { TorrentsCoreModule } from './core/torrents-core.module';
 import { TorrentsController } from './torrents.controller';
@@ -14,7 +14,7 @@ import { TorrentsService } from './torrents.service';
     TorrentsCoreModule,
     AuthModule,
     WebTorrentModule,
-    TorrentCacheCoreModule,
+    TorrentsCacheCoreModule,
   ],
   providers: [
     TorrentsService,

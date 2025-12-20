@@ -54,16 +54,6 @@ export class SettingsService {
         });
     }
     /**
-     * @returns any
-     * @throws ApiError
-     */
-    public cacheTorrentsCleanup(): CancelablePromise<any> {
-        return this.httpRequest.request({
-            method: 'POST',
-            url: '/api/settings/cache/torrents/retention-cleanup',
-        });
-    }
-    /**
      * @param requestBody
      * @returns UserDto
      * @throws ApiError

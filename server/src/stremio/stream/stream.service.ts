@@ -16,7 +16,7 @@ import { RESOLUTION_LABEL_MAP } from 'src/common/common.constant';
 import { LanguageEnum } from 'src/common/enum/language.enum';
 import { ParsedFile } from 'src/common/utils/parse-torrent.util';
 import { SettingsStore } from 'src/settings/core/settings.store';
-import { TorrentCacheStore } from 'src/torrent-cache/core/torrent-cache.store';
+import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
 import { TorrentsService } from 'src/torrents/torrents.service';
 import { TrackerTorrentStatusEnum } from 'src/trackers/enum/tracker-torrent-status.enum';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
@@ -47,7 +47,7 @@ export class StremioStreamService {
   private inFlightPlay = new Map<string, Promise<TorrentFile>>();
 
   constructor(
-    private readonly torrentCacheStore: TorrentCacheStore,
+    private readonly torrentsCacheStore: TorrentsCacheStore,
     private readonly trackerDiscoveryService: TrackerDiscoveryService,
     private readonly torrentsService: TorrentsService,
     private readonly settingsStore: SettingsStore,
@@ -165,7 +165,7 @@ export class StremioStreamService {
   private async fetchTorrent(payload: PlayStream) {
     const { imdbId, tracker, torrentId, fileIndex } = payload;
 
-    const torrentCache = await this.torrentCacheStore.findOne({
+    const torrentCache = await this.torrentsCacheStore.findOne({
       imdbId,
       tracker,
       torrentId,

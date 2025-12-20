@@ -5,7 +5,6 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { toDto } from 'src/common/utils/to-dto';
-import { TorrentCacheService } from 'src/torrent-cache/torrent-cache.service';
 import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
 import { SettingsStore } from './core/settings.store';
@@ -21,9 +20,8 @@ import { SettingsService } from './settings.service';
 @ApiTags('Settings')
 export class SettingsController {
   constructor(
-    private settingsStore: SettingsStore,
-    private settingsService: SettingsService,
-    private torrentsCache: TorrentCacheService,
+    private readonly settingsStore: SettingsStore,
+    private readonly settingsService: SettingsService,
   ) {}
 
   @ApiResponse({ status: 200, type: SettingDto })
@@ -51,11 +49,5 @@ export class SettingsController {
     return {
       localUrl,
     };
-  }
-
-  @ApiResponse({ status: 200 })
-  @Post('/cache/torrents/retention-cleanup')
-  async cacheTorrentsCleanup(): Promise<void> {
-    return this.torrentsCache.runRetentionCleanup();
   }
 }

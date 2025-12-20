@@ -60,66 +60,74 @@ export const UrlConfiguration = withForm({
     const { data: setting } = useQuery(getSettings)
     assertExists(setting)
 
-    const networkConfig = form.store.state.values.enebledlocalIp
-      ? 'ip'
-      : 'domain'
-
     return (
-      <div className="grid gap-2">
-        <Item className="p-0">
-          <ItemContent>
-            <ItemTitle>{addressMap[networkConfig].label}</ItemTitle>
-            <ItemDescription>
-              {addressMap[networkConfig].description}
-            </ItemDescription>
-          </ItemContent>
-          <form.Subscribe selector={(state) => [state.values.connection]}>
-            {([connection]) =>
-              connection !== 'idle' && (
-                <ItemActions>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant={
-                          connection === 'error' ? 'destructive' : 'default'
-                        }
-                        size="icon-sm"
-                        className={clsx([
-                          'rounded-full',
-                          connection === 'success' && 'bg-green-500 text-white',
-                        ])}
-                      >
-                        {networkCheckMap[connection].icon}
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{networkCheckMap[connection].title}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </ItemActions>
-              )
-            }
-          </form.Subscribe>
-        </Item>
-        <form.Field name="address">
-          {(field) => (
-            <Field>
-              <Input
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => {
-                  field.handleChange(e.target.value)
-                }}
-                placeholder={addressMap[networkConfig].placeholder}
-              />
-              {field.state.meta.isTouched && (
-                <FieldError errors={field.state.meta.errors} />
-              )}
-            </Field>
-          )}
-        </form.Field>
-      </div>
+      <form.Subscribe selector={(state) => [state.values.enebledlocalIp]}>
+        {([enebledlocalIp]) => {
+          const networkConfig = enebledlocalIp ? 'ip' : 'domain'
+
+          return (
+            <div className="grid gap-2">
+              <Item className="p-0">
+                <ItemContent>
+                  <ItemTitle>{addressMap[networkConfig].label}</ItemTitle>
+                  <ItemDescription>
+                    {addressMap[networkConfig].description}
+                  </ItemDescription>
+                </ItemContent>
+                <form.Subscribe selector={(state) => [state.values.connection]}>
+                  {([connection]) =>
+                    connection !== 'idle' && (
+                      <ItemActions>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant={
+                                connection === 'error'
+                                  ? 'destructive'
+                                  : 'default'
+                              }
+                              size="icon-sm"
+                              className={clsx([
+                                'rounded-full',
+                                connection === 'success' &&
+                                  'bg-green-500 text-white',
+                              ])}
+                            >
+                              {networkCheckMap[connection].icon}
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{networkCheckMap[connection].title}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </ItemActions>
+                    )
+                  }
+                </form.Subscribe>
+              </Item>
+
+              <form.Field name="address">
+                {(field) => (
+                  <Field>
+                    <Input
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => {
+                        field.handleChange(e.target.value)
+                      }}
+                      placeholder={addressMap[networkConfig].placeholder}
+                    />
+                    {field.state.meta.isTouched && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                )}
+              </form.Field>
+            </div>
+          )
+        }}
+      </form.Subscribe>
     )
   },
 })

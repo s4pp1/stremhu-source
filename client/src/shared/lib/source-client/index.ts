@@ -50,5 +50,6 @@ export { StremHuCatalogService } from './services/StremHuCatalogService';
 export { StremioService } from './services/StremioService';
 export { StremioStreamService } from './services/StremioStreamService';
 export { TorrentsService } from './services/TorrentsService';
+export { TorrentsCacheService } from './services/TorrentsCacheService';
 export { TrackersService } from './services/TrackersService';
 export { UsersService } from './services/UsersService';

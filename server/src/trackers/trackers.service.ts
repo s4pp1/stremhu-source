@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
 
-import { TorrentCacheService } from 'src/torrent-cache/torrent-cache.service';
+import { TorrentsCacheService } from 'src/torrents-cache/torrents-cache.service';
 import { TorrentsService } from 'src/torrents/torrents.service';
 
 import { TrackersStore } from './core/trackers.store';
@@ -21,7 +21,7 @@ export class TrackersService {
     private readonly trackerAdapterRegistry: TrackerAdapterRegistry,
     private readonly trackersStore: TrackersStore,
     private readonly torrentsService: TorrentsService,
-    private readonly torrentCacheService: TorrentCacheService,
+    private readonly torrentsCacheService: TorrentsCacheService,
   ) {}
 
   async login(tracker: TrackerEnum, payload: LoginRequest): Promise<void> {
@@ -68,7 +68,7 @@ export class TrackersService {
     }
 
     await this.torrentsService.deleteAllByTracker(tracker);
-    await this.torrentCacheService.deleteAllByTracker(tracker);
+    await this.torrentsCacheService.deleteAllByTracker(tracker);
     await this.trackersStore.remove(foundTracker, manager);
   }
 }

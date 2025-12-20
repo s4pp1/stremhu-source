@@ -14,17 +14,17 @@ import {
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import { TrackerTorrentId } from 'src/trackers/tracker.types';
 
-import { MARKER_FILENAME } from '../torrent-cache.constants';
+import { MARKER_FILENAME } from '../torrents-cache.constants';
 import {
   ParsedTorrentPath,
   TorrentCache,
   TorrentCacheId,
   TorrentsCache,
-} from '../torrent-cache.types';
+} from '../torrents-cache.types';
 
 @Injectable()
-export class TorrentCacheStore implements OnModuleInit {
-  private readonly logger = new Logger(TorrentCacheStore.name);
+export class TorrentsCacheStore implements OnModuleInit {
+  private readonly logger = new Logger(TorrentsCacheStore.name);
   private readonly torrentsDir: string;
 
   constructor(private readonly configService: ConfigService) {

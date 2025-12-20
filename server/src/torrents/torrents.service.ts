@@ -16,7 +16,7 @@ import type {
   WebTorrentTorrent,
 } from 'src/clients/webtorrent/webtorrent.types';
 import { safeReaddir } from 'src/common/utils/file.util';
-import { TorrentCacheStore } from 'src/torrent-cache/core/torrent-cache.store';
+import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { TorrentsStore } from './core/torrents.store';
@@ -41,7 +41,7 @@ export class TorrentsService
     private readonly configService: ConfigService,
     private readonly torrentsStore: TorrentsStore,
     @Inject('TorrentClient') private readonly torrentClient: TorrentClient,
-    private readonly torrentCacheStore: TorrentCacheStore,
+    private readonly torrentsCacheStore: TorrentsCacheStore,
   ) {
     this.downloadsDir = this.configService.getOrThrow<string>(
       'web-torrent.downloads-dir',
@@ -59,7 +59,7 @@ export class TorrentsService
     const torrents = await this.torrentsStore.find();
 
     for (const torrent of torrents) {
-      const torrentCache = await this.torrentCacheStore.findOne({
+      const torrentCache = await this.torrentsCacheStore.findOne({
         imdbId: torrent.imdbId,
         tracker: torrent.tracker,
         torrentId: torrent.torrentId,

@@ -5,7 +5,7 @@ import { EntityManager } from 'typeorm';
 import { CatalogService } from 'src/catalog/catalog.service';
 import { GLOBAL_ID } from 'src/common/common.constant';
 import { LocalIpService } from 'src/local-ip/local-ip.service';
-import { TorrentCacheService } from 'src/torrent-cache/torrent-cache.service';
+import { TorrentsCacheService } from 'src/torrents-cache/torrents-cache.service';
 import { TorrentsService } from 'src/torrents/torrents.service';
 import { TrackerMaintenanceService } from 'src/trackers/tracker-maintenance.service';
 
@@ -22,7 +22,7 @@ export class SettingsService implements OnModuleInit {
     private readonly trackerMaintenanceService: TrackerMaintenanceService,
     private readonly torrentsService: TorrentsService,
     private readonly localIpService: LocalIpService,
-    private readonly torrentCacheService: TorrentCacheService,
+    private readonly torrentsCacheService: TorrentsCacheService,
     private readonly catalogService: CatalogService,
   ) {}
 
@@ -63,7 +63,7 @@ export class SettingsService implements OnModuleInit {
     const prevState = _.isNumber(setting.cacheRetentionSeconds);
     const updateState = _.isNumber(payload.cacheRetentionSeconds);
     if (hasCacheRetentionSeconds && prevState !== updateState) {
-      await this.torrentCacheService.setRetentionCleanupCron(updateState);
+      await this.torrentsCacheService.setRetentionCleanupCron(updateState);
     }
 
     // Web Torrent letöltés/feltöltés beállítása

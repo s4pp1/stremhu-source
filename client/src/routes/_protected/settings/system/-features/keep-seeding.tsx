@@ -1,6 +1,7 @@
 import { useForm } from '@tanstack/react-form'
 import { useQuery } from '@tanstack/react-query'
 import { isEmpty } from 'lodash'
+import { TimerIcon } from 'lucide-react'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -19,6 +20,12 @@ import {
   InputGroupInput,
   InputGroupText,
 } from '@/shared/components/ui/input-group'
+import {
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemTitle,
+} from '@/shared/components/ui/item'
 import { Label } from '@/shared/components/ui/label'
 import { Switch } from '@/shared/components/ui/switch'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
@@ -89,11 +96,11 @@ export function KeepSeeding() {
       <CardHeader>
         <CardTitle>Torrent törlés feltételei</CardTitle>
         <CardDescription>
-          A torrent és a hozzá tartozó adatok csak akkor törlődnek, ha a
-          bekapcsolt feltételek mindegyike teljesül.
+          A torrent és a hozzá tartozó adat csak akkor törlődik, ha a bekapcsolt
+          feltételek mindegyike teljesül.
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-4">
+      <CardContent className="grid gap-6">
         <form.Field name="hitAndRun">
           {(field) => (
             <Label htmlFor={field.name} className="flex items-start gap-3">
@@ -114,37 +121,51 @@ export function KeepSeeding() {
             </Label>
           )}
         </form.Field>
-        <form.Field name="keepSeed">
-          {(field) => (
-            <Field>
-              <InputGroup>
-                <InputGroupInput
-                  placeholder="Nincs automatikus megtartás"
-                  inputMode="numeric"
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value ?? ''}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => {
-                    const value = e.target.value
+        <div className="grid gap-3">
+          <Item variant="default" className="p-0">
+            <ItemContent>
+              <ItemTitle>Lejátszás alapú seedben tartás</ItemTitle>
+              <ItemDescription>
+                Az utolsó lejátszást követően mennyi ideig tartsa seed-ben a
+                torrentet?
+              </ItemDescription>
+            </ItemContent>
+          </Item>
+          <form.Field name="keepSeed">
+            {(field) => (
+              <Field>
+                <InputGroup>
+                  <InputGroupInput
+                    placeholder="Nincs seed-ben tartás"
+                    inputMode="numeric"
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value ?? ''}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => {
+                      const value = e.target.value
 
-                    if (isEmpty(value)) {
-                      field.handleChange(null)
-                    } else {
-                      field.handleChange(e.target.value)
-                    }
-                  }}
-                />
-                <InputGroupAddon align="inline-end">
-                  <InputGroupText>nap</InputGroupText>
-                </InputGroupAddon>
-              </InputGroup>
-              {field.state.meta.isTouched && (
-                <FieldError errors={field.state.meta.errors} />
-              )}
-            </Field>
-          )}
-        </form.Field>
+                      if (isEmpty(value)) {
+                        field.handleChange(null)
+                      } else {
+                        field.handleChange(e.target.value)
+                      }
+                    }}
+                  />
+                  <InputGroupAddon>
+                    <TimerIcon />
+                  </InputGroupAddon>
+                  <InputGroupAddon align="inline-end">
+                    <InputGroupText>nap</InputGroupText>
+                  </InputGroupAddon>
+                </InputGroup>
+                {field.state.meta.isTouched && (
+                  <FieldError errors={field.state.meta.errors} />
+                )}
+              </Field>
+            )}
+          </form.Field>
+        </div>
       </CardContent>
     </Card>
   )

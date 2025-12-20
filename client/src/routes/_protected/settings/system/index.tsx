@@ -15,6 +15,8 @@ export const Route = createFileRoute('/_protected/settings/system/')({
 function SystemRoute() {
   return (
     <div className="grid gap-8">
+      <Trackers />
+      <Separator />
       <div className="columns-1 md:columns-2 gap-4">
         <div className="break-inside-avoid mb-4">
           <NetworkAccessInfo />
@@ -29,8 +31,6 @@ function SystemRoute() {
           <KeepSeeding />
         </div>
       </div>
-      <Separator />
-      <Trackers />
     </div>
   )
 }
