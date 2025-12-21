@@ -1,6 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
 
+import { UsersStore } from 'src/users/core/users.store';
 import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 import { UsersService } from 'src/users/users.service';
 
@@ -11,12 +12,13 @@ import { StatusDto } from './dto/status.dto';
 @Injectable()
 export class SetupService {
   constructor(
+    private readonly usersStore: UsersStore,
     private readonly usersService: UsersService,
     private readonly settingsStore: SettingsStore,
   ) {}
 
   async create(payload: CreateSetupDto, manager?: EntityManager) {
-    const users = await this.usersService.find();
+    const users = await this.usersStore.find();
 
     if (users.length > 0) {
       throw new HttpException('Szerver már kofigurálva van', 410);
@@ -34,8 +36,8 @@ export class SetupService {
   }
 
   async status(): Promise<StatusDto> {
-    const users = await this.usersService.find((qb) =>
-      qb.where('user_role = :userRole', { userRole: UserRoleEnum.ADMIN }),
+    const users = await this.usersStore.find((qb) =>
+      qb.where('user.userRole = :userRole', { userRole: UserRoleEnum.ADMIN }),
     );
     const setting = await this.settingsStore.findOneOrThrow();
 

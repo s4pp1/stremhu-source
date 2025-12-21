@@ -7,7 +7,7 @@ import {
 import { SortableContext } from '@dnd-kit/sortable'
 import { useQuery } from '@tanstack/react-query'
 
-import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
+import { useMetadata } from '@/shared/hooks/use-metadata'
 import type { LanguageEnum } from '@/shared/lib/source-client'
 import { cn } from '@/shared/lib/utils'
 import { getMetadata } from '@/shared/queries/metadata'
@@ -30,7 +30,7 @@ export function LanguagesSelector(props: LanguagesSelectorProps) {
   const { data: metadata } = useQuery(getMetadata)
   if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
 
-  const { getLanguageLabel } = useMetadataLabel()
+  const { getLanguageLabel } = useMetadata()
 
   const inactiveItems = metadata.languages.filter(
     (resolution) => !items.includes(resolution.value),

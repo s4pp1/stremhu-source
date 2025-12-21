@@ -24,8 +24,11 @@ export class Setting {
   @Column({ name: 'hit_and_run', type: 'boolean', default: false })
   hitAndRun!: boolean;
 
-  @Column({ name: 'cache_retention', type: 'text', nullable: true })
-  cacheRetention!: string | null;
+  @Column({ name: 'keep_seed_seconds', type: 'int', nullable: true })
+  keepSeedSeconds!: number | null;
+
+  @Column({ name: 'cache_retention_seconds', type: 'integer', nullable: true })
+  cacheRetentionSeconds!: number | null;
 
   @Column({ name: 'catalog_token', type: 'text', nullable: true })
   catalogToken!: string | null;

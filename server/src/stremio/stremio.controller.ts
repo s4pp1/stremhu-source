@@ -7,12 +7,12 @@ import {
 } from '@nestjs/swagger';
 import type { Response } from 'express';
 
-import { StremioTokenGuard } from 'src/auth/guards/stremio-token.guard';
+import { TokenGuard } from 'src/auth/guards/token.guard';
 
 import { ManifestDto } from './dto/manifest.dto';
 import { StremioService } from './stremio.service';
 
-@UseGuards(StremioTokenGuard)
+@UseGuards(TokenGuard)
 @Controller('/:token')
 @ApiTags('Stremio')
 @ApiParam({

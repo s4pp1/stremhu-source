@@ -4,7 +4,8 @@ export interface SettingToCreate {
   downloadLimit: number;
   uploadLimit: number;
   hitAndRun: boolean;
-  cacheRetention: string | null;
+  keepSeedSeconds: number | null;
+  cacheRetentionSeconds: number | null;
 }
 
 export interface SettingToUpdate {
@@ -13,6 +14,7 @@ export interface SettingToUpdate {
   downloadLimit?: number;
   uploadLimit?: number;
   hitAndRun?: boolean;
-  cacheRetention?: string | null;
+  keepSeedSeconds?: number | null;
+  cacheRetentionSeconds?: number | null;
   catalogToken?: string | null;
 }

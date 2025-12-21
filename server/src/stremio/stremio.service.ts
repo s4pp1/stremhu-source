@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import semver from 'semver';
 
-import { NodeEnvEnum } from 'src/config/enums/node-env.enum';
+import { NodeEnvEnum } from 'src/config/enum/node-env.enum';
 import { SettingsStore } from 'src/settings/core/settings.store';
 
 import {

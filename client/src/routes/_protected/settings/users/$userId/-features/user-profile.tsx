@@ -49,7 +49,7 @@ import { UserRoleEnum } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import { getMe } from '@/shared/queries/me'
 import { getMetadata } from '@/shared/queries/metadata'
-import { useDeleteUser, useUpdateProfile } from '@/shared/queries/users'
+import { useDeleteUser, useUpdateUser } from '@/shared/queries/users'
 
 type UserProfile = {
   user: UserDto
@@ -72,10 +72,10 @@ export function UserProfile(props: UserProfile) {
   const dialogs = useDialogs()
 
   const { urlEndpoint } = useIntegrationDomain({
-    stremioToken: user.stremioToken,
+    token: user.token,
   })
 
-  const { mutateAsync: updateProfile } = useUpdateProfile()
+  const { mutateAsync: updateUser } = useUpdateUser()
   const { mutateAsync: deleteUser } = useDeleteUser()
 
   const form = useForm({
@@ -95,8 +95,7 @@ export function UserProfile(props: UserProfile) {
     },
     onSubmit: async ({ value, formApi }) => {
       try {
-        await updateProfile({ userId: user.id, payload: value })
-        toast.success(`Sikeresen módosítva.`)
+        await updateUser({ userId: user.id, payload: value })
       } catch (error) {
         formApi.reset()
         const message = parseApiError(error)
@@ -220,9 +219,9 @@ export function UserProfile(props: UserProfile) {
           )}
         </form.Field>
         <Field>
-          <FieldLabel htmlFor="stremioToken">Stremio addon URL</FieldLabel>
+          <FieldLabel htmlFor="token">Stremio addon URL</FieldLabel>
           <InputGroup>
-            <InputGroupInput name="stremioToken" readOnly value={urlEndpoint} />
+            <InputGroupInput name="token" readOnly value={urlEndpoint} />
             <InputGroupAddon align="inline-end">
               <InputGroupButton
                 variant="ghost"

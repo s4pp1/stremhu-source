@@ -5,12 +5,12 @@ import {
   VideoCodec as VideoCodecEnum,
 } from '@ctrl/video-filename-parser';
 
-import { LanguageEnum } from 'src/common/enums/language.enum';
+import { LanguageEnum } from 'src/common/enum/language.enum';
 import { ParsedFile } from 'src/common/utils/parse-torrent.util';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import { User } from 'src/users/entity/user.entity';
 
-import { StreamMediaTypeEnum } from '../enums/stream-media-type.enum';
+import { StreamMediaTypeEnum } from '../enum/stream-media-type.enum';
 import { ParsedStreamIdSeries } from './pipe/stream-id.pipe';
 
 export enum RangeErrorEnum {
@@ -21,7 +21,6 @@ export enum RangeErrorEnum {
 export interface CalculateRange {
   rangeHeader?: string;
   total: number;
-  torrentPieceLength: number;
 }
 
 export interface CalculatedRangeDetails {
@@ -78,7 +77,7 @@ export interface VideoFileWithRank {
   language: VideoFileLanguage;
   videoCodec?: VideoCodecEnum;
   audioCodec?: AudioCodecEnum;
-  isHDR: boolean;
+  hdrTypes: string[];
   sources: SourceEnum[];
   notWebReady: boolean;
 }
@@ -94,7 +93,7 @@ export interface PlayStream {
   imdbId: string;
   tracker: TrackerEnum;
   torrentId: string;
-  fileIdx: number;
+  fileIndex: number;
 }
 
 export interface SelectVideoOptions {

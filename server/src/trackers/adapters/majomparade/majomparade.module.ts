@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { TrackerCredentialsModule } from 'src/trackers/credentials/tracker-credentials.module';
+import { TrackersCoreModule } from 'src/trackers/core/trackers-core.module';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { TRACKER_TOKEN } from '../adapters.types';
@@ -9,7 +9,7 @@ import { MajomparadeClient } from './majomparade.client';
 import { MajomparadeClientFactory } from './majomparade.client-factory';
 
 @Module({
-  imports: [TrackerCredentialsModule],
+  imports: [TrackersCoreModule],
   providers: [
     { provide: TRACKER_TOKEN, useValue: TrackerEnum.MAJOMPARADE },
     MajomparadeAdapter,

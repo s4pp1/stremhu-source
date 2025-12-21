@@ -1,25 +1,16 @@
 import { Resolution as ResolutionEnum } from '@ctrl/video-filename-parser';
 
-import { LanguageEnum } from 'src/common/enums/language.enum';
+import { LanguageEnum } from 'src/common/enum/language.enum';
 import { ParsedTorrent } from 'src/common/utils/parse-torrent.util';
-import { StreamMediaTypeEnum } from 'src/stremio/enums/stream-media-type.enum';
+import { StreamMediaTypeEnum } from 'src/stremio/enum/stream-media-type.enum';
 
 import {
   AdapterParsedTorrent,
   AdapterTorrent,
   AdapterTorrentId,
 } from './adapters/adapters.types';
+import { TrackerTorrentStatusEnum } from './enum/tracker-torrent-status.enum';
 import { TrackerEnum } from './enum/tracker.enum';
-
-export interface TrackerOption {
-  value: TrackerEnum;
-  label: string;
-}
-
-export enum TrackerTorrentStatusEnum {
-  SUCCESS = 'success',
-  ERROR = 'error',
-}
 
 export interface TrackerTorrentId {
   tracker: TrackerEnum;

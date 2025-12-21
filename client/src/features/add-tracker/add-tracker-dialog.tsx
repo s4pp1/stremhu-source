@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from '@/shared/components/ui/select'
 import { useAppForm } from '@/shared/contexts/form-context'
-import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
+import { useMetadata } from '@/shared/hooks/use-metadata'
 import { TrackerEnum } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import { getMetadata } from '@/shared/queries/metadata'
@@ -42,7 +42,7 @@ export function AddTrackerDialog(dialog: OpenedDialog & AddTrackerDialog) {
   const dialogsStore = useDialogsStore()
 
   const { data: metadata } = useQuery(getMetadata)
-  const { getTrackerLabel } = useMetadataLabel()
+  const { getTrackerLabel } = useMetadata()
   if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
 
   const { mutateAsync: loginTracker } = useLoginTracker()

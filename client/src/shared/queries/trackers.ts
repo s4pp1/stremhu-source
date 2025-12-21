@@ -5,7 +5,11 @@ import {
 } from '@tanstack/react-query'
 
 import { appClient } from '@/shared/lib/client'
-import type { LoginTrackerDto, TrackerEnum } from '@/shared/lib/source-client'
+import type {
+  LoginTrackerDto,
+  TrackerEnum,
+  UpdateTrackerDto,
+} from '@/shared/lib/source-client'
 
 export const getTrackers = queryOptions({
   queryKey: ['trackers'],
@@ -19,7 +23,19 @@ export function useLoginTracker() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (payload: LoginTrackerDto) => {
-      await appClient.trackers.loginTracker(payload)
+      await appClient.trackers.login(payload)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: getTrackers.queryKey })
+    },
+  })
+}
+
+export function useUpdateTracker(tracker: TrackerEnum) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (payload: UpdateTrackerDto) => {
+      await appClient.trackers.update(tracker, payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getTrackers.queryKey })
@@ -31,7 +47,7 @@ export function useDeleteTracker() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (tracker: TrackerEnum) => {
-      await appClient.trackers.deleteTracker(tracker)
+      await appClient.trackers.delete(tracker)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getTrackers.queryKey })

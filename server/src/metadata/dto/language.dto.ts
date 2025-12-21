@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsString } from 'class-validator';
 
-import { LanguageEnum } from 'src/common/enums/language.enum';
+import { LanguageEnum } from 'src/common/enum/language.enum';
 
 export class LanguageDto {
   @IsEnum(LanguageEnum)

@@ -52,9 +52,15 @@ export class UpdateSettingDto {
 
   @IsOptional()
   @IsNullable()
-  @IsString()
-  @ApiProperty({ type: 'string', nullable: true, required: false })
-  cacheRetention?: string | null;
+  @IsNumber()
+  @ApiProperty({ type: 'number', nullable: true, required: false })
+  keepSeedSeconds?: number | null;
+
+  @IsOptional()
+  @IsNullable()
+  @IsNumber()
+  @ApiProperty({ type: 'number', nullable: true, required: false })
+  cacheRetentionSeconds?: number | null;
 
   @IsOptional()
   @IsNullable()

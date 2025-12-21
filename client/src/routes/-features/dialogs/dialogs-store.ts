@@ -7,6 +7,7 @@ import type { AddUserDialog } from '@/features/add-user/add-user.types'
 import type { ChangePasswordDialog } from '@/features/change-password/change-password.types'
 import type { ChangeUsernameDialog } from '@/features/change-username/change-username.types'
 import type { ConfirmDialog } from '@/features/confirm/confirm.types'
+import type { EditTrackerDialog } from '@/features/edit-tracker/edit-tracker.type'
 import type { NetworkAccessDialog } from '@/features/network-access/network-access.types'
 import type { StremhuCatalogDialog } from '@/features/stremhu-catalog/types'
 
@@ -23,6 +24,7 @@ export type OpenDialog = BaseOpenDialog &
     | AddUserDialog
     | NetworkAccessDialog
     | StremhuCatalogDialog
+    | EditTrackerDialog
   )
 
 type BaseDialogContent = {

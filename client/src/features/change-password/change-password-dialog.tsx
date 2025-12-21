@@ -13,10 +13,10 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog'
 import { useAppForm } from '@/shared/contexts/form-context'
-import type { ChangePasswordDto } from '@/shared/lib/source-client'
+import type { UpdateMeDto, UpdateUserDto } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
-import { useChangeMePassword } from '@/shared/queries/me'
-import { useChangePassword } from '@/shared/queries/users'
+import { useUpdateMe } from '@/shared/queries/me'
+import { useUpdateUser } from '@/shared/queries/users'
 
 import type { ChangePasswordDialog } from './change-password.types'
 
@@ -31,21 +31,21 @@ export function ChangePasswordDialog(
 
   const dialogsStore = useDialogsStore()
 
-  const { mutateAsync: changePassword } = useChangePassword()
-  const { mutateAsync: changeMePassword } = useChangeMePassword()
+  const { mutateAsync: updateUser } = useUpdateUser()
+  const { mutateAsync: updateMe } = useUpdateMe()
 
   const dialogConfig = {
     title: 'Jelszó módosítása',
     description:
       'A jelszó módosítása után ezzel tudsz majd újra bejelentkezni.',
-    mutate: (payload: ChangePasswordDto) => changeMePassword(payload),
+    mutate: (payload: UpdateMeDto) => updateMe(payload),
   }
 
   if (user) {
     dialogConfig.description =
       'A jelszó módosítása után ezzel tud újra bejelentkezni.'
-    dialogConfig.mutate = (payload: ChangePasswordDto) =>
-      changePassword({ userId: user.id, payload })
+    dialogConfig.mutate = (payload: UpdateUserDto) =>
+      updateUser({ userId: user.id, payload })
   }
 
   const form = useAppForm({

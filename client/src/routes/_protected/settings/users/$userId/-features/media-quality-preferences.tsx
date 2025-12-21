@@ -12,7 +12,7 @@ import {
 } from '@/shared/components/ui/card'
 import type { ResolutionEnum, UserDto } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
-import { useUpdateProfile } from '@/shared/queries/users'
+import { useUpdateUser } from '@/shared/queries/users'
 
 type MediaQualityPreferences = {
   user: UserDto
@@ -21,7 +21,7 @@ type MediaQualityPreferences = {
 export function MediaQualityPreferences(props: MediaQualityPreferences) {
   const { user } = props
 
-  const { mutateAsync: updateProfile } = useUpdateProfile()
+  const { mutateAsync: updateUser } = useUpdateUser()
 
   const form = useForm({
     defaultValues: {
@@ -42,8 +42,7 @@ export function MediaQualityPreferences(props: MediaQualityPreferences) {
     },
     onSubmit: async ({ value, formApi }) => {
       try {
-        await updateProfile({ userId: user.id, payload: value })
-        toast.success('Módosítások elmentve')
+        await updateUser({ userId: user.id, payload: value })
       } catch (error) {
         formApi.reset()
         const message = parseApiError(error)

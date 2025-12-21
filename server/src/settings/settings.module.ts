@@ -3,10 +3,8 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from 'src/auth/auth.module';
 import { CatalogModule } from 'src/catalog/catalog.module';
 import { LocalIpModule } from 'src/local-ip/local-ip.module';
-import { TorrentCacheModule } from 'src/torrent-cache/torrent-cache.module';
-import { TrackersModule } from 'src/trackers/trackers.module';
+import { TorrentsModule } from 'src/torrents/torrents.module';
 import { UsersModule } from 'src/users/users.module';
-import { WebTorrentModule } from 'src/web-torrent/web-torrent.module';
 
 import { SettingsCoreModule } from './core/settings-core.module';
 import { SettingsController } from './settings.controller';
@@ -19,10 +17,8 @@ import { SetupModule } from './setup/setup.module';
     AuthModule,
     UsersModule,
     SetupModule,
-    TrackersModule,
-    WebTorrentModule,
+    TorrentsModule,
     LocalIpModule,
-    TorrentCacheModule,
     CatalogModule,
   ],
   providers: [SettingsService],

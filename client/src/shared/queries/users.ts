@@ -5,12 +5,7 @@ import {
 } from '@tanstack/react-query'
 
 import { appClient } from '@/shared/lib/client'
-import type {
-  ChangePasswordDto,
-  ChangeUsernameDto,
-  CreateUserDto,
-  UpdateUserDto,
-} from '@/shared/lib/source-client'
+import type { CreateUserDto, UpdateUserDto } from '@/shared/lib/source-client'
 
 import { getMe } from './me'
 
@@ -56,46 +51,11 @@ export function useDeleteUser() {
   })
 }
 
-export function useChangeUsername() {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: async (data: {
-      userId: string
-      payload: ChangeUsernameDto
-    }) => {
-      const { userId, payload } = data
-      const user = await appClient.users.changeUsername(userId, payload)
-      return user
-    },
-    onSuccess: (updated) => {
-      queryClient.invalidateQueries({ queryKey: getUsers.queryKey })
-      queryClient.setQueryData(getMe.queryKey, (prev) => {
-        if (!prev) return prev
-        const isSelf = prev.id === updated.id
-        return isSelf ? updated : prev
-      })
-    },
-  })
-}
-
-export function useChangePassword() {
-  return useMutation({
-    mutationFn: async (data: {
-      userId: string
-      payload: ChangePasswordDto
-    }) => {
-      const { userId, payload } = data
-      const user = await appClient.users.changePassword(userId, payload)
-      return user
-    },
-  })
-}
-
-export function useChangeStremioToken() {
+export function useRegenerateUserToken() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (userId: string) => {
-      const user = await appClient.users.changeStremioToken(userId)
+      const user = await appClient.users.regenerateToken(userId)
       return user
     },
     onSuccess: (updated) => {
@@ -109,7 +69,7 @@ export function useChangeStremioToken() {
   })
 }
 
-export function useUpdateProfile() {
+export function useUpdateUser() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (data: { userId: string; payload: UpdateUserDto }) => {

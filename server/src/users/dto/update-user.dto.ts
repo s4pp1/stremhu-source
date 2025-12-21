@@ -7,13 +7,30 @@ import {
   IsEnum,
   IsNumber,
   IsOptional,
+  IsString,
 } from 'class-validator';
 
-import { LanguageEnum } from 'src/common/enums/language.enum';
+import { LanguageEnum } from 'src/common/enum/language.enum';
 
 import { UserRoleEnum } from '../enum/user-role.enum';
 
 export class UpdateUserDto {
+  @IsOptional()
+  @IsString()
+  @ApiProperty({
+    type: 'string',
+    required: false,
+  })
+  username?: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty({
+    type: 'string',
+    required: false,
+  })
+  password?: string;
+
   @IsOptional()
   @IsEnum(UserRoleEnum)
   @ApiProperty({
@@ -21,7 +38,7 @@ export class UpdateUserDto {
     enumName: 'UserRoleEnum',
     required: false,
   })
-  userRole: UserRoleEnum;
+  userRole?: UserRoleEnum;
 
   @IsOptional()
   @IsArray()
@@ -34,7 +51,7 @@ export class UpdateUserDto {
     isArray: true,
     required: false,
   })
-  torrentResolutions: Resolution[];
+  torrentResolutions?: Resolution[];
 
   @IsOptional()
   @IsArray()
@@ -47,10 +64,10 @@ export class UpdateUserDto {
     isArray: true,
     required: false,
   })
-  torrentLanguages: LanguageEnum[];
+  torrentLanguages?: LanguageEnum[];
 
   @IsOptional()
   @IsNumber()
   @ApiProperty({ type: 'number', nullable: true, required: false })
-  torrentSeed: number | null;
+  torrentSeed?: number | null;
 }

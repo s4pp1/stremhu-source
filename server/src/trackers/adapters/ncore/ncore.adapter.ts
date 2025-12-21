@@ -1,8 +1,8 @@
 import { Resolution as ResolutionEnum } from '@ctrl/video-filename-parser';
 import { Inject, Injectable } from '@nestjs/common';
 
-import { LanguageEnum } from 'src/common/enums/language.enum';
-import { StreamMediaTypeEnum } from 'src/stremio/enums/stream-media-type.enum';
+import { LanguageEnum } from 'src/common/enum/language.enum';
+import { StreamMediaTypeEnum } from 'src/stremio/enum/stream-media-type.enum';
 
 import { TrackerEnum } from '../../enum/tracker.enum';
 import {

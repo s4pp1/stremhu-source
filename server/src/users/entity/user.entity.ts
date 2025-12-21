@@ -1,7 +1,14 @@
 import { Resolution } from '@ctrl/video-filename-parser';
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-import { LanguageEnum } from 'src/common/enums/language.enum';
+import { LanguageEnum } from 'src/common/enum/language.enum';
 
 import { UserRoleEnum } from '../enum/user-role.enum';
 
@@ -17,8 +24,8 @@ export class User {
   passwordHash: string | null;
 
   @Index()
-  @Column({ name: 'stremio_token', type: 'uuid' })
-  stremioToken: string;
+  @Column({ name: 'token', type: 'uuid' })
+  token: string;
 
   @Column({
     name: 'user_role',
@@ -48,4 +55,10 @@ export class User {
     default: null,
   })
   torrentSeed: number | null;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 }

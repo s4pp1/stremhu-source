@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { z } from 'zod';
 
-import { NodeEnvEnum } from './enums/node-env.enum';
+import { NodeEnvEnum } from './enum/node-env.enum';
 import { AppConfig } from './interfaces/app-config.interface';
 import ZodUtil, { ZodConfig } from './utils/zod-util';
 

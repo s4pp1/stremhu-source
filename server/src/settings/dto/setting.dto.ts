@@ -25,9 +25,13 @@ export class SettingDto {
   @ApiProperty()
   hitAndRun: boolean;
 
-  @IsString()
-  @ApiProperty({ type: 'string', nullable: true })
-  cacheRetention: string | null;
+  @IsNumber()
+  @ApiProperty({ type: 'number', nullable: true })
+  keepSeedSeconds: number | null;
+
+  @IsNumber()
+  @ApiProperty({ type: 'number', nullable: true })
+  cacheRetentionSeconds: number | null;
 
   @IsString()
   @ApiProperty({ type: 'string', nullable: true })

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { TrackerCredentialsModule } from 'src/trackers/credentials/tracker-credentials.module';
+import { TrackersCoreModule } from 'src/trackers/core/trackers-core.module';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { TRACKER_TOKEN } from '../adapters.types';
@@ -9,7 +9,7 @@ import { NcoreClient } from './ncore.client';
 import { NcoreClientFactory } from './ncore.client-factory';
 
 @Module({
-  imports: [TrackerCredentialsModule],
+  imports: [TrackersCoreModule],
   providers: [
     { provide: TRACKER_TOKEN, useValue: TrackerEnum.NCORE },
     NcoreAdapter,

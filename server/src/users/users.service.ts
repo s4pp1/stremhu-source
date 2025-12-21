@@ -1,175 +1,91 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Algorithm, hash } from '@node-rs/argon2';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { hash } from '@node-rs/argon2';
 import { isUndefined, omitBy } from 'lodash';
 import { randomUUID } from 'node:crypto';
-import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
+import { EntityManager } from 'typeorm';
 
-import { User } from './entity/user.entity';
+import { UsersStore } from './core/users.store';
 import { UserToCreate } from './type/user-to-create.type';
 import { UserToUpdate } from './type/user-to-update.type';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
-  ) {}
-
-  protected getRepository(manager?: EntityManager): Repository<User> {
-    return manager ? manager.getRepository(User) : this.userRepository;
-  }
+  constructor(private readonly usersStore: UsersStore) {}
 
   async create(payload: UserToCreate, manager?: EntityManager) {
-    const repository = this.getRepository(manager);
+    await this.checkExistUsername(payload.username);
 
-    const users = await this.find((queryBuilder) =>
-      queryBuilder.where('username = :username', {
-        username: payload.username,
-      }),
+    const passwordHash = payload.password ? await hash(payload.password) : null;
+
+    const user = await this.usersStore.create(
+      {
+        ...payload,
+        passwordHash,
+        token: randomUUID(),
+      },
+      manager,
     );
-
-    if (users.length !== 0) {
-      throw new NotFoundException();
-    }
-
-    let passwordHash: string | null = null;
-    if (payload.password) {
-      passwordHash = await this.hashPassword(payload.password);
-    }
-
-    const userEntity = repository.create({
-      ...payload,
-      passwordHash,
-      stremioToken: randomUUID(),
-    });
-    const user = repository.save(userEntity);
 
     return user;
   }
 
-  async find(
-    configureQuery?: (
-      queryBuilder: SelectQueryBuilder<User>,
-    ) => SelectQueryBuilder<User>,
-  ) {
-    let queryBuilder = this.userRepository.createQueryBuilder();
-
-    if (configureQuery) {
-      queryBuilder = configureQuery(queryBuilder);
-    }
-
-    const users = await queryBuilder.getMany();
-    return users;
-  }
-
-  async findOne(
-    configureQuery?: (
-      queryBuilder: SelectQueryBuilder<User>,
-    ) => SelectQueryBuilder<User>,
-  ) {
-    let queryBuilder = this.userRepository.createQueryBuilder();
-
-    if (configureQuery) {
-      queryBuilder = configureQuery(queryBuilder);
-    }
-
-    const user = await queryBuilder.getOne();
-    return user;
-  }
-
-  async findOneOrThrow(
-    configureQuery?: (
-      queryBuilder: SelectQueryBuilder<User>,
-    ) => SelectQueryBuilder<User>,
-  ) {
-    const user = await this.findOne(configureQuery);
-
-    if (!user) {
-      throw new NotFoundException();
-    }
-
-    return user;
-  }
-
-  async updateUsernameOrThrow(
-    userId: string,
-    username: string,
-    manager?: EntityManager,
-  ) {
-    const existUser = await this.findOne((qb) =>
-      qb.where('username = :username', { username }),
-    );
-
-    if (existUser) {
-      throw new BadRequestException('A fejlasználónév már használatban van.');
-    }
-
-    const user = await this.findOneOrThrow((qb) =>
-      qb.where('id = :userId', { userId }),
-    );
-
-    const repository = this.getRepository(manager);
-
-    await repository.update({ id: userId }, { username });
-
-    return { ...user, username };
-  }
-
-  async updateOneOrThrow(
+  async updateOrThrow(
     userId: string,
     payload: UserToUpdate,
     manager?: EntityManager,
   ) {
-    const repository = this.getRepository(manager);
-
-    const user = await this.findOneOrThrow((qb) =>
-      qb.where('id = :userId', { userId }),
-    );
+    const user = await this.usersStore.findOneByIdOrThrow(userId);
 
     const updateData = omitBy(payload, isUndefined);
 
+    if (payload.username) {
+      await this.checkExistUsername(payload.username);
+    }
+
     if (payload.password) {
-      const passwordHash = await this.hashPassword(payload.password);
+      const passwordHash = await hash(payload.password);
       delete updateData.password;
       updateData.passwordHash = passwordHash;
     }
 
-    await repository.update({ id: userId }, updateData);
-
-    return { ...user, ...updateData };
-  }
-
-  async regenerateStremioToken(userId: string, manager?: EntityManager) {
-    const repository = this.getRepository(manager);
-
-    const user = await this.findOneOrThrow((queryBuilder) =>
-      queryBuilder.where('id = :userId', { userId }),
+    const updatedUser = await this.usersStore.updateOneOrThrow(
+      user.id,
+      updateData,
+      manager,
     );
 
-    const stremioToken = randomUUID();
-    await repository.update({ id: userId }, { stremioToken });
+    return updatedUser;
+  }
 
-    return { ...user, stremioToken };
+  async regenerateToken(userId: string, manager?: EntityManager) {
+    const user = await this.usersStore.findOneByIdOrThrow(userId);
+
+    const token = randomUUID();
+
+    const updatedUser = await this.usersStore.updateOneOrThrow(
+      user.id,
+      { token },
+      manager,
+    );
+
+    return updatedUser;
   }
 
   async deleteOrThrow(userId: string, manager?: EntityManager) {
-    const repository = this.getRepository(manager);
-
-    const user = await this.findOneOrThrow((queryBuilder) =>
-      queryBuilder.where('id = :userId', { userId }),
-    );
-
-    await repository.delete({ id: user.id });
+    await this.usersStore.deleteOrThrow(userId, manager);
   }
 
-  private async hashPassword(password: string) {
-    const passwordHash = await hash(password);
+  private async checkExistUsername(username: string) {
+    const users = await this.usersStore.find((qb) => {
+      qb.where('user.username = :username', {
+        username,
+      });
 
-    return passwordHash;
+      return qb;
+    });
+
+    if (users.length !== 0) {
+      throw new BadRequestException('A felhasználónév már használatban van.');
+    }
   }
 }

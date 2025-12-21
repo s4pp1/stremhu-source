@@ -1,4 +1,4 @@
-import { NodeEnvEnum } from '../enums/node-env.enum';
+import { NodeEnvEnum } from '../enum/node-env.enum';
 
 export interface AppConfig {
   'node-env': NodeEnvEnum;

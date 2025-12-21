@@ -6,6 +6,8 @@ import type { LanguageEnum } from './LanguageEnum';
 import type { ResolutionEnum } from './ResolutionEnum';
 import type { UserRoleEnum } from './UserRoleEnum';
 export type UpdateUserDto = {
+    username?: string;
+    password?: string;
     userRole?: UserRoleEnum;
     torrentResolutions?: Array<ResolutionEnum>;
     torrentLanguages?: Array<LanguageEnum>;

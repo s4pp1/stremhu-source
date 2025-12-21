@@ -7,7 +7,7 @@ import {
   ResolutionOption,
   UserRoleOption,
 } from './common.types';
-import { LanguageEnum } from './enums/language.enum';
+import { LanguageEnum } from './enum/language.enum';
 
 export const GLOBAL_ID = 'global';
 

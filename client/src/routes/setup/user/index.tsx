@@ -13,7 +13,7 @@ import {
   CardTitle,
 } from '@/shared/components/ui/card'
 import { useAppForm } from '@/shared/contexts/form-context'
-import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
+import { useMetadata } from '@/shared/hooks/use-metadata'
 import { UserRoleEnum } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import { useRegistration } from '@/shared/queries/auth'
@@ -40,7 +40,7 @@ const schema = z.object({
 function SetupUserRoute() {
   const navigate = useNavigate({ from: '/setup/user' })
 
-  const { getUserRoleLabel } = useMetadataLabel()
+  const { getUserRoleLabel } = useMetadata()
   const { mutateAsync: registration } = useRegistration()
 
   const form = useAppForm({

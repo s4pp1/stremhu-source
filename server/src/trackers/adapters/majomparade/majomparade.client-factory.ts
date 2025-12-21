@@ -15,7 +15,7 @@ import _ from 'lodash';
 import { CookieJar } from 'tough-cookie';
 
 import { createAxios } from 'src/trackers/common/create-axios';
-import { TrackerCredentialsService } from 'src/trackers/credentials/tracker-credentials.service';
+import { TrackersStore } from 'src/trackers/core/trackers.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { TRACKER_TOKEN } from '../adapters.types';
@@ -40,7 +40,7 @@ export class MajomparadeClientFactory {
   constructor(
     @Inject(TRACKER_TOKEN) private readonly tracker: TrackerEnum,
     private configService: ConfigService,
-    private trackerCredentialsService: TrackerCredentialsService,
+    private trackersStore: TrackersStore,
   ) {
     this.majomparadeBaseUrl = this.configService.getOrThrow<string>(
       'tracker.majomparade-url',
@@ -60,19 +60,17 @@ export class MajomparadeClientFactory {
       if (payload) {
         credential = payload;
       } else {
-        const response = await this.trackerCredentialsService.findOne(
-          this.tracker,
-        );
+        const tracker = await this.trackersStore.findOneByTracker(this.tracker);
 
-        if (!response) {
+        if (!tracker) {
           throw new BadRequestException(
             getTrackerCredentialErrorMessage(this.tracker),
           );
         }
 
         credential = {
-          username: response.username,
-          password: response.password,
+          username: tracker.username,
+          password: tracker.password,
         };
       }
 

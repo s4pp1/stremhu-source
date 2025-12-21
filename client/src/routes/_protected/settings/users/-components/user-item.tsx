@@ -18,7 +18,7 @@ import {
   TooltipTrigger,
 } from '@/shared/components/ui/tooltip'
 import { useIntegrationDomain } from '@/shared/hooks/use-integration-domain'
-import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
+import { useMetadata } from '@/shared/hooks/use-metadata'
 import type { UserDto } from '@/shared/lib/source-client'
 import { useDeleteUser } from '@/shared/queries/users'
 
@@ -33,10 +33,10 @@ export function UserItem(props: UserItem) {
   const confirmDialog = useConfirmDialog()
 
   const { urlEndpoint } = useIntegrationDomain({
-    stremioToken: user.stremioToken,
+    token: user.token,
   })
 
-  const { getUserRoleLabel } = useMetadataLabel()
+  const { getUserRoleLabel } = useMetadata()
   const { mutateAsync: deleteUser } = useDeleteUser()
 
   const handleCopyUrl = async (event: MouseEvent<HTMLButtonElement>) => {
@@ -79,7 +79,7 @@ export function UserItem(props: UserItem) {
             </span>
           </ItemTitle>
           <div className="flex gap-2 items-center">
-            {user.stremioToken}
+            {user.token}
             <Tooltip>
               <TooltipTrigger asChild>
                 <InputGroupButton

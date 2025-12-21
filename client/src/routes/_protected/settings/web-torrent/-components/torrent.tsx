@@ -1,11 +1,14 @@
+import { filesize } from 'filesize'
 import {
   ArrowBigUpIcon,
   HardDriveDownloadIcon,
   HardDriveIcon,
   HardDriveUploadIcon,
+  PinIcon,
+  PinOffIcon,
   TrashIcon,
 } from 'lucide-react'
-import type { JSX } from 'react'
+import type { JSX, MouseEventHandler } from 'react'
 import { toast } from 'sonner'
 
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
@@ -16,10 +19,11 @@ import {
   ItemContent,
   ItemTitle,
 } from '@/shared/components/ui/item'
-import { useMetadataLabel } from '@/shared/hooks/use-metadata-label'
+import { Toggle } from '@/shared/components/ui/toggle'
+import { useMetadata } from '@/shared/hooks/use-metadata'
 import type { TorrentDto } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
-import { useDeleteTorrent } from '@/shared/queries/torrents'
+import { useDeleteTorrent, useUpdateTorrent } from '@/shared/queries/torrents'
 
 interface TorrentProps {
   torrent: TorrentDto
@@ -44,12 +48,17 @@ function TorrentDetail(props: TorrentDetailProps) {
 export function Torrent(props: TorrentProps) {
   const { torrent } = props
 
-  const { getTrackerLabel } = useMetadataLabel()
+  const { getTrackerLabel } = useMetadata()
 
   const confirmDialog = useConfirmDialog()
+
+  const { mutateAsync: updateTorrent } = useUpdateTorrent(torrent.infoHash)
   const { mutateAsync: deleteTorrent } = useDeleteTorrent()
 
-  async function handleDelete() {
+  const handleDelete: MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
     await confirmDialog.confirm({
       title: `Biztosan törlöd?`,
       description: `A(z) ${torrent.name} törlésével az adatok is törlésre kerülnek.`,
@@ -66,6 +75,13 @@ export function Torrent(props: TorrentProps) {
     })
   }
 
+  const handleUpdate: MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    await updateTorrent({ isPersisted: !torrent.isPersisted })
+  }
+
   return (
     <div className="grid gap-2 border border-transparent rounded-md bg-muted/50 p-4">
       <Item className="p-0">
@@ -75,6 +91,15 @@ export function Torrent(props: TorrentProps) {
           </ItemTitle>
         </ItemContent>
         <ItemActions>
+          <Toggle
+            variant="outline"
+            size="sm"
+            className="rounded-full data-[state=on]:bg-blue-600"
+            pressed={torrent.isPersisted}
+            onClick={handleUpdate}
+          >
+            {torrent.isPersisted ? <PinIcon /> : <PinOffIcon />}
+          </Toggle>
           <Button
             variant="destructive"
             size="icon-sm"
@@ -86,18 +111,21 @@ export function Torrent(props: TorrentProps) {
         </ItemActions>
       </Item>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        <TorrentDetail icon={<HardDriveIcon />} value={torrent.total} />
+        <TorrentDetail
+          icon={<HardDriveIcon />}
+          value={filesize(torrent.total)}
+        />
         <TorrentDetail
           icon={<HardDriveDownloadIcon />}
-          value={torrent.downloaded}
+          value={filesize(torrent.downloaded)}
         />
         <TorrentDetail
           icon={<HardDriveUploadIcon className="size-4" />}
-          value={torrent.uploaded}
+          value={filesize(torrent.uploaded)}
         />
         <TorrentDetail
           icon={<ArrowBigUpIcon className="text-destructive" />}
-          value={torrent.uploadSpeed}
+          value={filesize(torrent.uploadSpeed)}
         />
       </div>
     </div>

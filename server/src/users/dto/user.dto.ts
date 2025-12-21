@@ -11,7 +11,7 @@ import {
   IsUUID,
 } from 'class-validator';
 
-import { LanguageEnum } from 'src/common/enums/language.enum';
+import { LanguageEnum } from 'src/common/enum/language.enum';
 
 import { UserRoleEnum } from '../enum/user-role.enum';
 
@@ -31,7 +31,7 @@ export class UserDto {
 
   @IsString()
   @ApiProperty()
-  stremioToken: string;
+  token: string;
 
   @IsEnum(UserRoleEnum)
   @ApiProperty({ enum: UserRoleEnum, enumName: 'UserRoleEnum' })

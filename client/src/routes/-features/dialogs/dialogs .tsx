@@ -6,6 +6,7 @@ import { AddUserDialog } from '@/features/add-user/add-user-dialog'
 import { ChangePasswordDialog } from '@/features/change-password/change-password-dialog'
 import { ChangeUsernameDialog } from '@/features/change-username/change-username-dialog'
 import { ConfirmDialog } from '@/features/confirm/confirm-dialog'
+import { EditTrackerDialog } from '@/features/edit-tracker/edit-tracker-dialog'
 import { NetworkAccessDialog } from '@/features/network-access/network-access-dialog'
 import { StremhuCatalogDialog } from '@/features/stremhu-catalog/stremhu-catalog-dialog'
 import { useDialogsStore } from '@/routes/-features/dialogs/dialogs-store'
@@ -23,6 +24,7 @@ const dialogComponents = {
   ADD_USER: AddUserDialog,
   NETWORK_ACCESS: NetworkAccessDialog,
   STREMHU_CATALOG: StremhuCatalogDialog,
+  EDIT_TRACKER: EditTrackerDialog,
 } satisfies DialogComponentMap
 
 export function Dialogs() {

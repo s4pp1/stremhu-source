@@ -3,7 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { LoginTrackerDto } from '../models/LoginTrackerDto';
-import type { TrackerCredentialDto } from '../models/TrackerCredentialDto';
+import type { TrackerDto } from '../models/TrackerDto';
+import type { UpdateTrackerDto } from '../models/UpdateTrackerDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class TrackersService {
@@ -13,7 +14,7 @@ export class TrackersService {
      * @returns any
      * @throws ApiError
      */
-    public loginTracker(
+    public login(
         requestBody: LoginTrackerDto,
     ): CancelablePromise<any> {
         return this.httpRequest.request({
@@ -24,10 +25,10 @@ export class TrackersService {
         });
     }
     /**
-     * @returns TrackerCredentialDto
+     * @returns TrackerDto
      * @throws ApiError
      */
-    public trackers(): CancelablePromise<Array<TrackerCredentialDto>> {
+    public trackers(): CancelablePromise<Array<TrackerDto>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/trackers',
@@ -37,10 +38,30 @@ export class TrackersService {
      * @returns any
      * @throws ApiError
      */
-    public cleanupHitAndRun(): CancelablePromise<any> {
+    public cleanup(): CancelablePromise<any> {
         return this.httpRequest.request({
-            method: 'DELETE',
-            url: '/api/trackers/hit-and-run',
+            method: 'POST',
+            url: '/api/trackers/cleanup',
+        });
+    }
+    /**
+     * @param tracker
+     * @param requestBody
+     * @returns any
+     * @throws ApiError
+     */
+    public update(
+        tracker: 'ncore' | 'bithumen' | 'majomparade',
+        requestBody: UpdateTrackerDto,
+    ): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/api/trackers/{tracker}',
+            path: {
+                'tracker': tracker,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
     /**
@@ -48,7 +69,7 @@ export class TrackersService {
      * @returns any
      * @throws ApiError
      */
-    public deleteTracker(
+    public delete(
         tracker: 'ncore' | 'bithumen' | 'majomparade',
     ): CancelablePromise<any> {
         return this.httpRequest.request({

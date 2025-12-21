@@ -8,23 +8,24 @@ import { Injectable } from '@nestjs/common';
 import { filesize } from 'filesize';
 import isVideo from 'is-video';
 import _ from 'lodash';
-import { Torrent, TorrentFile } from 'webtorrent';
+import { TorrentFile } from 'webtorrent';
 
 import { CatalogService } from 'src/catalog/catalog.service';
+import { WebTorrentTorrent } from 'src/clients/webtorrent/webtorrent.types';
 import { RESOLUTION_LABEL_MAP } from 'src/common/common.constant';
-import { LanguageEnum } from 'src/common/enums/language.enum';
+import { LanguageEnum } from 'src/common/enum/language.enum';
 import { ParsedFile } from 'src/common/utils/parse-torrent.util';
 import { SettingsStore } from 'src/settings/core/settings.store';
-import { TorrentCacheStore } from 'src/torrent-cache/core/torrent-cache.store';
+import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
+import { TorrentsService } from 'src/torrents/torrents.service';
+import { TrackerTorrentStatusEnum } from 'src/trackers/enum/tracker-torrent-status.enum';
+import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
 import {
   TrackerTorrentError,
-  TrackerTorrentStatusEnum,
   TrackerTorrentSuccess,
 } from 'src/trackers/tracker.types';
-import { TRACKER_LABEL_MAP } from 'src/trackers/trackers.constants';
-import { TrackersService } from 'src/trackers/trackers.service';
+import { TRACKER_INFO } from 'src/trackers/trackers.constants';
 import { User } from 'src/users/entity/user.entity';
-import { WebTorrentService } from 'src/web-torrent/web-torrent.service';
 
 import { StreamDto } from './dto/stremio-stream.dto';
 import { ParsedStreamIdSeries } from './pipe/stream-id.pipe';
@@ -39,21 +40,17 @@ import {
   VideoFileResolution,
   VideoFileWithRank,
 } from './stream.types';
-import { HDR_PATTERNS } from './stremio.constants';
 
 @Injectable()
 export class StremioStreamService {
-  private inFlightPlay = new Map<
-    string,
-    Promise<{ file: TorrentFile; torrent: Torrent }>
-  >();
+  private inFlightPlay = new Map<string, Promise<TorrentFile>>();
 
   constructor(
-    private torrentCacheStore: TorrentCacheStore,
-    private trackersService: TrackersService,
-    private webTorrentService: WebTorrentService,
-    private settingsStore: SettingsStore,
-    private catalogService: CatalogService,
+    private readonly torrentsCacheStore: TorrentsCacheStore,
+    private readonly trackerDiscoveryService: TrackerDiscoveryService,
+    private readonly torrentsService: TorrentsService,
+    private readonly settingsStore: SettingsStore,
+    private readonly catalogService: CatalogService,
   ) {}
 
   async streams(payload: FindStreams): Promise<StreamDto[]> {
@@ -69,7 +66,7 @@ export class StremioStreamService {
 
     const endpoint = await this.settingsStore.getEndpoint();
 
-    const torrents = await this.trackersService.findTorrents({
+    const torrents = await this.trackerDiscoveryService.findTorrents({
       imdbId: imdbId,
       mediaType: !isSpecial ? mediaType : undefined,
     });
@@ -103,9 +100,9 @@ export class StremioStreamService {
     }));
 
     const streams: StreamDto[] = sortedVideoFiles.map((videoFile) => {
-      const hdr = videoFile.isHDR ? 'HDR' : undefined;
+      const hdrTypes = videoFile.hdrTypes.join(', ');
 
-      const nameArray = _.compact([videoFile.resolution.label, hdr]);
+      const nameArray = _.compact([videoFile.resolution.label, hdrTypes]);
 
       const isCamSource = videoFile.sources.includes(SourceEnum.CAM);
 
@@ -115,7 +112,7 @@ export class StremioStreamService {
 
       const fileSize = `💾 ${filesize(videoFile.fileSize)}`;
       const seeders = `👥 ${videoFile.seeders}`;
-      const tracker = `🧲 ${TRACKER_LABEL_MAP[videoFile.tracker]}`;
+      const tracker = `🧲 ${TRACKER_INFO[videoFile.tracker].label}`;
       const group = videoFile.group ? `🎯 ${videoFile.group}` : undefined;
 
       const descriptionArray = _.compact([
@@ -133,7 +130,7 @@ export class StremioStreamService {
       return {
         name: nameArray.join(' | '),
         description: descriptionArray.join('\n'),
-        url: `${endpoint}/api/${user.stremioToken}/stream/play/${videoFile.imdbId}/${videoFile.tracker}/${videoFile.torrentId}/${videoFile.fileIndex}`,
+        url: `${endpoint}/api/${user.token}/stream/play/${videoFile.imdbId}/${videoFile.tracker}/${videoFile.torrentId}/${videoFile.fileIndex}`,
         behaviorHints: {
           notWebReady: videoFile.notWebReady,
           bingeGroup,
@@ -145,12 +142,10 @@ export class StremioStreamService {
     return [...streams, ...streamErrors];
   }
 
-  async playStream(
-    payload: PlayStream,
-  ): Promise<{ file: TorrentFile; torrent: Torrent }> {
-    const { imdbId, tracker, torrentId, fileIdx } = payload;
+  async playStream(payload: PlayStream): Promise<TorrentFile> {
+    const { imdbId, tracker, torrentId, fileIndex } = payload;
 
-    const key = `${imdbId}-${tracker}-${torrentId}-${fileIdx}`;
+    const key = `${imdbId}-${tracker}-${torrentId}-${fileIndex}`;
     const running = this.inFlightPlay.get(key);
     if (running) return running;
 
@@ -167,43 +162,46 @@ export class StremioStreamService {
   }
 
   private async fetchTorrent(payload: PlayStream) {
-    const { imdbId, tracker, torrentId, fileIdx } = payload;
+    const { imdbId, tracker, torrentId, fileIndex } = payload;
 
-    const torrentCache = await this.torrentCacheStore.findOne({
+    const torrentCache = await this.torrentsCacheStore.findOne({
       imdbId,
       tracker,
       torrentId,
     });
 
-    let torrent: Torrent | null = null;
+    let torrent: WebTorrentTorrent | null = null;
 
     if (torrentCache) {
-      torrent = await this.webTorrentService.getTorrent(
+      torrent = await this.torrentsService.getTorrentForStream(
         torrentCache.parsed.infoHash,
       );
     }
 
     if (!torrent) {
-      const torrentFile = await this.trackersService.findOneTorrent(
+      const torrentFile = await this.trackerDiscoveryService.findOneTorrent(
         tracker,
         torrentId,
       );
 
-      torrent = await this.webTorrentService.getTorrent(
+      torrent = await this.torrentsService.getTorrentForStream(
         torrentFile.parsed.infoHash,
       );
 
       if (!torrent) {
-        torrent = await this.webTorrentService.addTorrent({
+        torrent = await this.torrentsService.addTorrentForStream({
           ...torrentFile,
-          parsed: torrentFile.parsed,
+          parsedTorrent: torrentFile.parsed,
         });
       }
     }
 
-    const file = this.webTorrentService.getFileByIndex(torrent, fileIdx);
+    const file = this.torrentsService.getTorrentFileForStream(
+      torrent,
+      fileIndex,
+    );
 
-    return { file, torrent };
+    return file;
   }
 
   private findVideoFilesWithRank(
@@ -226,9 +224,7 @@ export class StremioStreamService {
         group: torrentGroup,
       } = filenameParse(torrentName);
 
-      const isHDR = HDR_PATTERNS.some((pattern) =>
-        torrentName.includes(pattern),
-      );
+      const hdrTypes = this.hdrTypes(torrentName);
 
       const videoFile = this.selectVideoFile({
         files: torrent.parsed.files,
@@ -271,7 +267,7 @@ export class StremioStreamService {
         ),
         audioCodec,
         videoCodec,
-        isHDR,
+        hdrTypes,
         sources,
         notWebReady,
       };
@@ -396,11 +392,12 @@ export class StremioStreamService {
 
       return { file: videoFile, fileIndex };
     } else {
-      const fileSizes = files.map((file) => file.length);
-      const largestSize = _.max(fileSizes);
+      const largestFile = _.maxBy(files, (file) => file.length);
+      if (!largestFile || !isVideo(largestFile.name)) return;
+
       const largestFileIndex = _.findIndex(
         files,
-        (file) => file.length === largestSize,
+        (file) => file.name === largestFile.name,
       );
 
       return {
@@ -502,5 +499,56 @@ export class StremioStreamService {
           rank: resolutionRank || 96,
         };
     }
+  }
+
+  private hdrTypes(torrentName: string) {
+    const hdrTypes: string[] = [];
+
+    // Dolby Vision
+    const isDolbyVision = [
+      '.Dolby.Vision.',
+      '.DoVi.',
+      '.DoVi-',
+      '-DoVi.',
+      '.DV.',
+    ].some((dolbyVision) => torrentName.includes(dolbyVision));
+
+    if (isDolbyVision) hdrTypes.push('Dolby Vision');
+
+    // HDR
+    const isHDR = ['.HDR.', '-HDR.', '.HDR-'].some((hdr) =>
+      torrentName.includes(hdr),
+    );
+
+    if (isHDR) hdrTypes.push('HDR');
+
+    // HDR10
+    const isHDR10 = ['.HDR10.', '-HDR10.', '.HDR10-'].some((hdr) =>
+      torrentName.includes(hdr),
+    );
+
+    if (isHDR10) hdrTypes.push('HDR10');
+
+    // HDR10+
+    const isHDRPlus = [
+      '.HDR10Plus.',
+      '-HDR10Plus.',
+      '.HDR10Plus-',
+      '.HDR10+.',
+      '-HDR10+.',
+      '.HDR10+-',
+      '.HDR10P.',
+      '-HDR10P.',
+      '.HDR10P-',
+    ].some((hdr) => torrentName.includes(hdr));
+
+    if (isHDRPlus) hdrTypes.push('HDR10+');
+
+    // HLG
+    const isHLG = torrentName.includes('.HLG.');
+
+    if (isHLG) hdrTypes.push('HLG');
+
+    return hdrTypes;
   }
 }

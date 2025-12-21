@@ -13,10 +13,10 @@ import {
   DialogTitle,
 } from '@/shared/components/ui/dialog'
 import { useAppForm } from '@/shared/contexts/form-context'
-import type { ChangeUsernameDto } from '@/shared/lib/source-client'
+import type { UpdateMeDto, UpdateUserDto } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
-import { useChangeMeUsername } from '@/shared/queries/me'
-import { useChangeUsername } from '@/shared/queries/users'
+import { useUpdateMe } from '@/shared/queries/me'
+import { useUpdateUser } from '@/shared/queries/users'
 
 import type { ChangeUsernameDialog } from './change-username.types'
 
@@ -31,22 +31,22 @@ export function ChangeUsernameDialog(
 
   const dialogsStore = useDialogsStore()
 
-  const { mutateAsync: changeUsername } = useChangeUsername()
-  const { mutateAsync: changeMeUsername } = useChangeMeUsername()
+  const { mutateAsync: updateUser } = useUpdateUser()
+  const { mutateAsync: updateMe } = useUpdateMe()
 
   const dialogConfig = {
     title: 'Felhasználónév módosítása',
     description:
       'Felhasználóneved módosítása után már ezzel tudsz majd újra bejelentkezni.',
-    mutate: (payload: ChangeUsernameDto) => changeMeUsername(payload),
+    mutate: (payload: UpdateMeDto) => updateMe(payload),
   }
 
   if (user) {
     dialogConfig.title = `${user.username} felhasználónevének módosítása`
     dialogConfig.description =
       'A felhasználónév módosítása után ezzel tud újra bejelentkezni.'
-    dialogConfig.mutate = (payload: ChangeUsernameDto) =>
-      changeUsername({ userId: user.id, payload })
+    dialogConfig.mutate = (payload: UpdateUserDto) =>
+      updateUser({ userId: user.id, payload })
   }
 
   const form = useAppForm({

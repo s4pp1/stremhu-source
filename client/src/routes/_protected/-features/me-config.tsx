@@ -32,7 +32,7 @@ export function MeConfig() {
   assertExists(me)
 
   const { appEndpoint, webEndpoint, urlEndpoint } = useIntegrationDomain({
-    stremioToken: me.stremioToken,
+    token: me.token,
   })
 
   return (
@@ -100,7 +100,7 @@ export function MeConfig() {
                 Addon manuális telepítése
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="max-w-[380px] grid gap-4">
+            <PopoverContent className="max-w-95 grid gap-4">
               <p className="text-muted-foreground text-sm">
                 Másold ki az URL-t és add hozzá a Stremio alkalmazáshoz a
                 "Bővítmények" menüpontban.

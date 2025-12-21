@@ -15,10 +15,10 @@ import * as mime from 'mime-types';
 import { Readable, pipeline } from 'node:stream';
 import rangeParser from 'range-parser';
 
-import { StremioTokenGuard } from 'src/auth/guards/stremio-token.guard';
+import { TokenGuard } from 'src/auth/guards/token.guard';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
-import { StreamMediaTypeEnum } from '../enums/stream-media-type.enum';
+import { StreamMediaTypeEnum } from '../enum/stream-media-type.enum';
 import { StreamsResponseDto } from './dto/stremio-stream.dto';
 import { StreamIdPipe } from './pipe/stream-id.pipe';
 import type { ParsedStreamId } from './pipe/stream-id.pipe';
@@ -29,13 +29,12 @@ import {
   RangeErrorEnum,
 } from './stream.types';
 
-@UseGuards(StremioTokenGuard)
+@UseGuards(TokenGuard)
 @Controller('/:token/stream')
 @ApiTags('Stremio / Stream')
 @ApiParam({
   name: 'token',
   required: true,
-  description: 'Stremio addon token',
   schema: { type: 'string' },
 })
 export class StremioStreamController {
@@ -45,8 +44,7 @@ export class StremioStreamController {
 
   @ApiParam({
     name: 'id',
-    schema: { type: 'string' },
-    example: 'tt1234567:1:2',
+    type: 'string',
   })
   @ApiParam({
     name: 'mediaType',
@@ -85,15 +83,15 @@ export class StremioStreamController {
     @Param('tracker', new ParseEnumPipe(TrackerEnum))
     tracker: TrackerEnum,
     @Param('torrentId') torrentId: string,
-    @Param('fileIdx', ParseIntPipe) fileIdx: number,
+    @Param('fileIdx', ParseIntPipe) fileIndex: number,
   ) {
     const rangeHeader = req.headers.range;
 
-    const { torrent, file } = await this.streamService.playStream({
+    const file = await this.streamService.playStream({
       imdbId,
       tracker,
       torrentId,
-      fileIdx,
+      fileIndex,
     });
 
     const contentType = mime.lookup(file.name) || 'application/octet-stream';
@@ -102,7 +100,6 @@ export class StremioStreamController {
 
     const calculatedRange = this.calculateRange({
       rangeHeader,
-      torrentPieceLength: torrent.pieceLength,
       total,
     });
 

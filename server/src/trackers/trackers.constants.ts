@@ -1,18 +1,34 @@
 import { TrackerEnum } from './enum/tracker.enum';
-import { TrackerOption } from './tracker.types';
+import { TrackerInfo } from './type/tracker-info.type';
+import { TrackerOption } from './type/tracker-option.type';
 
 export const TRACKER_OPTIONS: TrackerOption[] = [
-  { value: TrackerEnum.NCORE, label: 'nCore' },
-  { value: TrackerEnum.BITHUMEN, label: 'BitHUmen' },
-  { value: TrackerEnum.MAJOMPARADE, label: 'Majomparádé' },
+  {
+    value: TrackerEnum.NCORE,
+    label: 'nCore',
+    requiresFullDownload: false,
+  },
+  {
+    value: TrackerEnum.BITHUMEN,
+    label: 'BitHUmen',
+    requiresFullDownload: false,
+  },
+  {
+    value: TrackerEnum.MAJOMPARADE,
+    label: 'Majomparádé',
+    requiresFullDownload: true,
+  },
 ];
 
-export const TRACKER_LABEL_MAP = TRACKER_OPTIONS.reduce(
+export const TRACKER_INFO = TRACKER_OPTIONS.reduce(
   (previousValue, value) => ({
     ...previousValue,
-    [value.value]: value.label,
+    [value.value]: {
+      label: value.label,
+      requiresFullDownload: value.requiresFullDownload,
+    },
   }),
-  {} as Record<TrackerEnum, string>,
+  {} as Record<TrackerEnum, TrackerInfo>,
 );
 
 export const LOGIN_ERROR_MESSAGE = 'Hibás felhasználónév, vagy jelszó!';

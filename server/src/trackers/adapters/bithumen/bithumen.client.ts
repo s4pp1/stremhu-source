@@ -5,6 +5,7 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import Bottleneck from 'bottleneck';
 import { load } from 'cheerio';
 import _ from 'lodash';
 
@@ -34,6 +35,14 @@ import {
 @Injectable()
 export class BithumenClient {
   private readonly logger = new Logger(BithumenClient.name);
+  private readonly limiter = new Bottleneck({
+    reservoir: 10,
+    reservoirRefreshAmount: 10,
+    reservoirRefreshInterval: 1000,
+    maxConcurrent: 10,
+    minTime: 0,
+  });
+
   private readonly bithumenBaseUrl: string;
 
   constructor(
@@ -47,7 +56,7 @@ export class BithumenClient {
   }
 
   login(payload: BithumenLoginRequest) {
-    return this.bithumenClientFactory.login(payload);
+    return this.requestLimit(() => this.bithumenClientFactory.login(payload));
   }
 
   find(payload: BithumenTorrentsQuery) {
@@ -71,11 +80,10 @@ export class BithumenClient {
         torrentsUrl.searchParams.append(`c${category}`, '1');
       });
 
-      const response = await this.bithumenClientFactory.client.get<string>(
-        torrentsUrl.href,
-        {
+      const response = await this.requestLimit(() =>
+        this.bithumenClientFactory.client.get<string>(torrentsUrl.href, {
           responseType: 'text',
-        },
+        }),
       );
 
       const data = this.processTorrentsHtml(response.data);
@@ -99,8 +107,8 @@ export class BithumenClient {
       const detailsUrl = new URL(BITHUMEN_DETAILS_PATH, this.bithumenBaseUrl);
       detailsUrl.searchParams.append('id', torrentId);
 
-      const response = await this.bithumenClientFactory.client.get<string>(
-        detailsUrl.href,
+      const response = await this.requestLimit(() =>
+        this.bithumenClientFactory.client.get<string>(detailsUrl.href),
       );
 
       const $ = load(response.data);
@@ -137,11 +145,10 @@ export class BithumenClient {
   async download(payload: AdapterTorrentId): Promise<AdapterParsedTorrent> {
     const { torrentId, downloadUrl } = payload;
 
-    const response = await this.bithumenClientFactory.client.get<ArrayBuffer>(
-      downloadUrl,
-      {
+    const response = await this.requestLimit(() =>
+      this.bithumenClientFactory.client.get<ArrayBuffer>(downloadUrl, {
         responseType: 'arraybuffer',
-      },
+      }),
     );
 
     const bytes = new Uint8Array(response.data);
@@ -152,7 +159,9 @@ export class BithumenClient {
 
   async hitnrun(): Promise<string[]> {
     try {
-      const userId = await this.bithumenClientFactory.getUserId();
+      const userId = await this.requestLimit(() =>
+        this.bithumenClientFactory.getUserId(),
+      );
 
       const hitAndRunUrl = new URL(
         BITHUMEN_HIT_N_RUN_PATH,
@@ -161,11 +170,10 @@ export class BithumenClient {
       hitAndRunUrl.searchParams.append('id', userId);
       hitAndRunUrl.searchParams.append('hnr', '1');
 
-      const response = await this.bithumenClientFactory.client.get<string>(
-        hitAndRunUrl.href,
-        {
+      const response = await this.requestLimit(() =>
+        this.bithumenClientFactory.client.get<string>(hitAndRunUrl.href, {
           responseType: 'text',
-        },
+        }),
       );
 
       const $ = load(response.data);
@@ -240,5 +248,9 @@ export class BithumenClient {
       results: torrents,
       hasNextPage,
     };
+  }
+
+  private requestLimit<T>(fn: () => Promise<T>) {
+    return this.limiter.schedule(fn);
   }
 }

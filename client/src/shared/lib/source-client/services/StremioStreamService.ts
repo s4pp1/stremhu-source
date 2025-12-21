@@ -10,7 +10,7 @@ export class StremioStreamService {
     /**
      * @param mediaType
      * @param id
-     * @param token Stremio addon token
+     * @param token
      * @returns StreamsResponseDto
      * @throws ApiError
      */
@@ -34,7 +34,7 @@ export class StremioStreamService {
      * @param tracker
      * @param torrentId
      * @param fileIdx
-     * @param token Stremio addon token
+     * @param token
      * @returns any
      * @throws ApiError
      */

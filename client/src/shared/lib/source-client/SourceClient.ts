@@ -13,9 +13,10 @@ import { SettingsService } from './services/SettingsService';
 import { StremHuCatalogService } from './services/StremHuCatalogService';
 import { StremioService } from './services/StremioService';
 import { StremioStreamService } from './services/StremioStreamService';
+import { TorrentsService } from './services/TorrentsService';
+import { TorrentsCacheService } from './services/TorrentsCacheService';
 import { TrackersService } from './services/TrackersService';
 import { UsersService } from './services/UsersService';
-import { WebTorrentService } from './services/WebTorrentService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class SourceClient {
     public readonly app: AppService;
@@ -26,9 +27,10 @@ export class SourceClient {
     public readonly stremHuCatalog: StremHuCatalogService;
     public readonly stremio: StremioService;
     public readonly stremioStream: StremioStreamService;
+    public readonly torrents: TorrentsService;
+    public readonly torrentsCache: TorrentsCacheService;
     public readonly trackers: TrackersService;
     public readonly users: UsersService;
-    public readonly webTorrent: WebTorrentService;
     public readonly request: BaseHttpRequest;
     constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = FetchHttpRequest) {
         this.request = new HttpRequest({
@@ -50,9 +52,10 @@ export class SourceClient {
         this.stremHuCatalog = new StremHuCatalogService(this.request);
         this.stremio = new StremioService(this.request);
         this.stremioStream = new StremioStreamService(this.request);
+        this.torrents = new TorrentsService(this.request);
+        this.torrentsCache = new TorrentsCacheService(this.request);
         this.trackers = new TrackersService(this.request);
         this.users = new UsersService(this.request);
-        this.webTorrent = new WebTorrentService(this.request);
     }
 }
 

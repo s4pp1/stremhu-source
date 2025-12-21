@@ -3,10 +3,9 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from 'src/auth/auth.module';
 import { CatalogModule } from 'src/catalog/catalog.module';
 import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
-import { TorrentCacheCoreModule } from 'src/torrent-cache/core/torrent-cache-core.module';
+import { TorrentsCacheCoreModule } from 'src/torrents-cache/core/torrents-cache-core.module';
+import { TorrentsModule } from 'src/torrents/torrents.module';
 import { TrackersModule } from 'src/trackers/trackers.module';
-import { UsersModule } from 'src/users/users.module';
-import { WebTorrentModule } from 'src/web-torrent/web-torrent.module';
 
 import { StremioStreamController } from './stream.controller';
 import { StremioStreamService } from './stream.service';
@@ -14,11 +13,10 @@ import { StremioStreamService } from './stream.service';
 @Module({
   imports: [
     AuthModule,
-    UsersModule,
     SettingsCoreModule,
-    WebTorrentModule,
+    TorrentsModule,
     TrackersModule,
-    TorrentCacheCoreModule,
+    TorrentsCacheCoreModule,
     CatalogModule,
   ],
   controllers: [StremioStreamController],

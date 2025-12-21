@@ -8,7 +8,8 @@ export type SettingDto = {
     downloadLimit: number;
     uploadLimit: number;
     hitAndRun: boolean;
-    cacheRetention: string | null;
+    keepSeedSeconds: number | null;
+    cacheRetentionSeconds: number | null;
     catalogToken: string | null;
 };
 

@@ -10,7 +10,7 @@ import path from 'node:path';
 
 import { THIRTY_DAYS_MS } from './app.constant';
 import { AppModule } from './app.module';
-import { NodeEnvEnum } from './config/enums/node-env.enum';
+import { NodeEnvEnum } from './config/enum/node-env.enum';
 import { SessionsService } from './sessions/sessions.service';
 
 export const EXPRESS = express();
