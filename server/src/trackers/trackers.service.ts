@@ -74,6 +74,18 @@ export class TrackersService {
   }
 
   async updateOneOrThrow(tracker: TrackerEnum, payload: TrackerToUpdate) {
+    const { downloadFullTorrent } = payload;
+
+    if (downloadFullTorrent !== undefined) {
+      const rule = TRACKER_INFO[tracker].requiresFullDownload;
+
+      if (rule && !downloadFullTorrent) {
+        throw new BadRequestException(
+          `A(z) "${TRACKER_INFO[tracker].label}" esetén a teljes letöltés nem kapcsolható ki.`,
+        );
+      }
+    }
+
     const item = await this.findOneOrThrow(tracker);
 
     const updateData = omitBy(payload, isUndefined);

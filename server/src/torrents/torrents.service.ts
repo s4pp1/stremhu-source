@@ -18,6 +18,7 @@ import type {
 import { safeReaddir } from 'src/common/utils/file.util';
 import { SettingsStore } from 'src/settings/core/settings.store';
 import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
+import { TrackersStore } from 'src/trackers/core/trackers.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { TorrentsStore } from './core/torrents.store';
@@ -42,6 +43,7 @@ export class TorrentsService
     private readonly configService: ConfigService,
     private readonly torrentsStore: TorrentsStore,
     @Inject('TorrentClient') private readonly torrentClient: TorrentClient,
+    private readonly trackersStore: TrackersStore,
     private readonly torrentsCacheStore: TorrentsCacheStore,
     private readonly settingsStore: SettingsStore,
   ) {
@@ -60,6 +62,9 @@ export class TorrentsService
     // Torrentek lekérése és visszarakása a kliensbe
     const torrents = await this.torrentsStore.find();
 
+    // Tracker-ek letöltése
+    const trackers = await this.trackersStore.find();
+
     for (const torrent of torrents) {
       const torrentCache = await this.torrentsCacheStore.findOne({
         imdbId: torrent.imdbId,
@@ -73,8 +78,13 @@ export class TorrentsService
         continue;
       }
 
+      const tracker = trackers.find(
+        (tracker) => tracker.tracker === torrent.tracker,
+      );
+
       const clientTorrent = await this.torrentClient.addTorrent({
         parsedTorrent: torrentCache.parsed,
+        downloadFullTorrent: tracker?.downloadFullTorrent ?? false,
       });
 
       this.logger.log(`🔼 .torrent fájl betöltve: ${clientTorrent.name}`);
@@ -271,14 +281,18 @@ export class TorrentsService
   async addTorrentForStream(
     payload: TorrentToAddClient,
   ): Promise<WebTorrentTorrent> {
-    const { parsedTorrent, ...rest } = payload;
+    const { tracker: trackerEnum, parsedTorrent, ...rest } = payload;
+
+    const tracker = await this.trackersStore.findOneByTracker(trackerEnum);
 
     const clientTorrent = await this.torrentClient.addTorrent({
       parsedTorrent,
+      downloadFullTorrent: tracker?.downloadFullTorrent ?? false,
     });
 
     await this.torrentsStore.create({
       ...rest,
+      tracker: trackerEnum,
       infoHash: clientTorrent.infoHash,
       lastPlayedAt: new Date(),
     });
