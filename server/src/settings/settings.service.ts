@@ -48,14 +48,6 @@ export class SettingsService implements OnModuleInit {
       await this.catalogService.catalogHealthCheck(catalogToken);
     }
 
-    // Hit'n'Run Cron vezérlése
-    if (
-      !_.isUndefined(payload.hitAndRun) &&
-      setting.hitAndRun !== payload.hitAndRun
-    ) {
-      await this.trackerMaintenanceService.setHitAndRunCron(payload.hitAndRun);
-    }
-
     // Torrent Cache Cron vezérlése
     const hasCacheRetentionSeconds = !_.isUndefined(
       payload.cacheRetentionSeconds,

@@ -16,7 +16,6 @@ import type {
   WebTorrentTorrent,
 } from 'src/clients/webtorrent/webtorrent.types';
 import { safeReaddir } from 'src/common/utils/file.util';
-import { SettingsStore } from 'src/settings/core/settings.store';
 import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
 import { TrackersStore } from 'src/trackers/core/trackers.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
@@ -45,7 +44,6 @@ export class TorrentsService
     @Inject('TorrentClient') private readonly torrentClient: TorrentClient,
     private readonly trackersStore: TrackersStore,
     private readonly torrentsCacheStore: TorrentsCacheStore,
-    private readonly settingsStore: SettingsStore,
   ) {
     this.downloadsDir = this.configService.getOrThrow<string>(
       'web-torrent.downloads-dir',
@@ -182,29 +180,30 @@ export class TorrentsService
     return this.mergeTorrentEntityWithTorrentClient(torrent, clientTorrent);
   }
 
-  async purgeTrackerExcept(tracker: TrackerEnum, torrentIds: string[]) {
-    const setting = await this.settingsStore.findOne();
-    if (!setting) return;
-
+  async cleanupTrackerTorrents(
+    trackerEnum: TrackerEnum,
+    keepSeedSeconds: number | undefined,
+    notCompletedTorrentIds?: string[],
+  ) {
     const torrents = await this.torrentsStore.find((qb) => {
       qb.where(
         'torrent.tracker = :tracker AND torrent.isPersisted = :isPersisted',
         {
-          tracker,
+          tracker: trackerEnum,
           isPersisted: false,
         },
       );
 
-      if (torrentIds.length) {
-        qb.andWhere('torrent.torrentId NOT IN (:...torrentIds)', {
-          torrentIds,
+      if (notCompletedTorrentIds?.length) {
+        qb.andWhere('torrent.torrentId NOT IN (:...notCompletedTorrentIds)', {
+          notCompletedTorrentIds,
         });
       }
 
-      if (setting.cacheRetentionSeconds !== null) {
+      if (keepSeedSeconds) {
         qb.andWhere(
-          "datetime(torrent.lastPlayedAt, '+' || :cacheRetentionSeconds || ' seconds') < datetime('now')",
-          { cacheRetentionSeconds: setting.cacheRetentionSeconds },
+          "datetime(torrent.lastPlayedAt, '+' || :keepSeedSeconds || ' seconds') < datetime('now')",
+          { keepSeedSeconds },
         );
       }
 

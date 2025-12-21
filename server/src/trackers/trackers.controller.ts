@@ -53,9 +53,9 @@ export class TrackersController {
   }
 
   @ApiResponse({ status: 200 })
-  @Post('/hit-and-run')
-  async cleanupHitAndRun() {
-    return this.trackerMaintenanceService.cleanupHitAndRun();
+  @Post('/cleanup')
+  async cleanup() {
+    return this.trackerMaintenanceService.runTrackersCleanup();
   }
 
   @ApiParam({

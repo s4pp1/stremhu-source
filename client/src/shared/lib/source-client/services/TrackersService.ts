@@ -38,10 +38,10 @@ export class TrackersService {
      * @returns any
      * @throws ApiError
      */
-    public cleanupHitAndRun(): CancelablePromise<any> {
+    public cleanup(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'POST',
-            url: '/api/trackers/hit-and-run',
+            url: '/api/trackers/cleanup',
         });
     }
     /**
