@@ -82,8 +82,11 @@ async function bootstrap() {
 
   await app.init();
 
-  await new Promise<void>((resolve) => {
-    EXPRESS.listen(port, () => resolve());
+  await new Promise<void>((resolve, reject) => {
+    const server = EXPRESS.listen(port);
+
+    server.once('listening', resolve);
+    server.once('error', reject);
   });
 }
 
