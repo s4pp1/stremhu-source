@@ -333,6 +333,7 @@ export class TorrentsService
       progress: webTorrentTorrent.progress,
       total: webTorrentTorrent.length,
       uploaded: webTorrentTorrent.uploaded + torrentEntity.uploaded,
+      downloadSpeed: webTorrentTorrent.downloadSpeed,
       uploadSpeed: webTorrentTorrent.uploadSpeed,
       updatedAt: torrentEntity.updatedAt,
       createdAt: torrentEntity.createdAt,

@@ -6,6 +6,7 @@ import type { TrackerEnum } from './TrackerEnum';
 export type TorrentDto = {
     tracker: TrackerEnum;
     name: string;
+    downloadSpeed: number;
     uploadSpeed: number;
     progress: number;
     downloaded: number;

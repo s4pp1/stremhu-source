@@ -10,6 +10,9 @@ export class TorrentDto {
   name: string;
 
   @ApiProperty()
+  downloadSpeed: number;
+
+  @ApiProperty()
   uploadSpeed: number;
 
   @ApiProperty()

@@ -1,5 +1,6 @@
 import { filesize } from 'filesize'
 import {
+  ArrowBigDownIcon,
   ArrowBigUpIcon,
   HardDriveDownloadIcon,
   HardDriveIcon,
@@ -110,7 +111,7 @@ export function Torrent(props: TorrentProps) {
           </Button>
         </ItemActions>
       </Item>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
         <TorrentDetail
           icon={<HardDriveIcon />}
           value={filesize(torrent.total)}
@@ -122,6 +123,10 @@ export function Torrent(props: TorrentProps) {
         <TorrentDetail
           icon={<HardDriveUploadIcon className="size-4" />}
           value={filesize(torrent.uploaded)}
+        />
+        <TorrentDetail
+          icon={<ArrowBigDownIcon className="text-green-500" />}
+          value={filesize(torrent.downloadSpeed)}
         />
         <TorrentDetail
           icon={<ArrowBigUpIcon className="text-destructive" />}

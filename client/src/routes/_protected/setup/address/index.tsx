@@ -45,35 +45,31 @@ function SetupAddressRoute() {
 
   return (
     <div className="flex flex-col items-center py-10">
-      <div className="w-md">
-        <Card>
-          <CardHeader>
-            <CardTitle>{NETWORK_ACCESS_HEADER.TITLE}</CardTitle>
-            <CardDescription>
-              {NETWORK_ACCESS_HEADER.DESCRIPTION}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <NetworkAccess
-              onSuccess={handleSuccessOrSkip}
-              onSkip={handleSuccessOrSkip}
-              onValidated={setIsValid}
-            />
-          </CardContent>
-          <CardFooter className="gap-2 justify-end">
-            <Button type="reset" variant="link" form={NETWORK_ACCESS_FORM_ID}>
-              Kihagyás
-            </Button>
-            <Button
-              type="submit"
-              form={NETWORK_ACCESS_FORM_ID}
-              disabled={!isValid}
-            >
-              Mentés
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
+      <Card className="w-md">
+        <CardHeader>
+          <CardTitle>{NETWORK_ACCESS_HEADER.TITLE}</CardTitle>
+          <CardDescription>{NETWORK_ACCESS_HEADER.DESCRIPTION}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <NetworkAccess
+            onSuccess={handleSuccessOrSkip}
+            onSkip={handleSuccessOrSkip}
+            onValidated={setIsValid}
+          />
+        </CardContent>
+        <CardFooter className="gap-2 justify-end">
+          <Button type="reset" variant="link" form={NETWORK_ACCESS_FORM_ID}>
+            Kihagyás
+          </Button>
+          <Button
+            type="submit"
+            form={NETWORK_ACCESS_FORM_ID}
+            disabled={!isValid}
+          >
+            Mentés
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   )
 }

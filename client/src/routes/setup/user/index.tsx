@@ -70,7 +70,11 @@ function SetupUserRoute() {
 
   return (
     <form.AppForm>
-      <form name="registration" className="py-10" onSubmit={onSubmit}>
+      <form
+        name="registration"
+        className="py-10 flex flex-col items-center"
+        onSubmit={onSubmit}
+      >
         <Card className="w-sm">
           <CardHeader>
             <CardTitle>
