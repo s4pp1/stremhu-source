@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { CircleCheckBigIcon } from 'lucide-react'
+import { CircleCheckBigIcon, InfoIcon } from 'lucide-react'
 
 import {
   Alert,
@@ -21,8 +21,7 @@ export function Torrents() {
         <CircleCheckBigIcon />
         <AlertTitle>Nincs aktív torrent</AlertTitle>
         <AlertDescription>
-          Amint elindítasz egy filmet vagy sorozatot, az ahhoz tartozó aktív
-          torrentek itt jelennek meg.
+          Az elindított médiákhoz tartozó torrentek itt fognak megjelennie.
         </AlertDescription>
       </Alert>
     )
@@ -33,6 +32,14 @@ export function Torrents() {
       {torrents.map((torrent) => (
         <Torrent key={torrent.infoHash} torrent={torrent} />
       ))}
+      <Alert>
+        <InfoIcon />
+        <AlertTitle>Torrentek alatt látható értékek jelentése</AlertTitle>
+        <AlertDescription>
+          letöltött adat | letöltési sebesség | feltöltött adat | feltöltési
+          sebesség | torrent teljes mérete
+        </AlertDescription>
+      </Alert>
     </div>
   )
 }
