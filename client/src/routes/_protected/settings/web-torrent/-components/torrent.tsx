@@ -113,24 +113,24 @@ export function Torrent(props: TorrentProps) {
       </Item>
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
         <TorrentDetail
-          icon={<HardDriveIcon />}
-          value={filesize(torrent.total)}
-        />
-        <TorrentDetail
           icon={<HardDriveDownloadIcon />}
           value={filesize(torrent.downloaded)}
-        />
-        <TorrentDetail
-          icon={<HardDriveUploadIcon className="size-4" />}
-          value={filesize(torrent.uploaded)}
         />
         <TorrentDetail
           icon={<ArrowBigDownIcon className="text-green-500" />}
           value={filesize(torrent.downloadSpeed)}
         />
         <TorrentDetail
+          icon={<HardDriveUploadIcon className="size-4" />}
+          value={filesize(torrent.uploaded)}
+        />
+        <TorrentDetail
           icon={<ArrowBigUpIcon className="text-destructive" />}
           value={filesize(torrent.uploadSpeed)}
+        />
+        <TorrentDetail
+          icon={<HardDriveIcon />}
+          value={filesize(torrent.total)}
         />
       </div>
     </div>

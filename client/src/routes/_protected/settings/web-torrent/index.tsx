@@ -39,9 +39,8 @@ function RouteComponent() {
         <CardHeader>
           <CardTitle>Aktív torrentek</CardTitle>
           <CardDescription>
-            Az egyes torrentek alatt látható értékek sorrendben: a torrent
-            teljes mérete, az eddig letöltött adat, az összes feltöltött adat és
-            az aktuális feltöltési sebesség.
+            Kövesd nyomon a torrentek statisztikáit és tűzd ki, ha nem
+            szeretnéd, hogy autómatikusan törlődjenek.
           </CardDescription>
         </CardHeader>
         <Separator />

@@ -54,7 +54,7 @@
     "rxjs": "7.8.2",
     "semver": "7.7.3",
     "tough-cookie": "6.0.0",
-    "typeorm": "0.3.27",
+    "typeorm": "0.3.28",
     "webtorrent": "2.8.5",
     "zod": "4.1.13"
   },
