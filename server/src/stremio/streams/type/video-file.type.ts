@@ -10,7 +10,7 @@ import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import { AudioCodecEnum } from '../enum/audio-codec.enum';
 import { VideoQualityEnum } from '../enum/video-quality.enum';
 
-export type VideoFileWithRank = {
+export type VideoFile = {
   imdbId: string;
   tracker: TrackerEnum;
   torrentId: string;
