@@ -5,6 +5,7 @@ import type {
   ResolutionEnum,
   TrackerEnum,
   UserRoleEnum,
+  VideoQualityEnum,
 } from '@/shared/lib/source-client'
 import { getMetadata } from '@/shared/queries/metadata'
 
@@ -12,7 +13,8 @@ export function useMetadata() {
   const { data: metadata } = useQuery(getMetadata)
   if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
 
-  const { languages, resolutions, trackers, userRoles } = metadata
+  const { languages, resolutions, videoQualities, trackers, userRoles } =
+    metadata
 
   const getUserRoleLabel = (userRoleEnum: UserRoleEnum): string => {
     const found = userRoles.find((role) => role.value === userRoleEnum)
@@ -31,6 +33,13 @@ export function useMetadata() {
     return found!.label
   }
 
+  const getVideoQualityLabel = (videoQualityEnum: VideoQualityEnum): string => {
+    const found = videoQualities.find(
+      (videoQuality) => videoQuality.value === videoQualityEnum,
+    )
+    return found!.label
+  }
+
   const getTrackerLabel = (trackerEnum: TrackerEnum) => {
     const found = trackers.find((tracker) => tracker.value === trackerEnum)
     return found!.label
@@ -45,6 +54,7 @@ export function useMetadata() {
     getUserRoleLabel,
     getLanguageLabel,
     getResolutionLabel,
+    getVideoQualityLabel,
     getTrackerLabel,
     getTrackerFullDownload,
   }

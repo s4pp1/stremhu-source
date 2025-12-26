@@ -7,6 +7,7 @@ import { LanguageDto } from './language.dto';
 import { ResolutionDto } from './resolution.dto';
 import { TrackerMetaDto } from './tracker-meta.dto';
 import { UserRoleDto } from './user-role.dto';
+import { VideoQualityDto } from './video-quality.dto';
 
 export class MetadataDto extends HealthDto {
   @IsArray()
@@ -16,6 +17,10 @@ export class MetadataDto extends HealthDto {
   @IsArray()
   @ApiProperty({ type: ResolutionDto, isArray: true })
   resolutions: ResolutionDto[];
+
+  @IsArray()
+  @ApiProperty({ type: VideoQualityDto, isArray: true })
+  videoQualities: VideoQualityDto[];
 
   @IsArray()
   @ApiProperty({ type: LanguageDto, isArray: true })

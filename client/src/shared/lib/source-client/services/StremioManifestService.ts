@@ -5,7 +5,7 @@
 import type { ManifestDto } from '../models/ManifestDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-export class StremioService {
+export class StremioManifestService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * @param token

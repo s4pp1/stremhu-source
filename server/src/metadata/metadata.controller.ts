@@ -6,6 +6,7 @@ import {
   LANGUAGE_OPTIONS,
   RESOLUTION_OPTIONS,
   USER_ROLE_OPTIONS,
+  VIDEO_QUALITY_OPTIONS,
 } from 'src/common/common.constant';
 import { SettingsStore } from 'src/settings/core/settings.store';
 import { TRACKER_OPTIONS } from 'src/trackers/trackers.constants';
@@ -29,6 +30,7 @@ export class MetadataController {
     return {
       userRoles: USER_ROLE_OPTIONS,
       resolutions: RESOLUTION_OPTIONS,
+      videoQualities: VIDEO_QUALITY_OPTIONS,
       languages: LANGUAGE_OPTIONS,
       trackers: TRACKER_OPTIONS,
       endpoint,

@@ -1,15 +1,10 @@
 import { Module } from '@nestjs/common';
 
-import { AuthModule } from 'src/auth/auth.module';
-import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
-
-import { StremioStreamModule } from './stream/stream.module';
-import { StremioController } from './stremio.controller';
-import { StremioService } from './stremio.service';
+import { ManifestModule } from './manifest/manifest.module';
+import { PlaybackModule } from './playback/playback.module';
+import { StreamsModule } from './streams/streams.module';
 
 @Module({
-  imports: [AuthModule, StremioStreamModule, SettingsCoreModule],
-  controllers: [StremioController],
-  providers: [StremioService],
+  imports: [ManifestModule, StreamsModule, PlaybackModule],
 })
 export class StremioModule {}

@@ -2,7 +2,11 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { MoveVerticalIcon, TrashIcon } from 'lucide-react'
 
-import type { LanguageEnum, ResolutionEnum } from '@/shared/lib/source-client'
+import type {
+  LanguageEnum,
+  ResolutionEnum,
+  VideoQualityEnum,
+} from '@/shared/lib/source-client'
 
 import { Button } from './ui/button'
 import { Label } from './ui/label'
@@ -14,9 +18,9 @@ interface SortableSelectorItemProps<T> {
   onDelete: (item: T) => void
 }
 
-export function SortableSelectorItem<T extends ResolutionEnum | LanguageEnum>(
-  props: SortableSelectorItemProps<T>,
-) {
+export function SortableSelectorItem<
+  T extends ResolutionEnum | LanguageEnum | VideoQualityEnum,
+>(props: SortableSelectorItemProps<T>) {
   const { item, label, isDisabled, onDelete } = props
 
   const { attributes, listeners, setNodeRef, transform, transition } =

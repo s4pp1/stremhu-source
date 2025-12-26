@@ -1,10 +1,18 @@
 import { useForm } from '@tanstack/react-form'
 import { useQueries } from '@tanstack/react-query'
 import { toast } from 'sonner'
+import * as z from 'zod'
 
-import { userPreferencesSchema } from '@/common/schemas'
+import {
+  onlyBestTorrentSchema,
+  torrentLanguagesSchema,
+  torrentResolutionsSchema,
+  torrentSeedSchema,
+  torrentVideoQualitiesSchema,
+} from '@/common/schemas'
 import { LanguagesSelector } from '@/shared/components/form/languages-selector'
 import { ResolutionsSelector } from '@/shared/components/form/resolutions-selector'
+import { VideoQualitiesSelector } from '@/shared/components/form/video-qualities-selector'
 import {
   Card,
   CardContent,
@@ -14,11 +22,19 @@ import {
 } from '@/shared/components/ui/card'
 import { Label } from '@/shared/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group'
+import { Switch } from '@/shared/components/ui/switch'
 import { SEED_OPTIONS } from '@/shared/constants'
-import type { LanguageEnum, ResolutionEnum } from '@/shared/lib/source-client'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
 import { getMe, useUpdateMe } from '@/shared/queries/me'
 import { getMetadata } from '@/shared/queries/metadata'
+
+export const validatorSchema = z.object({
+  torrentResolutions: torrentResolutionsSchema,
+  torrentVideoQualities: torrentVideoQualitiesSchema,
+  torrentLanguages: torrentLanguagesSchema,
+  torrentSeed: torrentSeedSchema,
+  onlyBestTorrent: onlyBestTorrentSchema,
+})
 
 export function TorrentsPreferences() {
   const [{ data: me }, { data: metadata }] = useQueries({
@@ -32,11 +48,13 @@ export function TorrentsPreferences() {
   const form = useForm({
     defaultValues: {
       torrentLanguages: me.torrentLanguages,
+      torrentVideoQualities: me.torrentVideoQualities,
       torrentResolutions: me.torrentResolutions,
       torrentSeed: me.torrentSeed,
+      onlyBestTorrent: me.onlyBestTorrent,
     },
     validators: {
-      onChange: userPreferencesSchema,
+      onChange: validatorSchema,
     },
     listeners: {
       onChangeDebounceMs: 1000,
@@ -61,9 +79,9 @@ export function TorrentsPreferences() {
     <div className="columns-1 md:columns-2 gap-4">
       <Card className="break-inside-avoid mb-4">
         <CardHeader>
-          <CardTitle>Előnyben részesített képminőség</CardTitle>
+          <CardTitle>Előnyben részesített felbontás</CardTitle>
           <CardDescription>
-            Állítsd be, milyen képminőséget részesítsen előnyben a rendszer.
+            Állítsd be, milyen felbontást részesítsen előnyben a rendszer.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -71,28 +89,25 @@ export function TorrentsPreferences() {
             {(field) => (
               <ResolutionsSelector
                 items={field.state.value}
-                onAdd={(resolution) => {
-                  field.pushValue(resolution)
-                }}
-                onDelete={(resolution) => {
-                  const index = field.state.value.findIndex(
-                    (value) => value === resolution,
-                  )
-                  field.removeValue(index)
-                }}
-                onSortableDragEnd={(event) => {
-                  const { active, over } = event
-
-                  if (!over || active.id === over.id) return
-                  const oldIndex = field.state.value.indexOf(
-                    active.id as ResolutionEnum,
-                  )
-                  const newIndex = field.state.value.indexOf(
-                    over.id as ResolutionEnum,
-                  )
-                  if (oldIndex < 0 || newIndex < 0) return
-                  field.moveValue(oldIndex, newIndex)
-                }}
+                onChangeItems={(items) => field.handleChange(items)}
+              />
+            )}
+          </form.Field>
+        </CardContent>
+      </Card>
+      <Card className="break-inside-avoid mb-4">
+        <CardHeader>
+          <CardTitle>Előnyben részesített képminőség</CardTitle>
+          <CardDescription>
+            Állítsd be, milyen képminőséget részesítsen előnyben a rendszer.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form.Field name="torrentVideoQualities" mode="array">
+            {(field) => (
+              <VideoQualitiesSelector
+                items={field.state.value}
+                onChangeItems={(items) => field.handleChange(items)}
               />
             )}
           </form.Field>
@@ -110,28 +125,7 @@ export function TorrentsPreferences() {
             {(field) => (
               <LanguagesSelector
                 items={field.state.value}
-                onAdd={(language) => {
-                  field.pushValue(language)
-                }}
-                onDelete={(language) => {
-                  const index = field.state.value.findIndex(
-                    (value) => value === language,
-                  )
-                  field.removeValue(index)
-                }}
-                onSortableDragEnd={(event) => {
-                  const { active, over } = event
-
-                  if (!over || active.id === over.id) return
-                  const oldIndex = field.state.value.indexOf(
-                    active.id as LanguageEnum,
-                  )
-                  const newIndex = field.state.value.indexOf(
-                    over.id as LanguageEnum,
-                  )
-                  if (oldIndex < 0 || newIndex < 0) return
-                  field.moveValue(oldIndex, newIndex)
-                }}
+                onChangeItems={(items) => field.handleChange(items)}
               />
             )}
           </form.Field>
@@ -173,6 +167,29 @@ export function TorrentsPreferences() {
                   </div>
                 ))}
               </RadioGroup>
+            )}
+          </form.Field>
+        </CardContent>
+      </Card>
+      <Card className="break-inside-avoid mb-4">
+        <CardHeader>
+          <CardTitle>Családbarát mód</CardTitle>
+          <CardDescription>
+            Csak a legjobb torrent jelenik meg a beállított preferenciáid
+            alapján - így nem kell listából válogatni.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form.Field name="onlyBestTorrent">
+            {(field) => (
+              <Label htmlFor={field.name} className="flex items-start gap-3">
+                <Switch
+                  id={field.name}
+                  checked={field.state.value}
+                  onCheckedChange={field.handleChange}
+                />
+                Családbarát mód
+              </Label>
             )}
           </form.Field>
         </CardContent>

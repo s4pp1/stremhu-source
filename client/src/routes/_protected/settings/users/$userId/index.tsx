@@ -5,9 +5,11 @@ import { assertExists } from '@/shared/lib/utils'
 import { getUser } from '@/shared/queries/users'
 
 import { LanguagePreferences } from './-features/language-preferences'
-import { MediaQualityPreferences } from './-features/media-quality-preferences'
+import { OnlyBestTorrent } from './-features/only-best-torrent'
+import { ResolutionPreferences } from './-features/resolution-preferences'
 import { TorrentSeeders } from './-features/torrent-seeders'
 import { UserProfile } from './-features/user-profile'
+import { VideoQualityPreferences } from './-features/video-quality-preferences'
 
 export const Route = createFileRoute('/_protected/settings/users/$userId/')({
   component: UserRoute,
@@ -30,10 +32,16 @@ function UserRoute() {
         <LanguagePreferences user={user} />
       </div>
       <div className="break-inside-avoid mb-4">
-        <MediaQualityPreferences user={user} />
+        <ResolutionPreferences user={user} />
+      </div>
+      <div className="break-inside-avoid mb-4">
+        <VideoQualityPreferences user={user} />
       </div>
       <div className="break-inside-avoid mb-4">
         <TorrentSeeders user={user} />
+      </div>
+      <div className="break-inside-avoid mb-4">
+        <OnlyBestTorrent user={user} />
       </div>
     </div>
   )

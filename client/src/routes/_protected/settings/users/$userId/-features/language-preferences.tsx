@@ -1,7 +1,8 @@
 import { useForm } from '@tanstack/react-form'
 import { toast } from 'sonner'
+import * as z from 'zod'
 
-import { userPreferencesSchema } from '@/common/schemas'
+import { torrentLanguagesSchema } from '@/common/schemas'
 import { LanguagesSelector } from '@/shared/components/form/languages-selector'
 import {
   Card,
@@ -10,9 +11,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
-import type { LanguageEnum, UserDto } from '@/shared/lib/source-client'
+import type { UserDto } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import { useUpdateUser } from '@/shared/queries/users'
+
+const validatorSchema = z.object({
+  torrentLanguages: torrentLanguagesSchema,
+})
 
 type LanguagePreferences = {
   user: UserDto
@@ -26,11 +31,9 @@ export function LanguagePreferences(props: LanguagePreferences) {
   const form = useForm({
     defaultValues: {
       torrentLanguages: user.torrentLanguages,
-      torrentResolutions: user.torrentResolutions,
-      torrentSeed: user.torrentSeed,
     },
     validators: {
-      onChange: userPreferencesSchema,
+      onChange: validatorSchema,
     },
     listeners: {
       onChangeDebounceMs: 1000,
@@ -64,28 +67,7 @@ export function LanguagePreferences(props: LanguagePreferences) {
           {(field) => (
             <LanguagesSelector
               items={field.state.value}
-              onAdd={(language) => {
-                field.pushValue(language)
-              }}
-              onDelete={(language) => {
-                const index = field.state.value.findIndex(
-                  (value) => value === language,
-                )
-                field.removeValue(index)
-              }}
-              onSortableDragEnd={(event) => {
-                const { active, over } = event
-
-                if (!over || active.id === over.id) return
-                const oldIndex = field.state.value.indexOf(
-                  active.id as LanguageEnum,
-                )
-                const newIndex = field.state.value.indexOf(
-                  over.id as LanguageEnum,
-                )
-                if (oldIndex < 0 || newIndex < 0) return
-                field.moveValue(oldIndex, newIndex)
-              }}
+              onChangeItems={(items) => field.handleChange(items)}
             />
           )}
         </form.Field>

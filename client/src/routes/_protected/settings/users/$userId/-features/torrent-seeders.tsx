@@ -1,7 +1,8 @@
 import { useForm } from '@tanstack/react-form'
 import { toast } from 'sonner'
+import * as z from 'zod'
 
-import { userPreferencesSchema } from '@/common/schemas'
+import { torrentSeedSchema } from '@/common/schemas'
 import {
   Card,
   CardContent,
@@ -16,6 +17,10 @@ import type { UserDto } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import { useUpdateUser } from '@/shared/queries/users'
 
+const validatorSchema = z.object({
+  torrentSeed: torrentSeedSchema,
+})
+
 type TorrentSeeders = {
   user: UserDto
 }
@@ -27,15 +32,13 @@ export function TorrentSeeders(props: TorrentSeeders) {
 
   const form = useForm({
     defaultValues: {
-      torrentLanguages: user.torrentLanguages,
-      torrentResolutions: user.torrentResolutions,
       torrentSeed: user.torrentSeed,
     },
     validators: {
-      onChange: userPreferencesSchema,
+      onChange: validatorSchema,
     },
     listeners: {
-      onChangeDebounceMs: 2000,
+      onChangeDebounceMs: 1000,
       onChange: ({ formApi }) => {
         if (formApi.state.isValid) {
           formApi.handleSubmit()

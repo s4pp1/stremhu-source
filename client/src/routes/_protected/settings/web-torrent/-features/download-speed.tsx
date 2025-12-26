@@ -41,7 +41,7 @@ export function DownloadSpeed() {
       onChange: schema,
     },
     listeners: {
-      onChangeDebounceMs: 2000,
+      onChangeDebounceMs: 1000,
       onChange: ({ formApi }) => {
         if (formApi.state.isValid) {
           formApi.handleSubmit()

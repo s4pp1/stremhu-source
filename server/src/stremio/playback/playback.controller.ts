@@ -9,67 +9,30 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 import * as mime from 'mime-types';
 import { Readable, pipeline } from 'node:stream';
-import rangeParser from 'range-parser';
 
 import { TokenGuard } from 'src/auth/guards/token.guard';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
-import { StreamMediaTypeEnum } from '../enum/stream-media-type.enum';
-import { StreamsResponseDto } from './dto/stremio-stream.dto';
-import { StreamIdPipe } from './pipe/stream-id.pipe';
-import type { ParsedStreamId } from './pipe/stream-id.pipe';
-import { StremioStreamService } from './stream.service';
-import {
-  CalculateRange,
-  CalculatedRange,
-  RangeErrorEnum,
-} from './stream.types';
+import { RangeErrorEnum } from './enum/range-error.enum';
+import { PlaybackService } from './playback.service';
+import { calculateRange } from './util/calculate-range.util';
 
 @UseGuards(TokenGuard)
 @Controller('/:token/stream')
-@ApiTags('Stremio / Stream')
 @ApiParam({
   name: 'token',
   required: true,
-  schema: { type: 'string' },
+  type: 'string',
 })
-export class StremioStreamController {
-  private readonly logger = new Logger(StremioStreamController.name);
+@ApiTags('Stremio / Playback')
+export class PlaybackController {
+  private readonly logger = new Logger(PlaybackController.name);
 
-  constructor(private streamService: StremioStreamService) {}
-
-  @ApiParam({
-    name: 'id',
-    type: 'string',
-  })
-  @ApiParam({
-    name: 'mediaType',
-    enum: StreamMediaTypeEnum,
-  })
-  @ApiOkResponse({ type: StreamsResponseDto })
-  @Get('/:mediaType/:id.json')
-  async streams(
-    @Req() req: Request,
-    @Param('mediaType', new ParseEnumPipe(StreamMediaTypeEnum))
-    mediaType: StreamMediaTypeEnum,
-    @Param('id', StreamIdPipe) id: ParsedStreamId,
-  ): Promise<StreamsResponseDto> {
-    const { user } = req;
-
-    const streams = await this.streamService.streams({
-      user: user!,
-      mediaType,
-      ...id,
-    });
-
-    return {
-      streams: streams,
-    };
-  }
+  constructor(private playbackService: PlaybackService) {}
 
   @ApiParam({
     name: 'tracker',
@@ -87,7 +50,7 @@ export class StremioStreamController {
   ) {
     const rangeHeader = req.headers.range;
 
-    const file = await this.streamService.playStream({
+    const file = await this.playbackService.play({
       imdbId,
       tracker,
       torrentId,
@@ -98,7 +61,7 @@ export class StremioStreamController {
 
     const total = file.length;
 
-    const calculatedRange = this.calculateRange({
+    const calculatedRange = calculateRange({
       rangeHeader,
       total,
     });
@@ -145,30 +108,5 @@ export class StremioStreamController {
         `🚨 Stream hibára futott: ${err.message}, ${JSON.stringify(err)}`,
       );
     });
-  }
-
-  private calculateRange(payload: CalculateRange): CalculatedRange {
-    const { rangeHeader, total } = payload;
-
-    if (!rangeHeader) {
-      return {
-        start: 0,
-        end: total - 1,
-        contentLength: total,
-      };
-    }
-
-    const parsedRange = rangeParser(total, rangeHeader);
-
-    if (parsedRange === -1) return RangeErrorEnum.RANGE_NOT_SATISFIABLE;
-    if (parsedRange === -2) return RangeErrorEnum.RANGE_MALFORMED;
-
-    const [range] = parsedRange;
-
-    return {
-      start: range.start,
-      end: range.end,
-      contentLength: range.end - range.start + 1,
-    };
   }
 }

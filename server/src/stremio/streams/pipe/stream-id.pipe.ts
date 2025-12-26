@@ -1,7 +1,7 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
 import { isString, toInteger } from 'lodash';
 
-import { ADDON_PREFIX_ID } from '../stremio.constants';
+import { ADDON_PREFIX_ID } from '../../stremio.constants';
 
 export interface ParsedStreamIdSeries {
   season: number;

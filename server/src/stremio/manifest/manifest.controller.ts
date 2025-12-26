@@ -1,4 +1,4 @@
-import { Controller, Get, Header, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Res, UseGuards } from '@nestjs/common';
 import {
   ApiParam,
   ApiPermanentRedirectResponse,
@@ -9,19 +9,19 @@ import type { Response } from 'express';
 
 import { TokenGuard } from 'src/auth/guards/token.guard';
 
-import { ManifestDto } from './dto/manifest.dto';
-import { StremioService } from './stremio.service';
+import { ManifestDto } from '../dto/manifest.dto';
+import { ManifestService } from './manifest.service';
 
 @UseGuards(TokenGuard)
 @Controller('/:token')
-@ApiTags('Stremio')
+@ApiTags('Stremio / Manifest')
 @ApiParam({
   name: 'token',
   required: true,
   type: 'string',
 })
-export class StremioController {
-  constructor(private readonly stremioService: StremioService) {}
+export class ManifestController {
+  constructor(private readonly manifestService: ManifestService) {}
 
   @ApiPermanentRedirectResponse({ description: 'Átirányítás a UI felületre.' })
   @Get('/configure')
@@ -31,13 +31,7 @@ export class StremioController {
 
   @ApiResponse({ type: ManifestDto })
   @Get('/manifest.json')
-  @Header(
-    'Cache-Control',
-    'no-store, no-cache, must-revalidate, proxy-revalidate',
-  )
-  @Header('Pragma', 'no-cache')
-  @Header('Expires', '0')
   async manifest(): Promise<ManifestDto> {
-    return this.stremioService.manifest();
+    return this.manifestService.manifest();
   }
 }

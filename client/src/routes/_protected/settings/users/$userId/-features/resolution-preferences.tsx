@@ -1,7 +1,8 @@
 import { useForm } from '@tanstack/react-form'
 import { toast } from 'sonner'
+import * as z from 'zod'
 
-import { userPreferencesSchema } from '@/common/schemas'
+import { torrentResolutionsSchema } from '@/common/schemas'
 import { ResolutionsSelector } from '@/shared/components/form/resolutions-selector'
 import {
   Card,
@@ -10,30 +11,32 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
-import type { ResolutionEnum, UserDto } from '@/shared/lib/source-client'
+import type { UserDto } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import { useUpdateUser } from '@/shared/queries/users'
 
-type MediaQualityPreferences = {
+const validatorSchema = z.object({
+  torrentResolutions: torrentResolutionsSchema,
+})
+
+type ResolutionPreferences = {
   user: UserDto
 }
 
-export function MediaQualityPreferences(props: MediaQualityPreferences) {
+export function ResolutionPreferences(props: ResolutionPreferences) {
   const { user } = props
 
   const { mutateAsync: updateUser } = useUpdateUser()
 
   const form = useForm({
     defaultValues: {
-      torrentLanguages: user.torrentLanguages,
       torrentResolutions: user.torrentResolutions,
-      torrentSeed: user.torrentSeed,
     },
     validators: {
-      onChange: userPreferencesSchema,
+      onChange: validatorSchema,
     },
     listeners: {
-      onChangeDebounceMs: 2000,
+      onChangeDebounceMs: 1000,
       onChange: ({ formApi }) => {
         if (formApi.state.isValid) {
           formApi.handleSubmit()
@@ -54,9 +57,9 @@ export function MediaQualityPreferences(props: MediaQualityPreferences) {
   return (
     <Card className="break-inside-avoid mb-4">
       <CardHeader>
-        <CardTitle>Előnyben részesített képminőség</CardTitle>
+        <CardTitle>Előnyben részesített felbontás</CardTitle>
         <CardDescription>
-          Állítsd be, milyen képminőséget részesítsen előnyben a rendszer.
+          Állítsd be, milyen felbontást részesítsen előnyben a rendszer.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
@@ -64,28 +67,7 @@ export function MediaQualityPreferences(props: MediaQualityPreferences) {
           {(field) => (
             <ResolutionsSelector
               items={field.state.value}
-              onAdd={(resolution) => {
-                field.pushValue(resolution)
-              }}
-              onDelete={(resolution) => {
-                const index = field.state.value.findIndex(
-                  (value) => value === resolution,
-                )
-                field.removeValue(index)
-              }}
-              onSortableDragEnd={(event) => {
-                const { active, over } = event
-
-                if (!over || active.id === over.id) return
-                const oldIndex = field.state.value.indexOf(
-                  active.id as ResolutionEnum,
-                )
-                const newIndex = field.state.value.indexOf(
-                  over.id as ResolutionEnum,
-                )
-                if (oldIndex < 0 || newIndex < 0) return
-                field.moveValue(oldIndex, newIndex)
-              }}
+              onChangeItems={(items) => field.handleChange(items)}
             />
           )}
         </form.Field>

@@ -4,6 +4,7 @@ import {
   ArrayNotEmpty,
   ArrayUnique,
   IsArray,
+  IsBoolean,
   IsEnum,
   IsNumber,
   IsOptional,
@@ -11,6 +12,7 @@ import {
 } from 'class-validator';
 
 import { LanguageEnum } from 'src/common/enum/language.enum';
+import { VideoQualityEnum } from 'src/stremio/streams/enum/video-quality.enum';
 
 import { UserRoleEnum } from '../enum/user-role.enum';
 
@@ -57,6 +59,19 @@ export class UpdateUserDto {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
+  @IsEnum(VideoQualityEnum, { each: true })
+  @ApiProperty({
+    enum: VideoQualityEnum,
+    enumName: 'VideoQualityEnum',
+    isArray: true,
+    required: false,
+  })
+  torrentVideoQualities?: VideoQualityEnum[];
+
+  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  @ArrayUnique()
   @IsEnum(LanguageEnum, { each: true })
   @ApiProperty({
     enum: LanguageEnum,
@@ -70,4 +85,9 @@ export class UpdateUserDto {
   @IsNumber()
   @ApiProperty({ type: 'number', nullable: true, required: false })
   torrentSeed?: number | null;
+
+  @IsOptional()
+  @IsBoolean()
+  @ApiProperty({ type: 'boolean', required: false })
+  onlyBestTorrent?: boolean;
 }

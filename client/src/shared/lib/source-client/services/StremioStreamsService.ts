@@ -5,7 +5,7 @@
 import type { StreamsResponseDto } from '../models/StreamsResponseDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-export class StremioStreamService {
+export class StremioStreamsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * @param mediaType
@@ -25,34 +25,6 @@ export class StremioStreamService {
             path: {
                 'mediaType': mediaType,
                 'id': id,
-                'token': token,
-            },
-        });
-    }
-    /**
-     * @param imdbId
-     * @param tracker
-     * @param torrentId
-     * @param fileIdx
-     * @param token
-     * @returns any
-     * @throws ApiError
-     */
-    public playStream(
-        imdbId: string,
-        tracker: 'ncore' | 'bithumen' | 'majomparade',
-        torrentId: string,
-        fileIdx: number,
-        token: string,
-    ): CancelablePromise<any> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/api/{token}/stream/play/{imdbId}/{tracker}/{torrentId}/{fileIdx}',
-            path: {
-                'imdbId': imdbId,
-                'tracker': tracker,
-                'torrentId': torrentId,
-                'fileIdx': fileIdx,
                 'token': token,
             },
         });

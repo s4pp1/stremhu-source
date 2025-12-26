@@ -9,11 +9,11 @@ import {
   ContentTypeEnum,
   ManifestDto,
   ShortManifestResourceEnum,
-} from './dto/manifest.dto';
-import { ADDON_PREFIX_ID } from './stream/stremio.constants';
+} from '../dto/manifest.dto';
+import { ADDON_PREFIX_ID } from '../stremio.constants';
 
 @Injectable()
-export class StremioService {
+export class ManifestService {
   constructor(
     private configService: ConfigService,
     private settingsStore: SettingsStore,

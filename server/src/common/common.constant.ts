@@ -1,11 +1,13 @@
 import { Resolution as ResolutionEnum } from '@ctrl/video-filename-parser';
 
+import { VideoQualityEnum } from 'src/stremio/streams/enum/video-quality.enum';
 import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
 import {
   LanguageOption,
   ResolutionOption,
   UserRoleOption,
+  VideoQualityOption,
 } from './common.types';
 import { LanguageEnum } from './enum/language.enum';
 
@@ -33,12 +35,32 @@ export const RESOLUTION_OPTIONS: ResolutionOption[] = [
   { value: ResolutionEnum.R480P, label: 'SD (480p)' },
 ];
 
+export const ALL_RESOLUTION = RESOLUTION_OPTIONS.map(
+  (resolution) => resolution.value,
+);
+
 export const RESOLUTION_LABEL_MAP = RESOLUTION_OPTIONS.reduce(
   (previousValue, value) => ({
     ...previousValue,
     [value.value]: value.label,
   }),
   {} as Record<ResolutionEnum, string>,
+);
+
+export const VIDEO_QUALITY_OPTIONS: VideoQualityOption[] = [
+  { value: VideoQualityEnum.DV, label: 'Dolby Vision' },
+  { value: VideoQualityEnum.HDR10P, label: 'HDR10+' },
+  { value: VideoQualityEnum.HDR10, label: 'HDR10' },
+  { value: VideoQualityEnum.HLG, label: 'HLG' },
+  { value: VideoQualityEnum.SDR, label: 'SDR' },
+];
+
+export const VIDEO_QUALITY_LABEL_MAP = VIDEO_QUALITY_OPTIONS.reduce(
+  (previousValue, value) => ({
+    ...previousValue,
+    [value.value]: value.label,
+  }),
+  {} as Record<VideoQualityEnum, string>,
 );
 
 export const LANGUAGE_OPTIONS: LanguageOption[] = [
