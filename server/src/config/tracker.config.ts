@@ -35,6 +35,14 @@ export default registerAs('tracker', () => {
       value: getMaxConcurrent('MAJOMPARADE_MAX_CONCURRENT') || 5,
       zod: z.number().positive(),
     },
+    'diablo-url': {
+      value: process.env.DIABLO_URL ?? 'https://diablotorrent.net',
+      zod: z.string().trim().nonempty(),
+    },
+    'diablo-max-concurrent': {
+      value: getMaxConcurrent('DIABLO_MAX_CONCURRENT') || 5,
+      zod: z.number().positive(),
+    },
   };
 
   return ZodUtil.validate<TrackerConfig>(configs);

@@ -16,7 +16,7 @@ import { TrackerEnum } from './enum/tracker.enum';
 import { TrackerAdapterRegistry } from './tracker-adapter.registry';
 import { LoginRequest } from './tracker.types';
 import { LOGIN_ERROR_MESSAGE, TRACKER_INFO } from './trackers.constants';
-import { TrackerToUpdate } from './type/tracker-to-update';
+import { TrackerToUpdate } from './type/tracker-to-update.type';
 
 @Injectable()
 export class TrackersService {

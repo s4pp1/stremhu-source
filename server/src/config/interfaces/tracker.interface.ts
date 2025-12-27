@@ -5,4 +5,6 @@ export interface TrackerConfig {
   'bithumen-max-concurrent': number;
   'majomparade-url': string;
   'majomparade-max-concurrent': number;
+  'diablo-url': string;
+  'diablo-max-concurrent': number;
 }

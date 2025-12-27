@@ -18,6 +18,11 @@ export const TRACKER_OPTIONS: TrackerOption[] = [
     label: 'Majomparádé',
     requiresFullDownload: true,
   },
+  {
+    value: TrackerEnum.DIABLO,
+    label: 'Diablo',
+    requiresFullDownload: false,
+  },
 ];
 
 export const TRACKER_INFO = TRACKER_OPTIONS.reduce(

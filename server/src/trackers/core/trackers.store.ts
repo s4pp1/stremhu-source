@@ -4,7 +4,7 @@ import { EntityManager, Repository, SelectQueryBuilder } from 'typeorm';
 
 import { Tracker } from '../entity/tracker.entity';
 import { TrackerEnum } from '../enum/tracker.enum';
-import { TrackerCoreToCreate } from '../type/tracker-core-to-create';
+import { TrackerCoreToCreate } from '../type/tracker-core-to-create.type';
 
 @Injectable()
 export class TrackersStore {
