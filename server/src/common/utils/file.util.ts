@@ -1,3 +1,4 @@
+import { partial } from 'filesize';
 import { Dirent } from 'node:fs';
 import { readFile, readdir } from 'node:fs/promises';
 
@@ -19,3 +20,5 @@ export async function safeReadFile(
     return null;
   }
 }
+
+export const formatFilesize = partial({ standard: 'jedec' });

@@ -54,13 +54,14 @@ export function findVideoFile(
 }
 
 function isSampleOrTrash(fileName: string) {
-  const isVideoFile = isVideo(fileName);
+  const normalizedName = fileName.toLowerCase();
+  const isVideoFile = isVideo(normalizedName);
   if (!isVideoFile) return true;
 
-  return isSample(fileName);
+  return isSample(normalizedName);
 }
 
-function isSample(fileName: string): boolean {
-  const base = fileName.replace(/\.[^.]+$/, '');
+function isSample(normalizedName: string): boolean {
+  const base = normalizedName.replace(/\.[^.]+$/, '');
   return /(^sample|sample$|sample-|-sample-|-sample)/.test(base);
 }

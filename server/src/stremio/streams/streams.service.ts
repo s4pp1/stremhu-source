@@ -3,7 +3,6 @@ import {
   filenameParse,
 } from '@ctrl/video-filename-parser';
 import { Injectable } from '@nestjs/common';
-import { filesize } from 'filesize';
 import { compact, orderBy } from 'lodash';
 
 import { CatalogService } from 'src/catalog/catalog.service';
@@ -12,6 +11,7 @@ import {
   RESOLUTION_LABEL_MAP,
   VIDEO_QUALITY_LABEL_MAP,
 } from 'src/common/common.constant';
+import { formatFilesize } from 'src/common/utils/file.util';
 import { SettingsStore } from 'src/settings/core/settings.store';
 import { TrackerTorrentStatusEnum } from 'src/trackers/enum/tracker-torrent-status.enum';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
@@ -118,7 +118,8 @@ export class StreamsService {
     }
 
     const readableLanguage = `🌍 ${LANGUAGE_LABEL_MAP[videoFile.language]}`;
-    const fileSize = `💾 ${filesize(videoFile.fileSize)}`;
+
+    const fileSize = `💾 ${formatFilesize(videoFile.fileSize)}`;
     const seeders = `👥 ${videoFile.seeders}`;
     const tracker = `🧲 ${TRACKER_INFO[videoFile.tracker].label}`;
     const group = videoFile.group ? `🎯 ${videoFile.group}` : undefined;

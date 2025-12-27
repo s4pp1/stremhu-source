@@ -1,4 +1,3 @@
-import { filesize } from 'filesize'
 import {
   ArrowBigDownIcon,
   ArrowBigUpIcon,
@@ -12,6 +11,7 @@ import {
 import type { JSX, MouseEventHandler } from 'react'
 import { toast } from 'sonner'
 
+import { formatFilesize } from '@/common/file.util'
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { Button } from '@/shared/components/ui/button'
 import {
@@ -114,23 +114,23 @@ export function Torrent(props: TorrentProps) {
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
         <TorrentDetail
           icon={<HardDriveDownloadIcon />}
-          value={filesize(torrent.downloaded)}
+          value={formatFilesize(torrent.downloaded)}
         />
         <TorrentDetail
           icon={<ArrowBigDownIcon className="text-green-500" />}
-          value={filesize(torrent.downloadSpeed)}
+          value={formatFilesize(torrent.downloadSpeed)}
         />
         <TorrentDetail
           icon={<HardDriveUploadIcon className="size-4" />}
-          value={filesize(torrent.uploaded)}
+          value={formatFilesize(torrent.uploaded)}
         />
         <TorrentDetail
           icon={<ArrowBigUpIcon className="text-destructive" />}
-          value={filesize(torrent.uploadSpeed)}
+          value={formatFilesize(torrent.uploadSpeed)}
         />
         <TorrentDetail
           icon={<HardDriveIcon />}
-          value={filesize(torrent.total)}
+          value={formatFilesize(torrent.total)}
         />
       </div>
     </div>
