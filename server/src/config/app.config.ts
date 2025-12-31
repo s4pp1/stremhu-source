@@ -37,7 +37,7 @@ export default registerAs('app', () => {
   const configs: ZodConfig<AppConfig> = {
     'node-env': {
       value: process.env.NODE_ENV ?? NodeEnvEnum.PRODUCTION,
-      zod: z.enum(['dev', 'production']),
+      zod: z.enum(NodeEnvEnum),
     },
     'client-path': {
       value: join(process.cwd(), '../client/dist'),

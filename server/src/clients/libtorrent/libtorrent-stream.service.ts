@@ -3,13 +3,10 @@ import { ConfigService } from '@nestjs/config';
 import { createReadStream as fsCreateReadStream } from 'node:fs';
 import path from 'node:path';
 import { Readable } from 'node:stream';
-import { setTimeout } from 'node:timers/promises';
 
 import { LibTorrentClient } from './client';
 import { LIBTORRENT_CLIENT } from './libtorrent-client.token';
 import { CreateReadStream } from './type/create-read-stream.type';
-
-const MIN_WINDOW_PIECES = 8;
 
 @Injectable()
 export class LibtorrentStreamService {
@@ -23,18 +20,13 @@ export class LibtorrentStreamService {
     private readonly configService: ConfigService,
   ) {
     this.downloadsDir = this.configService.getOrThrow<string>(
-      'web-torrent.downloads-dir',
+      'torrent.downloads-dir',
     );
   }
 
   createReadStream(payload: CreateReadStream): Readable {
-    try {
-      const streamIterator = this.streamIterator(payload);
-      return Readable.from(streamIterator);
-    } catch (error) {
-      console.log('Leállt a lejátszás', error);
-      throw error;
-    }
+    const streamIterator = this.streamIterator(payload);
+    return Readable.from(streamIterator);
   }
 
   async *streamIterator(payload: CreateReadStream) {
@@ -79,48 +71,24 @@ export class LibtorrentStreamService {
       let currentByte = start;
 
       while (currentByte <= safeEnd && !streamClosed) {
-        const windowBytes = MIN_WINDOW_PIECES * file.piece_length;
-        const endByte = Math.min(currentByte + windowBytes - 1, safeEnd);
-
-        await this.libtorrentClient.torrents.prioritizePiecesRange(
-          infoHash,
-          fileIndex,
-          {
-            start_byte: currentByte,
-            end_byte: endByte,
-          },
-        );
-
-        const checkedRange =
-          await this.libtorrentClient.torrents.checkPiecesRangeAvailable(
+        const prioritizeAndWait =
+          await this.libtorrentClient.torrents.prioritizeAndWait(
             infoHash,
             fileIndex,
             {
               start_byte: currentByte,
-              end_byte: endByte,
             },
           );
 
-        if (!checkedRange.ready) {
-          await setTimeout(200);
-          continue;
-        }
-
-        let streamEndByte = endByte;
-
-        if (checkedRange.is_available) {
-          streamEndByte = safeEnd;
-        }
-
         const chunks = fsCreateReadStream(torrentFilePath, {
           start: currentByte,
-          end: streamEndByte,
+          end: prioritizeAndWait.available_end_byte,
         });
         for await (const chunk of chunks) {
           yield chunk;
         }
 
-        currentByte = streamEndByte + 1;
+        currentByte = prioritizeAndWait.available_end_byte + 1;
       }
     } finally {
       streamClosed = true;

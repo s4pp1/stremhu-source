@@ -3,23 +3,28 @@ import _ from 'lodash';
 import { join } from 'node:path';
 import { z } from 'zod';
 
-import { WebTorrentConfig } from './interfaces/web-torrent.interface';
+import { TorrentClientEnum } from './enum/torrent-client.enum';
+import { TorrentConfig } from './interfaces/torrent.interface';
 import ZodUtil, { ZodConfig } from './utils/zod-util';
 
-export default registerAs('web-torrent', () => {
-  const port = process.env.WEB_TORRENT_PORT
-    ? _.parseInt(process.env.WEB_TORRENT_PORT)
+export default registerAs('torrent', () => {
+  const port = process.env.TORRENT_PORT
+    ? _.parseInt(process.env.TORRENT_PORT)
     : undefined;
 
   const peerLimit = process.env.WEB_TORRENT_PEER_LIMIT
     ? _.parseInt(process.env.WEB_TORRENT_PEER_LIMIT)
     : undefined;
 
-  const storeCacheSlots = process.env.WEB_TORRENT_STORE_CACHE_SLOTS
-    ? _.parseInt(process.env.WEB_TORRENT_STORE_CACHE_SLOTS)
+  const storeCacheSlots = process.env.TORRENT_STORE_CACHE_SLOTS
+    ? _.parseInt(process.env.TORRENT_STORE_CACHE_SLOTS)
     : undefined;
 
-  const configs: ZodConfig<WebTorrentConfig> = {
+  const configs: ZodConfig<TorrentConfig> = {
+    client: {
+      value: process.env.TORRENT_CLIENT ?? TorrentClientEnum.WEB_TORRENT,
+      zod: z.enum(TorrentClientEnum),
+    },
     port: {
       value: port || 6881,
       zod: z.number().positive(),
@@ -42,5 +47,5 @@ export default registerAs('web-torrent', () => {
     },
   };
 
-  return ZodUtil.validate<WebTorrentConfig>(configs);
+  return ZodUtil.validate<TorrentConfig>(configs);
 });

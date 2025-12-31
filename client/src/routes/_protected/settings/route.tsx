@@ -7,8 +7,8 @@ import { getMe } from '@/shared/queries/me'
 
 import { SettingsBreadcrumb } from './-components/settings-breadcrumb'
 import { SETTINGS_SYSTEM_NAME } from './system/route'
+import { SETTINGS_TORRENT_CLIENT_NAME } from './torrent-client/route'
 import { SETTINGS_USERS_NAME } from './users/route'
-import { SETTINGS_WEB_TORRENT_NAME } from './web-torrent/route'
 
 export const Route = createFileRoute('/_protected/settings')({
   component: SettingsLayout,
@@ -44,10 +44,10 @@ function SettingsLayout() {
           </Button>
           <Button asChild variant="ghost" size="sm">
             <Link
-              to="/settings/web-torrent"
+              to="/settings/torrent-client"
               activeProps={{ className: 'bg-background' }}
             >
-              {SETTINGS_WEB_TORRENT_NAME}
+              {SETTINGS_TORRENT_CLIENT_NAME}
             </Link>
           </Button>
         </div>

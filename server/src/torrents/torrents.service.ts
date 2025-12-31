@@ -44,7 +44,7 @@ export class TorrentsService
     private readonly torrentsCacheStore: TorrentsCacheStore,
   ) {
     this.downloadsDir = this.configService.getOrThrow<string>(
-      'web-torrent.downloads-dir',
+      'torrent.downloads-dir',
     );
   }
 
@@ -218,8 +218,8 @@ export class TorrentsService
     await Promise.all(torrents.map((torrent) => this.delete(torrent.infoHash)));
   }
 
-  updateTorrentClient(payload: TorrentClientToUpdateConfig) {
-    this.torrentClient.updateConfig(payload);
+  async updateTorrentClient(payload: TorrentClientToUpdateConfig) {
+    await this.torrentClient.updateConfig(payload);
   }
 
   async delete(infoHash: string): Promise<void> {

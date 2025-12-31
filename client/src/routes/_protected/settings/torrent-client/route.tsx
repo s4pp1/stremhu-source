@@ -3,11 +3,11 @@ import { Outlet, createFileRoute } from '@tanstack/react-router'
 import { getSettings } from '@/shared/queries/settings'
 import { getTorrents } from '@/shared/queries/torrents'
 
-export const SETTINGS_WEB_TORRENT_NAME = 'WebTorrent'
+export const SETTINGS_TORRENT_CLIENT_NAME = 'Torrent Kliens'
 
 const RouteComponent = () => <Outlet />
 
-export const Route = createFileRoute('/_protected/settings/web-torrent')({
+export const Route = createFileRoute('/_protected/settings/torrent-client')({
   component: RouteComponent,
   beforeLoad: async ({ context }) => {
     await Promise.all([
@@ -16,6 +16,6 @@ export const Route = createFileRoute('/_protected/settings/web-torrent')({
     ])
   },
   loader: () => {
-    return { breadcrumb: SETTINGS_WEB_TORRENT_NAME }
+    return { breadcrumb: SETTINGS_TORRENT_CLIENT_NAME }
   },
 })

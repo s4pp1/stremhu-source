@@ -38,7 +38,7 @@ export interface TorrentClient {
   bootstrap(): Promise<void>;
   shutdown(): Promise<void>;
 
-  updateConfig(payload: TorrentClientToUpdateConfig): void;
+  updateConfig(payload: TorrentClientToUpdateConfig): Promise<void> | void;
 
   getTorrents(): Promise<ClientTorrent[]> | ClientTorrent[];
   getTorrent(infoHash: string): Promise<ClientTorrent | null>;

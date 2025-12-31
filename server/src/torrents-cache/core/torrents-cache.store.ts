@@ -29,7 +29,7 @@ export class TorrentsCacheStore implements OnModuleInit {
 
   constructor(private readonly configService: ConfigService) {
     this.torrentsDir = this.configService.getOrThrow<string>(
-      'web-torrent.torrents-dir',
+      'torrent.torrents-dir',
     );
   }
 

@@ -9,8 +9,8 @@ import { join } from 'path';
 import appConfig from './config/app.config';
 import authConfig from './config/auth.config';
 import databaseConfig from './config/database.config';
+import torrentConfig from './config/torrent.config';
 import trackerConfig from './config/tracker.config';
-import webTorrentConfig from './config/web-torrent.config';
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import webTorrentConfig from './config/web-torrent.config';
         appConfig,
         authConfig,
         databaseConfig,
-        webTorrentConfig,
+        torrentConfig,
         trackerConfig,
       ],
     }),

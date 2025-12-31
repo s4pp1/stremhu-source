@@ -5,6 +5,12 @@ from pydantic import BaseModel, Field, model_validator
 from .constants import PRIO_HIGH
 
 
+class UpdateSettings(BaseModel):
+    download_rate_limit: Optional[int] = None
+    upload_rate_limit: Optional[int] = None
+    port: Optional[int] = None
+
+
 class Torrent(BaseModel):
     name: str
     info_hash: str
@@ -56,6 +62,14 @@ class PrioritizeTorrentFile(BaseModel):
     priority: int = PRIO_HIGH
     start_byte: int
     end_byte: int
+
+
+class PrioritizeAndWaitRequest(BaseModel):
+    start_byte: int
+
+
+class PrioritizeAndWait(BaseModel):
+    available_end_byte: int
 
 
 class RemoveTorrent(BaseModel):

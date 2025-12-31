@@ -33,20 +33,18 @@ export class WebTorrentService implements TorrentClient {
     private readonly settingsStore: SettingsStore,
   ) {
     this.downloadsDir = this.configService.getOrThrow<string>(
-      'web-torrent.downloads-dir',
+      'torrent.downloads-dir',
     );
     this.storeCacheSlots = this.configService.getOrThrow<number>(
-      'web-torrent.store-cache-slots',
+      'torrent.store-cache-slots',
     );
   }
 
   async bootstrap() {
     const setting = await this.settingsStore.findOneOrThrow();
-    const torrentPort =
-      this.configService.getOrThrow<number>('web-torrent.port');
-    const maxConns = this.configService.getOrThrow<number>(
-      'web-torrent.peer-limit',
-    );
+    const torrentPort = this.configService.getOrThrow<number>('torrent.port');
+    const maxConns =
+      this.configService.getOrThrow<number>('torrent.peer-limit');
 
     const { default: WebTorrent } = await import('webtorrent');
 

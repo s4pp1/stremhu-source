@@ -2,8 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type PiecesRangeRequest = {
+export type PrioritizeAndWaitRequest = {
     start_byte: number;
-    end_byte: number;
 };
 

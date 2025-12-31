@@ -14,10 +14,10 @@ export type { AddTorrent } from './models/AddTorrent';
 export type { File } from './models/File';
 export type { Health } from './models/Health';
 export type { HTTPValidationError } from './models/HTTPValidationError';
-export type { PiecesRangeAvailable } from './models/PiecesRangeAvailable';
-export type { PiecesRangeRequest } from './models/PiecesRangeRequest';
-export type { PrioritizeTorrentFile } from './models/PrioritizeTorrentFile';
+export type { PrioritizeAndWait } from './models/PrioritizeAndWait';
+export type { PrioritizeAndWaitRequest } from './models/PrioritizeAndWaitRequest';
 export type { Torrent } from './models/Torrent';
+export type { UpdateSettings } from './models/UpdateSettings';
 export type { ValidationError } from './models/ValidationError';
 
 export { MonitoringService } from './services/MonitoringService';

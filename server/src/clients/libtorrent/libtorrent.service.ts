@@ -4,11 +4,13 @@ import { spawn } from 'node:child_process';
 import { join } from 'node:path';
 import { setTimeout } from 'node:timers/promises';
 
+import { SettingsStore } from 'src/settings/core/settings.store';
 import {
   ClientTorrent,
   ClientTorrentFile,
   TorrentClient,
   TorrentClientToAddTorrent,
+  TorrentClientToUpdateConfig,
 } from 'src/torrents/ports/torrent-client.port';
 
 import { LibTorrentClient, Torrent } from './client';
@@ -27,14 +29,18 @@ export class LibtorrentService implements TorrentClient {
     private readonly libtorrentClient: LibTorrentClient,
     private readonly libtorrentStreamService: LibtorrentStreamService,
     private readonly configService: ConfigService,
+    private readonly settingsStore: SettingsStore,
   ) {
     this.downloadsDir = this.configService.getOrThrow<string>(
-      'web-torrent.downloads-dir',
+      'torrent.downloads-dir',
     );
   }
 
   async bootstrap() {
     if (this.libtorrentEngineProcess) return;
+
+    const setting = await this.settingsStore.findOneOrThrow();
+    const port = this.configService.getOrThrow<number>('torrent.port');
 
     const repoRoot = join(process.cwd(), '../');
     const libtorrentEngineCwd = join(repoRoot, 'libtorrent-engine', 'src');
@@ -88,6 +94,14 @@ export class LibtorrentService implements TorrentClient {
         await setTimeout(500);
       }
     }
+
+    await this.libtorrentClient.torrents.updateSettings({
+      port,
+      download_rate_limit: setting.downloadLimit,
+      upload_rate_limit: setting.uploadLimit,
+    });
+
+    this.logger.log('✅ libtorrent kliens elindult');
   }
 
   async shutdown() {
@@ -107,10 +121,17 @@ export class LibtorrentService implements TorrentClient {
       }
     }
 
-    this.logger.log('✅ WebTorrent kliens leállítva.');
+    this.logger.log('✅ libtorrent kliens leállítva.');
   }
 
-  updateConfig() {}
+  async updateConfig(payload: TorrentClientToUpdateConfig) {
+    if (!this.libtorrentEngineProcess) return;
+
+    await this.libtorrentClient.torrents.updateSettings({
+      download_rate_limit: payload.downloadLimit,
+      upload_rate_limit: payload.uploadLimit,
+    });
+  }
 
   async getTorrents(): Promise<ClientTorrent[]> {
     const torrents = await this.libtorrentClient.torrents.getTorrents();
@@ -135,7 +156,7 @@ export class LibtorrentService implements TorrentClient {
     });
 
     this.logger.log(
-      `🎬 "${torrent.name}" nevű torrent hozzáadva a WebTorrent-hez.`,
+      `🎬 "${torrent.name}" nevű torrent hozzáadva a libtorrent-hez.`,
     );
 
     return this.buildClientTorrent(torrent);
@@ -145,11 +166,8 @@ export class LibtorrentService implements TorrentClient {
     const torrent =
       await this.libtorrentClient.torrents.deleteTorrent(infoHash);
 
-    // const torrentPath = join(webTorrentTorrent.path, webTorrentTorrent.name);
-    // await rm(torrentPath, { recursive: true, force: true });
-
     this.logger.log(
-      `🗑️ "${torrent.name}" nevű torrent törölve a WebTorrent-ből.`,
+      `🗑️ "${torrent.name}" nevű torrent törölve a libtorrent-ből.`,
     );
 
     return this.buildClientTorrent(torrent);

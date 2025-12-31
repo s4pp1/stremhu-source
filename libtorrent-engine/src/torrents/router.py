@@ -6,10 +6,10 @@ from fastapi import APIRouter
 from .schemas import (
     AddTorrent,
     File,
-    PiecesRangeAvailable,
-    PiecesRangeRequest,
-    PrioritizeTorrentFile,
+    PrioritizeAndWait,
+    PrioritizeAndWaitRequest,
     Torrent,
+    UpdateSettings,
 )
 from .service import TorrentsService
 
@@ -65,16 +65,17 @@ def get_torrent_file(
 
 
 @router.post(
-    "/{info_hash}/files/{file_index}/prioritize",
-    operation_id="prioritize_pieces_range",
+    "/{info_hash}/files/{file_index}/prioritize_and_wait",
+    response_model=PrioritizeAndWait,
+    operation_id="prioritize_and_wait",
 )
-def prioritize_pieces_range(
+def prioritize_and_wait(
     info_hash: str,
     file_index: int,
-    req: PrioritizeTorrentFile,
+    req: PrioritizeAndWaitRequest,
 ):
     parsed_info_hash = torrents_service.parse_info_hash(info_hash)
-    torrents_service.prioritize_pieces_range(parsed_info_hash, file_index, req)
+    return torrents_service.prioritize_and_wait(parsed_info_hash, file_index, req)
 
 
 @router.post(
@@ -89,25 +90,6 @@ def reset_pieces_priorities(
     torrents_service.reset_pieces_priorities(parsed_info_hash, file_index)
 
 
-@router.post(
-    "/{info_hash}/files/{file_index}/pieces/available/check",
-    response_model=PiecesRangeAvailable,
-    operation_id="check_pieces_range_available",
-)
-def check_pieces_range_available(
-    info_hash: str,
-    file_index: int,
-    req: PiecesRangeRequest,
-):
-    parsed_info_hash = torrents_service.parse_info_hash(info_hash)
-    return torrents_service.check_pieces_range_available(
-        info_hash=parsed_info_hash,
-        file_index=file_index,
-        start_byte=req.start_byte,
-        end_byte=req.end_byte,
-    )
-
-
 @router.delete(
     "/{info_hash}",
     response_model=Torrent,
@@ -118,3 +100,14 @@ def delete_torrent(
 ):
     parsed_info_hash = torrents_service.parse_info_hash(info_hash)
     return torrents_service.remove_torrent(parsed_info_hash)
+
+
+@router.put(
+    "/settings",
+    response_model=None,
+    operation_id="update_settings",
+)
+def update_settings(
+    req: UpdateSettings,
+):
+    torrents_service.update_settings(req)

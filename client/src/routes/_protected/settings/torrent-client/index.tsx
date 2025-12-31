@@ -15,7 +15,7 @@ import { DownloadSpeed } from './-features/download-speed'
 import { Torrents } from './-features/torrents'
 import { UploadSpeed } from './-features/upload-speed'
 
-export const Route = createFileRoute('/_protected/settings/web-torrent/')({
+export const Route = createFileRoute('/_protected/settings/torrent-client/')({
   component: RouteComponent,
 })
 

@@ -4,10 +4,10 @@
 /* eslint-disable */
 import type { AddTorrent } from '../models/AddTorrent';
 import type { File } from '../models/File';
-import type { PiecesRangeAvailable } from '../models/PiecesRangeAvailable';
-import type { PiecesRangeRequest } from '../models/PiecesRangeRequest';
-import type { PrioritizeTorrentFile } from '../models/PrioritizeTorrentFile';
+import type { PrioritizeAndWait } from '../models/PrioritizeAndWait';
+import type { PrioritizeAndWaitRequest } from '../models/PrioritizeAndWaitRequest';
 import type { Torrent } from '../models/Torrent';
+import type { UpdateSettings } from '../models/UpdateSettings';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class TorrentsService {
@@ -106,21 +106,21 @@ export class TorrentsService {
         });
     }
     /**
-     * Prioritize Pieces Range
+     * Prioritize And Wait
      * @param infoHash
      * @param fileIndex
      * @param requestBody
-     * @returns any Successful Response
+     * @returns PrioritizeAndWait Successful Response
      * @throws ApiError
      */
-    public prioritizePiecesRange(
+    public prioritizeAndWait(
         infoHash: string,
         fileIndex: number,
-        requestBody: PrioritizeTorrentFile,
-    ): CancelablePromise<any> {
+        requestBody: PrioritizeAndWaitRequest,
+    ): CancelablePromise<PrioritizeAndWait> {
         return this.httpRequest.request({
             method: 'POST',
-            url: '/torrents/{info_hash}/files/{file_index}/prioritize',
+            url: '/torrents/{info_hash}/files/{file_index}/prioritize_and_wait',
             path: {
                 'info_hash': infoHash,
                 'file_index': fileIndex,
@@ -156,25 +156,17 @@ export class TorrentsService {
         });
     }
     /**
-     * Check Pieces Range Available
-     * @param infoHash
-     * @param fileIndex
+     * Update Settings
      * @param requestBody
-     * @returns PiecesRangeAvailable Successful Response
+     * @returns any Successful Response
      * @throws ApiError
      */
-    public checkPiecesRangeAvailable(
-        infoHash: string,
-        fileIndex: number,
-        requestBody: PiecesRangeRequest,
-    ): CancelablePromise<PiecesRangeAvailable> {
+    public updateSettings(
+        requestBody: UpdateSettings,
+    ): CancelablePromise<any> {
         return this.httpRequest.request({
-            method: 'POST',
-            url: '/torrents/{info_hash}/files/{file_index}/pieces/available/check',
-            path: {
-                'info_hash': infoHash,
-                'file_index': fileIndex,
-            },
+            method: 'PUT',
+            url: '/torrents/settings',
             body: requestBody,
             mediaType: 'application/json',
             errors: {
