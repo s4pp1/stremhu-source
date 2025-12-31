@@ -15,7 +15,7 @@ export interface TorrentCache {
   imdbId: string;
   tracker: TrackerEnum;
   torrentId: string;
-  path: string;
+  torrentFilePath: string;
   parsed: ParsedTorrent;
 }
 

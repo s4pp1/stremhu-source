@@ -20,7 +20,8 @@
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
     "migration:show": "npm run typeorm -- migration:show",
-    "generate:openapi": "openapi --input https://catalog.stremhu.app/api/docs/public-json --output ./src/catalog-client/client/ --name CatalogClient"
+    "generate:catalog:openapi": "openapi --input https://catalog.stremhu.app/api/docs/public-json --output ./src/catalog-client/client/ --name CatalogClient",
+    "generate:libtorrent:openapi": "openapi --input ../libtorrent-engine/openapi/openapi.json --output ./src/clients/libtorrent/client/ --name LibTorrentClient"
   },
   "dependencies": {
     "@ctrl/video-filename-parser": "5.4.1",

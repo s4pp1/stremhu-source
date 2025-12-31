@@ -12,7 +12,7 @@ import {
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 import * as mime from 'mime-types';
-import { Readable, pipeline } from 'node:stream';
+import { pipeline } from 'node:stream';
 
 import { TokenGuard } from 'src/auth/guards/token.guard';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
@@ -59,11 +59,9 @@ export class PlaybackController {
 
     const contentType = mime.lookup(file.name) || 'application/octet-stream';
 
-    const total = file.length;
-
     const calculatedRange = calculateRange({
       rangeHeader,
-      total,
+      total: file.total,
     });
 
     if (
@@ -71,7 +69,7 @@ export class PlaybackController {
       calculatedRange === RangeErrorEnum.RANGE_NOT_SATISFIABLE
     ) {
       res.status(416);
-      res.setHeader('Content-Range', `bytes */${total}`);
+      res.setHeader('Content-Range', `bytes */${file.total}`);
       return res.end();
     }
 
@@ -82,19 +80,19 @@ export class PlaybackController {
 
     if (rangeHeader === undefined) {
       res.status(200);
-      res.setHeader('Content-Length', `${total}`);
+      res.setHeader('Content-Length', `${file.total}`);
     } else {
       res.status(206);
       res.setHeader('Content-Length', `${contentLength}`);
       res.setHeader('Cache-Control', 'no-store, no-transform');
-      res.setHeader('Content-Range', `bytes ${start}-${end}/${total}`);
+      res.setHeader('Content-Range', `bytes ${start}-${end}/${file.total}`);
     }
 
     if (req.method === 'HEAD') {
       return res.end();
     }
 
-    const stream = file.createReadStream({ start, end }) as Readable;
+    const stream = file.createReadStream({ start, end });
 
     pipeline(stream, res, (err) => {
       if (!err) return;

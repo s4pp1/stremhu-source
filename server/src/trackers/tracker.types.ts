@@ -16,11 +16,20 @@ export interface TrackerTorrentId {
   tracker: TrackerEnum;
   torrentId: string;
   imdbId: string;
-  parsed: ParsedTorrent;
+  torrentFilePath: string;
+}
+
+export interface TrackerTorrentFile {
+  name: string;
+  size: number;
+  fileIndex: number;
 }
 
 export interface TrackerTorrentSuccess extends TrackerTorrentId {
   status: TrackerTorrentStatusEnum.SUCCESS;
+  name: string;
+  infoHash: string;
+  files: TrackerTorrentFile[];
   language: LanguageEnum;
   resolution: ResolutionEnum;
   seeders: number;

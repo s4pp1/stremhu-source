@@ -1,9 +1,9 @@
-import { ParsedFile } from 'src/common/utils/parse-torrent.util';
+import { TrackerTorrentFile } from 'src/trackers/tracker.types';
 
 import { ParsedStreamIdSeries } from '../pipe/stream-id.pipe';
 
 export type SelectVideoOptions = {
-  files: ParsedFile[] | undefined;
+  files: TrackerTorrentFile[];
   series?: ParsedStreamIdSeries;
   isSpecial: boolean;
 };

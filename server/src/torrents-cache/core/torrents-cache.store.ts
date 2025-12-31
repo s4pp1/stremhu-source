@@ -12,7 +12,6 @@ import {
   toTorrentFile,
 } from 'src/common/utils/parse-torrent.util';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
-import { TrackerTorrentId } from 'src/trackers/tracker.types';
 
 import { MARKER_FILENAME } from '../torrents-cache.constants';
 import {
@@ -21,6 +20,7 @@ import {
   TorrentCacheId,
   TorrentsCache,
 } from '../torrents-cache.types';
+import { TorrentCacheToCreate } from '../type/torrent-cache-to-create.type';
 
 @Injectable()
 export class TorrentsCacheStore implements OnModuleInit {
@@ -37,7 +37,7 @@ export class TorrentsCacheStore implements OnModuleInit {
     await mkdir(this.torrentsDir, { recursive: true });
   }
 
-  async create(payload: TrackerTorrentId): Promise<TorrentCache> {
+  async create(payload: TorrentCacheToCreate): Promise<TorrentCache> {
     const { imdbId, tracker, torrentId, parsed } = payload;
 
     const trackerDirPath = this.buildTrackerDirPath(imdbId, tracker);
@@ -58,7 +58,7 @@ export class TorrentsCacheStore implements OnModuleInit {
 
     return {
       ...payload,
-      path: torrentFilePath,
+      torrentFilePath: torrentFilePath,
     };
   }
 
@@ -85,7 +85,12 @@ export class TorrentsCacheStore implements OnModuleInit {
         continue;
       }
 
-      parsedTorrents.push({ ...payload, torrentId, path, parsed });
+      parsedTorrents.push({
+        ...payload,
+        torrentId,
+        torrentFilePath: path,
+        parsed,
+      });
     }
 
     return parsedTorrents;
@@ -106,7 +111,7 @@ export class TorrentsCacheStore implements OnModuleInit {
 
     return {
       ...payload,
-      path: torrentFilePath,
+      torrentFilePath: torrentFilePath,
       parsed,
     };
   }

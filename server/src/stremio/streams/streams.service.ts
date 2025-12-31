@@ -166,8 +166,7 @@ export class StreamsService {
     const torrentByFiles: VideoFile[] = [];
 
     for (const torrent of torrents) {
-      const torrentName = torrent.parsed.name;
-      if (!torrentName) continue;
+      if (!torrent.name) continue;
 
       const {
         sources: torrentSources,
@@ -175,10 +174,10 @@ export class StreamsService {
         resolution: torrentResolution,
         audioCodec: torrentAudioCodec,
         group: torrentGroup,
-      } = filenameParse(torrentName);
+      } = filenameParse(torrent.name);
 
       const videoFile = findVideoFile({
-        files: torrent.parsed.files,
+        files: torrent.files,
         series,
         isSpecial,
       });
@@ -190,7 +189,7 @@ export class StreamsService {
         videoCodec: fileVideoCodec,
         resolution: fileResolution,
         audioCodec: fileAudioCodec,
-      } = filenameParse(videoFile.file.name);
+      } = filenameParse(videoFile.name);
 
       const videoCodec = torrentVideoCodec ?? fileVideoCodec;
       const resolution = torrentResolution ?? fileResolution;
@@ -204,17 +203,17 @@ export class StreamsService {
         seeders: torrent.seeders,
         group: torrentGroup || undefined,
 
-        infoHash: torrent.parsed.infoHash,
-        fileName: videoFile.file.name,
-        fileSize: videoFile.file.length,
+        infoHash: torrent.infoHash,
+        fileName: videoFile.name,
+        fileSize: videoFile.size,
         fileIndex: videoFile.fileIndex,
 
         language: torrent.language,
         resolution: resolution || torrent.resolution,
         audioCodec,
         videoCodec,
-        videoQualities: parseVideoQualities(torrentName),
-        sourceType: parseSourceType(torrentName),
+        videoQualities: parseVideoQualities(torrent.name),
+        sourceType: parseSourceType(torrent.name),
         sources,
         notWebReady: isNotWebReady(videoCodec, audioCodec),
       };

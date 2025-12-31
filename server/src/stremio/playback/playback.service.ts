@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { TorrentFile } from 'webtorrent';
 
-import { WebTorrentTorrent } from 'src/clients/webtorrent/webtorrent.types';
 import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
+import {
+  ClientTorrent,
+  ClientTorrentFile,
+} from 'src/torrents/ports/torrent-client.port';
 import { TorrentsService } from 'src/torrents/torrents.service';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
 
@@ -10,7 +12,7 @@ import { Play } from './type/play.type';
 
 @Injectable()
 export class PlaybackService {
-  private inFlightPlay = new Map<string, Promise<TorrentFile>>();
+  private inFlightPlay = new Map<string, Promise<ClientTorrentFile>>();
 
   constructor(
     private readonly torrentsCacheStore: TorrentsCacheStore,
@@ -18,7 +20,7 @@ export class PlaybackService {
     private readonly trackerDiscoveryService: TrackerDiscoveryService,
   ) {}
 
-  async play(payload: Play): Promise<TorrentFile> {
+  async play(payload: Play): Promise<ClientTorrentFile> {
     const { imdbId, tracker, torrentId, fileIndex } = payload;
 
     const key = `${imdbId}-${tracker}-${torrentId}-${fileIndex}`;
@@ -37,7 +39,7 @@ export class PlaybackService {
     }
   }
 
-  private async getTorrentFile(payload: Play): Promise<TorrentFile> {
+  private async getTorrentFile(payload: Play): Promise<ClientTorrentFile> {
     const { imdbId, tracker, torrentId, fileIndex } = payload;
 
     const torrentCache = await this.torrentsCacheStore.findOne({
@@ -46,7 +48,7 @@ export class PlaybackService {
       torrentId,
     });
 
-    let torrent: WebTorrentTorrent | null = null;
+    let torrent: ClientTorrent | null = null;
 
     if (torrentCache) {
       torrent = await this.torrentsService.getTorrentForStream(
@@ -61,19 +63,19 @@ export class PlaybackService {
       );
 
       torrent = await this.torrentsService.getTorrentForStream(
-        torrentFile.parsed.infoHash,
+        torrentFile.infoHash,
       );
 
       if (!torrent) {
         torrent = await this.torrentsService.addTorrentForStream({
           ...torrentFile,
-          parsedTorrent: torrentFile.parsed,
+          torrentFilePath: torrentFile.torrentFilePath,
         });
       }
     }
 
     const file = this.torrentsService.getTorrentFileForStream(
-      torrent,
+      torrent.infoHash,
       fileIndex,
     );
 

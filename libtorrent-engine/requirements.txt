@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+libtorrent==2.0.11
+types-libtorrent==2.0.11.20250816
+pydantic
+pydantic-settings

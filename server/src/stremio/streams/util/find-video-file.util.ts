@@ -1,21 +1,20 @@
 import { filenameParse } from '@ctrl/video-filename-parser';
 import isVideo from 'is-video';
-import { findIndex, isUndefined, maxBy } from 'lodash';
+import { findIndex, maxBy } from 'lodash';
+
+import { TrackerTorrentFile } from 'src/trackers/tracker.types';
 
 import { SelectVideoOptions } from '../type/select-video-options.type';
-import { SelectedVideoFile } from '../type/selected-video-file.type';
 
 export function findVideoFile(
   payload: SelectVideoOptions,
-): SelectedVideoFile | undefined {
+): TrackerTorrentFile | undefined {
   const { files, series, isSpecial } = payload;
 
-  if (isUndefined(files) || !files.length) return;
+  if (files.length === 0) return;
 
   if (series && !isSpecial) {
-    let fileIndex = 0;
-
-    const videoFile = files.find((mediaFile, index) => {
+    const videoFile = files.find((mediaFile) => {
       const sampleOrTrash = isSampleOrTrash(mediaFile.name);
       if (sampleOrTrash) return false;
 
@@ -30,15 +29,14 @@ export function findVideoFile(
 
       if (!isSeason || !isEpisode) return false;
 
-      fileIndex = index;
       return true;
     });
 
     if (!videoFile) return;
 
-    return { file: videoFile, fileIndex };
+    return videoFile;
   } else {
-    const largestFile = maxBy(files, (file) => file.length);
+    const largestFile = maxBy(files, (file) => file.size);
     if (!largestFile || !isVideo(largestFile.name)) return;
 
     const largestFileIndex = findIndex(
@@ -46,10 +44,7 @@ export function findVideoFile(
       (file) => file.name === largestFile.name,
     );
 
-    return {
-      file: files[largestFileIndex],
-      fileIndex: largestFileIndex,
-    };
+    return files[largestFileIndex];
   }
 }
 

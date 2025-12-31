@@ -3,10 +3,7 @@ import _ from 'lodash';
 
 import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
 
-import {
-  AdapterParsedTorrent,
-  AdapterTorrentId,
-} from './adapters/adapters.types';
+import { AdapterTorrentId } from './adapters/adapters.types';
 import { TrackersStore } from './core/trackers.store';
 import { TrackerTorrentStatusEnum } from './enum/tracker-torrent-status.enum';
 import { TrackerEnum } from './enum/tracker.enum';
@@ -15,8 +12,10 @@ import {
   TrackerAdapter,
   TrackerSearchQuery,
   TrackerTorrent,
-  TrackerTorrentId,
+  TrackerTorrentFile,
 } from './tracker.types';
+import { TrackerTorrentDownloaded } from './type/tracker-torrent-downloaded.type';
+import { TrackerTorrentFound } from './type/tracker-torrent-found.type';
 
 @Injectable()
 export class TrackerDiscoveryService {
@@ -52,7 +51,7 @@ export class TrackerDiscoveryService {
   async findOneTorrent(
     tracker: TrackerEnum,
     torrentId: string,
-  ): Promise<TrackerTorrentId> {
+  ): Promise<TrackerTorrentFound> {
     const adapter = this.trackerAdapterRegistry.get(tracker);
 
     const torrent = await adapter.findOne(torrentId);
@@ -61,12 +60,13 @@ export class TrackerDiscoveryService {
     if (torrentCache) {
       return {
         ...torrent,
-        parsed: torrentCache.parsed,
+        infoHash: torrentCache.parsed.infoHash,
+        torrentFilePath: torrentCache.torrentFilePath,
       };
     }
 
     const downloaded = await adapter.download(torrent);
-    await this.torrentsCacheStore.create({
+    const createdTorrentCache = await this.torrentsCacheStore.create({
       tracker,
       torrentId,
       imdbId: torrent.imdbId,
@@ -75,7 +75,8 @@ export class TrackerDiscoveryService {
 
     return {
       ...torrent,
-      parsed: downloaded.parsed,
+      infoHash: createdTorrentCache.parsed.infoHash,
+      torrentFilePath: createdTorrentCache.torrentFilePath,
     };
   }
 
@@ -111,7 +112,7 @@ export class TrackerDiscoveryService {
       );
       await this.torrentsCacheStore.delete(
         notAvailableTorrents.map(
-          (notAvailableTorrent) => notAvailableTorrent.path,
+          (notAvailableTorrent) => notAvailableTorrent.torrentFilePath,
         ),
       );
 
@@ -120,10 +121,26 @@ export class TrackerDiscoveryService {
       const allTorrentMap = _.keyBy(allTorrent, 'torrentId');
 
       return torrents.map((torrent) => {
+        const parsedTorrent = allTorrentMap[torrent.torrentId].parsed;
+
+        const name = parsedTorrent.name || '';
+
+        const parsedFiles = parsedTorrent.files || [];
+        const files: TrackerTorrentFile[] = parsedFiles.map(
+          (parsedFile, index) => ({
+            name: parsedFile.name,
+            size: parsedFile.length,
+            fileIndex: index,
+          }),
+        );
+
         return {
           ...torrent,
           status: TrackerTorrentStatusEnum.SUCCESS,
-          parsed: allTorrentMap[torrent.torrentId].parsed,
+          infoHash: parsedTorrent.infoHash,
+          name,
+          files,
+          torrentFilePath: allTorrentMap[torrent.torrentId].torrentFilePath,
         };
       });
     } catch (error) {
@@ -149,20 +166,25 @@ export class TrackerDiscoveryService {
   private async downloads(
     adapter: TrackerAdapter,
     adapterTorrents: AdapterTorrentId[],
-  ): Promise<AdapterParsedTorrent[]> {
+  ): Promise<TrackerTorrentDownloaded[]> {
     const adapterParsedTorrents = await Promise.all(
-      adapterTorrents.map(async (adapterTorrent) => {
-        const adapterParsedTorrent = await adapter.download(adapterTorrent);
+      adapterTorrents.map(
+        async (adapterTorrent): Promise<TrackerTorrentDownloaded> => {
+          const adapterParsedTorrent = await adapter.download(adapterTorrent);
 
-        await this.torrentsCacheStore.create({
-          imdbId: adapterTorrent.imdbId,
-          parsed: adapterParsedTorrent.parsed,
-          torrentId: adapterTorrent.torrentId,
-          tracker: adapterTorrent.tracker,
-        });
+          const createdTorrentCache = await this.torrentsCacheStore.create({
+            imdbId: adapterTorrent.imdbId,
+            parsed: adapterParsedTorrent.parsed,
+            torrentId: adapterTorrent.torrentId,
+            tracker: adapterTorrent.tracker,
+          });
 
-        return adapterParsedTorrent;
-      }),
+          return {
+            ...adapterParsedTorrent,
+            torrentFilePath: createdTorrentCache.torrentFilePath,
+          };
+        },
+      ),
     );
 
     return adapterParsedTorrents;

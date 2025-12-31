@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 
 import { AuthModule } from 'src/auth/auth.module';
+import { LibtorrentModule } from 'src/clients/libtorrent/libtorrent.module';
+import { LibtorrentService } from 'src/clients/libtorrent/libtorrent.service';
 import { WebTorrentModule } from 'src/clients/webtorrent/webtorrent.module';
-import { WebTorrentService } from 'src/clients/webtorrent/webtorrent.service';
 import { TorrentsCacheCoreModule } from 'src/torrents-cache/core/torrents-cache-core.module';
 import { TrackersCoreModule } from 'src/trackers/core/trackers-core.module';
 
@@ -15,12 +16,13 @@ import { TorrentsService } from './torrents.service';
     TorrentsCoreModule,
     AuthModule,
     WebTorrentModule,
+    LibtorrentModule,
     TorrentsCacheCoreModule,
     TrackersCoreModule,
   ],
   providers: [
     TorrentsService,
-    { provide: 'TorrentClient', useExisting: WebTorrentService },
+    { provide: 'TorrentClient', useExisting: LibtorrentService },
   ],
   controllers: [TorrentsController],
   exports: [TorrentsService],

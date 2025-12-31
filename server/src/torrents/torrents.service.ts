@@ -7,14 +7,10 @@ import {
   OnApplicationShutdown,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Cron, CronExpression } from '@nestjs/schedule';
+// import { Cron, CronExpression } from '@nestjs/schedule';
 import _, { isUndefined, omitBy } from 'lodash';
 import { mkdir } from 'node:fs/promises';
 
-import type {
-  WebTorrentFile,
-  WebTorrentTorrent,
-} from 'src/clients/webtorrent/webtorrent.types';
 import { safeReaddir } from 'src/common/utils/file.util';
 import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
 import { TrackersStore } from 'src/trackers/core/trackers.store';
@@ -23,6 +19,8 @@ import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import { TorrentsStore } from './core/torrents.store';
 import { Torrent, Torrent as TorrentEntity } from './entity/torrent.entity';
 import type {
+  ClientTorrent,
+  ClientTorrentFile,
   TorrentClient,
   TorrentClientToUpdateConfig,
 } from './ports/torrent-client.port';
@@ -82,7 +80,7 @@ export class TorrentsService
 
       this.torrentClient
         .addTorrent({
-          parsedTorrent: torrentCache.parsed,
+          torrentFilePath: torrentCache.torrentFilePath,
           downloadFullTorrent: tracker?.downloadFullTorrent ?? false,
         })
         .then((clientTorrent) => {
@@ -100,7 +98,7 @@ export class TorrentsService
     this.logger.log(`🛑 Torrent kliens leállítása... signal: ${signal}`);
 
     // A futás óta feltöltött tartalom mennyiségének tárolása
-    const clientTorrents = this.torrentClient.getTorrents();
+    const clientTorrents = await this.torrentClient.getTorrents();
 
     await Promise.all(
       clientTorrents.map((clientTorrent) =>
@@ -127,7 +125,7 @@ export class TorrentsService
 
   async getTorrents(): Promise<MergedTorrent[]> {
     const torrents = await this.torrentsStore.find();
-    const clientTorrents = this.torrentClient.getTorrents();
+    const clientTorrents = await this.torrentClient.getTorrents();
 
     const activeTorrents: MergedTorrent[] = [];
 
@@ -232,7 +230,7 @@ export class TorrentsService
         throw new NotFoundException(`A(z) "${infoHash}" torrent nem található`);
       }
 
-      await this.torrentClient.deleteTorrent(webTorrentTorrent);
+      await this.torrentClient.deleteTorrent(webTorrentTorrent.infoHash);
       await this.torrentsStore.removeByInfoHash(webTorrentTorrent.infoHash);
     } catch (error) {
       this.logger.error(
@@ -258,23 +256,19 @@ export class TorrentsService
     );
   }
 
-  async getTorrentForStream(
-    infoHash: string,
-  ): Promise<WebTorrentTorrent | null> {
-    const webTorrentTorrent = await this.torrentClient.getTorrent(infoHash);
+  async getTorrentForStream(infoHash: string): Promise<ClientTorrent | null> {
+    const clientTorrent = await this.torrentClient.getTorrent(infoHash);
 
-    if (!webTorrentTorrent) {
+    if (!clientTorrent) {
       return null;
     }
 
     await this.updateOneOrThrow(infoHash, { lastPlayedAt: new Date() });
 
-    return webTorrentTorrent;
+    return clientTorrent;
   }
 
-  async getTorrentForStreamOrThrow(
-    infoHash: string,
-  ): Promise<WebTorrentTorrent> {
+  async getTorrentForStreamOrThrow(infoHash: string): Promise<ClientTorrent> {
     const clientTorrent = await this.getTorrentForStream(infoHash);
 
     if (!clientTorrent) {
@@ -286,13 +280,13 @@ export class TorrentsService
 
   async addTorrentForStream(
     payload: TorrentToAddClient,
-  ): Promise<WebTorrentTorrent> {
-    const { tracker: trackerEnum, parsedTorrent, ...rest } = payload;
+  ): Promise<ClientTorrent> {
+    const { tracker: trackerEnum, torrentFilePath, ...rest } = payload;
 
     const tracker = await this.trackersStore.findOneByTracker(trackerEnum);
 
     const clientTorrent = await this.torrentClient.addTorrent({
-      parsedTorrent,
+      torrentFilePath,
       downloadFullTorrent: tracker?.downloadFullTorrent ?? false,
     });
 
@@ -306,41 +300,40 @@ export class TorrentsService
     return clientTorrent;
   }
 
-  getTorrentFileForStream(
-    webTorrentTorrent: WebTorrentTorrent,
+  async getTorrentFileForStream(
+    infoHash: string,
     fileIndex: number,
-  ): WebTorrentFile {
-    if (!webTorrentTorrent.files[fileIndex]) {
-      throw new NotFoundException(
-        `A(z) "${webTorrentTorrent.name}-ben nincs ilyen fileIndex: ${fileIndex}. Fájlok száma: ${webTorrentTorrent.files.length}`,
-      );
-    }
-    return webTorrentTorrent.files[fileIndex];
+  ): Promise<ClientTorrentFile> {
+    const clientTorrentFile = await this.torrentClient.getTorrentFile(
+      infoHash,
+      fileIndex,
+    );
+    return clientTorrentFile;
   }
 
   private mergeTorrentEntityWithTorrentClient(
     torrentEntity: TorrentEntity,
-    webTorrentTorrent: WebTorrentTorrent,
+    clientTorrent: ClientTorrent,
   ): MergedTorrent {
     return {
-      name: webTorrentTorrent.name,
+      name: clientTorrent.name,
       imdbId: torrentEntity.imdbId,
       tracker: torrentEntity.tracker,
       torrentId: torrentEntity.torrentId,
       infoHash: torrentEntity.infoHash,
       isPersisted: torrentEntity.isPersisted,
-      downloaded: webTorrentTorrent.downloaded,
-      progress: webTorrentTorrent.progress,
-      total: webTorrentTorrent.length,
-      uploaded: webTorrentTorrent.uploaded + torrentEntity.uploaded,
-      downloadSpeed: webTorrentTorrent.downloadSpeed,
-      uploadSpeed: webTorrentTorrent.uploadSpeed,
+      downloaded: clientTorrent.downloaded,
+      progress: clientTorrent.progress,
+      total: clientTorrent.total,
+      uploaded: clientTorrent.uploaded + torrentEntity.uploaded,
+      downloadSpeed: clientTorrent.downloadSpeed,
+      uploadSpeed: clientTorrent.uploadSpeed,
       updatedAt: torrentEntity.updatedAt,
       createdAt: torrentEntity.createdAt,
     };
   }
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
+  // @Cron(CronExpression.EVERY_10_SECONDS)
   async cleanupOrphanTorrents() {
     const nowMs = new Date().getTime();
 
