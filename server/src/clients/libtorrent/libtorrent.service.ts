@@ -41,31 +41,36 @@ export class LibtorrentService implements TorrentClient {
 
     const setting = await this.settingsStore.findOneOrThrow();
     const port = this.configService.getOrThrow<number>('torrent.port');
+    const debugEnabled = true;
+
+    const debugPort = '5678';
 
     const repoRoot = join(process.cwd(), '../');
     const libtorrentEngineCwd = join(repoRoot, 'libtorrent-engine', 'src');
     const pythonPath = join(repoRoot, 'libtorrent-engine', 'src');
 
-    this.libtorrentEngineProcess = spawn(
-      'python',
-      [
-        '-m',
-        'uvicorn',
-        'main:app',
-        '--port',
-        '4300',
-        '--log-config',
-        '../logging.ini',
-      ],
-      {
-        cwd: libtorrentEngineCwd,
-        env: {
-          ...process.env,
-          PYTHONPATH: pythonPath,
-        },
-        stdio: ['ignore', 'pipe', 'pipe'],
-      },
+    const args: string[] = [];
+    if (debugEnabled) {
+      args.push('-m', 'debugpy', '--listen', `0.0.0.0:${debugPort}`);
+    }
+    args.push(
+      '-m',
+      'uvicorn',
+      'main:app',
+      '--port',
+      '4300',
+      '--log-config',
+      '../logging.ini',
     );
+
+    this.libtorrentEngineProcess = spawn('python', args, {
+      cwd: libtorrentEngineCwd,
+      env: {
+        ...process.env,
+        PYTHONPATH: pythonPath,
+      },
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
 
     this.libtorrentEngineProcess.stdout?.on('data', (data: Buffer) => {
       this.logger.log(`[libtorrent engine] ${data.toString().trimEnd()}`);

@@ -135,20 +135,17 @@ export class TorrentsService {
     /**
      * Reset Pieces Priorities
      * @param infoHash
-     * @param fileIndex
      * @returns any Successful Response
      * @throws ApiError
      */
     public resetPiecesPriorities(
         infoHash: string,
-        fileIndex: number,
     ): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/torrents/{info_hash}/files/{file_index}/pieces/priorities/reset',
             path: {
                 'info_hash': infoHash,
-                'file_index': fileIndex,
             },
             errors: {
                 422: `Validation Error`,

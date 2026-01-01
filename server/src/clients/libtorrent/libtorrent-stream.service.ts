@@ -93,10 +93,7 @@ export class LibtorrentStreamService {
       }
     } finally {
       streamClosed = true;
-      await this.libtorrentClient.torrents.resetPiecesPriorities(
-        infoHash,
-        fileIndex,
-      );
+      await this.libtorrentClient.torrents.resetPiecesPriorities(infoHash);
     }
   }
 }

@@ -7,14 +7,16 @@ from typing import Any, Dict, List
 import libtorrent as libtorrent
 from fastapi import HTTPException
 from torrents.constants import (
-    PREFETCH_PIECES,
     PRIO_HIGH,
+    PRIO_LOW,
     PRIO_MEDIUM,
     PRIO_NORMAL,
+    PRIO_SKIP,
 )
 from torrents.schemas import (
     AddTorrent,
     File,
+    PieceWindow,
     PrioritizeAndWait,
     PrioritizeAndWaitRequest,
     Torrent,
@@ -34,12 +36,12 @@ class TorrentsService:
                 "enable_natpmp": True,
                 "enable_incoming_utp": True,
                 "enable_incoming_tcp": True,
-                "connections_limit": 200,
+                "connections_limit": 10000,
             }
         )
 
         self._lock = threading.RLock()
-        self._last_prioritized: dict[str, tuple[int, int]] = {}
+        self._last_prioritized: dict[libtorrent.sha1_hash, PieceWindow] = {}
 
     def update_settings(
         self,
@@ -121,7 +123,7 @@ class TorrentsService:
 
                 files_priority = 0
                 if req.download_full_torrent:
-                    files_priority = PRIO_NORMAL
+                    files_priority = PRIO_LOW
 
                 torrent_handle.prioritize_files([files_priority] * files.num_files())
 
@@ -175,38 +177,9 @@ class TorrentsService:
 
         return file
 
-    def reset_pieces_priorities(
-        self,
-        info_hash: libtorrent.sha1_hash,
-        file_index: int,
-    ) -> None:
-        torrent_handle = self.get_torrent_handle_or_raise(info_hash=info_hash)
-
-        torrent_file = torrent_handle.torrent_file()
-        if torrent_file is None:
-            return
-
-        files = torrent_file.files()
-
-        piece_size = int(torrent_file.piece_length())
-        file_offset = int(files.file_offset(file_index))
-        file_size = int(files.file_size(file_index))
-
-        if file_size <= 0:
-            return
-
-        start_piece = file_offset // piece_size
-        end_piece = (file_offset + file_size - 1) // piece_size
-
-        priorities = torrent_handle.piece_priorities()
-        num_pieces = int(torrent_file.num_pieces())
-        start_piece = max(0, min(num_pieces - 1, start_piece))
-        end_piece = max(0, min(num_pieces - 1, end_piece))
-
-        for piece_index in range(start_piece, end_piece + 1):
-            priorities[piece_index] = PRIO_NORMAL
-
-        torrent_handle.prioritize_pieces(priorities)
+    def parse_info_hash(self, info_hash_str: str) -> libtorrent.sha1_hash:
+        sha1_hash = libtorrent.sha1_hash(bytes.fromhex(info_hash_str))
+        return sha1_hash
 
     def prioritize_and_wait(
         self,
@@ -220,14 +193,6 @@ class TorrentsService:
 
         priorities = torrent_handle.piece_priorities()
 
-        has_nonzero = any(priority > 0 for priority in priorities)
-        if has_nonzero is False:
-            torrent_handle.file_priority(file_index, PRIO_NORMAL)
-            self.reset_pieces_priorities(
-                info_hash=info_hash,
-                file_index=file_index,
-            )
-
         # Torrent Fájl
         torrent_file = torrent_handle.torrent_file()
 
@@ -238,6 +203,24 @@ class TorrentsService:
 
         if file_index < 0 or file_index >= files.num_files():
             raise HTTPException(400, "File index out of range")
+
+        last_prioritized = self._last_prioritized.get(info_hash)
+        if last_prioritized is None:
+            piece_window = PieceWindow(
+                start_piece_index=0,
+                end_piece_index=0,
+                priorities=priorities,
+            )
+            self._last_prioritized[info_hash] = piece_window
+
+            torrent_handle.file_priority(file_index, PRIO_HIGH)
+
+            self._set_file_pieces_priorities(
+                priorities=priorities,
+                torrent_file=torrent_file,
+                file_index=file_index,
+                priority=PRIO_SKIP,
+            )
 
         torrent_piece_size = torrent_file.piece_length()
         file_offset = files.file_offset(file_index)
@@ -269,10 +252,20 @@ class TorrentsService:
             prioritize_and_wait.available_end_byte = null_based_file_size
             return prioritize_and_wait
 
-        torrent_handle.set_piece_deadline(stream_piece_index, 50)
+        # Prefetch beállítása
+        self._set_prefetch_priorities(
+            info_hash=info_hash,
+            priorities=priorities,
+            file_end_piece_index=file_end_piece_index,
+            stream_piece_index=stream_piece_index,
+        )
 
-        next_stream_piece_index = stream_piece_index + 1
-        torrent_handle.set_piece_deadline(next_stream_piece_index, 100)
+        torrent_handle.prioritize_pieces(priorities)
+
+        # Kritikus piece kérése
+        # for index in range(4):
+        #     torrent_handle.set_piece_deadline(stream_piece_index + index, 50 * index)
+        torrent_handle.set_piece_deadline(stream_piece_index, 50)
 
         piece_is_ready = False
 
@@ -283,22 +276,123 @@ class TorrentsService:
             )
 
             if not piece_is_ready:
-                time.sleep(0.2)
-
-        end_index = min(next_stream_piece_index + 1, file_end_piece_index + 1)
-
-        for index, prefetch_piece_index in enumerate(range(PREFETCH_PIECES)):
-            piece_index = end_index + prefetch_piece_index
-            if piece_index >= file_end_piece_index + 1:
-                break
-
-            if index < 8:
-                priorities[piece_index] = PRIO_HIGH
-            else:
-                priorities[piece_index] = PRIO_MEDIUM
-            torrent_handle.prioritize_pieces(priorities)
+                time.sleep(0.1)
 
         return prioritize_and_wait
+
+    def reset_pieces_priorities(
+        self,
+        info_hash: libtorrent.sha1_hash,
+    ) -> None:
+        torrent_handle = self.get_torrent_handle_or_raise(info_hash=info_hash)
+
+        last_prioritized = self._last_prioritized.get(info_hash)
+
+        if last_prioritized is not None:
+            torrent_handle.prioritize_pieces(last_prioritized.priorities)
+            del self._last_prioritized[info_hash]
+
+    def _set_prefetch_priorities(
+        self,
+        info_hash: libtorrent.sha1_hash,
+        priorities: List[int],
+        file_end_piece_index: int,
+        stream_piece_index: int,
+    ):
+        # Előző prioritások levétele
+        last_prioritized = self._last_prioritized.get(info_hash)
+        if last_prioritized is not None:
+            self._set_pieces_priorities(
+                priorities=priorities,
+                file_end_piece_index=file_end_piece_index,
+                start_piece_index=last_prioritized.start_piece_index,
+                end_piece_index=last_prioritized.end_piece_index,
+                priority=PRIO_LOW,
+            )
+
+        # Előtöltés beállítása
+        prefetch_high_start_piece_index = stream_piece_index
+        prefetch_high_end_piece_index = prefetch_high_start_piece_index + 8
+
+        self._set_pieces_priorities(
+            priorities=priorities,
+            file_end_piece_index=file_end_piece_index,
+            start_piece_index=prefetch_high_start_piece_index,
+            end_piece_index=prefetch_high_end_piece_index,
+            priority=PRIO_HIGH,
+        )
+
+        prefetch_medium_start_piece_index = prefetch_high_end_piece_index
+        prefetch_medium_end_piece_index = prefetch_medium_start_piece_index + 16
+
+        self._set_pieces_priorities(
+            priorities=priorities,
+            file_end_piece_index=file_end_piece_index,
+            start_piece_index=prefetch_medium_start_piece_index,
+            end_piece_index=prefetch_medium_end_piece_index,
+            priority=PRIO_MEDIUM,
+        )
+
+        prefetch_normal_start_piece_index = prefetch_medium_end_piece_index
+        prefetch_normal_end_piece_index = prefetch_normal_start_piece_index + 32
+
+        self._set_pieces_priorities(
+            priorities=priorities,
+            file_end_piece_index=file_end_piece_index,
+            start_piece_index=prefetch_normal_start_piece_index,
+            end_piece_index=prefetch_normal_end_piece_index,
+            priority=PRIO_NORMAL,
+        )
+
+        # Előző prioritások beállítása
+        last_prioritized = self._last_prioritized.get(info_hash)
+        if last_prioritized:
+            last_prioritized._replace(
+                start_piece_index=prefetch_high_start_piece_index,
+                end_piece_index=prefetch_normal_end_piece_index,
+            )
+
+    def _set_file_pieces_priorities(
+        self,
+        priorities: List[int],
+        torrent_file: libtorrent.torrent_info,
+        file_index: int,
+        priority: int,
+    ):
+        files = torrent_file.files()
+
+        piece_size = int(torrent_file.piece_length())
+
+        file_offset = int(files.file_offset(file_index))
+        file_size = int(files.file_size(file_index))
+
+        file_start_piece_index = file_offset // piece_size
+        file_end_piece_index = (file_offset + file_size - 1) // piece_size
+
+        self._set_pieces_priorities(
+            priorities=priorities,
+            file_end_piece_index=file_end_piece_index,
+            start_piece_index=file_start_piece_index,
+            end_piece_index=file_end_piece_index + 1,
+            priority=priority,
+        )
+
+    # A end_piece_index-ig állítja be, tehát az end_piece_index már nem kerül beállítása
+    def _set_pieces_priorities(
+        self,
+        priorities: List[int],
+        file_end_piece_index: int,
+        start_piece_index: int,
+        end_piece_index: int,
+        priority: int,
+    ):
+        if start_piece_index > file_end_piece_index:
+            pass
+
+        for piece_index in range(start_piece_index, end_piece_index):
+            if piece_index > file_end_piece_index:
+                break
+            priorities[piece_index] = priority
 
     def _check_file_available(
         self,
@@ -334,10 +428,6 @@ class TorrentsService:
 
         return ready
 
-    def parse_info_hash(self, info_hash_str: str) -> libtorrent.sha1_hash:
-        sha1_hash = libtorrent.sha1_hash(bytes.fromhex(info_hash_str))
-        return sha1_hash
-
     def _build_torrent(self, torrent_handle: libtorrent.torrent_handle) -> Torrent:
         status = torrent_handle.status()
 
@@ -351,21 +441,3 @@ class TorrentsService:
             progress=status.progress,
             total=status.total,
         )
-
-    def _status_with_pieces(
-        self, torrent_handle: libtorrent.torrent_handle
-    ) -> libtorrent.torrent_status:
-        # Some versions require query_pieces flag to populate st.pieces
-        try:
-            return torrent_handle.status(flags=libtorrent.status_flags_t.query_pieces)
-        except Exception:
-            return torrent_handle.status()
-
-    def _piece_index_for_file_byte(
-        self,
-        piece_size: int,
-        file_offset: int,
-        file_byte: int,
-    ) -> int:
-        torrent_pos = file_offset + file_byte
-        return int(torrent_pos // piece_size)

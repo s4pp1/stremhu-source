@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, NamedTuple, Optional
 
 from pydantic import BaseModel, Field
 
@@ -51,3 +51,9 @@ class PrioritizeAndWait(BaseModel):
 
 class RemoveTorrent(BaseModel):
     deleteFiles: bool = False
+
+
+class PieceWindow(NamedTuple):
+    start_piece_index: int
+    end_piece_index: int
+    priorities: List[int]
