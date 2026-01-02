@@ -7,7 +7,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import Bottleneck from 'bottleneck';
 import { load } from 'cheerio';
-import _ from 'lodash';
+import _, { nth } from 'lodash';
 
 import { parseTorrent } from 'src/common/utils/parse-torrent.util';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
@@ -99,7 +99,7 @@ export class BithumenClient {
         return this.findAll(payload, page + 1, accumulator);
       }
 
-      return accumulator;
+      return accumulator.filter((acc) => acc.imdbId === imdbId);
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
@@ -233,6 +233,13 @@ export class BithumenClient {
           .eq(1)
           .attr('href')!;
         const downloadUrl = new URL(downloadPath, this.bithumenBaseUrl);
+        const imdbUrl =
+          torrentColumns
+            .eq(1)
+            .find('a[href*="www.imdb.com/title/"]')
+            .first()
+            .attr('href') || '';
+        const imdbId = nth(imdbUrl.split('/'), -2);
 
         const torrentId = torrentColumns
           .eq(1)
@@ -248,6 +255,7 @@ export class BithumenClient {
           downloadUrl: downloadUrl.href,
           category: category as BithumenCategory,
           seeders: seeders,
+          imdbId: imdbId || '',
         };
       })
       .get();

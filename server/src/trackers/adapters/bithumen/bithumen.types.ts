@@ -35,6 +35,7 @@ export interface BithumenTorrent {
   torrentId: string;
   category: BithumenCategory;
   seeders: string;
+  imdbId: string;
 }
 
 export interface BithumenTorrents {
