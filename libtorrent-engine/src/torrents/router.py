@@ -90,11 +90,13 @@ def prioritize_and_wait(
 )
 def reset_pieces_priorities(
     info_hash: str,
+    file_index: int,
     stream_id: str,
 ):
     parsed_info_hash = torrents_service.parse_info_hash(info_hash)
     torrents_service.reset_pieces_priorities(
         parsed_info_hash,
+        file_index,
         stream_id,
     )
 

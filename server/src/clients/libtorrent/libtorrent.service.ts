@@ -9,6 +9,7 @@ import { spawn } from 'node:child_process';
 import { join } from 'node:path';
 import { setTimeout } from 'node:timers/promises';
 
+import { NodeEnvEnum } from 'src/config/enum/node-env.enum';
 import { SettingsStore } from 'src/settings/core/settings.store';
 import {
   ClientTorrent,
@@ -44,20 +45,25 @@ export class LibtorrentService implements TorrentClient {
   async bootstrap() {
     if (this.libtorrentEngineProcess) return;
 
-    const setting = await this.settingsStore.findOneOrThrow();
     const port = this.configService.getOrThrow<number>('torrent.port');
-    const debugEnabled = true;
+    const peerLimit =
+      this.configService.getOrThrow<number>('torrent.peer-limit');
+    const nodeEnv = this.configService.getOrThrow<NodeEnvEnum>('app.node-env');
 
-    const debugPort = '5678';
+    const setting = await this.settingsStore.findOneOrThrow();
+
+    const debugEnabled = nodeEnv === NodeEnvEnum.DEV;
 
     const repoRoot = join(process.cwd(), '../');
     const libtorrentEngineCwd = join(repoRoot, 'libtorrent-engine', 'src');
     const pythonPath = join(repoRoot, 'libtorrent-engine', 'src');
 
     const args: string[] = [];
+
     if (debugEnabled) {
-      args.push('-m', 'debugpy', '--listen', `0.0.0.0:${debugPort}`);
+      args.push('-m', 'debugpy', '--listen', `0.0.0.0:5678`);
     }
+
     args.push(
       '-m',
       'uvicorn',
@@ -109,6 +115,7 @@ export class LibtorrentService implements TorrentClient {
       port,
       download_rate_limit: setting.downloadLimit,
       upload_rate_limit: setting.uploadLimit,
+      peer_limit: peerLimit,
     });
 
     this.logger.log('✅ libtorrent kliens elindult');

@@ -83,6 +83,7 @@ export class LibtorrentStreamService {
       streamClosed = true;
       await this.libtorrentClient.torrents.resetPiecesPriorities(
         infoHash,
+        fileIndex,
         stremId,
       );
     }

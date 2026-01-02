@@ -6,5 +6,6 @@ export type UpdateSettings = {
     download_rate_limit?: (number | null);
     upload_rate_limit?: (number | null);
     port?: (number | null);
+    peer_limit?: (number | null);
 };
 

@@ -140,12 +140,14 @@ export class TorrentsService {
     /**
      * Reset Pieces Priorities
      * @param infoHash
+     * @param fileIndex
      * @param streamId
      * @returns any Successful Response
      * @throws ApiError
      */
     public resetPiecesPriorities(
         infoHash: string,
+        fileIndex: number,
         streamId: string,
     ): CancelablePromise<any> {
         return this.httpRequest.request({
@@ -153,6 +155,7 @@ export class TorrentsService {
             url: '/torrents/{info_hash}/files/{file_index}/pieces/priorities/reset',
             path: {
                 'info_hash': infoHash,
+                'file_index': fileIndex,
             },
             query: {
                 'stream_id': streamId,
