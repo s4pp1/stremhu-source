@@ -41,7 +41,7 @@ export function findVideoFile(
 
     const largestFileIndex = findIndex(
       files,
-      (file) => file.name === largestFile.name,
+      (file) => file.size === largestFile.size,
     );
 
     return files[largestFileIndex];
