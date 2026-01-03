@@ -9,6 +9,7 @@ from .schemas import (
     PrioritizeAndWait,
     PrioritizeAndWaitRequest,
     Torrent,
+    TorrentState,
     UpdateSettings,
 )
 from .service import TorrentsService
@@ -49,6 +50,18 @@ def get_torrent(
 ):
     parsed_info_hash = torrents_service.parse_info_hash(info_hash)
     return torrents_service.get_torrent_or_raise(parsed_info_hash)
+
+
+@router.get(
+    "/{info_hash}/verification",
+    response_model=TorrentState,
+    operation_id="get_torrent_state",
+)
+def get_torrent_state(
+    info_hash: str,
+):
+    parsed_info_hash = torrents_service.parse_info_hash(info_hash)
+    return torrents_service.get_torrent_state(parsed_info_hash)
 
 
 @router.get(

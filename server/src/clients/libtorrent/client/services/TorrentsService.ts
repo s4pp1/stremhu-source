@@ -7,6 +7,7 @@ import type { File } from '../models/File';
 import type { PrioritizeAndWait } from '../models/PrioritizeAndWait';
 import type { PrioritizeAndWaitRequest } from '../models/PrioritizeAndWaitRequest';
 import type { Torrent } from '../models/Torrent';
+import type { TorrentState } from '../models/TorrentState';
 import type { UpdateSettings } from '../models/UpdateSettings';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -74,6 +75,26 @@ export class TorrentsService {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/torrents/{info_hash}',
+            path: {
+                'info_hash': infoHash,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Get Torrent State
+     * @param infoHash
+     * @returns TorrentState Successful Response
+     * @throws ApiError
+     */
+    public getTorrentState(
+        infoHash: string,
+    ): CancelablePromise<TorrentState> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/torrents/{info_hash}/verification',
             path: {
                 'info_hash': infoHash,
             },

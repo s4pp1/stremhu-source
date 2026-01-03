@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -10,8 +9,6 @@ from config import config
 from fastapi import FastAPI
 from monitoring.router import router as monitoring_router
 from torrents.router import router as torrents_router
-
-logging.basicConfig(level=logging.INFO)
 
 
 @asynccontextmanager

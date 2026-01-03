@@ -19,14 +19,26 @@ class UpdateSettings(BaseModel):
     peer_limit: Optional[int] = None
 
 
-class Torrent(BaseModel):
+class TorrentState(BaseModel):
+    state: int = Field(
+        ...,
+        description=(
+            "checking_files=1, downloading_metadata=2, downloading=3, finished=4, "
+            "seeding=5, unused_enum_for_backwards_compatibility_allocating=6, "
+            "checking_resume_data=7 "
+            "https://www.libtorrent.org/reference-Torrent_Status.html#torrent_status"
+        ),
+    )
+    progress: float
+
+
+class Torrent(TorrentState):
     name: str
     info_hash: str
     download_speed: int
     upload_speed: int
     downloaded: int
     uploaded: int
-    progress: float
     total: int
 
 

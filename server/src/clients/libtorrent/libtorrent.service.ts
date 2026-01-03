@@ -52,7 +52,7 @@ export class LibtorrentService implements TorrentClient {
 
     const setting = await this.settingsStore.findOneOrThrow();
 
-    const debugEnabled = nodeEnv === NodeEnvEnum.DEV;
+    const idDevEnv = nodeEnv === NodeEnvEnum.DEV;
 
     const repoRoot = join(process.cwd(), '../');
     const libtorrentEngineCwd = join(repoRoot, 'libtorrent-engine', 'src');
@@ -60,9 +60,11 @@ export class LibtorrentService implements TorrentClient {
 
     const args: string[] = [];
 
-    if (debugEnabled) {
+    if (idDevEnv) {
       args.push('-m', 'debugpy', '--listen', `0.0.0.0:5678`);
     }
+
+    const logConfig = idDevEnv ? '../logging.dev.ini' : '../logging.prod.ini';
 
     args.push(
       '-m',
@@ -71,7 +73,7 @@ export class LibtorrentService implements TorrentClient {
       '--port',
       '4300',
       '--log-config',
-      '../logging.ini',
+      logConfig,
     );
 
     this.libtorrentEngineProcess = spawn('python', args, {
@@ -171,6 +173,21 @@ export class LibtorrentService implements TorrentClient {
       save_path: this.downloadsDir,
       download_full_torrent: payload.downloadFullTorrent,
     });
+
+    let isChecking = [1, 2, 7].includes(torrent.state);
+
+    while (isChecking) {
+      const { state, progress } =
+        await this.libtorrentClient.torrents.getTorrentState(torrent.info_hash);
+
+      isChecking = [1, 2, 7].includes(state);
+      if (isChecking) {
+        this.logger.log(
+          `⏳ A(z) "${torrent.name}" torrent ellenörzés alatt van: ${progress.toPrecision(2)}%`,
+        );
+      }
+      await setTimeout(1000);
+    }
 
     this.logger.log(
       `🎬 "${torrent.name}" nevű torrent hozzáadva a libtorrent-hez.`,

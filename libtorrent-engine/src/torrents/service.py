@@ -16,6 +16,7 @@ from torrents.schemas import (
     PrioritizeAndWait,
     PrioritizeAndWaitRequest,
     Torrent,
+    TorrentState,
     TorrentStatuses,
     UpdateSettings,
 )
@@ -60,9 +61,11 @@ class TorrentsService:
             self.peer_limit = payload.peer_limit
 
     def get_torrents(self) -> List[Torrent]:
-        torrents = self.libtorrent_session.get_torrents()
+        torrent_handlers = self.libtorrent_session.get_torrents()
 
-        return [self._build_torrent(torrent) for torrent in torrents]
+        return [
+            self._build_torrent(torrent_handle) for torrent_handle in torrent_handlers
+        ]
 
     def get_torrent_handle(
         self, info_hash: libtorrent.sha1_hash
@@ -84,9 +87,21 @@ class TorrentsService:
 
         return torrent_handle
 
-    def get_torrent_or_raise(self, info_hash: libtorrent.sha1_hash) -> Torrent:
+    def get_torrent_or_raise(
+        self,
+        info_hash: libtorrent.sha1_hash,
+    ) -> Torrent:
         torrent_handle = self.get_torrent_handle_or_raise(info_hash=info_hash)
         return self._build_torrent(torrent_handle)
+
+    def get_torrent_state(
+        self,
+        info_hash: libtorrent.sha1_hash,
+    ) -> TorrentState:
+        torrent_handle = self.get_torrent_handle_or_raise(info_hash=info_hash)
+        return self._torrent_state(
+            torrent_handle=torrent_handle,
+        )
 
     def add_torrent(self, req: AddTorrent) -> Torrent:
         save_path = os.path.abspath(req.save_path)
@@ -124,7 +139,7 @@ class TorrentsService:
             if is_valid:
                 break
 
-            time.sleep(0.5)
+            time.sleep(1.0)
 
         if not is_valid:
             self.libtorrent_session.remove_torrent(
@@ -150,13 +165,6 @@ class TorrentsService:
 
         torrent_handle.prioritize_pieces(torrent_status.default_priorities)
 
-        checking = True
-        while checking:
-            checking = self._check_torrent_checking(
-                torrent_handle=torrent_handle,
-            )
-            time.sleep(1.0)
-
         return self._build_torrent(torrent_handle)
 
     def remove_torrent(self, info_hash: libtorrent.sha1_hash) -> Torrent:
@@ -179,8 +187,6 @@ class TorrentsService:
         file_index: int,
     ) -> File:
         torrent_handle = self.get_torrent_handle_or_raise(info_hash=info_hash)
-
-        self._check_torrent_checking_or_raise(torrent_handle=torrent_handle)
 
         torrent_file = torrent_handle.torrent_file()
 
@@ -227,8 +233,6 @@ class TorrentsService:
         stream_start_byte = req.start_byte
 
         torrent_handle = self.get_torrent_handle_or_raise(info_hash=info_hash)
-
-        self._check_torrent_checking_or_raise(torrent_handle=torrent_handle)
 
         # Torrent Fájl
         torrent_file = torrent_handle.torrent_file()
@@ -320,7 +324,6 @@ class TorrentsService:
         stream_id: str,
     ) -> None:
         torrent_handle = self.get_torrent_handle_or_raise(info_hash=info_hash)
-        self._check_torrent_checking_or_raise(torrent_handle=torrent_handle)
 
         priorities = self.torrent_statuses.end_stream(
             info_hash=str(info_hash),
@@ -379,33 +382,15 @@ class TorrentsService:
     ) -> bool:
         return torrent_handle.have_piece(piece_index)
 
-    def _check_torrent_checking(
+    def _torrent_state(
         self,
         torrent_handle: libtorrent.torrent_handle,
-    ) -> bool:
+    ) -> TorrentState:
         torrent_status = torrent_handle.status()
-
-        checking = False
-        if torrent_status.state in (
-            libtorrent.torrent_status.checking_files,
-            libtorrent.torrent_status.checking_resume_data,
-        ):
-            checking = True
-        return checking
-
-    def _check_torrent_checking_or_raise(
-        self,
-        torrent_handle: libtorrent.torrent_handle,
-    ):
-        torrent_name = torrent_handle.name()
-        checking = self._check_torrent_checking(
-            torrent_handle=torrent_handle,
+        return TorrentState(
+            state=torrent_status.state,
+            progress=torrent_status.progress,
         )
-
-        if checking:
-            raise HTTPException(
-                400, f"A(z) {torrent_name} még nem használható, ellenörzés alatt áll."
-            )
 
     def _build_torrent(
         self,
@@ -420,6 +405,7 @@ class TorrentsService:
             upload_speed=status.upload_rate,
             downloaded=status.total_done,
             uploaded=status.total_upload,
+            state=status.state,
             progress=status.progress,
             total=status.total,
         )

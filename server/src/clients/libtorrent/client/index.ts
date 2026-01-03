@@ -17,6 +17,7 @@ export type { HTTPValidationError } from './models/HTTPValidationError';
 export type { PrioritizeAndWait } from './models/PrioritizeAndWait';
 export type { PrioritizeAndWaitRequest } from './models/PrioritizeAndWaitRequest';
 export type { Torrent } from './models/Torrent';
+export type { TorrentState } from './models/TorrentState';
 export type { UpdateSettings } from './models/UpdateSettings';
 export type { ValidationError } from './models/ValidationError';
 
