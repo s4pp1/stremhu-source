@@ -166,6 +166,7 @@ export class LibtorrentService implements TorrentClient {
     await this.libtorrentClient.torrents.updateSettings({
       download_rate_limit: payload.downloadLimit,
       upload_rate_limit: payload.uploadLimit,
+      port: payload.port,
     });
   }
 
@@ -199,8 +200,9 @@ export class LibtorrentService implements TorrentClient {
 
       isChecking = [1, 2, 7].includes(state);
       if (isChecking) {
+        const percentage = progress * 100;
         this.logger.log(
-          `⏳ A(z) "${torrent.name}" torrent ellenörzés alatt van: ${progress.toPrecision(2)}%`,
+          `⏳ A(z) "${torrent.name}" torrent ellenörzés alatt van: ${percentage.toPrecision(2)}%`,
         );
       }
       await setTimeout(2000);

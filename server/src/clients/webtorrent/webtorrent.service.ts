@@ -80,8 +80,13 @@ export class WebTorrentService implements TorrentClient {
   updateConfig(payload: TorrentClientToUpdateConfig) {
     const webtorrent = this.getClient();
 
-    webtorrent.throttleDownload(payload.downloadLimit);
-    webtorrent.throttleUpload(payload.uploadLimit);
+    if (payload.downloadLimit !== undefined) {
+      webtorrent.throttleDownload(payload.downloadLimit);
+    }
+
+    if (payload.uploadLimit !== undefined) {
+      webtorrent.throttleUpload(payload.uploadLimit);
+    }
   }
 
   getTorrents(): ClientTorrent[] {

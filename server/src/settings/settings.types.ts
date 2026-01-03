@@ -17,4 +17,5 @@ export interface SettingToUpdate {
   keepSeedSeconds?: number | null;
   cacheRetentionSeconds?: number | null;
   catalogToken?: string | null;
+  port?: number;
 }
