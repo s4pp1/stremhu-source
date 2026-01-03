@@ -33,7 +33,7 @@ RUN npm run build
 # libtorrent engine dependenciák
 WORKDIR /app/libtorrent-engine
 COPY libtorrent-engine/requirements.txt ./requirements.txt
-COPY libtorrent-engine/logging.ini ./logging.ini
+COPY libtorrent-engine/logging.prod.ini ./logging.prod.ini
 COPY libtorrent-engine/src ./src
 
 
