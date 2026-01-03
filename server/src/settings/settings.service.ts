@@ -1,5 +1,5 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import _ from 'lodash';
+import _, { isEmpty } from 'lodash';
 import { EntityManager } from 'typeorm';
 
 import { CatalogService } from 'src/catalog/catalog.service';
@@ -44,17 +44,16 @@ export class SettingsService implements OnModuleInit {
       await this.catalogService.catalogHealthCheck(catalogToken);
     }
 
-    // Web Torrent letöltés/feltöltés beállítása
-    const downloadLimit = payload.downloadLimit;
-    const uploadLimit = payload.uploadLimit;
-
+    // Torrent kliens
     if (
-      (downloadLimit && setting.downloadLimit !== downloadLimit) ||
-      (uploadLimit && uploadLimit !== setting.uploadLimit)
+      payload.downloadLimit !== undefined ||
+      payload.uploadLimit !== undefined ||
+      payload.port !== undefined
     ) {
       await this.torrentsService.updateTorrentClient({
-        downloadLimit: downloadLimit || setting.downloadLimit,
-        uploadLimit: uploadLimit || setting.uploadLimit,
+        downloadLimit: payload.uploadLimit,
+        uploadLimit: payload.uploadLimit,
+        port: payload.port,
       });
     }
 
@@ -70,9 +69,14 @@ export class SettingsService implements OnModuleInit {
       }
     }
 
-    const updatedSetting = await this.settingsStore.update(payload, manager);
+    delete payload.port;
 
-    return updatedSetting;
+    if (!isEmpty(payload)) {
+      const updatedSetting = await this.settingsStore.update(payload, manager);
+      return updatedSetting;
+    }
+
+    return setting;
   }
 
   private async init() {

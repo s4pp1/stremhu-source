@@ -7,6 +7,7 @@ import { TorrentsModule } from 'src/torrents/torrents.module';
 import { UsersModule } from 'src/users/users.module';
 
 import { SettingsCoreModule } from './core/settings-core.module';
+import { ExternalSettingsController } from './external-settings.controller';
 import { SettingsController } from './settings.controller';
 import { SettingsService } from './settings.service';
 import { SetupModule } from './setup/setup.module';
@@ -22,7 +23,7 @@ import { SetupModule } from './setup/setup.module';
     CatalogModule,
   ],
   providers: [SettingsService],
-  controllers: [SettingsController],
+  controllers: [SettingsController, ExternalSettingsController],
   exports: [SettingsService],
 })
 export class SettingsModule {}

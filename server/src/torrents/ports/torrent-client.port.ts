@@ -6,8 +6,9 @@ export type TorrentClientToAddTorrent = {
 };
 
 export type TorrentClientToUpdateConfig = {
-  downloadLimit: number;
-  uploadLimit: number;
+  downloadLimit?: number;
+  uploadLimit?: number;
+  port?: number;
 };
 
 export type ClientTorrent = {
