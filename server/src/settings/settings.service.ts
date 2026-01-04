@@ -51,7 +51,7 @@ export class SettingsService implements OnModuleInit {
       payload.port !== undefined
     ) {
       await this.torrentsService.updateTorrentClient({
-        downloadLimit: payload.uploadLimit,
+        downloadLimit: payload.downloadLimit,
         uploadLimit: payload.uploadLimit,
         port: payload.port,
       });

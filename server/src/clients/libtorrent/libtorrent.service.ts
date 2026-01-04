@@ -164,8 +164,9 @@ export class LibtorrentService implements TorrentClient {
     if (!this.libtorrentEngineProcess) return;
 
     await this.libtorrentClient.torrents.updateSettings({
-      download_rate_limit: payload.downloadLimit,
-      upload_rate_limit: payload.uploadLimit,
+      download_rate_limit:
+        payload.downloadLimit === -1 ? 0 : payload.downloadLimit,
+      upload_rate_limit: payload.uploadLimit === -1 ? 0 : payload.uploadLimit,
       port: payload.port,
     });
   }

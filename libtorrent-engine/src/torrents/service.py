@@ -13,6 +13,7 @@ from torrents.schemas import (
     AddTorrent,
     File,
     FileDetails,
+    PieceOrFileAvailable,
     PrioritizeAndWait,
     PrioritizeAndWaitRequest,
     Torrent,
@@ -45,19 +46,19 @@ class TorrentsService:
     ):
         apply_settings: Dict[str, Any] = {}
 
-        if payload.upload_rate_limit:
-            apply_settings["upload_rate_limit"] = payload.upload_rate_limit
-
-        if payload.download_rate_limit:
+        if payload.download_rate_limit is not None:
             apply_settings["download_rate_limit"] = payload.download_rate_limit
+
+        if payload.upload_rate_limit is not None:
+            apply_settings["upload_rate_limit"] = payload.upload_rate_limit
 
         self.libtorrent_session.apply_settings(apply_settings)
 
         # libtorrent port konfiguráció
-        if payload.port:
+        if payload.port is not None:
             self.libtorrent_session.listen_on(payload.port, payload.port)  # type: ignore[call-arg]
 
-        if payload.peer_limit:
+        if payload.peer_limit is not None:
             self.peer_limit = payload.peer_limit
 
     def get_torrents(self) -> List[Torrent]:
@@ -244,6 +245,26 @@ class TorrentsService:
             torrent_file=torrent_file,
             file_index=file_index,
         )
+
+        stream_start_piece_index = (
+            stream_start_byte + file_details.file_offset
+        ) // file_details.piece_size
+
+        piece_or_file_available = self._check_piece_or_file_available(
+            torrent_handle=torrent_handle,
+            file_index=file_index,
+            piece_index=stream_start_piece_index,
+        )
+
+        prioritize_and_wait = PrioritizeAndWait(
+            end_byte=None,
+        )
+
+        # Már le van töltve, csak visszaadjuk a végét és mehet a lejátszás.
+        if piece_or_file_available.file_available:
+            prioritize_and_wait.end_byte = file_details.file_end_byte
+            return prioritize_and_wait
+
         self.torrent_statuses.start_stream(
             info_hash=str(info_hash),
             file_index=file_index,
@@ -252,28 +273,16 @@ class TorrentsService:
             file_end_piece_index=file_details.file_end_piece_index,
         )
 
-        # Aktuálisan stream piece index megkeresése
-        stream_start_piece_index = (
-            stream_start_byte + file_details.file_offset
-        ) // file_details.piece_size
-
-        is_file_available = self._check_file_available(
-            torrent_handle=torrent_handle,
-            file_index=file_index,
-        )
-
-        available_end_byte = (
-            (stream_start_piece_index + 1) * file_details.piece_size
-        ) - file_details.file_offset
-
-        prioritize_and_wait = PrioritizeAndWait(
-            available_end_byte=available_end_byte,
-            is_available=is_file_available,
-        )
-
-        if is_file_available:
-            prioritize_and_wait.available_end_byte = file_details.file_size - 1
-            return prioritize_and_wait
+        # A kért piece már le van töltve, tehát beállítjuk a következőt priority piece-nek.
+        if piece_or_file_available.piece_available:
+            next_stream_piece_index = stream_start_piece_index + 1
+            available_end_byte = (
+                (next_stream_piece_index * file_details.piece_size)
+                - file_details.file_offset
+                - 1
+            )
+            prioritize_and_wait.end_byte = available_end_byte
+            stream_start_piece_index = next_stream_piece_index
 
         # Prefetch beállítása
         critical_pieces = self.torrent_statuses.set_streams_pieces(
@@ -292,28 +301,6 @@ class TorrentsService:
         # Kritikus piece kérése
         for index, critical_piece in enumerate(critical_pieces):
             torrent_handle.set_piece_deadline(critical_piece.piece_index, 50 * index)
-
-        piece_is_ready = False
-
-        max_wait_seconds = 60.0
-        poll_interval = 0.1
-        max_checks = int(max_wait_seconds / poll_interval)
-        checks = 0
-
-        while not piece_is_ready:
-            if checks >= max_checks:
-                raise HTTPException(
-                    504, "A stream-et nem sikerült időben elindítani, próbáld újra."
-                )
-
-            piece_is_ready = self._check_piece_available(
-                torrent_handle=torrent_handle,
-                piece_index=stream_start_piece_index,
-            )
-
-            if not piece_is_ready:
-                time.sleep(poll_interval)
-                checks += 1
 
         return prioritize_and_wait
 
@@ -353,6 +340,7 @@ class TorrentsService:
 
         return FileDetails(
             file_start_piece_index=file_start_piece_index,
+            file_end_byte=file_size - 1,
             file_end_piece_index=file_end_piece_index,
             piece_size=piece_size,
             file_offset=file_offset,
@@ -375,12 +363,36 @@ class TorrentsService:
         is_available = file_progress[file_index] == file_size
         return is_available
 
-    def _check_piece_available(
+    def _check_piece_or_file_available(
         self,
         torrent_handle: libtorrent.torrent_handle,
+        file_index: int,
         piece_index: int,
-    ) -> bool:
-        return torrent_handle.have_piece(piece_index)
+    ) -> PieceOrFileAvailable:
+        piece_or_file_available = PieceOrFileAvailable(
+            piece_available=False,
+            file_available=False,
+        )
+
+        torrent_file = torrent_handle.torrent_file()
+        if torrent_file is None:
+            return piece_or_file_available
+
+        files_progress = torrent_handle.file_progress()
+        file_progress = files_progress[file_index]
+        file_entry = torrent_file.file_at(file_index)
+
+        file_available = file_progress == file_entry.size
+
+        if file_available:
+            piece_or_file_available.piece_available = True
+            piece_or_file_available.file_available = True
+            return piece_or_file_available
+
+        piece_available = torrent_handle.have_piece(piece_index)
+        piece_or_file_available.piece_available = piece_available
+
+        return piece_or_file_available
 
     def _torrent_state(
         self,

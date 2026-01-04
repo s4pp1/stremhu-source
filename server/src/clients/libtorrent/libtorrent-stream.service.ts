@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto';
 import { createReadStream as fsCreateReadStream } from 'node:fs';
 import path from 'node:path';
 import { Readable } from 'node:stream';
+import { setTimeout } from 'node:timers/promises';
 
 import { LibTorrentClient } from './client';
 import { LIBTORRENT_CLIENT } from './libtorrent-client.token';
@@ -58,26 +59,35 @@ export class LibtorrentStreamService {
       let currentByte = start;
 
       while (currentByte <= safeEnd && !streamClosed) {
-        const prioritizeAndWait =
-          await this.libtorrentClient.torrents.prioritizeAndWait(
-            infoHash,
-            fileIndex,
-            stremId,
-            {
-              start_byte: currentByte,
-            },
-          );
+        let endByte: number | null = null;
+
+        do {
+          const { end_byte } =
+            await this.libtorrentClient.torrents.prioritizeAndWait(
+              infoHash,
+              fileIndex,
+              stremId,
+              { start_byte: currentByte },
+            );
+
+          endByte = end_byte;
+
+          if (endByte === null) {
+            this.logger.log(`A(z) "${currentByte}" még nem érhető el.`);
+            await setTimeout(250);
+          }
+        } while (endByte === null);
 
         const chunks = fsCreateReadStream(torrentFilePath, {
           start: currentByte,
-          end: prioritizeAndWait.available_end_byte,
+          end: endByte,
         });
 
         for await (const chunk of chunks) {
           yield chunk;
         }
 
-        currentByte = prioritizeAndWait.available_end_byte + 1;
+        currentByte = endByte + 1;
       }
     } finally {
       streamClosed = true;

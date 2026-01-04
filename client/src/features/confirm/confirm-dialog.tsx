@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import type { MouseEventHandler } from 'react'
+import { useState } from 'react'
 
 import type { OpenedDialog } from '@/routes/-features/dialogs/dialogs-store'
 
@@ -49,7 +49,7 @@ export function ConfirmDialog(dialog: OpenedDialog & ConfirmDialog) {
       <AlertDialogContent className="md:max-w-md">
         <AlertDialogHeader>
           <AlertDialogTitle>{dialog.options.title}</AlertDialogTitle>
-          <AlertDialogDescription>
+          <AlertDialogDescription className="break-all">
             {dialog.options.description}
           </AlertDialogDescription>
         </AlertDialogHeader>

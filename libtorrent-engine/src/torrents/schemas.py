@@ -65,10 +65,7 @@ class PrioritizeAndWaitRequest(BaseModel):
 
 
 class PrioritizeAndWait(BaseModel):
-    available_end_byte: int
-    is_available: bool = Field(
-        ..., description="A fájl már teljesen le van töltve, csak a stream-elni kell."
-    )
+    end_byte: Optional[int] = Field(...)
 
 
 class RemoveTorrent(BaseModel):
@@ -78,6 +75,11 @@ class RemoveTorrent(BaseModel):
 class StreamPiece(BaseModel):
     piece_index: int
     piece_priority: int
+
+
+class PieceOrFileAvailable(BaseModel):
+    piece_available: bool
+    file_available: bool
 
 
 class Stream(BaseModel):
@@ -126,6 +128,7 @@ class FileStatus(BaseModel):
 
 class FileDetails(BaseModel):
     file_start_piece_index: int
+    file_end_byte: int
     file_end_piece_index: int
     piece_size: int
     file_offset: int
