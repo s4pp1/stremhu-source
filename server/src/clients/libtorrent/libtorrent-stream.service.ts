@@ -10,6 +10,8 @@ import { LibTorrentClient } from './client';
 import { LIBTORRENT_CLIENT } from './libtorrent-client.token';
 import { CreateReadStream } from './type/create-read-stream.type';
 
+const WAIT_TIMEOUT_MS = 60_000;
+
 @Injectable()
 export class LibtorrentStreamService {
   private readonly logger = new Logger(LibtorrentStreamService.name);
@@ -59,6 +61,8 @@ export class LibtorrentStreamService {
       let currentByte = start;
 
       while (currentByte <= safeEnd && !streamClosed) {
+        const deadline = Date.now() + WAIT_TIMEOUT_MS;
+
         let endByte: number | null = null;
 
         do {
@@ -72,8 +76,14 @@ export class LibtorrentStreamService {
 
           endByte = end_byte;
 
+          if (Date.now() >= deadline) {
+            this.logger.error(
+              `🛑 ${WAIT_TIMEOUT_MS / 1000} másodperc alatt nem sikerül letölteni a következő darabot.`,
+            );
+            return;
+          }
+
           if (endByte === null) {
-            this.logger.log(`A(z) "${currentByte}" még nem érhető el.`);
             await setTimeout(250);
           }
         } while (endByte === null);
