@@ -11,6 +11,7 @@ import { RESOLUTION_LABEL_MAP } from 'src/common/constant/resolution.constant';
 import { VIDEO_QUALITY_LABEL_MAP } from 'src/common/constant/video-quality.constant';
 import { formatFilesize } from 'src/common/utils/file.util';
 import { SettingsStore } from 'src/settings/core/settings.store';
+import { TorrentsService } from 'src/torrents/torrents.service';
 import { TrackerTorrentStatusEnum } from 'src/trackers/enum/tracker-torrent-status.enum';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
 import {
@@ -38,6 +39,7 @@ export class StreamsService {
     private readonly trackerDiscoveryService: TrackerDiscoveryService,
     private readonly settingsStore: SettingsStore,
     private readonly catalogService: CatalogService,
+    private readonly torrentsService: TorrentsService,
   ) {}
 
   async streams(payload: FindStreams): Promise<StreamDto[]> {
@@ -75,14 +77,20 @@ export class StreamsService {
 
     if (sortedVideoFiles.length > 0) {
       const endpoint = await this.settingsStore.getEndpoint();
+      const activeTorrents = await this.torrentsService.getTorrents();
+      const activeInfoHashes = new Set(
+        activeTorrents.map((torrent) => torrent.infoHash),
+      );
 
       if (user.onlyBestTorrent) {
         const bestVideoFile = sortedVideoFiles[0];
 
-        streams = [this.stream(bestVideoFile, user, endpoint)];
+        streams = [
+          this.stream(bestVideoFile, user, endpoint, activeInfoHashes),
+        ];
       } else {
         streams = sortedVideoFiles.map((videoFile) =>
-          this.stream(videoFile, user, endpoint),
+          this.stream(videoFile, user, endpoint, activeInfoHashes),
         );
       }
     }
@@ -98,6 +106,7 @@ export class StreamsService {
     videoFile: VideoFile,
     user: UserDto,
     endpoint: string,
+    activeInfoHashes: Set<string>,
   ): StreamDto {
     const videoQualities = videoFile.videoQualities.filter(
       (videoQuality) => videoQuality !== VideoQualityEnum.SDR,
@@ -114,6 +123,11 @@ export class StreamsService {
 
     if (isCamSource) {
       nameArray.push('📹 CAM');
+    }
+
+    const isActive = activeInfoHashes.has(videoFile.infoHash);
+    if (isActive) {
+      nameArray.unshift('⭐');
     }
 
     const readableLanguage = `🌍 ${LANGUAGE_LABEL_MAP[videoFile.language]}`;
