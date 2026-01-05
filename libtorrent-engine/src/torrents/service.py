@@ -285,11 +285,13 @@ class TorrentsService:
             stream_start_piece_index = next_stream_piece_index
 
         # Prefetch beállítása
-        critical_pieces = self.torrent_statuses.set_streams_pieces(
-            info_hash=str(info_hash),
-            file_index=file_index,
-            stream_id=stream_id,
-            start_piece_index=stream_start_piece_index,
+        critical_piece_index, prefetch_piece_count = (
+            self.torrent_statuses.set_streams_pieces(
+                info_hash=str(info_hash),
+                file_index=file_index,
+                stream_id=stream_id,
+                start_piece_index=stream_start_piece_index,
+            )
         )
 
         priorities = self.torrent_statuses.get_priorities_by_streams(
@@ -299,8 +301,17 @@ class TorrentsService:
         torrent_handle.prioritize_pieces(priorities)
 
         # Kritikus piece kérése
-        for index, critical_piece in enumerate(critical_pieces):
-            torrent_handle.set_piece_deadline(critical_piece.piece_index, 50 * index)
+        set_piece_count = 1
+        for count_index in range(prefetch_piece_count):
+            if set_piece_count > 4:
+                break
+
+            piece_index = critical_piece_index + count_index
+            if torrent_handle.have_piece(piece_index):
+                continue
+
+            torrent_handle.set_piece_deadline(piece_index, 100 * set_piece_count)
+            set_piece_count += 1
 
         return prioritize_and_wait
 
