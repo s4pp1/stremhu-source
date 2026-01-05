@@ -9,7 +9,7 @@ export class IsIPv4 implements ValidatorConstraintInterface {
   validate(value: string) {
     try {
       new Address4(value);
-      if (value.includes('/') || value.includes(':')) {
+      if (value.includes('/') || value.includes(':') || value === '127.0.0.1') {
         return false;
       }
 
@@ -19,6 +19,6 @@ export class IsIPv4 implements ValidatorConstraintInterface {
     }
   }
   defaultMessage() {
-    return 'Csak IPv4 megadása lehetséges (pl.: 192.168.1.100)';
+    return 'Csak IPv4 megadása lehetséges (pl.: 192.168.1.100) és a 127.0.0.1 nem használható!';
   }
 }

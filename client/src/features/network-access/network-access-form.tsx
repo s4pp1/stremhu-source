@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Address4 } from 'ip-address'
-import { useState } from 'react'
 import type { FormEventHandler } from 'react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
@@ -35,14 +35,19 @@ const schema = z
     if (enebledlocalIp) {
       try {
         new Address4(address)
-        if (address.includes('/') || address.includes(':')) {
+        if (
+          address.includes('/') ||
+          address.includes(':') ||
+          address === '127.0.0.1'
+        ) {
           throw new Error()
         }
       } catch (error) {
         ctx.addIssue({
           code: 'custom',
           path: ['address'],
-          message: 'Csak IPv4 cím adható meg (protokoll/subnet/port nélkül)',
+          message:
+            'Csak IPv4 cím adható meg (protokoll/subnet/port nélkül) a 127.0.0.1 nem használható',
         })
       }
 
