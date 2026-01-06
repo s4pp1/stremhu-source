@@ -18,9 +18,10 @@ services:
       - 6881:6881/udp
     volumes:
       - data:/app/data
-    restart: unless-stopped
+    mem_limit: "2g"
     networks:
       - stremhu
+    restart: unless-stopped
 
 volumes:
   data:
@@ -33,7 +34,7 @@ networks:
 Linux környezetben van lehetőség volume bind-ra, az azonos fájlrendszer miatt.
 
 > [!WARNING]
-> Windows és Mac környezetben nem használható, az eltérő fájlrendszer miatt nem lehetséges a megfelelő írási/olvasási sebsség ezzel a konfigurációval!
+> Windows és Mac környezetben nem használható, az eltérő fájlrendszer miatt nem lehetséges a megfelelő írási/olvasási sebesség ezzel a konfigurációval!
 
 ```yaml
 services:
