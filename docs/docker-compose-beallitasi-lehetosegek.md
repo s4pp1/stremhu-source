@@ -13,16 +13,33 @@ services:
     container_name: stremhu-source
     ports:
       - 3000:3000
-      - 6881:6881
+      - 3443:3443
+      - 6881:6881/tcp
+      - 6881:6881/udp
     volumes:
-      - ./data:/app/data
+      - data:/app/data
     restart: unless-stopped
     networks:
       - stremhu
 
+volumes:
+  data:
+
 networks:
   stremhu:
     driver: bridge
+```
+
+Linux környezetben van lehetőség volume bind-ra, az azonos fájlrendszer miatt.
+
+> [!WARNING]
+> Windows és Mac környezetben nem használható, az eltérő fájlrendszer miatt nem lehetséges a megfelelő írási/olvasási sebsség ezzel a konfigurációval!
+
+```yaml
+services:
+  stremhu-source:
+    volumes:
+      - ./data:/app/data
 ```
 
 Ha szeretnéd, hogy a tényleges adat másik HDD-n legyen tárolva, akkor így tudod konfigurálni.
