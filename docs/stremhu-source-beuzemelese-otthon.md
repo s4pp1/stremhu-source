@@ -38,36 +38,7 @@ A további lépésekben feltételezzük, hogy ebbe a mappába dolgozol.
 
 ### 3. A docker-compose.yaml fájl elhelyezése
 
-Az előző lépésben létrehozott mappában hozz létre egy új fájlt `docker-compose.yaml` néven, és másold bele az alábbi tartalmat:
-
-```yaml
-services:
-  stremhu-source:
-    image: s4pp1/stremhu-source:latest
-    container_name: stremhu-source
-    ports:
-      - target: 3000
-        published: 3000
-      - target: 3443
-        published: 3443
-      - target: 6881
-        published: 6881
-    volumes:
-      - type: bind
-        source: ./data
-        target: /app/data
-    restart: unless-stopped
-    networks: [stremhu-net]
-
-networks:
-  stremhu-net:
-    driver: bridge
-```
-
-> [!NOTE]
-> Ez egy alap példa. Ha szeretnél rajta változtatni (image név, portok, ENV változók), nézd meg a részletes útmutatót: ["Docker Compose beállítási lehetőségek"](./docker-compose-beallitasi-lehetosegek.md)
-
----
+Az előző lépésben létrehozott mappában hozz létre egy új fájlt `docker-compose.yaml` néven, és a ["Docker Compose beállítási lehetőségek"](./docker-compose-beallitasi-lehetosegek.md) alapján konfiguráld.
 
 ### 4. A StremHU Source elindítása Docker Compose-szal
 
