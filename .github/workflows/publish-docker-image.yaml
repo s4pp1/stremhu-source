@@ -1,5 +1,9 @@
 name: Publish Docker Image
 
+concurrency:
+  group: publish-docker-image-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
