@@ -2,10 +2,10 @@ from typing import Dict, List, Optional, Tuple
 
 from pydantic import BaseModel, Field
 from torrents.constants import (
+    EXTRA_PIECE_COUNT,
     PREFETCH_HIGH_PIECES,
     PREFETCH_MEDIUM_PIECES,
     PREFETCH_PIECES,
-    PREVIOUS_PIECE_COUNT,
     PRIO_HIGH,
     PRIO_MEDIUM,
     PRIO_NORMAL,
@@ -63,6 +63,7 @@ class File(BaseModel):
 
 class PrioritizeAndWaitRequest(BaseModel):
     start_byte: int
+    end_byte: int
 
 
 class PrioritizeAndWait(BaseModel):
@@ -251,6 +252,7 @@ class TorrentStatuses(BaseModel):
         file_index: int,
         stream_id: str,
         start_piece_index: int,
+        end_piece_index: int,
     ) -> Tuple[int, int]:
         torrent_status = self.get_or_raise(info_hash)
         file_status = torrent_status.get_or_raise_file_status(file_index)
@@ -259,13 +261,18 @@ class TorrentStatuses(BaseModel):
         stream_pieces: List[StreamPiece] = []
 
         for prefetch_index in range(PREFETCH_PIECES):
-            piece_index = start_piece_index - PREVIOUS_PIECE_COUNT + prefetch_index
+            priority_piece_index = (
+                start_piece_index - EXTRA_PIECE_COUNT + prefetch_index
+            )
+            priority_end_piece_index = min(
+                end_piece_index + EXTRA_PIECE_COUNT, file_status.end_piece_index
+            )
 
-            if piece_index > file_status.end_piece_index:
+            if priority_piece_index > priority_end_piece_index:
                 break
 
             stream_piece = StreamPiece(
-                piece_index=piece_index,
+                piece_index=priority_piece_index,
                 piece_priority=PRIO_NORMAL,
             )
 

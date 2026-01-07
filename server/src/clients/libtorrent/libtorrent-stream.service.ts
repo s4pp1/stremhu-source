@@ -71,7 +71,7 @@ export class LibtorrentStreamService {
               infoHash,
               fileIndex,
               stremId,
-              { start_byte: currentByte },
+              { start_byte: currentByte, end_byte: safeEnd },
             );
 
           endByte = end_byte;

@@ -4,7 +4,7 @@ A StremHU Source futtatása Docker-el lehetséges. A lefrissebb image a `s4pp1/s
 
 A futtatása nem igényel konfigurációt, de van rá lehetőség ezeket tételesen tartalmazza a dokumentáció.
 
-Péda `docker-compose.yaml` fájl az indításhoz:
+Példa `docker-compose.yaml` fájl az indításhoz:
 
 ```yaml
 services:

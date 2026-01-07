@@ -232,6 +232,7 @@ class TorrentsService:
         req: PrioritizeAndWaitRequest,
     ):
         stream_start_byte = req.start_byte
+        stream_end_byte = req.end_byte
 
         torrent_handle = self.get_torrent_handle_or_raise(info_hash=info_hash)
 
@@ -248,6 +249,10 @@ class TorrentsService:
 
         stream_start_piece_index = (
             stream_start_byte + file_details.file_offset
+        ) // file_details.piece_size
+
+        stream_end_piece_index = (
+            stream_end_byte + file_details.file_offset
         ) // file_details.piece_size
 
         piece_or_file_available = self._check_piece_or_file_available(
@@ -291,6 +296,7 @@ class TorrentsService:
                 file_index=file_index,
                 stream_id=stream_id,
                 start_piece_index=stream_start_piece_index,
+                end_piece_index=stream_end_piece_index,
             )
         )
 
