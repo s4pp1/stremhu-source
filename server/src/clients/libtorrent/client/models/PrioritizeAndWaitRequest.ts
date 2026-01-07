@@ -4,5 +4,6 @@
 /* eslint-disable */
 export type PrioritizeAndWaitRequest = {
     start_byte: number;
+    end_byte: number;
 };
 
