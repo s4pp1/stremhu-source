@@ -8,14 +8,14 @@ export interface ParsedStremioIdSeries {
   episode: number;
 }
 
-export interface ParsedStreamId {
+export interface ParsedStremioId {
   imdbId: string;
   series?: ParsedStremioIdSeries;
 }
 
 @Injectable()
-export class StreamIdPipe implements PipeTransform<string, ParsedStreamId> {
-  transform(value: string): ParsedStreamId {
+export class StreamIdPipe implements PipeTransform<string, ParsedStremioId> {
+  transform(value: string): ParsedStremioId {
     let metaId = value;
 
     const isStremHuMeta = metaId.startsWith(ADDON_PREFIX_ID);

@@ -24,7 +24,7 @@ import { User } from 'src/users/entity/user.entity';
 
 import { StreamDto } from './dto/stremio-stream.dto';
 import { VideoQualityEnum } from './enum/video-quality.enum';
-import { ParsedStreamIdSeries } from './pipe/stream-id.pipe';
+import { ParsedStremioIdSeries } from './pipe/stream-id.pipe';
 import { FindStreams } from './type/find-streams.type';
 import { VideoFile } from './type/video-file.type';
 import { buildSelectors } from './util/build-selectors';
@@ -175,7 +175,7 @@ export class StreamsService {
   private findVideoFiles(
     isSpecial: boolean,
     torrents: TrackerTorrentSuccess[],
-    series?: ParsedStreamIdSeries,
+    series?: ParsedStremioIdSeries,
   ): VideoFile[] {
     const torrentByFiles: VideoFile[] = [];
 

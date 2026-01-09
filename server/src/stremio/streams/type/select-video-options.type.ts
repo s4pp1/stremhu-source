@@ -1,9 +1,9 @@
 import { TrackerTorrentFile } from 'src/trackers/tracker.types';
 
-import { ParsedStreamIdSeries } from '../pipe/stream-id.pipe';
+import { ParsedStremioIdSeries } from '../pipe/stream-id.pipe';
 
 export type SelectVideoOptions = {
   files: TrackerTorrentFile[];
-  series?: ParsedStreamIdSeries;
+  series?: ParsedStremioIdSeries;
   isSpecial: boolean;
 };
