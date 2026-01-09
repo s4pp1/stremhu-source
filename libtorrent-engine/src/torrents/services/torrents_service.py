@@ -18,15 +18,17 @@ from torrents.schemas import (
     PrioritizeAndWaitRequest,
     Torrent,
     TorrentState,
-    TorrentStatuses,
     UpdateSettings,
 )
+from torrents.services.stream_priority_service import StreamPriorityService
 
 logger = logging.getLogger(__name__)
 
 
 class TorrentsService:
     def __init__(self) -> None:
+        self.stream_priority_service = StreamPriorityService()
+
         self.libtorrent_session = libtorrent.session()
         self.libtorrent_session.apply_settings(
             {
@@ -38,7 +40,6 @@ class TorrentsService:
         )
 
         self.peer_limit = 20
-        self.torrent_statuses = TorrentStatuses()
 
     def update_settings(
         self,
@@ -158,13 +159,13 @@ class TorrentsService:
 
         priorities = torrent_handle.piece_priorities()
 
-        torrent_status = self.torrent_statuses.create_or_raise(
+        torrent_state = self.stream_priority_service.create_or_raise(
             info_hash=str(info_hash),
             priorities=priorities,
             priority=priority,
         )
 
-        torrent_handle.prioritize_pieces(torrent_status.default_priorities)
+        torrent_handle.prioritize_pieces(torrent_state.default_priorities)
 
         return self._build_torrent(torrent_handle)
 
@@ -176,7 +177,7 @@ class TorrentsService:
             libtorrent.options_t.delete_files,
         )
 
-        self.torrent_statuses.remove(
+        self.stream_priority_service.remove(
             info_hash=str(info_hash),
         )
 
@@ -270,7 +271,7 @@ class TorrentsService:
             prioritize_and_wait.end_byte = file_details.file_end_byte
             return prioritize_and_wait
 
-        self.torrent_statuses.start_stream(
+        self.stream_priority_service.start_stream(
             info_hash=str(info_hash),
             file_index=file_index,
             stream_id=stream_id,
@@ -291,7 +292,7 @@ class TorrentsService:
 
         # Prefetch beállítása
         critical_piece_index, prefetch_piece_count = (
-            self.torrent_statuses.set_streams_pieces(
+            self.stream_priority_service.set_streams_pieces(
                 info_hash=str(info_hash),
                 file_index=file_index,
                 stream_id=stream_id,
@@ -300,7 +301,7 @@ class TorrentsService:
             )
         )
 
-        priorities = self.torrent_statuses.get_priorities_by_streams(
+        priorities = self.stream_priority_service.get_priorities_by_streams(
             info_hash=str(info_hash),
         )
 
@@ -329,7 +330,7 @@ class TorrentsService:
     ) -> None:
         torrent_handle = self.get_torrent_handle_or_raise(info_hash=info_hash)
 
-        priorities = self.torrent_statuses.end_stream(
+        priorities = self.stream_priority_service.end_stream(
             info_hash=str(info_hash),
             file_index=file_index,
             stream_id=stream_id,
