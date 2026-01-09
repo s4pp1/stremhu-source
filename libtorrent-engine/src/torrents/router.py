@@ -12,7 +12,7 @@ from .schemas import (
     TorrentState,
     UpdateSettings,
 )
-from .service import TorrentsService
+from .services.torrents_service import TorrentsService
 
 router = APIRouter(
     prefix="/torrents",
