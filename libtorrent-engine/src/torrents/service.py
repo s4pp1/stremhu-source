@@ -427,6 +427,11 @@ class TorrentsService:
     ) -> Torrent:
         status = torrent_handle.status()
 
+        total = 0
+        torrent_info = torrent_handle.torrent_file()
+        if torrent_info:
+            total = torrent_info.total_size()
+
         return Torrent(
             name=status.name,
             info_hash=str(status.info_hash),
@@ -436,5 +441,5 @@ class TorrentsService:
             uploaded=status.total_upload,
             state=status.state,
             progress=status.progress,
-            total=status.total,
+            total=total,
         )

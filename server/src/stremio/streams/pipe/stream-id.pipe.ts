@@ -3,14 +3,14 @@ import { isString, toInteger } from 'lodash';
 
 import { ADDON_PREFIX_ID } from '../../stremio.constants';
 
-export interface ParsedStreamIdSeries {
+export interface ParsedStremioIdSeries {
   season: number;
   episode: number;
 }
 
 export interface ParsedStreamId {
   imdbId: string;
-  series?: ParsedStreamIdSeries;
+  series?: ParsedStremioIdSeries;
 }
 
 @Injectable()
@@ -36,7 +36,7 @@ export class StreamIdPipe implements PipeTransform<string, ParsedStreamId> {
       episode = toInteger(episodePart);
     }
 
-    let series: ParsedStreamIdSeries | undefined;
+    let series: ParsedStremioIdSeries | undefined;
 
     if (season !== undefined && episode !== undefined) {
       series = { season, episode };
