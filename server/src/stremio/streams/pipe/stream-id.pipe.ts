@@ -3,19 +3,19 @@ import { isString, toInteger } from 'lodash';
 
 import { ADDON_PREFIX_ID } from '../../stremio.constants';
 
-export interface ParsedStreamIdSeries {
+export interface ParsedStremioIdSeries {
   season: number;
   episode: number;
 }
 
-export interface ParsedStreamId {
+export interface ParsedStremioId {
   imdbId: string;
-  series?: ParsedStreamIdSeries;
+  series?: ParsedStremioIdSeries;
 }
 
 @Injectable()
-export class StreamIdPipe implements PipeTransform<string, ParsedStreamId> {
-  transform(value: string): ParsedStreamId {
+export class StreamIdPipe implements PipeTransform<string, ParsedStremioId> {
+  transform(value: string): ParsedStremioId {
     let metaId = value;
 
     const isStremHuMeta = metaId.startsWith(ADDON_PREFIX_ID);
@@ -36,7 +36,7 @@ export class StreamIdPipe implements PipeTransform<string, ParsedStreamId> {
       episode = toInteger(episodePart);
     }
 
-    let series: ParsedStreamIdSeries | undefined;
+    let series: ParsedStremioIdSeries | undefined;
 
     if (season !== undefined && episode !== undefined) {
       series = { season, episode };

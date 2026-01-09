@@ -13,8 +13,8 @@ import { TokenGuard } from 'src/auth/guards/token.guard';
 
 import { StreamMediaTypeEnum } from '../enum/stream-media-type.enum';
 import { StreamsResponseDto } from './dto/stremio-stream.dto';
+import type { ParsedStremioId } from './pipe/stream-id.pipe';
 import { StreamIdPipe } from './pipe/stream-id.pipe';
-import type { ParsedStreamId } from './pipe/stream-id.pipe';
 import { StreamsService } from './streams.service';
 
 @UseGuards(TokenGuard)
@@ -42,7 +42,7 @@ export class StreamsController {
     @Req() req: Request,
     @Param('mediaType', new ParseEnumPipe(StreamMediaTypeEnum))
     mediaType: StreamMediaTypeEnum,
-    @Param('id', StreamIdPipe) id: ParsedStreamId,
+    @Param('id', StreamIdPipe) id: ParsedStremioId,
   ): Promise<StreamsResponseDto> {
     const { user } = req;
 
