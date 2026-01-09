@@ -36,6 +36,7 @@ export type { TorrentDto } from './models/TorrentDto';
 export type { TrackerDto } from './models/TrackerDto';
 export { TrackerEnum } from './models/TrackerEnum';
 export type { TrackerMetaDto } from './models/TrackerMetaDto';
+export type { UpdateExternalSettingDto } from './models/UpdateExternalSettingDto';
 export type { UpdateMeDto } from './models/UpdateMeDto';
 export type { UpdateSettingDto } from './models/UpdateSettingDto';
 export type { UpdateTorrentDto } from './models/UpdateTorrentDto';
@@ -49,6 +50,7 @@ export { VideoQualityEnum } from './models/VideoQualityEnum';
 
 export { AppService } from './services/AppService';
 export { AuthenticationService } from './services/AuthenticationService';
+export { ExternalSettingsService } from './services/ExternalSettingsService';
 export { MeService } from './services/MeService';
 export { MetadataService } from './services/MetadataService';
 export { SettingsService } from './services/SettingsService';
