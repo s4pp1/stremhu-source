@@ -58,21 +58,21 @@ services:
 
 ## Konfigurálható környezeti változók
 
-| Válozó elnevezése               | Leírása                                                                                                                                            |       Alap értéke       |
-| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------: |
-| `HTTP_PORT`                     | Ezen a porton fog elindulni a szerver.                                                                                                             |          3000           |
-| `HTTPS_PORT`                    | Ezen a porton fut a HTTPS szerver, amennyiben a beállításoknál a `Hozzáférés otthoni hálózaton` van beállítva.                                     |          3443           |
-| `SESSION_SECRET`                | Session titkosításának beállítása.                                                                                                                 |     stremhu-source      |
-| `TORRENT_CLIENT`                | Beállítja, hogy a libtorrent vagy WebTorrent legyen használva.Lehetséges értékek: `libtorrent`, `web-torrent`.                                     |       libtorrent        |
-| `TORRENT_PORT`                  | A torrent kliens bejövő peer/seeding portja.                                                                                                       |          6881           |
-| `TORRENT_PEER_LIMIT`            | Torrent kliens peer limit beállítása, torrentenként értendő. Minnél több peer-re csatlakozik annál magasabb a RAM és CPU terhelés.                 |           20            |
-| `WEB_TORRENT_STORE_CACHE_SLOTS` | Web Torrent hány darab chunk-ot tart memóriában, minnél magasabb annál kevesebb lemez-I/O, gyorsabb hozzáférés, de több RAM-ot használ a rendszer. |           10            |
-| `NCORE_URL`                     | nCore weboldal URL módósítása esetén van lehetőség a módosításra.                                                                                  |    https://ncore.pro    |
-| `NCORE_MAX_CONCURRENT`          | Meghatározza, hogy egyidejűleg hány kérés indulhat az nCore irányába, ha túl magas a szám a tracker megtagadja a kérést.                           |            5            |
-| `BITHUMEN_URL`                  | BitHUmen weboldal URL módósítása esetén van lehetőség a módosításra.                                                                               |   https://bithumen.be   |
-| `BITHUMEN_MAX_CONCURRENT`       | Meghatározza, hogy egyidejűleg hány kérés indulhat a BitHUmen irányába, ha túl magas a szám a tracker megtagadja a kérést.                         |            5            |
-| `MAJOMPARADE_URL`               | Majomparádé weboldal URL módósítása esetén van lehetőség a módosításra.                                                                            | https://majomparade.euo |
-| `MAJOMPARADE_MAX_CONCURRENT`    | Meghatározza, hogy egyidejűleg hány kérés indulhat a Majomparádé irányába, ha túl magas a szám a tracker megtagadja a kérést.                      |            5            |
+| Válozó elnevezése               | Leírása                                                                                                                                            |      Alap értéke       |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------: |
+| `HTTP_PORT`                     | Ezen a porton fog elindulni a szerver.                                                                                                             |          3000          |
+| `HTTPS_PORT`                    | Ezen a porton fut a HTTPS szerver, amennyiben a beállításoknál a `Hozzáférés otthoni hálózaton` van beállítva.                                     |          3443          |
+| `SESSION_SECRET`                | Session titkosításának beállítása.                                                                                                                 |     stremhu-source     |
+| `TORRENT_CLIENT`                | Beállítja, hogy a libtorrent vagy WebTorrent legyen használva.Lehetséges értékek: `libtorrent`, `web-torrent`.                                     |       libtorrent       |
+| `TORRENT_PORT`                  | A torrent kliens bejövő peer/seeding portja.                                                                                                       |          6881          |
+| `TORRENT_PEER_LIMIT`            | Torrent kliens peer limit beállítása, torrentenként értendő. Minnél több peer-re csatlakozik annál magasabb a RAM és CPU terhelés.                 |           20           |
+| `WEB_TORRENT_STORE_CACHE_SLOTS` | Web Torrent hány darab chunk-ot tart memóriában, minnél magasabb annál kevesebb lemez-I/O, gyorsabb hozzáférés, de több RAM-ot használ a rendszer. |           10           |
+| `NCORE_URL`                     | nCore weboldal URL módósítása esetén van lehetőség a módosításra.                                                                                  |   https://ncore.pro    |
+| `NCORE_MAX_CONCURRENT`          | Meghatározza, hogy egyidejűleg hány kérés indulhat az nCore irányába, ha túl magas a szám a tracker megtagadja a kérést.                           |           5            |
+| `BITHUMEN_URL`                  | BitHUmen weboldal URL módósítása esetén van lehetőség a módosításra.                                                                               |  https://bithumen.be   |
+| `BITHUMEN_MAX_CONCURRENT`       | Meghatározza, hogy egyidejűleg hány kérés indulhat a BitHUmen irányába, ha túl magas a szám a tracker megtagadja a kérést.                         |           5            |
+| `MAJOMPARADE_URL`               | Majomparádé weboldal URL módósítása esetén van lehetőség a módosításra.                                                                            | https://majomparade.eu |
+| `MAJOMPARADE_MAX_CONCURRENT`    | Meghatározza, hogy egyidejűleg hány kérés indulhat a Majomparádé irányába, ha túl magas a szám a tracker megtagadja a kérést.                      |           5            |
 
 > [!WARNING]
 > Ha a beállításoknál a `Hozzáférés otthoni hálózaton` van kiválasztva, akkor a `HTTPS_PORT`-on beállított érték legyen a `target` a `docker-compose.yaml`-ben. `target` és a `published` port pedig azonos legyen a működés érdekében!
