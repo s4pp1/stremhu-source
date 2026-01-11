@@ -94,7 +94,22 @@ export class PlaybackController {
 
     const stream = await file.createReadStream({ start, end });
 
+    const cleanup = () => {
+      res.off('close', onClose);
+      req.off('aborted', onClose);
+    };
+
+    const onClose = () => {
+      cleanup();
+      if (stream.destroyed) return;
+      stream.destroy();
+    };
+
+    res.once('close', onClose);
+    req.once('aborted', onClose);
+
     pipeline(stream, res, (err) => {
+      cleanup();
       if (!err) return;
 
       if (err.code === 'ERR_STREAM_PREMATURE_CLOSE') {
@@ -102,9 +117,7 @@ export class PlaybackController {
         return;
       }
 
-      this.logger.error(
-        `🚨 Stream hibára futott: ${err.message}, ${JSON.stringify(err)}`,
-      );
+      this.logger.error(`🚨 Stream hibára futott: ${err.message}`, err);
     });
   }
 }

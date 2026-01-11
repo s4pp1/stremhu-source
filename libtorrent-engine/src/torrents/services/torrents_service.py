@@ -32,10 +32,7 @@ class TorrentsService:
         self.libtorrent_session = libtorrent.session()
         self.libtorrent_session.apply_settings(
             {
-                "enable_upnp": False,
-                "enable_natpmp": False,
-                "enable_dht": False,
-                "connections_limit": 1000,
+                "connections_limit": 200,
             }
         )
 
