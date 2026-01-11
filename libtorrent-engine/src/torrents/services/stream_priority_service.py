@@ -161,11 +161,11 @@ class StreamPriorityService:
         stream_id: str,
     ) -> List[int]:
         torrent = self.get_or_raise(info_hash)
-        file = torrent.get_or_raise_file(file_index)
-        file.streams.pop(stream_id)
+        file = torrent.get_file(file_index)
 
-        if not file.streams:
-            torrent.files.pop(file_index)
+        if file and file.streams:
+            file.streams.pop(stream_id, None)
+            torrent.files.pop(file_index, None)
 
         if not torrent.files:
             return torrent.default_priorities
