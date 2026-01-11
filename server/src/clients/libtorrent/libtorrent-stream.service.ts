@@ -68,59 +68,57 @@ export class LibtorrentStreamService {
 
         yield chunk;
       }
+    } else {
+      let currentByte = start;
 
-      return;
-    }
-
-    let currentByte = start;
-
-    while (currentByte <= safeEnd) {
-      if (!this.fileStreams.has(stremId)) return;
-
-      const deadline = Date.now() + WAIT_TIMEOUT_MS;
-
-      let endByte: number | null = null;
-
-      do {
+      while (currentByte <= safeEnd) {
         if (!this.fileStreams.has(stremId)) return;
 
-        const { end_byte } =
-          await this.libtorrentClient.torrents.prioritizeAndWait(
-            infoHash,
-            fileIndex,
-            stremId,
-            { start_byte: currentByte, end_byte: safeEnd },
-          );
+        const deadline = Date.now() + WAIT_TIMEOUT_MS;
 
-        endByte = end_byte;
+        let endByte: number | null = null;
 
-        if (Date.now() >= deadline) {
-          this.logger.error(
-            `🛑 ${WAIT_TIMEOUT_MS / 1000} másodperc alatt nem sikerül letölteni a következő darabot.`,
-          );
-          return;
+        do {
+          if (!this.fileStreams.has(stremId)) return;
+
+          const { end_byte } =
+            await this.libtorrentClient.torrents.prioritizeAndWait(
+              infoHash,
+              fileIndex,
+              stremId,
+              { start_byte: currentByte, end_byte: safeEnd },
+            );
+
+          endByte = end_byte;
+
+          if (Date.now() >= deadline) {
+            this.logger.error(
+              `🛑 ${WAIT_TIMEOUT_MS / 1000} másodperc alatt nem sikerül letölteni a következő darabot.`,
+            );
+            return;
+          }
+
+          if (endByte === null) {
+            await setTimeout(250);
+          }
+        } while (endByte === null);
+
+        const chunks = fsCreateReadStream(torrentFilePath, {
+          start: currentByte,
+          end: endByte,
+        });
+
+        for await (const chunk of chunks) {
+          if (!this.fileStreams.has(stremId)) {
+            chunks.destroy();
+            return;
+          }
+
+          yield chunk;
         }
 
-        if (endByte === null) {
-          await setTimeout(250);
-        }
-      } while (endByte === null);
-
-      const chunks = fsCreateReadStream(torrentFilePath, {
-        start: currentByte,
-        end: endByte,
-      });
-
-      for await (const chunk of chunks) {
-        if (!this.fileStreams.has(stremId)) {
-          chunks.destroy();
-          return;
-        }
-
-        yield chunk;
+        currentByte = endByte + 1;
       }
-
-      currentByte = endByte + 1;
     }
   }
 

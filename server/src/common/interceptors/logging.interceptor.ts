@@ -21,11 +21,22 @@ export class LoggingInterceptor implements NestInterceptor {
 
     const { method } = req;
     const url = req.originalUrl ?? req.url ?? '';
+    const token = req.params?.token;
+
+    let maskedUrl = url;
+
+    if (token) {
+      const encodedToken = encodeURIComponent(token);
+      maskedUrl = maskedUrl.split(token).join('[USER_TOKEN]');
+      if (encodedToken !== token) {
+        maskedUrl = maskedUrl.split(encodedToken).join('[USER_TOKEN]');
+      }
+    }
     const started = Date.now();
 
     const onFinish = () => {
       const ms = Date.now() - started;
-      this.logger.log(`${method} ${url} ${res.statusCode} - +${ms}ms`);
+      this.logger.log(`${method} ${maskedUrl} ${res.statusCode} - +${ms}ms`);
       res.removeListener('finish', onFinish);
       res.removeListener('close', onFinish);
     };
