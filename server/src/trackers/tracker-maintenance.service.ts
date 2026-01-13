@@ -50,7 +50,7 @@ export class TrackerMaintenanceService {
     }
 
     let keepSeedSeconds =
-      setting.keepSeedSeconds !== null ? setting.keepSeedSeconds : undefined;
+      setting.keepSeedSeconds > 0 ? setting.keepSeedSeconds : undefined;
 
     if (tracker.keepSeedSeconds !== null) {
       keepSeedSeconds = tracker.keepSeedSeconds;

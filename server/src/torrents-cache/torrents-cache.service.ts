@@ -73,7 +73,10 @@ export class TorrentsCacheService {
 
     if (cacheRetentionSeconds === null) {
       const setting = await this.appSettingsService.get();
-      cacheRetentionSeconds = setting.cacheRetentionSeconds;
+
+      if (setting.cacheRetentionSeconds > 0) {
+        cacheRetentionSeconds = setting.cacheRetentionSeconds;
+      }
     }
 
     if (cacheRetentionSeconds === null) return;

@@ -45,7 +45,7 @@ export function KeepSeeding() {
   const { mutateAsync: updateSetting } = useUpdateSetting()
 
   const keepSeedDays = useMemo(() => {
-    if (setting.keepSeedSeconds) {
+    if (setting.keepSeedSeconds > 0) {
       const days = setting.keepSeedSeconds / (24 * 60 * 60)
       return `${days}`
     }
@@ -71,7 +71,7 @@ export function KeepSeeding() {
     },
     onSubmit: async ({ value, formApi }) => {
       try {
-        let keepSeedSeconds = null
+        let keepSeedSeconds = 0
 
         if (value.keepSeed) {
           const days = Number(value.keepSeed)

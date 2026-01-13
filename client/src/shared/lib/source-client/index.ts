@@ -52,7 +52,7 @@ export { VideoQualityEnum } from './models/VideoQualityEnum';
 
 export { AppService } from './services/AppService';
 export { AuthenticationService } from './services/AuthenticationService';
-export { ExternalSettingsService } from './services/ExternalSettingsService';
+export { ExternalRelaySettingsService } from './services/ExternalRelaySettingsService';
 export { MeService } from './services/MeService';
 export { MetadataService } from './services/MetadataService';
 export { SettingsService } from './services/SettingsService';

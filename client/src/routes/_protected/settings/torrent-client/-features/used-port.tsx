@@ -7,7 +7,6 @@ import * as z from 'zod'
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
@@ -66,7 +65,6 @@ export function UsedPort() {
     <Card>
       <CardHeader>
         <CardTitle>Használt port</CardTitle>
-        <CardDescription>Kapcsolatok számának limitálása.</CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-6">
         <form.Field name="port">
