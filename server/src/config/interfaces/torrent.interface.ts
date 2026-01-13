@@ -5,6 +5,4 @@ export interface TorrentConfig {
   port: number;
   'downloads-dir': string;
   'torrents-dir': string;
-  'peer-limit': number;
-  'store-cache-slots': number;
 }

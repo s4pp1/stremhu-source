@@ -10,7 +10,7 @@ import { LANGUAGE_LABEL_MAP } from 'src/common/constant/language.constant';
 import { RESOLUTION_LABEL_MAP } from 'src/common/constant/resolution.constant';
 import { VIDEO_QUALITY_LABEL_MAP } from 'src/common/constant/video-quality.constant';
 import { formatFilesize } from 'src/common/utils/file.util';
-import { SettingsStore } from 'src/settings/core/settings.store';
+import { SettingsService } from 'src/settings/settings.service';
 import { TorrentsService } from 'src/torrents/torrents.service';
 import { TrackerTorrentStatusEnum } from 'src/trackers/enum/tracker-torrent-status.enum';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
@@ -37,7 +37,7 @@ import { parseVideoQualities } from './util/parse-video-qualities.util';
 export class StreamsService {
   constructor(
     private readonly trackerDiscoveryService: TrackerDiscoveryService,
-    private readonly settingsStore: SettingsStore,
+    private readonly settingsService: SettingsService,
     private readonly catalogService: CatalogService,
     private readonly torrentsService: TorrentsService,
   ) {}
@@ -76,7 +76,7 @@ export class StreamsService {
     let streams: StreamDto[] = [];
 
     if (sortedVideoFiles.length > 0) {
-      const endpoint = await this.settingsStore.getEndpoint();
+      const endpoint = await this.settingsService.getEndpoint();
       const activeTorrents = await this.torrentsService.getTorrents();
       const activeInfoHashes = new Set(
         activeTorrents.map((torrent) => torrent.infoHash),

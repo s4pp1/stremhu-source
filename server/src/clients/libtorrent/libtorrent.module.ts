@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
+import { RelaySettingsModule } from 'src/settings/relay/relay-settings.module';
 
 import { LibTorrentClient } from './client';
 import { LIBTORRENT_CLIENT } from './libtorrent-client.token';
@@ -9,7 +9,7 @@ import { LibtorrentStreamService } from './libtorrent-stream.service';
 import { LibtorrentService } from './libtorrent.service';
 
 @Module({
-  imports: [SettingsCoreModule],
+  imports: [RelaySettingsModule],
   providers: [
     {
       provide: LIBTORRENT_CLIENT,

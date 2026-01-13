@@ -7,7 +7,9 @@ class UpdateSettings(BaseModel):
     download_rate_limit: Optional[int] = None
     upload_rate_limit: Optional[int] = None
     port: Optional[int] = None
-    peer_limit: Optional[int] = None
+    connections_limit: Optional[int] = None
+    torrent_connections_limit: Optional[int] = None
+    enable_upnp_and_natpmp: Optional[bool] = None
 
 
 class TorrentState(BaseModel):

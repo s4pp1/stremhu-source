@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
-import { SettingsStore } from 'src/settings/core/settings.store';
-import { Setting } from 'src/settings/entity/setting.entity';
+import {
+  AppSettings,
+  AppSettingsService,
+} from 'src/settings/app/app-settings.service';
 import { TorrentsService } from 'src/torrents/torrents.service';
 
 import { TrackersStore } from './core/trackers.store';
@@ -15,14 +17,14 @@ export class TrackerMaintenanceService {
     private readonly trackerAdapterRegistry: TrackerAdapterRegistry,
     private readonly trackersStore: TrackersStore,
     private readonly torrentsService: TorrentsService,
-    private readonly settingsStore: SettingsStore,
+    private readonly appSettingsService: AppSettingsService,
   ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_4AM)
   async runTrackersCleanup(): Promise<void> {
     const [trackers, setting] = await Promise.all([
       this.trackersStore.find(),
-      this.settingsStore.findOneOrThrow(),
+      this.appSettingsService.get(),
     ]);
 
     await Promise.all(
@@ -32,7 +34,7 @@ export class TrackerMaintenanceService {
     );
   }
 
-  private async runTrackerCleanup(tracker: Tracker, setting: Setting) {
+  private async runTrackerCleanup(tracker: Tracker, setting: AppSettings) {
     const adapter = this.trackerAdapterRegistry.get(tracker.tracker);
 
     let enabledHitAndRun = setting.hitAndRun;
@@ -48,7 +50,7 @@ export class TrackerMaintenanceService {
     }
 
     let keepSeedSeconds =
-      setting.keepSeedSeconds !== null ? setting.keepSeedSeconds : undefined;
+      setting.keepSeedSeconds > 0 ? setting.keepSeedSeconds : undefined;
 
     if (tracker.keepSeedSeconds !== null) {
       keepSeedSeconds = tracker.keepSeedSeconds;

@@ -6,7 +6,7 @@ import axiosRetry, { exponentialDelay } from 'axios-retry';
 import * as https from 'node:https';
 import { z } from 'zod';
 
-import { SettingsStore } from 'src/settings/core/settings.store';
+import { AppSettingsService } from 'src/settings/app/app-settings.service';
 
 import { EXPRESS } from '../main';
 import { LOCAL_IP_CRON_JOB, LOCAL_IP_KEYS_URL } from './local-ip.constants';
@@ -27,7 +27,7 @@ export class LocalIpService implements OnApplicationBootstrap {
   constructor(
     private readonly configService: ConfigService,
     private readonly schedulerRegistry: SchedulerRegistry,
-    private readonly settingsStore: SettingsStore,
+    private readonly appSettingsService: AppSettingsService,
   ) {
     axiosRetry(axios, { retries: 2, retryDelay: exponentialDelay });
   }
@@ -35,7 +35,7 @@ export class LocalIpService implements OnApplicationBootstrap {
   private httpsServer: https.Server | null = null;
 
   async onApplicationBootstrap() {
-    const setting = await this.settingsStore.findOneOrThrow();
+    const setting = await this.appSettingsService.get();
     const job = this.schedulerRegistry.getCronJob(LOCAL_IP_CRON_JOB);
 
     if (!setting.enebledlocalIp) {

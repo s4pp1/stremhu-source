@@ -11,29 +11,32 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
-import { Field, FieldError } from '@/shared/components/ui/field'
+import { Field, FieldError, FieldLabel } from '@/shared/components/ui/field'
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
   InputGroupText,
 } from '@/shared/components/ui/input-group'
-import { parseApiError } from '@/shared/lib/utils'
-import { getSettings, useUpdateSetting } from '@/shared/queries/settings'
+import { assertExists, parseApiError } from '@/shared/lib/utils'
+import { getRelaySettings, useUpdateRelaySetting } from '@/shared/queries/relay'
 
 const schema = z.object({
+  downloadLimit: z.coerce.number<string>().positive().nullable(),
   uploadLimit: z.coerce.number<string>().positive().nullable(),
 })
 
-export function UploadSpeed() {
+export function Speed() {
   const queryClient = useQueryClient()
-  const setting = queryClient.getQueryData(getSettings.queryKey)
-  if (!setting) throw new Error(`Nincs "settings" a cache-ben`)
 
-  const { mutateAsync: updateSetting } = useUpdateSetting()
+  const setting = queryClient.getQueryData(getRelaySettings.queryKey)
+  assertExists(setting)
+
+  const { mutateAsync: updateSetting } = useUpdateRelaySetting()
 
   const form = useForm({
     defaultValues: {
+      downloadLimit: setting.downloadLimit,
       uploadLimit: setting.uploadLimit,
     },
     validators: {
@@ -50,7 +53,7 @@ export function UploadSpeed() {
     onSubmit: async ({ value, formApi }) => {
       try {
         await updateSetting({
-          uploadLimit: value.uploadLimit ? Number(value.uploadLimit) : -1,
+          downloadLimit: value.downloadLimit ? Number(value.downloadLimit) : 0,
         })
         toast.success('Módosítások elmentve')
       } catch (error) {
@@ -64,16 +67,49 @@ export function UploadSpeed() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Feltöltési sebesség</CardTitle>
+        <CardTitle>Sebesség</CardTitle>
         <CardDescription>
-          Add meg a maximális feltöltési sebességet. Ha üresen hagyod, a
-          feltöltés korlátlan lesz.
+          Maximális letöltési és feltöltési sebesség. Ha üresen hagyod korlátlan
+          lesz.
         </CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-6">
+        <form.Field name="downloadLimit">
+          {(field) => (
+            <Field>
+              <FieldLabel>Letöltés</FieldLabel>
+              <InputGroup>
+                <InputGroupInput
+                  placeholder="Nincs limitálva"
+                  inputMode="numeric"
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value ?? ''}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => {
+                    const value = e.target.value
+
+                    if (isEmpty(value)) {
+                      field.handleChange(null)
+                    } else {
+                      field.handleChange(e.target.value)
+                    }
+                  }}
+                />
+                <InputGroupAddon align="inline-end">
+                  <InputGroupText>Mbit/s</InputGroupText>
+                </InputGroupAddon>
+              </InputGroup>
+              {field.state.meta.isTouched && (
+                <FieldError errors={field.state.meta.errors} />
+              )}
+            </Field>
+          )}
+        </form.Field>
         <form.Field name="uploadLimit">
           {(field) => (
             <Field>
+              <FieldLabel>Feltöltés</FieldLabel>
               <InputGroup>
                 <InputGroupInput
                   placeholder="Nincs limitálva"

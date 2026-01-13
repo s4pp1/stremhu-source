@@ -1,98 +1,82 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import _, { isEmpty } from 'lodash';
-import { EntityManager } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
 
 import { CatalogService } from 'src/catalog/catalog.service';
-import { GLOBAL_ID } from 'src/common/constant/common.constant';
 import { LocalIpService } from 'src/local-ip/local-ip.service';
-import { TorrentsService } from 'src/torrents/torrents.service';
 
-import { SettingsStore } from './core/settings.store';
-import { Setting } from './entity/setting.entity';
-import { SettingToUpdate } from './settings.types';
+import { AppSettings, AppSettingsService } from './app/app-settings.service';
+import { RelaySettingsService } from './relay/relay-settings.service';
 
 @Injectable()
 export class SettingsService implements OnModuleInit {
   private readonly logger = new Logger(SettingsService.name);
 
   constructor(
-    private readonly settingsStore: SettingsStore,
-    private readonly torrentsService: TorrentsService,
-    private readonly localIpService: LocalIpService,
+    private readonly configService: ConfigService,
+    private readonly appSettingsService: AppSettingsService,
+    private readonly relaySettingsService: RelaySettingsService,
     private readonly catalogService: CatalogService,
+    private readonly localIpService: LocalIpService,
   ) {}
 
   async onModuleInit() {
-    await this.init();
+    this.logger.log('⚙️ Konfigurációk inicializálása és szinkronizálása...');
+
+    const port = this.configService.getOrThrow<number>('torrent.port');
+
+    try {
+      await Promise.all([
+        this.appSettingsService.update({}),
+        this.relaySettingsService.update({ port }),
+      ]);
+    } catch (error) {
+      this.logger.fatal(
+        '🚨 Hiba történt a konfigurációk inicializálása közben!',
+        error,
+      );
+    }
   }
 
-  async update(
-    payload: SettingToUpdate,
-    manager?: EntityManager,
-  ): Promise<Setting> {
-    const setting = await this.settingsStore.findOneOrThrow();
+  async update(payload: Partial<AppSettings>): Promise<AppSettings> {
+    const current = await this.appSettingsService.get();
+    const updated = await this.appSettingsService.update(payload);
 
-    // StremHU | Catalog token
-    const { catalogToken } = payload;
-    const tokenNotUndefined = !_.isUndefined(catalogToken);
-    const tokenNotNull = catalogToken !== null;
+    // StremHU Catalog token frissítése
     if (
-      tokenNotUndefined &&
-      tokenNotNull &&
-      setting.catalogToken !== catalogToken
+      updated.catalogToken !== null &&
+      updated.catalogToken !== current.catalogToken
     ) {
-      await this.catalogService.catalogHealthCheck(catalogToken);
+      await this.catalogService.catalogHealthCheck(updated.catalogToken);
     }
 
-    // Torrent kliens
-    if (
-      payload.downloadLimit !== undefined ||
-      payload.uploadLimit !== undefined ||
-      payload.port !== undefined
-    ) {
-      await this.torrentsService.updateTorrentClient({
-        downloadLimit: payload.downloadLimit,
-        uploadLimit: payload.uploadLimit,
-        port: payload.port,
-      });
+    // Local IP elindítása / leállítása
+    if (updated.enebledlocalIp) {
+      await this.localIpService.enable();
+    } else {
+      await this.localIpService.disable();
     }
 
-    // Local IP vezérlés
-    if (
-      !_.isUndefined(payload.enebledlocalIp) &&
-      setting.enebledlocalIp !== payload.enebledlocalIp
-    ) {
-      if (payload.enebledlocalIp) {
-        await this.localIpService.enable();
-      } else {
-        await this.localIpService.disable();
-      }
-    }
-
-    delete payload.port;
-
-    if (!isEmpty(payload)) {
-      const updatedSetting = await this.settingsStore.update(payload, manager);
-      return updatedSetting;
-    }
-
-    return setting;
+    return updated;
   }
 
-  private async init() {
-    const setting = await this.settingsStore.findOne();
-    if (setting) return;
+  async getEndpoint() {
+    const setting = await this.appSettingsService.get();
 
-    this.logger.log('⚙️ Beállítások konfigurálása első indítással');
+    let endpoint = this.buildLocalUrl('127.0.0.1');
 
-    await this.settingsStore.create({
-      id: GLOBAL_ID,
-      hitAndRun: true,
-      enebledlocalIp: true,
-      downloadLimit: -1,
-      uploadLimit: -1,
-      keepSeedSeconds: null,
-      cacheRetentionSeconds: 14 * 24 * 60 * 60,
-    });
+    if (setting.enebledlocalIp && setting.address) {
+      endpoint = this.buildLocalUrl(setting.address);
+    }
+
+    if (!setting.enebledlocalIp && setting.address) {
+      endpoint = setting.address;
+    }
+
+    return endpoint;
+  }
+
+  buildLocalUrl(ipAddress: string) {
+    const httpsPort = this.configService.getOrThrow<number>('app.https-port');
+    return `https://${ipAddress.split('.').join('-')}.local-ip.medicmobile.org:${httpsPort}`;
   }
 }

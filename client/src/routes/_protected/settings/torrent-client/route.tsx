@@ -1,6 +1,6 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 
-import { getSettings } from '@/shared/queries/settings'
+import { getRelaySettings } from '@/shared/queries/relay'
 import { getTorrents } from '@/shared/queries/torrents'
 
 export const SETTINGS_TORRENT_CLIENT_NAME = 'Torrent Kliens'
@@ -12,7 +12,7 @@ export const Route = createFileRoute('/_protected/settings/torrent-client')({
   beforeLoad: async ({ context }) => {
     await Promise.all([
       context.queryClient.ensureQueryData(getTorrents),
-      context.queryClient.ensureQueryData(getSettings),
+      context.queryClient.ensureQueryData(getRelaySettings),
     ])
   },
   loader: () => {

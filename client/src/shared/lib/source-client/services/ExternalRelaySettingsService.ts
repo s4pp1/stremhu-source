@@ -6,7 +6,7 @@ import type { SettingDto } from '../models/SettingDto';
 import type { UpdateExternalSettingDto } from '../models/UpdateExternalSettingDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-export class ExternalSettingsService {
+export class ExternalRelaySettingsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
      * @param token
@@ -20,7 +20,7 @@ export class ExternalSettingsService {
     ): CancelablePromise<SettingDto> {
         return this.httpRequest.request({
             method: 'PUT',
-            url: '/api/{token}/settings',
+            url: '/api/{token}/external/relay/settings',
             path: {
                 'token': token,
             },

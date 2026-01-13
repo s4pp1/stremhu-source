@@ -8,23 +8,23 @@ import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
 import { SettingDto } from './dto/setting.dto';
 import { UpdateExternalSettingDto } from './dto/update-external-setting.dto';
-import { SettingsService } from './settings.service';
+import { RelaySettingsService } from './relay/relay-settings.service';
 
 @UseGuards(TokenGuard, RolesGuard)
 @Roles(UserRoleEnum.ADMIN)
-@Controller(':token/settings')
+@Controller(':token/external/relay/settings')
 @ApiParam({
   name: 'token',
   required: true,
   type: 'string',
 })
-@ApiTags('External Settings')
-export class ExternalSettingsController {
-  constructor(private readonly settingsService: SettingsService) {}
+@ApiTags('External Relay Settings')
+export class ExternalRelaySettingsController {
+  constructor(private readonly relaySettingsService: RelaySettingsService) {}
 
   @ApiResponse({ status: 200, type: SettingDto })
   @Put('/')
   async update(@Body() body: UpdateExternalSettingDto): Promise<void> {
-    await this.settingsService.update(body);
+    await this.relaySettingsService.update(body);
   }
 }

@@ -2,8 +2,8 @@ import { useForm } from '@tanstack/react-form'
 import { useQuery } from '@tanstack/react-query'
 import { isEmpty } from 'lodash'
 import { BrushCleaningIcon } from 'lucide-react'
-import { useMemo } from 'react'
 import type { MouseEventHandler } from 'react'
+import { useMemo } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
@@ -51,7 +51,7 @@ export function TorrentFilesCache() {
   const { mutateAsync: cleanupTorrentsCache } = useCleanupTorrentsCache()
 
   const cacheRetentionDays = useMemo(() => {
-    if (setting.cacheRetentionSeconds) {
+    if (setting.cacheRetentionSeconds > 0) {
       const days = setting.cacheRetentionSeconds / (24 * 60 * 60)
       return `${days}`
     }
@@ -76,7 +76,7 @@ export function TorrentFilesCache() {
     },
     onSubmit: async ({ value, formApi }) => {
       try {
-        let cacheRetentionSeconds = null
+        let cacheRetentionSeconds = 0
 
         if (value.cacheRetention) {
           const days = Number(value.cacheRetention)

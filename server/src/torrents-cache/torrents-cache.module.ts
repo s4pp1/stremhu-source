@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AuthModule } from 'src/auth/auth.module';
-import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
+import { AppSettingsModule } from 'src/settings/app/app-settings.module';
 import { TorrentsModule } from 'src/torrents/torrents.module';
 
 import { TorrentsCacheCoreModule } from './core/torrents-cache-core.module';
@@ -12,7 +12,7 @@ import { TorrentsCacheService } from './torrents-cache.service';
   imports: [
     AuthModule,
     TorrentsCacheCoreModule,
-    SettingsCoreModule,
+    AppSettingsModule,
     TorrentsModule,
   ],
   providers: [TorrentsCacheService],

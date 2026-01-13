@@ -13,25 +13,17 @@ export class SettingDto {
   @ApiProperty({ type: 'string', nullable: true })
   address: string | null;
 
-  @IsNumber()
-  @ApiProperty()
-  downloadLimit: number;
-
-  @IsNumber()
-  @ApiProperty()
-  uploadLimit: number;
-
   @IsBoolean()
   @ApiProperty()
   hitAndRun: boolean;
 
   @IsNumber()
-  @ApiProperty({ type: 'number', nullable: true })
-  keepSeedSeconds: number | null;
+  @ApiProperty({ type: 'number' })
+  keepSeedSeconds: number;
 
   @IsNumber()
-  @ApiProperty({ type: 'number', nullable: true })
-  cacheRetentionSeconds: number | null;
+  @ApiProperty({ type: 'number' })
+  cacheRetentionSeconds: number;
 
   @IsString()
   @ApiProperty({ type: 'string', nullable: true })

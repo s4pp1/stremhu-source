@@ -5,6 +5,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { LibtorrentModule } from 'src/clients/libtorrent/libtorrent.module';
 import { LibtorrentService } from 'src/clients/libtorrent/libtorrent.service';
 import { TorrentClientEnum } from 'src/config/enum/torrent-client.enum';
+import { RelaySettingsModule } from 'src/settings/relay/relay-settings.module';
 import { TorrentsCacheCoreModule } from 'src/torrents-cache/core/torrents-cache-core.module';
 import { TrackersCoreModule } from 'src/trackers/core/trackers-core.module';
 
@@ -14,11 +15,12 @@ import { TorrentsService } from './torrents.service';
 
 @Module({
   imports: [
-    TorrentsCoreModule,
     AuthModule,
+    TorrentsCoreModule,
     LibtorrentModule,
     TorrentsCacheCoreModule,
     TrackersCoreModule,
+    RelaySettingsModule,
   ],
   providers: [
     TorrentsService,

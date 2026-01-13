@@ -5,7 +5,7 @@ import { UsersStore } from 'src/users/core/users.store';
 import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 import { UsersService } from 'src/users/users.service';
 
-import { SettingsStore } from '../core/settings.store';
+import { AppSettingsService } from '../app/app-settings.service';
 import { CreateSetupDto } from './dto/create-setup.dto';
 import { StatusDto } from './dto/status.dto';
 
@@ -14,7 +14,7 @@ export class SetupService {
   constructor(
     private readonly usersStore: UsersStore,
     private readonly usersService: UsersService,
-    private readonly settingsStore: SettingsStore,
+    private readonly appSettingsService: AppSettingsService,
   ) {}
 
   async create(payload: CreateSetupDto, manager?: EntityManager) {
@@ -39,7 +39,7 @@ export class SetupService {
     const users = await this.usersStore.find((qb) =>
       qb.where('user.userRole = :userRole', { userRole: UserRoleEnum.ADMIN }),
     );
-    const setting = await this.settingsStore.findOneOrThrow();
+    const setting = await this.appSettingsService.get();
 
     const hasAdminUser = users.length > 0;
 

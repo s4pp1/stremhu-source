@@ -2,12 +2,39 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { RelaySettingsDto } from '../models/RelaySettingsDto';
 import type { TorrentDto } from '../models/TorrentDto';
+import type { UpdateRelaySettingsDto } from '../models/UpdateRelaySettingsDto';
 import type { UpdateTorrentDto } from '../models/UpdateTorrentDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class TorrentsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
+    /**
+     * @returns RelaySettingsDto
+     * @throws ApiError
+     */
+    public settings(): CancelablePromise<RelaySettingsDto> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/api/relay/settings',
+        });
+    }
+    /**
+     * @param requestBody
+     * @returns TorrentDto
+     * @throws ApiError
+     */
+    public updateSettings(
+        requestBody: UpdateRelaySettingsDto,
+    ): CancelablePromise<Array<TorrentDto>> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/api/relay/settings',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
     /**
      * @returns TorrentDto
      * @throws ApiError
@@ -15,7 +42,7 @@ export class TorrentsService {
     public find(): CancelablePromise<Array<TorrentDto>> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/api/torrents',
+            url: '/api/relay/torrents',
         });
     }
     /**
@@ -30,7 +57,7 @@ export class TorrentsService {
     ): CancelablePromise<TorrentDto> {
         return this.httpRequest.request({
             method: 'PUT',
-            url: '/api/torrents/{infoHash}',
+            url: '/api/relay/torrents/{infoHash}',
             path: {
                 'infoHash': infoHash,
             },
@@ -48,7 +75,7 @@ export class TorrentsService {
     ): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'DELETE',
-            url: '/api/torrents/{infoHash}',
+            url: '/api/relay/torrents/{infoHash}',
             path: {
                 'infoHash': infoHash,
             },

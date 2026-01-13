@@ -5,11 +5,9 @@
 export type UpdateSettingDto = {
     enebledlocalIp?: boolean;
     address?: string;
-    downloadLimit?: number;
-    uploadLimit?: number;
     hitAndRun?: boolean;
-    keepSeedSeconds?: number | null;
-    cacheRetentionSeconds?: number | null;
+    keepSeedSeconds?: number;
+    cacheRetentionSeconds?: number;
     catalogToken?: string | null;
 };
 

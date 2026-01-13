@@ -7,35 +7,33 @@ import * as z from 'zod'
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
-import { Field, FieldError } from '@/shared/components/ui/field'
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-  InputGroupText,
-} from '@/shared/components/ui/input-group'
+import { Field, FieldError, FieldLabel } from '@/shared/components/ui/field'
+import { InputGroup, InputGroupInput } from '@/shared/components/ui/input-group'
+import { Label } from '@/shared/components/ui/label'
+import { Switch } from '@/shared/components/ui/switch'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
-import { getSettings, useUpdateSetting } from '@/shared/queries/settings'
+import { getRelaySettings, useUpdateRelaySetting } from '@/shared/queries/relay'
 
 const schema = z.object({
-  downloadLimit: z.coerce.number<string>().positive().nullable(),
+  port: z.coerce.number<string>().min(1),
+  enableUpnpAndNatpmp: z.boolean(),
 })
 
-export function DownloadSpeed() {
+export function UsedPort() {
   const queryClient = useQueryClient()
 
-  const setting = queryClient.getQueryData(getSettings.queryKey)
+  const setting = queryClient.getQueryData(getRelaySettings.queryKey)
   assertExists(setting)
 
-  const { mutateAsync: updateSetting } = useUpdateSetting()
+  const { mutateAsync: updateSetting } = useUpdateRelaySetting()
 
   const form = useForm({
     defaultValues: {
-      downloadLimit: setting.downloadLimit,
+      port: setting.port.toString(),
+      enableUpnpAndNatpmp: setting.enableUpnpAndNatpmp,
     },
     validators: {
       onChange: schema,
@@ -51,7 +49,8 @@ export function DownloadSpeed() {
     onSubmit: async ({ value, formApi }) => {
       try {
         await updateSetting({
-          downloadLimit: value.downloadLimit ? Number(value.downloadLimit) : -1,
+          ...value,
+          port: value.port ? Number(value.port) : 0,
         })
         toast.success('Módosítások elmentve')
       } catch (error) {
@@ -65,42 +64,51 @@ export function DownloadSpeed() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Letöltési sebesség</CardTitle>
-        <CardDescription>
-          Add meg a maximális letöltési sebességet. Ha üresen hagyod, a letöltés
-          korlátlan lesz.
-        </CardDescription>
+        <CardTitle>Használt port</CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-6">
-        <form.Field name="downloadLimit">
+        <form.Field name="port">
           {(field) => (
             <Field>
+              <FieldLabel>Port a bejövő kapcsolatokhoz</FieldLabel>
               <InputGroup>
                 <InputGroupInput
+                  disabled
                   placeholder="Nincs limitálva"
                   inputMode="numeric"
                   id={field.name}
                   name={field.name}
-                  value={field.state.value ?? ''}
+                  value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(e) => {
                     const value = e.target.value
 
                     if (isEmpty(value)) {
-                      field.handleChange(null)
+                      field.handleChange('0')
                     } else {
                       field.handleChange(e.target.value)
                     }
                   }}
                 />
-                <InputGroupAddon align="inline-end">
-                  <InputGroupText>Mbit/s</InputGroupText>
-                </InputGroupAddon>
               </InputGroup>
               {field.state.meta.isTouched && (
                 <FieldError errors={field.state.meta.errors} />
               )}
             </Field>
+          )}
+        </form.Field>
+        <form.Field name="enableUpnpAndNatpmp">
+          {(field) => (
+            <div className="flex items-center space-x-2">
+              <Switch
+                id={field.name}
+                checked={field.state.value}
+                onCheckedChange={field.handleChange}
+              />
+              <Label htmlFor="airplane-mode">
+                UPnP / NAT-PMP használata a routeren a porttovábbításhoz
+              </Label>
+            </div>
           )}
         </form.Field>
       </CardContent>

@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { rm } from 'node:fs/promises';
 
-import { SettingsStore } from 'src/settings/core/settings.store';
+import { AppSettingsService } from 'src/settings/app/app-settings.service';
 import { TorrentsService } from 'src/torrents/torrents.service';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
@@ -14,7 +14,7 @@ export class TorrentsCacheService {
 
   constructor(
     private readonly torrentsCacheStore: TorrentsCacheStore,
-    private readonly settingsStore: SettingsStore,
+    private readonly appSettingsService: AppSettingsService,
     private readonly torrentsService: TorrentsService,
   ) {}
 
@@ -72,8 +72,11 @@ export class TorrentsCacheService {
     let cacheRetentionSeconds = retentionSeconds ?? null;
 
     if (cacheRetentionSeconds === null) {
-      const setting = await this.settingsStore.findOneOrThrow();
-      cacheRetentionSeconds = setting.cacheRetentionSeconds;
+      const setting = await this.appSettingsService.get();
+
+      if (setting.cacheRetentionSeconds > 0) {
+        cacheRetentionSeconds = setting.cacheRetentionSeconds;
+      }
     }
 
     if (cacheRetentionSeconds === null) return;

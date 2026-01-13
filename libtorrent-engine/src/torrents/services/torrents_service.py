@@ -33,10 +33,12 @@ class TorrentsService:
         self.libtorrent_session.apply_settings(
             {
                 "connections_limit": 200,
+                "enable_dht": False,
+                "enable_lsd": False,
             }
         )
 
-        self.peer_limit = 20
+        self.torrent_connections_limit = 20
 
     def update_settings(
         self,
@@ -50,14 +52,27 @@ class TorrentsService:
         if payload.upload_rate_limit is not None:
             apply_settings["upload_rate_limit"] = payload.upload_rate_limit
 
+        if payload.connections_limit is not None:
+            apply_settings["connections_limit"] = payload.connections_limit
+
+        if payload.enable_upnp_and_natpmp is not None:
+            apply_settings["enable_upnp"] = payload.enable_upnp_and_natpmp
+            apply_settings["enable_natpmp"] = payload.enable_upnp_and_natpmp
+
+        if payload.torrent_connections_limit is not None:
+            self.torrent_connections_limit = payload.torrent_connections_limit
+            for torrent_handle in self.libtorrent_session.get_torrents():
+                if torrent_handle.is_valid():
+                    torrent_handle.set_max_connections(self.torrent_connections_limit)
+
         self.libtorrent_session.apply_settings(apply_settings)
 
         # libtorrent port konfiguráció
         if payload.port is not None:
             self.libtorrent_session.listen_on(payload.port, payload.port)  # type: ignore[call-arg]
 
-        if payload.peer_limit is not None:
-            self.peer_limit = payload.peer_limit
+        if payload.torrent_connections_limit is not None:
+            self.torrent_connections_limit = payload.torrent_connections_limit
 
     def get_torrents(self) -> List[Torrent]:
         torrent_handlers = self.libtorrent_session.get_torrents()
@@ -128,7 +143,8 @@ class TorrentsService:
         params.storage_mode = libtorrent.storage_mode_t.storage_mode_sparse
 
         torrent_handle = self.libtorrent_session.add_torrent(params)
-        torrent_handle.set_max_connections(self.peer_limit)
+        torrent_handle.set_max_connections(self.torrent_connections_limit)
+        torrent_handle.unset_flags(libtorrent.torrent_flags.disable_pex)
 
         is_valid = False
 
@@ -433,10 +449,10 @@ class TorrentsService:
         return Torrent(
             name=status.name,
             info_hash=str(status.info_hash),
-            download_speed=status.download_rate,
-            upload_speed=status.upload_rate,
+            download_speed=status.download_payload_rate,
+            upload_speed=status.upload_payload_rate,
             downloaded=status.total_done,
-            uploaded=status.total_upload,
+            uploaded=status.total_payload_upload,
             state=status.state,
             progress=status.progress,
             total=total,

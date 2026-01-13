@@ -7,7 +7,7 @@ import type { OpenAPIConfig } from './core/OpenAPI';
 import { FetchHttpRequest } from './core/FetchHttpRequest';
 import { AppService } from './services/AppService';
 import { AuthenticationService } from './services/AuthenticationService';
-import { ExternalSettingsService } from './services/ExternalSettingsService';
+import { ExternalRelaySettingsService } from './services/ExternalRelaySettingsService';
 import { MeService } from './services/MeService';
 import { MetadataService } from './services/MetadataService';
 import { SettingsService } from './services/SettingsService';
@@ -23,7 +23,7 @@ type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class SourceClient {
     public readonly app: AppService;
     public readonly authentication: AuthenticationService;
-    public readonly externalSettings: ExternalSettingsService;
+    public readonly externalRelaySettings: ExternalRelaySettingsService;
     public readonly me: MeService;
     public readonly metadata: MetadataService;
     public readonly settings: SettingsService;
@@ -50,7 +50,7 @@ export class SourceClient {
         });
         this.app = new AppService(this.request);
         this.authentication = new AuthenticationService(this.request);
-        this.externalSettings = new ExternalSettingsService(this.request);
+        this.externalRelaySettings = new ExternalRelaySettingsService(this.request);
         this.me = new MeService(this.request);
         this.metadata = new MetadataService(this.request);
         this.settings = new SettingsService(this.request);
