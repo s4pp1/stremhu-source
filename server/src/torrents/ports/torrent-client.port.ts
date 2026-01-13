@@ -8,6 +8,9 @@ export type TorrentClientToAddTorrent = {
 export type TorrentClientToUpdateConfig = {
   downloadLimit?: number;
   uploadLimit?: number;
+  connectionsLimit?: number;
+  torrentConnectionsLimit?: number;
+  enableUpnpAndNatpmp?: boolean;
   port?: number;
 };
 

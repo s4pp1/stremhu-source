@@ -36,16 +36,6 @@ export class UpdateSettingDto {
   address?: string;
 
   @IsOptional()
-  @IsNumber()
-  @ApiProperty({ required: false })
-  downloadLimit?: number;
-
-  @IsOptional()
-  @IsNumber()
-  @ApiProperty({ required: false })
-  uploadLimit?: number;
-
-  @IsOptional()
   @IsBoolean()
   @ApiProperty({ required: false })
   hitAndRun?: boolean;
@@ -53,14 +43,14 @@ export class UpdateSettingDto {
   @IsOptional()
   @IsNullable()
   @IsNumber()
-  @ApiProperty({ type: 'number', nullable: true, required: false })
-  keepSeedSeconds?: number | null;
+  @ApiProperty({ type: 'number', required: false })
+  keepSeedSeconds?: number;
 
   @IsOptional()
   @IsNullable()
   @IsNumber()
-  @ApiProperty({ type: 'number', nullable: true, required: false })
-  cacheRetentionSeconds?: number | null;
+  @ApiProperty({ type: 'number', required: false })
+  cacheRetentionSeconds?: number;
 
   @IsOptional()
   @IsNullable()

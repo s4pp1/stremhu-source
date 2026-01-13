@@ -3,27 +3,25 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from 'src/auth/auth.module';
 import { CatalogModule } from 'src/catalog/catalog.module';
 import { LocalIpModule } from 'src/local-ip/local-ip.module';
-import { TorrentsModule } from 'src/torrents/torrents.module';
-import { UsersModule } from 'src/users/users.module';
 
+import { AppSettingsModule } from './app/app-settings.module';
 import { SettingsCoreModule } from './core/settings-core.module';
-import { ExternalSettingsController } from './external-settings.controller';
+import { ExternalRelaySettingsController } from './external-relay-settings.controller';
+import { RelaySettingsModule } from './relay/relay-settings.module';
 import { SettingsController } from './settings.controller';
 import { SettingsService } from './settings.service';
-import { SetupModule } from './setup/setup.module';
 
 @Module({
   imports: [
-    SettingsCoreModule,
     AuthModule,
-    UsersModule,
-    SetupModule,
-    TorrentsModule,
+    SettingsCoreModule,
+    AppSettingsModule,
+    RelaySettingsModule,
     LocalIpModule,
     CatalogModule,
   ],
   providers: [SettingsService],
-  controllers: [SettingsController, ExternalSettingsController],
+  controllers: [SettingsController, ExternalRelaySettingsController],
   exports: [SettingsService],
 })
 export class SettingsModule {}

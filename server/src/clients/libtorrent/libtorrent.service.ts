@@ -10,7 +10,7 @@ import { join } from 'node:path';
 import { setTimeout } from 'node:timers/promises';
 
 import { NodeEnvEnum } from 'src/config/enum/node-env.enum';
-import { SettingsStore } from 'src/settings/core/settings.store';
+import { RelaySettingsService } from 'src/settings/relay/relay-settings.service';
 import {
   ClientTorrent,
   ClientTorrentFile,
@@ -38,7 +38,7 @@ export class LibtorrentService implements TorrentClient {
     private readonly libtorrentClient: LibTorrentClient,
     private readonly libtorrentStreamService: LibtorrentStreamService,
     private readonly configService: ConfigService,
-    private readonly settingsStore: SettingsStore,
+    private readonly relaySettingsService: RelaySettingsService,
   ) {
     this.downloadsDir = this.configService.getOrThrow<string>(
       'torrent.downloads-dir',
@@ -51,11 +51,10 @@ export class LibtorrentService implements TorrentClient {
     this.isShuttingDown = false;
 
     const port = this.configService.getOrThrow<number>('torrent.port');
-    const peerLimit =
-      this.configService.getOrThrow<number>('torrent.peer-limit');
+
     const nodeEnv = this.configService.getOrThrow<NodeEnvEnum>('app.node-env');
 
-    const setting = await this.settingsStore.findOneOrThrow();
+    const setting = await this.relaySettingsService.get();
 
     const idDevEnv = nodeEnv === NodeEnvEnum.DEV;
 
@@ -133,7 +132,9 @@ export class LibtorrentService implements TorrentClient {
       port,
       download_rate_limit: setting.downloadLimit,
       upload_rate_limit: setting.uploadLimit,
-      peer_limit: peerLimit,
+      connections_limit: setting.connectionsLimit,
+      torrent_connections_limit: setting.torrentConnectionsLimit,
+      enable_upnp_and_natpmp: setting.enableUpnpAndNatpmp,
     });
 
     this.logger.log('✅ libtorrent kliens elindult');
@@ -163,12 +164,7 @@ export class LibtorrentService implements TorrentClient {
   async updateConfig(payload: TorrentClientToUpdateConfig) {
     if (!this.libtorrentEngineProcess) return;
 
-    await this.libtorrentClient.torrents.updateSettings({
-      download_rate_limit:
-        payload.downloadLimit === -1 ? 0 : payload.downloadLimit,
-      upload_rate_limit: payload.uploadLimit === -1 ? 0 : payload.uploadLimit,
-      port: payload.port,
-    });
+    await this.libtorrentClient.torrents.updateSettings(payload);
   }
 
   async getTorrents(): Promise<ClientTorrent[]> {

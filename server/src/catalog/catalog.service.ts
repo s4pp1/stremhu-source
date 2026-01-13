@@ -5,7 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 
-import { SettingsStore } from 'src/settings/core/settings.store';
+import { AppSettingsService } from 'src/settings/app/app-settings.service';
 
 import { CATALOG_CLIENT } from './catalog-client.token';
 import { ResolveImdbId, ResolvedImdbId } from './catalog.types';
@@ -17,14 +17,14 @@ export class CatalogService {
 
   constructor(
     @Inject(CATALOG_CLIENT) private readonly client: CatalogClient,
-    private settingsStore: SettingsStore,
+    private appSettingsService: AppSettingsService,
   ) {}
 
   async catalogHealthCheck(catalogToken?: string): Promise<HealthDto> {
     let token = catalogToken || null;
 
     if (!catalogToken) {
-      const setting = await this.settingsStore.findOneOrThrow();
+      const setting = await this.appSettingsService.get();
       token = setting.catalogToken;
     }
 
@@ -50,7 +50,7 @@ export class CatalogService {
 
     if (season !== 0) return { imdbId: payload.imdbId };
 
-    const { catalogToken } = await this.settingsStore.findOneOrThrow();
+    const { catalogToken } = await this.appSettingsService.get();
     if (!catalogToken) return { imdbId };
 
     try {

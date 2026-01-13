@@ -3,33 +3,36 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 @Entity('settings')
 export class Setting {
   @PrimaryColumn({ type: 'text' })
-  id!: string;
+  key: string;
 
-  @Column({
-    name: 'enebled_local_ip',
-    type: 'boolean',
-    default: true,
-  })
-  enebledlocalIp!: boolean;
+  @Column({ type: 'simple-json', default: '{}' })
+  value: Record<string, unknown>;
 
-  @Column({ type: 'text', nullable: true, default: null })
-  address!: string | null;
+  // @Column({
+  //   name: 'enebled_local_ip',
+  //   type: 'boolean',
+  //   default: true,
+  // })
+  // enebledlocalIp!: boolean;
 
-  @Column({ name: 'download_limit', type: 'integer', default: -1 })
-  downloadLimit!: number;
+  // @Column({ type: 'text', nullable: true, default: null })
+  // address!: string | null;
 
-  @Column({ name: 'upload_limit', type: 'integer', default: -1 })
-  uploadLimit!: number;
+  // @Column({ name: 'download_limit', type: 'integer', default: -1 })
+  // downloadLimit!: number;
 
-  @Column({ name: 'hit_and_run', type: 'boolean', default: false })
-  hitAndRun!: boolean;
+  // @Column({ name: 'upload_limit', type: 'integer', default: -1 })
+  // uploadLimit!: number;
 
-  @Column({ name: 'keep_seed_seconds', type: 'int', nullable: true })
-  keepSeedSeconds!: number | null;
+  // @Column({ name: 'hit_and_run', type: 'boolean', default: false })
+  // hitAndRun!: boolean;
 
-  @Column({ name: 'cache_retention_seconds', type: 'integer', nullable: true })
-  cacheRetentionSeconds!: number | null;
+  // @Column({ name: 'keep_seed_seconds', type: 'int', nullable: true })
+  // keepSeedSeconds!: number | null;
 
-  @Column({ name: 'catalog_token', type: 'text', nullable: true })
-  catalogToken!: string | null;
+  // @Column({ name: 'cache_retention_seconds', type: 'integer', nullable: true })
+  // cacheRetentionSeconds!: number | null;
+
+  // @Column({ name: 'catalog_token', type: 'text', nullable: true })
+  // catalogToken!: string | null;
 }

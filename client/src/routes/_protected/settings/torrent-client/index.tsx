@@ -1,7 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { TriangleAlertIcon } from 'lucide-react'
 
-import { Alert, AlertTitle } from '@/shared/components/ui/alert'
 import {
   Card,
   CardContent,
@@ -11,9 +9,10 @@ import {
 } from '@/shared/components/ui/card'
 import { Separator } from '@/shared/components/ui/separator'
 
-import { DownloadSpeed } from './-features/download-speed'
+import { Connection } from './-features/connection'
+import { Speed } from './-features/speed'
 import { Torrents } from './-features/torrents'
-import { UploadSpeed } from './-features/upload-speed'
+import { UsedPort } from './-features/used-port'
 
 export const Route = createFileRoute('/_protected/settings/torrent-client/')({
   component: RouteComponent,
@@ -23,18 +22,17 @@ function RouteComponent() {
   return (
     <div className="grid gap-8">
       <div className="grid gap-4">
-        <div className="grid sm:grid-cols-2 gap-4">
-          <DownloadSpeed />
-          <UploadSpeed />
+        <div className="columns-1 md:columns-2 gap-4">
+          <div className="break-inside-avoid mb-4">
+            <UsedPort />
+          </div>
+          <div className="break-inside-avoid mb-4">
+            <Speed />
+          </div>
+          <div className="break-inside-avoid mb-4">
+            <Connection />
+          </div>
         </div>
-        <Alert className="text-orange-400 *:data-[slot=alert-description]:text-orange-400 ">
-          <TriangleAlertIcon />
-          <AlertTitle className="line-clamp-3">
-            A zavartalan letöltéshez feltöltésre is szükség van. Állítsd a
-            feltöltési limitet legalább a kívánt letöltési sebesség 10%-ára,
-            hogy ne fogja vissza a letöltést.
-          </AlertTitle>
-        </Alert>
       </div>
       <Separator />
       <Card>

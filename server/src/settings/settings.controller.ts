@@ -7,7 +7,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { toDto } from 'src/common/utils/to-dto';
 import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
-import { SettingsStore } from './core/settings.store';
+import { AppSettingsService } from './app/app-settings.service';
 import { LocalUrlRequestDto } from './dto/local-url-request.dto';
 import { LocalUrlDto } from './dto/local-url.dto';
 import { SettingDto } from './dto/setting.dto';
@@ -20,14 +20,14 @@ import { SettingsService } from './settings.service';
 @ApiTags('Settings')
 export class SettingsController {
   constructor(
-    private readonly settingsStore: SettingsStore,
     private readonly settingsService: SettingsService,
+    private readonly appSettingsService: AppSettingsService,
   ) {}
 
   @ApiResponse({ status: 200, type: SettingDto })
   @Get('/')
   async findOne(): Promise<SettingDto> {
-    const setting = await this.settingsStore.findOneOrThrow();
+    const setting = await this.appSettingsService.get();
     return toDto(SettingDto, setting);
   }
 
@@ -35,16 +35,13 @@ export class SettingsController {
   @Put('/')
   async update(@Body() body: UpdateSettingDto): Promise<SettingDto> {
     const setting = await this.settingsService.update(body);
-    return {
-      ...setting,
-      address: setting.address || '',
-    };
+    return setting;
   }
 
   @ApiResponse({ status: 200, type: LocalUrlDto })
   @Post('/local-url')
   buildLocalUrl(@Body() body: LocalUrlRequestDto): LocalUrlDto {
-    const localUrl = this.settingsStore.buildLocalUrl(body.ipv4);
+    const localUrl = this.settingsService.buildLocalUrl(body.ipv4);
 
     return {
       localUrl,

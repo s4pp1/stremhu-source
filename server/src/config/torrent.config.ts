@@ -12,14 +12,6 @@ export default registerAs('torrent', () => {
     ? _.parseInt(process.env.TORRENT_PORT)
     : undefined;
 
-  const peerLimit = process.env.TORRENT_PEER_LIMIT
-    ? _.parseInt(process.env.TORRENT_PEER_LIMIT)
-    : undefined;
-
-  const storeCacheSlots = process.env.WEB_TORRENT_STORE_CACHE_SLOTS
-    ? _.parseInt(process.env.WEB_TORRENT_STORE_CACHE_SLOTS)
-    : undefined;
-
   const configs: ZodConfig<TorrentConfig> = {
     client: {
       value: process.env.TORRENT_CLIENT ?? TorrentClientEnum.LIBTORRENT,
@@ -36,14 +28,6 @@ export default registerAs('torrent', () => {
     'torrents-dir': {
       value: join(process.cwd(), '../data/torrents'),
       zod: z.string().trim().nonempty(),
-    },
-    'peer-limit': {
-      value: peerLimit ?? 20,
-      zod: z.number().positive(),
-    },
-    'store-cache-slots': {
-      value: storeCacheSlots ?? 10,
-      zod: z.number().nonnegative(),
     },
   };
 

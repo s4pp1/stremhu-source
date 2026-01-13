@@ -1,18 +1,13 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { isUndefined, omitBy } from 'lodash';
-import { EntityManager, Repository } from 'typeorm';
-
-import { GLOBAL_ID } from 'src/common/constant/common.constant';
+import { DeepPartial, EntityManager, Repository } from 'typeorm';
 
 import { Setting } from '../entity/setting.entity';
-import { SettingToCreate, SettingToUpdate } from '../settings.types';
+import { APP_SETTINGS, TORRENT_SETTINGS } from '../settings.constant';
 
 @Injectable()
 export class SettingsStore {
   constructor(
-    private readonly configService: ConfigService,
     @InjectRepository(Setting)
     private readonly settingRepository: Repository<Setting>,
   ) {}
@@ -21,64 +16,26 @@ export class SettingsStore {
     return manager ? manager.getRepository(Setting) : this.settingRepository;
   }
 
-  async create(payload: SettingToCreate): Promise<Setting> {
-    const settingEntity = this.settingRepository.create(payload);
-    const setting = await this.settingRepository.save(settingEntity);
-
-    return setting;
+  createEntity(data: DeepPartial<Setting>): Setting {
+    const entity = this.settingRepository.create(data);
+    return entity;
   }
-
-  async findOne(): Promise<Setting | null> {
-    const setting = await this.settingRepository.findOne({
-      where: { id: GLOBAL_ID },
-    });
-
-    return setting;
-  }
-
-  async findOneOrThrow(): Promise<Setting> {
-    const setting = await this.findOne();
-
-    if (!setting) {
-      throw new InternalServerErrorException('A beállítások nem érhetők el');
-    }
-
-    return setting;
-  }
-
-  async update(
-    payload: SettingToUpdate,
+  async createOrUpdate(
+    entity: Setting,
     manager?: EntityManager,
   ): Promise<Setting> {
     const repository = this.getRepository(manager);
-
-    const setting = await this.findOneOrThrow();
-
-    const updateData = omitBy(payload, isUndefined);
-
-    await repository.update({ id: GLOBAL_ID }, updateData);
-
-    return { ...setting, ...updateData };
+    const setting = await repository.save(entity);
+    return setting;
   }
 
-  async getEndpoint() {
-    const setting = await this.findOneOrThrow();
+  async findOneByKey(
+    key: typeof APP_SETTINGS | typeof TORRENT_SETTINGS,
+  ): Promise<Setting | null> {
+    const setting = await this.settingRepository.findOne({
+      where: { key },
+    });
 
-    let endpoint = this.buildLocalUrl('127.0.0.1');
-
-    if (setting.enebledlocalIp && setting.address) {
-      endpoint = this.buildLocalUrl(setting.address);
-    }
-
-    if (!setting.enebledlocalIp && setting.address) {
-      endpoint = setting.address;
-    }
-
-    return endpoint;
-  }
-
-  buildLocalUrl(ipAddress: string) {
-    const httpsPort = this.configService.getOrThrow<number>('app.https-port');
-    return `https://${ipAddress.split('.').join('-')}.local-ip.medicmobile.org:${httpsPort}`;
+    return setting;
   }
 }
