@@ -12,6 +12,7 @@ import _ from 'lodash';
 import { parseTorrent } from 'src/common/utils/parse-torrent.util';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
+import { FIND_TORRENTS_LIMIT } from '../adapter.contant';
 import {
   AdapterParsedTorrent,
   AdapterTorrentId,
@@ -76,6 +77,10 @@ export class MajomparadeClient {
     accumulator: MajomparadeTorrent[] = [],
   ): Promise<MajomparadeTorrent[]> {
     try {
+      if (accumulator.length > FIND_TORRENTS_LIMIT) {
+        return accumulator;
+      }
+
       const { imdbId, categories } = payload;
 
       const torrentsUrl = new URL(
