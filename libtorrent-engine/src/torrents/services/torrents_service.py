@@ -35,6 +35,10 @@ class TorrentsService:
                 "connections_limit": 200,
                 "enable_dht": False,
                 "enable_lsd": False,
+                "auto_sequential": False,
+                "piece_extent_affinity": True,
+                "piece_timeout": 10,
+                "request_timeout": 20,
             }
         )
 
