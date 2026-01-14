@@ -164,7 +164,14 @@ export class LibtorrentService implements TorrentClient {
   async updateConfig(payload: TorrentClientToUpdateConfig) {
     if (!this.libtorrentEngineProcess) return;
 
-    await this.libtorrentClient.torrents.updateSettings(payload);
+    await this.libtorrentClient.torrents.updateSettings({
+      port: payload.port,
+      connections_limit: payload.connectionsLimit,
+      torrent_connections_limit: payload.torrentConnectionsLimit,
+      download_rate_limit: payload.downloadLimit,
+      upload_rate_limit: payload.uploadLimit,
+      enable_upnp_and_natpmp: payload.enableUpnpAndNatpmp,
+    });
   }
 
   async getTorrents(): Promise<ClientTorrent[]> {
