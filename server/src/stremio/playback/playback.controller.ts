@@ -49,6 +49,7 @@ export class PlaybackController {
     @Param('fileIdx', ParseIntPipe) fileIndex: number,
   ) {
     const rangeHeader = req.headers.range;
+    this.logger.log(`▶️ Lejátszás indítása "${rangeHeader}" range-el.`);
 
     const file = await this.playbackService.play({
       imdbId,
