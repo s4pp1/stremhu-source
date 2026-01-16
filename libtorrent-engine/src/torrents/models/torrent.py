@@ -4,13 +4,12 @@ from torrents.models.file import File
 
 
 class Torrent:
-    files: Dict[int, File] = {}
-
     def __init__(
         self,
         current_priorities: List[int],
         default_priorities: List[int],
     ):
+        self.files: Dict[int, File] = {}
         self.current_priorities = current_priorities
         self.default_priorities = default_priorities
 

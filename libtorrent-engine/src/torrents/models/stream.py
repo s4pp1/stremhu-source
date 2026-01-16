@@ -4,7 +4,8 @@ from torrents.models.stream_piece import StreamPiece
 
 
 class Stream:
-    stream_pieces: List[StreamPiece] = []
+    def __init__(self):
+        self.stream_pieces: List[StreamPiece] = []
 
     def set_stream_pieces(
         self,
