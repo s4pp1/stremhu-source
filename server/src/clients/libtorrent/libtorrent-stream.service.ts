@@ -11,7 +11,7 @@ import { LIBTORRENT_CLIENT } from './libtorrent-client.token';
 import { CreateReadStream } from './type/create-read-stream.type';
 import { StreamIterator } from './type/stream-iterator.type';
 
-const WAIT_TIMEOUT_MS = 40_000;
+const WAIT_TIMEOUT_MS = 60_000;
 
 @Injectable()
 export class LibtorrentStreamService {

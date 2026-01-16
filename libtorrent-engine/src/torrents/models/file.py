@@ -4,13 +4,12 @@ from torrents.models.stream import Stream
 
 
 class File:
-    streams: Dict[str, Stream] = {}
-
     def __init__(
         self,
         start_piece_index: int,
         end_piece_index: int,
     ):
+        self.streams: Dict[str, Stream] = {}
         self.start_piece_index = start_piece_index
         self.end_piece_index = end_piece_index
 
