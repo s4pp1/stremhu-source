@@ -10,7 +10,14 @@ export class SettingsStructureRefactor1768251172677 implements MigrationInterfac
     await queryRunner.query(
       `INSERT INTO "temporary_settings"("key", "value")
        SELECT 'app',
-              json_object('enebledlocalIp', "enebled_local_ip", 'address', "address")
+              json_object(
+                'enebledlocalIp', CASE WHEN enebled_local_ip = 1 THEN json('true') ELSE json('false') END,
+                'address', "address",
+                'hitAndRun', CASE WHEN hit_and_run = 1 THEN json('true') ELSE json('false') END,
+                'catalogToken', "catalog_token",
+                'keepSeedSeconds', "keep_seed_seconds",
+                'cacheRetentionSeconds', "cache_retention_seconds"
+              )
        FROM "settings"
        LIMIT 1`,
     );
