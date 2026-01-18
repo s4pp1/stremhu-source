@@ -15,7 +15,10 @@ from torrents.models.torrent import Torrent
 
 
 class StreamPriorityService:
-    torrents: Dict[str, Torrent] = {}
+    def __init__(
+        self,
+    ):
+        self.torrents: Dict[str, Torrent] = {}
 
     def get_or_raise(
         self,
@@ -136,8 +139,8 @@ class StreamPriorityService:
                 stream = file.streams[stream_index]
 
                 for stream in stream.stream_pieces:
-                    piece = all_stream_pieces.get(stream.piece_index)
-                    if piece is None or stream.piece_priority > piece:
+                    piece_priority = all_stream_pieces.get(stream.piece_index)
+                    if piece_priority is None or stream.piece_priority > piece_priority:
                         all_stream_pieces[stream.piece_index] = stream.piece_priority
 
         updated_priorities = torrent.current_priorities.copy()

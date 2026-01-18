@@ -36,9 +36,11 @@ class TorrentsService:
                 "enable_dht": False,
                 "enable_lsd": False,
                 "auto_sequential": False,
+                "peer_timeout": 30,
                 "piece_extent_affinity": True,
-                "piece_timeout": 10,
-                "request_timeout": 20,
+                "piece_timeout": 20,
+                "request_timeout": 15,
+                "unchoke_interval": 10,
             }
         )
 
