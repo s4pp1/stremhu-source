@@ -54,6 +54,7 @@ export function Speed() {
       try {
         await updateSetting({
           downloadLimit: value.downloadLimit ? Number(value.downloadLimit) : 0,
+          uploadLimit: value.uploadLimit ? Number(value.uploadLimit) : 0,
         })
         toast.success('Módosítások elmentve')
       } catch (error) {
