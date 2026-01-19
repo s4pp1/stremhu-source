@@ -10,6 +10,7 @@ import { TorrentsCacheCoreModule } from 'src/torrents-cache/core/torrents-cache-
 import { TrackersCoreModule } from 'src/trackers/core/trackers-core.module';
 
 import { TorrentsCoreModule } from './core/torrents-core.module';
+import { ExternalRelaySettingsController } from './external-relay-settings.controller';
 import { TorrentsController } from './torrents.controller';
 import { TorrentsService } from './torrents.service';
 
@@ -36,7 +37,7 @@ import { TorrentsService } from './torrents.service';
       },
     },
   ],
-  controllers: [TorrentsController],
+  controllers: [TorrentsController, ExternalRelaySettingsController],
   exports: [TorrentsService],
 })
 export class TorrentsModule {}
