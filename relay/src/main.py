@@ -8,6 +8,7 @@ import uvicorn
 from config import config
 from fastapi import FastAPI
 from monitoring.router import router as monitoring_router
+from stream.router import router as stream_router
 from torrents.router import router as torrents_router
 
 
@@ -22,14 +23,14 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Torrent Engine",
-    version="0.1.0",
+    title="StremHU Relay",
     lifespan=lifespan,
 )
 
 
 app.include_router(monitoring_router)
 app.include_router(torrents_router)
+app.include_router(stream_router)
 
 if __name__ == "__main__":
     uvicorn.run(

@@ -1,7 +1,8 @@
 from typing import List
 
 import libtorrent as libtorrent
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from libtorrent.dependencies import get_libtorrent_service
 
 from .schemas import (
     AddTorrent,
@@ -20,6 +21,14 @@ router = APIRouter(
 )
 
 torrents_service = TorrentsService()
+
+
+def get_torrents_service(
+    libtorrent_service=Depends(get_libtorrent_service),
+):
+    return TorrentsService(
+        libtorrent_service=libtorrent_service,
+    )
 
 
 @router.post(

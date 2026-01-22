@@ -5,6 +5,7 @@ from typing import Any, Dict, List
 
 import libtorrent as libtorrent
 from fastapi import HTTPException
+from libtorrent.service import LibtorrentService
 from torrents.constants import (
     PRIO_LOW,
     PRIO_SKIP,
@@ -26,7 +27,12 @@ logger = logging.getLogger(__name__)
 
 
 class TorrentsService:
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        libtorrent_service: LibtorrentService,
+    ) -> None:
+        self.libtorrent_service = libtorrent_service
+
         self.stream_priority_service = StreamPriorityService()
 
         self.libtorrent_session = libtorrent.session()
