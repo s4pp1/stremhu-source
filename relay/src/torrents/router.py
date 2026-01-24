@@ -2,72 +2,64 @@ from typing import List
 
 import libtorrent as libtorrent
 from fastapi import APIRouter, Depends
-from libtorrent.dependencies import get_libtorrent_service
-
-from .schemas import (
+from torrents.dependencies import get_torrents_service
+from torrents.schemas import (
     AddTorrent,
     File,
-    PrioritizeAndWait,
-    PrioritizeAndWaitRequest,
-    Torrent,
-    TorrentState,
-    UpdateSettings,
+    RelayTorrent,
+    RelayTorrentState,
 )
-from .services.torrents_service import TorrentsService
+from torrents.service import TorrentsService
 
 router = APIRouter(
     prefix="/torrents",
     tags=["Torrents"],
 )
 
-torrents_service = TorrentsService()
-
-
-def get_torrents_service(
-    libtorrent_service=Depends(get_libtorrent_service),
-):
-    return TorrentsService(
-        libtorrent_service=libtorrent_service,
-    )
-
 
 @router.post(
     "/",
-    response_model=Torrent,
+    response_model=RelayTorrent,
     operation_id="add_torrent",
 )
-def add_torrent(req: AddTorrent):
+def add_torrent(
+    req: AddTorrent,
+    torrents_service: TorrentsService = Depends(get_torrents_service),
+):
     return torrents_service.add_torrent(req)
 
 
 @router.get(
     "/",
-    response_model=List[Torrent],
+    response_model=List[RelayTorrent],
     operation_id="get_torrents",
 )
-def get_torrents():
+def get_torrents(
+    torrents_service: TorrentsService = Depends(get_torrents_service),
+):
     return torrents_service.get_torrents()
 
 
 @router.get(
     "/{info_hash}",
-    response_model=Torrent,
+    response_model=RelayTorrent,
     operation_id="get_torrent",
 )
 def get_torrent(
     info_hash: str,
+    torrents_service: TorrentsService = Depends(get_torrents_service),
 ):
-    parsed_info_hash = torrents_service.parse_info_hash(info_hash)
-    return torrents_service.get_torrent_or_raise(parsed_info_hash)
+    return torrents_service.get_torrent_or_raise(info_hash)
 
 
 @router.get(
     "/{info_hash}/verification",
-    response_model=TorrentState,
+    response_model=RelayTorrentState,
     operation_id="get_torrent_state",
 )
 def get_torrent_state(
     info_hash: str,
+    torrents_service: TorrentsService = Depends(get_torrents_service),
 ):
     parsed_info_hash = torrents_service.parse_info_hash(info_hash)
     return torrents_service.get_torrent_state(parsed_info_hash)
@@ -81,66 +73,21 @@ def get_torrent_state(
 def get_torrent_file(
     info_hash: str,
     file_index: int,
+    torrents_service: TorrentsService = Depends(get_torrents_service),
 ):
     parsed_info_hash = torrents_service.parse_info_hash(info_hash)
     return torrents_service.get_torrent_file(parsed_info_hash, file_index)
 
 
-@router.post(
-    "/{info_hash}/files/{file_index}/prioritize_and_wait",
-    response_model=PrioritizeAndWait,
-    operation_id="prioritize_and_wait",
-)
-def prioritize_and_wait(
-    info_hash: str,
-    stream_id: str,
-    file_index: int,
-    req: PrioritizeAndWaitRequest,
-):
-    parsed_info_hash = torrents_service.parse_info_hash(info_hash)
-    return torrents_service.prioritize_and_wait(
-        parsed_info_hash,
-        stream_id,
-        file_index,
-        req,
-    )
-
-
-@router.post(
-    "/{info_hash}/files/{file_index}/pieces/priorities/reset",
-    operation_id="reset_pieces_priorities",
-)
-def reset_pieces_priorities(
-    info_hash: str,
-    file_index: int,
-    stream_id: str,
-):
-    parsed_info_hash = torrents_service.parse_info_hash(info_hash)
-    torrents_service.reset_pieces_priorities(
-        parsed_info_hash,
-        file_index,
-        stream_id,
-    )
-
-
 @router.delete(
     "/{info_hash}",
-    response_model=Torrent,
+    response_model=RelayTorrent,
     operation_id="delete_torrent",
 )
 def delete_torrent(
     info_hash: str,
+    torrents_service: TorrentsService = Depends(get_torrents_service),
 ):
-    parsed_info_hash = torrents_service.parse_info_hash(info_hash)
-    return torrents_service.remove_torrent(parsed_info_hash)
-
-
-@router.put(
-    "/settings",
-    response_model=None,
-    operation_id="update_settings",
-)
-def update_settings(
-    req: UpdateSettings,
-):
-    torrents_service.update_settings(req)
+    return torrents_service.remove_torrent(
+        info_hash=info_hash,
+    )

@@ -1,18 +1,15 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
+from pydantic.alias_generators import to_camel
 
 
-class UpdateSettings(BaseModel):
-    download_rate_limit: Optional[int] = None
-    upload_rate_limit: Optional[int] = None
-    port: Optional[int] = None
-    connections_limit: Optional[int] = None
-    torrent_connections_limit: Optional[int] = None
-    enable_upnp_and_natpmp: Optional[bool] = None
+class RelayTorrentState(BaseModel):
+    model_config = ConfigDict(
+        populate_by_name=True,
+        alias_generator=to_camel,
+    )
 
-
-class TorrentState(BaseModel):
     state: int = Field(
         ...,
         description=(
@@ -25,7 +22,12 @@ class TorrentState(BaseModel):
     progress: float
 
 
-class Torrent(TorrentState):
+class RelayTorrent(RelayTorrentState):
+    model_config = ConfigDict(
+        populate_by_name=True,
+        alias_generator=to_camel,
+    )
+
     name: str
     info_hash: str
     download_speed: int
@@ -36,12 +38,25 @@ class Torrent(TorrentState):
 
 
 class AddTorrent(BaseModel):
+    model_config = ConfigDict(
+        populate_by_name=True,
+        alias_generator=to_camel,
+    )
+
     torrent_file_path: str
-    save_path: str = Field(..., description="A torrents mappa abszolút elérési úrja.")
+    save_path: str = Field(
+        ...,
+        description="A torrents mappa abszolút elérési úrja.",
+    )
     download_full_torrent: Optional[bool] = False
 
 
 class File(BaseModel):
+    model_config = ConfigDict(
+        populate_by_name=True,
+        alias_generator=to_camel,
+    )
+
     info_hash: str
     file_index: int
     path: str
@@ -53,22 +68,8 @@ class File(BaseModel):
     )
 
 
-class PrioritizeAndWaitRequest(BaseModel):
-    start_byte: int
-    end_byte: int
-
-
 class PrioritizeAndWait(BaseModel):
     end_byte: Optional[int] = Field(...)
-
-
-class RemoveTorrent(BaseModel):
-    deleteFiles: bool = False
-
-
-class StreamPiece(BaseModel):
-    piece_index: int
-    piece_priority: int
 
 
 class PieceOrFileAvailable(BaseModel):

@@ -16,5 +16,5 @@
   },
   "ruff.enable": true,
   "python.analysis.autoImportCompletions": true,
-  "python.analysis.extraPaths": ["./libtorrent-engine/src"]
+  "python.analysis.extraPaths": ["./relay/src"]
 }

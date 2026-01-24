@@ -8,6 +8,7 @@ import uvicorn
 from config import config
 from fastapi import FastAPI
 from monitoring.router import router as monitoring_router
+from setting.router import router as setting_router
 from stream.router import router as stream_router
 from torrents.router import router as torrents_router
 
@@ -29,6 +30,7 @@ app = FastAPI(
 
 
 app.include_router(monitoring_router)
+app.include_router(setting_router)
 app.include_router(torrents_router)
 app.include_router(stream_router)
 

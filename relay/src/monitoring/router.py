@@ -11,4 +11,4 @@ router = APIRouter()
     tags=["Monitoring"],
 )
 async def health() -> Health:
-    return Health(ok=True)
+    return Health()

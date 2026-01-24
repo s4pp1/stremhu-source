@@ -1,176 +1,321 @@
-from typing import Dict, List, Tuple
+import asyncio
+from typing import AsyncIterator, Dict
+from uuid import uuid4
 
-from torrents.constants import (
-    EXTRA_PIECE_COUNT,
-    PREFETCH_HIGH_PIECES,
-    PREFETCH_MEDIUM_PIECES,
-    PREFETCH_PIECES,
-    PRIO_HIGH,
-    PRIO_MEDIUM,
-    PRIO_NORMAL,
-    PRIO_SKIP,
-)
-from torrents.models.stream_piece import StreamPiece
-from torrents.models.torrent import Torrent
+import libtorrent as libtorrent
+from fastapi import HTTPException, Request
+from libtorrent_client.service import LibtorrentClientService
+from stream.models import File, Stream, Torrent
+from stream.schemas import ParsedRangeHeader, PlaybackResponse
+from torrents.schemas import PieceOrFileAvailable, PrioritizeAndWait
 
 
 class StreamService:
     def __init__(
         self,
+        libtorrent_client_service: LibtorrentClientService,
     ):
+        self.libtorrent_client_service = libtorrent_client_service
         self.torrents: Dict[str, Torrent] = {}
 
-    def get_or_raise(
+    async def stream(
         self,
         info_hash: str,
-    ) -> Torrent:
-        if info_hash not in self.torrents:
-            raise KeyError(f'A(z) "{info_hash}" nem létezik.')
-        return self.torrents[info_hash]
+        file_index: int,
+        request: Request,
+        range_header: str | None = None,
+    ) -> PlaybackResponse:
+        torrent_handle = self.libtorrent_client_service.get_torrent_or_raise(
+            libtorrent.sha1_hash(bytes.fromhex(info_hash))
+        )
 
-    def create_or_raise(
-        self,
-        info_hash: str,
-        priorities: List[int],
-        priority: int,
-    ):
-        if info_hash in self.torrents:
-            raise KeyError(f'A(z) "{info_hash}" már létezik.')
-
-        default_priorities = priorities.copy()
-
-        for index in range(len(default_priorities)):
-            default_priorities[index] = priority
-
+        # Torrent megkeresése vagy létrehozása
         torrent = Torrent(
-            current_priorities=default_priorities,
-            default_priorities=default_priorities,
+            torrent_handle=torrent_handle,
         )
-        self.torrents[info_hash] = torrent
 
-        return self.get_or_raise(info_hash)
+        if info_hash in self.torrents:
+            torrent = self.torrents[info_hash]
 
-    def remove(
-        self,
-        info_hash: str,
-    ):
-        self.torrents.pop(info_hash)
-
-    def start_stream(
-        self,
-        info_hash: str,
-        file_index: int,
-        file_start_piece_index: int,
-        file_end_piece_index: int,
-        stream_id: str,
-    ):
-        torrent = self.get_or_raise(info_hash)
-
-        file = torrent.get_or_create_file(
+        # File megkeresése vagy létrehozása
+        torrent_file = File(
             file_index=file_index,
-            start_piece_index=file_start_piece_index,
-            end_piece_index=file_end_piece_index,
+            torrent=torrent,
         )
 
-        if not file.streams:
-            priorities = torrent.default_priorities.copy()
-            for priority_index in range(len(priorities)):
-                priorities[priority_index] = PRIO_SKIP
-            torrent.set_current_priorities(priorities)
+        if file_index in torrent.files:
+            torrent_file = torrent.files[file_index]
 
-        file.get_or_create_stream(
-            stream_id=stream_id,
+        # Range header elemzése
+        parsed_range_header = self._parse_range_header(
+            file_size=torrent_file.size,
+            range_header=range_header,
         )
 
-    def set_streams_pieces(
+        if torrent_file.is_available:
+            return PlaybackResponse(
+                iterator=self._file_iterator(
+                    torrent_file=torrent_file,
+                    stream_start_byte=parsed_range_header.start_byte,
+                    stream_end_byte=parsed_range_header.end_byte,
+                    request=request,
+                ),
+                file_size=torrent_file.size,
+                start_byte=parsed_range_header.start_byte,
+                end_byte=parsed_range_header.end_byte,
+                file_name=torrent_file.name,
+            )
+
+        if info_hash in self.torrents:
+            torrent = self.torrents[info_hash]
+
+            if file_index in torrent.files:
+                torrent_file = torrent.files[file_index]
+            else:
+                torrent.files[file_index] = torrent_file
+        else:
+            self.torrents[info_hash] = torrent
+            torrent.files[file_index] = torrent_file
+
+        return PlaybackResponse(
+            iterator=self._file_iterator_with_priorities(
+                torrent_file=torrent_file,
+                stream_start_byte=parsed_range_header.start_byte,
+                stream_end_byte=parsed_range_header.end_byte,
+                request=request,
+            ),
+            file_size=torrent_file.size,
+            start_byte=parsed_range_header.start_byte,
+            end_byte=parsed_range_header.end_byte,
+            file_name=torrent_file.name,
+        )
+
+    def _parse_range_header(
         self,
-        info_hash: str,
-        file_index: int,
-        stream_id: str,
-        start_piece_index: int,
-        end_piece_index: int,
-    ) -> Tuple[int, int]:
-        torrent = self.get_or_raise(info_hash)
-        file = torrent.get_or_raise_file(file_index)
-        stream = file.get_or_raise_stream(stream_id)
-
-        stream_pieces: List[StreamPiece] = []
-
-        for prefetch_index in range(PREFETCH_PIECES):
-            priority_piece_index = (
-                start_piece_index - EXTRA_PIECE_COUNT + prefetch_index
-            )
-            priority_end_piece_index = min(
-                end_piece_index + EXTRA_PIECE_COUNT, file.end_piece_index
+        file_size: int,
+        range_header: str | None = None,
+    ) -> ParsedRangeHeader:
+        if range_header is None:
+            return ParsedRangeHeader(
+                start_byte=0,
+                end_byte=file_size - 1,
+                content_length=file_size,
             )
 
-            if priority_piece_index > priority_end_piece_index:
+        if not range_header.startswith("bytes="):
+            raise HTTPException(416, "Érvénytelen range header.")
+
+        range_value = range_header.replace("bytes=", "", 1).strip()
+        if "," in range_value:
+            raise HTTPException(416, "A több tartomány nem támogatott.")
+
+        start_byte_str, end_byte_str = range_value.split("-", 1)
+
+        if start_byte_str == "":
+            if not end_byte_str:
+                raise HTTPException(416, "Érvénytelen range header.")
+
+            suffix_length = int(end_byte_str)
+            if suffix_length <= 0:
+                raise HTTPException(416, "Érvénytelen range header.")
+
+            start_byte = max(file_size - suffix_length, 0)
+            end_byte = file_size - 1
+        else:
+            start_byte = int(start_byte_str)
+            end_byte = int(end_byte_str) if end_byte_str else file_size - 1
+
+        if (
+            start_byte < 0
+            or end_byte < 0
+            or start_byte > end_byte
+            or end_byte >= file_size
+        ):
+            raise HTTPException(416, "A kért tartomány kívül esik a fájlon.")
+
+        return ParsedRangeHeader(
+            start_byte=start_byte,
+            end_byte=end_byte,
+            content_length=file_size,
+        )
+
+    async def _file_iterator_with_priorities(
+        self,
+        torrent_file: File,
+        stream_start_byte: int,
+        stream_end_byte: int,
+        request: Request,
+    ) -> AsyncIterator[bytes]:
+        stream_id = uuid4().hex
+
+        current_stream_byte = stream_start_byte
+
+        stream = Stream(
+            stream_id=stream_id,
+            torrent=torrent_file.torrent,
+            file=torrent_file,
+            stream_start_byte=current_stream_byte,
+            stream_end_byte=stream_end_byte,
+        )
+
+        torrent_file.streams[stream_id] = stream
+
+        try:
+            while current_stream_byte <= stream_end_byte:
+                if await request.is_disconnected():
+                    return
+
+                stream.set_pieces(
+                    stream_start_byte=current_stream_byte,
+                    stream_end_byte=stream_end_byte,
+                )
+
+                current_end_byte = None
+
+                while current_end_byte is None:
+                    if await request.is_disconnected():
+                        return
+
+                    response = await self.prioritize_and_wait(
+                        stream=stream,
+                    )
+
+                    if response.end_byte is not None:
+                        current_end_byte = response.end_byte
+                        break
+
+                    await asyncio.sleep(0.2)
+
+                async for chunk in self._file_iterator(
+                    torrent_file=torrent_file,
+                    stream_start_byte=current_stream_byte,
+                    stream_end_byte=current_end_byte,
+                    request=request,
+                ):
+                    yield chunk
+
+                current_stream_byte = current_end_byte + 1
+        finally:
+            self._end_stream(
+                stream=stream,
+            )
+
+    async def _file_iterator(
+        self,
+        torrent_file: File,
+        stream_start_byte: int,
+        stream_end_byte: int,
+        request: Request,
+    ) -> AsyncIterator[bytes]:
+        with torrent_file.path.open("rb") as file_handle:
+            file_handle.seek(stream_start_byte)
+
+            remaining = stream_end_byte - stream_start_byte + 1
+
+            while remaining > 0:
+                if await request.is_disconnected():
+                    return
+
+                chunk = file_handle.read(
+                    min(torrent_file.torrent.piece_size, remaining)
+                )
+
+                if not chunk:
+                    return
+
+                remaining -= len(chunk)
+
+                yield chunk
+
+    async def prioritize_and_wait(
+        self,
+        stream: Stream,
+    ):
+        piece_or_file_available = self._check_piece_or_file_available(
+            stream=stream,
+        )
+
+        prioritize_and_wait = PrioritizeAndWait(
+            end_byte=None,
+        )
+
+        # Már le van töltve, csak visszaadjuk a végét és mehet a lejátszás.
+        if piece_or_file_available.file_available:
+            prioritize_and_wait.end_byte = stream.file.end_byte
+            return prioritize_and_wait
+
+        if piece_or_file_available.piece_available:
+            next_stream_piece_index = stream.stream_start_piece_index + 1
+            available_end_byte = (
+                (next_stream_piece_index * stream.torrent.piece_size)
+                - stream.file.offset
+                - 1
+            )
+            prioritize_and_wait.end_byte = available_end_byte
+
+        # Prefetch beállítása
+        priorities, critical_piece_index, prefetch_piece_count = stream.get_priorities()
+
+        stream.torrent.torrent_handle.prioritize_pieces(priorities)
+
+        # Kritikus piece kérése
+        set_piece_count = 1
+        for count_index in range(prefetch_piece_count):
+            if set_piece_count > 4:
                 break
 
-            stream_piece = StreamPiece(
-                piece_index=priority_piece_index,
-                piece_priority=PRIO_NORMAL,
+            piece_index = critical_piece_index + count_index
+            if stream.torrent.torrent_handle.have_piece(piece_index):
+                continue
+
+            stream.torrent.torrent_handle.set_piece_deadline(
+                piece_index, 200 * set_piece_count
             )
+            set_piece_count += 1
 
-            if PREFETCH_HIGH_PIECES > prefetch_index:
-                stream_piece.piece_priority = PRIO_HIGH
+        return prioritize_and_wait
 
-            elif PREFETCH_MEDIUM_PIECES > prefetch_index:
-                stream_piece.piece_priority = PRIO_MEDIUM
-
-            stream_pieces.append(stream_piece)
-
-        stream.set_stream_pieces(stream_pieces)
-
-        return stream_pieces[0].piece_index, len(stream_pieces)
-
-    def get_priorities_by_streams(
+    def _check_piece_or_file_available(
         self,
-        info_hash: str,
-    ) -> List[int]:
-        torrent = self.get_or_raise(info_hash)
+        stream: Stream,
+    ) -> PieceOrFileAvailable:
+        piece_or_file_available = PieceOrFileAvailable(
+            piece_available=False,
+            file_available=False,
+        )
 
-        all_stream_pieces: Dict[int, int] = {}
+        files_progress = stream.torrent.torrent_handle.file_progress()
+        file_progress = files_progress[stream.file.file_index]
 
-        for file_index in torrent.files:
-            file = torrent.files[file_index]
+        file_available = file_progress == stream.file.size
 
-            for stream_index in file.streams:
-                stream = file.streams[stream_index]
+        if file_available:
+            piece_or_file_available.piece_available = True
+            piece_or_file_available.file_available = True
+            return piece_or_file_available
 
-                for stream in stream.stream_pieces:
-                    piece_priority = all_stream_pieces.get(stream.piece_index)
-                    if piece_priority is None or stream.piece_priority > piece_priority:
-                        all_stream_pieces[stream.piece_index] = stream.piece_priority
+        piece_available = stream.torrent.torrent_handle.have_piece(
+            stream.stream_start_piece_index
+        )
 
-        updated_priorities = torrent.current_priorities.copy()
+        piece_or_file_available.piece_available = piece_available
 
-        for priority_index in range(len(updated_priorities)):
-            stream_priority = all_stream_pieces.get(priority_index)
+        return piece_or_file_available
 
-            if not stream_priority:
-                stream_priority = PRIO_SKIP
-
-            updated_priorities[priority_index] = stream_priority
-
-        torrent.set_current_priorities(updated_priorities)
-
-        return updated_priorities
-
-    def end_stream(
+    def _end_stream(
         self,
-        info_hash: str,
-        file_index: int,
-        stream_id: str,
-    ) -> List[int]:
-        torrent = self.get_or_raise(info_hash)
-        file = torrent.get_file(file_index)
+        stream: Stream,
+    ):
+        torrent = stream.torrent
+        file = stream.file
 
-        if file and file.streams:
-            file.streams.pop(stream_id, None)
-            torrent.files.pop(file_index, None)
+        file.streams.pop(stream.id)
+
+        if not file.streams:
+            torrent.files.pop(file.file_index)
 
         if not torrent.files:
-            return torrent.default_priorities
+            torrent.torrent_handle.prioritize_pieces(torrent.default_priorities)
 
-        return self.get_priorities_by_streams(info_hash)
+            info_hash = torrent.torrent_info.info_hash()
+            self.torrents.pop(str(info_hash))

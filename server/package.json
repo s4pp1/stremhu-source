@@ -20,8 +20,8 @@
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
     "migration:show": "npm run typeorm -- migration:show",
-    "generate:catalog:openapi": "openapi --input https://catalog.stremhu.app/api/docs/public-json --output ./src/catalog-client/client/ --name CatalogClient",
-    "generate:libtorrent:openapi": "openapi --input ../libtorrent-engine/openapi/openapi.json --output ./src/clients/libtorrent/client/ --name LibTorrentClient"
+    "generate:catalog:openapi": "openapi --input https://catalog.stremhu.app/api/docs/public-json -c axios -o ./src/catalog-client/client/ --name CatalogClient",
+    "generate:relay:openapi": "openapi --input ../relay/openapi/openapi.json -c axios -o ./src/relay/client/ --name RelayClient"
   },
   "dependencies": {
     "@ctrl/video-filename-parser": "5.4.1",
@@ -44,6 +44,7 @@
     "express-session": "1.18.2",
     "filesize": "11.0.13",
     "http-cookie-agent": "7.0.3",
+    "http-proxy-middleware": "3.0.5",
     "internal-ip": "8.0.1",
     "ip-address": "10.1.0",
     "is-video": "2.0.0",
