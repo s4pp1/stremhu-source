@@ -10,6 +10,7 @@ from common.constants import (
     PRIO_HIGH,
     PRIO_LOW,
     PRIO_NORMAL,
+    PRIO_SKIP,
 )
 from fastapi import HTTPException
 
@@ -56,13 +57,16 @@ class Torrent:
         priorities = self.default_priorities.copy()
 
         for priority_index, _ in enumerate(priorities):
-            priority = PRIO_LOW
-
             for file_index in self.files:
                 file = self.files[file_index]
                 file_range = range(file.start_piece_index, file.end_piece_index + 1)
 
                 if priority_index in file_range:
+                    priority = priorities[priority_index]
+
+                    if priority == PRIO_SKIP:
+                        priority = PRIO_LOW
+
                     for stream_index in file.streams:
                         stream = file.streams[stream_index]
 
@@ -83,7 +87,7 @@ class Torrent:
                             ):
                                 priority = PRIO_NORMAL
 
-            priorities[priority_index] = priority
+                    priorities[priority_index] = priority
 
         return priorities
 
