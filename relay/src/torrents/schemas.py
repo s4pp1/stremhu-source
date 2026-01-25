@@ -49,21 +49,3 @@ class AddTorrent(BaseModel):
         description="A torrents mappa abszolút elérési úrja.",
     )
     download_full_torrent: Optional[bool] = False
-
-
-class PrioritizeAndWait(BaseModel):
-    end_byte: Optional[int] = Field(...)
-
-
-class PieceOrFileAvailable(BaseModel):
-    piece_available: bool
-    file_available: bool
-
-
-class FileDetails(BaseModel):
-    file_start_piece_index: int
-    file_end_byte: int
-    file_end_piece_index: int
-    piece_size: int
-    file_offset: int
-    file_size: int

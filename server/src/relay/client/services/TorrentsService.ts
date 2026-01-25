@@ -3,7 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { AddTorrent } from '../models/AddTorrent';
-import type { File } from '../models/File';
 import type { RelayTorrent } from '../models/RelayTorrent';
 import type { RelayTorrentState } from '../models/RelayTorrentState';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -94,29 +93,6 @@ export class TorrentsService {
             url: '/torrents/{info_hash}/verification',
             path: {
                 'info_hash': infoHash,
-            },
-            errors: {
-                422: `Validation Error`,
-            },
-        });
-    }
-    /**
-     * Get Torrent File
-     * @param infoHash
-     * @param fileIndex
-     * @returns File Successful Response
-     * @throws ApiError
-     */
-    public getTorrentFile(
-        infoHash: string,
-        fileIndex: number,
-    ): CancelablePromise<File> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/torrents/{info_hash}/files/{file_index}',
-            path: {
-                'info_hash': infoHash,
-                'file_index': fileIndex,
             },
             errors: {
                 422: `Validation Error`,

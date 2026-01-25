@@ -1,14 +1,18 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict
+from pydantic.alias_generators import to_camel
 
 
 class UpdateSettings(BaseModel):
-    download_rate_limit: Optional[int] = Field(None, alias="downloadLimit")
-    upload_rate_limit: Optional[int] = Field(None, alias="uploadLimit")
-    port: Optional[int] = Field(None)
-    connections_limit: Optional[int] = Field(None, alias="connectionsLimit")
-    torrent_connections_limit: Optional[int] = Field(
-        None, alias="torrentConnectionsLimit"
+    model_config = ConfigDict(
+        populate_by_name=True,
+        alias_generator=to_camel,
     )
-    enable_upnp_and_natpmp: Optional[bool] = Field(None, alias="enableUpnpAndNatpmp")
+
+    download_limit: Optional[int] = None
+    upload_limit: Optional[int] = None
+    port: Optional[int] = None
+    connections_limit: Optional[int] = None
+    torrent_connections_limit: Optional[int] = None
+    enable_upnp_and_natpmp: Optional[bool] = None

@@ -16,33 +16,6 @@ router = APIRouter(
 @router.get(
     "/{info_hash}/{file_index}",
     operation_id="stream_file",
-    responses={
-        200: {
-            "description": "Teljes tartalom",
-            "content": {
-                "application/octet-stream": {
-                    "schema": {"type": "string", "format": "binary"}
-                }
-            },
-        },
-        206: {
-            "description": "Részleges tartalom (Range)",
-            "headers": {
-                "Content-Range": {
-                    "description": "Küldött byte-tartomány",
-                    "schema": {"type": "string"},
-                }
-            },
-            "content": {
-                "application/octet-stream": {
-                    "schema": {"type": "string", "format": "binary"}
-                }
-            },
-        },
-        416: {
-            "description": "Érvénytelen tartomány",
-        },
-    },
 )
 async def stream(
     info_hash: str,

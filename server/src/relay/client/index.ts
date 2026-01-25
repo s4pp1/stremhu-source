@@ -11,7 +11,6 @@ export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { AddTorrent } from './models/AddTorrent';
-export type { File } from './models/File';
 export type { Health } from './models/Health';
 export type { HTTPValidationError } from './models/HTTPValidationError';
 export type { RelayTorrent } from './models/RelayTorrent';

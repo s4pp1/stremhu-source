@@ -3,11 +3,9 @@ from typing import List
 
 import libtorrent as libtorrent
 from common.constants import PRIO_LOW, PRIO_SKIP
-from fastapi import HTTPException
 from libtorrent_client.service import LibtorrentClientService
 from torrents.schemas import (
     AddTorrent,
-    FileDetails,
     RelayTorrent,
     RelayTorrentState,
 )
@@ -87,33 +85,6 @@ class TorrentsService:
     def parse_info_hash(self, info_hash_str: str) -> libtorrent.sha1_hash:
         sha1_hash = libtorrent.sha1_hash(bytes.fromhex(info_hash_str))
         return sha1_hash
-
-    def _get_file_details(
-        self,
-        torrent_file: libtorrent.torrent_info,
-        file_index: int,
-    ) -> FileDetails:
-        files = torrent_file.files()
-
-        if file_index < 0 or file_index >= files.num_files():
-            raise HTTPException(400, f'A(z) "{file_index}" fálj nem létezik.')
-
-        piece_size = int(torrent_file.piece_length())
-
-        file_offset = int(files.file_offset(file_index))
-        file_size = int(files.file_size(file_index))
-
-        file_start_piece_index = file_offset // piece_size
-        file_end_piece_index = (file_offset + file_size - 1) // piece_size
-
-        return FileDetails(
-            file_start_piece_index=file_start_piece_index,
-            file_end_byte=file_size - 1,
-            file_end_piece_index=file_end_piece_index,
-            piece_size=piece_size,
-            file_offset=file_offset,
-            file_size=file_size,
-        )
 
     def _torrent_state(
         self,

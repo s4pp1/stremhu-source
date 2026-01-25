@@ -7,7 +7,7 @@ import { setTimeout } from 'node:timers/promises';
 import { NodeEnvEnum } from 'src/config/enum/node-env.enum';
 import { RelaySettingsService } from 'src/settings/relay/relay-settings.service';
 
-import { File, RelayClient, RelayTorrent, UpdateSettings } from './client';
+import { RelayClient, RelayTorrent, UpdateSettings } from './client';
 import { RELAY_BASE_URL_PORT } from './relay.content';
 import { RELAY_CLIENT } from './relay.token';
 import { AddRelayTorrent } from './type/add-relay-torrent.type';
@@ -39,7 +39,6 @@ export class RelayService {
     this.isShuttingDown = false;
 
     const port = this.configService.getOrThrow<number>('torrent.port');
-
     const nodeEnv = this.configService.getOrThrow<NodeEnvEnum>('app.node-env');
 
     const setting = await this.relaySettingsService.get();
@@ -50,13 +49,14 @@ export class RelayService {
     const libtorrentEngineCwd = join(repoRoot, 'relay', 'src');
     const pythonPath = join(repoRoot, 'relay', 'src');
 
+    let logConfig = '../logging.prod.ini';
+
     const args: string[] = [];
 
     if (idDevEnv) {
+      logConfig = '../logging.dev.ini';
       args.push('-m', 'debugpy', '--listen', `0.0.0.0:5678`);
     }
-
-    const logConfig = idDevEnv ? '../logging.dev.ini' : '../logging.prod.ini';
 
     args.push(
       '-m',
@@ -196,15 +196,6 @@ export class RelayService {
     this.logger.log(`🗑️ "${infoHash}" torrent törölve a libtorrent-ből.`);
 
     return torrent;
-  }
-
-  async getTorrentFile(infoHash: string, fileIndex: number): Promise<File> {
-    const torrentFile = await this.relayClient.torrents.getTorrentFile(
-      infoHash,
-      fileIndex,
-    );
-
-    return torrentFile;
   }
 
   private async restartEngine() {

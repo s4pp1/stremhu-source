@@ -38,11 +38,11 @@ class LibtorrentClientService:
     ):
         apply_settings: Dict[str, Any] = {}
 
-        if payload.download_rate_limit is not None:
-            apply_settings["download_rate_limit"] = payload.download_rate_limit
+        if payload.download_limit is not None:
+            apply_settings["download_rate_limit"] = payload.download_limit
 
-        if payload.upload_rate_limit is not None:
-            apply_settings["upload_rate_limit"] = payload.upload_rate_limit
+        if payload.upload_limit is not None:
+            apply_settings["upload_rate_limit"] = payload.upload_limit
 
         if payload.connections_limit is not None:
             apply_settings["connections_limit"] = payload.connections_limit

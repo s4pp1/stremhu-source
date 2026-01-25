@@ -9,6 +9,11 @@ class ParsedRangeHeader(BaseModel):
     content_length: int
 
 
+class PieceOrFileAvailable(BaseModel):
+    piece_available: bool
+    file_available: bool
+
+
 class PlaybackResponse:
     def __init__(
         self,

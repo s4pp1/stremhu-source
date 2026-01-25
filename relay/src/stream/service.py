@@ -6,8 +6,11 @@ import libtorrent as libtorrent
 from fastapi import HTTPException, Request
 from libtorrent_client.service import LibtorrentClientService
 from stream.models import File, Stream, Torrent
-from stream.schemas import ParsedRangeHeader, PlaybackResponse
-from torrents.schemas import PieceOrFileAvailable, PrioritizeAndWait
+from stream.schemas import (
+    ParsedRangeHeader,
+    PieceOrFileAvailable,
+    PlaybackResponse,
+)
 
 
 class StreamService:
@@ -176,12 +179,12 @@ class StreamService:
                     if await request.is_disconnected():
                         return
 
-                    response = await self.prioritize_and_wait(
+                    available_end_byte = self._check_piece_and_prioritize(
                         stream=stream,
                     )
 
-                    if response.end_byte is not None:
-                        current_end_byte = response.end_byte
+                    if available_end_byte is not None:
+                        current_end_byte = available_end_byte
                         break
 
                     await asyncio.sleep(0.2)
@@ -227,22 +230,19 @@ class StreamService:
 
                 yield chunk
 
-    async def prioritize_and_wait(
+    def _check_piece_and_prioritize(
         self,
         stream: Stream,
-    ):
+    ) -> int | None:
         piece_or_file_available = self._check_piece_or_file_available(
             stream=stream,
         )
 
-        prioritize_and_wait = PrioritizeAndWait(
-            end_byte=None,
-        )
+        available_end_byte = None
 
         # Már le van töltve, csak visszaadjuk a végét és mehet a lejátszás.
         if piece_or_file_available.file_available:
-            prioritize_and_wait.end_byte = stream.file.end_byte
-            return prioritize_and_wait
+            return stream.file.end_byte
 
         if piece_or_file_available.piece_available:
             next_stream_piece_index = stream.stream_start_piece_index + 1
@@ -251,7 +251,6 @@ class StreamService:
                 - stream.file.offset
                 - 1
             )
-            prioritize_and_wait.end_byte = available_end_byte
 
         # Prefetch beállítása
         priorities, critical_piece_index, prefetch_piece_count = stream.get_priorities()
@@ -273,7 +272,7 @@ class StreamService:
             )
             set_piece_count += 1
 
-        return prioritize_and_wait
+        return available_end_byte
 
     def _check_piece_or_file_available(
         self,
