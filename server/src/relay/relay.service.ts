@@ -1,23 +1,16 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import axios, { AxiosResponse } from 'axios';
 import { spawn } from 'node:child_process';
 import { join } from 'node:path';
-import { Readable } from 'node:stream';
 import { setTimeout } from 'node:timers/promises';
 
 import { NodeEnvEnum } from 'src/config/enum/node-env.enum';
 import { RelaySettingsService } from 'src/settings/relay/relay-settings.service';
-import {
-  ClientTorrentFile,
-  TorrentClientToAddTorrent,
-  TorrentClientToUpdateConfig,
-} from 'src/torrents/ports/torrent-client.port';
 
-import { RelayClient, RelayTorrent } from './client';
+import { File, RelayClient, RelayTorrent, UpdateSettings } from './client';
 import { RELAY_BASE_URL_PORT } from './relay.content';
 import { RELAY_CLIENT } from './relay.token';
-import { CreateReadStream } from './type/create-read-stream.type';
+import { AddRelayTorrent } from './type/add-relay-torrent.type';
 
 @Injectable()
 export class RelayService {
@@ -147,7 +140,7 @@ export class RelayService {
     this.logger.log('✅ libtorrent kliens leállítva.');
   }
 
-  async updateConfig(payload: TorrentClientToUpdateConfig) {
+  async updateConfig(payload: UpdateSettings) {
     if (!this.libtorrentEngineProcess) return;
 
     await this.relayClient.setting.update(payload);
@@ -167,10 +160,10 @@ export class RelayService {
     }
   }
 
-  async addTorrent(payload: TorrentClientToAddTorrent): Promise<RelayTorrent> {
+  async addTorrent(payload: AddRelayTorrent): Promise<RelayTorrent> {
     const torrent = await this.relayClient.torrents.addTorrent({
-      torrentFilePath: payload.torrentFilePath,
       savePath: this.downloadsDir,
+      torrentFilePath: payload.torrentFilePath,
       downloadFullTorrent: payload.downloadFullTorrent,
     });
 
@@ -205,37 +198,13 @@ export class RelayService {
     return torrent;
   }
 
-  async getTorrentFile(
-    infoHash: string,
-    fileIndex: number,
-  ): Promise<ClientTorrentFile> {
+  async getTorrentFile(infoHash: string, fileIndex: number): Promise<File> {
     const torrentFile = await this.relayClient.torrents.getTorrentFile(
       infoHash,
       fileIndex,
     );
 
-    return {
-      infoHash: torrentFile.infoHash,
-      fileIndex: torrentFile.fileIndex,
-      name: torrentFile.path,
-      total: torrentFile.size,
-    };
-  }
-
-  async playback(payload: CreateReadStream) {
-    const controller = new AbortController();
-    const response: AxiosResponse<Readable> = await axios.get(
-      `http://127.0.0.1:4300/stream/${payload.infoHash}/${payload.fileIndex}`,
-      {
-        responseType: 'stream',
-        headers: { Range: payload.range },
-        signal: controller.signal,
-      },
-    );
-
-    const stream = response.data;
-
-    return { stream, controller };
+    return torrentFile;
   }
 
   private async restartEngine() {

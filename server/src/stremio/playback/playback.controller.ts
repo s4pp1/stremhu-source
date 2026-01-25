@@ -11,12 +11,11 @@ import {
 } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
-import { createProxyMiddleware } from 'http-proxy-middleware';
 
 import { TokenGuard } from 'src/auth/guards/token.guard';
-import { RELAY_BASE_URL } from 'src/relay/relay.content';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
+import { streamProxyMiddleware } from './playback.proxy';
 import { PlaybackService } from './playback.service';
 
 @UseGuards(TokenGuard)
@@ -55,25 +54,14 @@ export class PlaybackController {
       torrentId,
     });
 
-    const streamProxyMiddleware = this.createStreamProxyMiddleware(
-      relayTorrent.infoHash,
-      fileIndex,
-    );
+    req.infoHash = relayTorrent.infoHash;
+    req.fileIndex = fileIndex;
 
     return streamProxyMiddleware(req, res, (err) => {
       if (err) {
         this.logger.error(err);
         res.status(502).end();
       }
-    });
-  }
-
-  private createStreamProxyMiddleware(infoHash: string, fileIndex: number) {
-    return createProxyMiddleware({
-      target: RELAY_BASE_URL,
-      changeOrigin: true,
-      pathRewrite: () => `/stream/${infoHash}/${fileIndex}`,
-      selfHandleResponse: false,
     });
   }
 }

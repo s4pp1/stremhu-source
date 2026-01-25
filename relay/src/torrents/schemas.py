@@ -51,23 +51,6 @@ class AddTorrent(BaseModel):
     download_full_torrent: Optional[bool] = False
 
 
-class File(BaseModel):
-    model_config = ConfigDict(
-        populate_by_name=True,
-        alias_generator=to_camel,
-    )
-
-    info_hash: str
-    file_index: int
-    path: str
-    piece_length: int
-    size: int
-    offset: int
-    is_available: bool = Field(
-        ..., description="A fájl már teljesen le van töltve, csak a stream-elni kell."
-    )
-
-
 class PrioritizeAndWait(BaseModel):
     end_byte: Optional[int] = Field(...)
 

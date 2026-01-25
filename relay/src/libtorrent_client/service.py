@@ -135,7 +135,7 @@ class LibtorrentClientService:
             if is_valid:
                 break
 
-            time.sleep(1.0)
+            time.sleep(0.1)
 
         if not is_valid:
             self.libtorrent_session.remove_torrent(

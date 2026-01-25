@@ -7,9 +7,7 @@ from fastapi import HTTPException
 from libtorrent_client.service import LibtorrentClientService
 from torrents.schemas import (
     AddTorrent,
-    File,
     FileDetails,
-    PieceOrFileAvailable,
     RelayTorrent,
     RelayTorrentState,
 )
@@ -86,46 +84,6 @@ class TorrentsService:
 
         return torrent
 
-    def get_torrent_file(
-        self,
-        info_hash: libtorrent.sha1_hash,
-        file_index: int,
-    ) -> File:
-        torrent_handle = self.libtorrent_client_service.get_torrent_or_raise(
-            info_hash=info_hash
-        )
-
-        torrent_file = torrent_handle.torrent_file()
-
-        if torrent_file is None:
-            raise HTTPException(404, f'A(z) "{info_hash}" torrent nem található.')
-
-        files = torrent_file.files()
-        if file_index >= files.num_files():
-            raise HTTPException(
-                404, f'A(z) "{info_hash}, {file_index}" fájl nem található.'
-            )
-
-        file_size = files.file_size(file_index)
-        file_entry = torrent_file.file_at(file_index)
-
-        is_available = self._check_file_available(
-            torrent_handle=torrent_handle,
-            file_index=file_index,
-        )
-
-        file = File(
-            info_hash=str(torrent_handle.info_hash()),
-            file_index=file_index,
-            piece_length=torrent_file.piece_length(),
-            path=file_entry.path,
-            offset=file_entry.offset,
-            size=file_size,
-            is_available=is_available,
-        )
-
-        return file
-
     def parse_info_hash(self, info_hash_str: str) -> libtorrent.sha1_hash:
         sha1_hash = libtorrent.sha1_hash(bytes.fromhex(info_hash_str))
         return sha1_hash
@@ -156,53 +114,6 @@ class TorrentsService:
             file_offset=file_offset,
             file_size=file_size,
         )
-
-    def _check_file_available(
-        self,
-        torrent_handle: libtorrent.torrent_handle,
-        file_index: int,
-    ) -> bool:
-        torrent_file = torrent_handle.torrent_file()
-        if torrent_file is None:
-            return False
-
-        file_progress = torrent_handle.file_progress()
-        file_entry = torrent_file.file_at(file_index)
-
-        file_size = file_entry.size
-        is_available = file_progress[file_index] == file_size
-        return is_available
-
-    def _check_piece_or_file_available(
-        self,
-        torrent_handle: libtorrent.torrent_handle,
-        file_index: int,
-        piece_index: int,
-    ) -> PieceOrFileAvailable:
-        piece_or_file_available = PieceOrFileAvailable(
-            piece_available=False,
-            file_available=False,
-        )
-
-        torrent_file = torrent_handle.torrent_file()
-        if torrent_file is None:
-            return piece_or_file_available
-
-        files_progress = torrent_handle.file_progress()
-        file_progress = files_progress[file_index]
-        file_entry = torrent_file.file_at(file_index)
-
-        file_available = file_progress == file_entry.size
-
-        if file_available:
-            piece_or_file_available.piece_available = True
-            piece_or_file_available.file_available = True
-            return piece_or_file_available
-
-        piece_available = torrent_handle.have_piece(piece_index)
-        piece_or_file_available.piece_available = piece_available
-
-        return piece_or_file_available
 
     def _torrent_state(
         self,

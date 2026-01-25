@@ -5,7 +5,6 @@ from fastapi import APIRouter, Depends
 from torrents.dependencies import get_torrents_service
 from torrents.schemas import (
     AddTorrent,
-    File,
     RelayTorrent,
     RelayTorrentState,
 )
@@ -63,20 +62,6 @@ def get_torrent_state(
 ):
     parsed_info_hash = torrents_service.parse_info_hash(info_hash)
     return torrents_service.get_torrent_state(parsed_info_hash)
-
-
-@router.get(
-    "/{info_hash}/files/{file_index}",
-    response_model=File,
-    operation_id="get_torrent_file",
-)
-def get_torrent_file(
-    info_hash: str,
-    file_index: int,
-    torrents_service: TorrentsService = Depends(get_torrents_service),
-):
-    parsed_info_hash = torrents_service.parse_info_hash(info_hash)
-    return torrents_service.get_torrent_file(parsed_info_hash, file_index)
 
 
 @router.delete(

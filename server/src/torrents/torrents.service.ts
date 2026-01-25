@@ -11,7 +11,7 @@ import _, { isUndefined, omitBy } from 'lodash';
 import { mkdir } from 'node:fs/promises';
 
 import { safeReaddir } from 'src/common/utils/file.util';
-import { RelayTorrent } from 'src/relay/client';
+import { RelayTorrent, UpdateSettings } from 'src/relay/client';
 import { RelayService } from 'src/relay/relay.service';
 import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
 import { TrackersStore } from 'src/trackers/core/trackers.store';
@@ -19,7 +19,6 @@ import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { TorrentsStore } from './core/torrents.store';
 import { Torrent, Torrent as TorrentEntity } from './entity/torrent.entity';
-import type { TorrentClientToUpdateConfig } from './ports/torrent-client.port';
 import { TorrentToAddClient } from './type/torrent-to-add-client.type';
 import { TorrentToUpdate } from './type/torrent-to-update.type';
 import { MergedTorrent } from './type/torrent.type';
@@ -214,7 +213,7 @@ export class TorrentsService
     await Promise.all(torrents.map((torrent) => this.delete(torrent.infoHash)));
   }
 
-  async updateTorrentClient(payload: TorrentClientToUpdateConfig) {
+  async updateTorrentClient(payload: UpdateSettings) {
     await this.relayService.updateConfig(payload);
   }
 
@@ -294,15 +293,6 @@ export class TorrentsService
     });
 
     return clientTorrent;
-  }
-
-  async playback(infoHash: string, fileIndex: number, range?: string) {
-    const response = await this.relayService.playback({
-      infoHash,
-      fileIndex,
-      range,
-    });
-    return response;
   }
 
   private mergeTorrentEntityWithTorrentClient(
