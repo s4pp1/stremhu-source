@@ -7,6 +7,7 @@ import { TorrentsCacheModule } from 'src/torrents-cache/torrents-cache.module';
 import { TorrentsModule } from 'src/torrents/torrents.module';
 
 import { BithumenModule } from './adapters/bithumen/bithumen.module';
+import { InsaneModule } from './adapters/insane/insane.module';
 import { MajomparadeModule } from './adapters/majomparade/majomparade.module';
 import { NcoreModule } from './adapters/ncore/ncore.module';
 import { TrackersCoreModule } from './core/trackers-core.module';
@@ -26,6 +27,7 @@ import { TrackersService } from './trackers.service';
     AppSettingsModule,
     NcoreModule,
     BithumenModule,
+    InsaneModule,
     MajomparadeModule,
   ],
   providers: [

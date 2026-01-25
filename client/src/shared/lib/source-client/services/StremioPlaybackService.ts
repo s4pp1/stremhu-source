@@ -17,7 +17,7 @@ export class StremioPlaybackService {
      */
     public playStream(
         imdbId: string,
-        tracker: 'ncore' | 'bithumen' | 'majomparade',
+        tracker: 'ncore' | 'bithumen' | 'majomparade' | 'insane',
         torrentId: string,
         fileIdx: number,
         token: string,

@@ -51,7 +51,7 @@ export class TrackersService {
      * @throws ApiError
      */
     public update(
-        tracker: 'ncore' | 'bithumen' | 'majomparade',
+        tracker: 'ncore' | 'bithumen' | 'majomparade' | 'insane',
         requestBody: UpdateTrackerDto,
     ): CancelablePromise<any> {
         return this.httpRequest.request({
@@ -70,7 +70,7 @@ export class TrackersService {
      * @throws ApiError
      */
     public delete(
-        tracker: 'ncore' | 'bithumen' | 'majomparade',
+        tracker: 'ncore' | 'bithumen' | 'majomparade' | 'insane',
     ): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'DELETE',

@@ -19,6 +19,7 @@ export default registerAs('tracker', () => {
       value: getMaxConcurrent('NCORE_MAX_CONCURRENT') || 5,
       zod: z.number().positive(),
     },
+
     'bithumen-url': {
       value: process.env.BITHUMEN_URL ?? 'https://bithumen.be',
       zod: z.string().trim().nonempty(),
@@ -27,6 +28,16 @@ export default registerAs('tracker', () => {
       value: getMaxConcurrent('BITHUMEN_MAX_CONCURRENT') || 5,
       zod: z.number().positive(),
     },
+
+    'insane-url': {
+      value: process.env.INSANE_URL ?? 'https://newinsane.info',
+      zod: z.string().trim().nonempty(),
+    },
+    'insane-max-concurrent': {
+      value: getMaxConcurrent('INSANE_MAX_CONCURRENT') || 5,
+      zod: z.number().positive(),
+    },
+
     'majomparade-url': {
       value: process.env.MAJOMPARADE_URL ?? 'https://majomparade.eu',
       zod: z.string().trim().nonempty(),
