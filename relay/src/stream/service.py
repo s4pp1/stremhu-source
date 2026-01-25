@@ -293,11 +293,26 @@ class StreamService:
             piece_or_file_available.file_available = True
             return piece_or_file_available
 
-        piece_available = stream.torrent.torrent_handle.have_piece(
-            stream.stream_start_piece_index
+        stream_end_piece_index = min(
+            stream.stream_end_piece_index, stream.stream_start_piece_index + 3
+        )
+        prefech_pieces = range(
+            stream.stream_start_piece_index,
+            stream_end_piece_index + 1,
         )
 
-        piece_or_file_available.piece_available = piece_available
+        pieces_available = True
+
+        for prefech_piece in prefech_pieces:
+            piece_available = stream.torrent.torrent_handle.have_piece(
+                prefech_piece,
+            )
+
+            if not piece_available:
+                pieces_available = False
+                break
+
+        piece_or_file_available.piece_available = pieces_available
 
         return piece_or_file_available
 

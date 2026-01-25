@@ -7,10 +7,9 @@ import libtorrent as libtorrent
 from common.constants import (
     PREFETCH_HIGH_PIECES,
     PREFETCH_NORMAL_PIECES,
-    PRIO_HIGH,
-    PRIO_LOW,
-    PRIO_NORMAL,
-    PRIO_SKIP,
+    PRIO_2,
+    PRIO_5,
+    PRIO_7,
 )
 from fastapi import HTTPException
 
@@ -64,8 +63,8 @@ class Torrent:
                 if priority_index in file_range:
                     priority = priorities[priority_index]
 
-                    if priority == PRIO_SKIP:
-                        priority = PRIO_LOW
+                    if priority < PRIO_2:
+                        priority = PRIO_2
 
                     for stream_index in file.streams:
                         stream = file.streams[stream_index]
@@ -79,13 +78,13 @@ class Torrent:
                             stream_range_index = stream_range.index(priority_index)
 
                             if stream_range_index < PREFETCH_HIGH_PIECES:
-                                priority = PRIO_HIGH
+                                priority = PRIO_7
 
                             elif (
                                 stream_range_index < PREFETCH_NORMAL_PIECES
-                                and priority < PRIO_NORMAL
+                                and priority < PRIO_5
                             ):
-                                priority = PRIO_NORMAL
+                                priority = PRIO_5
 
                     priorities[priority_index] = priority
 

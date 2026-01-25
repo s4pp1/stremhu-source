@@ -2,7 +2,7 @@ import logging
 from typing import List
 
 import libtorrent as libtorrent
-from common.constants import PRIO_LOW, PRIO_SKIP
+from common.constants import PRIO_0, PRIO_1
 from libtorrent_client.service import LibtorrentClientService
 from torrents.schemas import (
     AddTorrent,
@@ -24,9 +24,9 @@ class TorrentsService:
         self,
         payload: AddTorrent,
     ) -> RelayTorrent:
-        priority = PRIO_SKIP
+        priority = PRIO_0
         if payload.download_full_torrent:
-            priority = PRIO_LOW
+            priority = PRIO_1
 
         torrent_handle = self.libtorrent_client_service.add_torrent(
             save_path=payload.save_path,
