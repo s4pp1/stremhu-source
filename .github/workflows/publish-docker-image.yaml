@@ -11,6 +11,7 @@ on:
     paths:
       - "client/**"
       - "server/**"
+      - "relay/**"
       - "Dockerfile"
 
   workflow_dispatch:
