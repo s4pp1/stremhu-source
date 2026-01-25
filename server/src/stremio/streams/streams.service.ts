@@ -144,9 +144,9 @@ export class StreamsService {
     ]);
 
     const bingeGroup = [
+      videoFile.imdbId,
       videoFile.tracker,
-      videoFile.resolution,
-      videoFile.language,
+      videoFile.torrentId,
     ].join('-');
 
     return {
