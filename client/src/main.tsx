@@ -1,8 +1,10 @@
-import { QueryClientProvider } from '@tanstack/react-query'
 import type { QueryClient } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
+import * as z from 'zod'
+import { hu } from 'zod/locales'
 
 import reportWebVitals from './reportWebVitals.ts'
 import { routeTree } from './routeTree.gen'
@@ -10,6 +12,8 @@ import { DefaultError } from './shared/components/default-error.tsx'
 import { DefaultLoading } from './shared/components/default-loading.tsx'
 import { queryClient } from './shared/lib/client.ts'
 import './styles.css'
+
+z.config(hu())
 
 export interface RouterContext {
   queryClient: QueryClient
