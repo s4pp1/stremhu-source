@@ -1,6 +1,5 @@
 import { useForm } from '@tanstack/react-form'
 import { useQueryClient } from '@tanstack/react-query'
-import { isEmpty } from 'lodash'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
@@ -78,20 +77,13 @@ export function Connection() {
               <FieldLabel>Globális kapcsolatok maximális száma</FieldLabel>
               <InputGroup>
                 <InputGroupInput
-                  placeholder="Nincs limitálva"
                   inputMode="numeric"
                   id={field.name}
                   name={field.name}
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(e) => {
-                    const value = e.target.value
-
-                    if (isEmpty(value)) {
-                      field.handleChange('0')
-                    } else {
-                      field.handleChange(e.target.value)
-                    }
+                    field.handleChange(e.target.value)
                   }}
                 />
               </InputGroup>
@@ -109,20 +101,13 @@ export function Connection() {
               </FieldLabel>
               <InputGroup>
                 <InputGroupInput
-                  placeholder="Nincs limitálva"
                   inputMode="numeric"
                   id={field.name}
                   name={field.name}
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(e) => {
-                    const value = e.target.value
-
-                    if (isEmpty(value)) {
-                      field.handleChange('0')
-                    } else {
-                      field.handleChange(e.target.value)
-                    }
+                    field.handleChange(e.target.value)
                   }}
                 />
               </InputGroup>
