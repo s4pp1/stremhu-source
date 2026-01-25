@@ -1,18 +1,15 @@
 import { Injectable } from '@nestjs/common';
 
+import { RelayTorrent } from 'src/relay/client';
 import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
-import {
-  ClientTorrent,
-  ClientTorrentFile,
-} from 'src/torrents/ports/torrent-client.port';
 import { TorrentsService } from 'src/torrents/torrents.service';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
 
-import { Play } from './type/play.type';
+import { PreparePlay } from './type/prepare-play.type';
 
 @Injectable()
 export class PlaybackService {
-  private inFlightPlay = new Map<string, Promise<ClientTorrentFile>>();
+  private inFlightPlay = new Map<string, Promise<RelayTorrent>>();
 
   constructor(
     private readonly torrentsCacheStore: TorrentsCacheStore,
@@ -20,14 +17,14 @@ export class PlaybackService {
     private readonly trackerDiscoveryService: TrackerDiscoveryService,
   ) {}
 
-  async play(payload: Play): Promise<ClientTorrentFile> {
-    const { imdbId, tracker, torrentId, fileIndex } = payload;
+  async preparePlayback(payload: PreparePlay): Promise<RelayTorrent> {
+    const { imdbId, tracker, torrentId } = payload;
 
-    const key = `${imdbId}-${tracker}-${torrentId}-${fileIndex}`;
+    const key = `${imdbId}-${tracker}-${torrentId}`;
     const running = this.inFlightPlay.get(key);
     if (running) return running;
 
-    const promise = this.getTorrentFile(payload);
+    const promise = this.getTorrent(payload);
 
     this.inFlightPlay.set(key, promise);
 
@@ -39,8 +36,8 @@ export class PlaybackService {
     }
   }
 
-  private async getTorrentFile(payload: Play): Promise<ClientTorrentFile> {
-    const { imdbId, tracker, torrentId, fileIndex } = payload;
+  private async getTorrent(payload: PreparePlay): Promise<RelayTorrent> {
+    const { imdbId, tracker, torrentId } = payload;
 
     const torrentCache = await this.torrentsCacheStore.findOne({
       imdbId,
@@ -48,7 +45,7 @@ export class PlaybackService {
       torrentId,
     });
 
-    let torrent: ClientTorrent | null = null;
+    let torrent: RelayTorrent | null = null;
 
     if (torrentCache) {
       torrent = await this.torrentsService.getTorrentForStream(
@@ -74,11 +71,6 @@ export class PlaybackService {
       }
     }
 
-    const file = this.torrentsService.getTorrentFileForStream(
-      torrent.infoHash,
-      fileIndex,
-    );
-
-    return file;
+    return torrent;
   }
 }

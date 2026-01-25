@@ -31,10 +31,10 @@ RUN npm ci
 RUN npm run build
 
 # libtorrent engine dependenciák
-WORKDIR /app/libtorrent-engine
-COPY libtorrent-engine/requirements.txt ./requirements.txt
-COPY libtorrent-engine/logging.prod.ini ./logging.prod.ini
-COPY libtorrent-engine/src ./src
+WORKDIR /app/relay
+COPY relay/requirements.txt ./requirements.txt
+COPY relay/logging.prod.ini ./logging.prod.ini
+COPY relay/src ./src
 
 
 RUN python3 -m venv /opt/venv \
@@ -57,12 +57,12 @@ COPY --from=build /app/server/dist ./server/dist
 COPY --from=build /app/client/dist ./client/dist
 
 # libtorrent engine kód és dependencia
-COPY --from=build /app/libtorrent-engine /app/libtorrent-engine
+COPY --from=build /app/relay /app/relay
 
 WORKDIR /app/server
 
 ENV NODE_ENV=production
-ENV PYTHONPATH=/app/libtorrent-engine/src
+ENV PYTHONPATH=/app/relay/src
 ENV PATH="/opt/venv/bin:${PATH}"
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 ENV SSL_CERT_DIR=/etc/ssl/certs

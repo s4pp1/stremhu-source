@@ -1,1 +1,0 @@
-export const LIBTORRENT_CLIENT = Symbol('LIBTORRENT_CLIENT');
