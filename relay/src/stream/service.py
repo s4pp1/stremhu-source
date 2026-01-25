@@ -240,7 +240,7 @@ class StreamService:
 
         available_end_byte = None
 
-        # Már le van töltve, csak visszaadjuk a végét és mehet a lejátszás.
+        # A teljes file elérhetó, visszaadjuk az utolsó byte-ot.
         if piece_or_file_available.file_available:
             return stream.file.end_byte
 
