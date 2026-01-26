@@ -37,11 +37,13 @@ async def stream(
     status_code = 200
     headers = {
         "Accept-Ranges": "bytes",
-        "Content-Length": str(playback.end_byte - playback.start_byte + 1),
     }
 
-    if range_header:
+    if range_header is None:
+        headers["Content-Length"] = str(playback.file_size)
+    else:
         status_code = 206
+        headers["Content-Length"] = str(playback.content_length)
         headers["Content-Range"] = (
             f"bytes {playback.start_byte}-{playback.end_byte}/{playback.file_size}"
         )
