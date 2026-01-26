@@ -97,6 +97,10 @@ class File:
         file_index: int,
         torrent: Torrent,
     ):
+        files_count = torrent.torrent_info.num_files()
+        if file_index < 0 or file_index >= files_count:
+            raise HTTPException(404, f'A(z) "{file_index}" fájl nem található.')
+
         file_progress = torrent.torrent_handle.file_progress()
         file_entry = torrent.torrent_info.file_at(file_index)
         file_size = file_entry.size
