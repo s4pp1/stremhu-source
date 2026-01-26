@@ -66,6 +66,7 @@ class StreamService:
                 file_size=torrent_file.size,
                 start_byte=parsed_range_header.start_byte,
                 end_byte=parsed_range_header.end_byte,
+                content_length=parsed_range_header.content_length,
                 file_name=torrent_file.name,
             )
 
@@ -90,6 +91,7 @@ class StreamService:
             file_size=torrent_file.size,
             start_byte=parsed_range_header.start_byte,
             end_byte=parsed_range_header.end_byte,
+            content_length=parsed_range_header.content_length,
             file_name=torrent_file.name,
         )
 
@@ -136,10 +138,12 @@ class StreamService:
         ):
             raise HTTPException(416, "A kért tartomány kívül esik a fájlon.")
 
+        content_length = end_byte - start_byte + 1
+
         return ParsedRangeHeader(
             start_byte=start_byte,
             end_byte=end_byte,
-            content_length=file_size,
+            content_length=content_length,
         )
 
     async def _file_iterator_with_priorities(
@@ -192,7 +196,7 @@ class StreamService:
                 async for chunk in self._file_iterator(
                     torrent_file=torrent_file,
                     stream_start_byte=current_stream_byte,
-                    stream_end_byte=current_end_byte,
+                    stream_end_byte=min(current_end_byte, stream_end_byte),
                     request=request,
                 ):
                     yield chunk

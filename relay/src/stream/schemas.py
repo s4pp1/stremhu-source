@@ -22,9 +22,11 @@ class PlaybackResponse:
         end_byte: int,
         file_size: int,
         file_name: str,
+        content_length: int,
     ):
         self.iterator = iterator
         self.start_byte = start_byte
         self.end_byte = end_byte
         self.file_size = file_size
+        self.content_length = content_length
         self.file_name = file_name
