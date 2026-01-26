@@ -191,7 +191,7 @@ export class InsaneClient {
       );
 
       const $ = load(response.data);
-      const hitnrunTorrents = $('td a[href*="/details.php?id="]');
+      const hitnrunTorrents = $('td a[href*="details.php?id="]');
       const torrentIds = hitnrunTorrents
         .map((_, el) => $(el).attr('href'))
         .get();
