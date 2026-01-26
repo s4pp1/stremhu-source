@@ -1,0 +1,127 @@
+import { Resolution as ResolutionEnum } from '@ctrl/video-filename-parser';
+import { Inject, Injectable } from '@nestjs/common';
+
+import { LanguageEnum } from 'src/common/enum/language.enum';
+import { StreamMediaTypeEnum } from 'src/stremio/enum/stream-media-type.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
+import {
+  LoginRequest,
+  TrackerAdapter,
+  TrackerSearchQuery,
+} from 'src/trackers/tracker.types';
+
+import {
+  AdapterParsedTorrent,
+  AdapterTorrent,
+  AdapterTorrentId,
+  TRACKER_TOKEN,
+} from '../adapters.types';
+import { InsaneClient } from './insane.client';
+import {
+  MOVIE_CATEGORY_FILTERS,
+  SERIES_CATEGORY_FILTERS,
+} from './insane.constants';
+import {
+  CategoryEnum,
+  MovieCategoryEnum,
+  SeriesCategoryEnum,
+} from './insane.types';
+
+@Injectable()
+export class InsaneAdapter implements TrackerAdapter {
+  constructor(
+    @Inject(TRACKER_TOKEN) readonly tracker: TrackerEnum,
+    private client: InsaneClient,
+  ) {}
+
+  async login(payload: LoginRequest): Promise<void> {
+    await this.client.login(payload);
+  }
+
+  async find(query: TrackerSearchQuery): Promise<AdapterTorrent[]> {
+    const { imdbId, mediaType } = query;
+
+    let categories: string[] = [
+      ...MOVIE_CATEGORY_FILTERS,
+      ...SERIES_CATEGORY_FILTERS,
+    ];
+
+    switch (mediaType) {
+      case StreamMediaTypeEnum.MOVIE:
+        categories = MOVIE_CATEGORY_FILTERS;
+        break;
+
+      case StreamMediaTypeEnum.SERIES:
+        categories = SERIES_CATEGORY_FILTERS;
+        break;
+    }
+
+    const torrents = await this.client.find({ imdbId, categories });
+
+    return torrents.map((torrent) => {
+      const resolution = this.resolveTorrentResolution(torrent.category);
+      const language = this.resolveVideoLanguage(torrent.category);
+
+      return {
+        tracker: this.tracker,
+        imdbId: imdbId,
+        torrentId: torrent.torrentId,
+        seeders: Number(torrent.seeders),
+        resolution,
+        language,
+        downloadUrl: torrent.downloadUrl,
+      };
+    });
+  }
+
+  async findOne(torrentId: string): Promise<AdapterTorrentId> {
+    return this.client.findOne(torrentId);
+  }
+
+  async download(payload: AdapterTorrentId): Promise<AdapterParsedTorrent> {
+    return this.client.download(payload);
+  }
+
+  async seedRequirement(): Promise<string[]> {
+    return this.client.hitnrun();
+  }
+
+  private resolveTorrentResolution(category: CategoryEnum): ResolutionEnum {
+    switch (category) {
+      case MovieCategoryEnum.SD:
+      case MovieCategoryEnum.SD_HUN:
+      case SeriesCategoryEnum.SD:
+      case SeriesCategoryEnum.SD_HUN:
+        return ResolutionEnum.R480P;
+
+      case MovieCategoryEnum.HD:
+      case MovieCategoryEnum.HD_HUN:
+      case SeriesCategoryEnum.HD:
+      case SeriesCategoryEnum.HD_HUN:
+        return ResolutionEnum.R720P;
+
+      case MovieCategoryEnum.UHD:
+      case MovieCategoryEnum.UHD_HUN:
+      case SeriesCategoryEnum.UHD:
+      case SeriesCategoryEnum.UHD_HUN:
+        return ResolutionEnum.R2160P;
+    }
+  }
+
+  private resolveVideoLanguage(category: CategoryEnum): LanguageEnum {
+    const huCategories = [
+      MovieCategoryEnum.SD_HUN,
+      MovieCategoryEnum.HD_HUN,
+      MovieCategoryEnum.UHD_HUN,
+      SeriesCategoryEnum.SD_HUN,
+      SeriesCategoryEnum.HD_HUN,
+      SeriesCategoryEnum.UHD_HUN,
+    ];
+
+    if (huCategories.includes(category)) {
+      return LanguageEnum.HU;
+    } else {
+      return LanguageEnum.EN;
+    }
+  }
+}

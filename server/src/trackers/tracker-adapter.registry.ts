@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { BithumenAdapter } from './adapters/bithumen/bithumen.adapter';
+import { InsaneAdapter } from './adapters/insane/insane.adapter';
 import { MajomparadeAdapter } from './adapters/majomparade/majomparade.adapter';
 import { NcoreAdapter } from './adapters/ncore/ncore.adapter';
 import { TrackerEnum } from './enum/tracker.enum';
@@ -13,11 +14,13 @@ export class TrackerAdapterRegistry {
   constructor(
     ncore: NcoreAdapter,
     bithumen: BithumenAdapter,
+    insane: InsaneAdapter,
     majomparade: MajomparadeAdapter,
   ) {
     const entries: Array<[TrackerEnum, TrackerAdapter]> = [
       [ncore.tracker, ncore],
       [bithumen.tracker, bithumen],
+      [insane.tracker, insane],
       [majomparade.tracker, majomparade],
     ];
     this.adapters = new Map(entries);

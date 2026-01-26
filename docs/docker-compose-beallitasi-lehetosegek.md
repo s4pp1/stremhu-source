@@ -68,6 +68,8 @@ services:
 | `NCORE_MAX_CONCURRENT`       | Meghatározza, hogy egyidejűleg hány kérés indulhat az nCore irányába, ha túl magas a szám a tracker megtagadja a kérést.      |           5            |
 | `BITHUMEN_URL`               | BitHUmen weboldal URL módósítása esetén van lehetőség a módosításra.                                                          |  https://bithumen.be   |
 | `BITHUMEN_MAX_CONCURRENT`    | Meghatározza, hogy egyidejűleg hány kérés indulhat a BitHUmen irányába, ha túl magas a szám a tracker megtagadja a kérést.    |           5            |
+| `INSANE_URL`                 | iNSANE weboldal URL módósítása esetén van lehetőség a módosításra.                                                            | https://newinsane.info |
+| `INSANE_MAX_CONCURRENT`      | Meghatározza, hogy egyidejűleg hány kérés indulhat a iNSANE irányába, ha túl magas a szám a tracker megtagadja a kérést.      |           5            |
 | `MAJOMPARADE_URL`            | Majomparádé weboldal URL módósítása esetén van lehetőség a módosításra.                                                       | https://majomparade.eu |
 | `MAJOMPARADE_MAX_CONCURRENT` | Meghatározza, hogy egyidejűleg hány kérés indulhat a Majomparádé irányába, ha túl magas a szám a tracker megtagadja a kérést. |           5            |
 

@@ -16,6 +16,7 @@ Self-hostolható Stremio addon, amellyel **közvetlenül magyar trackeroldalakr�
 
 - **nCore**
 - **BitHUmen**
+- **iNSANE**
 - **Majomparádé**
 
 ### Funkciók

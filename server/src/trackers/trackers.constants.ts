@@ -14,6 +14,11 @@ export const TRACKER_OPTIONS: TrackerOption[] = [
     requiresFullDownload: false,
   },
   {
+    value: TrackerEnum.INSANE,
+    label: 'iNSANE',
+    requiresFullDownload: false,
+  },
+  {
     value: TrackerEnum.MAJOMPARADE,
     label: 'Majomparádé',
     requiresFullDownload: true,
