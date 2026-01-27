@@ -38,12 +38,13 @@ async def stream(
     content_type, _ = mimetypes.guess_type(playback.file_name)
     media_type = content_type or "application/octet-stream"
 
-    status_code = 200
     headers = {
         "Accept-Ranges": "bytes",
+        "Cache-Control": "no-store, no-transform",
     }
 
     if range_header is None:
+        status_code = 200
         headers["Content-Length"] = str(playback.file_size)
     else:
         status_code = 206
