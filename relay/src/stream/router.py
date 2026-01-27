@@ -15,7 +15,11 @@ router = APIRouter(
 
 @router.get(
     "/{info_hash}/{file_index}",
-    operation_id="stream_file",
+    operation_id="get_stream_file",
+)
+@router.head(
+    "/{info_hash}/{file_index}",
+    operation_id="head_stream_file",
 )
 async def stream(
     info_hash: str,

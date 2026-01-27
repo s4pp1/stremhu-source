@@ -4,6 +4,7 @@ from typing import List
 import libtorrent as libtorrent
 from common.constants import PRIO_0, PRIO_1
 from libtorrent_client.service import LibtorrentClientService
+from stream.service import StreamService
 from torrents.schemas import (
     AddTorrent,
     RelayTorrent,
@@ -17,8 +18,10 @@ class TorrentsService:
     def __init__(
         self,
         libtorrent_client_service: LibtorrentClientService,
+        stream_service: StreamService,
     ) -> None:
         self.libtorrent_client_service = libtorrent_client_service
+        self.stream_service = stream_service
 
     def add_torrent(
         self,
@@ -78,6 +81,10 @@ class TorrentsService:
 
         self.libtorrent_client_service.remove_torrent(
             info_hash=info_hash_sha1,
+        )
+
+        self.stream_service.remove_torrent(
+            info_hash=info_hash,
         )
 
         return torrent
