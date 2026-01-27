@@ -95,6 +95,10 @@ class StreamService:
             file_name=torrent_file.name,
         )
 
+    def remove_torrent(self, info_hash: str):
+        if info_hash in self.torrents:
+            self.torrents.pop(info_hash)
+
     def _parse_range_header(
         self,
         file_size: int,
