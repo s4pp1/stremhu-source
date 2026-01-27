@@ -46,7 +46,9 @@ export class PlaybackController {
     @Param('fileIdx', ParseIntPipe) fileIndex: number,
   ) {
     const rangeHeader = req.headers.range;
-    this.logger.log(`▶️ Lejátszás indítása "${rangeHeader}" range-el.`);
+    this.logger.log(
+      `▶️ Lejátszás indítása "${req.method}"- "${rangeHeader}" range-el.`,
+    );
 
     const relayTorrent = await this.playbackService.preparePlayback({
       imdbId,
