@@ -28,14 +28,13 @@ async def stream(
     range_header: str | None = Header(None, alias="Range"),
     stream_service: StreamService = Depends(get_stream_service),
 ):
-    playback = await stream_service.stream(
+    stream = await stream_service.prepare_for_stream(
         info_hash=info_hash,
         file_index=file_index,
-        request=request,
         range_header=range_header,
     )
 
-    content_type, _ = mimetypes.guess_type(playback.file_name)
+    content_type, _ = mimetypes.guess_type(stream.file.name)
     media_type = content_type or "application/octet-stream"
 
     headers = {
@@ -45,12 +44,12 @@ async def stream(
 
     if range_header is None:
         status_code = 200
-        headers["Content-Length"] = str(playback.file_size)
+        headers["Content-Length"] = str(stream.file.size)
     else:
         status_code = 206
-        headers["Content-Length"] = str(playback.content_length)
+        headers["Content-Length"] = str(stream.end_byte - stream.start_byte + 1)
         headers["Content-Range"] = (
-            f"bytes {playback.start_byte}-{playback.end_byte}/{playback.file_size}"
+            f"bytes {stream.start_byte}-{stream.end_byte}/{stream.file.size}"
         )
 
     if request.method == "HEAD":
@@ -60,8 +59,13 @@ async def stream(
             media_type=media_type,
         )
 
+    iterator = await stream_service.stream(
+        stream=stream,
+        request=request,
+    )
+
     return StreamingResponse(
-        content=playback.iterator,
+        content=iterator,
         media_type=media_type,
         status_code=status_code,
         headers=headers,
