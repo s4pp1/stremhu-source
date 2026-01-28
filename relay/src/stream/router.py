@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-import mimetypes
-
+import content_types
 from fastapi import APIRouter, Depends, Header, Request, Response
 from fastapi.responses import StreamingResponse
 from stream.dependencies import get_stream_service
@@ -34,7 +33,7 @@ async def stream(
         range_header=range_header,
     )
 
-    content_type, _ = mimetypes.guess_type(stream.file.name)
+    content_type = content_types.get_content_type(stream.file.name)
     media_type = content_type or "application/octet-stream"
 
     headers = {
