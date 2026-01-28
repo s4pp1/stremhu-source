@@ -132,6 +132,8 @@ class Stream:
         self.id = stream_id
         self.torrent = torrent
         self.file = file
+        self.start_byte = stream_start_byte
+        self.end_byte = stream_end_byte
 
         stream_start_piece_index, stream_end_piece_index = self._get_byte_to_piece(
             stream_start_byte=stream_start_byte,
