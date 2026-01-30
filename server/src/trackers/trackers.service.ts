@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  HttpException,
   Injectable,
   NotFoundException,
   NotImplementedException,
@@ -15,7 +14,7 @@ import { TrackersStore } from './core/trackers.store';
 import { TrackerEnum } from './enum/tracker.enum';
 import { TrackerAdapterRegistry } from './tracker-adapter.registry';
 import { LoginRequest } from './tracker.types';
-import { LOGIN_ERROR_MESSAGE, TRACKER_INFO } from './trackers.constants';
+import { TRACKER_INFO } from './trackers.constants';
 import { TrackerToUpdate } from './type/tracker-to-update';
 
 @Injectable()
@@ -49,12 +48,8 @@ export class TrackersService {
         downloadFullTorrent: TRACKER_INFO[tracker].requiresFullDownload,
       });
     } catch (error) {
-      if (error instanceof HttpException) {
-        if (error.getStatus() === 422) {
-          throw new BadRequestException(LOGIN_ERROR_MESSAGE);
-        }
-
-        throw error;
+      if (error instanceof Error) {
+        throw new BadRequestException(error.message);
       }
 
       throw new NotImplementedException(

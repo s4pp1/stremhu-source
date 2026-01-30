@@ -1,19 +1,15 @@
-import {
-  Inject,
-  Injectable,
-  Logger,
-  ServiceUnavailableException,
-} from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Bottleneck from 'bottleneck';
 import { load } from 'cheerio';
-import _ from 'lodash';
+import { compact, last } from 'lodash';
 
 import { parseTorrent } from 'src/common/utils/parse-torrent.util';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { FIND_TORRENTS_LIMIT } from '../adapter.contant';
 import {
+  AdapterLoginRequest,
   AdapterParsedTorrent,
   AdapterTorrentId,
   TRACKER_TOKEN,
@@ -27,7 +23,6 @@ import { NCORE_HIT_N_RUN_PATH, NCORE_TORRENTS_PATH } from './ncore.constants';
 import {
   NcoreDownloadRequest,
   NcoreFindQuery,
-  NcoreLoginRequest,
   NcoreOrderByEnum,
   NcoreOrderDirectionEnum,
   NcoreSearchByEnum,
@@ -41,16 +36,14 @@ import {
 export class NcoreClient {
   private readonly logger = new Logger(NcoreClient.name);
   private readonly limiter: Bottleneck;
-
-  private readonly ncoreBaseUrl: string;
+  private readonly baseUrl: string;
 
   constructor(
     @Inject(TRACKER_TOKEN) private readonly tracker: TrackerEnum,
     private configService: ConfigService,
-    private ncoreClientFactory: NcoreClientFactory,
+    private clientFactory: NcoreClientFactory,
   ) {
-    this.ncoreBaseUrl =
-      this.configService.getOrThrow<string>('tracker.ncore-url');
+    this.baseUrl = this.configService.getOrThrow<string>('tracker.ncore-url');
 
     const maxConcurrent = this.configService.getOrThrow<number>(
       'tracker.ncore-max-concurrent',
@@ -61,8 +54,8 @@ export class NcoreClient {
     });
   }
 
-  login(payload: NcoreLoginRequest) {
-    return this.requestLimit(() => this.ncoreClientFactory.login(payload));
+  login(payload: AdapterLoginRequest) {
+    return this.requestLimit(() => this.clientFactory.login(payload));
   }
 
   async find(payload: NcoreFindQuery): Promise<NcoreTorrent[]> {
@@ -81,7 +74,7 @@ export class NcoreClient {
     try {
       const { imdbId, categories } = payload;
 
-      const torrentsUrl = new URL(NCORE_TORRENTS_PATH, this.ncoreBaseUrl);
+      const torrentsUrl = new URL(NCORE_TORRENTS_PATH, this.baseUrl);
 
       const searchParams: NcoreSearchParams = {
         oldal: page,
@@ -95,7 +88,7 @@ export class NcoreClient {
       };
 
       const response = await this.requestLimit(() =>
-        this.ncoreClientFactory.client.get<NcoreTorrents | string>(
+        this.clientFactory.client.get<NcoreTorrents | string>(
           torrentsUrl.href,
           {
             params: searchParams,
@@ -128,19 +121,19 @@ export class NcoreClient {
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new ServiceUnavailableException(errorMessage);
+      throw new Error(errorMessage);
     }
   }
 
   async findOne(torrentId: string): Promise<AdapterTorrentId> {
     try {
-      const detailsUrl = new URL(NCORE_TORRENTS_PATH, this.ncoreBaseUrl);
+      const detailsUrl = new URL(NCORE_TORRENTS_PATH, this.baseUrl);
 
       detailsUrl.searchParams.append('action', 'details');
       detailsUrl.searchParams.append('id', torrentId);
 
       const response = await this.requestLimit(() =>
-        this.ncoreClientFactory.client.get<string>(detailsUrl.href),
+        this.clientFactory.client.get<string>(detailsUrl.href),
       );
 
       const $ = load(response.data);
@@ -157,7 +150,7 @@ export class NcoreClient {
         .first()
         .text();
 
-      const imdbId = _.last(imdbUrl.split('/'));
+      const imdbId = last(imdbUrl.split('/'));
 
       if (!downloadPath || !imdbId) {
         throw new Error(
@@ -165,7 +158,7 @@ export class NcoreClient {
         );
       }
 
-      const downloadUrl = new URL(downloadPath, this.ncoreBaseUrl);
+      const downloadUrl = new URL(downloadPath, this.baseUrl);
 
       return {
         tracker: this.tracker,
@@ -176,7 +169,7 @@ export class NcoreClient {
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new ServiceUnavailableException(errorMessage);
+      throw new Error(errorMessage);
     }
   }
 
@@ -185,7 +178,7 @@ export class NcoreClient {
 
     try {
       const response = await this.requestLimit(() =>
-        this.ncoreClientFactory.client.get<ArrayBuffer>(downloadUrl, {
+        this.clientFactory.client.get<ArrayBuffer>(downloadUrl, {
           responseType: 'arraybuffer',
         }),
       );
@@ -206,11 +199,11 @@ export class NcoreClient {
 
   async hitnrun(): Promise<string[]> {
     try {
-      const hitAndRunUrl = new URL(NCORE_HIT_N_RUN_PATH, this.ncoreBaseUrl);
+      const hitAndRunUrl = new URL(NCORE_HIT_N_RUN_PATH, this.baseUrl);
       hitAndRunUrl.searchParams.append('showall', 'false');
 
       const response = await this.requestLimit(() =>
-        this.ncoreClientFactory.client.get<string>(hitAndRunUrl.href, {
+        this.clientFactory.client.get<string>(hitAndRunUrl.href, {
           responseType: 'text',
         }),
       );
@@ -224,16 +217,16 @@ export class NcoreClient {
         .get();
 
       const sourceIds = hitnrunTorrents.map((hitnrunTorrent) => {
-        const url = new URL(hitnrunTorrent, this.ncoreBaseUrl);
+        const url = new URL(hitnrunTorrent, this.baseUrl);
         const idParam = url.searchParams.get('id');
         return idParam;
       });
 
-      return _.compact(sourceIds);
+      return compact(sourceIds);
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new ServiceUnavailableException(errorMessage);
+      throw new Error(errorMessage);
     }
   }
 

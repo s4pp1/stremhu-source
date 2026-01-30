@@ -116,7 +116,7 @@ export class RelayService {
 
     await this.updateConfig({ ...setting, port });
 
-    this.logger.log('✅ StremHU Relay elindult');
+    this.logger.log('✅ StremHU Relay (libtorrent) elindult');
   }
 
   async shutdown() {
@@ -137,7 +137,7 @@ export class RelayService {
       }
     }
 
-    this.logger.log('✅ libtorrent kliens leállítva.');
+    this.logger.log('✅ StremHU Relay (libtorrent) leállítva.');
   }
 
   async updateConfig(payload: UpdateSettings) {
@@ -183,9 +183,7 @@ export class RelayService {
       await setTimeout(2000);
     }
 
-    this.logger.log(
-      `🎬 "${torrent.name}" nevű torrent hozzáadva a libtorrent-hez.`,
-    );
+    this.logger.log(`🎬 "${torrent.name}" nevű torrent hozzáadva a Relay-hez.`);
 
     return torrent;
   }
@@ -193,14 +191,14 @@ export class RelayService {
   async deleteTorrent(infoHash: string): Promise<RelayTorrent> {
     const torrent = await this.relayClient.torrents.deleteTorrent(infoHash);
 
-    this.logger.log(`🗑️ "${infoHash}" torrent törölve a libtorrent-ből.`);
+    this.logger.log(`🗑️ "${infoHash}" torrent törölve a Relay-ből.`);
 
     return torrent;
   }
 
   private async restartEngine() {
     this.logger.warn(
-      `[libtorrent] Újrainditas hiba miatt ${this.restartDelayMs}ms múlva.`,
+      `[Relay] Újrainditas hiba miatt ${this.restartDelayMs}ms múlva.`,
     );
 
     await setTimeout(this.restartDelayMs);

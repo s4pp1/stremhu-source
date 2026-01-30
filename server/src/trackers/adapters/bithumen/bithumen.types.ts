@@ -20,11 +20,6 @@ export type BithumenCategory =
   | BithumenMovieCategoryEnum
   | BithumenSeriesCategoryEnum;
 
-export interface BithumenLoginRequest {
-  username: string;
-  password: string;
-}
-
 export interface BithumenTorrentsQuery {
   categories: string[];
   imdbId: string;

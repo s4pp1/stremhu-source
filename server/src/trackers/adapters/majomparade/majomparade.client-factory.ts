@@ -4,8 +4,6 @@ import {
   Inject,
   Injectable,
   Logger,
-  ServiceUnavailableException,
-  UnprocessableEntityException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { AxiosInstance } from 'axios';
@@ -18,20 +16,18 @@ import { createAxios } from 'src/trackers/common/create-axios';
 import { TrackersStore } from 'src/trackers/core/trackers.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
-import { TRACKER_TOKEN } from '../adapters.types';
+import { AdapterLoginRequest, TRACKER_TOKEN } from '../adapters.types';
 import {
   getTrackerCredentialErrorMessage,
   getTrackerLoginErrorMessage,
   getTrackerRefreshMessage,
-  getTrackerStructureErrorMessage,
 } from '../adapters.utils';
 import { MAJOMPARADE_LOGIN_PATH } from './majomparade.constants';
-import { MajomparadeLoginRequest } from './majomparade.types';
 
 @Injectable()
 export class MajomparadeClientFactory {
   private readonly logger = new Logger(MajomparadeClientFactory.name);
-  private readonly majomparadeBaseUrl: string;
+  private readonly baseUrl: string;
 
   private jar = new CookieJar();
   private axios: AxiosInstance = createAxios(this.jar);
@@ -42,7 +38,7 @@ export class MajomparadeClientFactory {
     private configService: ConfigService,
     private trackersStore: TrackersStore,
   ) {
-    this.majomparadeBaseUrl = this.configService.getOrThrow<string>(
+    this.baseUrl = this.configService.getOrThrow<string>(
       'tracker.majomparade-url',
     );
 
@@ -53,71 +49,57 @@ export class MajomparadeClientFactory {
     return this.axios;
   }
 
-  async login(payload?: MajomparadeLoginRequest) {
-    try {
-      let credential: MajomparadeLoginRequest | undefined;
+  async login(payload?: AdapterLoginRequest) {
+    let credential = payload;
 
-      if (payload) {
-        credential = payload;
-      } else {
-        const tracker = await this.trackersStore.findOneByTracker(this.tracker);
+    if (!credential) {
+      const tracker = await this.trackersStore.findOneByTracker(this.tracker);
 
-        if (!tracker) {
-          throw new BadRequestException(
-            getTrackerCredentialErrorMessage(this.tracker),
-          );
-        }
-
-        credential = {
-          username: tracker.username,
-          password: tracker.password,
-        };
-      }
-
-      const { username, password } = credential;
-
-      await this.jar.removeAllCookies();
-      const axios = createAxios(this.jar);
-
-      const loginUrl = new URL(MAJOMPARADE_LOGIN_PATH, this.majomparadeBaseUrl);
-
-      const loginResponse = await axios.get<string>(loginUrl.href, {
-        responseType: 'text',
-      });
-
-      const $login = load(loginResponse.data);
-      const getUnique = $login('.rejtett_input[name="getUnique"]')
-        .first()
-        .attr('value');
-
-      if (!getUnique) {
-        throw new Error('getUnique nem található');
-      }
-
-      const form = new URLSearchParams();
-      form.set('nev', username);
-      form.set('jelszo', password);
-      form.set('getUnique', getUnique);
-
-      const response = await axios.post(`${loginUrl.href}?belepes`, form, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
-
-      if (response.data !== 'location="index.php";') {
-        throw new UnprocessableEntityException(
-          getTrackerLoginErrorMessage(this.tracker),
+      if (!tracker) {
+        throw new BadRequestException(
+          getTrackerCredentialErrorMessage(this.tracker),
         );
       }
-    } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
 
-      const errorMessage = getTrackerStructureErrorMessage(this.tracker);
-      this.logger.error(errorMessage, error);
-      throw new ServiceUnavailableException(errorMessage);
+      credential = {
+        username: tracker.username,
+        password: tracker.password,
+      };
+    }
+
+    const { username, password } = credential;
+
+    await this.jar.removeAllCookies();
+    const axios = createAxios(this.jar);
+
+    const loginUrl = new URL(MAJOMPARADE_LOGIN_PATH, this.baseUrl);
+
+    const loginResponse = await axios.get<string>(loginUrl.href, {
+      responseType: 'text',
+    });
+
+    const $login = load(loginResponse.data);
+    const getUnique = $login('.rejtett_input[name="getUnique"]')
+      .first()
+      .attr('value');
+
+    if (!getUnique) {
+      throw new Error('getUnique nem található');
+    }
+
+    const form = new URLSearchParams();
+    form.set('nev', username);
+    form.set('jelszo', password);
+    form.set('getUnique', getUnique);
+
+    const response = await axios.post(`${loginUrl.href}?belepes`, form, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+
+    if (response.data !== 'location="index.php";') {
+      throw new Error(getTrackerLoginErrorMessage(this.tracker));
     }
   }
 

@@ -4,8 +4,6 @@ import {
   Inject,
   Injectable,
   Logger,
-  ServiceUnavailableException,
-  UnprocessableEntityException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { AxiosInstance, AxiosResponse } from 'axios';
@@ -18,7 +16,7 @@ import { createAxios } from 'src/trackers/common/create-axios';
 import { TrackersStore } from 'src/trackers/core/trackers.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
-import { TRACKER_TOKEN } from '../adapters.types';
+import { AdapterLoginRequest, TRACKER_TOKEN } from '../adapters.types';
 import {
   getTrackerCredentialErrorMessage,
   getTrackerLoginErrorMessage,
@@ -26,12 +24,11 @@ import {
   getTrackerStructureErrorMessage,
 } from '../adapters.utils';
 import { BITHUMEN_INDEX_PATH, BITHUMEN_LOGIN_PATH } from './bithumen.constants';
-import { BithumenLoginRequest } from './bithumen.types';
 
 @Injectable()
 export class BithumenClientFactory {
   private readonly logger = new Logger(BithumenClientFactory.name);
-  private readonly bithumenBaseUrl: string;
+  private readonly baseUrl: string;
 
   private jar = new CookieJar();
   private axios: AxiosInstance = createAxios(this.jar);
@@ -44,7 +41,7 @@ export class BithumenClientFactory {
     private configService: ConfigService,
     private trackersStore: TrackersStore,
   ) {
-    this.bithumenBaseUrl = this.configService.getOrThrow<string>(
+    this.baseUrl = this.configService.getOrThrow<string>(
       'tracker.bithumen-url',
     );
 
@@ -55,13 +52,11 @@ export class BithumenClientFactory {
     return this.axios;
   }
 
-  async login(payload?: BithumenLoginRequest) {
+  async login(payload?: AdapterLoginRequest) {
     try {
-      let credential: BithumenLoginRequest | undefined;
+      let credential = payload;
 
-      if (payload) {
-        credential = payload;
-      } else {
+      if (!credential) {
         const tracker = await this.trackersStore.findOneByTracker(this.tracker);
 
         if (!tracker) {
@@ -81,7 +76,7 @@ export class BithumenClientFactory {
       await this.jar.removeAllCookies();
       const axios = createAxios(this.jar);
 
-      const loginUrl = new URL(BITHUMEN_LOGIN_PATH, this.bithumenBaseUrl);
+      const loginUrl = new URL(BITHUMEN_LOGIN_PATH, this.baseUrl);
 
       const form = new URLSearchParams();
       form.set('username', username);
@@ -97,18 +92,16 @@ export class BithumenClientFactory {
 
       const isAuthError = this.isAuthError(response);
       if (isAuthError) {
-        throw new UnprocessableEntityException(
-          getTrackerLoginErrorMessage(this.tracker),
-        );
+        throw new Error(getTrackerLoginErrorMessage(this.tracker));
       }
     } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
+      if (isAxiosError(error) && error.status === 401) {
+        throw new Error(getTrackerLoginErrorMessage(this.tracker));
       }
 
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new ServiceUnavailableException(errorMessage);
+      throw new Error(errorMessage);
     }
   }
 
@@ -116,7 +109,7 @@ export class BithumenClientFactory {
     try {
       if (this.userId) return this.userId;
 
-      const indexUrl = new URL(BITHUMEN_INDEX_PATH, this.bithumenBaseUrl);
+      const indexUrl = new URL(BITHUMEN_INDEX_PATH, this.baseUrl);
       const response = await this.client.get<string>(indexUrl.href, {
         responseType: 'text',
       });
@@ -130,7 +123,7 @@ export class BithumenClientFactory {
         throw new Error(`"userDetailPath": ${userDetailPath} nem található`);
       }
 
-      const userDetailUrl = new URL(userDetailPath, this.bithumenBaseUrl);
+      const userDetailUrl = new URL(userDetailPath, this.baseUrl);
       const userId = userDetailUrl.searchParams.get('id');
 
       if (!userId) {
@@ -143,7 +136,7 @@ export class BithumenClientFactory {
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new ServiceUnavailableException(errorMessage);
+      throw new Error(errorMessage);
     }
   }
 

@@ -1,9 +1,4 @@
-import {
-  Inject,
-  Injectable,
-  Logger,
-  ServiceUnavailableException,
-} from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Bottleneck from 'bottleneck';
 import { load } from 'cheerio';
@@ -14,6 +9,7 @@ import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { FIND_TORRENTS_LIMIT } from '../adapter.contant';
 import {
+  AdapterLoginRequest,
   AdapterParsedTorrent,
   AdapterTorrentId,
   TRACKER_TOKEN,
@@ -30,7 +26,6 @@ import {
 } from './bithumen.constants';
 import {
   BithumenCategory,
-  BithumenLoginRequest,
   BithumenTorrent,
   BithumenTorrents,
   BithumenTorrentsQuery,
@@ -41,14 +36,14 @@ export class BithumenClient {
   private readonly logger = new Logger(BithumenClient.name);
   private readonly limiter: Bottleneck;
 
-  private readonly bithumenBaseUrl: string;
+  private readonly baseUrl: string;
 
   constructor(
     @Inject(TRACKER_TOKEN) readonly tracker: TrackerEnum,
     private configService: ConfigService,
     private bithumenClientFactory: BithumenClientFactory,
   ) {
-    this.bithumenBaseUrl = this.configService.getOrThrow<string>(
+    this.baseUrl = this.configService.getOrThrow<string>(
       'tracker.bithumen-url',
     );
 
@@ -61,7 +56,7 @@ export class BithumenClient {
     });
   }
 
-  login(payload: BithumenLoginRequest) {
+  login(payload: AdapterLoginRequest) {
     return this.requestLimit(() => this.bithumenClientFactory.login(payload));
   }
 
@@ -81,7 +76,7 @@ export class BithumenClient {
     try {
       const { imdbId, categories } = payload;
 
-      const torrentsUrl = new URL(BITHUMEN_TORRENTS_PATH, this.bithumenBaseUrl);
+      const torrentsUrl = new URL(BITHUMEN_TORRENTS_PATH, this.baseUrl);
       torrentsUrl.searchParams.append('genre', '0');
       torrentsUrl.searchParams.append('search', imdbId);
       torrentsUrl.searchParams.append('page', `${page}`);
@@ -108,13 +103,13 @@ export class BithumenClient {
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new ServiceUnavailableException(errorMessage);
+      throw new Error(errorMessage);
     }
   }
 
   async findOne(torrentId: string): Promise<AdapterTorrentId> {
     try {
-      const detailsUrl = new URL(BITHUMEN_DETAILS_PATH, this.bithumenBaseUrl);
+      const detailsUrl = new URL(BITHUMEN_DETAILS_PATH, this.baseUrl);
       detailsUrl.searchParams.append('id', torrentId);
 
       const response = await this.requestLimit(() =>
@@ -137,7 +132,7 @@ export class BithumenClient {
         );
       }
 
-      const downloadUrl = new URL(downloadPath, this.bithumenBaseUrl);
+      const downloadUrl = new URL(downloadPath, this.baseUrl);
 
       return {
         tracker: this.tracker,
@@ -148,7 +143,7 @@ export class BithumenClient {
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new ServiceUnavailableException(errorMessage);
+      throw new Error(errorMessage);
     }
   }
 
@@ -182,10 +177,7 @@ export class BithumenClient {
         this.bithumenClientFactory.getUserId(),
       );
 
-      const hitAndRunUrl = new URL(
-        BITHUMEN_HIT_N_RUN_PATH,
-        this.bithumenBaseUrl,
-      );
+      const hitAndRunUrl = new URL(BITHUMEN_HIT_N_RUN_PATH, this.baseUrl);
       hitAndRunUrl.searchParams.append('id', userId);
       hitAndRunUrl.searchParams.append('hnr', '1');
 
@@ -202,7 +194,7 @@ export class BithumenClient {
         .get();
 
       const sourceIds = torrentIds.map((hitnrunTorrent) => {
-        const url = new URL(hitnrunTorrent, this.bithumenBaseUrl);
+        const url = new URL(hitnrunTorrent, this.baseUrl);
         const idParam = url.searchParams.get('id');
         return idParam;
       });
@@ -211,7 +203,7 @@ export class BithumenClient {
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new ServiceUnavailableException(errorMessage);
+      throw new Error(errorMessage);
     }
   }
 
@@ -237,7 +229,7 @@ export class BithumenClient {
           .children('a')
           .eq(1)
           .attr('href')!;
-        const downloadUrl = new URL(downloadPath, this.bithumenBaseUrl);
+        const downloadUrl = new URL(downloadPath, this.baseUrl);
         const imdbUrl =
           torrentColumns
             .eq(1)
