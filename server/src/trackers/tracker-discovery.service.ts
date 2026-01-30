@@ -5,7 +5,6 @@ import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store
 
 import { AdapterTorrentId } from './adapters/adapters.types';
 import { TrackersStore } from './core/trackers.store';
-import { TrackerTorrentStatusEnum } from './enum/tracker-torrent-status.enum';
 import { TrackerEnum } from './enum/tracker.enum';
 import { TrackerAdapterRegistry } from './tracker-adapter.registry';
 import {
@@ -14,6 +13,7 @@ import {
   TrackerTorrent,
   TrackerTorrentFile,
 } from './tracker.types';
+import { TRACKER_INFO } from './trackers.constants';
 import { TrackerTorrentDownloaded } from './type/tracker-torrent-downloaded.type';
 import { TrackerTorrentFound } from './type/tracker-torrent-found.type';
 
@@ -25,27 +25,25 @@ export class TrackerDiscoveryService {
     private readonly torrentsCacheStore: TorrentsCacheStore,
   ) {}
 
-  async findTorrents(query: TrackerSearchQuery): Promise<TrackerTorrent[]> {
+  async findTorrents(
+    query: TrackerSearchQuery,
+  ): Promise<PromiseSettledResult<TrackerTorrent[]>[]> {
     const trackers = await this.trackersStore.find();
 
     if (trackers.length === 0) {
-      return [
-        {
-          status: TrackerTorrentStatusEnum.ERROR,
-          message:
-            '[StremHU Source] Használat előtt konfigurálnod kell tracker bejelentkezést.',
-        },
-      ];
+      throw new Error(
+        '[StremHU Source] Használat előtt konfigurálnod kell tracker bejelentkezést.',
+      );
     }
 
-    const results = await Promise.all(
+    const results = await Promise.allSettled(
       trackers.map((tracker) => {
         const adapter = this.trackerAdapterRegistry.get(tracker.tracker);
         return this.findTrackerTorrents(adapter, query);
       }),
     );
 
-    return results.flat();
+    return results;
   }
 
   async findOneTorrent(
@@ -84,90 +82,65 @@ export class TrackerDiscoveryService {
     adapter: TrackerAdapter,
     query: TrackerSearchQuery,
   ): Promise<TrackerTorrent[]> {
-    try {
-      const { imdbId } = query;
+    const { imdbId } = query;
 
-      const torrents = await adapter.find(query);
-      const cachedTorrents = await this.torrentsCacheStore.find({
-        imdbId,
-        tracker: adapter.tracker,
-      });
+    const torrents = await adapter.find(query);
+    const cachedTorrents = await this.torrentsCacheStore.find({
+      imdbId,
+      tracker: adapter.tracker,
+    });
 
-      const notCachedTorrents = _.differenceWith(
-        torrents,
-        cachedTorrents,
-        (torrent, cachedTorrent) =>
-          torrent.torrentId === cachedTorrent.torrentId,
+    const notCachedTorrents = _.differenceWith(
+      torrents,
+      cachedTorrents,
+      (torrent, cachedTorrent) => torrent.torrentId === cachedTorrent.torrentId,
+    );
+    const torrentParsedFiles = await this.downloads(adapter, notCachedTorrents);
+
+    const notAvailableTorrents = _.differenceWith(
+      cachedTorrents,
+      torrentParsedFiles,
+      (cachedTorrent, torrent) => torrent.torrentId === cachedTorrent.torrentId,
+    );
+    await this.torrentsCacheStore.delete(
+      notAvailableTorrents.map(
+        (notAvailableTorrent) => notAvailableTorrent.torrentFilePath,
+      ),
+    );
+
+    const allTorrent = [...cachedTorrents, ...torrentParsedFiles];
+
+    const allTorrentMap = _.keyBy(allTorrent, 'torrentId');
+
+    return torrents.map((torrent) => {
+      const parsedTorrent = allTorrentMap[torrent.torrentId].parsed;
+
+      const name = parsedTorrent.name || '';
+
+      const parsedFiles = parsedTorrent.files || [];
+      const files: TrackerTorrentFile[] = parsedFiles.map(
+        (parsedFile, index) => ({
+          name: parsedFile.name,
+          size: parsedFile.length,
+          fileIndex: index,
+        }),
       );
-      const torrentParsedFiles = await this.downloads(
-        adapter,
-        notCachedTorrents,
-      );
 
-      const notAvailableTorrents = _.differenceWith(
-        cachedTorrents,
-        torrents,
-        (cachedTorrent, torrent) =>
-          torrent.torrentId === cachedTorrent.torrentId,
-      );
-      await this.torrentsCacheStore.delete(
-        notAvailableTorrents.map(
-          (notAvailableTorrent) => notAvailableTorrent.torrentFilePath,
-        ),
-      );
-
-      const allTorrent = [...cachedTorrents, ...torrentParsedFiles];
-
-      const allTorrentMap = _.keyBy(allTorrent, 'torrentId');
-
-      return torrents.map((torrent) => {
-        const parsedTorrent = allTorrentMap[torrent.torrentId].parsed;
-
-        const name = parsedTorrent.name || '';
-
-        const parsedFiles = parsedTorrent.files || [];
-        const files: TrackerTorrentFile[] = parsedFiles.map(
-          (parsedFile, index) => ({
-            name: parsedFile.name,
-            size: parsedFile.length,
-            fileIndex: index,
-          }),
-        );
-
-        return {
-          ...torrent,
-          status: TrackerTorrentStatusEnum.SUCCESS,
-          infoHash: parsedTorrent.infoHash,
-          name,
-          files,
-          torrentFilePath: allTorrentMap[torrent.torrentId].torrentFilePath,
-        };
-      });
-    } catch (error) {
-      let message = 'Hiba történt';
-
-      if (
-        _.isObject(error) &&
-        'message' in error &&
-        typeof error.message === 'string'
-      ) {
-        message = error.message;
-      }
-
-      return [
-        {
-          status: TrackerTorrentStatusEnum.ERROR,
-          message,
-        },
-      ];
-    }
+      return {
+        ...torrent,
+        infoHash: parsedTorrent.infoHash,
+        name,
+        files,
+        torrentFilePath: allTorrentMap[torrent.torrentId].torrentFilePath,
+      };
+    });
   }
 
   private async downloads(
     adapter: TrackerAdapter,
     adapterTorrents: AdapterTorrentId[],
   ): Promise<TrackerTorrentDownloaded[]> {
-    const adapterParsedTorrents = await Promise.all(
+    const results = await Promise.allSettled(
       adapterTorrents.map(
         async (adapterTorrent): Promise<TrackerTorrentDownloaded> => {
           const adapterParsedTorrent = await adapter.download(adapterTorrent);
@@ -187,6 +160,22 @@ export class TrackerDiscoveryService {
       ),
     );
 
-    return adapterParsedTorrents;
+    if (results.length === 0) {
+      return [];
+    }
+
+    const failedFetches = results.every(
+      (result) => result.status === 'rejected',
+    );
+
+    if (failedFetches) {
+      throw new Error(
+        `Nem sikerült torrentet letölteni a ${TRACKER_INFO[adapter.tracker].label}-ról.`,
+      );
+    }
+
+    return results.flatMap((result) =>
+      result.status === 'fulfilled' ? [result.value] : [],
+    );
   }
 }

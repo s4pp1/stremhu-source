@@ -6,7 +6,7 @@ export function getTrackerRefreshMessage(tracker: TrackerEnum): string {
 }
 
 export function getTrackerLoginErrorMessage(tracker: TrackerEnum): string {
-  return `Sikertelen bejelentkezés a(z) ${TRACKER_INFO[tracker].label} fiókba, frissítsd a hitelesítési adatokat!`;
+  return `Sikertelen bejelentkezés a(z) ${TRACKER_INFO[tracker].label} fiókba.`;
 }
 
 export function getTrackerCredentialErrorMessage(tracker: TrackerEnum): string {

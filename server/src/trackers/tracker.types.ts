@@ -9,7 +9,6 @@ import {
   AdapterTorrent,
   AdapterTorrentId,
 } from './adapters/adapters.types';
-import { TrackerTorrentStatusEnum } from './enum/tracker-torrent-status.enum';
 import { TrackerEnum } from './enum/tracker.enum';
 
 export interface TrackerTorrentId {
@@ -25,8 +24,7 @@ export interface TrackerTorrentFile {
   fileIndex: number;
 }
 
-export interface TrackerTorrentSuccess extends TrackerTorrentId {
-  status: TrackerTorrentStatusEnum.SUCCESS;
+export interface TrackerTorrent extends TrackerTorrentId {
   name: string;
   infoHash: string;
   files: TrackerTorrentFile[];
@@ -34,13 +32,6 @@ export interface TrackerTorrentSuccess extends TrackerTorrentId {
   resolution: ResolutionEnum;
   seeders: number;
 }
-
-export interface TrackerTorrentError {
-  status: TrackerTorrentStatusEnum.ERROR;
-  message: string;
-}
-
-export type TrackerTorrent = TrackerTorrentSuccess | TrackerTorrentError;
 
 export interface LoginRequest {
   username: string;

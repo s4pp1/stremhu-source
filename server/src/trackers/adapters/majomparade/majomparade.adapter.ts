@@ -30,11 +30,11 @@ import {
 export class MajomparadeAdapter implements TrackerAdapter {
   constructor(
     @Inject(TRACKER_TOKEN) readonly tracker: TrackerEnum,
-    private majomparadeClient: MajomparadeClient,
+    private client: MajomparadeClient,
   ) {}
 
   async login(payload: LoginRequest): Promise<void> {
-    await this.majomparadeClient.login(payload);
+    await this.client.login(payload);
   }
 
   async find(query: TrackerSearchQuery): Promise<AdapterTorrent[]> {
@@ -53,7 +53,7 @@ export class MajomparadeAdapter implements TrackerAdapter {
       categories = MAJOMPARADE_SERIES_CATEGORY_FILTERS;
     }
 
-    const torrents = await this.majomparadeClient.find({ imdbId, categories });
+    const torrents = await this.client.find({ imdbId, categories });
 
     return torrents.map((torrent) => {
       const resolution = this.resolveTorrentResolution(torrent.category);
@@ -72,15 +72,15 @@ export class MajomparadeAdapter implements TrackerAdapter {
   }
 
   async findOne(torrentId: string): Promise<AdapterTorrentId> {
-    return this.majomparadeClient.findOne(torrentId);
+    return this.client.findOne(torrentId);
   }
 
   async download(payload: AdapterTorrentId): Promise<AdapterParsedTorrent> {
-    return this.majomparadeClient.download(payload);
+    return this.client.download(payload);
   }
 
   async seedRequirement(): Promise<string[]> {
-    return this.majomparadeClient.hitnrun();
+    return this.client.hitnrun();
   }
 
   private resolveTorrentResolution(

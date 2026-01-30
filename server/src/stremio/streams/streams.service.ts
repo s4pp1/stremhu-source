@@ -12,12 +12,8 @@ import { VIDEO_QUALITY_LABEL_MAP } from 'src/common/constant/video-quality.const
 import { formatFilesize } from 'src/common/utils/file.util';
 import { SettingsService } from 'src/settings/settings.service';
 import { TorrentsService } from 'src/torrents/torrents.service';
-import { TrackerTorrentStatusEnum } from 'src/trackers/enum/tracker-torrent-status.enum';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
-import {
-  TrackerTorrentError,
-  TrackerTorrentSuccess,
-} from 'src/trackers/tracker.types';
+import { TrackerTorrent } from 'src/trackers/tracker.types';
 import { TRACKER_INFO } from 'src/trackers/trackers.constants';
 import { UserDto } from 'src/users/dto/user.dto';
 import { User } from 'src/users/entity/user.entity';
@@ -58,18 +54,20 @@ export class StreamsService {
       mediaType: !isSpecial ? mediaType : undefined,
     });
 
-    const torrentErrors: TrackerTorrentError[] = [];
-    const torrentSuccesses: TrackerTorrentSuccess[] = [];
+    let trackerTorrents: TrackerTorrent[] = [];
+    const streamErrors: StreamDto[] = [];
 
     torrents.forEach((torrent) => {
-      if (torrent.status === TrackerTorrentStatusEnum.ERROR) {
-        return torrentErrors.push(torrent);
+      if (torrent.status === 'fulfilled') {
+        trackerTorrents = [...trackerTorrents, ...torrent.value];
+      } else {
+        const error = torrent.reason as Error;
+        const streamError = this.streamError(error.message);
+        streamErrors.push(streamError);
       }
-
-      return torrentSuccesses.push(torrent);
     });
 
-    const videoFiles = this.findVideoFiles(isSpecial, torrentSuccesses, series);
+    const videoFiles = this.findVideoFiles(isSpecial, trackerTorrents, series);
     const filteredVideoFiles = this.filterVideoFiles(videoFiles, user);
     const sortedVideoFiles = this.sortVideoFiles(filteredVideoFiles, user);
 
@@ -94,10 +92,6 @@ export class StreamsService {
         );
       }
     }
-
-    const streamErrors: StreamDto[] = torrentErrors.map((torrentError) =>
-      this.streamError(torrentError),
-    );
 
     return [...streams, ...streamErrors];
   }
@@ -161,10 +155,10 @@ export class StreamsService {
     };
   }
 
-  private streamError(torrentError: TrackerTorrentError) {
+  private streamError(message: string) {
     return {
       name: '❗ H I B A ❗',
-      description: `❗ ${torrentError.message} ❗`,
+      description: `❗ ${message} ❗`,
       url: 'http://hiba.tortent',
       behaviorHints: {
         notWebReady: false,
@@ -174,7 +168,7 @@ export class StreamsService {
 
   private findVideoFiles(
     isSpecial: boolean,
-    torrents: TrackerTorrentSuccess[],
+    torrents: TrackerTorrent[],
     series?: ParsedStremioIdSeries,
   ): VideoFile[] {
     const torrentByFiles: VideoFile[] = [];

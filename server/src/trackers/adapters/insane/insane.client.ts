@@ -14,6 +14,7 @@ import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { FIND_TORRENTS_LIMIT } from '../adapter.contant';
 import {
+  AdapterLoginRequest,
   AdapterParsedTorrent,
   AdapterTorrentId,
   TRACKER_TOKEN,
@@ -28,13 +29,7 @@ import {
   TORRENTS_PATH,
   TORRENT_DETAILS_PATH,
 } from './insane.constants';
-import {
-  CategoryEnum,
-  LoginRequest,
-  Torrent,
-  Torrents,
-  TorrentsQuery,
-} from './insane.types';
+import { CategoryEnum, Torrent, Torrents, TorrentsQuery } from './insane.types';
 
 @Injectable()
 export class InsaneClient {
@@ -59,7 +54,7 @@ export class InsaneClient {
     });
   }
 
-  login(payload: LoginRequest) {
+  login(payload: AdapterLoginRequest) {
     return this.requestLimit(() => this.clientFactory.login(payload));
   }
 

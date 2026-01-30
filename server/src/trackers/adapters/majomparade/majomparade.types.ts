@@ -18,11 +18,6 @@ export type MajomparadeCategory =
   | MajomparadeMovieCategoryEnum
   | MajomparadeSeriesCategoryEnum;
 
-export interface MajomparadeLoginRequest {
-  username: string;
-  password: string;
-}
-
 export interface MajomparadeTorrentsQuery {
   categories: string[];
   imdbId: string;

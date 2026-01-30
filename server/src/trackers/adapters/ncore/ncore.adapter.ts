@@ -31,11 +31,11 @@ import {
 export class NcoreAdapter implements TrackerAdapter {
   constructor(
     @Inject(TRACKER_TOKEN) readonly tracker: TrackerEnum,
-    private ncoreClient: NcoreClient,
+    private client: NcoreClient,
   ) {}
 
   async login(payload: LoginRequest): Promise<void> {
-    await this.ncoreClient.login(payload);
+    await this.client.login(payload);
   }
 
   async find(query: TrackerSearchQuery): Promise<AdapterTorrent[]> {
@@ -54,7 +54,7 @@ export class NcoreAdapter implements TrackerAdapter {
       categories = NCORE_SERIES_CATEGORY_FILTERS;
     }
 
-    const torrents = await this.ncoreClient.find({ imdbId, categories });
+    const torrents = await this.client.find({ imdbId, categories });
 
     return torrents.map((torrent) => {
       const resolution = this.resolveTorrentResolution(torrent.category);
@@ -73,15 +73,15 @@ export class NcoreAdapter implements TrackerAdapter {
   }
 
   async findOne(torrentId: string): Promise<AdapterTorrentId> {
-    return this.ncoreClient.findOne(torrentId);
+    return this.client.findOne(torrentId);
   }
 
   async download(payload: AdapterTorrentId): Promise<AdapterParsedTorrent> {
-    return this.ncoreClient.download(payload);
+    return this.client.download(payload);
   }
 
   async seedRequirement(): Promise<string[]> {
-    return this.ncoreClient.hitnrun();
+    return this.client.hitnrun();
   }
 
   private resolveTorrentResolution(

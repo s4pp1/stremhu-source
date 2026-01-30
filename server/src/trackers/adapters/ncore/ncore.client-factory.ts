@@ -4,8 +4,6 @@ import {
   Inject,
   Injectable,
   Logger,
-  ServiceUnavailableException,
-  UnprocessableEntityException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { AxiosInstance, AxiosResponse } from 'axios';
@@ -17,20 +15,18 @@ import { createAxios } from 'src/trackers/common/create-axios';
 import { TrackersStore } from 'src/trackers/core/trackers.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
-import { TRACKER_TOKEN } from '../adapters.types';
+import { AdapterLoginRequest, TRACKER_TOKEN } from '../adapters.types';
 import {
   getTrackerCredentialErrorMessage,
   getTrackerLoginErrorMessage,
   getTrackerRefreshMessage,
-  getTrackerStructureErrorMessage,
 } from '../adapters.utils';
 import { NCORE_LOGIN_PATH } from './ncore.constants';
-import { NcoreLoginRequest } from './ncore.types';
 
 @Injectable()
 export class NcoreClientFactory {
   private readonly logger = new Logger(NcoreClientFactory.name);
-  private readonly ncoreBaseUrl: string;
+  private readonly baseUrl: string;
 
   private jar = new CookieJar();
   private axios: AxiosInstance = createAxios(this.jar);
@@ -41,8 +37,7 @@ export class NcoreClientFactory {
     private configService: ConfigService,
     private trackersStore: TrackersStore,
   ) {
-    this.ncoreBaseUrl =
-      this.configService.getOrThrow<string>('tracker.ncore-url');
+    this.baseUrl = this.configService.getOrThrow<string>('tracker.ncore-url');
 
     this.initInterceptors();
   }
@@ -51,59 +46,45 @@ export class NcoreClientFactory {
     return this.axios;
   }
 
-  async login(payload?: NcoreLoginRequest) {
-    try {
-      let credential: NcoreLoginRequest | undefined;
+  async login(payload?: AdapterLoginRequest) {
+    let credential = payload;
 
-      if (payload) {
-        credential = payload;
-      } else {
-        const tracker = await this.trackersStore.findOneByTracker(this.tracker);
+    if (!credential) {
+      const tracker = await this.trackersStore.findOneByTracker(this.tracker);
 
-        if (!tracker) {
-          throw new BadRequestException(
-            getTrackerCredentialErrorMessage(this.tracker),
-          );
-        }
-
-        credential = {
-          username: tracker.username,
-          password: tracker.password,
-        };
-      }
-
-      const { username, password } = credential;
-
-      await this.jar.removeAllCookies();
-      const axios = createAxios(this.jar);
-
-      const loginUrl = new URL(NCORE_LOGIN_PATH, this.ncoreBaseUrl);
-
-      const form = new URLSearchParams();
-      form.set('nev', username);
-      form.set('pass', password);
-
-      const response = await axios.post<string>(loginUrl.href, form, {
-        responseType: 'text',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
-
-      const isAuthError = this.isAuthError(response);
-      if (isAuthError) {
-        throw new UnprocessableEntityException(
-          getTrackerLoginErrorMessage(this.tracker),
+      if (!tracker) {
+        throw new BadRequestException(
+          getTrackerCredentialErrorMessage(this.tracker),
         );
       }
-    } catch (error) {
-      if (error instanceof HttpException) {
-        throw error;
-      }
 
-      const errorMessage = getTrackerStructureErrorMessage(this.tracker);
-      this.logger.error(errorMessage, error);
-      throw new ServiceUnavailableException(errorMessage);
+      credential = {
+        username: tracker.username,
+        password: tracker.password,
+      };
+    }
+
+    const { username, password } = credential;
+
+    await this.jar.removeAllCookies();
+    const axios = createAxios(this.jar);
+
+    const loginUrl = new URL(NCORE_LOGIN_PATH, this.baseUrl);
+
+    const form = new URLSearchParams();
+    form.set('nev', username);
+    form.set('pass', password);
+
+    const response = await axios.post<string>(loginUrl.href, form, {
+      responseType: 'text',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+
+    const isAuthError = this.isAuthError(response);
+    if (isAuthError) {
+      throw new Error(getTrackerLoginErrorMessage(this.tracker));
     }
   }
 

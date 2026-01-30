@@ -30,11 +30,11 @@ import {
 export class BithumenAdapter implements TrackerAdapter {
   constructor(
     @Inject(TRACKER_TOKEN) readonly tracker: TrackerEnum,
-    private bithumenClient: BithumenClient,
+    private client: BithumenClient,
   ) {}
 
   async login(payload: LoginRequest): Promise<void> {
-    await this.bithumenClient.login(payload);
+    await this.client.login(payload);
   }
 
   async find(query: TrackerSearchQuery): Promise<AdapterTorrent[]> {
@@ -55,7 +55,7 @@ export class BithumenAdapter implements TrackerAdapter {
         break;
     }
 
-    const torrents = await this.bithumenClient.find({ imdbId, categories });
+    const torrents = await this.client.find({ imdbId, categories });
 
     return torrents.map((torrent) => {
       const resolution = this.resolveTorrentResolution(torrent.category);
@@ -74,15 +74,15 @@ export class BithumenAdapter implements TrackerAdapter {
   }
 
   async findOne(torrentId: string): Promise<AdapterTorrentId> {
-    return this.bithumenClient.findOne(torrentId);
+    return this.client.findOne(torrentId);
   }
 
   async download(payload: AdapterTorrentId): Promise<AdapterParsedTorrent> {
-    return this.bithumenClient.download(payload);
+    return this.client.download(payload);
   }
 
   async seedRequirement(): Promise<string[]> {
-    return this.bithumenClient.hitnrun();
+    return this.client.hitnrun();
   }
 
   private resolveTorrentResolution(

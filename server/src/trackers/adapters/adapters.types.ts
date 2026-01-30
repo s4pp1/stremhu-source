@@ -7,6 +7,11 @@ import { TrackerEnum } from '../enum/tracker.enum';
 
 export const TRACKER_TOKEN = Symbol('TRACKER_TOKEN');
 
+export type AdapterLoginRequest = {
+  username: string;
+  password: string;
+};
+
 export interface AdapterTorrentId {
   tracker: TrackerEnum;
   torrentId: string;

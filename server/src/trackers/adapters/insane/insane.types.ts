@@ -18,11 +18,6 @@ export enum SeriesCategoryEnum {
 
 export type CategoryEnum = MovieCategoryEnum | SeriesCategoryEnum;
 
-export interface LoginRequest {
-  username: string;
-  password: string;
-}
-
 export interface TorrentsQuery {
   categories: string[];
   imdbId: string;

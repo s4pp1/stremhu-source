@@ -14,11 +14,6 @@ export enum NcoreSeriesCategoryEnum {
 
 export type NcoreCategory = NcoreMovieCategoryEnum | NcoreSeriesCategoryEnum;
 
-export interface NcoreLoginRequest {
-  username: string;
-  password: string;
-}
-
 export enum NcoreSearchByEnum {
   NAME = 'name',
   DESCRIPTION = 'leiras',
