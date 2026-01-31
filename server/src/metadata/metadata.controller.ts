@@ -2,6 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
+import { AUDIO_CODEC_OPTIONS } from 'src/common/constant/audio-codec.constant';
 import { LANGUAGE_OPTIONS } from 'src/common/constant/language.constant';
 import { RESOLUTION_OPTIONS } from 'src/common/constant/resolution.constant';
 import { SOURCE_TYPE_OPTIONS } from 'src/common/constant/source-type.constant';
@@ -30,6 +31,7 @@ export class MetadataController {
       userRoles: USER_ROLE_OPTIONS,
       resolutions: RESOLUTION_OPTIONS,
       videoQualities: VIDEO_QUALITY_OPTIONS,
+      audioCodecs: AUDIO_CODEC_OPTIONS,
       sourceTypes: SOURCE_TYPE_OPTIONS,
       languages: LANGUAGE_OPTIONS,
       trackers: TRACKER_OPTIONS,

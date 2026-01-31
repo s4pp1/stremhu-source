@@ -1,12 +1,9 @@
 import { VideoQualityEnum } from '../enum/video-quality.enum';
 
-type HdrType =
-  | VideoQualityEnum.DV
-  | VideoQualityEnum.HDR10
-  | VideoQualityEnum.HDR10P
-  | VideoQualityEnum.HLG;
-
-const HDR_PATTERNS: Record<HdrType, string[]> = {
+const HDR_PATTERNS: Record<
+  Exclude<VideoQualityEnum, VideoQualityEnum.SDR>,
+  string[]
+> = {
   [VideoQualityEnum.DV]: [
     '.dolby.vision.',
     '.dovi.',

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import type {
+  AudioCodecEnum,
   LanguageEnum,
   ResolutionEnum,
   SourceTypeEnum,
@@ -18,6 +19,7 @@ export function useMetadata() {
     languages,
     resolutions,
     videoQualities,
+    audioCodecs,
     sourceTypes,
     trackers,
     userRoles,
@@ -47,6 +49,13 @@ export function useMetadata() {
     return found!.label
   }
 
+  const getAudioCodecLabel = (audioCodecEnum: AudioCodecEnum): string => {
+    const found = audioCodecs.find(
+      (audioCodec) => audioCodec.value === audioCodecEnum,
+    )
+    return found!.label
+  }
+
   const getSourceTypeLabel = (sourceTypeEnum: SourceTypeEnum): string => {
     const found = sourceTypes.find(
       (sourceType) => sourceType.value === sourceTypeEnum,
@@ -69,6 +78,7 @@ export function useMetadata() {
     getLanguageLabel,
     getResolutionLabel,
     getVideoQualityLabel,
+    getAudioCodecLabel,
     getSourceTypeLabel,
     getTrackerLabel,
     getTrackerFullDownload,

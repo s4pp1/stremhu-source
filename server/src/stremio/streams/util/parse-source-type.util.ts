@@ -1,14 +1,9 @@
 import { SourceTypeEnum } from '../enum/source-type.enum';
 
-type HdrType =
-  | SourceTypeEnum.DISC_REMUX
-  | SourceTypeEnum.DISC_RIP
-  | SourceTypeEnum.WEB_DL
-  | SourceTypeEnum.WEB_RIP
-  | SourceTypeEnum.BROADCAST
-  | SourceTypeEnum.THEATRICAL;
-
-const SOURCE_TYPE_PATTERNS: Record<HdrType, string[]> = {
+const SOURCE_TYPE_PATTERNS: Record<
+  Exclude<SourceTypeEnum, SourceTypeEnum.UNKNOWN>,
+  string[]
+> = {
   [SourceTypeEnum.DISC_REMUX]: ['.remux.'],
   [SourceTypeEnum.DISC_RIP]: ['.bluray.', '.bdrip.', '.dvdrip.'],
   [SourceTypeEnum.WEB_DL]: ['.web-dl.', '.web_dl.', '.web-dl-rip.'],

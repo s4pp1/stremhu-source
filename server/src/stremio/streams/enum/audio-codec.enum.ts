@@ -1,3 +1,9 @@
-import { ParsedFilename } from '@ctrl/video-filename-parser';
-
-export type AudioCodecEnum = NonNullable<ParsedFilename['audioCodec']>;
+export enum AudioCodecEnum {
+  TRUEHD = 'truehd',
+  DTS_HD_MA = 'dts-hd-ma',
+  DD_PLUS = 'ddp',
+  DTS = 'dts',
+  DD = 'dd',
+  AAC = 'aac',
+  UNKNOWN = 'unknown',
+}

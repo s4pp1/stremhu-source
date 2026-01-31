@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 
 import { LanguageEnum } from 'src/common/enum/language.enum';
+import { AudioCodecEnum } from 'src/stremio/streams/enum/audio-codec.enum';
 import { SourceTypeEnum } from 'src/stremio/streams/enum/source-type.enum';
 import { VideoQualityEnum } from 'src/stremio/streams/enum/video-quality.enum';
 
@@ -49,6 +50,13 @@ export class User {
     default: JSON.stringify(Object.values(VideoQualityEnum)),
   })
   torrentVideoQualities: VideoQualityEnum[];
+
+  @Column({
+    name: 'torrent_audio_codecs',
+    type: 'simple-json',
+    default: JSON.stringify(Object.values(AudioCodecEnum)),
+  })
+  torrentAudioCodecs: AudioCodecEnum[];
 
   @Column({
     name: 'torrent_source_types',

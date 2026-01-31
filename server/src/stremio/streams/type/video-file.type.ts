@@ -26,7 +26,7 @@ export type VideoFile = {
   resolution: ResolutionEnum;
   language: LanguageEnum;
   videoCodec?: VideoCodecEnum;
-  audioCodec?: AudioCodecEnum;
+  audioCodec: AudioCodecEnum;
   videoQualities: VideoQualityEnum[];
   sourceType: SourceTypeEnum;
   sources: SourceEnum[];

@@ -6,6 +6,7 @@ import { Injectable } from '@nestjs/common';
 import { compact, orderBy } from 'lodash';
 
 import { CatalogService } from 'src/catalog/catalog.service';
+import { AUDIO_CODEC_LABEL_MAP } from 'src/common/constant/audio-codec.constant';
 import { LANGUAGE_LABEL_MAP } from 'src/common/constant/language.constant';
 import { RESOLUTION_LABEL_MAP } from 'src/common/constant/resolution.constant';
 import { VIDEO_QUALITY_LABEL_MAP } from 'src/common/constant/video-quality.constant';
@@ -19,6 +20,7 @@ import { UserDto } from 'src/users/dto/user.dto';
 import { User } from 'src/users/entity/user.entity';
 
 import { StreamDto } from './dto/stremio-stream.dto';
+import { AudioCodecEnum } from './enum/audio-codec.enum';
 import { VideoQualityEnum } from './enum/video-quality.enum';
 import { ParsedStremioIdSeries } from './pipe/stream-id.pipe';
 import { FindStreams } from './type/find-streams.type';
@@ -26,6 +28,7 @@ import { VideoFile } from './type/video-file.type';
 import { buildSelectors } from './util/build-selectors';
 import { findVideoFile } from './util/find-video-file.util';
 import { isNotWebReady } from './util/is-not-web-ready.util';
+import { parseAudioCodec } from './util/parse-audio-codec.util';
 import { parseSourceType } from './util/parse-source-type.util';
 import { parseVideoQualities } from './util/parse-video-qualities.util';
 
@@ -129,12 +132,16 @@ export class StreamsService {
     const fileSize = `💾 ${formatFilesize(videoFile.fileSize)}`;
     const seeders = `👥 ${videoFile.seeders}`;
     const tracker = `🧲 ${TRACKER_INFO[videoFile.tracker].label}`;
-    const group = videoFile.group ? `🎯 ${videoFile.group}` : undefined;
+
+    let readableAudioCodec: string | undefined;
+
+    if (videoFile.audioCodec !== AudioCodecEnum.UNKNOWN) {
+      readableAudioCodec = `🔈 ${AUDIO_CODEC_LABEL_MAP[videoFile.audioCodec]}`;
+    }
 
     const descriptionArray = compact([
-      compact([tracker, seeders]).join(' | '),
-      compact([readableLanguage, videoFile.audioCodec]).join(' | '),
-      compact([fileSize, group]).join(' | '),
+      compact([tracker, seeders, fileSize]).join(' | '),
+      compact([readableLanguage, readableAudioCodec]).join(' | '),
     ]);
 
     const bingeGroup = [
@@ -157,7 +164,7 @@ export class StreamsService {
 
   private streamError(message: string) {
     return {
-      name: '❗ H I B A ❗',
+      name: '❗ HIBA ❗',
       description: `❗ ${message} ❗`,
       url: 'http://hiba.tortent',
       behaviorHints: {
@@ -180,7 +187,6 @@ export class StreamsService {
         sources: torrentSources,
         videoCodec: torrentVideoCodec,
         resolution: torrentResolution,
-        audioCodec: torrentAudioCodec,
         group: torrentGroup,
       } = filenameParse(torrent.name);
 
@@ -196,12 +202,11 @@ export class StreamsService {
         sources: fileSources,
         videoCodec: fileVideoCodec,
         resolution: fileResolution,
-        audioCodec: fileAudioCodec,
       } = filenameParse(videoFile.name);
 
       const videoCodec = torrentVideoCodec ?? fileVideoCodec;
       const resolution = torrentResolution ?? fileResolution;
-      const audioCodec = torrentAudioCodec ?? fileAudioCodec;
+      const audioCodec = parseAudioCodec(torrent.name);
       const sources = torrentSources ?? fileSources;
 
       const torrentByFile: VideoFile = {
@@ -215,7 +220,6 @@ export class StreamsService {
         fileName: videoFile.name,
         fileSize: videoFile.size,
         fileIndex: videoFile.fileIndex,
-
         language: torrent.language,
         resolution: resolution || torrent.resolution,
         audioCodec,
@@ -237,6 +241,7 @@ export class StreamsService {
       torrentLanguages,
       torrentResolutions,
       torrentVideoQualities,
+      torrentAudioCodecs,
       torrentSourceTypes,
       torrentSeed,
     } = user;
@@ -244,6 +249,7 @@ export class StreamsService {
     const languageSelectors = buildSelectors(torrentLanguages);
     const resolutionSelectors = buildSelectors(torrentResolutions);
     const videoQualitySelectors = buildSelectors(torrentVideoQualities);
+    const audioCodecSelectors = buildSelectors(torrentAudioCodecs);
     const sourceTypeSelectors = buildSelectors(torrentSourceTypes);
 
     const filteredVideoFiles = videoFiles.filter((videoFile) => {
@@ -260,6 +266,7 @@ export class StreamsService {
         videoFile.videoQualities.some((videoQuality) =>
           videoQualitySelectors.filterToAllowed(videoQuality),
         ) &&
+        audioCodecSelectors.filterToAllowed(videoFile.audioCodec) &&
         sourceTypeSelectors.filterToAllowed(videoFile.sourceType)
       );
     });
@@ -272,12 +279,14 @@ export class StreamsService {
       torrentLanguages,
       torrentResolutions,
       torrentVideoQualities,
+      torrentAudioCodecs,
       torrentSourceTypes,
     } = user;
 
     const languageSelectors = buildSelectors(torrentLanguages);
     const resolutionSelectors = buildSelectors(torrentResolutions);
     const videoQualitySelectors = buildSelectors(torrentVideoQualities);
+    const audioCodecSelectors = buildSelectors(torrentAudioCodecs);
     const sourceTypeSelectors = buildSelectors(torrentSourceTypes);
 
     const sortedVideoFiles = orderBy(
@@ -294,10 +303,11 @@ export class StreamsService {
 
           return bestQualityRank;
         },
+        (videoFile) => audioCodecSelectors.priorityIndex(videoFile.audioCodec),
         (videoFile) => sourceTypeSelectors.priorityIndex(videoFile.sourceType),
         (videoFile) => videoFile.seeders,
       ],
-      ['asc', 'asc', 'asc', 'asc', 'desc'],
+      ['asc', 'asc', 'asc', 'asc', 'asc', 'desc'],
     );
 
     return sortedVideoFiles;

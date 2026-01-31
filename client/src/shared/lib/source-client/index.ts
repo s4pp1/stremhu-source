@@ -10,6 +10,8 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { AudioCodecDto } from './models/AudioCodecDto';
+export { AudioCodecEnum } from './models/AudioCodecEnum';
 export type { AuthLoginDto } from './models/AuthLoginDto';
 export type { BehaviorHintsDto } from './models/BehaviorHintsDto';
 export type { CatalogHealthDto } from './models/CatalogHealthDto';
