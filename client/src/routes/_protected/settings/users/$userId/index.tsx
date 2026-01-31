@@ -4,6 +4,7 @@ import { createFileRoute, useParams } from '@tanstack/react-router'
 import { assertExists } from '@/shared/lib/utils'
 import { getUser } from '@/shared/queries/users'
 
+import { AudioCodecPreferences } from './-features/audio-codec-preferences'
 import { LanguagePreferences } from './-features/language-preferences'
 import { OnlyBestTorrent } from './-features/only-best-torrent'
 import { ResolutionPreferences } from './-features/resolution-preferences'
@@ -37,6 +38,9 @@ function UserRoute() {
       </div>
       <div className="break-inside-avoid mb-4">
         <VideoQualityPreferences user={user} />
+      </div>
+      <div className="break-inside-avoid mb-4">
+        <AudioCodecPreferences user={user} />
       </div>
       <div className="break-inside-avoid mb-4">
         <SourceTypePreferences user={user} />

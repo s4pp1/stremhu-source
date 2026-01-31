@@ -3,6 +3,7 @@ import { IsArray, IsString } from 'class-validator';
 
 import { HealthDto } from 'src/common/dto/health.dto';
 
+import { AudioCodecDto } from './audio-codec.dto';
 import { LanguageDto } from './language.dto';
 import { ResolutionDto } from './resolution.dto';
 import { SourceTypeDto } from './source-type.dto';
@@ -22,6 +23,10 @@ export class MetadataDto extends HealthDto {
   @IsArray()
   @ApiProperty({ type: VideoQualityDto, isArray: true })
   videoQualities: VideoQualityDto[];
+
+  @IsArray()
+  @ApiProperty({ type: AudioCodecDto, isArray: true })
+  audioCodecs: AudioCodecDto[];
 
   @IsArray()
   @ApiProperty({ type: LanguageDto, isArray: true })

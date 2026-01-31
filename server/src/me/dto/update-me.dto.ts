@@ -12,6 +12,7 @@ import {
 } from 'class-validator';
 
 import { LanguageEnum } from 'src/common/enum/language.enum';
+import { AudioCodecEnum } from 'src/stremio/streams/enum/audio-codec.enum';
 import { SourceTypeEnum } from 'src/stremio/streams/enum/source-type.enum';
 import { VideoQualityEnum } from 'src/stremio/streams/enum/video-quality.enum';
 
@@ -57,6 +58,19 @@ export class UpdateMeDto {
     required: false,
   })
   torrentVideoQualities?: VideoQualityEnum[];
+
+  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  @ArrayUnique()
+  @IsEnum(AudioCodecEnum, { each: true })
+  @ApiProperty({
+    enum: AudioCodecEnum,
+    enumName: 'AudioCodecEnum',
+    isArray: true,
+    required: false,
+  })
+  torrentAudioCodecs?: AudioCodecEnum[];
 
   @IsOptional()
   @IsArray()

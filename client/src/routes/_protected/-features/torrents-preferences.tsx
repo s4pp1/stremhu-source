@@ -5,12 +5,14 @@ import * as z from 'zod'
 
 import {
   onlyBestTorrentSchema,
+  torrentAudioCodecsSchema,
   torrentLanguagesSchema,
   torrentResolutionsSchema,
   torrentSeedSchema,
   torrentSourceTypesSchema,
   torrentVideoQualitiesSchema,
 } from '@/common/schemas'
+import { AudioCodecsSelector } from '@/shared/components/form/audio-codecs-selector'
 import { LanguagesSelector } from '@/shared/components/form/languages-selector'
 import { ResolutionsSelector } from '@/shared/components/form/resolutions-selector'
 import { SourceTypesSelector } from '@/shared/components/form/source-types-selector'
@@ -33,6 +35,7 @@ import { getMetadata } from '@/shared/queries/metadata'
 export const validatorSchema = z.object({
   torrentResolutions: torrentResolutionsSchema,
   torrentVideoQualities: torrentVideoQualitiesSchema,
+  torrentAudioCodecs: torrentAudioCodecsSchema,
   torrentSourceTypes: torrentSourceTypesSchema,
   torrentLanguages: torrentLanguagesSchema,
   torrentSeed: torrentSeedSchema,
@@ -53,6 +56,7 @@ export function TorrentsPreferences() {
       torrentLanguages: me.torrentLanguages,
       torrentResolutions: me.torrentResolutions,
       torrentVideoQualities: me.torrentVideoQualities,
+      torrentAudioCodecs: me.torrentAudioCodecs,
       torrentSourceTypes: me.torrentSourceTypes,
       torrentSeed: me.torrentSeed,
       onlyBestTorrent: me.onlyBestTorrent,
@@ -128,6 +132,24 @@ export function TorrentsPreferences() {
           <form.Field name="torrentVideoQualities" mode="array">
             {(field) => (
               <VideoQualitiesSelector
+                items={field.state.value}
+                onChangeItems={(items) => field.handleChange(items)}
+              />
+            )}
+          </form.Field>
+        </CardContent>
+      </Card>
+      <Card className="break-inside-avoid mb-4">
+        <CardHeader>
+          <CardTitle>Előnyben részesített hangminőség</CardTitle>
+          <CardDescription>
+            Állítsd be, milyen hangminőséget részesítsen előnyben a rendszer.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form.Field name="torrentAudioCodecs" mode="array">
+            {(field) => (
+              <AudioCodecsSelector
                 items={field.state.value}
                 onChangeItems={(items) => field.handleChange(items)}
               />

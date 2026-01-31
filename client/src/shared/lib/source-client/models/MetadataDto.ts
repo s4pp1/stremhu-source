@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { AudioCodecDto } from './AudioCodecDto';
 import type { LanguageDto } from './LanguageDto';
 import type { ResolutionDto } from './ResolutionDto';
 import type { SourceTypeDto } from './SourceTypeDto';
@@ -13,6 +14,7 @@ export type MetadataDto = {
     userRoles: Array<UserRoleDto>;
     resolutions: Array<ResolutionDto>;
     videoQualities: Array<VideoQualityDto>;
+    audioCodecs: Array<AudioCodecDto>;
     languages: Array<LanguageDto>;
     sourceTypes: Array<SourceTypeDto>;
     trackers: Array<TrackerMetaDto>;

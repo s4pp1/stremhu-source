@@ -1,6 +1,9 @@
 import { AudioCodecEnum } from '../enum/audio-codec.enum';
 
-const AUDIO_CODEC_PATTERNS: Record<AudioCodecEnum, string[]> = {
+const AUDIO_CODEC_PATTERNS: Record<
+  Exclude<AudioCodecEnum, AudioCodecEnum.UNKNOWN>,
+  string[]
+> = {
   [AudioCodecEnum.TRUEHD]: ['.truehd.'],
   [AudioCodecEnum.DTS_HD_MA]: ['.dts-hd.ma.', '.dtshdma.', '.dts-hdma.'],
   [AudioCodecEnum.DD_PLUS]: [
@@ -24,14 +27,23 @@ const AUDIO_CODEC_PATTERNS: Record<AudioCodecEnum, string[]> = {
   [AudioCodecEnum.AAC]: ['.aac.', '.aac2.0.', '.aac5.1.'],
 };
 
-export function parseAudioCodecs(torrentName: string): AudioCodecEnum[] {
+export function parseAudioCodec(torrentName: string): AudioCodecEnum {
   const normalizedTorrentName = torrentName.toLocaleLowerCase();
 
-  const audioCodecs = Object.entries(AUDIO_CODEC_PATTERNS)
-    .filter(([, patterns]) =>
-      patterns.some((pattern) => normalizedTorrentName.includes(pattern)),
-    )
-    .map(([type]) => type as AudioCodecEnum);
+  let audioCodec = AudioCodecEnum.UNKNOWN;
 
-  return audioCodecs.length > 0 ? audioCodecs : [];
+  for (const [type, patterns] of Object.entries(AUDIO_CODEC_PATTERNS)) {
+    const isSourceType = patterns.some((pattern) =>
+      normalizedTorrentName.includes(pattern),
+    );
+
+    if (!isSourceType) {
+      continue;
+    }
+
+    audioCodec = type as AudioCodecEnum;
+    break;
+  }
+
+  return audioCodec;
 }
