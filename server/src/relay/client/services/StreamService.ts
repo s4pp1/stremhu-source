@@ -11,15 +11,42 @@ export class StreamService {
      * @param infoHash
      * @param fileIndex
      * @param range
-     * @returns any Teljes tartalom
-     * @returns binary Részleges tartalom (Range)
+     * @returns any Successful Response
      * @throws ApiError
      */
-    public streamFile(
+    public headStreamFile(
         infoHash: string,
         fileIndex: number,
         range?: (string | null),
-    ): CancelablePromise<any | Blob> {
+    ): CancelablePromise<any> {
+        return this.httpRequest.request({
+            method: 'HEAD',
+            url: '/stream/{info_hash}/{file_index}',
+            path: {
+                'info_hash': infoHash,
+                'file_index': fileIndex,
+            },
+            headers: {
+                'Range': range,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Stream
+     * @param infoHash
+     * @param fileIndex
+     * @param range
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public getStreamFile(
+        infoHash: string,
+        fileIndex: number,
+        range?: (string | null),
+    ): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/stream/{info_hash}/{file_index}',
@@ -31,7 +58,6 @@ export class StreamService {
                 'Range': range,
             },
             errors: {
-                416: `Érvénytelen tartomány`,
                 422: `Validation Error`,
             },
         });

@@ -16,3 +16,12 @@ class UpdateSettings(BaseModel):
     connections_limit: Optional[int] = None
     torrent_connections_limit: Optional[int] = None
     enable_upnp_and_natpmp: Optional[bool] = None
+
+
+class UpdateTorrent(BaseModel):
+    model_config = ConfigDict(
+        populate_by_name=True,
+        alias_generator=to_camel,
+    )
+
+    priority: Optional[int] = None

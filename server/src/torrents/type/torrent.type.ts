@@ -14,6 +14,7 @@ export type MergedTorrent = {
   tracker: TrackerEnum;
   torrentId: string;
   isPersisted: boolean;
+  fullDownload: boolean | null;
 
   updatedAt: Date;
   createdAt: Date;

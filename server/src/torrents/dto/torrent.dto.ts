@@ -35,4 +35,7 @@ export class TorrentDto {
 
   @ApiProperty()
   isPersisted: boolean;
+
+  @ApiProperty({ type: 'string', nullable: true })
+  fullDownload: boolean | null;
 }

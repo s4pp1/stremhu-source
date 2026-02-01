@@ -38,7 +38,10 @@ function RouteComponent() {
       <Card>
         <CardHeader>
           <CardTitle>
-            {SETTINGS_RELAY_NAME} <span>({torrents.length})</span>
+            {SETTINGS_RELAY_NAME}{' '}
+            <span className="text-sm text-muted-foreground">
+              ({torrents.length})
+            </span>
           </CardTitle>
           <CardDescription>
             Kövesd nyomon a torrentek statisztikáit és tűzd ki, ha nem

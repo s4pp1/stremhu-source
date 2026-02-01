@@ -73,13 +73,19 @@ export class TorrentsService
         (tracker) => tracker.tracker === torrent.tracker,
       );
 
+      let downloadFullTorrent = tracker?.downloadFullTorrent ?? false;
+
+      if (torrent.fullDownload !== null) {
+        downloadFullTorrent = torrent.fullDownload;
+      }
+
       this.relayService
         .addTorrent({
           torrentFilePath: torrentCache.torrentFilePath,
-          downloadFullTorrent: tracker?.downloadFullTorrent ?? false,
+          downloadFullTorrent: downloadFullTorrent,
         })
-        .then((clientTorrent) => {
-          this.logger.log(`🔼 .torrent fájl betöltve: ${clientTorrent.name}`);
+        .then((relayTorrent) => {
+          this.logger.log(`🔼 .torrent fájl betöltve: ${relayTorrent.name}`);
         })
         .catch(() => {
           this.logger.error(
@@ -120,24 +126,22 @@ export class TorrentsService
 
   async getTorrents(): Promise<MergedTorrent[]> {
     const torrents = await this.torrentsStore.find();
-    const clientTorrents = await this.relayService.getTorrents();
+    const relayTorrents = await this.relayService.getTorrents();
 
     const activeTorrents: MergedTorrent[] = [];
 
-    for (const clientTorrent of clientTorrents) {
+    for (const relayTorrent of relayTorrents) {
       const torrent = torrents.find(
-        (torrent) => torrent.infoHash === clientTorrent.infoHash,
+        (torrent) => torrent.infoHash === relayTorrent.infoHash,
       );
 
       if (!torrent) {
-        this.logger.warn(
-          `⚠️ A ${clientTorrent.name} csak a kliensben létezik!`,
-        );
+        this.logger.warn(`⚠️ A ${relayTorrent.name} csak a kliensben létezik!`);
         continue;
       }
 
       activeTorrents.push(
-        this.mergeTorrentEntityWithTorrentClient(torrent, clientTorrent),
+        this.mergeTorrentEntityWithTorrentClient(torrent, relayTorrent),
       );
     }
 
@@ -160,6 +164,22 @@ export class TorrentsService
     payload: TorrentToUpdate,
   ): Promise<Torrent> {
     const torrent = await this.getTorrentOrThrow(infoHash);
+
+    if (payload.fullDownload !== undefined) {
+      let fullDownload = payload.fullDownload;
+
+      if (fullDownload === null) {
+        const tracker = await this.trackersStore.findOneByTracker(
+          torrent.tracker,
+        );
+
+        fullDownload = tracker?.downloadFullTorrent ?? false;
+      }
+
+      await this.relayService.updateTorrent(infoHash, {
+        downloadFullTorrent: fullDownload,
+      });
+    }
 
     const updateData = omitBy(payload, isUndefined);
 
@@ -306,6 +326,7 @@ export class TorrentsService
       torrentId: torrentEntity.torrentId,
       infoHash: torrentEntity.infoHash,
       isPersisted: torrentEntity.isPersisted,
+      fullDownload: torrentEntity.fullDownload,
       downloaded: relayTorrent.downloaded,
       progress: relayTorrent.progress,
       total: relayTorrent.total,

@@ -49,3 +49,12 @@ class AddTorrent(BaseModel):
         description="A torrents mappa abszolút elérési úrja.",
     )
     download_full_torrent: Optional[bool] = False
+
+
+class UpdateRelayTorrent(BaseModel):
+    model_config = ConfigDict(
+        populate_by_name=True,
+        alias_generator=to_camel,
+    )
+
+    download_full_torrent: Optional[bool] = False

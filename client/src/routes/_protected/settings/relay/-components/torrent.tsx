@@ -1,17 +1,21 @@
+import { useQuery } from '@tanstack/react-query'
 import {
   ArrowBigDownIcon,
   ArrowBigUpIcon,
-  ArrowDownToLineIcon,
   EllipsisVerticalIcon,
   ExternalLinkIcon,
+  FileDownIcon,
+  FolderDownIcon,
   HardDriveDownloadIcon,
   HardDriveIcon,
   HardDriveUploadIcon,
   PinIcon,
   PinOffIcon,
+  RotateCcwIcon,
   TrashIcon,
 } from 'lucide-react'
 import type { JSX, MouseEventHandler } from 'react'
+import { useMemo } from 'react'
 import { toast } from 'sonner'
 
 import { formatFilesize } from '@/common/file.util'
@@ -33,8 +37,9 @@ import {
 } from '@/shared/components/ui/item'
 import { useMetadata } from '@/shared/hooks/use-metadata'
 import type { TorrentDto } from '@/shared/lib/source-client'
-import { parseApiError } from '@/shared/lib/utils'
+import { assertExists, parseApiError } from '@/shared/lib/utils'
 import { useDeleteTorrent, useUpdateTorrent } from '@/shared/queries/torrents'
+import { getTrackers } from '@/shared/queries/trackers'
 
 interface TorrentProps {
   torrent: TorrentDto
@@ -59,12 +64,27 @@ function TorrentDetail(props: TorrentDetailProps) {
 export function Torrent(props: TorrentProps) {
   const { torrent } = props
 
+  const { data: trackers } = useQuery(getTrackers)
+  assertExists(trackers)
+
   const { getTrackerLabel, getTrackerUrl } = useMetadata()
 
   const confirmDialog = useConfirmDialog()
 
   const { mutateAsync: updateTorrent } = useUpdateTorrent(torrent.infoHash)
   const { mutateAsync: deleteTorrent } = useDeleteTorrent()
+
+  const fullDownload = useMemo(() => {
+    const trackerFullDownload =
+      trackers.find((tracker) => tracker.tracker === torrent.tracker)
+        ?.downloadFullTorrent ?? false
+
+    if (torrent.fullDownload === null) {
+      return trackerFullDownload
+    }
+
+    return torrent.fullDownload
+  }, [torrent, trackers])
 
   const handleDelete: MouseEventHandler<HTMLDivElement> = async (e) => {
     e.stopPropagation()
@@ -112,6 +132,14 @@ export function Torrent(props: TorrentProps) {
     window.open(url.href, '_blank', 'noopener,noreferrer')
   }
 
+  const handleFullDownload =
+    (value: boolean | null): MouseEventHandler<HTMLDivElement> =>
+    async (e) => {
+      e.stopPropagation()
+
+      await updateTorrent({ fullDownload: value })
+    }
+
   return (
     <div className="grid gap-2 border border-transparent rounded-md bg-muted/50 p-4">
       <Item className="p-0">
@@ -129,6 +157,13 @@ export function Torrent(props: TorrentProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-64">
               <DropdownMenuGroup>
+                <DropdownMenuItem onClick={handleOpenDetails}>
+                  <ExternalLinkIcon />
+                  Adatlap megnyitása
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
                 <DropdownMenuItem onClick={handleUpdate}>
                   {torrent.isPersisted ? (
                     <>
@@ -142,19 +177,29 @@ export function Torrent(props: TorrentProps) {
                     </>
                   )}
                 </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  <ArrowDownToLineIcon />
-                  Teljes torrent letöltése
-                </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem onClick={handleOpenDetails}>
-                  <ExternalLinkIcon />
-                  Adatlap megnyitása
-                </DropdownMenuItem>
+                {fullDownload ? (
+                  <DropdownMenuItem onClick={handleFullDownload(false)}>
+                    <FileDownIcon />
+                    Teljes letöltés megszüntetése
+                  </DropdownMenuItem>
+                ) : (
+                  <DropdownMenuItem onClick={handleFullDownload(true)}>
+                    <FolderDownIcon />
+                    Teljes letöltés
+                  </DropdownMenuItem>
+                )}
+                {torrent.fullDownload !== null && (
+                  <DropdownMenuItem onClick={handleFullDownload(null)}>
+                    <RotateCcwIcon />
+                    Letöltés visszaállítása a tracker beállításra
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
+
               <DropdownMenuGroup>
                 <DropdownMenuItem variant="destructive" onClick={handleDelete}>
                   <TrashIcon />

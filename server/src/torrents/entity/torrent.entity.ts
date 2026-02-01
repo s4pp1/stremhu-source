@@ -35,6 +35,14 @@ export class Torrent {
   isPersisted: boolean;
 
   @Column({
+    name: 'full_download',
+    type: 'boolean',
+    nullable: true,
+    default: null,
+  })
+  fullDownload: boolean | null;
+
+  @Column({
     name: 'last_played_at',
     type: 'datetime',
   })

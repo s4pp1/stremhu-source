@@ -6,4 +6,5 @@ export type TorrentToUpdate = {
   torrentId?: string;
   lastPlayedAt?: Date;
   isPersisted?: boolean;
+  fullDownload?: boolean | null;
 };
