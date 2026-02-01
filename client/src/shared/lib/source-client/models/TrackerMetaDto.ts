@@ -7,5 +7,7 @@ export type TrackerMetaDto = {
     value: TrackerEnum;
     label: string;
     requiresFullDownload: boolean;
+    url: string;
+    detailsPath: string;
 };
 

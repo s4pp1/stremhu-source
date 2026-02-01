@@ -15,4 +15,12 @@ export class TrackerMetaDto {
   @IsBoolean()
   @ApiProperty()
   requiresFullDownload: boolean;
+
+  @IsString()
+  @ApiProperty()
+  url: string;
+
+  @IsString()
+  @ApiProperty()
+  detailsPath: string;
 }

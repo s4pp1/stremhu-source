@@ -21,7 +21,7 @@ import {
   getTrackerLoginErrorMessage,
   getTrackerRefreshMessage,
 } from '../adapters.utils';
-import { NCORE_LOGIN_PATH } from './ncore.constants';
+import { LOGIN_PATH } from './ncore.constants';
 
 @Injectable()
 export class NcoreClientFactory {
@@ -69,7 +69,7 @@ export class NcoreClientFactory {
     await this.jar.removeAllCookies();
     const axios = createAxios(this.jar);
 
-    const loginUrl = new URL(NCORE_LOGIN_PATH, this.baseUrl);
+    const loginUrl = new URL(LOGIN_PATH, this.baseUrl);
 
     const form = new URLSearchParams();
     form.set('nev', username);
@@ -90,7 +90,7 @@ export class NcoreClientFactory {
 
   private isAuthError(res: AxiosResponse) {
     const requestPath = _.get(res.request, ['path']) as string | undefined;
-    const isLoginPath = requestPath?.includes(NCORE_LOGIN_PATH);
+    const isLoginPath = requestPath?.includes(LOGIN_PATH);
 
     return isLoginPath;
   }

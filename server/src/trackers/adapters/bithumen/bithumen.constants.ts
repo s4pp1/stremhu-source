@@ -3,15 +3,13 @@ import {
   BithumenSeriesCategoryEnum,
 } from './bithumen.types';
 
-export const BITHUMEN_MOVIE_CATEGORY_FILTERS = Object.values(
-  BithumenMovieCategoryEnum,
-);
-export const BITHUMEN_SERIES_CATEGORY_FILTERS = Object.values(
+export const MOVIE_CATEGORY_FILTERS = Object.values(BithumenMovieCategoryEnum);
+export const SERIES_CATEGORY_FILTERS = Object.values(
   BithumenSeriesCategoryEnum,
 );
 
-export const BITHUMEN_INDEX_PATH = '/index.php';
-export const BITHUMEN_LOGIN_PATH = '/takelogin.php';
-export const BITHUMEN_TORRENTS_PATH = '/browse.php';
-export const BITHUMEN_DETAILS_PATH = '/details.php';
-export const BITHUMEN_HIT_N_RUN_PATH = '/userdetails.php';
+export const INDEX_PATH = '/index.php';
+export const LOGIN_PATH = '/takelogin.php';
+export const TORRENTS_PATH = '/browse.php';
+export const DETAILS_PATH = '/details.php?id={torrentId}';
+export const HIT_N_RUN_PATH = '/userdetails.php';

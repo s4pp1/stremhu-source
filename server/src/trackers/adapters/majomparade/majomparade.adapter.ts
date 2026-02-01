@@ -18,8 +18,8 @@ import {
 } from '../adapters.types';
 import { MajomparadeClient } from './majomparade.client';
 import {
-  MAJOMPARADE_MOVIE_CATEGORY_FILTERS,
-  MAJOMPARADE_SERIES_CATEGORY_FILTERS,
+  MOVIE_CATEGORY_FILTERS,
+  SERIES_CATEGORY_FILTERS,
 } from './majomparade.constants';
 import {
   MajomparadeMovieCategoryEnum,
@@ -41,16 +41,16 @@ export class MajomparadeAdapter implements TrackerAdapter {
     const { imdbId, mediaType } = query;
 
     let categories: string[] = [
-      ...MAJOMPARADE_MOVIE_CATEGORY_FILTERS,
-      ...MAJOMPARADE_SERIES_CATEGORY_FILTERS,
+      ...MOVIE_CATEGORY_FILTERS,
+      ...SERIES_CATEGORY_FILTERS,
     ];
 
     if (mediaType === StreamMediaTypeEnum.MOVIE) {
-      categories = MAJOMPARADE_MOVIE_CATEGORY_FILTERS;
+      categories = MOVIE_CATEGORY_FILTERS;
     }
 
     if (mediaType === StreamMediaTypeEnum.SERIES) {
-      categories = MAJOMPARADE_SERIES_CATEGORY_FILTERS;
+      categories = SERIES_CATEGORY_FILTERS;
     }
 
     const torrents = await this.client.find({ imdbId, categories });

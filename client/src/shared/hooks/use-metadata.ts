@@ -73,6 +73,11 @@ export function useMetadata() {
     return found!.requiresFullDownload
   }
 
+  const getTrackerUrl = (trackerEnum: TrackerEnum) => {
+    const found = trackers.find((tracker) => tracker.value === trackerEnum)
+    return { url: found!.url, detailsPath: found!.detailsPath }
+  }
+
   return {
     getUserRoleLabel,
     getLanguageLabel,
@@ -82,5 +87,6 @@ export function useMetadata() {
     getSourceTypeLabel,
     getTrackerLabel,
     getTrackerFullDownload,
+    getTrackerUrl,
   }
 }

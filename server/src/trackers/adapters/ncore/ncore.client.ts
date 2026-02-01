@@ -19,7 +19,7 @@ import {
   getTrackerTorrentDownloadErrorMessage,
 } from '../adapters.utils';
 import { NcoreClientFactory } from './ncore.client-factory';
-import { NCORE_HIT_N_RUN_PATH, NCORE_TORRENTS_PATH } from './ncore.constants';
+import { DETAILS_PATH, HIT_N_RUN_PATH, TORRENTS_PATH } from './ncore.constants';
 import {
   NcoreDownloadRequest,
   NcoreFindQuery,
@@ -74,7 +74,7 @@ export class NcoreClient {
     try {
       const { imdbId, categories } = payload;
 
-      const torrentsUrl = new URL(NCORE_TORRENTS_PATH, this.baseUrl);
+      const torrentsUrl = new URL(TORRENTS_PATH, this.baseUrl);
 
       const searchParams: NcoreSearchParams = {
         oldal: page,
@@ -127,10 +127,8 @@ export class NcoreClient {
 
   async findOne(torrentId: string): Promise<AdapterTorrentId> {
     try {
-      const detailsUrl = new URL(NCORE_TORRENTS_PATH, this.baseUrl);
-
-      detailsUrl.searchParams.append('action', 'details');
-      detailsUrl.searchParams.append('id', torrentId);
+      const detailsPath = DETAILS_PATH.replace('{torrentId}', torrentId);
+      const detailsUrl = new URL(detailsPath, this.baseUrl);
 
       const response = await this.requestLimit(() =>
         this.clientFactory.client.get<string>(detailsUrl.href),
@@ -199,7 +197,7 @@ export class NcoreClient {
 
   async hitnrun(): Promise<string[]> {
     try {
-      const hitAndRunUrl = new URL(NCORE_HIT_N_RUN_PATH, this.baseUrl);
+      const hitAndRunUrl = new URL(HIT_N_RUN_PATH, this.baseUrl);
       hitAndRunUrl.searchParams.append('showall', 'false');
 
       const response = await this.requestLimit(() =>

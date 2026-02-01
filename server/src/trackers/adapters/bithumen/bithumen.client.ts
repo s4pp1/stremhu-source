@@ -20,9 +20,9 @@ import {
 } from '../adapters.utils';
 import { BithumenClientFactory } from './bithumen.client-factory';
 import {
-  BITHUMEN_DETAILS_PATH,
-  BITHUMEN_HIT_N_RUN_PATH,
-  BITHUMEN_TORRENTS_PATH,
+  DETAILS_PATH,
+  HIT_N_RUN_PATH,
+  TORRENTS_PATH,
 } from './bithumen.constants';
 import {
   BithumenCategory,
@@ -76,7 +76,7 @@ export class BithumenClient {
     try {
       const { imdbId, categories } = payload;
 
-      const torrentsUrl = new URL(BITHUMEN_TORRENTS_PATH, this.baseUrl);
+      const torrentsUrl = new URL(TORRENTS_PATH, this.baseUrl);
       torrentsUrl.searchParams.append('genre', '0');
       torrentsUrl.searchParams.append('search', imdbId);
       torrentsUrl.searchParams.append('page', `${page}`);
@@ -109,8 +109,8 @@ export class BithumenClient {
 
   async findOne(torrentId: string): Promise<AdapterTorrentId> {
     try {
-      const detailsUrl = new URL(BITHUMEN_DETAILS_PATH, this.baseUrl);
-      detailsUrl.searchParams.append('id', torrentId);
+      const detailsPath = DETAILS_PATH.replace('{torrentId}', torrentId);
+      const detailsUrl = new URL(detailsPath, this.baseUrl);
 
       const response = await this.requestLimit(() =>
         this.bithumenClientFactory.client.get<string>(detailsUrl.href),
@@ -177,7 +177,7 @@ export class BithumenClient {
         this.bithumenClientFactory.getUserId(),
       );
 
-      const hitAndRunUrl = new URL(BITHUMEN_HIT_N_RUN_PATH, this.baseUrl);
+      const hitAndRunUrl = new URL(HIT_N_RUN_PATH, this.baseUrl);
       hitAndRunUrl.searchParams.append('id', userId);
       hitAndRunUrl.searchParams.append('hnr', '1');
 

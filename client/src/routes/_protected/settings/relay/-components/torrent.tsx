@@ -1,6 +1,9 @@
 import {
   ArrowBigDownIcon,
   ArrowBigUpIcon,
+  ArrowDownToLineIcon,
+  EllipsisVerticalIcon,
+  ExternalLinkIcon,
   HardDriveDownloadIcon,
   HardDriveIcon,
   HardDriveUploadIcon,
@@ -15,12 +18,19 @@ import { formatFilesize } from '@/common/file.util'
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { Button } from '@/shared/components/ui/button'
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/shared/components/ui/dropdown-menu'
+import {
   Item,
   ItemActions,
   ItemContent,
   ItemTitle,
 } from '@/shared/components/ui/item'
-import { Toggle } from '@/shared/components/ui/toggle'
 import { useMetadata } from '@/shared/hooks/use-metadata'
 import type { TorrentDto } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
@@ -49,20 +59,24 @@ function TorrentDetail(props: TorrentDetailProps) {
 export function Torrent(props: TorrentProps) {
   const { torrent } = props
 
-  const { getTrackerLabel } = useMetadata()
+  const { getTrackerLabel, getTrackerUrl } = useMetadata()
 
   const confirmDialog = useConfirmDialog()
 
   const { mutateAsync: updateTorrent } = useUpdateTorrent(torrent.infoHash)
   const { mutateAsync: deleteTorrent } = useDeleteTorrent()
 
-  const handleDelete: MouseEventHandler<HTMLButtonElement> = async (e) => {
-    e.preventDefault()
+  const handleDelete: MouseEventHandler<HTMLDivElement> = async (e) => {
     e.stopPropagation()
 
     await confirmDialog.confirm({
       title: `Biztosan törlöd?`,
-      description: `A(z) ${torrent.name} törlésével az adatok is törlésre kerülnek.`,
+      description: (
+        <>
+          A(z) <span className="font-bold break-all">{torrent.name}</span>{' '}
+          törlésével az adatok is törlésre kerülnek.
+        </>
+      ),
       confirmText: 'Törlés',
       onConfirm: async () => {
         try {
@@ -76,11 +90,26 @@ export function Torrent(props: TorrentProps) {
     })
   }
 
-  const handleUpdate: MouseEventHandler<HTMLButtonElement> = async (e) => {
-    e.preventDefault()
+  const handleUpdate: MouseEventHandler<HTMLDivElement> = async (e) => {
     e.stopPropagation()
 
     await updateTorrent({ isPersisted: !torrent.isPersisted })
+  }
+
+  const handleOpenDetails: MouseEventHandler<HTMLDivElement> = (e) => {
+    e.stopPropagation()
+
+    const trackerUrl = getTrackerUrl(torrent.tracker)
+
+    const detailsPath = trackerUrl.detailsPath.replace(
+      '{torrentId}',
+      torrent.torrentId,
+    )
+    const url = new URL(detailsPath, trackerUrl.url)
+
+    console.log('url.href', url.href)
+
+    window.open(url.href, '_blank', 'noopener,noreferrer')
   }
 
   return (
@@ -92,23 +121,48 @@ export function Torrent(props: TorrentProps) {
           </ItemTitle>
         </ItemContent>
         <ItemActions>
-          <Toggle
-            variant="outline"
-            size="sm"
-            className="rounded-full data-[state=on]:bg-blue-600"
-            pressed={torrent.isPersisted}
-            onClick={handleUpdate}
-          >
-            {torrent.isPersisted ? <PinIcon /> : <PinOffIcon />}
-          </Toggle>
-          <Button
-            variant="destructive"
-            size="icon-sm"
-            className="rounded-full"
-            onClick={handleDelete}
-          >
-            <TrashIcon />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon-sm" className="rounded-full">
+                <EllipsisVerticalIcon />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-64">
+              <DropdownMenuGroup>
+                <DropdownMenuItem onClick={handleUpdate}>
+                  {torrent.isPersisted ? (
+                    <>
+                      <PinOffIcon />
+                      Seedben tartás megszüntetése
+                    </>
+                  ) : (
+                    <>
+                      <PinIcon />
+                      Seedben tartás
+                    </>
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem disabled>
+                  <ArrowDownToLineIcon />
+                  Teljes torrent letöltése
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem onClick={handleOpenDetails}>
+                  <ExternalLinkIcon />
+                  Adatlap megnyitása
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem variant="destructive" onClick={handleDelete}>
+                  <TrashIcon />
+                  Törlés
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </ItemActions>
       </Item>
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">

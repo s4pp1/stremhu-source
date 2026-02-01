@@ -31,5 +31,8 @@ export class TorrentDto {
   infoHash: string;
 
   @ApiProperty()
+  torrentId: string;
+
+  @ApiProperty()
   isPersisted: boolean;
 }
