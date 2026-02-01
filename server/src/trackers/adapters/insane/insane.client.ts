@@ -25,9 +25,9 @@ import {
 } from '../adapters.utils';
 import { InsaneClientFactory } from './insane.client-factory';
 import {
+  DETAILS_PATH,
   HIT_N_RUN_PATH,
   TORRENTS_PATH,
-  TORRENT_DETAILS_PATH,
 } from './insane.constants';
 import { CategoryEnum, Torrent, Torrents, TorrentsQuery } from './insane.types';
 
@@ -113,8 +113,8 @@ export class InsaneClient {
 
   async findOne(torrentId: string): Promise<AdapterTorrentId> {
     try {
-      const detailsUrl = new URL(TORRENT_DETAILS_PATH, this.baseUrl);
-      detailsUrl.searchParams.append('id', torrentId);
+      const detailsPath = DETAILS_PATH.replace('{torrentId}', torrentId);
+      const detailsUrl = new URL(detailsPath, this.baseUrl);
 
       const response = await this.requestLimit(() =>
         this.clientFactory.client.get<string>(detailsUrl.href),

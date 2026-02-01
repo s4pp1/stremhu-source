@@ -18,8 +18,8 @@ import {
 } from '../adapters.types';
 import { BithumenClient } from './bithumen.client';
 import {
-  BITHUMEN_MOVIE_CATEGORY_FILTERS,
-  BITHUMEN_SERIES_CATEGORY_FILTERS,
+  MOVIE_CATEGORY_FILTERS,
+  SERIES_CATEGORY_FILTERS,
 } from './bithumen.constants';
 import {
   BithumenMovieCategoryEnum,
@@ -41,17 +41,17 @@ export class BithumenAdapter implements TrackerAdapter {
     const { imdbId, mediaType } = query;
 
     let categories: string[] = [
-      ...BITHUMEN_MOVIE_CATEGORY_FILTERS,
-      ...BITHUMEN_SERIES_CATEGORY_FILTERS,
+      ...MOVIE_CATEGORY_FILTERS,
+      ...SERIES_CATEGORY_FILTERS,
     ];
 
     switch (mediaType) {
       case StreamMediaTypeEnum.MOVIE:
-        categories = BITHUMEN_MOVIE_CATEGORY_FILTERS;
+        categories = MOVIE_CATEGORY_FILTERS;
         break;
 
       case StreamMediaTypeEnum.SERIES:
-        categories = BITHUMEN_SERIES_CATEGORY_FILTERS;
+        categories = SERIES_CATEGORY_FILTERS;
         break;
     }
 

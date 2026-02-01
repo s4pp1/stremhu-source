@@ -13,6 +13,8 @@ export type TorrentDto = {
     uploaded: number;
     total: number;
     infoHash: string;
+    torrentId: string;
     isPersisted: boolean;
+    fullDownload: string | null;
 };
 

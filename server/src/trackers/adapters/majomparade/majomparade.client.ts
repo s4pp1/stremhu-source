@@ -25,9 +25,9 @@ import {
 } from '../adapters.utils';
 import { MajomparadeClientFactory } from './majomparade.client-factory';
 import {
-  MAJOMPARADE_DETAILS_PATH,
-  MAJOMPARADE_HIT_N_RUN_PATH,
-  MAJOMPARADE_TORRENTS_PATH,
+  DETAILS_PATH,
+  HIT_N_RUN_PATH,
+  TORRENTS_PATH,
 } from './majomparade.constants';
 import {
   MajomparadeCategory,
@@ -83,7 +83,7 @@ export class MajomparadeClient {
 
       const { imdbId, categories } = payload;
 
-      const torrentsUrl = new URL(MAJOMPARADE_TORRENTS_PATH, this.baseUrl);
+      const torrentsUrl = new URL(TORRENTS_PATH, this.baseUrl);
 
       const unixSeconds = Math.floor(Date.now() / 1000);
 
@@ -126,8 +126,8 @@ export class MajomparadeClient {
 
   async findOne(torrentId: string): Promise<AdapterTorrentId> {
     try {
-      const detailsUrl = new URL(MAJOMPARADE_DETAILS_PATH, this.baseUrl);
-      detailsUrl.searchParams.append('id', `${torrentId}`);
+      const detailsPath = DETAILS_PATH.replace('{torrentId}', torrentId);
+      const detailsUrl = new URL(detailsPath, this.baseUrl);
 
       const response = await this.requestLimit(() =>
         this.majomparadeClientFactory.client.get<string>(detailsUrl.href, {
@@ -192,7 +192,7 @@ export class MajomparadeClient {
 
   async hitnrun(): Promise<string[]> {
     try {
-      const hitAndRunUrl = new URL(MAJOMPARADE_HIT_N_RUN_PATH, this.baseUrl);
+      const hitAndRunUrl = new URL(HIT_N_RUN_PATH, this.baseUrl);
 
       const response = await this.requestLimit(() =>
         this.majomparadeClientFactory.client.get<string>(hitAndRunUrl.href, {

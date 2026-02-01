@@ -3,12 +3,14 @@ from typing import List
 
 import libtorrent as libtorrent
 from common.constants import PRIO_0, PRIO_1
+from libtorrent_client.schemas import UpdateTorrent
 from libtorrent_client.service import LibtorrentClientService
 from stream.service import StreamService
 from torrents.schemas import (
     AddTorrent,
     RelayTorrent,
     RelayTorrentState,
+    UpdateRelayTorrent,
 )
 
 logger = logging.getLogger(__name__)
@@ -53,6 +55,29 @@ class TorrentsService:
         info_hash_sha1 = self.libtorrent_client_service.parse_info_hash(info_hash)
         torrent_handle = self.libtorrent_client_service.get_torrent_or_raise(
             info_hash=info_hash_sha1
+        )
+
+        return self._build_torrent(torrent_handle)
+
+    def update_torrent_or_raise(
+        self,
+        info_hash: str,
+        payload: UpdateRelayTorrent,
+    ):
+        info_hash_sha1 = self.libtorrent_client_service.parse_info_hash(info_hash)
+
+        update_torrent = UpdateTorrent(
+            priority=None,
+        )
+
+        if payload.download_full_torrent is True:
+            update_torrent.priority = PRIO_1
+        elif payload.download_full_torrent is False:
+            update_torrent.priority = PRIO_0
+
+        torrent_handle = self.libtorrent_client_service.update_torrent_or_raise(
+            info_hash=info_hash_sha1,
+            payload=update_torrent,
         )
 
         return self._build_torrent(torrent_handle)

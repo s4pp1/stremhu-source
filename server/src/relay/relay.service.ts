@@ -7,7 +7,12 @@ import { setTimeout } from 'node:timers/promises';
 import { NodeEnvEnum } from 'src/config/enum/node-env.enum';
 import { RelaySettingsService } from 'src/settings/relay/relay-settings.service';
 
-import { RelayClient, RelayTorrent, UpdateSettings } from './client';
+import {
+  RelayClient,
+  RelayTorrent,
+  UpdateRelayTorrent,
+  UpdateSettings,
+} from './client';
 import { RELAY_BASE_URL_PORT } from './relay.content';
 import { RELAY_CLIENT } from './relay.token';
 import { AddRelayTorrent } from './type/add-relay-torrent.type';
@@ -184,6 +189,18 @@ export class RelayService {
     }
 
     this.logger.log(`🎬 "${torrent.name}" nevű torrent hozzáadva a Relay-hez.`);
+
+    return torrent;
+  }
+
+  async updateTorrent(
+    infoHash: string,
+    payload: UpdateRelayTorrent,
+  ): Promise<RelayTorrent> {
+    const torrent = await this.relayClient.torrents.updateTorrent(
+      infoHash,
+      payload,
+    );
 
     return torrent;
   }

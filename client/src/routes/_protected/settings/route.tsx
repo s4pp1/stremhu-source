@@ -6,8 +6,8 @@ import { assertExists } from '@/shared/lib/utils'
 import { getMe } from '@/shared/queries/me'
 
 import { SettingsBreadcrumb } from './-components/settings-breadcrumb'
+import { SETTINGS_RELAY_NAME } from './relay/route'
 import { SETTINGS_SYSTEM_NAME } from './system/route'
-import { SETTINGS_TORRENT_CLIENT_NAME } from './torrent-client/route'
 import { SETTINGS_USERS_NAME } from './users/route'
 
 export const Route = createFileRoute('/_protected/settings')({
@@ -44,10 +44,10 @@ function SettingsLayout() {
           </Button>
           <Button asChild variant="ghost" size="sm">
             <Link
-              to="/settings/torrent-client"
+              to="/settings/relay"
               activeProps={{ className: 'bg-background' }}
             >
-              {SETTINGS_TORRENT_CLIENT_NAME}
+              {SETTINGS_RELAY_NAME}
             </Link>
           </Button>
         </div>

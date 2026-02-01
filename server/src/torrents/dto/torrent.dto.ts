@@ -31,5 +31,11 @@ export class TorrentDto {
   infoHash: string;
 
   @ApiProperty()
+  torrentId: string;
+
+  @ApiProperty()
   isPersisted: boolean;
+
+  @ApiProperty({ type: 'string', nullable: true })
+  fullDownload: boolean | null;
 }

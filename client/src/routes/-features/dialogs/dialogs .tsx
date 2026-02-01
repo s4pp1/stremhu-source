@@ -6,11 +6,12 @@ import { AddUserDialog } from '@/features/add-user/add-user-dialog'
 import { ChangePasswordDialog } from '@/features/change-password/change-password-dialog'
 import { ChangeUsernameDialog } from '@/features/change-username/change-username-dialog'
 import { ConfirmDialog } from '@/features/confirm/confirm-dialog'
+import { EditRelayDialog } from '@/features/edit-relay/edit-relay-dialog'
 import { EditTrackerDialog } from '@/features/edit-tracker/edit-tracker-dialog'
 import { NetworkAccessDialog } from '@/features/network-access/network-access-dialog'
 import { StremhuCatalogDialog } from '@/features/stremhu-catalog/stremhu-catalog-dialog'
-import { useDialogsStore } from '@/routes/-features/dialogs/dialogs-store'
 import type { OpenedDialog } from '@/routes/-features/dialogs/dialogs-store'
+import { useDialogsStore } from '@/routes/-features/dialogs/dialogs-store'
 
 type DialogComponentMap = {
   [K in OpenedDialog['type']]: ComponentType<Extract<OpenedDialog, { type: K }>>
@@ -25,6 +26,7 @@ const dialogComponents = {
   NETWORK_ACCESS: NetworkAccessDialog,
   STREMHU_CATALOG: StremhuCatalogDialog,
   EDIT_TRACKER: EditTrackerDialog,
+  EDIT_RELAY: EditRelayDialog,
 } satisfies DialogComponentMap
 
 export function Dialogs() {

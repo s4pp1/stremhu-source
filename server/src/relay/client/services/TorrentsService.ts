@@ -5,6 +5,7 @@
 import type { AddTorrent } from '../models/AddTorrent';
 import type { RelayTorrent } from '../models/RelayTorrent';
 import type { RelayTorrentState } from '../models/RelayTorrentState';
+import type { UpdateRelayTorrent } from '../models/UpdateRelayTorrent';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class TorrentsService {
@@ -54,6 +55,30 @@ export class TorrentsService {
             path: {
                 'info_hash': infoHash,
             },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Update Torrent
+     * @param infoHash
+     * @param requestBody
+     * @returns RelayTorrent Successful Response
+     * @throws ApiError
+     */
+    public updateTorrent(
+        infoHash: string,
+        requestBody: UpdateRelayTorrent,
+    ): CancelablePromise<RelayTorrent> {
+        return this.httpRequest.request({
+            method: 'PUT',
+            url: '/torrents/{info_hash}',
+            path: {
+                'info_hash': infoHash,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
             errors: {
                 422: `Validation Error`,
             },

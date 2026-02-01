@@ -15,6 +15,7 @@ export type { Health } from './models/Health';
 export type { HTTPValidationError } from './models/HTTPValidationError';
 export type { RelayTorrent } from './models/RelayTorrent';
 export type { RelayTorrentState } from './models/RelayTorrentState';
+export type { UpdateRelayTorrent } from './models/UpdateRelayTorrent';
 export type { UpdateSettings } from './models/UpdateSettings';
 export type { ValidationError } from './models/ValidationError';
 

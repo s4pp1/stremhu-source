@@ -23,7 +23,7 @@ import {
   getTrackerRefreshMessage,
   getTrackerStructureErrorMessage,
 } from '../adapters.utils';
-import { BITHUMEN_INDEX_PATH, BITHUMEN_LOGIN_PATH } from './bithumen.constants';
+import { INDEX_PATH, LOGIN_PATH } from './bithumen.constants';
 
 @Injectable()
 export class BithumenClientFactory {
@@ -76,7 +76,7 @@ export class BithumenClientFactory {
       await this.jar.removeAllCookies();
       const axios = createAxios(this.jar);
 
-      const loginUrl = new URL(BITHUMEN_LOGIN_PATH, this.baseUrl);
+      const loginUrl = new URL(LOGIN_PATH, this.baseUrl);
 
       const form = new URLSearchParams();
       form.set('username', username);
@@ -109,7 +109,7 @@ export class BithumenClientFactory {
     try {
       if (this.userId) return this.userId;
 
-      const indexUrl = new URL(BITHUMEN_INDEX_PATH, this.baseUrl);
+      const indexUrl = new URL(INDEX_PATH, this.baseUrl);
       const response = await this.client.get<string>(indexUrl.href, {
         responseType: 'text',
       });
@@ -142,7 +142,7 @@ export class BithumenClientFactory {
 
   private isAuthError(res: AxiosResponse) {
     const requestPath = _.get(res.request, ['path']) as string | undefined;
-    const checkPaths = ['/login.php', BITHUMEN_LOGIN_PATH];
+    const checkPaths = ['/login.php', LOGIN_PATH];
 
     const isLoginPath = checkPaths.some((checkPath) =>
       requestPath?.includes(checkPath),

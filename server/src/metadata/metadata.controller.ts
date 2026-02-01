@@ -9,7 +9,7 @@ import { SOURCE_TYPE_OPTIONS } from 'src/common/constant/source-type.constant';
 import { USER_ROLE_OPTIONS } from 'src/common/constant/user-role.constant';
 import { VIDEO_QUALITY_OPTIONS } from 'src/common/constant/video-quality.constant';
 import { SettingsService } from 'src/settings/settings.service';
-import { TRACKER_OPTIONS } from 'src/trackers/trackers.constants';
+import { TrackersService } from 'src/trackers/trackers.service';
 
 import { MetadataDto } from './dto/metadata.dto';
 
@@ -19,6 +19,7 @@ export class MetadataController {
   constructor(
     private readonly configService: ConfigService,
     private readonly settingsService: SettingsService,
+    private readonly trackersService: TrackersService,
   ) {}
 
   @Get('/')
@@ -34,7 +35,7 @@ export class MetadataController {
       audioCodecs: AUDIO_CODEC_OPTIONS,
       sourceTypes: SOURCE_TYPE_OPTIONS,
       languages: LANGUAGE_OPTIONS,
-      trackers: TRACKER_OPTIONS,
+      trackers: this.trackersService.getTrackerOptionsWithUrl(),
       endpoint,
       version,
     };

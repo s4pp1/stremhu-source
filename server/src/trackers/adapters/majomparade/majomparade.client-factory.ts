@@ -22,7 +22,7 @@ import {
   getTrackerLoginErrorMessage,
   getTrackerRefreshMessage,
 } from '../adapters.utils';
-import { MAJOMPARADE_LOGIN_PATH } from './majomparade.constants';
+import { LOGIN_PATH } from './majomparade.constants';
 
 @Injectable()
 export class MajomparadeClientFactory {
@@ -72,7 +72,7 @@ export class MajomparadeClientFactory {
     await this.jar.removeAllCookies();
     const axios = createAxios(this.jar);
 
-    const loginUrl = new URL(MAJOMPARADE_LOGIN_PATH, this.baseUrl);
+    const loginUrl = new URL(LOGIN_PATH, this.baseUrl);
 
     const loginResponse = await axios.get<string>(loginUrl.href, {
       responseType: 'text',
@@ -107,7 +107,7 @@ export class MajomparadeClientFactory {
     this.axios.interceptors.response.use(
       async (res) => {
         const requestPath = _.get(res.request, ['path']) as string | undefined;
-        const isLoginPath = requestPath?.includes(MAJOMPARADE_LOGIN_PATH);
+        const isLoginPath = requestPath?.includes(LOGIN_PATH);
 
         if (isLoginPath) {
           await this.relogin();

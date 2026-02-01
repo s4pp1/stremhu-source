@@ -38,7 +38,7 @@ const schema = z.object({
 })
 
 function SetupUserRoute() {
-  const navigate = useNavigate({ from: '/setup/user' })
+  const navigate = useNavigate({ from: '/setup/user/' })
 
   const { getUserRoleLabel } = useMetadata()
   const { mutateAsync: registration } = useRegistration()

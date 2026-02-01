@@ -7,6 +7,7 @@ import libtorrent as libtorrent
 from fastapi import HTTPException
 from libtorrent_client.schemas import (
     UpdateSettings,
+    UpdateTorrent,
 )
 
 logger = logging.getLogger(__name__)
@@ -76,30 +77,6 @@ class LibtorrentClientService:
 
         return valid_torrent_handlers
 
-    def get_torrent(
-        self,
-        info_hash: libtorrent.sha1_hash,
-    ) -> libtorrent.torrent_handle | None:
-        torrent_handle = self.libtorrent_session.find_torrent(info_hash)
-
-        if not torrent_handle.is_valid():
-            return None
-
-        return torrent_handle
-
-    def get_torrent_or_raise(
-        self,
-        info_hash: libtorrent.sha1_hash,
-    ) -> libtorrent.torrent_handle:
-        torrent_handle = self.get_torrent(
-            info_hash=info_hash,
-        )
-
-        if torrent_handle is None:
-            raise HTTPException(404, f'"{info_hash}" torrent nem található.')
-
-        return torrent_handle
-
     def add_torrent(
         self,
         save_path: str,
@@ -149,6 +126,45 @@ class LibtorrentClientService:
 
         priorities = torrent_handle.piece_priorities()
         torrent_handle.prioritize_pieces([priority] * len(priorities))
+
+        return torrent_handle
+
+    def get_torrent(
+        self,
+        info_hash: libtorrent.sha1_hash,
+    ) -> libtorrent.torrent_handle | None:
+        torrent_handle = self.libtorrent_session.find_torrent(info_hash)
+
+        if not torrent_handle.is_valid():
+            return None
+
+        return torrent_handle
+
+    def get_torrent_or_raise(
+        self,
+        info_hash: libtorrent.sha1_hash,
+    ) -> libtorrent.torrent_handle:
+        torrent_handle = self.get_torrent(
+            info_hash=info_hash,
+        )
+
+        if torrent_handle is None:
+            raise HTTPException(404, f'"{info_hash}" torrent nem található.')
+
+        return torrent_handle
+
+    def update_torrent_or_raise(
+        self,
+        info_hash: libtorrent.sha1_hash,
+        payload: UpdateTorrent,
+    ):
+        torrent_handle = self.get_torrent_or_raise(
+            info_hash=info_hash,
+        )
+
+        if payload.priority is not None:
+            priorities = torrent_handle.piece_priorities()
+            torrent_handle.prioritize_pieces([payload.priority] * len(priorities))
 
         return torrent_handle
 

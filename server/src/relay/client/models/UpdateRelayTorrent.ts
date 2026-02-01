@@ -2,8 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type UpdateTorrentDto = {
-    isPersisted?: boolean;
-    fullDownload?: boolean | null;
+export type UpdateRelayTorrent = {
+    downloadFullTorrent?: (boolean | null);
 };
 

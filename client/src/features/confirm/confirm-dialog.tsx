@@ -49,7 +49,7 @@ export function ConfirmDialog(dialog: OpenedDialog & ConfirmDialog) {
       <AlertDialogContent className="md:max-w-md">
         <AlertDialogHeader>
           <AlertDialogTitle>{dialog.options.title}</AlertDialogTitle>
-          <AlertDialogDescription className="break-all">
+          <AlertDialogDescription>
             {dialog.options.description}
           </AlertDialogDescription>
         </AlertDialogHeader>

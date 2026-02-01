@@ -18,8 +18,8 @@ import {
 } from '../adapters.types';
 import { NcoreClient } from './ncore.client';
 import {
-  NCORE_MOVIE_CATEGORY_FILTERS,
-  NCORE_SERIES_CATEGORY_FILTERS,
+  MOVIE_CATEGORY_FILTERS,
+  SERIES_CATEGORY_FILTERS,
 } from './ncore.constants';
 import {
   NcoreCategory,
@@ -42,16 +42,16 @@ export class NcoreAdapter implements TrackerAdapter {
     const { imdbId, mediaType } = query;
 
     let categories: NcoreCategory[] = [
-      ...NCORE_MOVIE_CATEGORY_FILTERS,
-      ...NCORE_SERIES_CATEGORY_FILTERS,
+      ...MOVIE_CATEGORY_FILTERS,
+      ...SERIES_CATEGORY_FILTERS,
     ];
 
     if (mediaType === StreamMediaTypeEnum.MOVIE) {
-      categories = NCORE_MOVIE_CATEGORY_FILTERS;
+      categories = MOVIE_CATEGORY_FILTERS;
     }
 
     if (mediaType === StreamMediaTypeEnum.SERIES) {
-      categories = NCORE_SERIES_CATEGORY_FILTERS;
+      categories = SERIES_CATEGORY_FILTERS;
     }
 
     const torrents = await this.client.find({ imdbId, categories });

@@ -35,5 +35,3 @@ export const TRACKER_INFO = TRACKER_OPTIONS.reduce(
   }),
   {} as Record<TrackerEnum, TrackerInfo>,
 );
-
-export const LOGIN_ERROR_MESSAGE = 'Hibás felhasználónév, vagy jelszó!';
