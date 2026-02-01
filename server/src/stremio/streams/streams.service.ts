@@ -266,8 +266,8 @@ export class StreamsService {
         videoFile.videoQualities.some((videoQuality) =>
           videoQualitySelectors.filterToAllowed(videoQuality),
         ) &&
-        audioCodecSelectors.filterToAllowed(videoFile.audioCodec) &&
-        sourceTypeSelectors.filterToAllowed(videoFile.sourceType)
+        sourceTypeSelectors.filterToAllowed(videoFile.sourceType) &&
+        audioCodecSelectors.filterToAllowed(videoFile.audioCodec)
       );
     });
 
@@ -303,8 +303,8 @@ export class StreamsService {
 
           return bestQualityRank;
         },
-        (videoFile) => audioCodecSelectors.priorityIndex(videoFile.audioCodec),
         (videoFile) => sourceTypeSelectors.priorityIndex(videoFile.sourceType),
+        (videoFile) => audioCodecSelectors.priorityIndex(videoFile.audioCodec),
         (videoFile) => videoFile.seeders,
       ],
       ['asc', 'asc', 'asc', 'asc', 'asc', 'desc'],

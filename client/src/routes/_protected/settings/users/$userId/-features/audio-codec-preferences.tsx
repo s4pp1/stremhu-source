@@ -57,9 +57,9 @@ export function AudioCodecPreferences(props: AudioCodecPreferences) {
   return (
     <Card className="break-inside-avoid mb-4">
       <CardHeader>
-        <CardTitle>Előnyben részesített képminőség</CardTitle>
+        <CardTitle>Előnyben részesített hangminőség</CardTitle>
         <CardDescription>
-          Állítsd be, milyen képminőséget részesítsen előnyben a rendszer.
+          Állítsd be, milyen hangminőséget részesítsen előnyben a rendszer.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
