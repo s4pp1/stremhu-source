@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   Logger,
   NotFoundException,
@@ -16,6 +17,7 @@ import { RelayService } from 'src/relay/relay.service';
 import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
 import { TrackersStore } from 'src/trackers/core/trackers.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
+import { TRACKER_INFO } from 'src/trackers/trackers.constants';
 
 import { TorrentsStore } from './core/torrents.store';
 import { Torrent, Torrent as TorrentEntity } from './entity/torrent.entity';
@@ -165,7 +167,15 @@ export class TorrentsService
   ): Promise<Torrent> {
     const torrent = await this.getTorrentOrThrow(infoHash);
 
+    const tracker = TRACKER_INFO[torrent.tracker];
+
     if (payload.fullDownload !== undefined) {
+      if (tracker.requiresFullDownload) {
+        throw new BadRequestException(
+          `A(z) "${tracker.label}" torrent esetén nem írható felül a globális beállítás.`,
+        );
+      }
+
       let fullDownload = payload.fullDownload;
 
       if (fullDownload === null) {
