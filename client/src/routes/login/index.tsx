@@ -35,7 +35,7 @@ const schema = z.object({
 })
 
 function LoginRoute() {
-  const navigate = useNavigate({ from: '/login' })
+  const navigate = useNavigate({ from: '/login/' })
 
   const { mutateAsync: login } = useLogin()
 

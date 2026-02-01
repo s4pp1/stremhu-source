@@ -36,7 +36,7 @@ export const Route = createFileRoute('/_protected/setup/address/')({
 function SetupAddressRoute() {
   const [isValid, setIsValid] = useState(false)
   const navigate = useNavigate({
-    from: '/setup/address',
+    from: '/setup/address/',
   })
 
   const handleSuccessOrSkip = () => {
