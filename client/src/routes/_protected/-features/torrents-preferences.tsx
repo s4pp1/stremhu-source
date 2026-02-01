@@ -141,24 +141,6 @@ export function TorrentsPreferences() {
       </Card>
       <Card className="break-inside-avoid mb-4">
         <CardHeader>
-          <CardTitle>Előnyben részesített hangminőség</CardTitle>
-          <CardDescription>
-            Állítsd be, milyen hangminőséget részesítsen előnyben a rendszer.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form.Field name="torrentAudioCodecs" mode="array">
-            {(field) => (
-              <AudioCodecsSelector
-                items={field.state.value}
-                onChangeItems={(items) => field.handleChange(items)}
-              />
-            )}
-          </form.Field>
-        </CardContent>
-      </Card>
-      <Card className="break-inside-avoid mb-4">
-        <CardHeader>
           <CardTitle>Előnyben részesített forrás</CardTitle>
           <CardDescription>
             Állítsd be, milyen forrást részesítsen előnyben a rendszer.
@@ -175,7 +157,24 @@ export function TorrentsPreferences() {
           </form.Field>
         </CardContent>
       </Card>
-
+      <Card className="break-inside-avoid mb-4">
+        <CardHeader>
+          <CardTitle>Előnyben részesített hangminőség</CardTitle>
+          <CardDescription>
+            Állítsd be, milyen hangminőséget részesítsen előnyben a rendszer.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form.Field name="torrentAudioCodecs" mode="array">
+            {(field) => (
+              <AudioCodecsSelector
+                items={field.state.value}
+                onChangeItems={(items) => field.handleChange(items)}
+              />
+            )}
+          </form.Field>
+        </CardContent>
+      </Card>
       <Card className="break-inside-avoid mb-4">
         <CardHeader>
           <CardTitle>Torrent elérhetősége</CardTitle>

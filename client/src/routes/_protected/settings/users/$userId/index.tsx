@@ -40,10 +40,10 @@ function UserRoute() {
         <VideoQualityPreferences user={user} />
       </div>
       <div className="break-inside-avoid mb-4">
-        <AudioCodecPreferences user={user} />
+        <SourceTypePreferences user={user} />
       </div>
       <div className="break-inside-avoid mb-4">
-        <SourceTypePreferences user={user} />
+        <AudioCodecPreferences user={user} />
       </div>
       <div className="break-inside-avoid mb-4">
         <TorrentSeeders user={user} />
