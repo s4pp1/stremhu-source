@@ -9,7 +9,7 @@ export const AUDIO_CODEC_OPTIONS: AudioCodecOption[] = [
   { value: AudioCodecEnum.DTS, label: 'DTS Core' },
   { value: AudioCodecEnum.DD, label: 'Dolby Digital' },
   { value: AudioCodecEnum.AAC, label: 'AAC' },
-  { value: AudioCodecEnum.UNKNOWN, label: 'Ismeretlen' },
+  { value: AudioCodecEnum.UNKNOWN, label: 'Egyéb' },
 ];
 
 export const AUDIO_CODEC_LABEL_MAP = AUDIO_CODEC_OPTIONS.reduce(

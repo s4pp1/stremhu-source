@@ -9,6 +9,8 @@ export type MergedTorrent = {
   uploaded: number;
   progress: number;
   total: number;
+  connections: number;
+  maxConnections: number;
 
   imdbId: string;
   tracker: TrackerEnum;
@@ -16,6 +18,7 @@ export type MergedTorrent = {
   isPersisted: boolean;
   fullDownload: boolean | null;
 
+  lastPlayedAt: Date;
   updatedAt: Date;
   createdAt: Date;
 };

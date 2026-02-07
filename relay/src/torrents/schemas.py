@@ -35,6 +35,8 @@ class RelayTorrent(RelayTorrentState):
     downloaded: int
     uploaded: int
     total: int
+    max_connections: int
+    connections: int
 
 
 class AddTorrent(BaseModel):

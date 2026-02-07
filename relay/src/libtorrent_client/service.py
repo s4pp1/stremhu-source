@@ -18,7 +18,7 @@ class LibtorrentClientService:
         self.libtorrent_session = libtorrent.session()
         self.libtorrent_session.apply_settings(
             {
-                "listen_interfaces": "0.0.0.0:6881",
+                "listen_interfaces": "0.0.0.0:6881,[::]:6881",
                 "connections_limit": 200,
                 "enable_dht": False,
                 "enable_lsd": False,
@@ -59,7 +59,9 @@ class LibtorrentClientService:
                     torrent_handle.set_max_connections(self.torrent_connections_limit)
 
         if payload.port is not None:
-            apply_settings["listen_interfaces"] = f"0.0.0.0:{payload.port}"
+            apply_settings["listen_interfaces"] = (
+                f"0.0.0.0:{payload.port},[::]:{payload.port}"
+            )
 
         self.libtorrent_session.apply_settings(apply_settings)
 

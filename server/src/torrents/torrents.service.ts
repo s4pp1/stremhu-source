@@ -340,9 +340,12 @@ export class TorrentsService
       downloaded: relayTorrent.downloaded,
       progress: relayTorrent.progress,
       total: relayTorrent.total,
+      connections: relayTorrent.connections,
+      maxConnections: relayTorrent.maxConnections,
       uploaded: relayTorrent.uploaded + torrentEntity.uploaded,
       downloadSpeed: relayTorrent.downloadSpeed,
       uploadSpeed: relayTorrent.uploadSpeed,
+      lastPlayedAt: torrentEntity.lastPlayedAt,
       updatedAt: torrentEntity.updatedAt,
       createdAt: torrentEntity.createdAt,
     };
