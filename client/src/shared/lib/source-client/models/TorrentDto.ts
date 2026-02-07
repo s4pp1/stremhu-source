@@ -15,6 +15,9 @@ export type TorrentDto = {
     infoHash: string;
     torrentId: string;
     isPersisted: boolean;
-    fullDownload: string | null;
+    fullDownload: boolean | null;
+    lastPlayedAt: string;
+    updatedAt: string;
+    createdAt: string;
 };
 

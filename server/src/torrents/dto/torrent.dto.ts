@@ -36,6 +36,15 @@ export class TorrentDto {
   @ApiProperty()
   isPersisted: boolean;
 
-  @ApiProperty({ type: 'string', nullable: true })
+  @ApiProperty({ type: 'boolean', nullable: true })
   fullDownload: boolean | null;
+
+  @ApiProperty({ type: 'string', format: 'date-time' })
+  lastPlayedAt: Date;
+
+  @ApiProperty({ type: 'string', format: 'date-time' })
+  updatedAt: Date;
+
+  @ApiProperty({ type: 'string', format: 'date-time' })
+  createdAt: Date;
 }

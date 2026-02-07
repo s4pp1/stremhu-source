@@ -1,10 +1,12 @@
 import type { QueryClient } from '@tanstack/react-query'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { setDefaultOptions } from 'date-fns'
+import { hu as dateFnsHu } from 'date-fns/locale'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import * as z from 'zod'
-import { hu } from 'zod/locales'
+import { hu as zodHu } from 'zod/locales'
 
 import reportWebVitals from './reportWebVitals.ts'
 import { routeTree } from './routeTree.gen'
@@ -13,7 +15,8 @@ import { DefaultLoading } from './shared/components/default-loading.tsx'
 import { queryClient } from './shared/lib/client.ts'
 import './styles.css'
 
-z.config(hu())
+z.config(zodHu())
+setDefaultOptions({ locale: dateFnsHu })
 
 export interface RouterContext {
   queryClient: QueryClient

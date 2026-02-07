@@ -148,6 +148,10 @@ export class TrackerDiscoveryService {
     adapterTorrents: AdapterTorrentId[],
     torrentsCount: number,
   ): Promise<TorrentCache[]> {
+    if (adapterTorrents.length === 0) {
+      return [];
+    }
+
     const results = await Promise.allSettled(
       adapterTorrents.map(async (adapterTorrent) => {
         const adapterParsedTorrent = await adapter.download(adapterTorrent);

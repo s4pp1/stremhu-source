@@ -149,4 +149,6 @@ class TorrentsService:
             state=status.state,
             progress=status.progress,
             total=total,
+            connections=status.num_connections,
+            max_connections=status.connections_limit,
         )

@@ -9,8 +9,10 @@ import {
   HardDriveDownloadIcon,
   HardDriveIcon,
   HardDriveUploadIcon,
+  LayersPlusIcon,
   PinIcon,
   PinOffIcon,
+  PlayIcon,
   RotateCcwIcon,
   TrashIcon,
 } from 'lucide-react'
@@ -20,6 +22,7 @@ import { toast } from 'sonner'
 
 import { formatFilesize } from '@/common/file.util'
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
+import { Badge } from '@/shared/components/ui/badge'
 import { Button } from '@/shared/components/ui/button'
 import {
   DropdownMenu,
@@ -37,7 +40,7 @@ import {
 } from '@/shared/components/ui/item'
 import { useMetadata } from '@/shared/hooks/use-metadata'
 import type { TorrentDto } from '@/shared/lib/source-client'
-import { assertExists, parseApiError } from '@/shared/lib/utils'
+import { assertExists, formatDateTime, parseApiError } from '@/shared/lib/utils'
 import { useDeleteTorrent, useUpdateTorrent } from '@/shared/queries/torrents'
 import { getTrackers } from '@/shared/queries/trackers'
 
@@ -245,6 +248,22 @@ export function Torrent(props: TorrentProps) {
           icon={<HardDriveIcon />}
           value={formatFilesize(torrent.total)}
         />
+      </div>
+      <div className="mt-1 flex flex-wrap gap-2">
+        <Badge
+          variant="secondary"
+          title={`Torrent hozzáadás időpontja: ${formatDateTime(torrent.createdAt)}`}
+        >
+          <LayersPlusIcon />
+          {formatDateTime(torrent.createdAt)}
+        </Badge>
+        <Badge
+          variant="secondary"
+          title={`Torrent utolsó lejátszásának időpontja: ${formatDateTime(torrent.createdAt)}`}
+        >
+          <PlayIcon />
+          {formatDateTime(torrent.lastPlayedAt)}
+        </Badge>
       </div>
     </div>
   )

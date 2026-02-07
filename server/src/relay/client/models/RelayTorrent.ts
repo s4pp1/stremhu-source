@@ -15,5 +15,7 @@ export type RelayTorrent = {
     downloaded: number;
     uploaded: number;
     total: number;
+    maxConnections: number;
+    connections: number;
 };
 

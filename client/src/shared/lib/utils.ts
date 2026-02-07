@@ -1,5 +1,6 @@
-import { clsx } from 'clsx'
 import type { ClassValue } from 'clsx'
+import { clsx } from 'clsx'
+import { format } from 'date-fns'
 import _ from 'lodash'
 import { twMerge } from 'tailwind-merge'
 
@@ -30,4 +31,8 @@ export function assertExists<T>(value: T): asserts value is NonNullable<T> {
   if (!value) {
     throw new Error('A store nem érhető el!')
   }
+}
+
+export function formatDateTime(dateTime: string) {
+  return format(dateTime, 'yyyy.MM.dd. HH:mm')
 }

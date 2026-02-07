@@ -12,7 +12,7 @@ export const SOURCE_TYPE_OPTIONS: SourceTypeOption[] = [
   { value: SourceTypeEnum.WEB_RIP, label: 'Streaming (WEBRip - újrakódolt)' },
   { value: SourceTypeEnum.BROADCAST, label: 'TV (HDTV / közvetített)' },
   { value: SourceTypeEnum.THEATRICAL, label: 'Mozis felvétel (CAM/TS/TC)' },
-  { value: SourceTypeEnum.UNKNOWN, label: 'Ismeretlen' },
+  { value: SourceTypeEnum.UNKNOWN, label: 'Egyéb' },
 ];
 
 export const SOURCE_TYPE_LABEL_MAP = SOURCE_TYPE_OPTIONS.reduce(
