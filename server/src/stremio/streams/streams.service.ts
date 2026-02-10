@@ -78,7 +78,7 @@ export class StreamsService {
 
     if (sortedVideoFiles.length > 0) {
       const endpoint = await this.settingsService.getEndpoint();
-      const activeTorrents = await this.torrentsService.getTorrents();
+      const activeTorrents = await this.torrentsService.find();
       const activeInfoHashes = new Set(
         activeTorrents.map((torrent) => torrent.infoHash),
       );

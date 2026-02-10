@@ -15,7 +15,7 @@ import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
   'tracker',
   'torrentId',
 ])
-export class Torrent {
+export class PersistedTorrent {
   @PrimaryColumn({ name: 'info_hash' })
   infoHash!: string;
 
