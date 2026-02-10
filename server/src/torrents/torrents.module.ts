@@ -6,15 +6,17 @@ import { RelaySettingsModule } from 'src/settings/relay/relay-settings.module';
 import { TorrentsCacheCoreModule } from 'src/torrents-cache/core/torrents-cache-core.module';
 import { TrackersCoreModule } from 'src/trackers/core/trackers-core.module';
 
-import { TorrentsCoreModule } from './core/torrents-core.module';
 import { ExternalRelaySettingsController } from './external-relay-settings.controller';
+import { PersistedTorrentsCoreModule } from './persisted/core/persisted-torrents-core.module';
+import { PersistedTorrentsModule } from './persisted/persisted-torrents.module';
 import { TorrentsController } from './torrents.controller';
 import { TorrentsService } from './torrents.service';
 
 @Module({
   imports: [
     AuthModule,
-    TorrentsCoreModule,
+    PersistedTorrentsCoreModule,
+    PersistedTorrentsModule,
     RelayModule,
     TorrentsCacheCoreModule,
     TrackersCoreModule,

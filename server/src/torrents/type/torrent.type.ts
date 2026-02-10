@@ -1,6 +1,6 @@
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
-export type MergedTorrent = {
+export type Torrent = {
   name: string;
   infoHash: string;
   downloadSpeed: number;

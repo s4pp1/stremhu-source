@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 
-import { RelayTorrent } from 'src/relay/client';
 import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
 import { TorrentsService } from 'src/torrents/torrents.service';
+import { Torrent } from 'src/torrents/type/torrent.type';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
 
 import { PreparePlay } from './type/prepare-play.type';
 
 @Injectable()
 export class PlaybackService {
-  private inFlightPlay = new Map<string, Promise<RelayTorrent>>();
+  private inFlightPlay = new Map<string, Promise<Torrent>>();
 
   constructor(
     private readonly torrentsCacheStore: TorrentsCacheStore,
@@ -17,7 +17,7 @@ export class PlaybackService {
     private readonly trackerDiscoveryService: TrackerDiscoveryService,
   ) {}
 
-  async preparePlayback(payload: PreparePlay): Promise<RelayTorrent> {
+  async preparePlayback(payload: PreparePlay): Promise<Torrent> {
     const { imdbId, tracker, torrentId } = payload;
 
     const key = `${imdbId}-${tracker}-${torrentId}`;
@@ -36,7 +36,7 @@ export class PlaybackService {
     }
   }
 
-  private async getTorrent(payload: PreparePlay): Promise<RelayTorrent> {
+  private async getTorrent(payload: PreparePlay): Promise<Torrent> {
     const { imdbId, tracker, torrentId } = payload;
 
     const torrentCache = await this.torrentsCacheStore.findOne({
@@ -45,10 +45,10 @@ export class PlaybackService {
       torrentId,
     });
 
-    let torrent: RelayTorrent | null = null;
+    let torrent: Torrent | null = null;
 
     if (torrentCache) {
-      torrent = await this.torrentsService.getTorrentForStream(
+      torrent = await this.torrentsService.findOneByInfoHash(
         torrentCache.parsed.infoHash,
       );
     }
@@ -59,17 +59,21 @@ export class PlaybackService {
         torrentId,
       );
 
-      torrent = await this.torrentsService.getTorrentForStream(
+      torrent = await this.torrentsService.findOneByInfoHash(
         torrentFile.infoHash,
       );
 
       if (!torrent) {
-        torrent = await this.torrentsService.addTorrentForStream({
+        torrent = await this.torrentsService.addTorrent({
           ...torrentFile,
           torrentFilePath: torrentFile.torrentFilePath,
         });
       }
     }
+
+    torrent = await this.torrentsService.updateOne(torrent.infoHash, {
+      lastPlayedAt: new Date(),
+    });
 
     return torrent;
   }

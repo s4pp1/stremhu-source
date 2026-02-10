@@ -52,7 +52,7 @@ export class TorrentsController {
   @Get('/torrents')
   @ApiResponse({ status: 200, type: TorrentDto, isArray: true })
   async find(): Promise<TorrentDto[]> {
-    const torrents = await this.torrentsService.getTorrents();
+    const torrents = await this.torrentsService.find();
 
     const sortedTorrents = orderBy(
       torrents,
@@ -72,12 +72,9 @@ export class TorrentsController {
     @Param('infoHash') infoHash: string,
     @Body() payload: UpdateTorrentDto,
   ): Promise<TorrentDto> {
-    const mergedTorrent = await this.torrentsService.updateOneForRest(
-      infoHash,
-      payload,
-    );
+    const torrent = await this.torrentsService.updateOne(infoHash, payload);
 
-    return toDto(TorrentDto, mergedTorrent);
+    return toDto(TorrentDto, torrent);
   }
 
   @Delete('/torrents/:infoHash')
