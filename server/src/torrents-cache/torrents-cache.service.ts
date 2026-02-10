@@ -19,7 +19,7 @@ export class TorrentsCacheService {
   ) {}
 
   async deleteAllByTracker(tracker: TrackerEnum) {
-    const activeTorrents = await this.torrentsService.getTorrents();
+    const activeTorrents = await this.torrentsService.find();
 
     const imdbDirents = await this.torrentsCacheStore.findImdbDirents();
 
@@ -83,7 +83,7 @@ export class TorrentsCacheService {
 
     const cacheRetentionMs = cacheRetentionSeconds * 1000;
 
-    const activeTorrents = await this.torrentsService.getTorrents();
+    const activeTorrents = await this.torrentsService.find();
 
     const now = Date.now();
     const imdbDirents = await this.torrentsCacheStore.findImdbDirents();

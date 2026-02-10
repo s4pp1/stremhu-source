@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Injectable,
   Logger,
   NotFoundException,
@@ -7,23 +6,20 @@ import {
   OnApplicationShutdown,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-// import { Cron, CronExpression } from '@nestjs/schedule';
-import _, { isUndefined, omitBy } from 'lodash';
 import { mkdir } from 'node:fs/promises';
 
-import { safeReaddir } from 'src/common/utils/file.util';
 import { RelayTorrent, UpdateSettings } from 'src/relay/client';
 import { RelayService } from 'src/relay/relay.service';
 import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
 import { TrackersStore } from 'src/trackers/core/trackers.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
-import { TRACKER_INFO } from 'src/trackers/trackers.constants';
 
-import { TorrentsStore } from './core/torrents.store';
-import { Torrent, Torrent as TorrentEntity } from './entity/torrent.entity';
-import { TorrentToAddClient } from './type/torrent-to-add-client.type';
+import { PersistedTorrentsStore } from './persisted/core/persisted-torrents.store';
+import { PersistedTorrent } from './persisted/entity/torrent.entity';
+import { PersistedTorrentsService } from './persisted/persisted-torrents.service';
+import { TorrentToAdd } from './type/torrent-to-add.type';
 import { TorrentToUpdate } from './type/torrent-to-update.type';
-import { MergedTorrent } from './type/torrent.type';
+import { Torrent } from './type/torrent.type';
 
 @Injectable()
 export class TorrentsService
@@ -35,7 +31,8 @@ export class TorrentsService
 
   constructor(
     private readonly configService: ConfigService,
-    private readonly torrentsStore: TorrentsStore,
+    private readonly persistedTorrentsStore: PersistedTorrentsStore,
+    private readonly persistedTorrentsService: PersistedTorrentsService,
     private readonly relayService: RelayService,
     private readonly trackersStore: TrackersStore,
     private readonly torrentsCacheStore: TorrentsCacheStore,
@@ -53,32 +50,36 @@ export class TorrentsService
     await this.relayService.bootstrap();
 
     // Torrentek lekérése és visszarakása a kliensbe
-    const torrents = await this.torrentsStore.find();
+    const persistedTorrents = await this.persistedTorrentsService.find();
 
     // Tracker-ek letöltése
     const trackers = await this.trackersStore.find();
 
-    for (const torrent of torrents) {
+    for (const persistedTorrent of persistedTorrents) {
       const torrentCache = await this.torrentsCacheStore.findOne({
-        imdbId: torrent.imdbId,
-        tracker: torrent.tracker,
-        torrentId: torrent.torrentId,
+        imdbId: persistedTorrent.imdbId,
+        tracker: persistedTorrent.tracker,
+        torrentId: persistedTorrent.torrentId,
       });
 
       if (!torrentCache) {
-        this.logger.error(`🚨 "${torrent.infoHash}" nem tölthető vissza.`);
-        await this.torrentsStore.removeByInfoHash(torrent.infoHash);
+        this.logger.error(
+          `🚨 "${persistedTorrent.infoHash}" nem tölthető vissza.`,
+        );
+        await this.persistedTorrentsService.deleteByInfoHash(
+          persistedTorrent.infoHash,
+        );
         continue;
       }
 
       const tracker = trackers.find(
-        (tracker) => tracker.tracker === torrent.tracker,
+        (tracker) => tracker.tracker === persistedTorrent.tracker,
       );
 
       let downloadFullTorrent = tracker?.downloadFullTorrent ?? false;
 
-      if (torrent.fullDownload !== null) {
-        downloadFullTorrent = torrent.fullDownload;
+      if (persistedTorrent.fullDownload !== null) {
+        downloadFullTorrent = persistedTorrent.fullDownload;
       }
 
       this.relayService
@@ -101,86 +102,115 @@ export class TorrentsService
     this.logger.log(`🛑 Torrent kliens leállítása... signal: ${signal}`);
 
     // A futás óta feltöltött tartalom mennyiségének tárolása
-    const clientTorrents = await this.relayService.getTorrents();
+    const relayTorrents = await this.relayService.getTorrents();
 
     await Promise.all(
-      clientTorrents.map((clientTorrent) =>
-        this.torrentsStore.flushUploaded({
-          infoHash: clientTorrent.infoHash,
-          sessionBytes: clientTorrent.uploaded,
-        }),
-      ),
+      relayTorrents.map(async (relayTorrent) => {
+        const persistedTorrent =
+          await this.persistedTorrentsService.findOneByInfoHashOrThrow(
+            relayTorrent.infoHash,
+          );
+
+        const uploaded = persistedTorrent.uploaded + relayTorrent.uploaded;
+
+        await this.persistedTorrentsService.updateOne(
+          relayTorrent.infoHash,
+          {
+            uploaded,
+          },
+          persistedTorrent,
+        );
+      }),
     );
 
     // Torrent kliens leállítása
     await this.relayService.shutdown();
   }
 
-  async getTorrentOrThrow(infoHash: string): Promise<Torrent> {
-    const torrent = await this.torrentsStore.findOneByInfoHash(infoHash);
+  async find(): Promise<Torrent[]> {
+    const [persistedTorrents, relayTorrents] = await Promise.all([
+      this.persistedTorrentsService.find(),
+      this.relayService.getTorrents(),
+    ]);
 
-    if (!torrent) {
-      throw new NotFoundException(`A(z) "${infoHash}" torrent nem található.`);
-    }
+    const persistedTorrentMap = new Map(
+      persistedTorrents.map((persistedTorrent) => [
+        persistedTorrent.infoHash,
+        persistedTorrent,
+      ]),
+    );
 
-    return torrent;
-  }
-
-  async getTorrents(): Promise<MergedTorrent[]> {
-    const torrents = await this.torrentsStore.find();
-    const relayTorrents = await this.relayService.getTorrents();
-
-    const activeTorrents: MergedTorrent[] = [];
+    const activeTorrents: Torrent[] = [];
 
     for (const relayTorrent of relayTorrents) {
-      const torrent = torrents.find(
-        (torrent) => torrent.infoHash === relayTorrent.infoHash,
-      );
+      const persistedTorrent = persistedTorrentMap.get(relayTorrent.infoHash);
 
-      if (!torrent) {
+      if (!persistedTorrent) {
         this.logger.warn(`⚠️ A ${relayTorrent.name} csak a kliensben létezik!`);
         continue;
       }
 
       activeTorrents.push(
-        this.mergeTorrentEntityWithTorrentClient(torrent, relayTorrent),
+        this.mergePersistAndRelay(persistedTorrent, relayTorrent),
       );
     }
 
     return activeTorrents;
   }
 
-  async getTorrent(infoHash: string): Promise<MergedTorrent | null> {
-    const [torrent, clientTorrent] = await Promise.all([
-      this.torrentsStore.findOneByInfoHash(infoHash),
+  async findOneByInfoHash(infoHash: string): Promise<Torrent | null> {
+    const [persistedTorrent, relayTorrent] = await Promise.all([
+      this.persistedTorrentsService.findOneByInfoHash(infoHash),
       this.relayService.getTorrent(infoHash),
     ]);
 
-    if (!torrent || !clientTorrent) return null;
+    if (!persistedTorrent || !relayTorrent) return null;
 
-    return this.mergeTorrentEntityWithTorrentClient(torrent, clientTorrent);
+    return this.mergePersistAndRelay(persistedTorrent, relayTorrent);
   }
 
-  async updateOneOrThrow(
+  async findOneByInfoHashOrThrow(infoHash: string): Promise<Torrent> {
+    const torrent = await this.findOneByInfoHash(infoHash);
+
+    if (!torrent) {
+      throw new NotFoundException(`A(z) "${infoHash}" torrent nem található`);
+    }
+
+    return torrent;
+  }
+
+  async addTorrent(payload: TorrentToAdd): Promise<Torrent> {
+    const { tracker: trackerEnum, torrentFilePath, ...rest } = payload;
+
+    const tracker = await this.trackersStore.findOneByTracker(trackerEnum);
+
+    const relayTorrent = await this.relayService.addTorrent({
+      torrentFilePath,
+      downloadFullTorrent: tracker?.downloadFullTorrent ?? false,
+    });
+
+    const persistedTorrent = await this.persistedTorrentsService.create({
+      ...rest,
+      tracker: trackerEnum,
+      infoHash: relayTorrent.infoHash,
+    });
+
+    return this.mergePersistAndRelay(persistedTorrent, relayTorrent);
+  }
+
+  async updateOne(
     infoHash: string,
     payload: TorrentToUpdate,
   ): Promise<Torrent> {
-    const torrent = await this.getTorrentOrThrow(infoHash);
-
-    const tracker = TRACKER_INFO[torrent.tracker];
+    const updatedPersistedTorrent =
+      await this.persistedTorrentsService.updateOne(infoHash, payload);
 
     if (payload.fullDownload !== undefined) {
-      if (tracker.requiresFullDownload) {
-        throw new BadRequestException(
-          `A(z) "${tracker.label}" torrent esetén nem írható felül a globális beállítás.`,
-        );
-      }
-
       let fullDownload = payload.fullDownload;
 
       if (fullDownload === null) {
         const tracker = await this.trackersStore.findOneByTracker(
-          torrent.tracker,
+          updatedPersistedTorrent.tracker,
         );
 
         fullDownload = tracker?.downloadFullTorrent ?? false;
@@ -191,35 +221,19 @@ export class TorrentsService
       });
     }
 
-    const updateData = omitBy(payload, isUndefined);
-
-    const updatedTorrent = this.torrentsStore.updateOne({
-      ...torrent,
-      ...updateData,
-    });
-
-    return updatedTorrent;
-  }
-
-  async updateOneForRest(infoHash: string, payload: TorrentToUpdate) {
-    const torrent = await this.updateOneOrThrow(infoHash, payload);
-    const clientTorrent = await this.getTorrentForStreamOrThrow(
-      torrent.infoHash,
-    );
-
-    return this.mergeTorrentEntityWithTorrentClient(torrent, clientTorrent);
+    return this.findOneByInfoHashOrThrow(infoHash);
   }
 
   async cleanupTrackerTorrents(
-    trackerEnum: TrackerEnum,
+    tracker: TrackerEnum,
     keepSeedSeconds: number | undefined,
     notCompletedTorrentIds?: string[],
   ) {
-    const torrents = await this.torrentsStore.find((qb) => {
+    const persistedTorrents = await this.persistedTorrentsStore.find((qb) => {
       qb.where(
         'torrent.tracker = :tracker AND torrent.isPersisted = :isPersisted',
         {
-          tracker: trackerEnum,
+          tracker,
           isPersisted: false,
         },
       );
@@ -240,23 +254,45 @@ export class TorrentsService
       return qb;
     });
 
-    await Promise.all(torrents.map((torrent) => this.delete(torrent.infoHash)));
+    await Promise.all(
+      persistedTorrents.map((persistedTorrent) =>
+        this.delete(persistedTorrent.infoHash),
+      ),
+    );
   }
 
   async updateTorrentClient(payload: UpdateSettings) {
     await this.relayService.updateConfig(payload);
   }
 
+  async deleteAllByTracker(tracker: TrackerEnum): Promise<void> {
+    const persistedTorrents = await this.persistedTorrentsStore.find((qb) => {
+      qb.where(
+        'torrent.tracker = :tracker AND torrent.isPersisted = :isPersisted',
+        {
+          tracker,
+          isPersisted: false,
+        },
+      );
+
+      return qb;
+    });
+
+    await Promise.all(
+      persistedTorrents.map((persistedTorrent) =>
+        this.delete(persistedTorrent.infoHash),
+      ),
+    );
+  }
+
   async delete(infoHash: string): Promise<void> {
     try {
-      const webTorrentTorrent = await this.relayService.getTorrent(infoHash);
+      const torrent = await this.findOneByInfoHashOrThrow(infoHash);
 
-      if (!webTorrentTorrent) {
-        throw new NotFoundException(`A(z) "${infoHash}" torrent nem található`);
-      }
-
-      await this.relayService.deleteTorrent(webTorrentTorrent.infoHash);
-      await this.torrentsStore.removeByInfoHash(webTorrentTorrent.infoHash);
+      await Promise.all([
+        this.relayService.deleteTorrent(torrent.infoHash),
+        this.persistedTorrentsService.deleteByInfoHash(torrent.infoHash),
+      ]);
     } catch (error) {
       this.logger.error(
         `🚨 "${infoHash}" torrent törlése közben hiba történt!`,
@@ -267,124 +303,29 @@ export class TorrentsService
     }
   }
 
-  async deleteAllByTracker(tracker: TrackerEnum): Promise<void> {
-    const torrents = await this.torrentsStore.find();
-
-    const trackerTorrents = torrents.filter(
-      (torrentRun) => torrentRun.tracker === tracker,
-    );
-
-    await Promise.all(
-      trackerTorrents.map((trackerTorrent) =>
-        this.delete(trackerTorrent.infoHash),
-      ),
-    );
-  }
-
-  async getTorrentForStream(infoHash: string): Promise<RelayTorrent | null> {
-    const clientTorrent = await this.relayService.getTorrent(infoHash);
-
-    if (!clientTorrent) {
-      return null;
-    }
-
-    await this.updateOneOrThrow(infoHash, { lastPlayedAt: new Date() });
-
-    return clientTorrent;
-  }
-
-  async getTorrentForStreamOrThrow(infoHash: string): Promise<RelayTorrent> {
-    const clientTorrent = await this.getTorrentForStream(infoHash);
-
-    if (!clientTorrent) {
-      throw new NotFoundException(`A(z) "${infoHash}" torrent nem található.`);
-    }
-
-    return clientTorrent;
-  }
-
-  async addTorrentForStream(
-    payload: TorrentToAddClient,
-  ): Promise<RelayTorrent> {
-    const { tracker: trackerEnum, torrentFilePath, ...rest } = payload;
-
-    const tracker = await this.trackersStore.findOneByTracker(trackerEnum);
-
-    const clientTorrent = await this.relayService.addTorrent({
-      torrentFilePath,
-      downloadFullTorrent: tracker?.downloadFullTorrent ?? false,
-    });
-
-    await this.torrentsStore.create({
-      ...rest,
-      tracker: trackerEnum,
-      infoHash: clientTorrent.infoHash,
-      lastPlayedAt: new Date(),
-    });
-
-    return clientTorrent;
-  }
-
-  private mergeTorrentEntityWithTorrentClient(
-    torrentEntity: TorrentEntity,
+  private mergePersistAndRelay(
+    persistedTorrent: PersistedTorrent,
     relayTorrent: RelayTorrent,
-  ): MergedTorrent {
+  ): Torrent {
     return {
       name: relayTorrent.name,
-      imdbId: torrentEntity.imdbId,
-      tracker: torrentEntity.tracker,
-      torrentId: torrentEntity.torrentId,
-      infoHash: torrentEntity.infoHash,
-      isPersisted: torrentEntity.isPersisted,
-      fullDownload: torrentEntity.fullDownload,
+      imdbId: persistedTorrent.imdbId,
+      tracker: persistedTorrent.tracker,
+      torrentId: persistedTorrent.torrentId,
+      infoHash: persistedTorrent.infoHash,
+      isPersisted: persistedTorrent.isPersisted,
+      fullDownload: persistedTorrent.fullDownload,
       downloaded: relayTorrent.downloaded,
       progress: relayTorrent.progress,
       total: relayTorrent.total,
       connections: relayTorrent.connections,
       maxConnections: relayTorrent.maxConnections,
-      uploaded: relayTorrent.uploaded + torrentEntity.uploaded,
+      uploaded: relayTorrent.uploaded + persistedTorrent.uploaded,
       downloadSpeed: relayTorrent.downloadSpeed,
       uploadSpeed: relayTorrent.uploadSpeed,
-      lastPlayedAt: torrentEntity.lastPlayedAt,
-      updatedAt: torrentEntity.updatedAt,
-      createdAt: torrentEntity.createdAt,
+      lastPlayedAt: persistedTorrent.lastPlayedAt,
+      updatedAt: persistedTorrent.updatedAt,
+      createdAt: persistedTorrent.createdAt,
     };
-  }
-
-  // @Cron(CronExpression.EVERY_10_SECONDS)
-  async cleanupOrphanTorrents() {
-    const nowMs = new Date().getTime();
-
-    const [torrents, torrentDirents] = await Promise.all([
-      this.getTorrents(),
-      safeReaddir(this.downloadsDir),
-    ]);
-
-    const torrentNames = torrentDirents.map(
-      (torrentDirent) => torrentDirent.name,
-    );
-
-    const orphanTorrents = _.differenceWith(
-      torrents,
-      torrentNames,
-      (torrent, torrentName) => torrent.name === torrentName,
-    );
-
-    const deletePromise: Promise<void>[] = [];
-
-    orphanTorrents.forEach((orphanTorrent) => {
-      const ageMs = nowMs - new Date(orphanTorrent.createdAt).getTime();
-      if (ageMs < 10_000) return;
-
-      deletePromise.push(
-        this.torrentsStore.removeByInfoHash(orphanTorrent.infoHash),
-      );
-    });
-
-    try {
-      await Promise.all(deletePromise);
-    } catch (error) {
-      this.logger.error(error);
-    }
   }
 }
