@@ -6,11 +6,11 @@ import { Injectable } from '@nestjs/common';
 import { compact, orderBy } from 'lodash';
 
 import { CatalogService } from 'src/catalog/catalog.service';
-import { AUDIO_CODEC_LABEL_MAP } from 'src/common/constant/audio-codec.constant';
-import { LANGUAGE_LABEL_MAP } from 'src/common/constant/language.constant';
-import { RESOLUTION_LABEL_MAP } from 'src/common/constant/resolution.constant';
-import { VIDEO_QUALITY_LABEL_MAP } from 'src/common/constant/video-quality.constant';
 import { formatFilesize } from 'src/common/utils/file.util';
+import { AUDIO_CODEC_LABEL_MAP } from 'src/preference-items/constant/audio-codec.constant';
+import { LANGUAGE_LABEL_MAP } from 'src/preference-items/constant/language.constant';
+import { RESOLUTION_LABEL_MAP } from 'src/preference-items/constant/resolution.constant';
+import { VIDEO_QUALITY_LABEL_MAP } from 'src/preference-items/constant/video-quality.constant';
 import { SettingsService } from 'src/settings/settings.service';
 import { TorrentsService } from 'src/torrents/torrents.service';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
@@ -19,9 +19,9 @@ import { TRACKER_INFO } from 'src/trackers/trackers.constants';
 import { UserDto } from 'src/users/dto/user.dto';
 import { User } from 'src/users/entity/user.entity';
 
+import { AudioCodecEnum } from '../../preference-items/enum/audio-codec.enum';
+import { VideoQualityEnum } from '../../preference-items/enum/video-quality.enum';
 import { StreamDto } from './dto/stremio-stream.dto';
-import { AudioCodecEnum } from './enum/audio-codec.enum';
-import { VideoQualityEnum } from './enum/video-quality.enum';
 import { ParsedStremioIdSeries } from './pipe/stream-id.pipe';
 import { FindStreams } from './type/find-streams.type';
 import { VideoFile } from './type/video-file.type';

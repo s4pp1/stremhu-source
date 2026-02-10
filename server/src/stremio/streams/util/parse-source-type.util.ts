@@ -1,4 +1,4 @@
-import { SourceTypeEnum } from '../enum/source-type.enum';
+import { SourceTypeEnum } from '../../../preference-items/enum/source-type.enum';
 
 const SOURCE_TYPE_PATTERNS: Record<
   Exclude<SourceTypeEnum, SourceTypeEnum.UNKNOWN>,

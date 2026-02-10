@@ -1,4 +1,4 @@
-import { AudioCodecEnum } from 'src/stremio/streams/enum/audio-codec.enum';
+import { AudioCodecEnum } from 'src/preference-items/enum/audio-codec.enum';
 
 import { AudioCodecOption } from '../type/audio-codec-option.type';
 

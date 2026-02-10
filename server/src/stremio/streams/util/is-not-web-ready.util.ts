@@ -1,6 +1,6 @@
 import { VideoCodec as VideoCodecEnum } from '@ctrl/video-filename-parser';
 
-import { AudioCodecEnum } from '../enum/audio-codec.enum';
+import { AudioCodecEnum } from '../../../preference-items/enum/audio-codec.enum';
 
 const AUDIO_CODEC = {
   MP3: 'MP3',

@@ -1,4 +1,4 @@
-import { AudioCodecEnum } from '../enum/audio-codec.enum';
+import { AudioCodecEnum } from '../../../preference-items/enum/audio-codec.enum';
 
 const AUDIO_CODEC_PATTERNS: Record<
   Exclude<AudioCodecEnum, AudioCodecEnum.UNKNOWN>,

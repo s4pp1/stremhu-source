@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsString } from 'class-validator';
 
-import { SourceTypeEnum } from 'src/stremio/streams/enum/source-type.enum';
+import { SourceTypeEnum } from 'src/preference-items/enum/source-type.enum';
 
 export class SourceTypeDto {
   @IsEnum(SourceTypeEnum)

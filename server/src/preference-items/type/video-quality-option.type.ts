@@ -1,4 +1,4 @@
-import { VideoQualityEnum } from 'src/stremio/streams/enum/video-quality.enum';
+import { VideoQualityEnum } from 'src/preference-items/enum/video-quality.enum';
 
 export type VideoQualityOption = {
   value: VideoQualityEnum;

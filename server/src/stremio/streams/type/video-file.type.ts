@@ -4,12 +4,12 @@ import {
   VideoCodec as VideoCodecEnum,
 } from '@ctrl/video-filename-parser';
 
-import { LanguageEnum } from 'src/common/enum/language.enum';
+import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
-import { AudioCodecEnum } from '../enum/audio-codec.enum';
-import { SourceTypeEnum } from '../enum/source-type.enum';
-import { VideoQualityEnum } from '../enum/video-quality.enum';
+import { AudioCodecEnum } from '../../../preference-items/enum/audio-codec.enum';
+import { SourceTypeEnum } from '../../../preference-items/enum/source-type.enum';
+import { VideoQualityEnum } from '../../../preference-items/enum/video-quality.enum';
 
 export type VideoFile = {
   imdbId: string;

@@ -1,4 +1,4 @@
-import { VideoQualityEnum } from '../enum/video-quality.enum';
+import { VideoQualityEnum } from '../../../preference-items/enum/video-quality.enum';
 
 const HDR_PATTERNS: Record<
   Exclude<VideoQualityEnum, VideoQualityEnum.SDR>,

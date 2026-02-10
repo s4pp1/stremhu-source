@@ -9,6 +9,7 @@ import { Separator } from '@/shared/components/ui/separator'
 
 import { LoginAndSecurity } from './-features/login-and-security'
 import { MeConfig } from './-features/me-config'
+import { OtherTorrentsPreferences } from './-features/other-torrents-preferences'
 import { TorrentsPreferences } from './-features/torrents-preferences'
 
 export const Route = createFileRoute('/_protected/')({
@@ -27,6 +28,17 @@ function ProfileRoute() {
           </CardDescription>
         </CardHeader>
         <TorrentsPreferences />
+      </div>
+      <Separator />
+      <div className="grid gap-4">
+        <CardHeader className="px-0">
+          <CardTitle>További stream preferenciák</CardTitle>
+          <CardDescription>
+            Konfiguráld, hogy a Stremio-ban megjelenő torrenteknél mik a
+            preferenciáid és ennek megfelelően fognak megjelenni.
+          </CardDescription>
+        </CardHeader>
+        <OtherTorrentsPreferences />
       </div>
       <Separator />
       <div className="grid gap-4">

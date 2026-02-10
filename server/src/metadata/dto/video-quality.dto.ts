@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsString } from 'class-validator';
 
-import { VideoQualityEnum } from 'src/stremio/streams/enum/video-quality.enum';
+import { VideoQualityEnum } from 'src/preference-items/enum/video-quality.enum';
 
 export class VideoQualityDto {
   @IsEnum(VideoQualityEnum)

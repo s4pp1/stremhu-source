@@ -1,4 +1,4 @@
-import { SourceTypeEnum } from 'src/stremio/streams/enum/source-type.enum';
+import { SourceTypeEnum } from 'src/preference-items/enum/source-type.enum';
 
 import { SourceTypeOption } from '../type/source-type-option.type';
 

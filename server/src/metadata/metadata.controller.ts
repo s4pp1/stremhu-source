@@ -2,12 +2,12 @@ import { Controller, Get } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { AUDIO_CODEC_OPTIONS } from 'src/common/constant/audio-codec.constant';
-import { LANGUAGE_OPTIONS } from 'src/common/constant/language.constant';
-import { RESOLUTION_OPTIONS } from 'src/common/constant/resolution.constant';
-import { SOURCE_TYPE_OPTIONS } from 'src/common/constant/source-type.constant';
 import { USER_ROLE_OPTIONS } from 'src/common/constant/user-role.constant';
-import { VIDEO_QUALITY_OPTIONS } from 'src/common/constant/video-quality.constant';
+import { AUDIO_CODEC_OPTIONS } from 'src/preference-items/constant/audio-codec.constant';
+import { LANGUAGE_OPTIONS } from 'src/preference-items/constant/language.constant';
+import { RESOLUTION_OPTIONS } from 'src/preference-items/constant/resolution.constant';
+import { SOURCE_TYPE_OPTIONS } from 'src/preference-items/constant/source-type.constant';
+import { VIDEO_QUALITY_OPTIONS } from 'src/preference-items/constant/video-quality.constant';
 import { SettingsService } from 'src/settings/settings.service';
 import { TrackersService } from 'src/trackers/trackers.service';
 
