@@ -1,21 +1,21 @@
-import { AudioCodecEnum } from 'src/preference-items/enum/audio-codec.enum';
+import { AudioQualityEnum } from 'src/preference-items/enum/audio-quality.enum';
 
-import { AudioCodecOption } from '../type/audio-codec-option.type';
+import { AudioQualityOption } from '../type/audio-codec-option.type';
 
-export const AUDIO_CODEC_OPTIONS: AudioCodecOption[] = [
-  { value: AudioCodecEnum.TRUEHD, label: 'Dolby TrueHD' },
-  { value: AudioCodecEnum.DTS_HD_MA, label: 'DTS-HD Master Audio' },
-  { value: AudioCodecEnum.DD_PLUS, label: 'Dolby Digital Plus' },
-  { value: AudioCodecEnum.DTS, label: 'DTS Core' },
-  { value: AudioCodecEnum.DD, label: 'Dolby Digital' },
-  { value: AudioCodecEnum.AAC, label: 'AAC' },
-  { value: AudioCodecEnum.UNKNOWN, label: 'Egyéb' },
+export const AUDIO_QUALITY_OPTIONS: AudioQualityOption[] = [
+  { value: AudioQualityEnum.TRUEHD, label: 'Dolby TrueHD' },
+  { value: AudioQualityEnum.DTS_HD_MA, label: 'DTS-HD Master Audio' },
+  { value: AudioQualityEnum.DD_PLUS, label: 'Dolby Digital Plus' },
+  { value: AudioQualityEnum.DTS, label: 'DTS Core' },
+  { value: AudioQualityEnum.DD, label: 'Dolby Digital' },
+  { value: AudioQualityEnum.AAC, label: 'AAC' },
+  { value: AudioQualityEnum.UNKNOWN, label: 'Egyéb' },
 ];
 
-export const AUDIO_CODEC_LABEL_MAP = AUDIO_CODEC_OPTIONS.reduce(
+export const AUDIO_QUALITY_LABEL_MAP = AUDIO_QUALITY_OPTIONS.reduce(
   (previousValue, value) => ({
     ...previousValue,
     [value.value]: value.label,
   }),
-  {} as Record<AudioCodecEnum, string>,
+  {} as Record<AudioQualityEnum, string>,
 );

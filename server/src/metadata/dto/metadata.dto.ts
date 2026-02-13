@@ -3,10 +3,10 @@ import { IsArray, IsString } from 'class-validator';
 
 import { HealthDto } from 'src/common/dto/health.dto';
 
-import { AudioCodecDto } from './audio-codec.dto';
+import { AudioQualityDto } from './audio-quality.dto';
 import { LanguageDto } from './language.dto';
 import { ResolutionDto } from './resolution.dto';
-import { SourceTypeDto } from './source-type.dto';
+import { SourceDto } from './source.dto';
 import { TrackerMetaDto } from './tracker-meta.dto';
 import { UserRoleDto } from './user-role.dto';
 import { VideoQualityDto } from './video-quality.dto';
@@ -25,16 +25,16 @@ export class MetadataDto extends HealthDto {
   videoQualities: VideoQualityDto[];
 
   @IsArray()
-  @ApiProperty({ type: AudioCodecDto, isArray: true })
-  audioCodecs: AudioCodecDto[];
+  @ApiProperty({ type: AudioQualityDto, isArray: true })
+  audioQuality: AudioQualityDto[];
 
   @IsArray()
   @ApiProperty({ type: LanguageDto, isArray: true })
   languages: LanguageDto[];
 
   @IsArray()
-  @ApiProperty({ type: SourceTypeDto, isArray: true })
-  sourceTypes: SourceTypeDto[];
+  @ApiProperty({ type: SourceDto, isArray: true })
+  source: SourceDto[];
 
   @IsArray()
   @ApiProperty({ type: TrackerMetaDto, isArray: true })

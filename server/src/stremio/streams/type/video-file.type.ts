@@ -1,19 +1,14 @@
-import {
-  Resolution as ResolutionEnum,
-  Source as SourceEnum,
-  VideoCodec as VideoCodecEnum,
-} from '@ctrl/video-filename-parser';
-
+import { AudioQualityEnum } from 'src/preference-items/enum/audio-quality.enum';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
+import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
+import { SourceEnum } from 'src/preference-items/enum/source.enum';
+import { VideoQualityEnum } from 'src/preference-items/enum/video-quality.enum';
+import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
-
-import { AudioCodecEnum } from '../../../preference-items/enum/audio-codec.enum';
-import { SourceTypeEnum } from '../../../preference-items/enum/source-type.enum';
-import { VideoQualityEnum } from '../../../preference-items/enum/video-quality.enum';
 
 export type VideoFile = {
   imdbId: string;
-  tracker: TrackerEnum;
+  [PreferenceEnum.TRACKER]: TrackerEnum;
   torrentId: string;
   seeders: number;
   group?: string;
@@ -23,12 +18,10 @@ export type VideoFile = {
   fileSize: number;
   fileIndex: number;
 
-  resolution: ResolutionEnum;
-  language: LanguageEnum;
-  videoCodec?: VideoCodecEnum;
-  audioCodec: AudioCodecEnum;
-  videoQualities: VideoQualityEnum[];
-  sourceType: SourceTypeEnum;
-  sources: SourceEnum[];
+  [PreferenceEnum.LANGUAGE]: LanguageEnum;
+  [PreferenceEnum.RESOLUTION]: ResolutionEnum;
+  [PreferenceEnum.VIDEO_QUALITY]: VideoQualityEnum[];
+  [PreferenceEnum.AUDIO_QUALITY]: AudioQualityEnum;
+  [PreferenceEnum.SOURCE]: SourceEnum;
   notWebReady: boolean;
 };

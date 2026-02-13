@@ -1,5 +1,4 @@
-import { Resolution as ResolutionEnum } from '@ctrl/video-filename-parser';
-
+import { ResolutionEnum } from '../enum/resolution.enum';
 import { ResolutionOption } from '../type/resolution-option.type';
 
 export const RESOLUTION_OPTIONS: ResolutionOption[] = [

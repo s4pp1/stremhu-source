@@ -1,4 +1,4 @@
-import { Resolution as ResolutionEnum } from '@ctrl/video-filename-parser';
+import { ResolutionEnum } from '../enum/resolution.enum';
 
 export type ResolutionOption = {
   value: ResolutionEnum;

@@ -2,10 +2,10 @@ import { z } from 'zod';
 
 import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
 
-import { AudioCodecEnum } from './enum/audio-codec.enum';
+import { AudioQualityEnum } from './enum/audio-quality.enum';
 import { LanguageEnum } from './enum/language.enum';
 import { ResolutionEnum } from './enum/resolution.enum';
-import { SourceTypeEnum } from './enum/source-type.enum';
+import { SourceEnum } from './enum/source.enum';
 import { VideoQualityEnum } from './enum/video-quality.enum';
 
 const base = z.object({
@@ -22,15 +22,15 @@ export const preferenceItemSchema = z.discriminatedUnion('preference', [
     id: z.enum(ResolutionEnum),
   }),
   base.extend({
-    preference: z.literal(PreferenceEnum.VIDEO),
+    preference: z.literal(PreferenceEnum.VIDEO_QUALITY),
     id: z.enum(VideoQualityEnum),
   }),
   base.extend({
     preference: z.literal(PreferenceEnum.SOURCE),
-    id: z.enum(SourceTypeEnum),
+    id: z.enum(SourceEnum),
   }),
   base.extend({
-    preference: z.literal(PreferenceEnum.AUDIO),
-    id: z.enum(AudioCodecEnum),
+    preference: z.literal(PreferenceEnum.AUDIO_QUALITY),
+    id: z.enum(AudioQualityEnum),
   }),
 ]);

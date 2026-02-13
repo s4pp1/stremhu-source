@@ -1,6 +1,6 @@
 import { VideoCodec as VideoCodecEnum } from '@ctrl/video-filename-parser';
 
-import { AudioCodecEnum } from '../../../preference-items/enum/audio-codec.enum';
+import { AudioQualityEnum } from 'src/preference-items/enum/audio-quality.enum';
 
 const AUDIO_CODEC = {
   MP3: 'MP3',
@@ -20,7 +20,7 @@ const AUDIO_CODEC = {
 
 export function isNotWebReady(
   videoCodec: VideoCodecEnum | undefined,
-  audioCodec: AudioCodecEnum | undefined,
+  audioCodec: AudioQualityEnum | undefined,
 ): boolean {
   return notWebReadyVideoCodec(videoCodec) || notWebReadyAudioCodec(audioCodec);
 }
@@ -41,7 +41,7 @@ function notWebReadyVideoCodec(
   return notSupportedCodecs.includes(videoCodec);
 }
 
-function notWebReadyAudioCodec(audioCodec: AudioCodecEnum | undefined) {
+function notWebReadyAudioCodec(audioCodec: AudioQualityEnum | undefined) {
   if (!audioCodec) return false;
 
   const notSupportedCodecs = [
@@ -52,7 +52,7 @@ function notWebReadyAudioCodec(audioCodec: AudioCodecEnum | undefined) {
     AUDIO_CODEC.DTS,
     AUDIO_CODEC.DTSHD,
     AUDIO_CODEC.TRUEHD,
-  ] as AudioCodecEnum[];
+  ] as AudioQualityEnum[];
 
   return notSupportedCodecs.includes(audioCodec);
 }

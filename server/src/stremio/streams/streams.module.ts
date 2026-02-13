@@ -5,6 +5,7 @@ import { CatalogModule } from 'src/catalog/catalog.module';
 import { SettingsModule } from 'src/settings/settings.module';
 import { TorrentsModule } from 'src/torrents/torrents.module';
 import { TrackersModule } from 'src/trackers/trackers.module';
+import { UserPreferencesModule } from 'src/user-preferences/user-preferences.module';
 
 import { StreamsController } from './streams.controller';
 import { StreamsService } from './streams.service';
@@ -16,6 +17,7 @@ import { StreamsService } from './streams.service';
     TrackersModule,
     CatalogModule,
     TorrentsModule,
+    UserPreferencesModule,
   ],
   providers: [StreamsService],
   controllers: [StreamsController],

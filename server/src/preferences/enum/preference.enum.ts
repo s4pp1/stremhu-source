@@ -2,7 +2,7 @@ export enum PreferenceEnum {
   TRACKER = 'tracker',
   LANGUAGE = 'language',
   RESOLUTION = 'resolution',
-  VIDEO = 'video',
+  VIDEO_QUALITY = 'video-quality',
   SOURCE = 'source',
-  AUDIO = 'audio',
+  AUDIO_QUALITY = 'audio-quality',
 }

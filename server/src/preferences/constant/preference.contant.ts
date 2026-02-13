@@ -6,8 +6,8 @@ export const PREFERENCE_OPTIONS: PreferenceOption[] = [
   { label: 'nyelv', value: PreferenceEnum.LANGUAGE },
   { label: 'felbontás', value: PreferenceEnum.RESOLUTION },
   { label: 'forrás', value: PreferenceEnum.SOURCE },
-  { label: 'képminőség', value: PreferenceEnum.VIDEO },
-  { label: 'hangminőség', value: PreferenceEnum.AUDIO },
+  { label: 'képminőség', value: PreferenceEnum.VIDEO_QUALITY },
+  { label: 'hangminőség', value: PreferenceEnum.AUDIO_QUALITY },
 ];
 
 export const PREFERENCE_LABEL_MAP = PREFERENCE_OPTIONS.reduce(

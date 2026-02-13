@@ -1,4 +1,4 @@
-export enum SourceTypeEnum {
+export enum SourceEnum {
   DISC_REMUX = 'disc-remux',
   DISC_RIP = 'disc-rip',
   WEB_DL = 'web-dl',

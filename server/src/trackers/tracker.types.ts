@@ -1,7 +1,6 @@
-import { Resolution as ResolutionEnum } from '@ctrl/video-filename-parser';
-
 import { ParsedTorrent } from 'src/common/utils/parse-torrent.util';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
+import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
 import { StreamMediaTypeEnum } from 'src/stremio/enum/stream-media-type.enum';
 
 import {

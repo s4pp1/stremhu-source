@@ -1,25 +1,26 @@
-import {
-  Source as SourceEnum,
-  filenameParse,
-} from '@ctrl/video-filename-parser';
+import { filenameParse } from '@ctrl/video-filename-parser';
 import { Injectable } from '@nestjs/common';
 import { compact, orderBy } from 'lodash';
 
 import { CatalogService } from 'src/catalog/catalog.service';
 import { formatFilesize } from 'src/common/utils/file.util';
-import { AUDIO_CODEC_LABEL_MAP } from 'src/preference-items/constant/audio-codec.constant';
+import { AUDIO_QUALITY_LABEL_MAP } from 'src/preference-items/constant/audio-codec.constant';
 import { LANGUAGE_LABEL_MAP } from 'src/preference-items/constant/language.constant';
 import { RESOLUTION_LABEL_MAP } from 'src/preference-items/constant/resolution.constant';
 import { VIDEO_QUALITY_LABEL_MAP } from 'src/preference-items/constant/video-quality.constant';
+import { AudioQualityEnum } from 'src/preference-items/enum/audio-quality.enum';
+import { SourceEnum } from 'src/preference-items/enum/source.enum';
 import { SettingsService } from 'src/settings/settings.service';
 import { TorrentsService } from 'src/torrents/torrents.service';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
 import { TrackerTorrent } from 'src/trackers/tracker.types';
 import { TRACKER_INFO } from 'src/trackers/trackers.constants';
+import { PreferenceValue } from 'src/user-preferences/type/preference-value.type';
+import { UserPreference } from 'src/user-preferences/type/user-preference.type';
+import { UserPreferencesService } from 'src/user-preferences/user-preferences.service';
 import { UserDto } from 'src/users/dto/user.dto';
 import { User } from 'src/users/entity/user.entity';
 
-import { AudioCodecEnum } from '../../preference-items/enum/audio-codec.enum';
 import { VideoQualityEnum } from '../../preference-items/enum/video-quality.enum';
 import { StreamDto } from './dto/stremio-stream.dto';
 import { ParsedStremioIdSeries } from './pipe/stream-id.pipe';
@@ -27,9 +28,8 @@ import { FindStreams } from './type/find-streams.type';
 import { VideoFile } from './type/video-file.type';
 import { buildSelectors } from './util/build-selectors';
 import { findVideoFile } from './util/find-video-file.util';
-import { isNotWebReady } from './util/is-not-web-ready.util';
-import { parseAudioCodec } from './util/parse-audio-codec.util';
-import { parseSourceType } from './util/parse-source-type.util';
+import { parseAudioQuality } from './util/parse-audio-quality.util';
+import { parseSource } from './util/parse-source.util';
 import { parseVideoQualities } from './util/parse-video-qualities.util';
 
 @Injectable()
@@ -39,10 +39,13 @@ export class StreamsService {
     private readonly settingsService: SettingsService,
     private readonly catalogService: CatalogService,
     private readonly torrentsService: TorrentsService,
+    private readonly userPreferencesService: UserPreferencesService,
   ) {}
 
   async streams(payload: FindStreams): Promise<StreamDto[]> {
     const { user, mediaType, series } = payload;
+
+    const userPreferences = await this.userPreferencesService.find(user.id);
 
     const { imdbId, originalImdbId } = await this.catalogService.resolveImdbId({
       imdbId: payload.imdbId,
@@ -71,8 +74,15 @@ export class StreamsService {
     });
 
     const videoFiles = this.findVideoFiles(isSpecial, trackerTorrents, series);
-    const filteredVideoFiles = this.filterVideoFiles(videoFiles, user);
-    const sortedVideoFiles = this.sortVideoFiles(filteredVideoFiles, user);
+    const filteredVideoFiles = this.filterVideoFiles(
+      videoFiles,
+      user,
+      userPreferences,
+    );
+    const sortedVideoFiles = this.sortVideoFiles(
+      filteredVideoFiles,
+      userPreferences,
+    );
 
     let streams: StreamDto[] = [];
 
@@ -105,7 +115,7 @@ export class StreamsService {
     endpoint: string,
     activeInfoHashes: Set<string>,
   ): StreamDto {
-    const videoQualities = videoFile.videoQualities.filter(
+    const videoQualities = videoFile['video-quality'].filter(
       (videoQuality) => videoQuality !== VideoQualityEnum.SDR,
     );
 
@@ -116,7 +126,7 @@ export class StreamsService {
 
     const nameArray = compact([readableResolution, readableVideoQualities]);
 
-    const isCamSource = videoFile.sources.includes(SourceEnum.CAM);
+    const isCamSource = videoFile.source.includes(SourceEnum.THEATRICAL);
 
     if (isCamSource) {
       nameArray.push('📹 CAM');
@@ -135,8 +145,8 @@ export class StreamsService {
 
     let readableAudioCodec: string | undefined;
 
-    if (videoFile.audioCodec !== AudioCodecEnum.UNKNOWN) {
-      readableAudioCodec = `🔈 ${AUDIO_CODEC_LABEL_MAP[videoFile.audioCodec]}`;
+    if (videoFile['audio-quality'] !== AudioQualityEnum.UNKNOWN) {
+      readableAudioCodec = `🔈 ${AUDIO_QUALITY_LABEL_MAP[videoFile['audio-quality']]}`;
     }
 
     const descriptionArray = compact([
@@ -184,7 +194,6 @@ export class StreamsService {
       if (!torrent.name) continue;
 
       const {
-        sources: torrentSources,
         videoCodec: torrentVideoCodec,
         resolution: torrentResolution,
         group: torrentGroup,
@@ -198,16 +207,12 @@ export class StreamsService {
 
       if (!videoFile) continue;
 
-      const {
-        sources: fileSources,
-        videoCodec: fileVideoCodec,
-        resolution: fileResolution,
-      } = filenameParse(videoFile.name);
+      const { videoCodec: fileVideoCodec, resolution: fileResolution } =
+        filenameParse(videoFile.name);
 
       const videoCodec = torrentVideoCodec ?? fileVideoCodec;
       const resolution = torrentResolution ?? fileResolution;
-      const audioCodec = parseAudioCodec(torrent.name);
-      const sources = torrentSources ?? fileSources;
+      const audioQuality = parseAudioQuality(torrent.name);
 
       const torrentByFile: VideoFile = {
         imdbId: torrent.imdbId,
@@ -221,13 +226,11 @@ export class StreamsService {
         fileSize: videoFile.size,
         fileIndex: videoFile.fileIndex,
         language: torrent.language,
-        resolution: resolution || torrent.resolution,
-        audioCodec,
-        videoCodec,
-        videoQualities: parseVideoQualities(torrent.name),
-        sourceType: parseSourceType(torrent.name),
-        sources,
-        notWebReady: isNotWebReady(videoCodec, audioCodec),
+        resolution: torrent.resolution,
+        'audio-quality': audioQuality,
+        'video-quality': parseVideoQualities(torrent.name),
+        source: parseSource(torrent.name),
+        notWebReady: false,
       };
 
       torrentByFiles.push(torrentByFile);
@@ -236,79 +239,71 @@ export class StreamsService {
     return torrentByFiles;
   }
 
-  private filterVideoFiles(videoFiles: VideoFile[], user: User): VideoFile[] {
-    const {
-      torrentLanguages,
-      torrentResolutions,
-      torrentVideoQualities,
-      torrentAudioCodecs,
-      torrentSourceTypes,
-      torrentSeed,
-    } = user;
+  private filterVideoFiles(
+    videoFiles: VideoFile[],
+    user: User,
+    userPreferences: UserPreference[],
+  ): VideoFile[] {
+    const blockedPreferences = userPreferences.filter(
+      (userPreference) => userPreference.blocked.length !== 0,
+    );
 
-    const languageSelectors = buildSelectors(torrentLanguages);
-    const resolutionSelectors = buildSelectors(torrentResolutions);
-    const videoQualitySelectors = buildSelectors(torrentVideoQualities);
-    const audioCodecSelectors = buildSelectors(torrentAudioCodecs);
-    const sourceTypeSelectors = buildSelectors(torrentSourceTypes);
+    const selectors = blockedPreferences.map((blockedPreference) =>
+      buildSelectors(blockedPreference.preference, blockedPreference.blocked),
+    );
+
+    const { torrentSeed } = user;
 
     const filteredVideoFiles = videoFiles.filter((videoFile) => {
-      let isSeedSet = true;
-
       if (torrentSeed !== null) {
-        isSeedSet = videoFile.seeders > torrentSeed;
+        const isSeedFilter = videoFile.seeders < torrentSeed;
+        if (isSeedFilter) return false;
       }
 
-      return (
-        isSeedSet &&
-        resolutionSelectors.filterToAllowed(videoFile.resolution) &&
-        languageSelectors.filterToAllowed(videoFile.language) &&
-        videoFile.videoQualities.some((videoQuality) =>
-          videoQualitySelectors.filterToAllowed(videoQuality),
-        ) &&
-        sourceTypeSelectors.filterToAllowed(videoFile.sourceType) &&
-        audioCodecSelectors.filterToAllowed(videoFile.audioCodec)
+      const blockeds = selectors.map((selector) =>
+        selector.filterToBlocked((preference) => videoFile[preference]),
       );
+
+      return !blockeds.some((blocked) => !blocked);
     });
 
     return filteredVideoFiles;
   }
 
-  private sortVideoFiles(videoFiles: VideoFile[], user: User): VideoFile[] {
-    const {
-      torrentLanguages,
-      torrentResolutions,
-      torrentVideoQualities,
-      torrentAudioCodecs,
-      torrentSourceTypes,
-    } = user;
-
-    const languageSelectors = buildSelectors(torrentLanguages);
-    const resolutionSelectors = buildSelectors(torrentResolutions);
-    const videoQualitySelectors = buildSelectors(torrentVideoQualities);
-    const audioCodecSelectors = buildSelectors(torrentAudioCodecs);
-    const sourceTypeSelectors = buildSelectors(torrentSourceTypes);
-
-    const sortedVideoFiles = orderBy(
-      videoFiles,
-      [
-        (videoFile) => languageSelectors.priorityIndex(videoFile.language),
-        (videoFile) => resolutionSelectors.priorityIndex(videoFile.resolution),
-        (videoFile) => {
-          const bestQualityRank = Math.min(
-            ...videoFile.videoQualities.map((videoQuality) =>
-              videoQualitySelectors.priorityIndex(videoQuality),
-            ),
-          );
-
-          return bestQualityRank;
-        },
-        (videoFile) => sourceTypeSelectors.priorityIndex(videoFile.sourceType),
-        (videoFile) => audioCodecSelectors.priorityIndex(videoFile.audioCodec),
-        (videoFile) => videoFile.seeders,
-      ],
-      ['asc', 'asc', 'asc', 'asc', 'asc', 'desc'],
+  private sortVideoFiles(
+    videoFiles: VideoFile[],
+    userPreferences: UserPreference[],
+  ): VideoFile[] {
+    const preferredPreferences = userPreferences.filter(
+      (userPreference) => userPreference.preferred.length !== 0,
     );
+
+    const selectors = preferredPreferences.map((preferredPreference) =>
+      buildSelectors(
+        preferredPreference.preference,
+        preferredPreference.preferred,
+      ),
+    );
+
+    const dynamicIteratees = selectors.map(
+      (selector) => (videoFile: VideoFile) =>
+        selector.priorityIndex(
+          (preference) =>
+            videoFile[preference] as PreferenceValue | PreferenceValue[],
+        ),
+    );
+
+    const iteratees: Array<(videoFile: VideoFile) => number> = [
+      ...dynamicIteratees,
+      (videoFile: VideoFile) => videoFile.seeders,
+    ];
+
+    const orders: Array<'asc' | 'desc'> = [
+      ...dynamicIteratees.map((): 'asc' => 'asc'),
+      'desc',
+    ];
+
+    const sortedVideoFiles = orderBy(videoFiles, iteratees, orders);
 
     return sortedVideoFiles;
   }
