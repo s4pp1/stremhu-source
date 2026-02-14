@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { SourceTypeEnum } from './SourceTypeEnum';
-export type SourceTypeDto = {
-    value: SourceTypeEnum;
+import type { AudioQualityEnum } from './AudioQualityEnum';
+export type AudioQualityDto = {
+    value: AudioQualityEnum;
     label: string;
 };
 

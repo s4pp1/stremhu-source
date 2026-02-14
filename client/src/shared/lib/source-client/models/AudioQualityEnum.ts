@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export enum AudioCodecEnum {
+export enum AudioQualityEnum {
     TRUEHD = 'truehd',
     DTS_HD_MA = 'dts-hd-ma',
     DDP = 'ddp',

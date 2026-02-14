@@ -2,21 +2,17 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { AudioCodecDto } from './AudioCodecDto';
-import type { LanguageDto } from './LanguageDto';
-import type { ResolutionDto } from './ResolutionDto';
-import type { SourceTypeDto } from './SourceTypeDto';
+import type { AudioQualityPreferenceMetaDto } from './AudioQualityPreferenceMetaDto';
+import type { LanguagePreferenceMetaDto } from './LanguagePreferenceMetaDto';
+import type { ResolutionPreferenceMetaDto } from './ResolutionPreferenceMetaDto';
+import type { SourcePreferenceMetaDto } from './SourcePreferenceMetaDto';
 import type { TrackerMetaDto } from './TrackerMetaDto';
 import type { UserRoleDto } from './UserRoleDto';
-import type { VideoQualityDto } from './VideoQualityDto';
+import type { VideoQualityPreferenceMetaDto } from './VideoQualityPreferenceMetaDto';
 export type MetadataDto = {
     version: string;
     userRoles: Array<UserRoleDto>;
-    resolutions: Array<ResolutionDto>;
-    videoQualities: Array<VideoQualityDto>;
-    audioCodecs: Array<AudioCodecDto>;
-    languages: Array<LanguageDto>;
-    sourceTypes: Array<SourceTypeDto>;
+    preferences: Array<(LanguagePreferenceMetaDto | ResolutionPreferenceMetaDto | VideoQualityPreferenceMetaDto | SourcePreferenceMetaDto | AudioQualityPreferenceMetaDto)>;
     trackers: Array<TrackerMetaDto>;
     endpoint: string;
 };

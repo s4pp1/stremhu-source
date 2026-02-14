@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { AudioCodecEnum } from './AudioCodecEnum';
-export type AudioCodecDto = {
-    value: AudioCodecEnum;
+import type { SourceEnum } from './SourceEnum';
+export type SourceDto = {
+    value: SourceEnum;
     label: string;
 };
 
