@@ -1,13 +1,22 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
-import { LogOutIcon } from 'lucide-react'
+import {
+  LayoutDashboardIcon,
+  LogOutIcon,
+  SettingsIcon,
+  UserIcon,
+} from 'lucide-react'
 
+import { SETTINGS_RELAY_NAME } from '@/routes/_protected/relay/route'
 import { Button } from '@/shared/components/ui/button'
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/shared/components/ui/tooltip'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/shared/components/ui/dropdown-menu'
 import { UserRoleEnum } from '@/shared/lib/source-client'
 import { getMe } from '@/shared/queries/me'
 
@@ -23,28 +32,48 @@ export function UserNavigation() {
           activeOptions={{ exact: true }}
           activeProps={{ className: 'bg-background' }}
         >
-          Fiókom
+          Kezdőoldal
         </Link>
       </Button>
       {me.userRole === UserRoleEnum.ADMIN && (
         <Button asChild variant="ghost" size="sm">
-          <Link to="/settings" activeProps={{ className: 'bg-background' }}>
-            Beállítások
+          <Link to="/relay" activeProps={{ className: 'bg-background' }}>
+            {SETTINGS_RELAY_NAME}
           </Link>
         </Button>
       )}
-      <Tooltip delayDuration={500}>
-        <TooltipTrigger asChild>
-          <Button variant="ghost" size="icon" className="text-destructive">
-            <Link to="/logout">
-              <LogOutIcon />
-            </Link>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="icon-sm" className="rounded-full">
+            <UserIcon />
           </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Kijelentkezés</p>
-        </TooltipContent>
-      </Tooltip>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-40">
+          <DropdownMenuGroup>
+            <DropdownMenuItem asChild>
+              <Link to="/settings">
+                <SettingsIcon />
+                Beállítások
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/dashboard">
+                <LayoutDashboardIcon />
+                Irányítópult
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem asChild variant="destructive">
+              <Link to="/logout">
+                <LogOutIcon />
+                Kijelentkezés
+              </Link>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   )
 }

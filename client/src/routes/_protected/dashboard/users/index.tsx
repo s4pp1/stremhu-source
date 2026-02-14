@@ -20,7 +20,7 @@ import { getUsers } from '@/shared/queries/users'
 import { UserItem } from './-components/user-item'
 import { SETTINGS_USERS_NAME } from './route'
 
-export const Route = createFileRoute('/_protected/settings/users/')({
+export const Route = createFileRoute('/_protected/dashboard/users/')({
   component: RouteComponent,
 })
 

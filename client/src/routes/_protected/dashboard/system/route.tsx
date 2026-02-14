@@ -8,7 +8,7 @@ export const SETTINGS_SYSTEM_NAME = 'Rendszer'
 
 const RouteComponent = () => <Outlet />
 
-export const Route = createFileRoute('/_protected/settings/system')({
+export const Route = createFileRoute('/_protected/dashboard/system')({
   component: RouteComponent,
   beforeLoad: async ({ context }) => {
     await Promise.all([

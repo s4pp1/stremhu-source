@@ -11,9 +11,9 @@ export const VIDEO_QUALITY_OPTIONS: VideoQualityOption[] = [
 ];
 
 export const VIDEO_QUALITY_LABEL_MAP = VIDEO_QUALITY_OPTIONS.reduce(
-  (previousValue, value) => ({
-    ...previousValue,
-    [value.value]: value.label,
+  (previouItems, item) => ({
+    ...previouItems,
+    [item.value]: item.label,
   }),
   {} as Record<VideoQualityEnum, string>,
 );

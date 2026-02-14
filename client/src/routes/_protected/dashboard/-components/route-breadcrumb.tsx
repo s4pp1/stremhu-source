@@ -10,7 +10,7 @@ import {
   BreadcrumbSeparator,
 } from '@/shared/components/ui/breadcrumb'
 
-export function SettingsBreadcrumb() {
+export function RouteBreadcrumb() {
   const matches = useMatches()
 
   const breadcrumbItems = matches

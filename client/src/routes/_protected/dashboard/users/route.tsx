@@ -6,7 +6,7 @@ export const SETTINGS_USERS_NAME = 'Felhasználók'
 
 const RouteComponent = () => <Outlet />
 
-export const Route = createFileRoute('/_protected/settings/users')({
+export const Route = createFileRoute('/_protected/dashboard/users')({
   component: RouteComponent,
   beforeLoad: async ({ context }) => {
     await Promise.all([context.queryClient.ensureQueryData(getUsers)])

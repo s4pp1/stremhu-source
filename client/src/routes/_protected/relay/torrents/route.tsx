@@ -4,11 +4,11 @@ import { getRelaySettings } from '@/shared/queries/relay'
 import { getTorrents } from '@/shared/queries/torrents'
 import { getTrackers } from '@/shared/queries/trackers'
 
-export const SETTINGS_RELAY_NAME = 'Relay'
+export const RELAY_TORRENTS_NAME = 'Torrentek'
 
 const RouteComponent = () => <Outlet />
 
-export const Route = createFileRoute('/_protected/settings/relay')({
+export const Route = createFileRoute('/_protected/relay/torrents')({
   component: RouteComponent,
   beforeLoad: async ({ context }) => {
     await Promise.all([
@@ -18,6 +18,6 @@ export const Route = createFileRoute('/_protected/settings/relay')({
     ])
   },
   loader: () => {
-    return { breadcrumb: SETTINGS_RELAY_NAME }
+    return { breadcrumb: RELAY_TORRENTS_NAME }
   },
 })

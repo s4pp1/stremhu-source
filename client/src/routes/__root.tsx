@@ -9,7 +9,7 @@ import type { RouterContext } from '@/main'
 import { getMetadata } from '@/shared/queries/metadata'
 import { getSettingsStatus } from '@/shared/queries/settings-setup'
 
-import { Dialogs } from './-features/dialogs/dialogs '
+import { Dialogs } from './-features/dialogs/dialogs'
 import { AppLayout } from './-features/layout/app-layout'
 
 export const Route = createRootRouteWithContext<RouterContext>()({

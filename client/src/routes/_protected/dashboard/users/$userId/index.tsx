@@ -13,7 +13,7 @@ import { TorrentSeeders } from './-features/torrent-seeders'
 import { UserProfile } from './-features/user-profile'
 import { VideoQualityPreferences } from './-features/video-quality-preferences'
 
-export const Route = createFileRoute('/_protected/settings/users/$userId/')({
+export const Route = createFileRoute('/_protected/dashboard/users/$userId/')({
   component: UserRoute,
 })
 

@@ -1,22 +1,25 @@
+import { useQuery } from '@tanstack/react-query'
 import { Link, Outlet, createFileRoute } from '@tanstack/react-router'
 
 import { Button } from '@/shared/components/ui/button'
+import { assertExists } from '@/shared/lib/utils'
+import { getMe } from '@/shared/queries/me'
 
-import { RouteBreadcrumb } from '../dashboard/-components/route-breadcrumb'
-import { SETTINGS_ACCOUNT_NAME } from './account/route'
-import { SETTINGS_PREFERENCES_NAME } from './preferences/route'
+import { RouteBreadcrumb } from './-components/route-breadcrumb'
+import { SETTINGS_SYSTEM_NAME } from './system/route'
+import { SETTINGS_USERS_NAME } from './users/route'
 
-export const SETTINGS_NAME = 'Beállítások'
-
-export const Route = createFileRoute('/_protected/settings')({
+export const Route = createFileRoute('/_protected/dashboard')({
   component: SettingsLayout,
-
-  loader: () => {
-    return { breadcrumb: SETTINGS_NAME }
-  },
+  loader: () => ({
+    breadcrumb: 'Irányítópult',
+  }),
 })
 
 function SettingsLayout() {
+  const { data: me } = useQuery(getMe)
+  assertExists(me)
+
   return (
     <div className="grid gap-8">
       <div className="grid gap-4">
@@ -24,18 +27,18 @@ function SettingsLayout() {
         <div className="flex gap-2 items-center bg-card border shadow-sm rounded-md p-1">
           <Button asChild variant="ghost" size="sm">
             <Link
-              to="/settings/account"
+              to="/dashboard/system"
               activeProps={{ className: 'bg-background' }}
             >
-              {SETTINGS_ACCOUNT_NAME}
+              {SETTINGS_SYSTEM_NAME}
             </Link>
           </Button>
           <Button asChild variant="ghost" size="sm">
             <Link
-              to="/settings/preferences"
+              to="/dashboard/users"
               activeProps={{ className: 'bg-background' }}
             >
-              {SETTINGS_PREFERENCES_NAME}
+              {SETTINGS_USERS_NAME}
             </Link>
           </Button>
         </div>

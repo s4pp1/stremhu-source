@@ -8,7 +8,7 @@ import { StremhuCatalogInfo } from './-features/stremhu-catalog-info'
 import { TorrentFilesCache } from './-features/torrent-files-cache'
 import { Trackers } from './-features/trackers'
 
-export const Route = createFileRoute('/_protected/settings/system/')({
+export const Route = createFileRoute('/_protected/dashboard/system/')({
   component: SystemRoute,
 })
 

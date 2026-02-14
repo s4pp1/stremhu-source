@@ -16,6 +16,14 @@ export class MetadataDto extends HealthDto {
   @ApiProperty({ type: UserRoleDto, isArray: true })
   userRoles: UserRoleDto[];
 
+  @IsArray()
+  @ApiProperty({ type: TrackerMetaDto, isArray: true })
+  trackers: TrackerMetaDto[];
+
+  @IsString()
+  @ApiProperty()
+  endpoint: string;
+
   @ApiProperty({
     type: 'array',
     items: {
@@ -25,12 +33,4 @@ export class MetadataDto extends HealthDto {
     },
   })
   preferences: PreferenceMetaDto[];
-
-  @IsArray()
-  @ApiProperty({ type: TrackerMetaDto, isArray: true })
-  trackers: TrackerMetaDto[];
-
-  @IsString()
-  @ApiProperty()
-  endpoint: string;
 }

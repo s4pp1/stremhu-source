@@ -4,7 +4,7 @@ import { getUser } from '@/shared/queries/users'
 
 const RouteComponent = () => <Outlet />
 
-export const Route = createFileRoute('/_protected/settings/users/$userId')({
+export const Route = createFileRoute('/_protected/dashboard/users/$userId')({
   component: RouteComponent,
   beforeLoad: async ({ context, params }) => {
     const { userId } = params

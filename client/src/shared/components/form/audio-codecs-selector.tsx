@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 
 import { useMetadata } from '@/shared/hooks/use-metadata'
-import type { AudioCodecEnum } from '@/shared/lib/source-client'
+import type { AudioQualityEnum } from '@/shared/lib/source-client'
 import { assertExists, cn } from '@/shared/lib/utils'
 import { getMetadata } from '@/shared/queries/metadata'
 
@@ -18,8 +18,8 @@ import { SortableSelectorItem } from '../sortable-selector-item'
 import { Separator } from '../ui/separator'
 
 type AudioCodecsSelector = {
-  items: Array<AudioCodecEnum>
-  onChangeItems: (items: Array<AudioCodecEnum>) => void
+  items: Array<AudioQualityEnum>
+  onChangeItems: (items: Array<AudioQualityEnum>) => void
 } & React.ComponentProps<'div'>
 
 export function AudioCodecsSelector(props: AudioCodecsSelector) {
@@ -59,8 +59,8 @@ export function AudioCodecsSelector(props: AudioCodecsSelector) {
     const { active, over } = event
 
     if (!over || active.id === over.id) return
-    const oldIndex = localItems.indexOf(active.id as AudioCodecEnum)
-    const newIndex = localItems.indexOf(over.id as AudioCodecEnum)
+    const oldIndex = localItems.indexOf(active.id as AudioQualityEnum)
+    const newIndex = localItems.indexOf(over.id as AudioQualityEnum)
     if (oldIndex < 0 || newIndex < 0) return
 
     const nextItems = [...localItems]
@@ -70,12 +70,12 @@ export function AudioCodecsSelector(props: AudioCodecsSelector) {
     setLocalItems(nextItems)
   }
 
-  const handleAdd = (item: AudioCodecEnum) => {
+  const handleAdd = (item: AudioQualityEnum) => {
     const nextItems = [...localItems, item]
     setLocalItems(nextItems)
   }
 
-  const handleDelete = (item: AudioCodecEnum) => {
+  const handleDelete = (item: AudioQualityEnum) => {
     const nextItems = localItems.filter((value) => value !== item)
     setLocalItems(nextItems)
   }

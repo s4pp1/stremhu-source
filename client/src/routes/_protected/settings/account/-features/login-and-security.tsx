@@ -1,15 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import {
-  KeyRoundIcon,
-  PencilIcon,
-  RotateCcwKeyIcon,
-  ShieldUserIcon,
-  UserIcon,
-  UserPenIcon,
-} from 'lucide-react'
-import { toast } from 'sonner'
+import { PencilIcon, ShieldUserIcon, UserIcon, UserPenIcon } from 'lucide-react'
 
-import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { useDialogs } from '@/routes/-features/dialogs/dialogs-store'
 import { Button } from '@/shared/components/ui/button'
 import {
@@ -27,10 +18,9 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/shared/components/ui/item'
-import { Separator } from '@/shared/components/ui/separator'
 import { useMetadata } from '@/shared/hooks/use-metadata'
-import { assertExists, parseApiError } from '@/shared/lib/utils'
-import { getMe, useRegenerateMeToken } from '@/shared/queries/me'
+import { assertExists } from '@/shared/lib/utils'
+import { getMe } from '@/shared/queries/me'
 
 export function LoginAndSecurity() {
   const { data: me } = useQuery(getMe)
@@ -38,27 +28,6 @@ export function LoginAndSecurity() {
 
   const { getUserRoleLabel } = useMetadata()
   const dialogs = useDialogs()
-
-  const confirmDialog = useConfirmDialog()
-  const { mutateAsync: regenerateMeToken } = useRegenerateMeToken()
-
-  const handleChangeToken = async () => {
-    await confirmDialog.confirm({
-      title: 'Biztos generálsz új kulcsot?',
-      description:
-        'A kulcs generálása után az addont újra kell telepítened a Stremio-ban.',
-      onConfirm: async () => {
-        try {
-          await regenerateMeToken()
-          toast.success('Új kulcs generálása elkészült.')
-        } catch (error) {
-          const message = parseApiError(error)
-          toast.error(message)
-          throw error
-        }
-      },
-    })
-  }
 
   return (
     <Card>
@@ -126,27 +95,6 @@ export function LoginAndSecurity() {
               }
             >
               <PencilIcon />
-            </Button>
-          </ItemActions>
-        </Item>
-        <Separator />
-        <Item variant="default" className="p-0">
-          <ItemMedia variant="icon">
-            <KeyRoundIcon />
-          </ItemMedia>
-          <ItemContent>
-            <ItemTitle>Új kulcs generálása</ItemTitle>
-            <ItemDescription>
-              A régi kulcs törlésre kerül, így az addont újra kell telepíteni!
-            </ItemDescription>
-          </ItemContent>
-          <ItemActions onClick={handleChangeToken}>
-            <Button
-              size="icon-sm"
-              variant="destructive"
-              className="rounded-full"
-            >
-              <RotateCcwKeyIcon />
             </Button>
           </ItemActions>
         </Item>
