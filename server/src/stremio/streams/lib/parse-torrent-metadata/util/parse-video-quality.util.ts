@@ -1,6 +1,6 @@
-import { VideoQualityEnum } from '../../../preference-items/enum/video-quality.enum';
+import { VideoQualityEnum } from '../../../../../preference-items/enum/video-quality.enum';
 
-const HDR_PATTERNS: Record<
+const PATTERNS: Record<
   Exclude<VideoQualityEnum, VideoQualityEnum.SDR>,
   string[]
 > = {
@@ -33,14 +33,16 @@ const HDR_PATTERNS: Record<
   [VideoQualityEnum.HLG]: ['.hlg.'],
 };
 
-export function parseVideoQualities(torrentName: string): VideoQualityEnum[] {
-  const normalizedTorrentName = torrentName.toLocaleLowerCase();
-
-  const videoQualities = Object.entries(HDR_PATTERNS)
+export function parseVideoQuality(name: string): VideoQualityEnum[] {
+  const items = Object.entries(PATTERNS)
     .filter(([, patterns]) =>
-      patterns.some((pattern) => normalizedTorrentName.includes(pattern)),
+      patterns.some((pattern) => name.includes(pattern)),
     )
     .map(([type]) => type as VideoQualityEnum);
 
-  return videoQualities.length > 0 ? videoQualities : [VideoQualityEnum.SDR];
+  if (items.length === 0) {
+    return [VideoQualityEnum.SDR];
+  }
+
+  return items;
 }

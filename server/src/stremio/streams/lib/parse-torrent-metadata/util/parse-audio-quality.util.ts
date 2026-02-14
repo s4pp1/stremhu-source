@@ -27,23 +27,14 @@ const AUDIO_QUALITY_PATTERNS: Record<
   [AudioQualityEnum.AAC]: ['.aac.', '.aac2.0.', '.aac5.1.'],
 };
 
-export function parseAudioQuality(torrentName: string): AudioQualityEnum {
-  const normalizedTorrentName = torrentName.toLocaleLowerCase();
-
-  let audioCodec = AudioQualityEnum.UNKNOWN;
-
+export function parseAudioQuality(name: string): AudioQualityEnum {
   for (const [type, patterns] of Object.entries(AUDIO_QUALITY_PATTERNS)) {
-    const isSourceType = patterns.some((pattern) =>
-      normalizedTorrentName.includes(pattern),
-    );
+    const isMatched = patterns.some((pattern) => name.includes(pattern));
 
-    if (!isSourceType) {
-      continue;
+    if (isMatched) {
+      return type as AudioQualityEnum;
     }
-
-    audioCodec = type as AudioQualityEnum;
-    break;
   }
 
-  return audioCodec;
+  return AudioQualityEnum.UNKNOWN;
 }

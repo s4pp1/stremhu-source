@@ -11,8 +11,8 @@ export type VideoFile = {
   [PreferenceEnum.TRACKER]: TrackerEnum;
   torrentId: string;
   seeders: number;
-  group?: string;
 
+  torrentName: string;
   infoHash: string;
   fileName: string;
   fileSize: number;
@@ -23,5 +23,6 @@ export type VideoFile = {
   [PreferenceEnum.VIDEO_QUALITY]: VideoQualityEnum[];
   [PreferenceEnum.AUDIO_QUALITY]: AudioQualityEnum;
   [PreferenceEnum.SOURCE]: SourceEnum;
+
   notWebReady: boolean;
 };

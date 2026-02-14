@@ -1,4 +1,3 @@
-import { filenameParse } from '@ctrl/video-filename-parser';
 import { Injectable } from '@nestjs/common';
 import { compact, orderBy } from 'lodash';
 
@@ -23,14 +22,11 @@ import { User } from 'src/users/entity/user.entity';
 
 import { VideoQualityEnum } from '../../preference-items/enum/video-quality.enum';
 import { StreamDto } from './dto/stremio-stream.dto';
+import { resolveVideoFile } from './lib/resolve-video-file';
 import { ParsedStremioIdSeries } from './pipe/stream-id.pipe';
 import { FindStreams } from './type/find-streams.type';
 import { VideoFile } from './type/video-file.type';
 import { buildSelectors } from './util/build-selectors';
-import { findVideoFile } from './util/find-video-file.util';
-import { parseAudioQuality } from './util/parse-audio-quality.util';
-import { parseSource } from './util/parse-source.util';
-import { parseVideoQualities } from './util/parse-video-qualities.util';
 
 @Injectable()
 export class StreamsService {
@@ -73,7 +69,10 @@ export class StreamsService {
       }
     });
 
-    const videoFiles = this.findVideoFiles(isSpecial, trackerTorrents, series);
+    const videoFiles = this.resolveVideoFiles(
+      trackerTorrents,
+      isSpecial ? undefined : series,
+    );
     const filteredVideoFiles = this.filterVideoFiles(
       videoFiles,
       user,
@@ -183,60 +182,13 @@ export class StreamsService {
     };
   }
 
-  private findVideoFiles(
-    isSpecial: boolean,
+  private resolveVideoFiles(
     torrents: TrackerTorrent[],
     series?: ParsedStremioIdSeries,
   ): VideoFile[] {
-    const torrentByFiles: VideoFile[] = [];
-
-    for (const torrent of torrents) {
-      if (!torrent.name) continue;
-
-      const {
-        videoCodec: torrentVideoCodec,
-        resolution: torrentResolution,
-        group: torrentGroup,
-      } = filenameParse(torrent.name);
-
-      const videoFile = findVideoFile({
-        files: torrent.files,
-        series,
-        isSpecial,
-      });
-
-      if (!videoFile) continue;
-
-      const { videoCodec: fileVideoCodec, resolution: fileResolution } =
-        filenameParse(videoFile.name);
-
-      const videoCodec = torrentVideoCodec ?? fileVideoCodec;
-      const resolution = torrentResolution ?? fileResolution;
-      const audioQuality = parseAudioQuality(torrent.name);
-
-      const torrentByFile: VideoFile = {
-        imdbId: torrent.imdbId,
-        tracker: torrent.tracker,
-        torrentId: torrent.torrentId,
-        seeders: torrent.seeders,
-        group: torrentGroup || undefined,
-
-        infoHash: torrent.infoHash,
-        fileName: videoFile.name,
-        fileSize: videoFile.size,
-        fileIndex: videoFile.fileIndex,
-        language: torrent.language,
-        resolution: torrent.resolution,
-        'audio-quality': audioQuality,
-        'video-quality': parseVideoQualities(torrent.name),
-        source: parseSource(torrent.name),
-        notWebReady: false,
-      };
-
-      torrentByFiles.push(torrentByFile);
-    }
-
-    return torrentByFiles;
+    return torrents
+      .map((torrent) => resolveVideoFile({ torrent, series }))
+      .filter((videoFile) => videoFile !== null);
   }
 
   private filterVideoFiles(
@@ -264,7 +216,7 @@ export class StreamsService {
         selector.filterToBlocked((preference) => videoFile[preference]),
       );
 
-      return !blockeds.some((blocked) => !blocked);
+      return blockeds.some((blocked) => !blocked);
     });
 
     return filteredVideoFiles;
