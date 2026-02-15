@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { UserRoleEnum } from './UserRoleEnum';
-export type UserRoleDto = {
-    value: UserRoleEnum;
+import type { LanguageEnum } from './LanguageEnum';
+export type LanguageMetaDto = {
+    value: LanguageEnum;
     label: string;
 };
 

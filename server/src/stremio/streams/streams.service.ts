@@ -11,9 +11,9 @@ import { AudioQualityEnum } from 'src/preference-items/enum/audio-quality.enum';
 import { SourceEnum } from 'src/preference-items/enum/source.enum';
 import { SettingsService } from 'src/settings/settings.service';
 import { TorrentsService } from 'src/torrents/torrents.service';
+import { TrackersMetaService } from 'src/trackers/meta/trackers-meta.service';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
 import { TrackerTorrent } from 'src/trackers/tracker.types';
-import { TRACKER_INFO } from 'src/trackers/trackers.constants';
 import { PreferenceValue } from 'src/user-preferences/type/preference-value.type';
 import { UserPreference } from 'src/user-preferences/type/user-preference.type';
 import { UserPreferencesService } from 'src/user-preferences/user-preferences.service';
@@ -31,6 +31,7 @@ import { buildSelectors } from './util/build-selectors';
 @Injectable()
 export class StreamsService {
   constructor(
+    private readonly trackersMetaService: TrackersMetaService,
     private readonly trackerDiscoveryService: TrackerDiscoveryService,
     private readonly settingsService: SettingsService,
     private readonly catalogService: CatalogService,
@@ -140,7 +141,7 @@ export class StreamsService {
 
     const fileSize = `💾 ${formatFilesize(videoFile.fileSize)}`;
     const seeders = `👥 ${videoFile.seeders}`;
-    const tracker = `🧲 ${TRACKER_INFO[videoFile.tracker].label}`;
+    const tracker = `🧲 ${this.trackersMetaService.resolve(videoFile.tracker).label}`;
 
     let readableAudioCodec: string | undefined;
 
@@ -216,7 +217,7 @@ export class StreamsService {
         selector.filterToBlocked((preference) => videoFile[preference]),
       );
 
-      return blockeds.some((blocked) => !blocked);
+      return !blockeds.some((blocked) => blocked);
     });
 
     return filteredVideoFiles;

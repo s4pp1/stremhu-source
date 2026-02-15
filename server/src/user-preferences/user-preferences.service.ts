@@ -4,7 +4,7 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { isUndefined, omitBy } from 'lodash';
+import { difference, isUndefined, omitBy } from 'lodash';
 
 import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
 
@@ -23,7 +23,10 @@ export class UserPreferencesService {
 
   async find(userId: string): Promise<UserPreference[]> {
     const items = await this.userPreferencesStore.find((qb) => {
-      qb.where('user-preference.userId = :userId', { userId });
+      qb.where('user-preference.userId = :userId', { userId }).orderBy({
+        'user-preference.order': 'ASC',
+      });
+
       return qb;
     });
     return items.map((item) => this.validatePreference(item));
@@ -65,9 +68,27 @@ export class UserPreferencesService {
     userId: string,
     payload: UserPreferenceToCreate,
   ): Promise<UserPreference> {
+    if (payload.blocked.length === 0 && payload.preferred.length === 0) {
+      throw new BadRequestException(
+        'A blocked vagy preferred megadása kötelező.',
+      );
+    }
+
+    const userPreferences = await this.find(userId);
+
+    let order: number | null = null;
+
+    if (payload.preferred.length !== 0) {
+      const orderedUserPreferences = userPreferences.filter(
+        (userPreference) => userPreference.order !== null,
+      );
+      order = orderedUserPreferences.length - 1;
+    }
+
     const entity = this.userPreferencesStore.createEntity({
-      userId,
       ...payload,
+      userId,
+      order,
     });
 
     this.validatePreference(entity);
@@ -121,6 +142,45 @@ export class UserPreferencesService {
 
       throw error;
     }
+
+    await this.reorder(userId);
+  }
+
+  async reorder(
+    userId: string,
+    preferences?: PreferenceEnum[],
+  ): Promise<UserPreference[]> {
+    const items = await this.userPreferencesStore.find((qb) => {
+      qb.where(
+        'user-preference.userId = :userId AND user-preference.order IS NOT NULL',
+        { userId },
+      ).orderBy({
+        'user-preference.order': 'ASC',
+      });
+
+      return qb;
+    });
+
+    let itemIds = items.map((item) => item.preference);
+
+    if (preferences !== undefined) {
+      const diffItems = difference(itemIds, preferences);
+      if (diffItems.length > 0) {
+        throw new BadRequestException(
+          `A "${diffItems.join(', ')}" nem található.`,
+        );
+      }
+
+      itemIds = preferences;
+    }
+
+    await Promise.all(
+      itemIds.map((preference, idx) =>
+        this.updateOne(userId, preference, { order: idx }),
+      ),
+    );
+
+    return this.find(userId);
   }
 
   private validatePreference(preference: UserPreferenceEntity): UserPreference {

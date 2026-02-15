@@ -28,25 +28,23 @@ function RouteComponent() {
   assertExists(torrents)
 
   return (
-    <div className="grid gap-8">
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            {RELAY_TORRENTS_NAME}{' '}
-            <span className="text-sm text-muted-foreground">
-              ({torrents.length})
-            </span>
-          </CardTitle>
-          <CardDescription>
-            Kövesd nyomon a torrentek statisztikáit és tűzd ki, ha nem
-            szeretnéd, hogy autómatikusan törlődjenek.
-          </CardDescription>
-        </CardHeader>
-        <Separator />
-        <CardContent>
-          <Torrents />
-        </CardContent>
-      </Card>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>
+          {RELAY_TORRENTS_NAME}{' '}
+          <span className="text-sm text-muted-foreground">
+            ({torrents.length})
+          </span>
+        </CardTitle>
+        <CardDescription>
+          Kövesd nyomon a torrentek statisztikáit és tűzd ki, ha nem szeretnéd,
+          hogy autómatikusan törlődjenek.
+        </CardDescription>
+      </CardHeader>
+      <Separator />
+      <CardContent>
+        <Torrents />
+      </CardContent>
+    </Card>
   )
 }

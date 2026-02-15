@@ -3,7 +3,7 @@ import { IsEnum, IsString } from 'class-validator';
 
 import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
-export class UserRoleDto {
+export class UserRoleMetaDto {
   @IsEnum(UserRoleEnum)
   @ApiProperty({ enum: UserRoleEnum, enumName: 'UserRoleEnum' })
   value: UserRoleEnum;

@@ -2,15 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { VideoQualityDto } from './VideoQualityDto';
+import type { PreferenceEnum } from './PreferenceEnum';
+import type { VideoQualityMetaDto } from './VideoQualityMetaDto';
 export type VideoQualityPreferenceMetaDto = {
-    value: VideoQualityPreferenceMetaDto.value;
+    value: PreferenceEnum;
     label: string;
-    items: Array<VideoQualityDto>;
+    items: Array<VideoQualityMetaDto>;
 };
-export namespace VideoQualityPreferenceMetaDto {
-    export enum value {
-        VIDEO_QUALITY = 'video-quality',
-    }
-}
 

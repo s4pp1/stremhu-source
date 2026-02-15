@@ -8,13 +8,13 @@ import {
   PreferenceMetaDto,
 } from './preference-meta.dto';
 import { TrackerMetaDto } from './tracker-meta.dto';
-import { UserRoleDto } from './user-role.dto';
+import { UserRoleMetaDto } from './user-role-meta.dto';
 
 @ApiExtraModels(...PREFERENCE_META_SWAGGER_MODELS)
 export class MetadataDto extends HealthDto {
   @IsArray()
-  @ApiProperty({ type: UserRoleDto, isArray: true })
-  userRoles: UserRoleDto[];
+  @ApiProperty({ type: UserRoleMetaDto, isArray: true })
+  userRoles: UserRoleMetaDto[];
 
   @IsArray()
   @ApiProperty({ type: TrackerMetaDto, isArray: true })

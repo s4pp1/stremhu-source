@@ -66,6 +66,26 @@ export class MeController {
   }
 
   @ApiExtraModels(...PREFERENCE_SWAGGER_MODELS)
+  @ApiBody({
+    schema: {
+      oneOf: PREFERENCE_SWAGGER_MODELS.map((model) => ({
+        $ref: getSchemaPath(model),
+      })),
+    },
+  })
+  @Post('/preferences')
+  async createMePreference(
+    @Req() req: Request,
+    @Body() payload: PreferenceDto,
+  ) {
+    const userPreference = await this.userPreferencesService.create(
+      req.user!.id,
+      payload,
+    );
+    return toDto(preferenceDtoMap[userPreference.preference], userPreference);
+  }
+
+  @ApiExtraModels(...PREFERENCE_SWAGGER_MODELS)
   @ApiResponse({
     status: 200,
     schema: {
@@ -89,27 +109,42 @@ export class MeController {
   }
 
   @ApiExtraModels(...PREFERENCE_SWAGGER_MODELS)
-  @ApiBody({
+  @ApiParam({
+    name: 'preference',
+    type: 'enum',
+    enum: PreferenceEnum,
+    enumName: 'PreferenceEnum',
+  })
+  @ApiResponse({
+    status: 200,
     schema: {
       oneOf: PREFERENCE_SWAGGER_MODELS.map((model) => ({
         $ref: getSchemaPath(model),
       })),
     },
   })
-  @Post('/preferences')
-  async createMePreference(
+  @Get('/preferences/:preference')
+  async mePreference(
     @Req() req: Request,
-    @Body() payload: PreferenceDto,
+    @Param('preference', new ParseEnumPipe(PreferenceEnum))
+    preference: PreferenceEnum,
   ) {
-    const userPreference = await this.userPreferencesService.create(
-      req.user!.id,
-      payload,
-    );
+    const userPreference =
+      await this.userPreferencesService.findOneByPreferenceOrThrow(
+        req.user!.id,
+        preference,
+      );
+
     return toDto(preferenceDtoMap[userPreference.preference], userPreference);
   }
 
-  @ApiParam({ name: 'preference', type: 'enum', enum: PreferenceEnum })
   @ApiExtraModels(...PREFERENCE_SWAGGER_MODELS)
+  @ApiParam({
+    name: 'preference',
+    type: 'enum',
+    enum: PreferenceEnum,
+    enumName: 'PreferenceEnum',
+  })
   @ApiBody({
     schema: {
       oneOf: PREFERENCE_SWAGGER_MODELS.map((model) => ({
@@ -117,7 +152,14 @@ export class MeController {
       })),
     },
   })
-  @ApiResponse({ status: 200, type: UserDto })
+  @ApiResponse({
+    status: 200,
+    schema: {
+      oneOf: PREFERENCE_SWAGGER_MODELS.map((model) => ({
+        $ref: getSchemaPath(model),
+      })),
+    },
+  })
   @Put('/preferences/:preference')
   async updateMePreference(
     @Req() req: Request,
@@ -135,7 +177,6 @@ export class MeController {
   }
 
   @ApiParam({ name: 'preference', type: 'enum', enum: PreferenceEnum })
-  @ApiResponse({ status: 200, type: UserDto })
   @Delete('/preferences/:preference')
   async deleteMePreference(
     @Req() req: Request,

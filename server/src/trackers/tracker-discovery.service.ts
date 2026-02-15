@@ -7,6 +7,7 @@ import { TorrentCache } from 'src/torrents-cache/torrents-cache.types';
 import { AdapterTorrentId } from './adapters/adapters.types';
 import { TrackersStore } from './core/trackers.store';
 import { TrackerEnum } from './enum/tracker.enum';
+import { TrackersMetaService } from './meta/trackers-meta.service';
 import { TrackerAdapterRegistry } from './tracker-adapter.registry';
 import {
   TrackerAdapter,
@@ -14,13 +15,13 @@ import {
   TrackerTorrent,
   TrackerTorrentFile,
 } from './tracker.types';
-import { TRACKER_INFO } from './trackers.constants';
 import { TrackerTorrentFound } from './type/tracker-torrent-found.type';
 
 @Injectable()
 export class TrackerDiscoveryService {
   constructor(
     private readonly trackersStore: TrackersStore,
+    private readonly trackersMetaService: TrackersMetaService,
     private readonly trackerAdapterRegistry: TrackerAdapterRegistry,
     private readonly torrentsCacheStore: TorrentsCacheStore,
   ) {}
@@ -173,7 +174,7 @@ export class TrackerDiscoveryService {
 
     if (failedFetches.length === torrentsCount) {
       throw new Error(
-        `Nem sikerült torrentet letölteni a ${TRACKER_INFO[adapter.tracker].label}-ról.`,
+        `Nem sikerült torrentet letölteni a ${this.trackersMetaService.resolve(adapter.tracker).label}-ról.`,
       );
     }
 

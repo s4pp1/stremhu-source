@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { VideoQualityEnum } from './VideoQualityEnum';
-export type VideoQualityDto = {
-    value: VideoQualityEnum;
+import type { SourceEnum } from './SourceEnum';
+export type SourceMetaDto = {
+    value: SourceEnum;
     label: string;
 };
 

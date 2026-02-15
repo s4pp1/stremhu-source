@@ -67,7 +67,7 @@ export function UserItem(props: UserItem) {
   return (
     <Link
       key={user.id}
-      to="/settings/users/$userId"
+      to="/dashboard/users/$userId"
       params={{ userId: user.id }}
     >
       <Item variant="muted">

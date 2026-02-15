@@ -10,7 +10,6 @@ export const SETTINGS_NAME = 'Beállítások'
 
 export const Route = createFileRoute('/_protected/settings')({
   component: SettingsLayout,
-
   loader: () => {
     return { breadcrumb: SETTINGS_NAME }
   },

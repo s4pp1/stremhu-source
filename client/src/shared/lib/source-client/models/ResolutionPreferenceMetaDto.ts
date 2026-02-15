@@ -2,15 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ResolutionDto } from './ResolutionDto';
+import type { PreferenceEnum } from './PreferenceEnum';
+import type { ResolutionMetaDto } from './ResolutionMetaDto';
 export type ResolutionPreferenceMetaDto = {
-    value: ResolutionPreferenceMetaDto.value;
+    value: PreferenceEnum;
     label: string;
-    items: Array<ResolutionDto>;
+    items: Array<ResolutionMetaDto>;
 };
-export namespace ResolutionPreferenceMetaDto {
-    export enum value {
-        RESOLUTION = 'resolution',
-    }
-}
 

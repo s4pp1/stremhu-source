@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { USER_ROLE_OPTIONS } from 'src/common/constant/user-role.constant';
 import { SettingsService } from 'src/settings/settings.service';
-import { TrackersService } from 'src/trackers/trackers.service';
+import { TrackersMetaService } from 'src/trackers/meta/trackers-meta.service';
 
 import { MetadataDto } from './dto/metadata.dto';
 import { PreferencesMetadataService } from './preferences-metadata.service';
@@ -13,13 +13,13 @@ export class MetadataService {
   constructor(
     private readonly configService: ConfigService,
     private readonly settingsService: SettingsService,
-    private readonly trackersService: TrackersService,
+    private readonly trackersMetaService: TrackersMetaService,
     private readonly preferencesMetadataService: PreferencesMetadataService,
   ) {}
 
   async get(): Promise<MetadataDto> {
     const endpoint = await this.getEndpoint();
-    const preferences = this.preferencesMetadataService.get();
+    const preferences = await this.preferencesMetadataService.get();
 
     return {
       version: this.getVersion(),
@@ -45,7 +45,7 @@ export class MetadataService {
   }
 
   getTrackers() {
-    const trackers = this.trackersService.getTrackerOptionsWithUrl();
+    const trackers = this.trackersMetaService.all();
     return trackers;
   }
 }

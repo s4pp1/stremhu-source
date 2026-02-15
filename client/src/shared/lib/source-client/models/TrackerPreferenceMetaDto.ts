@@ -3,10 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { PreferenceEnum } from './PreferenceEnum';
-import type { SourceMetaDto } from './SourceMetaDto';
-export type SourcePreferenceMetaDto = {
+import type { TrackerMetaDto } from './TrackerMetaDto';
+export type TrackerPreferenceMetaDto = {
     value: PreferenceEnum;
     label: string;
-    items: Array<SourceMetaDto>;
+    items: Array<TrackerMetaDto>;
 };
 

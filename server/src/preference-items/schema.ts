@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { AudioQualityEnum } from './enum/audio-quality.enum';
 import { LanguageEnum } from './enum/language.enum';
@@ -13,6 +14,10 @@ const base = z.object({
 });
 
 export const preferenceItemSchema = z.discriminatedUnion('preference', [
+  base.extend({
+    preference: z.literal(PreferenceEnum.TRACKER),
+    id: z.enum(TrackerEnum),
+  }),
   base.extend({
     preference: z.literal(PreferenceEnum.LANGUAGE),
     id: z.enum(LanguageEnum),

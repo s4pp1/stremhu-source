@@ -7,7 +7,7 @@ import {
 import { isUndefined, omitBy } from 'lodash';
 
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
-import { TRACKER_INFO } from 'src/trackers/trackers.constants';
+import { TrackersMetaService } from 'src/trackers/meta/trackers-meta.service';
 
 import { PersistedTorrentsStore } from './core/persisted-torrents.store';
 import { PersistedTorrent } from './entity/torrent.entity';
@@ -20,6 +20,7 @@ export class PersistedTorrentsService {
 
   constructor(
     private readonly persistedTorrentsStore: PersistedTorrentsStore,
+    private readonly trackersMetaService: TrackersMetaService,
   ) {}
 
   async find(): Promise<PersistedTorrent[]> {
@@ -65,7 +66,7 @@ export class PersistedTorrentsService {
       persistedTorrent = await this.findOneByInfoHashOrThrow(infoHash);
     }
 
-    const tracker = TRACKER_INFO[persistedTorrent.tracker];
+    const tracker = this.trackersMetaService.resolve(persistedTorrent.tracker);
 
     if (payload.fullDownload !== undefined && tracker.requiresFullDownload) {
       throw new BadRequestException(

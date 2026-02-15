@@ -3,7 +3,7 @@ import { IsEnum, IsString } from 'class-validator';
 
 import { VideoQualityEnum } from 'src/preference-items/enum/video-quality.enum';
 
-export class VideoQualityDto {
+export class VideoQualityMetaDto {
   @IsEnum(VideoQualityEnum)
   @ApiProperty({ enum: VideoQualityEnum, enumName: 'VideoQualityEnum' })
   value: VideoQualityEnum;

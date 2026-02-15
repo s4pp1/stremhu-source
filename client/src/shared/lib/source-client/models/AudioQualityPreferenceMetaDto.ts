@@ -2,15 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { AudioQualityDto } from './AudioQualityDto';
+import type { AudioQualityMetaDto } from './AudioQualityMetaDto';
+import type { PreferenceEnum } from './PreferenceEnum';
 export type AudioQualityPreferenceMetaDto = {
-    value: AudioQualityPreferenceMetaDto.value;
+    value: PreferenceEnum;
     label: string;
-    items: Array<AudioQualityDto>;
+    items: Array<AudioQualityMetaDto>;
 };
-export namespace AudioQualityPreferenceMetaDto {
-    export enum value {
-        AUDIO_QUALITY = 'audio-quality',
-    }
-}
 

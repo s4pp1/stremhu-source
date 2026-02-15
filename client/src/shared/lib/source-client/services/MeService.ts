@@ -5,6 +5,7 @@
 import type { AudioPreferenceDto } from '../models/AudioPreferenceDto';
 import type { LanguagePreferenceDto } from '../models/LanguagePreferenceDto';
 import type { MeDto } from '../models/MeDto';
+import type { PreferenceEnum } from '../models/PreferenceEnum';
 import type { ResolutionPreferenceDto } from '../models/ResolutionPreferenceDto';
 import type { SourcePreferenceDto } from '../models/SourcePreferenceDto';
 import type { TrackerPreferenceDto } from '../models/TrackerPreferenceDto';
@@ -41,16 +42,6 @@ export class MeService {
         });
     }
     /**
-     * @returns any
-     * @throws ApiError
-     */
-    public mePreferences(): CancelablePromise<Array<(TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoPreferenceDto | SourcePreferenceDto | AudioPreferenceDto)>> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/api/me/preferences',
-        });
-    }
-    /**
      * @param requestBody
      * @returns any
      * @throws ApiError
@@ -66,15 +57,41 @@ export class MeService {
         });
     }
     /**
+     * @returns any
+     * @throws ApiError
+     */
+    public mePreferences(): CancelablePromise<Array<(TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoPreferenceDto | SourcePreferenceDto | AudioPreferenceDto)>> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/api/me/preferences',
+        });
+    }
+    /**
+     * @param preference
+     * @returns any
+     * @throws ApiError
+     */
+    public mePreference(
+        preference: PreferenceEnum,
+    ): CancelablePromise<(TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoPreferenceDto | SourcePreferenceDto | AudioPreferenceDto)> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/api/me/preferences/{preference}',
+            path: {
+                'preference': preference,
+            },
+        });
+    }
+    /**
      * @param preference
      * @param requestBody
-     * @returns UserDto
+     * @returns any
      * @throws ApiError
      */
     public updateMePreference(
-        preference: 'tracker' | 'language' | 'resolution' | 'video-quality' | 'source' | 'audio-quality',
+        preference: PreferenceEnum,
         requestBody: (TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoPreferenceDto | SourcePreferenceDto | AudioPreferenceDto),
-    ): CancelablePromise<UserDto> {
+    ): CancelablePromise<(TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoPreferenceDto | SourcePreferenceDto | AudioPreferenceDto)> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/api/me/preferences/{preference}',
@@ -87,12 +104,12 @@ export class MeService {
     }
     /**
      * @param preference
-     * @returns UserDto
+     * @returns any
      * @throws ApiError
      */
     public deleteMePreference(
         preference: 'tracker' | 'language' | 'resolution' | 'video-quality' | 'source' | 'audio-quality',
-    ): CancelablePromise<UserDto> {
+    ): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/me/preferences/{preference}',

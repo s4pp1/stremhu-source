@@ -2,15 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { LanguageDto } from './LanguageDto';
+import type { LanguageMetaDto } from './LanguageMetaDto';
+import type { PreferenceEnum } from './PreferenceEnum';
 export type LanguagePreferenceMetaDto = {
-    value: LanguagePreferenceMetaDto.value;
+    value: PreferenceEnum;
     label: string;
-    items: Array<LanguageDto>;
+    items: Array<LanguageMetaDto>;
 };
-export namespace LanguagePreferenceMetaDto {
-    export enum value {
-        LANGUAGE = 'language',
-    }
-}
 

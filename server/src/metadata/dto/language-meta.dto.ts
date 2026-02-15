@@ -3,7 +3,7 @@ import { IsEnum, IsString } from 'class-validator';
 
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 
-export class LanguageDto {
+export class LanguageMetaDto {
   @IsEnum(LanguageEnum)
   @ApiProperty({ enum: LanguageEnum, enumName: 'LanguageEnum' })
   value: LanguageEnum;

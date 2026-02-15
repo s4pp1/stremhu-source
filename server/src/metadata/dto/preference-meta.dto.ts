@@ -4,16 +4,39 @@ import { Equals, IsArray, IsString } from 'class-validator';
 
 import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
 
-import { AudioQualityDto } from './audio-quality.dto';
-import { LanguageDto } from './language.dto';
-import { ResolutionDto } from './resolution.dto';
-import { SourceDto } from './source.dto';
-import { VideoQualityDto } from './video-quality.dto';
+import { AudioQualityMetaDto } from './audio-quality-meta.dto';
+import { LanguageMetaDto } from './language-meta.dto';
+import { ResolutionMetaDto } from './resolution-meta.dto';
+import { SourceMetaDto } from './source-meta.dto';
+import { TrackerMetaDto } from './tracker-meta.dto';
+import { VideoQualityMetaDto } from './video-quality-meta.dto';
+
+export class TrackerPreferenceMetaDto {
+  @Equals(PreferenceEnum.TRACKER)
+  @ApiProperty({
+    enum: PreferenceEnum,
+    enumName: 'PreferenceEnum',
+    example: PreferenceEnum.TRACKER,
+  })
+  value: PreferenceEnum.TRACKER;
+
+  @IsString()
+  @ApiProperty()
+  label: string;
+
+  @IsArray()
+  @ApiProperty({
+    type: TrackerMetaDto,
+    isArray: true,
+  })
+  items: TrackerMetaDto[];
+}
 
 export class LanguagePreferenceMetaDto {
   @Equals(PreferenceEnum.LANGUAGE)
   @ApiProperty({
-    enum: [PreferenceEnum.LANGUAGE],
+    enum: PreferenceEnum,
+    enumName: 'PreferenceEnum',
     example: PreferenceEnum.LANGUAGE,
   })
   value: PreferenceEnum.LANGUAGE;
@@ -24,16 +47,17 @@ export class LanguagePreferenceMetaDto {
 
   @IsArray()
   @ApiProperty({
-    type: LanguageDto,
+    type: LanguageMetaDto,
     isArray: true,
   })
-  items: LanguageDto[];
+  items: LanguageMetaDto[];
 }
 
 export class ResolutionPreferenceMetaDto {
   @Equals(PreferenceEnum.RESOLUTION)
   @ApiProperty({
-    enum: [PreferenceEnum.RESOLUTION],
+    enum: PreferenceEnum,
+    enumName: 'PreferenceEnum',
     example: PreferenceEnum.RESOLUTION,
   })
   value: PreferenceEnum.RESOLUTION;
@@ -44,16 +68,17 @@ export class ResolutionPreferenceMetaDto {
 
   @IsArray()
   @ApiProperty({
-    type: ResolutionDto,
+    type: ResolutionMetaDto,
     isArray: true,
   })
-  items: ResolutionDto[];
+  items: ResolutionMetaDto[];
 }
 
 export class VideoQualityPreferenceMetaDto {
   @Equals(PreferenceEnum.VIDEO_QUALITY)
   @ApiProperty({
-    enum: [PreferenceEnum.VIDEO_QUALITY],
+    enum: PreferenceEnum,
+    enumName: 'PreferenceEnum',
     example: PreferenceEnum.VIDEO_QUALITY,
   })
   value: PreferenceEnum.VIDEO_QUALITY;
@@ -64,16 +89,17 @@ export class VideoQualityPreferenceMetaDto {
 
   @IsArray()
   @ApiProperty({
-    type: VideoQualityDto,
+    type: VideoQualityMetaDto,
     isArray: true,
   })
-  items: VideoQualityDto[];
+  items: VideoQualityMetaDto[];
 }
 
 export class SourcePreferenceMetaDto {
   @Equals(PreferenceEnum.SOURCE)
   @ApiProperty({
-    enum: [PreferenceEnum.SOURCE],
+    enum: PreferenceEnum,
+    enumName: 'PreferenceEnum',
     example: PreferenceEnum.SOURCE,
   })
   value: PreferenceEnum.SOURCE;
@@ -84,16 +110,17 @@ export class SourcePreferenceMetaDto {
 
   @IsArray()
   @ApiProperty({
-    type: SourceDto,
+    type: SourceMetaDto,
     isArray: true,
   })
-  items: SourceDto[];
+  items: SourceMetaDto[];
 }
 
 export class AudioQualityPreferenceMetaDto {
   @Equals(PreferenceEnum.AUDIO_QUALITY)
   @ApiProperty({
-    enum: [PreferenceEnum.AUDIO_QUALITY],
+    enum: PreferenceEnum,
+    enumName: 'PreferenceEnum',
     example: PreferenceEnum.AUDIO_QUALITY,
   })
   value: PreferenceEnum.AUDIO_QUALITY;
@@ -104,13 +131,14 @@ export class AudioQualityPreferenceMetaDto {
 
   @IsArray()
   @ApiProperty({
-    type: AudioQualityDto,
+    type: AudioQualityMetaDto,
     isArray: true,
   })
-  items: AudioQualityDto[];
+  items: AudioQualityMetaDto[];
 }
 
 export type PreferenceMetaDto =
+  | TrackerPreferenceMetaDto
   | LanguagePreferenceMetaDto
   | ResolutionPreferenceMetaDto
   | VideoQualityPreferenceMetaDto
@@ -121,6 +149,7 @@ type PreferenceMetaDtoConstructor = ClassConstructor<PreferenceMetaDto>;
 
 export const PREFERENCE_META_SWAGGER_MODELS: readonly PreferenceMetaDtoConstructor[] =
   [
+    TrackerPreferenceMetaDto,
     LanguagePreferenceMetaDto,
     ResolutionPreferenceMetaDto,
     VideoQualityPreferenceMetaDto,

@@ -7,6 +7,7 @@ import { SOURCE_OPTIONS } from 'src/preference-items/constant/source.constant';
 import { VIDEO_QUALITY_OPTIONS } from 'src/preference-items/constant/video-quality.constant';
 import { PREFERENCE_LABEL_MAP } from 'src/preferences/constant/preference.contant';
 import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
+import { TrackersMetaService } from 'src/trackers/meta/trackers-meta.service';
 import { TrackersService } from 'src/trackers/trackers.service';
 
 import {
@@ -15,15 +16,22 @@ import {
   PreferenceMetaDto,
   ResolutionPreferenceMetaDto,
   SourcePreferenceMetaDto,
+  TrackerPreferenceMetaDto,
   VideoQualityPreferenceMetaDto,
 } from './dto/preference-meta.dto';
 
 @Injectable()
 export class PreferencesMetadataService {
-  constructor(private readonly trackersService: TrackersService) {}
+  constructor(
+    private readonly trackersService: TrackersService,
+    private readonly trackersMetaService: TrackersMetaService,
+  ) {}
 
-  get(): PreferenceMetaDto[] {
+  async get(): Promise<PreferenceMetaDto[]> {
+    const tracker = await this.getTracker();
+
     const preferences = [
+      tracker,
       this.getLanguage(),
       this.getResolution(),
       this.getVideoQuality(),
@@ -34,9 +42,17 @@ export class PreferencesMetadataService {
     return preferences;
   }
 
-  getTrackers() {
-    const trackers = this.trackersService.getTrackerOptionsWithUrl();
-    return trackers;
+  async getTracker(): Promise<TrackerPreferenceMetaDto> {
+    const trackers = await this.trackersService.find();
+    const items = trackers.map((tracker) =>
+      this.trackersMetaService.resolve(tracker.tracker),
+    );
+
+    return {
+      value: PreferenceEnum.TRACKER,
+      label: PREFERENCE_LABEL_MAP[PreferenceEnum.TRACKER],
+      items: items,
+    };
   }
 
   getLanguage(): LanguagePreferenceMetaDto {

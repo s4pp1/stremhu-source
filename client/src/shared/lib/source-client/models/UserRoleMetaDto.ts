@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ResolutionEnum } from './ResolutionEnum';
-export type ResolutionDto = {
-    value: ResolutionEnum;
+import type { UserRoleEnum } from './UserRoleEnum';
+export type UserRoleMetaDto = {
+    value: UserRoleEnum;
     label: string;
 };
 

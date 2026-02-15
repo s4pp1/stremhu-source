@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { AudioQualityEnum } from './AudioQualityEnum';
-export type AudioQualityDto = {
-    value: AudioQualityEnum;
+import type { ResolutionEnum } from './ResolutionEnum';
+export type ResolutionMetaDto = {
+    value: ResolutionEnum;
     label: string;
 };
 
