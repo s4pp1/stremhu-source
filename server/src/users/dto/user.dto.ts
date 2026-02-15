@@ -1,9 +1,6 @@
-import { Resolution } from '@ctrl/video-filename-parser';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import {
-  ArrayUnique,
-  IsArray,
   IsBoolean,
   IsEnum,
   IsNumber,
@@ -12,11 +9,7 @@ import {
   IsUUID,
 } from 'class-validator';
 
-import { LanguageEnum } from 'src/common/enum/language.enum';
 import { IsNullable } from 'src/common/validators/is-nullable';
-import { AudioCodecEnum } from 'src/stremio/streams/enum/audio-codec.enum';
-import { SourceTypeEnum } from 'src/stremio/streams/enum/source-type.enum';
-import { VideoQualityEnum } from 'src/stremio/streams/enum/video-quality.enum';
 
 import { UserRoleEnum } from '../enum/user-role.enum';
 
@@ -41,48 +34,6 @@ export class UserDto {
   @IsEnum(UserRoleEnum)
   @ApiProperty({ enum: UserRoleEnum, enumName: 'UserRoleEnum' })
   userRole: UserRoleEnum;
-
-  @IsArray()
-  @ArrayUnique()
-  @IsEnum(Resolution, { each: true })
-  @ApiProperty({ enum: Resolution, enumName: 'ResolutionEnum', isArray: true })
-  torrentResolutions: Resolution[];
-
-  @IsArray()
-  @ArrayUnique()
-  @IsEnum(VideoQualityEnum, { each: true })
-  @ApiProperty({
-    enum: VideoQualityEnum,
-    enumName: 'VideoQualityEnum',
-    isArray: true,
-  })
-  torrentVideoQualities: VideoQualityEnum[];
-
-  @IsArray()
-  @ArrayUnique()
-  @IsEnum(AudioCodecEnum, { each: true })
-  @ApiProperty({
-    enum: AudioCodecEnum,
-    enumName: 'AudioCodecEnum',
-    isArray: true,
-  })
-  torrentAudioCodecs: AudioCodecEnum[];
-
-  @IsArray()
-  @ArrayUnique()
-  @IsEnum(SourceTypeEnum, { each: true })
-  @ApiProperty({
-    enum: SourceTypeEnum,
-    enumName: 'SourceTypeEnum',
-    isArray: true,
-  })
-  torrentSourceTypes: SourceTypeEnum[];
-
-  @IsArray()
-  @ArrayUnique()
-  @IsEnum(LanguageEnum, { each: true })
-  @ApiProperty({ enum: LanguageEnum, enumName: 'LanguageEnum', isArray: true })
-  torrentLanguages: LanguageEnum[];
 
   @IsNullable()
   @IsNumber()

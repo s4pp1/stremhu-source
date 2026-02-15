@@ -3,10 +3,10 @@ import { CSS } from '@dnd-kit/utilities'
 import { MoveVerticalIcon, TrashIcon } from 'lucide-react'
 
 import type {
-  AudioCodecEnum,
+  AudioQualityEnum,
   LanguageEnum,
   ResolutionEnum,
-  SourceTypeEnum,
+  SourceEnum,
   VideoQualityEnum,
 } from '@/shared/lib/source-client'
 
@@ -25,8 +25,8 @@ export function SortableSelectorItem<
     | ResolutionEnum
     | LanguageEnum
     | VideoQualityEnum
-    | AudioCodecEnum
-    | SourceTypeEnum,
+    | AudioQualityEnum
+    | SourceEnum,
 >(props: SortableSelectorItemProps<T>) {
   const { item, label, isDisabled, onDelete } = props
 

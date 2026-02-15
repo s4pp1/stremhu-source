@@ -4,11 +4,9 @@ import { toast } from 'sonner'
 import * as z from 'zod'
 
 import {
-  onlyBestTorrentSchema,
   torrentAudioCodecsSchema,
   torrentLanguagesSchema,
   torrentResolutionsSchema,
-  torrentSeedSchema,
   torrentSourceTypesSchema,
   torrentVideoQualitiesSchema,
 } from '@/common/schemas'
@@ -24,10 +22,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
-import { Label } from '@/shared/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group'
-import { Switch } from '@/shared/components/ui/switch'
-import { SEED_OPTIONS } from '@/shared/constants'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
 import { getMe, useUpdateMe } from '@/shared/queries/me'
 import { getMetadata } from '@/shared/queries/metadata'
@@ -38,8 +32,6 @@ export const validatorSchema = z.object({
   torrentAudioCodecs: torrentAudioCodecsSchema,
   torrentSourceTypes: torrentSourceTypesSchema,
   torrentLanguages: torrentLanguagesSchema,
-  torrentSeed: torrentSeedSchema,
-  onlyBestTorrent: onlyBestTorrentSchema,
 })
 
 export function TorrentsPreferences() {
@@ -58,8 +50,6 @@ export function TorrentsPreferences() {
       torrentVideoQualities: me.torrentVideoQualities,
       torrentAudioCodecs: me.torrentAudioCodecs,
       torrentSourceTypes: me.torrentSourceTypes,
-      torrentSeed: me.torrentSeed,
-      onlyBestTorrent: me.onlyBestTorrent,
     },
     validators: {
       onChange: validatorSchema,
@@ -171,69 +161,6 @@ export function TorrentsPreferences() {
                 items={field.state.value}
                 onChangeItems={(items) => field.handleChange(items)}
               />
-            )}
-          </form.Field>
-        </CardContent>
-      </Card>
-      <Card className="break-inside-avoid mb-4">
-        <CardHeader>
-          <CardTitle>Torrent elérhetősége</CardTitle>
-          <CardDescription>
-            Kevés seeder esetén, akadozhat a lejátszás, mennyi seeder alatt
-            legyen rejtve a torrent?
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form.Field name="torrentSeed">
-            {(field) => (
-              <RadioGroup
-                value={`${field.state.value}`}
-                onValueChange={(value) => {
-                  const number = Number(value)
-
-                  if (Number.isNaN(number)) {
-                    field.setValue(null)
-                  } else {
-                    field.setValue(number)
-                  }
-                }}
-              >
-                {SEED_OPTIONS.map((seedOption) => (
-                  <div
-                    key={seedOption.value}
-                    className="flex items-center gap-3"
-                  >
-                    <RadioGroupItem
-                      value={seedOption.value}
-                      id={seedOption.value}
-                    />
-                    <Label htmlFor={seedOption.value}>{seedOption.label}</Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            )}
-          </form.Field>
-        </CardContent>
-      </Card>
-      <Card className="break-inside-avoid mb-4">
-        <CardHeader>
-          <CardTitle>Családbarát mód</CardTitle>
-          <CardDescription>
-            Csak a legjobb torrent jelenik meg a beállított preferenciáid
-            alapján - így nem kell listából válogatni.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form.Field name="onlyBestTorrent">
-            {(field) => (
-              <Label htmlFor={field.name} className="flex items-start gap-3">
-                <Switch
-                  id={field.name}
-                  checked={field.state.value}
-                  onCheckedChange={field.handleChange}
-                />
-                Családbarát mód
-              </Label>
             )}
           </form.Field>
         </CardContent>
