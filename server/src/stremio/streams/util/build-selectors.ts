@@ -1,7 +1,7 @@
 import { isArray } from 'lodash';
 
 import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
-import { PreferenceValue } from 'src/user-preferences/type/preference-value.type';
+import { PreferenceValue } from 'src/users/preferences/type/preference-value.type';
 
 export function buildSelectors(
   preference: PreferenceEnum,

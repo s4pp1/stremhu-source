@@ -51,55 +51,53 @@ function ProfileRoute() {
           </CardDescription>
         </CardHeader>
         <div className="grid gap-4">
-          <Item variant="muted">
-            <ItemMedia variant="icon">
-              <ShieldUserIcon />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>
-                {SETTINGS_ACCOUNT_NAME} - Bejelentkezés és biztonság
-              </ItemTitle>
-              <ItemDescription>
-                The standard size for most use cases.
-              </ItemDescription>
-            </ItemContent>
-            <ItemActions>
-              <Button
-                asChild
-                className="rounded-full"
-                size="icon-sm"
-                variant="default"
-              >
-                <Link to="/settings/account">
+          <Item asChild variant="muted">
+            <Link to="/settings/account">
+              <ItemMedia variant="icon">
+                <ShieldUserIcon />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>
+                  {SETTINGS_ACCOUNT_NAME} - Bejelentkezés és biztonság
+                </ItemTitle>
+                <ItemDescription>
+                  The standard size for most use cases.
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <Button
+                  className="rounded-full"
+                  size="icon-sm"
+                  variant="default"
+                >
                   <ChevronRightIcon />
-                </Link>
-              </Button>
-            </ItemActions>
+                </Button>
+              </ItemActions>
+            </Link>
           </Item>
-          <Item variant="muted">
-            <ItemMedia variant="icon">
-              <ListVideoIcon />
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>
-                {SETTINGS_PREFERENCES_NAME} - Torrent lista személyreszabása
-              </ItemTitle>
-              <ItemDescription>
-                The standard size for most use cases.
-              </ItemDescription>
-            </ItemContent>
-            <ItemActions>
-              <Button
-                asChild
-                className="rounded-full"
-                size="icon-sm"
-                variant="default"
-              >
-                <Link to="/settings/preferences">
+          <Item asChild variant="muted">
+            <Link to="/settings/preferences">
+              <ItemMedia variant="icon">
+                <ListVideoIcon />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>
+                  {SETTINGS_PREFERENCES_NAME} - Torrent lista személyreszabása
+                </ItemTitle>
+                <ItemDescription>
+                  The standard size for most use cases.
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <Button
+                  className="rounded-full"
+                  size="icon-sm"
+                  variant="default"
+                >
                   <ChevronRightIcon />
-                </Link>
-              </Button>
-            </ItemActions>
+                </Button>
+              </ItemActions>
+            </Link>
           </Item>
         </div>
       </div>

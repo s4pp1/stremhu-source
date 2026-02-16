@@ -1,6 +1,6 @@
 import { useQueries } from '@tanstack/react-query'
 import { LogInIcon } from 'lucide-react'
-import type { FormEventHandler } from 'react'
+import type { MouseEventHandler } from 'react'
 
 import { useDialogs } from '@/routes/-features/dialogs/dialogs-store'
 import { Button } from '@/shared/components/ui/button'
@@ -43,7 +43,7 @@ export function Trackers() {
     (tracker) => tracker.tracker,
   )
 
-  const handleTrackerLogin: FormEventHandler<HTMLButtonElement> = (e) => {
+  const handleTrackerLogin: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault()
     e.stopPropagation()
     dialogs.openDialog({

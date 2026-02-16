@@ -1,11 +1,11 @@
 import { isEmpty } from 'lodash'
+import type { MouseEventHandler, SubmitEventHandler } from 'react'
 import { useMemo } from 'react'
-import type { FormEventHandler, MouseEventHandler } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
-import { useDialogsStore } from '@/routes/-features/dialogs/dialogs-store'
 import type { OpenedDialog } from '@/routes/-features/dialogs/dialogs-store'
+import { useDialogsStore } from '@/routes/-features/dialogs/dialogs-store'
 import {
   Dialog,
   DialogDescription,
@@ -37,8 +37,8 @@ import { parseApiError } from '@/shared/lib/utils'
 import { useUpdateTracker } from '@/shared/queries/trackers'
 
 import { HIT_AND_RUN_OPTIONS } from './edit-tracker.contant'
-import { EditTrackerOptionEnum } from './edit-tracker.type'
 import type { EditTrackerDialog } from './edit-tracker.type'
+import { EditTrackerOptionEnum } from './edit-tracker.type'
 
 const schema = z.object({
   hitAndRunEnum: z.enum(EditTrackerOptionEnum),
@@ -124,7 +124,7 @@ export function EditTrackerDialog(dialog: OpenedDialog & EditTrackerDialog) {
     },
   })
 
-  const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+  const onSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     e.stopPropagation()
     await form.handleSubmit()

@@ -41,7 +41,7 @@ export type PreferenceItemDto =
 export const getMePreferences = queryOptions({
   queryKey: ['me', 'preferences'],
   queryFn: async () => {
-    const response = await appClient.me.mePreferences()
+    const response = await appClient.mePreferences.find()
     return response
   },
 })
@@ -51,7 +51,7 @@ export function useCreateMePreference() {
 
   return useMutation({
     mutationFn: async (payload: PreferenceDto) => {
-      await appClient.me.createMePreference(payload)
+      await appClient.mePreferences.create(payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })
@@ -63,7 +63,7 @@ export const getMePreference = (preference: PreferenceEnum) =>
   queryOptions({
     queryKey: ['me', 'preferences', preference],
     queryFn: async () => {
-      const response = await appClient.me.mePreference(preference)
+      const response = await appClient.mePreferences.findOne(preference)
       return response
     },
   })
@@ -73,7 +73,7 @@ export function useUpdateMePreference() {
 
   return useMutation({
     mutationFn: async (payload: PreferenceDto) => {
-      await appClient.me.updateMePreference(payload.preference, payload)
+      await appClient.mePreferences.update(payload.preference, payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })
@@ -86,7 +86,7 @@ export function useReorderMePreference() {
 
   return useMutation({
     mutationFn: async (payload: ReorderPreferencesDto) => {
-      await appClient.me.mePreferenceReorder(payload)
+      await appClient.mePreferences.reorder(payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })
@@ -99,7 +99,7 @@ export function useDeleteMePreference() {
 
   return useMutation({
     mutationFn: async (preference: PreferenceEnum) => {
-      await appClient.me.deleteMePreference(preference)
+      await appClient.mePreferences.delete(preference)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })

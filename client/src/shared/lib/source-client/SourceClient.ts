@@ -9,6 +9,7 @@ import { AppService } from './services/AppService';
 import { AuthenticationService } from './services/AuthenticationService';
 import { ExternalRelaySettingsService } from './services/ExternalRelaySettingsService';
 import { MeService } from './services/MeService';
+import { MePreferencesService } from './services/MePreferencesService';
 import { MetadataService } from './services/MetadataService';
 import { SettingsService } from './services/SettingsService';
 import { StremHuCatalogService } from './services/StremHuCatalogService';
@@ -18,6 +19,7 @@ import { StremioStreamsService } from './services/StremioStreamsService';
 import { TorrentsService } from './services/TorrentsService';
 import { TorrentsCacheService } from './services/TorrentsCacheService';
 import { TrackersService } from './services/TrackersService';
+import { UserPreferencesService } from './services/UserPreferencesService';
 import { UsersService } from './services/UsersService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class SourceClient {
@@ -25,6 +27,7 @@ export class SourceClient {
     public readonly authentication: AuthenticationService;
     public readonly externalRelaySettings: ExternalRelaySettingsService;
     public readonly me: MeService;
+    public readonly mePreferences: MePreferencesService;
     public readonly metadata: MetadataService;
     public readonly settings: SettingsService;
     public readonly stremHuCatalog: StremHuCatalogService;
@@ -34,6 +37,7 @@ export class SourceClient {
     public readonly torrents: TorrentsService;
     public readonly torrentsCache: TorrentsCacheService;
     public readonly trackers: TrackersService;
+    public readonly userPreferences: UserPreferencesService;
     public readonly users: UsersService;
     public readonly request: BaseHttpRequest;
     constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = FetchHttpRequest) {
@@ -52,6 +56,7 @@ export class SourceClient {
         this.authentication = new AuthenticationService(this.request);
         this.externalRelaySettings = new ExternalRelaySettingsService(this.request);
         this.me = new MeService(this.request);
+        this.mePreferences = new MePreferencesService(this.request);
         this.metadata = new MetadataService(this.request);
         this.settings = new SettingsService(this.request);
         this.stremHuCatalog = new StremHuCatalogService(this.request);
@@ -61,6 +66,7 @@ export class SourceClient {
         this.torrents = new TorrentsService(this.request);
         this.torrentsCache = new TorrentsCacheService(this.request);
         this.trackers = new TrackersService(this.request);
+        this.userPreferences = new UserPreferencesService(this.request);
         this.users = new UsersService(this.request);
     }
 }

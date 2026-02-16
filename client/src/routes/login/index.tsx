@@ -1,5 +1,5 @@
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
-import type { FormEventHandler } from 'react'
+import type { SubmitEventHandler } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
@@ -60,7 +60,7 @@ function LoginRoute() {
     },
   })
 
-  const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+  const onSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     e.stopPropagation()
     await form.handleSubmit()

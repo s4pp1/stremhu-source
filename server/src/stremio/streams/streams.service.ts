@@ -14,11 +14,11 @@ import { TorrentsService } from 'src/torrents/torrents.service';
 import { TrackersMetaService } from 'src/trackers/meta/trackers-meta.service';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
 import { TrackerTorrent } from 'src/trackers/tracker.types';
-import { PreferenceValue } from 'src/user-preferences/type/preference-value.type';
-import { UserPreference } from 'src/user-preferences/type/user-preference.type';
-import { UserPreferencesService } from 'src/user-preferences/user-preferences.service';
 import { UserDto } from 'src/users/dto/user.dto';
 import { User } from 'src/users/entity/user.entity';
+import { PreferenceValue } from 'src/users/preferences/type/preference-value.type';
+import { UserPreference } from 'src/users/preferences/type/user-preference.type';
+import { UserPreferencesService } from 'src/users/preferences/user-preferences.service';
 
 import { VideoQualityEnum } from '../../preference-items/enum/video-quality.enum';
 import { StreamDto } from './dto/stremio-stream.dto';

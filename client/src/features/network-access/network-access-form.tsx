@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Address4 } from 'ip-address'
-import type { FormEventHandler } from 'react'
+import type { ReactEventHandler, SubmitEventHandler } from 'react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -194,13 +194,13 @@ export function NetworkAccess(props: NetworkAccessProps) {
     },
   })
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     e.stopPropagation()
     await form.handleSubmit()
   }
 
-  const handleSkip: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSkip: ReactEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     e.stopPropagation()
     await confirm({

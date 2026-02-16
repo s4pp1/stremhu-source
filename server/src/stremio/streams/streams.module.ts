@@ -6,7 +6,7 @@ import { SettingsModule } from 'src/settings/settings.module';
 import { TorrentsModule } from 'src/torrents/torrents.module';
 import { TrackersMetaModule } from 'src/trackers/meta/trackers-meta.module';
 import { TrackersModule } from 'src/trackers/trackers.module';
-import { UserPreferencesModule } from 'src/user-preferences/user-preferences.module';
+import { UserPreferencesModule } from 'src/users/preferences/user-preferences.module';
 
 import { StreamsController } from './streams.controller';
 import { StreamsService } from './streams.service';
