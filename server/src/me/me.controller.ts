@@ -28,6 +28,7 @@ import {
   PREFERENCE_SWAGGER_MODELS,
   preferenceDtoMap,
 } from 'src/preferences/dto/preference.dto';
+import { ReorderPreferencesDto } from 'src/preferences/dto/reorder-preferences.dto';
 import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
 import { UserPreferencesService } from 'src/user-preferences/user-preferences.service';
 
@@ -36,6 +37,7 @@ import { UsersService } from '../users/users.service';
 import { MeDto } from './dto/me.dto';
 import { UpdateMeDto } from './dto/update-me.dto';
 
+@ApiExtraModels(...PREFERENCE_SWAGGER_MODELS)
 @ApiTags('Me')
 @UseGuards(AuthGuard)
 @Controller('/me')
@@ -65,7 +67,6 @@ export class MeController {
     return toDto(UserDto, user);
   }
 
-  @ApiExtraModels(...PREFERENCE_SWAGGER_MODELS)
   @ApiBody({
     schema: {
       oneOf: PREFERENCE_SWAGGER_MODELS.map((model) => ({
@@ -85,7 +86,6 @@ export class MeController {
     return toDto(preferenceDtoMap[userPreference.preference], userPreference);
   }
 
-  @ApiExtraModels(...PREFERENCE_SWAGGER_MODELS)
   @ApiResponse({
     status: 200,
     schema: {
@@ -108,7 +108,32 @@ export class MeController {
     );
   }
 
-  @ApiExtraModels(...PREFERENCE_SWAGGER_MODELS)
+  @ApiResponse({
+    status: 200,
+    schema: {
+      type: 'array',
+      items: {
+        oneOf: PREFERENCE_SWAGGER_MODELS.map((model) => ({
+          $ref: getSchemaPath(model),
+        })),
+      },
+    },
+  })
+  @Post('/preferences/reorder')
+  async mePreferenceReorder(
+    @Req() req: Request,
+    @Body() payload: ReorderPreferencesDto,
+  ) {
+    const userPreferences = await this.userPreferencesService.reorder(
+      req.user!.id,
+      payload.preferences,
+    );
+
+    return userPreferences.map((userPreference) =>
+      toDto(preferenceDtoMap[userPreference.preference], userPreference),
+    );
+  }
+
   @ApiParam({
     name: 'preference',
     type: 'enum',
@@ -138,7 +163,6 @@ export class MeController {
     return toDto(preferenceDtoMap[userPreference.preference], userPreference);
   }
 
-  @ApiExtraModels(...PREFERENCE_SWAGGER_MODELS)
   @ApiParam({
     name: 'preference',
     type: 'enum',

@@ -1,19 +1,20 @@
 import { useQuery } from '@tanstack/react-query'
 
 import type {
-  AudioQualityDto,
   AudioQualityEnum,
-  LanguageDto,
+  AudioQualityMetaDto,
   LanguageEnum,
+  LanguageMetaDto,
   PreferenceEnum,
-  ResolutionDto,
   ResolutionEnum,
-  SourceDto,
+  ResolutionMetaDto,
   SourceEnum,
+  SourceMetaDto,
   TrackerEnum,
+  TrackerMetaDto,
   UserRoleEnum,
-  VideoQualityDto,
   VideoQualityEnum,
+  VideoQualityMetaDto,
 } from '@/shared/lib/source-client'
 import { getMetadata } from '@/shared/queries/metadata'
 
@@ -60,11 +61,12 @@ export function useMetadata() {
       | SourceEnum
       | AudioQualityEnum,
   ):
-    | LanguageDto
-    | ResolutionDto
-    | VideoQualityDto
-    | SourceDto
-    | AudioQualityDto => {
+    | TrackerMetaDto
+    | LanguageMetaDto
+    | ResolutionMetaDto
+    | VideoQualityMetaDto
+    | SourceMetaDto
+    | AudioQualityMetaDto => {
     const preference = getPreference(preferenceEnum)
 
     const found = preference.items.find(

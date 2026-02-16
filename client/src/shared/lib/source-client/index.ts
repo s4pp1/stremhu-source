@@ -32,6 +32,7 @@ export type { MeDto } from './models/MeDto';
 export type { MetadataDto } from './models/MetadataDto';
 export { PreferenceEnum } from './models/PreferenceEnum';
 export type { RelaySettingsDto } from './models/RelaySettingsDto';
+export type { ReorderPreferencesDto } from './models/ReorderPreferencesDto';
 export { ResolutionEnum } from './models/ResolutionEnum';
 export type { ResolutionMetaDto } from './models/ResolutionMetaDto';
 export type { ResolutionPreferenceDto } from './models/ResolutionPreferenceDto';

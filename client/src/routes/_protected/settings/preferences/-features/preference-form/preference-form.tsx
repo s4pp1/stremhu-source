@@ -1,9 +1,34 @@
-import { BanIcon, HeartIcon, SearchIcon, TrashIcon } from 'lucide-react'
+import type { DragEndEvent } from '@dnd-kit/core'
+import { DndContext } from '@dnd-kit/core'
+import {
+  restrictToVerticalAxis,
+  restrictToWindowEdges,
+} from '@dnd-kit/modifiers'
+import {
+  SortableContext,
+  arrayMove,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
+import {
+  BanIcon,
+  GrabIcon,
+  HeartIcon,
+  SearchIcon,
+  TrashIcon,
+} from 'lucide-react'
 import type { MouseEventHandler } from 'react'
 
+import { SortableWrapper } from '@/shared/components/sortable-wrapper'
 import { Alert, AlertTitle } from '@/shared/components/ui/alert'
 import { Button } from '@/shared/components/ui/button'
-import { ItemDescription, ItemTitle } from '@/shared/components/ui/item'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from '@/shared/components/ui/item'
 import { Separator } from '@/shared/components/ui/separator'
 import { withForm } from '@/shared/contexts/form-context'
 import { useMetadata } from '@/shared/hooks/use-metadata'
@@ -108,45 +133,97 @@ export const PreferenceForm = withForm({
           })}
         >
           {({ preference, preferred }) => {
+            const onReorderItems = (event: DragEndEvent) => {
+              const { active, over } = event
+              if (!over || active.id === over.id) return
+
+              const preferredItems = [...preferred] as Array<
+                (typeof preferred)[number]
+              >
+              const oldIndex = preferredItems.findIndex(
+                (value) => value === active.id,
+              )
+              const newIndex = preferredItems.findIndex(
+                (value) => value === over.id,
+              )
+              if (oldIndex === -1 || newIndex === -1) return
+
+              const reorderedItems = arrayMove(
+                preferredItems,
+                oldIndex,
+                newIndex,
+              )
+              form.setFieldValue(
+                'preferred',
+                reorderedItems as PreferenceItemDto,
+              )
+            }
+
             return (
               <div className="grid gap-4">
-                <div className="grid">
-                  <ItemTitle>Preferált tulajdonságok</ItemTitle>
-                  <ItemDescription>
-                    Azok a tulajdonságok, amiket ide hozzáadsz előrébb kerülnek
-                    a listában.
-                  </ItemDescription>
-                </div>
-                {preferred.map((item) => {
-                  const handleRemove: MouseEventHandler<HTMLButtonElement> = (
-                    event,
-                  ) => {
-                    event.preventDefault()
+                <Item className="p-0">
+                  <ItemContent>
+                    <ItemTitle>Preferált tulajdonságok</ItemTitle>
+                    <ItemDescription>
+                      Azok a tulajdonságok, amiket ide hozzáadsz előrébb
+                      kerülnek a listában.
+                    </ItemDescription>
+                  </ItemContent>
+                  <ItemActions>
+                    <ItemMedia variant="icon" className="rounded-full">
+                      <GrabIcon />
+                    </ItemMedia>
+                  </ItemActions>
+                </Item>
+                <DndContext
+                  onDragEnd={onReorderItems}
+                  modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
+                >
+                  <SortableContext
+                    items={preferred}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    {preferred.map((item) => {
+                      const handleRemove: MouseEventHandler<
+                        HTMLButtonElement
+                      > = (event) => {
+                        event.preventDefault()
 
-                    const filteredItems = preferred.filter(
-                      (i) => i !== item,
-                    ) as PreferenceItemDto
-                    form.setFieldValue('preferred', filteredItems)
-                  }
+                        const filteredItems = preferred.filter(
+                          (i) => i !== item,
+                        ) as PreferenceItemDto
+                        form.setFieldValue('preferred', filteredItems)
+                      }
 
-                  return (
-                    <PreferenceItem
-                      key={item}
-                      preference={preference}
-                      preferenceItem={item}
-                      actions={[
-                        <Button
-                          size="icon-sm"
-                          variant="destructive"
-                          className="rounded-full"
-                          onClick={handleRemove}
+                      return (
+                        <SortableWrapper
+                          key={item}
+                          item={item}
+                          resolveId={(i) => i}
                         >
-                          <TrashIcon />
-                        </Button>,
-                      ]}
-                    />
-                  )
-                })}
+                          <PreferenceItem
+                            preference={preference}
+                            preferenceItem={item}
+                            actions={[
+                              <Button
+                                key="delete"
+                                size="icon-sm"
+                                variant="destructive"
+                                className="rounded-full"
+                                onPointerDown={(event) =>
+                                  event.stopPropagation()
+                                }
+                                onClick={handleRemove}
+                              >
+                                <TrashIcon />
+                              </Button>,
+                            ]}
+                          />
+                        </SortableWrapper>
+                      )
+                    })}
+                  </SortableContext>
+                </DndContext>
                 {preferred.length === 0 && (
                   <Alert>
                     <HeartIcon />

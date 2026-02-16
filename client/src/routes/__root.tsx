@@ -30,6 +30,9 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       throw redirect({ to: '/' })
     }
   },
+  loader: () => {
+    return { breadcrumb: 'Kezdőoldal' }
+  },
   component: () => (
     <AppLayout>
       <Outlet />

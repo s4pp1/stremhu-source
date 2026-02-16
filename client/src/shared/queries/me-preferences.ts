@@ -11,6 +11,7 @@ import type {
   LanguageEnum,
   LanguagePreferenceDto,
   PreferenceEnum,
+  ReorderPreferencesDto,
   ResolutionEnum,
   ResolutionPreferenceDto,
   SourceEnum,
@@ -73,6 +74,19 @@ export function useUpdateMePreference() {
   return useMutation({
     mutationFn: async (payload: PreferenceDto) => {
       await appClient.me.updateMePreference(payload.preference, payload)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })
+    },
+  })
+}
+
+export function useReorderMePreference() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (payload: ReorderPreferencesDto) => {
+      await appClient.me.mePreferenceReorder(payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })

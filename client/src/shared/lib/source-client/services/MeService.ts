@@ -6,6 +6,7 @@ import type { AudioPreferenceDto } from '../models/AudioPreferenceDto';
 import type { LanguagePreferenceDto } from '../models/LanguagePreferenceDto';
 import type { MeDto } from '../models/MeDto';
 import type { PreferenceEnum } from '../models/PreferenceEnum';
+import type { ReorderPreferencesDto } from '../models/ReorderPreferencesDto';
 import type { ResolutionPreferenceDto } from '../models/ResolutionPreferenceDto';
 import type { SourcePreferenceDto } from '../models/SourcePreferenceDto';
 import type { TrackerPreferenceDto } from '../models/TrackerPreferenceDto';
@@ -64,6 +65,21 @@ export class MeService {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/me/preferences',
+        });
+    }
+    /**
+     * @param requestBody
+     * @returns any
+     * @throws ApiError
+     */
+    public mePreferenceReorder(
+        requestBody: ReorderPreferencesDto,
+    ): CancelablePromise<Array<(TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoPreferenceDto | SourcePreferenceDto | AudioPreferenceDto)>> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: '/api/me/preferences/reorder',
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
     /**

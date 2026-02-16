@@ -86,6 +86,7 @@ export function Preference(props: PreferenceProps) {
         <ItemActions>
           <Button asChild size="icon-sm" className="rounded-full">
             <Link
+              onPointerDown={(e) => e.stopPropagation()}
               to="/settings/preferences/$preference"
               params={{ preference: preference.preference }}
             >
@@ -96,6 +97,7 @@ export function Preference(props: PreferenceProps) {
             size="icon-sm"
             className="rounded-full"
             variant="destructive"
+            onPointerDown={(e) => e.stopPropagation()}
             onClick={handleDelete}
           >
             <TrashIcon />
