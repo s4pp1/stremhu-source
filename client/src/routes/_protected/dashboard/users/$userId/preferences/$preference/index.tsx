@@ -8,6 +8,7 @@ import {
 import type { SubmitEventHandler } from 'react'
 import { toast } from 'sonner'
 
+import { PreferenceForm } from '@/features/preference-form/preference-form'
 import {
   Card,
   CardContent,
@@ -20,47 +21,46 @@ import { useAppForm } from '@/shared/contexts/form-context'
 import { useMetadata } from '@/shared/hooks/use-metadata'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
 import {
-  getMePreference,
-  useUpdateMePreference,
-} from '@/shared/queries/me-preferences'
+  getUserPreference,
+  useUpdateUserPreference,
+} from '@/shared/queries/user-preferences'
 import type { PreferenceDto } from '@/shared/type/preference.dto'
 
-import { PreferenceForm } from '../../../../../features/preference-form/preference-form'
-
 export const Route = createFileRoute(
-  '/_protected/settings/preferences/$preference/',
+  '/_protected/dashboard/users/$userId/preferences/$preference/',
 )({
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const navigate = useNavigate()
-  const { preference } = useParams({
-    from: '/_protected/settings/preferences/$preference/',
+  const { userId, preference } = useParams({
+    from: '/_protected/dashboard/users/$userId/preferences/$preference/',
   })
 
-  const [{ data: mePreference }] = useQueries({
-    queries: [getMePreference(preference)],
+  const [{ data: userPreference }] = useQueries({
+    queries: [getUserPreference(userId, preference)],
   })
-
-  assertExists(mePreference)
+  assertExists(userPreference)
 
   const { getPreference } = useMetadata()
-
   const preferenceMeta = getPreference(preference)
 
-  const { mutateAsync: updateMePreference } = useUpdateMePreference()
+  const { mutateAsync: updateUserPreference } = useUpdateUserPreference(userId)
 
   const form = useAppForm({
     defaultValues: {
-      preference: mePreference.preference,
-      preferred: mePreference.preferred,
-      blocked: mePreference.blocked,
+      preference: userPreference.preference,
+      preferred: userPreference.preferred,
+      blocked: userPreference.blocked,
     } as PreferenceDto,
     onSubmit: async ({ value }) => {
       try {
-        await updateMePreference(value)
-        navigate({ to: '/settings/preferences' })
+        await updateUserPreference(value)
+        navigate({
+          to: '/dashboard/users/$userId/preferences',
+          params: { userId },
+        })
       } catch (error) {
         const message = parseApiError(error)
         toast.error(message)
@@ -90,7 +90,12 @@ function RouteComponent() {
           </CardContent>
           <CardFooter className="gap-4 justify-end">
             <form.SubscribeButton asChild variant="outline">
-              <Link to="/settings/preferences">Mégsem</Link>
+              <Link
+                to="/dashboard/users/$userId/preferences"
+                params={{ userId }}
+              >
+                Mégsem
+              </Link>
             </form.SubscribeButton>
             <form.Subscribe
               selector={(state) => {

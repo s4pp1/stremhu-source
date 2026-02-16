@@ -34,7 +34,7 @@ import { withForm } from '@/shared/contexts/form-context'
 import { useMetadata } from '@/shared/hooks/use-metadata'
 import type { PreferenceItemDto } from '@/shared/queries/me-preferences'
 
-import { PreferenceItem } from '../../-components/preference-item'
+import { PreferenceItem } from '../../routes/_protected/settings/preferences/-components/preference-item'
 import { preferenceFormValues } from './preference-form-values'
 
 export const PreferenceForm = withForm({

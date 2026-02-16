@@ -6,29 +6,16 @@ import {
 
 import { appClient } from '../lib/client'
 import type {
-  AudioPreferenceDto,
   AudioQualityEnum,
   LanguageEnum,
-  LanguagePreferenceDto,
   PreferenceEnum,
   ReorderPreferencesDto,
   ResolutionEnum,
-  ResolutionPreferenceDto,
   SourceEnum,
-  SourcePreferenceDto,
   TrackerEnum,
-  TrackerPreferenceDto,
-  VideoPreferenceDto,
   VideoQualityEnum,
 } from '../lib/source-client'
-
-export type PreferenceDto =
-  | TrackerPreferenceDto
-  | LanguagePreferenceDto
-  | ResolutionPreferenceDto
-  | VideoPreferenceDto
-  | SourcePreferenceDto
-  | AudioPreferenceDto
+import type { PreferenceDto } from '../type/preference.dto'
 
 export type PreferenceItemDto =
   | Array<TrackerEnum>

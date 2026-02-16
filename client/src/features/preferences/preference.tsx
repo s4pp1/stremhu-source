@@ -1,3 +1,4 @@
+import type { LinkProps } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
 import { EditIcon, TrashIcon } from 'lucide-react'
 import type { MouseEventHandler } from 'react'
@@ -12,38 +13,23 @@ import {
   ItemTitle,
 } from '@/shared/components/ui/item'
 import { useMetadata } from '@/shared/hooks/use-metadata'
-import type {
-  AudioPreferenceDto,
-  LanguagePreferenceDto,
-  PreferenceEnum,
-  ResolutionPreferenceDto,
-  SourcePreferenceDto,
-  TrackerPreferenceDto,
-  VideoPreferenceDto,
-} from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
-import { useDeleteMePreference } from '@/shared/queries/me-preferences'
+import type { PreferenceDto } from '@/shared/type/preference.dto'
 
 import { BadgesSection } from './badges-section'
 
 interface PreferenceProps {
-  preference:
-    | TrackerPreferenceDto
-    | LanguagePreferenceDto
-    | ResolutionPreferenceDto
-    | VideoPreferenceDto
-    | SourcePreferenceDto
-    | AudioPreferenceDto
+  preference: PreferenceDto
+  toEditLink: LinkProps
+  onDelete: (preference: PreferenceDto) => Promise<void>
 }
 
 export function Preference(props: PreferenceProps) {
-  const { preference } = props
+  const { preference, toEditLink, onDelete } = props
 
   const { getPreference, getPreferenceItem } = useMetadata()
 
   const confirmDialog = useConfirmDialog()
-
-  const { mutateAsync: deleteMePreference } = useDeleteMePreference()
 
   const preferenceName = getPreference(preference.preference).label
 
@@ -64,8 +50,7 @@ export function Preference(props: PreferenceProps) {
       confirmText: 'Törlés',
       onConfirm: async () => {
         try {
-          const item = preference.preference
-          await deleteMePreference(item as unknown as PreferenceEnum)
+          await onDelete(preference)
         } catch (error) {
           const message = parseApiError(error)
           toast.error(message)
@@ -85,11 +70,7 @@ export function Preference(props: PreferenceProps) {
         </ItemContent>
         <ItemActions>
           <Button asChild size="icon-sm" className="rounded-full">
-            <Link
-              onPointerDown={(e) => e.stopPropagation()}
-              to="/settings/preferences/$preference"
-              params={{ preference: preference.preference }}
-            >
+            <Link onPointerDown={(e) => e.stopPropagation()} {...toEditLink}>
               <EditIcon />
             </Link>
           </Button>
