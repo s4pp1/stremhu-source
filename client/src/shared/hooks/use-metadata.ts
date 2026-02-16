@@ -1,13 +1,20 @@
 import { useQuery } from '@tanstack/react-query'
 
 import type {
-  AudioCodecEnum,
+  AudioQualityEnum,
+  AudioQualityMetaDto,
   LanguageEnum,
+  LanguageMetaDto,
+  PreferenceEnum,
   ResolutionEnum,
-  SourceTypeEnum,
+  ResolutionMetaDto,
+  SourceEnum,
+  SourceMetaDto,
   TrackerEnum,
+  TrackerMetaDto,
   UserRoleEnum,
   VideoQualityEnum,
+  VideoQualityMetaDto,
 } from '@/shared/lib/source-client'
 import { getMetadata } from '@/shared/queries/metadata'
 
@@ -15,51 +22,10 @@ export function useMetadata() {
   const { data: metadata } = useQuery(getMetadata)
   if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
 
-  const {
-    languages,
-    resolutions,
-    videoQualities,
-    audioCodecs,
-    sourceTypes,
-    trackers,
-    userRoles,
-  } = metadata
+  const { preferences, trackers, userRoles } = metadata
 
   const getUserRoleLabel = (userRoleEnum: UserRoleEnum): string => {
     const found = userRoles.find((role) => role.value === userRoleEnum)
-    return found!.label
-  }
-
-  const getLanguageLabel = (languageEnum: LanguageEnum): string => {
-    const found = languages.find((language) => language.value === languageEnum)
-    return found!.label
-  }
-
-  const getResolutionLabel = (resolutionEnum: ResolutionEnum): string => {
-    const found = resolutions.find(
-      (resolution) => resolution.value === resolutionEnum,
-    )
-    return found!.label
-  }
-
-  const getVideoQualityLabel = (videoQualityEnum: VideoQualityEnum): string => {
-    const found = videoQualities.find(
-      (videoQuality) => videoQuality.value === videoQualityEnum,
-    )
-    return found!.label
-  }
-
-  const getAudioCodecLabel = (audioCodecEnum: AudioCodecEnum): string => {
-    const found = audioCodecs.find(
-      (audioCodec) => audioCodec.value === audioCodecEnum,
-    )
-    return found!.label
-  }
-
-  const getSourceTypeLabel = (sourceTypeEnum: SourceTypeEnum): string => {
-    const found = sourceTypes.find(
-      (sourceType) => sourceType.value === sourceTypeEnum,
-    )
     return found!.label
   }
 
@@ -78,15 +44,44 @@ export function useMetadata() {
     return { url: found!.url, detailsPath: found!.detailsPath }
   }
 
+  const getPreference = (preferenceEnum: PreferenceEnum) => {
+    const found = preferences.find(
+      (item) => (item.value as unknown as PreferenceEnum) === preferenceEnum,
+    )
+    return found!
+  }
+
+  const getPreferenceItem = (
+    preferenceEnum: PreferenceEnum,
+    preferenceItemEnum:
+      | TrackerEnum
+      | LanguageEnum
+      | ResolutionEnum
+      | VideoQualityEnum
+      | SourceEnum
+      | AudioQualityEnum,
+  ):
+    | TrackerMetaDto
+    | LanguageMetaDto
+    | ResolutionMetaDto
+    | VideoQualityMetaDto
+    | SourceMetaDto
+    | AudioQualityMetaDto => {
+    const preference = getPreference(preferenceEnum)
+
+    const found = preference.items.find(
+      (item) => item.value === preferenceItemEnum,
+    )
+
+    return found!
+  }
+
   return {
     getUserRoleLabel,
-    getLanguageLabel,
-    getResolutionLabel,
-    getVideoQualityLabel,
-    getAudioCodecLabel,
-    getSourceTypeLabel,
     getTrackerLabel,
     getTrackerFullDownload,
     getTrackerUrl,
+    getPreference,
+    getPreferenceItem,
   }
 }

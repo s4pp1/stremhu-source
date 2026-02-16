@@ -1,4 +1,3 @@
-import { Resolution } from '@ctrl/video-filename-parser';
 import {
   Column,
   CreateDateColumn,
@@ -7,11 +6,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
-import { LanguageEnum } from 'src/common/enum/language.enum';
-import { AudioCodecEnum } from 'src/stremio/streams/enum/audio-codec.enum';
-import { SourceTypeEnum } from 'src/stremio/streams/enum/source-type.enum';
-import { VideoQualityEnum } from 'src/stremio/streams/enum/video-quality.enum';
 
 import { UserRoleEnum } from '../enum/user-role.enum';
 
@@ -36,41 +30,6 @@ export class User {
     enum: UserRoleEnum,
   })
   userRole: UserRoleEnum;
-
-  @Column({
-    name: 'torrent_resolutions',
-    type: 'simple-json',
-    default: JSON.stringify(Object.values(Resolution)),
-  })
-  torrentResolutions: Resolution[];
-
-  @Column({
-    name: 'torrent_video_qualities',
-    type: 'simple-json',
-    default: JSON.stringify(Object.values(VideoQualityEnum)),
-  })
-  torrentVideoQualities: VideoQualityEnum[];
-
-  @Column({
-    name: 'torrent_audio_codecs',
-    type: 'simple-json',
-    default: JSON.stringify(Object.values(AudioCodecEnum)),
-  })
-  torrentAudioCodecs: AudioCodecEnum[];
-
-  @Column({
-    name: 'torrent_source_types',
-    type: 'simple-json',
-    default: JSON.stringify(Object.values(SourceTypeEnum)),
-  })
-  torrentSourceTypes: SourceTypeEnum[];
-
-  @Column({
-    name: 'torrent_languages',
-    type: 'simple-json',
-    default: JSON.stringify(Object.values(LanguageEnum)),
-  })
-  torrentLanguages: LanguageEnum[];
 
   @Column({
     name: 'torrent_seed',

@@ -1,9 +1,9 @@
-import type { FormEventHandler } from 'react'
+import type { MouseEventHandler, SubmitEventHandler } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
-import { useDialogsStore } from '@/routes/-features/dialogs/dialogs-store'
 import type { OpenedDialog } from '@/routes/-features/dialogs/dialogs-store'
+import { useDialogsStore } from '@/routes/-features/dialogs/dialogs-store'
 import {
   Dialog,
   DialogDescription,
@@ -67,13 +67,13 @@ export function ChangePasswordDialog(
     },
   })
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     e.stopPropagation()
     await form.handleSubmit()
   }
 
-  const handleClose: FormEventHandler<HTMLButtonElement> = (e) => {
+  const handleClose: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault()
     e.stopPropagation()
     dialogsStore.closeDialog(dialog.id)

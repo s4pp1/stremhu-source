@@ -1,6 +1,9 @@
 import { TrackerEnum } from '../enum/tracker.enum';
-import { TrackerInfo } from './tracker-info.type';
 
 export type TrackerOption = {
   value: TrackerEnum;
-} & TrackerInfo;
+  label: string;
+  requiresFullDownload: boolean;
+  url: string;
+  detailsPath: string;
+};

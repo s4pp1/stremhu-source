@@ -1,6 +1,6 @@
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import _ from 'lodash'
-import type { FormEventHandler } from 'react'
+import type { SubmitEventHandler } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
@@ -53,7 +53,7 @@ function SetupUserRoute() {
         await registration(value)
 
         navigate({
-          to: '/settings',
+          to: '/dashboard',
         })
       } catch (error) {
         const message = parseApiError(error)
@@ -62,7 +62,7 @@ function SetupUserRoute() {
     },
   })
 
-  const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+  const onSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     e.stopPropagation()
     await form.handleSubmit()

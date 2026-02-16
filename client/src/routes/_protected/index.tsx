@@ -1,15 +1,25 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router'
+import { ChevronRightIcon, ListVideoIcon, ShieldUserIcon } from 'lucide-react'
 
+import { Button } from '@/shared/components/ui/button'
 import {
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from '@/shared/components/ui/item'
 import { Separator } from '@/shared/components/ui/separator'
 
-import { LoginAndSecurity } from './-features/login-and-security'
 import { MeConfig } from './-features/me-config'
-import { TorrentsPreferences } from './-features/torrents-preferences'
+import { SETTINGS_ACCOUNT_NAME } from './settings/account/route'
+import { SETTINGS_PREFERENCES_NAME } from './settings/preferences/route'
 
 export const Route = createFileRoute('/_protected/')({
   component: ProfileRoute,
@@ -20,30 +30,75 @@ function ProfileRoute() {
     <div className="grid gap-8">
       <div className="grid gap-4">
         <CardHeader className="px-0">
-          <CardTitle>Stream preferenciák</CardTitle>
+          <CardTitle>Integráció</CardTitle>
           <CardDescription>
-            Konfiguráld, hogy a Stremio-ban megjelenő torrenteknél mik a
-            preferenciáid és ennek megfelelően fognak megjelenni.
+            Addon összekapcsolása a Stremio-fiókoddal.
           </CardDescription>
         </CardHeader>
-        <TorrentsPreferences />
+        <div className="columns-1 md:columns-2 gap-4">
+          <div className="break-inside-avoid mb-4">
+            <MeConfig />
+          </div>
+        </div>
       </div>
       <Separator />
       <div className="grid gap-4">
         <CardHeader className="px-0">
-          <CardTitle>Fiókbeállítások és Stremio-integráció</CardTitle>
+          <CardTitle>Beállítások</CardTitle>
           <CardDescription>
             Itt módosíthatod a belépési adataidat és biztonsági beállításaidat,
             valamint összekapcsolhatod az addont a Stremio-fiókoddal.
           </CardDescription>
         </CardHeader>
-        <div className="columns-1 md:columns-2 gap-4">
-          <div className="break-inside-avoid mb-4">
-            <LoginAndSecurity />
-          </div>
-          <div className="break-inside-avoid mb-4">
-            <MeConfig />
-          </div>
+        <div className="grid gap-4">
+          <Item asChild variant="muted">
+            <Link to="/settings/account">
+              <ItemMedia variant="icon">
+                <ShieldUserIcon />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>
+                  {SETTINGS_ACCOUNT_NAME} - Bejelentkezés és biztonság
+                </ItemTitle>
+                <ItemDescription>
+                  The standard size for most use cases.
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <Button
+                  className="rounded-full"
+                  size="icon-sm"
+                  variant="default"
+                >
+                  <ChevronRightIcon />
+                </Button>
+              </ItemActions>
+            </Link>
+          </Item>
+          <Item asChild variant="muted">
+            <Link to="/settings/preferences">
+              <ItemMedia variant="icon">
+                <ListVideoIcon />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>
+                  {SETTINGS_PREFERENCES_NAME} - Torrent lista személyreszabása
+                </ItemTitle>
+                <ItemDescription>
+                  The standard size for most use cases.
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions>
+                <Button
+                  className="rounded-full"
+                  size="icon-sm"
+                  variant="default"
+                >
+                  <ChevronRightIcon />
+                </Button>
+              </ItemActions>
+            </Link>
+          </Item>
         </div>
       </div>
     </div>

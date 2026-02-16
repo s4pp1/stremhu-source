@@ -1,7 +1,6 @@
-import { Resolution } from '@ctrl/video-filename-parser';
-
-import { LanguageEnum } from 'src/common/enum/language.enum';
 import { ParsedTorrent } from 'src/common/utils/parse-torrent.util';
+import { LanguageEnum } from 'src/preference-items/enum/language.enum';
+import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
 
 import { TrackerEnum } from '../enum/tracker.enum';
 
@@ -21,7 +20,7 @@ export interface AdapterTorrentId {
 
 export interface AdapterTorrent extends AdapterTorrentId {
   language: LanguageEnum;
-  resolution: Resolution;
+  resolution: ResolutionEnum;
   seeders: number;
 }
 

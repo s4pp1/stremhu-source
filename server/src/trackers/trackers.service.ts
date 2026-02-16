@@ -4,31 +4,25 @@ import {
   NotFoundException,
   NotImplementedException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { isUndefined, omitBy } from 'lodash';
 import { EntityManager } from 'typeorm';
 
 import { TorrentsCacheService } from 'src/torrents-cache/torrents-cache.service';
 import { TorrentsService } from 'src/torrents/torrents.service';
 
-import { DETAILS_PATH as BITHUMEN_DETAILS_PATH } from './adapters/bithumen/bithumen.constants';
-import { DETAILS_PATH as INSANE_DETAILS_PATH } from './adapters/insane/insane.constants';
-import { DETAILS_PATH as MAJOMPARADE_DETAILS_PATH } from './adapters/majomparade/majomparade.constants';
-import { DETAILS_PATH as NCORE_DETAILS_PATH } from './adapters/ncore/ncore.constants';
 import { TrackersStore } from './core/trackers.store';
 import { TrackerEnum } from './enum/tracker.enum';
+import { TrackersMetaService } from './meta/trackers-meta.service';
 import { TrackerAdapterRegistry } from './tracker-adapter.registry';
 import { LoginRequest } from './tracker.types';
-import { TRACKER_INFO, TRACKER_OPTIONS } from './trackers.constants';
-import { TrackerOptionWithUrl } from './type/tracker-option-with-url.type';
 import { TrackerToUpdate } from './type/tracker-to-update.type';
 
 @Injectable()
 export class TrackersService {
   constructor(
-    private readonly configService: ConfigService,
     private readonly trackerAdapterRegistry: TrackerAdapterRegistry,
     private readonly trackersStore: TrackersStore,
+    private readonly trackersMetaService: TrackersMetaService,
     private readonly torrentsService: TorrentsService,
     private readonly torrentsCacheService: TorrentsCacheService,
   ) {}
@@ -52,7 +46,8 @@ export class TrackersService {
         keepSeedSeconds: null,
         hitAndRun: null,
         orderIndex: trackers.length,
-        downloadFullTorrent: TRACKER_INFO[tracker].requiresFullDownload,
+        downloadFullTorrent:
+          this.trackersMetaService.resolve(tracker).requiresFullDownload,
       });
     } catch (error) {
       if (error instanceof Error) {
@@ -63,6 +58,11 @@ export class TrackersService {
         `Bejelentkezés közben hiba történt, próbáld újra!`,
       );
     }
+  }
+
+  async find() {
+    const items = await this.trackersStore.find();
+    return items;
   }
 
   async findOneOrThrow(tracker: TrackerEnum) {
@@ -79,11 +79,12 @@ export class TrackersService {
     const { downloadFullTorrent } = payload;
 
     if (downloadFullTorrent !== undefined) {
-      const rule = TRACKER_INFO[tracker].requiresFullDownload;
+      const rule =
+        this.trackersMetaService.resolve(tracker).requiresFullDownload;
 
       if (rule && !downloadFullTorrent) {
         throw new BadRequestException(
-          `A(z) "${TRACKER_INFO[tracker].label}" esetén a teljes letöltés nem kapcsolható ki.`,
+          `A(z) "${this.trackersMetaService.resolve(tracker).label}" esetén a teljes letöltés nem kapcsolható ki.`,
         );
       }
     }
@@ -110,42 +111,5 @@ export class TrackersService {
     await this.torrentsService.deleteAllByTracker(tracker);
     await this.torrentsCacheService.deleteAllByTracker(tracker);
     await this.trackersStore.remove(foundTracker, manager);
-  }
-
-  getTrackerOptionsWithUrl(): TrackerOptionWithUrl[] {
-    const ncoreUrl = this.configService.getOrThrow<string>('tracker.ncore-url');
-    const bithumenUrl = this.configService.getOrThrow<string>(
-      'tracker.bithumen-url',
-    );
-    const insaneUrl =
-      this.configService.getOrThrow<string>('tracker.insane-url');
-    const majomparadeUrl = this.configService.getOrThrow<string>(
-      'tracker.majomparade-url',
-    );
-
-    const trackerUrl = {
-      [TrackerEnum.NCORE]: {
-        url: ncoreUrl,
-        detailsPath: NCORE_DETAILS_PATH,
-      },
-      [TrackerEnum.BITHUMEN]: {
-        url: bithumenUrl,
-        detailsPath: BITHUMEN_DETAILS_PATH,
-      },
-      [TrackerEnum.INSANE]: {
-        url: insaneUrl,
-        detailsPath: INSANE_DETAILS_PATH,
-      },
-      [TrackerEnum.MAJOMPARADE]: {
-        url: majomparadeUrl,
-        detailsPath: MAJOMPARADE_DETAILS_PATH,
-      },
-    };
-
-    return TRACKER_OPTIONS.map((trackerOption) => ({
-      ...trackerOption,
-      url: trackerUrl[trackerOption.value].url,
-      detailsPath: trackerUrl[trackerOption.value].detailsPath,
-    }));
   }
 }

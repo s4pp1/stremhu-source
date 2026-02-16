@@ -5,17 +5,21 @@ import type { Request } from 'express';
 import { OptionalAuth } from 'src/auth/decorators/optional-auth.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { toDto } from 'src/common/utils/to-dto';
+import { UserPreferencesService } from 'src/users/preferences/user-preferences.service';
 
 import { UserDto } from '../users/dto/user.dto';
 import { UsersService } from '../users/users.service';
 import { MeDto } from './dto/me.dto';
 import { UpdateMeDto } from './dto/update-me.dto';
 
-@ApiTags('Me')
 @UseGuards(AuthGuard)
 @Controller('/me')
+@ApiTags('Me')
 export class MeController {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly userPreferencesService: UserPreferencesService,
+  ) {}
 
   @ApiResponse({
     status: 200,

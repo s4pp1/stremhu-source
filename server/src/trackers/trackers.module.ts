@@ -11,6 +11,7 @@ import { InsaneModule } from './adapters/insane/insane.module';
 import { MajomparadeModule } from './adapters/majomparade/majomparade.module';
 import { NcoreModule } from './adapters/ncore/ncore.module';
 import { TrackersCoreModule } from './core/trackers-core.module';
+import { TrackersMetaModule } from './meta/trackers-meta.module';
 import { TrackerAdapterRegistry } from './tracker-adapter.registry';
 import { TrackerDiscoveryService } from './tracker-discovery.service';
 import { TrackerMaintenanceService } from './tracker-maintenance.service';
@@ -20,6 +21,7 @@ import { TrackersService } from './trackers.service';
 @Module({
   imports: [
     TrackersCoreModule,
+    TrackersMetaModule,
     AuthModule,
     TorrentsCacheCoreModule,
     TorrentsCacheModule,

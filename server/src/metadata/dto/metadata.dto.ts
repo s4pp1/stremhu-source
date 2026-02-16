@@ -1,40 +1,20 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { IsArray, IsString } from 'class-validator';
 
 import { HealthDto } from 'src/common/dto/health.dto';
 
-import { AudioCodecDto } from './audio-codec.dto';
-import { LanguageDto } from './language.dto';
-import { ResolutionDto } from './resolution.dto';
-import { SourceTypeDto } from './source-type.dto';
+import {
+  PREFERENCE_META_SWAGGER_MODELS,
+  PreferenceMetaDto,
+} from './preference-meta.dto';
 import { TrackerMetaDto } from './tracker-meta.dto';
-import { UserRoleDto } from './user-role.dto';
-import { VideoQualityDto } from './video-quality.dto';
+import { UserRoleMetaDto } from './user-role-meta.dto';
 
+@ApiExtraModels(...PREFERENCE_META_SWAGGER_MODELS)
 export class MetadataDto extends HealthDto {
   @IsArray()
-  @ApiProperty({ type: UserRoleDto, isArray: true })
-  userRoles: UserRoleDto[];
-
-  @IsArray()
-  @ApiProperty({ type: ResolutionDto, isArray: true })
-  resolutions: ResolutionDto[];
-
-  @IsArray()
-  @ApiProperty({ type: VideoQualityDto, isArray: true })
-  videoQualities: VideoQualityDto[];
-
-  @IsArray()
-  @ApiProperty({ type: AudioCodecDto, isArray: true })
-  audioCodecs: AudioCodecDto[];
-
-  @IsArray()
-  @ApiProperty({ type: LanguageDto, isArray: true })
-  languages: LanguageDto[];
-
-  @IsArray()
-  @ApiProperty({ type: SourceTypeDto, isArray: true })
-  sourceTypes: SourceTypeDto[];
+  @ApiProperty({ type: UserRoleMetaDto, isArray: true })
+  userRoles: UserRoleMetaDto[];
 
   @IsArray()
   @ApiProperty({ type: TrackerMetaDto, isArray: true })
@@ -43,4 +23,14 @@ export class MetadataDto extends HealthDto {
   @IsString()
   @ApiProperty()
   endpoint: string;
+
+  @ApiProperty({
+    type: 'array',
+    items: {
+      oneOf: PREFERENCE_META_SWAGGER_MODELS.map((model) => ({
+        $ref: getSchemaPath(model),
+      })),
+    },
+  })
+  preferences: PreferenceMetaDto[];
 }
