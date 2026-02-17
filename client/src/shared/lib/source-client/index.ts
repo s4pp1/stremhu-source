@@ -10,10 +10,14 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
-export type { AudioPreferenceDto } from './models/AudioPreferenceDto';
 export { AudioQualityEnum } from './models/AudioQualityEnum';
 export type { AudioQualityMetaDto } from './models/AudioQualityMetaDto';
+export type { AudioQualityPreferenceDto } from './models/AudioQualityPreferenceDto';
 export type { AudioQualityPreferenceMetaDto } from './models/AudioQualityPreferenceMetaDto';
+export { AudioSpatialEnum } from './models/AudioSpatialEnum';
+export type { AudioSpatialMetaDto } from './models/AudioSpatialMetaDto';
+export type { AudioSpatialPreferenceDto } from './models/AudioSpatialPreferenceDto';
+export type { AudioSpatialPreferenceMetaDto } from './models/AudioSpatialPreferenceMetaDto';
 export type { AuthLoginDto } from './models/AuthLoginDto';
 export type { BehaviorHintsDto } from './models/BehaviorHintsDto';
 export type { CatalogHealthDto } from './models/CatalogHealthDto';
@@ -61,9 +65,9 @@ export type { UpdateUserDto } from './models/UpdateUserDto';
 export type { UserDto } from './models/UserDto';
 export { UserRoleEnum } from './models/UserRoleEnum';
 export type { UserRoleMetaDto } from './models/UserRoleMetaDto';
-export type { VideoPreferenceDto } from './models/VideoPreferenceDto';
 export { VideoQualityEnum } from './models/VideoQualityEnum';
 export type { VideoQualityMetaDto } from './models/VideoQualityMetaDto';
+export type { VideoQualityPreferenceDto } from './models/VideoQualityPreferenceDto';
 export type { VideoQualityPreferenceMetaDto } from './models/VideoQualityPreferenceMetaDto';
 
 export { AppService } from './services/AppService';

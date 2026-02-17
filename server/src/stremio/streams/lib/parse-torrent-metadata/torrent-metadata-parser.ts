@@ -1,3 +1,4 @@
+import { AudioSpatialEnum } from 'src/preference-items/enum/audio-feature.enum';
 import { AudioQualityEnum } from 'src/preference-items/enum/audio-quality.enum';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
@@ -6,6 +7,7 @@ import { VideoQualityEnum } from 'src/preference-items/enum/video-quality.enum';
 import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
 
 import { parseAudioQuality } from './util/parse-audio-quality.util';
+import { parseAudioSpatial } from './util/parse-audio-spatial.util';
 import { parseResolution } from './util/parse-resolution.util';
 import { parseSource } from './util/parse-source.util';
 import { parseVideoQuality } from './util/parse-video-quality.util';
@@ -49,6 +51,10 @@ export class TorrentMetadataParser {
     return parseAudioQuality(this.normalizeName);
   }
 
+  parseAudioSpatial(): AudioSpatialEnum | null {
+    return parseAudioSpatial(this.normalizeName);
+  }
+
   parse() {
     return {
       [PreferenceEnum.LANGUAGE]: this.parseLanguage(),
@@ -56,6 +62,7 @@ export class TorrentMetadataParser {
       [PreferenceEnum.VIDEO_QUALITY]: this.parseVideoQuality(),
       [PreferenceEnum.SOURCE]: this.parseSource(),
       [PreferenceEnum.AUDIO_QUALITY]: this.parseAudioQuality(),
+      [PreferenceEnum.AUDIO_SPATIAL]: this.parseAudioSpatial(),
     };
   }
 }

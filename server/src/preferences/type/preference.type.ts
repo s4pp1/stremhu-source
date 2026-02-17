@@ -1,3 +1,4 @@
+import { AudioSpatialEnum } from 'src/preference-items/enum/audio-feature.enum';
 import { AudioQualityEnum } from 'src/preference-items/enum/audio-quality.enum';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
@@ -47,12 +48,20 @@ export class SourcePreference {
   blocked: SourceEnum[];
 }
 
-export class AudioPreference {
+export class AudioQualityPreference {
   preference: PreferenceEnum.AUDIO_QUALITY;
 
   preferred: AudioQualityEnum[];
 
   blocked: AudioQualityEnum[];
+}
+
+export class AudioSpatialPreference {
+  preference: PreferenceEnum.AUDIO_SPATIAL;
+
+  preferred: AudioSpatialEnum[];
+
+  blocked: AudioSpatialEnum[];
 }
 
 export type Preference = {
@@ -63,5 +72,6 @@ export type Preference = {
   | ResolutionPreference
   | VideoPreference
   | SourcePreference
-  | AudioPreference
+  | AudioQualityPreference
+  | AudioSpatialPreference
 );

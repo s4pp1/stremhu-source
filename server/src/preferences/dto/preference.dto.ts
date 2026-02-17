@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import type { ClassConstructor } from 'class-transformer';
 import { Equals, IsEnum } from 'class-validator';
 
+import { AudioSpatialEnum } from 'src/preference-items/enum/audio-feature.enum';
 import { AudioQualityEnum } from 'src/preference-items/enum/audio-quality.enum';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
@@ -73,7 +74,7 @@ export class ResolutionPreferenceDto {
   blocked: ResolutionEnum[];
 }
 
-export class VideoPreferenceDto {
+export class VideoQualityPreferenceDto {
   @Equals(PreferenceEnum.VIDEO_QUALITY)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -125,7 +126,7 @@ export class SourcePreferenceDto {
   blocked: SourceEnum[];
 }
 
-export class AudioPreferenceDto {
+export class AudioQualityPreferenceDto {
   @Equals(PreferenceEnum.AUDIO_QUALITY)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -151,13 +152,40 @@ export class AudioPreferenceDto {
   blocked: AudioQualityEnum[];
 }
 
+export class AudioSpatialPreferenceDto {
+  @Equals(PreferenceEnum.AUDIO_SPATIAL)
+  @ApiProperty({
+    enum: PreferenceEnum,
+    enumName: 'PreferenceEnum',
+    example: PreferenceEnum.AUDIO_SPATIAL,
+  })
+  preference: PreferenceEnum.AUDIO_SPATIAL;
+
+  @IsEnum(AudioSpatialEnum, { each: true })
+  @ApiProperty({
+    enum: AudioSpatialEnum,
+    enumName: 'AudioSpatialEnum',
+    isArray: true,
+  })
+  preferred: AudioSpatialEnum[];
+
+  @IsEnum(AudioSpatialEnum, { each: true })
+  @ApiProperty({
+    enum: AudioSpatialEnum,
+    enumName: 'AudioSpatialEnum',
+    isArray: true,
+  })
+  blocked: AudioSpatialEnum[];
+}
+
 export type PreferenceDto =
   | TrackerPreferenceDto
   | LanguagePreferenceDto
   | ResolutionPreferenceDto
-  | VideoPreferenceDto
+  | VideoQualityPreferenceDto
   | SourcePreferenceDto
-  | AudioPreferenceDto;
+  | AudioQualityPreferenceDto
+  | AudioSpatialPreferenceDto;
 
 type PreferenceDtoConstructor = ClassConstructor<PreferenceDto>;
 
@@ -165,9 +193,10 @@ export const PREFERENCE_SWAGGER_MODELS: readonly PreferenceDtoConstructor[] = [
   TrackerPreferenceDto,
   LanguagePreferenceDto,
   ResolutionPreferenceDto,
-  VideoPreferenceDto,
+  VideoQualityPreferenceDto,
   SourcePreferenceDto,
-  AudioPreferenceDto,
+  AudioQualityPreferenceDto,
+  AudioSpatialPreferenceDto,
 ];
 
 export const preferenceDtoMap: Record<
@@ -177,7 +206,8 @@ export const preferenceDtoMap: Record<
   [PreferenceEnum.TRACKER]: TrackerPreferenceDto,
   [PreferenceEnum.LANGUAGE]: LanguagePreferenceDto,
   [PreferenceEnum.RESOLUTION]: ResolutionPreferenceDto,
-  [PreferenceEnum.VIDEO_QUALITY]: VideoPreferenceDto,
+  [PreferenceEnum.VIDEO_QUALITY]: VideoQualityPreferenceDto,
   [PreferenceEnum.SOURCE]: SourcePreferenceDto,
-  [PreferenceEnum.AUDIO_QUALITY]: AudioPreferenceDto,
+  [PreferenceEnum.AUDIO_QUALITY]: AudioQualityPreferenceDto,
+  [PreferenceEnum.AUDIO_SPATIAL]: AudioSpatialPreferenceDto,
 };

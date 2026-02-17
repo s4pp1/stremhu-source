@@ -1,11 +1,20 @@
 import { AudioQualityEnum } from 'src/preference-items/enum/audio-quality.enum';
 
-const AUDIO_QUALITY_PATTERNS: Record<
+const PATTERNS: Record<
   Exclude<AudioQualityEnum, AudioQualityEnum.UNKNOWN>,
   string[]
 > = {
   [AudioQualityEnum.TRUEHD]: ['.truehd.'],
-  [AudioQualityEnum.DTS_HD_MA]: ['.dts-hd.ma.', '.dtshdma.', '.dts-hdma.'],
+  [AudioQualityEnum.DTS_HD_MA]: [
+    '.dts-hd.ma.',
+    '.dtshdma.',
+    '.dts-hdma.',
+    '.dtsx.',
+    '.dtsx.7.1.',
+    '.dts.x.',
+    '.dts.x7.1.',
+    '.dts.x.7.1.',
+  ],
   [AudioQualityEnum.DD_PLUS]: [
     '.ddp.',
     '.ddp5.1.',
@@ -28,7 +37,7 @@ const AUDIO_QUALITY_PATTERNS: Record<
 };
 
 export function parseAudioQuality(name: string): AudioQualityEnum {
-  for (const [type, patterns] of Object.entries(AUDIO_QUALITY_PATTERNS)) {
+  for (const [type, patterns] of Object.entries(PATTERNS)) {
     const isMatched = patterns.some((pattern) => name.includes(pattern));
 
     if (isMatched) {

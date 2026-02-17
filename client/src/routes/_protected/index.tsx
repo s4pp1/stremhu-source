@@ -17,7 +17,7 @@ import {
 } from '@/shared/components/ui/item'
 import { Separator } from '@/shared/components/ui/separator'
 
-import { MeConfig } from './-features/me-config'
+import { Integration } from './-features/integration'
 import { SETTINGS_ACCOUNT_NAME } from './settings/account/route'
 import { SETTINGS_PREFERENCES_NAME } from './settings/preferences/route'
 
@@ -28,19 +28,7 @@ export const Route = createFileRoute('/_protected/')({
 function ProfileRoute() {
   return (
     <div className="grid gap-8">
-      <div className="grid gap-4">
-        <CardHeader className="px-0">
-          <CardTitle>Integráció</CardTitle>
-          <CardDescription>
-            Addon összekapcsolása a Stremio-fiókoddal.
-          </CardDescription>
-        </CardHeader>
-        <div className="columns-1 md:columns-2 gap-4">
-          <div className="break-inside-avoid mb-4">
-            <MeConfig />
-          </div>
-        </div>
-      </div>
+      <Integration />
       <Separator />
       <div className="grid gap-4">
         <CardHeader className="px-0">

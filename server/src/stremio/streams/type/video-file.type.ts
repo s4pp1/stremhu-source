@@ -1,3 +1,4 @@
+import { AudioSpatialEnum } from 'src/preference-items/enum/audio-feature.enum';
 import { AudioQualityEnum } from 'src/preference-items/enum/audio-quality.enum';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
@@ -22,6 +23,7 @@ export type VideoFile = {
   [PreferenceEnum.RESOLUTION]: ResolutionEnum;
   [PreferenceEnum.VIDEO_QUALITY]: VideoQualityEnum[];
   [PreferenceEnum.AUDIO_QUALITY]: AudioQualityEnum;
+  [PreferenceEnum.AUDIO_SPATIAL]: AudioSpatialEnum | null;
   [PreferenceEnum.SOURCE]: SourceEnum;
 
   notWebReady: boolean;

@@ -4,6 +4,7 @@ import { compact, orderBy } from 'lodash';
 import { CatalogService } from 'src/catalog/catalog.service';
 import { formatFilesize } from 'src/common/utils/file.util';
 import { AUDIO_QUALITY_LABEL_MAP } from 'src/preference-items/constant/audio-codec.constant';
+import { AUDIO_SPATIAL_LABEL_MAP } from 'src/preference-items/constant/audio-spatial.constant';
 import { LANGUAGE_LABEL_MAP } from 'src/preference-items/constant/language.constant';
 import { RESOLUTION_LABEL_MAP } from 'src/preference-items/constant/resolution.constant';
 import { VIDEO_QUALITY_LABEL_MAP } from 'src/preference-items/constant/video-quality.constant';
@@ -143,15 +144,26 @@ export class StreamsService {
     const seeders = `👥 ${videoFile.seeders}`;
     const tracker = `🧲 ${this.trackersMetaService.resolve(videoFile.tracker).label}`;
 
-    let readableAudioCodec: string | undefined;
+    let readableAudioQuality: string | undefined;
 
     if (videoFile['audio-quality'] !== AudioQualityEnum.UNKNOWN) {
-      readableAudioCodec = `🔈 ${AUDIO_QUALITY_LABEL_MAP[videoFile['audio-quality']]}`;
+      readableAudioQuality = `🔈 ${AUDIO_QUALITY_LABEL_MAP[videoFile['audio-quality']]}`;
+    }
+
+    let readableAudioSpatial: string | undefined;
+
+    if (videoFile['audio-spatial'] !== null) {
+      readableAudioSpatial =
+        AUDIO_SPATIAL_LABEL_MAP[videoFile['audio-spatial']];
     }
 
     const descriptionArray = compact([
       compact([tracker, seeders, fileSize]).join(' | '),
-      compact([readableLanguage, readableAudioCodec]).join(' | '),
+      compact([
+        readableLanguage,
+        readableAudioQuality,
+        readableAudioSpatial,
+      ]).join(' | '),
     ]);
 
     const bingeGroup = [
@@ -214,7 +226,7 @@ export class StreamsService {
       }
 
       const blockeds = selectors.map((selector) =>
-        selector.filterToBlocked((preference) => videoFile[preference]),
+        selector.filterToBlocked((preference) => videoFile[preference] ?? []),
       );
 
       return !blockeds.some((blocked) => blocked);

@@ -1,16 +1,18 @@
 import type {
-  AudioPreferenceDto,
+  AudioQualityPreferenceDto,
+  AudioSpatialPreferenceDto,
   LanguagePreferenceDto,
   ResolutionPreferenceDto,
   SourcePreferenceDto,
   TrackerPreferenceDto,
-  VideoPreferenceDto,
+  VideoQualityPreferenceDto,
 } from '../lib/source-client'
 
 export type PreferenceDto =
   | TrackerPreferenceDto
   | LanguagePreferenceDto
   | ResolutionPreferenceDto
-  | VideoPreferenceDto
+  | VideoQualityPreferenceDto
   | SourcePreferenceDto
-  | AudioPreferenceDto
+  | AudioQualityPreferenceDto
+  | AudioSpatialPreferenceDto
