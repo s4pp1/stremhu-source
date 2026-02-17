@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { AudioSpatialEnum } from 'src/preference-items/enum/audio-feature.enum';
 import { AudioQualityEnum } from 'src/preference-items/enum/audio-quality.enum';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
@@ -46,6 +47,11 @@ export const userPreferenceSchema = z
       preference: z.literal(PreferenceEnum.AUDIO_QUALITY),
       preferred: z.array(z.enum(AudioQualityEnum)),
       blocked: z.array(z.enum(AudioQualityEnum)),
+    }),
+    base.extend({
+      preference: z.literal(PreferenceEnum.AUDIO_SPATIAL),
+      preferred: z.array(z.enum(AudioSpatialEnum)),
+      blocked: z.array(z.enum(AudioSpatialEnum)),
     }),
   ])
   .superRefine((value, ctx) => {

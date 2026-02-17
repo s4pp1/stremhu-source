@@ -2,11 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { AudioQualityEnum } from './AudioQualityEnum';
 import type { PreferenceEnum } from './PreferenceEnum';
-import type { VideoQualityEnum } from './VideoQualityEnum';
-export type VideoPreferenceDto = {
+export type AudioQualityPreferenceDto = {
     preference: PreferenceEnum;
-    preferred: Array<VideoQualityEnum>;
-    blocked: Array<VideoQualityEnum>;
+    preferred: Array<AudioQualityEnum>;
+    blocked: Array<AudioQualityEnum>;
 };
 

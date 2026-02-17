@@ -1,5 +1,6 @@
 import type {
   AudioQualityPreferenceMetaDto,
+  AudioSpatialPreferenceMetaDto,
   LanguagePreferenceMetaDto,
   ResolutionPreferenceMetaDto,
   SourcePreferenceMetaDto,
@@ -14,3 +15,4 @@ export type PreferenceMetaDto =
   | VideoQualityPreferenceMetaDto
   | SourcePreferenceMetaDto
   | AudioQualityPreferenceMetaDto
+  | AudioSpatialPreferenceMetaDto

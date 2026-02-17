@@ -32,6 +32,11 @@ export const PREFERENCE_OPTIONS: PreferenceOption[] = [
     value: PreferenceEnum.AUDIO_QUALITY,
     description: 'A hangsáv formátuma / minősége',
   },
+  {
+    label: 'térhangzás',
+    value: PreferenceEnum.AUDIO_SPATIAL,
+    description: 'Objektumalapú surround hangzás',
+  },
 ];
 
 export const PREFERENCE_MAP = PREFERENCE_OPTIONS.reduce(

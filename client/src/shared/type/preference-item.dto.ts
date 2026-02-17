@@ -1,5 +1,6 @@
 import type {
   AudioQualityEnum,
+  AudioSpatialEnum,
   LanguageEnum,
   ResolutionEnum,
   SourceEnum,
@@ -14,3 +15,4 @@ export type PreferenceItemDto =
   | Array<VideoQualityEnum>
   | Array<SourceEnum>
   | Array<AudioQualityEnum>
+  | Array<AudioSpatialEnum>

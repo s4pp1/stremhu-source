@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { AudioQualityPreferenceMetaDto } from './AudioQualityPreferenceMetaDto';
+import type { AudioSpatialPreferenceMetaDto } from './AudioSpatialPreferenceMetaDto';
 import type { LanguagePreferenceMetaDto } from './LanguagePreferenceMetaDto';
 import type { ResolutionPreferenceMetaDto } from './ResolutionPreferenceMetaDto';
 import type { SourcePreferenceMetaDto } from './SourcePreferenceMetaDto';
@@ -15,6 +16,6 @@ export type MetadataDto = {
     userRoles: Array<UserRoleMetaDto>;
     trackers: Array<TrackerMetaDto>;
     endpoint: string;
-    preferences: Array<(TrackerPreferenceMetaDto | LanguagePreferenceMetaDto | ResolutionPreferenceMetaDto | VideoQualityPreferenceMetaDto | SourcePreferenceMetaDto | AudioQualityPreferenceMetaDto)>;
+    preferences: Array<(TrackerPreferenceMetaDto | LanguagePreferenceMetaDto | ResolutionPreferenceMetaDto | VideoQualityPreferenceMetaDto | SourcePreferenceMetaDto | AudioQualityPreferenceMetaDto | AudioSpatialPreferenceMetaDto)>;
 };
 

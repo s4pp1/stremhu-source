@@ -9,4 +9,5 @@ export enum PreferenceEnum {
     VIDEO_QUALITY = 'video-quality',
     SOURCE = 'source',
     AUDIO_QUALITY = 'audio-quality',
+    AUDIO_SPATIAL = 'audio-spatial',
 }

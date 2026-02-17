@@ -5,6 +5,7 @@ import { Equals, IsArray, IsString } from 'class-validator';
 import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
 
 import { AudioQualityMetaDto } from './audio-quality-meta.dto';
+import { AudioSpatialMetaDto } from './audio-spatial-meta.dto';
 import { LanguageMetaDto } from './language-meta.dto';
 import { ResolutionMetaDto } from './resolution-meta.dto';
 import { SourceMetaDto } from './source-meta.dto';
@@ -123,13 +124,31 @@ export class AudioQualityPreferenceMetaDto extends BasePreferenceMetaDto {
   items: AudioQualityMetaDto[];
 }
 
+export class AudioSpatialPreferenceMetaDto extends BasePreferenceMetaDto {
+  @Equals(PreferenceEnum.AUDIO_SPATIAL)
+  @ApiProperty({
+    enum: PreferenceEnum,
+    enumName: 'PreferenceEnum',
+    example: PreferenceEnum.AUDIO_SPATIAL,
+  })
+  value: PreferenceEnum.AUDIO_SPATIAL;
+
+  @IsArray()
+  @ApiProperty({
+    type: AudioSpatialMetaDto,
+    isArray: true,
+  })
+  items: AudioSpatialMetaDto[];
+}
+
 export type PreferenceMetaDto =
   | TrackerPreferenceMetaDto
   | LanguagePreferenceMetaDto
   | ResolutionPreferenceMetaDto
   | VideoQualityPreferenceMetaDto
   | SourcePreferenceMetaDto
-  | AudioQualityPreferenceMetaDto;
+  | AudioQualityPreferenceMetaDto
+  | AudioSpatialPreferenceMetaDto;
 
 type PreferenceMetaDtoConstructor = ClassConstructor<PreferenceMetaDto>;
 
@@ -141,4 +160,5 @@ export const PREFERENCE_META_SWAGGER_MODELS: readonly PreferenceMetaDtoConstruct
     VideoQualityPreferenceMetaDto,
     SourcePreferenceMetaDto,
     AudioQualityPreferenceMetaDto,
+    AudioSpatialPreferenceMetaDto,
   ];

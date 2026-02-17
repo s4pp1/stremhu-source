@@ -7,25 +7,12 @@ import {
   ItemTitle,
 } from '@/shared/components/ui/item'
 import { useMetadata } from '@/shared/hooks/use-metadata'
-import type {
-  AudioQualityEnum,
-  LanguageEnum,
-  PreferenceEnum,
-  ResolutionEnum,
-  SourceEnum,
-  TrackerEnum,
-  VideoQualityEnum,
-} from '@/shared/lib/source-client'
+import type { PreferenceEnum } from '@/shared/lib/source-client'
+import type { PreferenceItemEnum } from '@/shared/type/preference-item.enum'
 
 export interface PreferenceItemProps {
   preference: PreferenceEnum
-  preferenceItem:
-    | TrackerEnum
-    | LanguageEnum
-    | ResolutionEnum
-    | VideoQualityEnum
-    | SourceEnum
-    | AudioQualityEnum
+  preferenceItem: PreferenceItemEnum
   actions?: Array<ReactNode>
 }
 

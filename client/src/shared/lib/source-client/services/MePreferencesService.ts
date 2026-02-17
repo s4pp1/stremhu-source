@@ -2,14 +2,15 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { AudioPreferenceDto } from '../models/AudioPreferenceDto';
+import type { AudioQualityPreferenceDto } from '../models/AudioQualityPreferenceDto';
+import type { AudioSpatialPreferenceDto } from '../models/AudioSpatialPreferenceDto';
 import type { LanguagePreferenceDto } from '../models/LanguagePreferenceDto';
 import type { PreferenceEnum } from '../models/PreferenceEnum';
 import type { ReorderPreferencesDto } from '../models/ReorderPreferencesDto';
 import type { ResolutionPreferenceDto } from '../models/ResolutionPreferenceDto';
 import type { SourcePreferenceDto } from '../models/SourcePreferenceDto';
 import type { TrackerPreferenceDto } from '../models/TrackerPreferenceDto';
-import type { VideoPreferenceDto } from '../models/VideoPreferenceDto';
+import type { VideoQualityPreferenceDto } from '../models/VideoQualityPreferenceDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 export class MePreferencesService {
@@ -20,7 +21,7 @@ export class MePreferencesService {
      * @throws ApiError
      */
     public create(
-        requestBody: (TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoPreferenceDto | SourcePreferenceDto | AudioPreferenceDto),
+        requestBody: (TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoQualityPreferenceDto | SourcePreferenceDto | AudioQualityPreferenceDto | AudioSpatialPreferenceDto),
     ): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'POST',
@@ -33,7 +34,7 @@ export class MePreferencesService {
      * @returns any
      * @throws ApiError
      */
-    public find(): CancelablePromise<Array<(TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoPreferenceDto | SourcePreferenceDto | AudioPreferenceDto)>> {
+    public find(): CancelablePromise<Array<(TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoQualityPreferenceDto | SourcePreferenceDto | AudioQualityPreferenceDto | AudioSpatialPreferenceDto)>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/me/preference',
@@ -46,7 +47,7 @@ export class MePreferencesService {
      */
     public reorder(
         requestBody: ReorderPreferencesDto,
-    ): CancelablePromise<Array<(TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoPreferenceDto | SourcePreferenceDto | AudioPreferenceDto)>> {
+    ): CancelablePromise<Array<(TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoQualityPreferenceDto | SourcePreferenceDto | AudioQualityPreferenceDto | AudioSpatialPreferenceDto)>> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/me/preference/reorder',
@@ -61,7 +62,7 @@ export class MePreferencesService {
      */
     public findOne(
         preference: PreferenceEnum,
-    ): CancelablePromise<(TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoPreferenceDto | SourcePreferenceDto | AudioPreferenceDto)> {
+    ): CancelablePromise<(TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoQualityPreferenceDto | SourcePreferenceDto | AudioQualityPreferenceDto | AudioSpatialPreferenceDto)> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/me/preference/{preference}',
@@ -78,8 +79,8 @@ export class MePreferencesService {
      */
     public update(
         preference: PreferenceEnum,
-        requestBody: (TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoPreferenceDto | SourcePreferenceDto | AudioPreferenceDto),
-    ): CancelablePromise<(TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoPreferenceDto | SourcePreferenceDto | AudioPreferenceDto)> {
+        requestBody: (TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoQualityPreferenceDto | SourcePreferenceDto | AudioQualityPreferenceDto | AudioSpatialPreferenceDto),
+    ): CancelablePromise<(TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoQualityPreferenceDto | SourcePreferenceDto | AudioQualityPreferenceDto | AudioSpatialPreferenceDto)> {
         return this.httpRequest.request({
             method: 'PUT',
             url: '/api/me/preference/{preference}',
@@ -96,7 +97,7 @@ export class MePreferencesService {
      * @throws ApiError
      */
     public delete(
-        preference: 'tracker' | 'language' | 'resolution' | 'video-quality' | 'source' | 'audio-quality',
+        preference: 'tracker' | 'language' | 'resolution' | 'video-quality' | 'source' | 'audio-quality' | 'audio-spatial',
     ): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'DELETE',

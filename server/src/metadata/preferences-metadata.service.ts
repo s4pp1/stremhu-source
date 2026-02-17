@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { AUDIO_QUALITY_OPTIONS } from 'src/preference-items/constant/audio-codec.constant';
+import { AUDIO_SPATIAL_OPTIONS } from 'src/preference-items/constant/audio-spatial.constant';
 import { LANGUAGE_OPTIONS } from 'src/preference-items/constant/language.constant';
 import { RESOLUTION_OPTIONS } from 'src/preference-items/constant/resolution.constant';
 import { SOURCE_OPTIONS } from 'src/preference-items/constant/source.constant';
@@ -12,6 +13,7 @@ import { TrackersService } from 'src/trackers/trackers.service';
 
 import {
   AudioQualityPreferenceMetaDto,
+  AudioSpatialPreferenceMetaDto,
   LanguagePreferenceMetaDto,
   PreferenceMetaDto,
   ResolutionPreferenceMetaDto,
@@ -37,6 +39,7 @@ export class PreferencesMetadataService {
       this.getVideoQuality(),
       this.getSource(),
       this.getAudioQuality(),
+      this.getAudioSpatial(),
     ];
 
     return preferences;
@@ -110,6 +113,17 @@ export class PreferencesMetadataService {
       label: preference.label,
       description: preference.description,
       items: AUDIO_QUALITY_OPTIONS,
+    };
+  }
+
+  getAudioSpatial(): AudioSpatialPreferenceMetaDto {
+    const preference = PREFERENCE_MAP[PreferenceEnum.AUDIO_SPATIAL];
+
+    return {
+      value: PreferenceEnum.AUDIO_SPATIAL,
+      label: preference.label,
+      description: preference.description,
+      items: AUDIO_SPATIAL_OPTIONS,
     };
   }
 }
