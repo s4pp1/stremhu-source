@@ -5,7 +5,7 @@ import { LANGUAGE_OPTIONS } from 'src/preference-items/constant/language.constan
 import { RESOLUTION_OPTIONS } from 'src/preference-items/constant/resolution.constant';
 import { SOURCE_OPTIONS } from 'src/preference-items/constant/source.constant';
 import { VIDEO_QUALITY_OPTIONS } from 'src/preference-items/constant/video-quality.constant';
-import { PREFERENCE_LABEL_MAP } from 'src/preferences/constant/preference.contant';
+import { PREFERENCE_MAP } from 'src/preferences/constant/preference.contant';
 import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
 import { TrackersMetaService } from 'src/trackers/meta/trackers-meta.service';
 import { TrackersService } from 'src/trackers/trackers.service';
@@ -48,49 +48,67 @@ export class PreferencesMetadataService {
       this.trackersMetaService.resolve(tracker.tracker),
     );
 
+    const preference = PREFERENCE_MAP[PreferenceEnum.TRACKER];
+
     return {
       value: PreferenceEnum.TRACKER,
-      label: PREFERENCE_LABEL_MAP[PreferenceEnum.TRACKER],
+      label: preference.label,
+      description: preference.description,
       items: items,
     };
   }
 
   getLanguage(): LanguagePreferenceMetaDto {
+    const preference = PREFERENCE_MAP[PreferenceEnum.LANGUAGE];
+
     return {
       value: PreferenceEnum.LANGUAGE,
-      label: PREFERENCE_LABEL_MAP[PreferenceEnum.LANGUAGE],
+      label: preference.label,
+      description: preference.description,
       items: LANGUAGE_OPTIONS,
     };
   }
 
   getResolution(): ResolutionPreferenceMetaDto {
+    const preference = PREFERENCE_MAP[PreferenceEnum.RESOLUTION];
+
     return {
       value: PreferenceEnum.RESOLUTION,
-      label: PREFERENCE_LABEL_MAP[PreferenceEnum.RESOLUTION],
+      label: preference.label,
+      description: preference.description,
       items: RESOLUTION_OPTIONS,
     };
   }
 
   getVideoQuality(): VideoQualityPreferenceMetaDto {
+    const preference = PREFERENCE_MAP[PreferenceEnum.VIDEO_QUALITY];
+
     return {
       value: PreferenceEnum.VIDEO_QUALITY,
-      label: PREFERENCE_LABEL_MAP[PreferenceEnum.VIDEO_QUALITY],
+      label: preference.label,
+      description: preference.description,
       items: VIDEO_QUALITY_OPTIONS,
     };
   }
 
   getSource(): SourcePreferenceMetaDto {
+    const preference = PREFERENCE_MAP[PreferenceEnum.SOURCE];
+
     return {
       value: PreferenceEnum.SOURCE,
-      label: PREFERENCE_LABEL_MAP[PreferenceEnum.SOURCE],
+      label: preference.label,
+      description: preference.description,
       items: SOURCE_OPTIONS,
     };
   }
 
   getAudioQuality(): AudioQualityPreferenceMetaDto {
+    const preference = PREFERENCE_MAP[PreferenceEnum.AUDIO_QUALITY];
+
     return {
       value: PreferenceEnum.AUDIO_QUALITY,
-      label: PREFERENCE_LABEL_MAP[PreferenceEnum.AUDIO_QUALITY],
+      label: preference.label,
+      description: preference.description,
       items: AUDIO_QUALITY_OPTIONS,
     };
   }

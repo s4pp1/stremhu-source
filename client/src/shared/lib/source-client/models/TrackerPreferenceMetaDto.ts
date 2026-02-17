@@ -5,8 +5,9 @@
 import type { PreferenceEnum } from './PreferenceEnum';
 import type { TrackerMetaDto } from './TrackerMetaDto';
 export type TrackerPreferenceMetaDto = {
-    value: PreferenceEnum;
     label: string;
+    description: string;
+    value: PreferenceEnum;
     items: Array<TrackerMetaDto>;
 };
 

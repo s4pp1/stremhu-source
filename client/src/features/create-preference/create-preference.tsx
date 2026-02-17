@@ -59,7 +59,7 @@ export const CreatePreference = withForm({
                         <FieldContent>
                           <FieldTitle>{preference.label}</FieldTitle>
                           <FieldDescription>
-                            For individuals and small teams.
+                            {preference.description}
                           </FieldDescription>
                         </FieldContent>
                         <RadioGroupItem

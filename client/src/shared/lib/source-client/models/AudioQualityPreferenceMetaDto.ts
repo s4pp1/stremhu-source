@@ -5,8 +5,9 @@
 import type { AudioQualityMetaDto } from './AudioQualityMetaDto';
 import type { PreferenceEnum } from './PreferenceEnum';
 export type AudioQualityPreferenceMetaDto = {
-    value: PreferenceEnum;
     label: string;
+    description: string;
+    value: PreferenceEnum;
     items: Array<AudioQualityMetaDto>;
 };
 

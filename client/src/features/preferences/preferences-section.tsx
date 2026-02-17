@@ -105,26 +105,28 @@ export function PreferencesSection(props: PreferencesSectionProps) {
         </CardAction>
       </CardHeader>
       <Separator />
-      <CardContent className="grid gap-6">
+      <CardContent className="grid gap-8">
+        <div className="grid gap-4">
+          <Item className="p-0">
+            <ItemContent>
+              <ItemTitle>Preferencia sorrend</ItemTitle>
+              <ItemDescription>
+                Preferált tulajdonsággal rendelkező szabályok esetén módosítható
+                azok súlyozása a sorrend módosításával.
+              </ItemDescription>
+            </ItemContent>
+            <ItemActions>
+              <ItemMedia variant="icon" className="rounded-full">
+                <GrabIcon />
+              </ItemMedia>
+            </ItemActions>
+          </Item>
+        </div>
         <DndContext
           onDragEnd={handleDragEnd}
           modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
         >
-          <div className="grid gap-4">
-            <Item className="p-0">
-              <ItemContent>
-                <ItemTitle>Preferencia sorrend</ItemTitle>
-                <ItemDescription>
-                  Preferált tulajdonsággal rendelkező szabályok esetén
-                  módosítható azok súlyozása a sorrend módosításával.
-                </ItemDescription>
-              </ItemContent>
-              <ItemActions>
-                <ItemMedia variant="icon" className="rounded-full">
-                  <GrabIcon />
-                </ItemMedia>
-              </ItemActions>
-            </Item>
+          <div className="grid gap-3">
             <SortableContext
               items={items.map(
                 (preferredPreference) => preferredPreference.preference,
@@ -165,17 +167,19 @@ export function PreferencesSection(props: PreferencesSectionProps) {
               </ItemDescription>
             </ItemContent>
           </Item>
-          {blockedPreferences.map((preference) => (
-            <Fragment key={preference.preference}>
-              {renderPreference(preference)}
-            </Fragment>
-          ))}
-          {blockedPreferences.length === 0 && (
-            <Alert>
-              <SearchIcon />
-              <AlertTitle>Nincs kitiltásra használt szabály.</AlertTitle>
-            </Alert>
-          )}
+          <div className="grid gap-3">
+            {blockedPreferences.map((preference) => (
+              <Fragment key={preference.preference}>
+                {renderPreference(preference)}
+              </Fragment>
+            ))}
+            {blockedPreferences.length === 0 && (
+              <Alert>
+                <SearchIcon />
+                <AlertTitle>Nincs kitiltásra használt szabály.</AlertTitle>
+              </Alert>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -29,9 +29,7 @@ export class CatalogService {
     }
 
     if (!token) {
-      throw new BadRequestException(
-        'A StremHU | Catalog kulcs nincs beállítva',
-      );
+      throw new BadRequestException('A StremHU Catalog kulcs nincs beállítva');
     }
 
     try {
@@ -40,7 +38,7 @@ export class CatalogService {
 
       return healthCheck;
     } catch {
-      throw new BadRequestException('A StremHU | Catalog kulcs hibás');
+      throw new BadRequestException('A StremHU Catalog kulcs hibás');
     }
   }
 

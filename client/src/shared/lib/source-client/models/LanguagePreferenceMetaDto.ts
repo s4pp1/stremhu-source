@@ -5,8 +5,9 @@
 import type { LanguageMetaDto } from './LanguageMetaDto';
 import type { PreferenceEnum } from './PreferenceEnum';
 export type LanguagePreferenceMetaDto = {
-    value: PreferenceEnum;
     label: string;
+    description: string;
+    value: PreferenceEnum;
     items: Array<LanguageMetaDto>;
 };
 

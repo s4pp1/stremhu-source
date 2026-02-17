@@ -5,7 +5,7 @@ import { CatalogService } from './catalog.service';
 import { CatalogHealthDto } from './dto/catalog-health.dto';
 
 @Controller('/catalog')
-@ApiTags('StremHU | Catalog')
+@ApiTags('StremHU Catalog')
 export class CatalogController {
   constructor(private readonly catalogService: CatalogService) {}
 
