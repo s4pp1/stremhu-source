@@ -43,7 +43,7 @@ export const PreferenceForm = withForm({
     const { getPreference } = useMetadata()
 
     return (
-      <div className="grid gap-6">
+      <div className="grid gap-8">
         <form.Subscribe selector={(state) => state.values}>
           {(values) => {
             const preference = getPreference(values.preference)
@@ -57,70 +57,71 @@ export const PreferenceForm = withForm({
             )
 
             return (
-              <div className="grid gap-2">
+              <div className="grid gap-4">
                 <div className="grid">
                   <ItemTitle>Elérhető tulajdonságok</ItemTitle>
                   <ItemDescription>
                     Ezeket a tulajdonságokat tudod preferálni vagy kizárni.
                   </ItemDescription>
                 </div>
+                <div className="grid gap-3">
+                  {availablePreferenceItems.map((item) => {
+                    const handleAddPreferred: MouseEventHandler<
+                      HTMLButtonElement
+                    > = (event) => {
+                      event.preventDefault()
 
-                {availablePreferenceItems.map((item) => {
-                  const handleAddPreferred: MouseEventHandler<
-                    HTMLButtonElement
-                  > = (event) => {
-                    event.preventDefault()
+                      const items = [
+                        ...values.preferred,
+                        item.value,
+                      ] as PreferenceItemDto
+                      form.setFieldValue('preferred', items)
+                    }
 
-                    const items = [
-                      ...values.preferred,
-                      item.value,
-                    ] as PreferenceItemDto
-                    form.setFieldValue('preferred', items)
-                  }
+                    const handleAddBlocked: MouseEventHandler<
+                      HTMLButtonElement
+                    > = (event) => {
+                      event.preventDefault()
 
-                  const handleAddBlocked: MouseEventHandler<
-                    HTMLButtonElement
-                  > = (event) => {
-                    event.preventDefault()
+                      const items = [
+                        ...values.blocked,
+                        item.value,
+                      ] as PreferenceItemDto
+                      form.setFieldValue('blocked', items)
+                    }
 
-                    const items = [
-                      ...values.blocked,
-                      item.value,
-                    ] as PreferenceItemDto
-                    form.setFieldValue('blocked', items)
-                  }
-
-                  return (
-                    <PreferenceItem
-                      key={item.value}
-                      preference={values.preference}
-                      preferenceItem={item.value}
-                      actions={[
-                        <Button
-                          size="icon-sm"
-                          className="rounded-full"
-                          onClick={handleAddPreferred}
-                        >
-                          <HeartIcon />
-                        </Button>,
-                        <Button
-                          size="icon-sm"
-                          variant="destructive"
-                          className="rounded-full"
-                          onClick={handleAddBlocked}
-                        >
-                          <BanIcon />
-                        </Button>,
-                      ]}
-                    />
-                  )
-                })}
-                {availablePreferenceItems.length === 0 && (
-                  <Alert>
-                    <SearchIcon />
-                    <AlertTitle>Nincs több elérhető tulajdonság.</AlertTitle>
-                  </Alert>
-                )}
+                    return (
+                      <PreferenceItem
+                        key={item.value}
+                        preference={values.preference}
+                        preferenceItem={item.value}
+                        actions={[
+                          <Button
+                            size="icon-sm"
+                            className="rounded-full"
+                            onClick={handleAddPreferred}
+                          >
+                            <HeartIcon />
+                          </Button>,
+                          <Button
+                            size="icon-sm"
+                            variant="destructive"
+                            className="rounded-full"
+                            onClick={handleAddBlocked}
+                          >
+                            <BanIcon />
+                          </Button>,
+                        ]}
+                      />
+                    )
+                  })}
+                  {availablePreferenceItems.length === 0 && (
+                    <Alert>
+                      <SearchIcon />
+                      <AlertTitle>Nincs több elérhető tulajdonság.</AlertTitle>
+                    </Alert>
+                  )}
+                </div>
               </div>
             )
           }}
@@ -162,7 +163,7 @@ export const PreferenceForm = withForm({
             return (
               <div className="grid gap-4">
                 <Item className="p-0">
-                  <ItemContent>
+                  <ItemContent className="gap-0">
                     <ItemTitle>Preferált tulajdonságok</ItemTitle>
                     <ItemDescription>
                       Azok a tulajdonságok, amiket ide hozzáadsz előrébb
@@ -175,61 +176,63 @@ export const PreferenceForm = withForm({
                     </ItemMedia>
                   </ItemActions>
                 </Item>
-                <DndContext
-                  onDragEnd={onReorderItems}
-                  modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
-                >
-                  <SortableContext
-                    items={preferred}
-                    strategy={verticalListSortingStrategy}
+                <div className="grid gap-3">
+                  <DndContext
+                    onDragEnd={onReorderItems}
+                    modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
                   >
-                    {preferred.map((item) => {
-                      const handleRemove: MouseEventHandler<
-                        HTMLButtonElement
-                      > = (event) => {
-                        event.preventDefault()
+                    <SortableContext
+                      items={preferred}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      {preferred.map((item) => {
+                        const handleRemove: MouseEventHandler<
+                          HTMLButtonElement
+                        > = (event) => {
+                          event.preventDefault()
 
-                        const filteredItems = preferred.filter(
-                          (i) => i !== item,
-                        ) as PreferenceItemDto
-                        form.setFieldValue('preferred', filteredItems)
-                      }
+                          const filteredItems = preferred.filter(
+                            (i) => i !== item,
+                          ) as PreferenceItemDto
+                          form.setFieldValue('preferred', filteredItems)
+                        }
 
-                      return (
-                        <SortableWrapper
-                          key={item}
-                          item={item}
-                          resolveId={(i) => i}
-                        >
-                          <PreferenceItem
-                            preference={preference}
-                            preferenceItem={item}
-                            actions={[
-                              <Button
-                                key="delete"
-                                size="icon-sm"
-                                variant="destructive"
-                                className="rounded-full"
-                                onPointerDown={(event) =>
-                                  event.stopPropagation()
-                                }
-                                onClick={handleRemove}
-                              >
-                                <TrashIcon />
-                              </Button>,
-                            ]}
-                          />
-                        </SortableWrapper>
-                      )
-                    })}
-                  </SortableContext>
-                </DndContext>
-                {preferred.length === 0 && (
-                  <Alert>
-                    <HeartIcon />
-                    <AlertTitle>Nincs preferált tulajdonság</AlertTitle>
-                  </Alert>
-                )}
+                        return (
+                          <SortableWrapper
+                            key={item}
+                            item={item}
+                            resolveId={(i) => i}
+                          >
+                            <PreferenceItem
+                              preference={preference}
+                              preferenceItem={item}
+                              actions={[
+                                <Button
+                                  key="delete"
+                                  size="icon-sm"
+                                  variant="destructive"
+                                  className="rounded-full"
+                                  onPointerDown={(event) =>
+                                    event.stopPropagation()
+                                  }
+                                  onClick={handleRemove}
+                                >
+                                  <TrashIcon />
+                                </Button>,
+                              ]}
+                            />
+                          </SortableWrapper>
+                        )
+                      })}
+                    </SortableContext>
+                  </DndContext>
+                  {preferred.length === 0 && (
+                    <Alert>
+                      <HeartIcon />
+                      <AlertTitle>Nincs preferált tulajdonság</AlertTitle>
+                    </Alert>
+                  )}
+                </div>
               </div>
             )
           }}
@@ -251,42 +254,44 @@ export const PreferenceForm = withForm({
                     megjelennie.
                   </ItemDescription>
                 </div>
-                {blocked.map((item) => {
-                  const handleRemove: MouseEventHandler<HTMLButtonElement> = (
-                    event,
-                  ) => {
-                    event.preventDefault()
+                <div className="grid gap-3">
+                  {blocked.map((item) => {
+                    const handleRemove: MouseEventHandler<HTMLButtonElement> = (
+                      event,
+                    ) => {
+                      event.preventDefault()
 
-                    const filteredItems = blocked.filter(
-                      (i) => i !== item,
-                    ) as PreferenceItemDto
-                    form.setFieldValue('blocked', filteredItems)
-                  }
+                      const filteredItems = blocked.filter(
+                        (i) => i !== item,
+                      ) as PreferenceItemDto
+                      form.setFieldValue('blocked', filteredItems)
+                    }
 
-                  return (
-                    <PreferenceItem
-                      key={item}
-                      preference={preference}
-                      preferenceItem={item}
-                      actions={[
-                        <Button
-                          size="icon-sm"
-                          variant="destructive"
-                          className="rounded-full"
-                          onClick={handleRemove}
-                        >
-                          <TrashIcon />
-                        </Button>,
-                      ]}
-                    />
-                  )
-                })}
-                {blocked.length === 0 && (
-                  <Alert>
-                    <BanIcon />
-                    <AlertTitle>Nincs kizárt tulajdonság</AlertTitle>
-                  </Alert>
-                )}
+                    return (
+                      <PreferenceItem
+                        key={item}
+                        preference={preference}
+                        preferenceItem={item}
+                        actions={[
+                          <Button
+                            size="icon-sm"
+                            variant="destructive"
+                            className="rounded-full"
+                            onClick={handleRemove}
+                          >
+                            <TrashIcon />
+                          </Button>,
+                        ]}
+                      />
+                    )
+                  })}
+                  {blocked.length === 0 && (
+                    <Alert>
+                      <BanIcon />
+                      <AlertTitle>Nincs kizárt tulajdonság</AlertTitle>
+                    </Alert>
+                  )}
+                </div>
               </div>
             )
           }}

@@ -5,8 +5,9 @@
 import type { PreferenceEnum } from './PreferenceEnum';
 import type { VideoQualityMetaDto } from './VideoQualityMetaDto';
 export type VideoQualityPreferenceMetaDto = {
-    value: PreferenceEnum;
     label: string;
+    description: string;
+    value: PreferenceEnum;
     items: Array<VideoQualityMetaDto>;
 };
 

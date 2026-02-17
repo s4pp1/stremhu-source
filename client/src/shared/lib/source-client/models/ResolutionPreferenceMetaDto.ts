@@ -5,8 +5,9 @@
 import type { PreferenceEnum } from './PreferenceEnum';
 import type { ResolutionMetaDto } from './ResolutionMetaDto';
 export type ResolutionPreferenceMetaDto = {
-    value: PreferenceEnum;
     label: string;
+    description: string;
+    value: PreferenceEnum;
     items: Array<ResolutionMetaDto>;
 };
 

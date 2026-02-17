@@ -25,10 +25,10 @@ const networkCheckMap = {
     title: '🔎 Elérés ellenőrzése...',
   },
   success: {
-    title: '🟢 StremHU | Catalog csatlakoztatva',
+    title: '🟢 StremHU Catalog csatlakoztatva',
   },
   error: {
-    title: '🔴 StremHU | Catalog nem érhető el vagy hibás a kulcs',
+    title: '🔴 StremHU Catalog nem érhető el vagy hibás a kulcs',
   },
 }
 
@@ -48,9 +48,9 @@ export function StremhuCatalogInfo() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>StremHU | Catalog integráció</CardTitle>
+        <CardTitle>StremHU Catalog integráció</CardTitle>
         <CardDescription>
-          A StremHU | Catalog integráció lehetővé teszi, hogy a sorozatok
+          A StremHU Catalog integráció lehetővé teszi, hogy a sorozatok
           speciális epizódjait is listázza a torrentek közzött.
         </CardDescription>
       </CardHeader>
@@ -60,7 +60,7 @@ export function StremhuCatalogInfo() {
             <ItemTitle>
               {catalogConfigured
                 ? networkCheckMap[catalogHealth].title
-                : '🔑 A StremHU | Catalog kulcs nincs megadva.'}
+                : '🔑 A StremHU Catalog kulcs nincs megadva.'}
             </ItemTitle>
           </ItemContent>
           <ItemActions>
@@ -80,7 +80,7 @@ export function StremhuCatalogInfo() {
           target="_blank"
           className="text-sm font-mono tracking-tight hover:underline"
         >
-          StremHU | Catalog
+          StremHU Catalog
         </a>
       </CardContent>
     </Card>

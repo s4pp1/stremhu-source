@@ -46,8 +46,8 @@ function ProfileRoute() {
         <CardHeader className="px-0">
           <CardTitle>Beállítások</CardTitle>
           <CardDescription>
-            Itt módosíthatod a belépési adataidat és biztonsági beállításaidat,
-            valamint összekapcsolhatod az addont a Stremio-fiókoddal.
+            Itt módosíthatod a fiókadataidat, biztonsági beállításaidat és a
+            torrentlista preferenciáit.
           </CardDescription>
         </CardHeader>
         <div className="grid gap-4">
@@ -61,7 +61,8 @@ function ProfileRoute() {
                   {SETTINGS_ACCOUNT_NAME} - Bejelentkezés és biztonság
                 </ItemTitle>
                 <ItemDescription>
-                  The standard size for most use cases.
+                  Bejelentkezési adatok, jelszó és biztonsági beállítások
+                  kezelése.
                 </ItemDescription>
               </ItemContent>
               <ItemActions>
@@ -85,7 +86,8 @@ function ProfileRoute() {
                   {SETTINGS_PREFERENCES_NAME} - Torrent lista személyreszabása
                 </ItemTitle>
                 <ItemDescription>
-                  The standard size for most use cases.
+                  Állítsd be, mi kerüljön előre a találatok között, és mit
+                  zárjunk ki.
                 </ItemDescription>
               </ItemContent>
               <ItemActions>

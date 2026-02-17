@@ -5,8 +5,9 @@
 import type { PreferenceEnum } from './PreferenceEnum';
 import type { SourceMetaDto } from './SourceMetaDto';
 export type SourcePreferenceMetaDto = {
-    value: PreferenceEnum;
     label: string;
+    description: string;
+    value: PreferenceEnum;
     items: Array<SourceMetaDto>;
 };
 

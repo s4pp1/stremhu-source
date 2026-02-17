@@ -32,7 +32,13 @@ export function buildSelectors(
       const preferenceItem = resolveUserPreferenceItem(preference);
       const items = isArray(preferenceItem) ? preferenceItem : [preferenceItem];
 
-      const bestQualityRank = Math.min(...items.map((item) => rankMap[item]));
+      const bestQualityRank = Math.min(
+        ...items.map((item) => {
+          const index = rankMap[item];
+          return index ?? preferenceItems.length;
+        }),
+      );
+
       return bestQualityRank;
     },
   };

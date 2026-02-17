@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
 import { KeyRoundIcon, RotateCcwKeyIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -19,15 +18,16 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/shared/components/ui/item'
-import { assertExists, parseApiError } from '@/shared/lib/utils'
-import { getMe, useRegenerateMeToken } from '@/shared/queries/me'
+import { parseApiError } from '@/shared/lib/utils'
 
-export function TokenRegenerate() {
-  const { data: me } = useQuery(getMe)
-  assertExists(me)
+type TokenRegenerateProps = {
+  onSubmit: () => Promise<void>
+}
+
+export function TokenRegenerate(props: TokenRegenerateProps) {
+  const { onSubmit } = props
 
   const confirmDialog = useConfirmDialog()
-  const { mutateAsync: regenerateMeToken } = useRegenerateMeToken()
 
   const handleChangeToken = async () => {
     await confirmDialog.confirm({
@@ -36,7 +36,7 @@ export function TokenRegenerate() {
         'Az új kulcs létrehozása után az integrált alkalmazásokban az addon nem fog működni amíg újra nem telepíted!',
       onConfirm: async () => {
         try {
-          await regenerateMeToken()
+          await onSubmit()
           toast.success('Új kulcs generálása elkészült.')
         } catch (error) {
           const message = parseApiError(error)
@@ -53,7 +53,7 @@ export function TokenRegenerate() {
         <CardTitle>Kulcs kezelése</CardTitle>
         <CardDescription>
           A StremHU Source ennek a kulcsnak a segítségével azonosítja a
-          felhasználók az integrációnál.
+          felhasználót az integrációnál.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-5">

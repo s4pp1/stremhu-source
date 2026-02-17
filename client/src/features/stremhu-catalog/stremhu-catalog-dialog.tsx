@@ -3,8 +3,8 @@ import type { MouseEventHandler } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
-import { useDialogsStore } from '@/routes/-features/dialogs/dialogs-store'
 import type { OpenedDialog } from '@/routes/-features/dialogs/dialogs-store'
+import { useDialogsStore } from '@/routes/-features/dialogs/dialogs-store'
 import { Button } from '@/shared/components/ui/button'
 import {
   Dialog,
@@ -77,9 +77,9 @@ export function StremhuCatalogDialog(
       >
         <form.AppForm>
           <DialogHeader>
-            <DialogTitle>StremHU | Catalog integráció</DialogTitle>
+            <DialogTitle>StremHU Catalog integráció</DialogTitle>
             <DialogDescription>
-              A StremHU | Catalog integráció lehetővé teszi, hogy a sorozatok
+              A StremHU Catalog integráció lehetővé teszi, hogy a sorozatok
               speciális epizódjait is listázza a torrentek közzött.
             </DialogDescription>
           </DialogHeader>

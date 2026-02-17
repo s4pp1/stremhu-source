@@ -11,7 +11,17 @@ import { SourceMetaDto } from './source-meta.dto';
 import { TrackerMetaDto } from './tracker-meta.dto';
 import { VideoQualityMetaDto } from './video-quality-meta.dto';
 
-export class TrackerPreferenceMetaDto {
+export class BasePreferenceMetaDto {
+  @IsString()
+  @ApiProperty()
+  label: string;
+
+  @IsString()
+  @ApiProperty()
+  description: string;
+}
+
+export class TrackerPreferenceMetaDto extends BasePreferenceMetaDto {
   @Equals(PreferenceEnum.TRACKER)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -19,10 +29,6 @@ export class TrackerPreferenceMetaDto {
     example: PreferenceEnum.TRACKER,
   })
   value: PreferenceEnum.TRACKER;
-
-  @IsString()
-  @ApiProperty()
-  label: string;
 
   @IsArray()
   @ApiProperty({
@@ -32,7 +38,7 @@ export class TrackerPreferenceMetaDto {
   items: TrackerMetaDto[];
 }
 
-export class LanguagePreferenceMetaDto {
+export class LanguagePreferenceMetaDto extends BasePreferenceMetaDto {
   @Equals(PreferenceEnum.LANGUAGE)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -40,10 +46,6 @@ export class LanguagePreferenceMetaDto {
     example: PreferenceEnum.LANGUAGE,
   })
   value: PreferenceEnum.LANGUAGE;
-
-  @IsString()
-  @ApiProperty()
-  label: string;
 
   @IsArray()
   @ApiProperty({
@@ -53,7 +55,7 @@ export class LanguagePreferenceMetaDto {
   items: LanguageMetaDto[];
 }
 
-export class ResolutionPreferenceMetaDto {
+export class ResolutionPreferenceMetaDto extends BasePreferenceMetaDto {
   @Equals(PreferenceEnum.RESOLUTION)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -61,10 +63,6 @@ export class ResolutionPreferenceMetaDto {
     example: PreferenceEnum.RESOLUTION,
   })
   value: PreferenceEnum.RESOLUTION;
-
-  @IsString()
-  @ApiProperty()
-  label: string;
 
   @IsArray()
   @ApiProperty({
@@ -74,7 +72,7 @@ export class ResolutionPreferenceMetaDto {
   items: ResolutionMetaDto[];
 }
 
-export class VideoQualityPreferenceMetaDto {
+export class VideoQualityPreferenceMetaDto extends BasePreferenceMetaDto {
   @Equals(PreferenceEnum.VIDEO_QUALITY)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -82,10 +80,6 @@ export class VideoQualityPreferenceMetaDto {
     example: PreferenceEnum.VIDEO_QUALITY,
   })
   value: PreferenceEnum.VIDEO_QUALITY;
-
-  @IsString()
-  @ApiProperty()
-  label: string;
 
   @IsArray()
   @ApiProperty({
@@ -95,7 +89,7 @@ export class VideoQualityPreferenceMetaDto {
   items: VideoQualityMetaDto[];
 }
 
-export class SourcePreferenceMetaDto {
+export class SourcePreferenceMetaDto extends BasePreferenceMetaDto {
   @Equals(PreferenceEnum.SOURCE)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -103,10 +97,6 @@ export class SourcePreferenceMetaDto {
     example: PreferenceEnum.SOURCE,
   })
   value: PreferenceEnum.SOURCE;
-
-  @IsString()
-  @ApiProperty()
-  label: string;
 
   @IsArray()
   @ApiProperty({
@@ -116,7 +106,7 @@ export class SourcePreferenceMetaDto {
   items: SourceMetaDto[];
 }
 
-export class AudioQualityPreferenceMetaDto {
+export class AudioQualityPreferenceMetaDto extends BasePreferenceMetaDto {
   @Equals(PreferenceEnum.AUDIO_QUALITY)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -124,10 +114,6 @@ export class AudioQualityPreferenceMetaDto {
     example: PreferenceEnum.AUDIO_QUALITY,
   })
   value: PreferenceEnum.AUDIO_QUALITY;
-
-  @IsString()
-  @ApiProperty()
-  label: string;
 
   @IsArray()
   @ApiProperty({
