@@ -21,6 +21,7 @@ import { Separator } from '@/shared/components/ui/separator'
 import { withForm } from '@/shared/contexts/form-context'
 import type { PreferenceEnum } from '@/shared/lib/source-client'
 import type { PreferenceMetaDto } from '@/shared/type/preference-meta.dto'
+import { capitalizeFirstLetter } from '@/shared/utils/text.util'
 
 import { PreferenceForm } from '../preference-form/preference-form'
 import { preferenceFormValues } from '../preference-form/preference-form-values'
@@ -57,7 +58,9 @@ export const CreatePreference = withForm({
                     <FieldLabel htmlFor={preference.value}>
                       <Field orientation="horizontal">
                         <FieldContent>
-                          <FieldTitle>{preference.label}</FieldTitle>
+                          <FieldTitle>
+                            {capitalizeFirstLetter(preference.label)}
+                          </FieldTitle>
                           <FieldDescription>
                             {preference.description}
                           </FieldDescription>

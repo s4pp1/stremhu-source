@@ -14,7 +14,6 @@ import {
   Item,
   ItemActions,
   ItemContent,
-  ItemDescription,
   ItemMedia,
   ItemTitle,
 } from '@/shared/components/ui/item'
@@ -33,7 +32,7 @@ export function TokenRegenerate(props: TokenRegenerateProps) {
     await confirmDialog.confirm({
       title: 'Biztosan kérsz új kulcsot?',
       description:
-        'Az új kulcs létrehozása után az integrált alkalmazásokban az addon nem fog működni amíg újra nem telepíted!',
+        'Az új kulcs létrehozása után az telepített alkalmazásokban az addon nem fog működni amíg újra nem telepíted!',
       onConfirm: async () => {
         try {
           await onSubmit()
@@ -53,7 +52,7 @@ export function TokenRegenerate(props: TokenRegenerateProps) {
         <CardTitle>Kulcs kezelése</CardTitle>
         <CardDescription>
           A StremHU Source ennek a kulcsnak a segítségével azonosítja a
-          felhasználót az integrációnál.
+          felhasználót az alkalmazásokban.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
@@ -63,7 +62,6 @@ export function TokenRegenerate(props: TokenRegenerateProps) {
           </ItemMedia>
           <ItemContent>
             <ItemTitle>Új kulcs kérése</ItemTitle>
-            <ItemDescription>A régi kulcs törlésre kerül!</ItemDescription>
           </ItemContent>
           <ItemActions onClick={handleChangeToken}>
             <Button

@@ -137,3 +137,9 @@ code {
     cursor: pointer;
   }
 }
+
+@layer components {
+  .link-primary {
+    @apply text-primary underline-offset-4 transition-colors hover:text-primary/80 hover:underline;
+  }
+}

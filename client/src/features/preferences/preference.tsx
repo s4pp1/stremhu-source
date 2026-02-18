@@ -15,6 +15,7 @@ import {
 import { useMetadata } from '@/shared/hooks/use-metadata'
 import { parseApiError } from '@/shared/lib/utils'
 import type { PreferenceDto } from '@/shared/type/preference.dto'
+import { capitalizeFirstLetter } from '@/shared/utils/text.util'
 
 import { BadgesSection } from './badges-section'
 
@@ -65,7 +66,7 @@ export function Preference(props: PreferenceProps) {
       <Item className="p-0">
         <ItemContent>
           <ItemTitle className="line-clamp-2 break-all">
-            <span className="capitalize">{preferenceName}</span> konfigurációja
+            {capitalizeFirstLetter(preferenceName)} konfigurációja
           </ItemTitle>
         </ItemContent>
         <ItemActions>

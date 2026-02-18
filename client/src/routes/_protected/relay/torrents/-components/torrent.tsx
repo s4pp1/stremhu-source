@@ -20,7 +20,6 @@ import type { JSX, MouseEventHandler } from 'react'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
 
-import { formatFilesize } from '@/common/file.util'
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { Badge } from '@/shared/components/ui/badge'
 import { Button } from '@/shared/components/ui/button'
@@ -43,6 +42,7 @@ import type { TorrentDto } from '@/shared/lib/source-client'
 import { assertExists, formatDateTime, parseApiError } from '@/shared/lib/utils'
 import { useDeleteTorrent, useUpdateTorrent } from '@/shared/queries/torrents'
 import { getTrackers } from '@/shared/queries/trackers'
+import { formatFilesize } from '@/shared/utils/file.util'
 
 interface TorrentProps {
   torrent: TorrentDto

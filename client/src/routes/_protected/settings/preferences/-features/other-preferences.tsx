@@ -3,7 +3,6 @@ import { useQueries } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
-import { onlyBestTorrentSchema, torrentSeedSchema } from '@/common/schemas'
 import {
   Card,
   CardContent,
@@ -18,6 +17,7 @@ import { SEED_OPTIONS } from '@/shared/constants'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
 import { getMe, useUpdateMe } from '@/shared/queries/me'
 import { getMetadata } from '@/shared/queries/metadata'
+import { onlyBestTorrentSchema, torrentSeedSchema } from '@/shared/schemas'
 
 export const validatorSchema = z.object({
   torrentSeed: torrentSeedSchema,
@@ -65,8 +65,9 @@ export function OtherPreferences() {
       <CardHeader className="px-0">
         <CardTitle>További preferenciák</CardTitle>
         <CardDescription>
-          Itt módosíthatod a belépési adataidat és biztonsági beállításaidat,
-          valamint összekapcsolhatod az addont a Stremio-fiókoddal.
+          Itt finomhangolhatod a torrent-találatok megjelenését (pl. elrejtés
+          kevés seeder esetén), és bekapcsolhatod a Családbarát módot a
+          tisztább, egyszerűbb listához.
         </CardDescription>
       </CardHeader>
       <div className="columns-1 md:columns-2 gap-4">
