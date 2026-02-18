@@ -4,6 +4,7 @@ import * as z from 'zod'
 import { PreferenceEnum } from '@/shared/lib/source-client'
 import { getMePreference } from '@/shared/queries/me-preferences'
 import { getMetadata } from '@/shared/queries/metadata'
+import { capitalizeFirstLetter } from '@/shared/utils/text.util'
 
 const preferenceParamsSchema = z.object({
   preference: z.enum(PreferenceEnum),
@@ -38,7 +39,7 @@ export const Route = createFileRoute(
     )
 
     return {
-      breadcrumb: `${preferenceName!.label}`,
+      breadcrumb: `${capitalizeFirstLetter(preferenceName!.label)} konfigurációja`,
     }
   },
 })

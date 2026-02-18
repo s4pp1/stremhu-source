@@ -34,7 +34,7 @@ function ProfileRoute() {
         <CardHeader className="px-0">
           <CardTitle>Beállítások</CardTitle>
           <CardDescription>
-            Itt módosíthatod a fiókadataidat, biztonsági beállításaidat és a
+            Módosíthatod a fiókadataidat, biztonsági beállításaidat és a
             torrentlista preferenciáit.
           </CardDescription>
         </CardHeader>

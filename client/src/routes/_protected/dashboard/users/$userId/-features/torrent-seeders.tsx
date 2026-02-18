@@ -2,7 +2,6 @@ import { useForm } from '@tanstack/react-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
-import { torrentSeedSchema } from '@/common/schemas'
 import {
   Card,
   CardContent,
@@ -16,6 +15,7 @@ import { SEED_OPTIONS } from '@/shared/constants'
 import type { UserDto } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import { useUpdateUser } from '@/shared/queries/users'
+import { torrentSeedSchema } from '@/shared/schemas'
 
 const validatorSchema = z.object({
   torrentSeed: torrentSeedSchema,

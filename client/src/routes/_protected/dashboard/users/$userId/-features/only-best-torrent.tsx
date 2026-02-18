@@ -2,7 +2,6 @@ import { useForm } from '@tanstack/react-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
-import { onlyBestTorrentSchema } from '@/common/schemas'
 import {
   Card,
   CardContent,
@@ -15,6 +14,7 @@ import { Switch } from '@/shared/components/ui/switch'
 import type { UserDto } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import { useUpdateUser } from '@/shared/queries/users'
+import { onlyBestTorrentSchema } from '@/shared/schemas'
 
 const validatorSchema = z.object({
   onlyBestTorrent: onlyBestTorrentSchema,
