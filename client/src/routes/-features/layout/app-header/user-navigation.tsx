@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import {
   LayoutDashboardIcon,
@@ -17,12 +16,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu'
-import { UserRoleEnum } from '@/shared/lib/source-client'
-import { getMe } from '@/shared/queries/me'
+import { useIsAdmin } from '@/shared/hooks/use-is-admin'
 
 export function UserNavigation() {
-  const { data: me } = useQuery(getMe)
-  if (!me) return null
+  const { isAdmin } = useIsAdmin()
 
   return (
     <div className="flex gap-2 items-center">
@@ -35,7 +32,7 @@ export function UserNavigation() {
           Kezdőoldal
         </Link>
       </Button>
-      {me.userRole === UserRoleEnum.ADMIN && (
+      {isAdmin && (
         <Button asChild variant="ghost" size="sm">
           <Link to="/relay" activeProps={{ className: 'bg-background' }}>
             {SETTINGS_RELAY_NAME}
@@ -56,12 +53,14 @@ export function UserNavigation() {
                 Beállítások
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/dashboard">
-                <LayoutDashboardIcon />
-                Irányítópult
-              </Link>
-            </DropdownMenuItem>
+            {isAdmin && (
+              <DropdownMenuItem asChild>
+                <Link to="/dashboard">
+                  <LayoutDashboardIcon />
+                  Irányítópult
+                </Link>
+              </DropdownMenuItem>
+            )}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
