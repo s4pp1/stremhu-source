@@ -1,6 +1,7 @@
-import { ParsedTorrent } from 'src/common/utils/parse-torrent.util';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import { TrackerDownload } from 'src/trackers/tracker.types';
+
+import { TorrentInfo } from './type/torrent-info.type';
 
 export interface TorrentsCache {
   imdbId: string;
@@ -16,7 +17,7 @@ export interface TorrentCache {
   tracker: TrackerEnum;
   torrentId: string;
   torrentFilePath: string;
-  parsed: ParsedTorrent;
+  info: TorrentInfo;
 }
 
 export interface SaveTorrents {

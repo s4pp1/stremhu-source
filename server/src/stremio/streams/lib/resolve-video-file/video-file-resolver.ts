@@ -2,7 +2,8 @@ import { filenameParse } from '@ctrl/video-filename-parser';
 import isVideo from 'is-video';
 import { findIndex, maxBy } from 'lodash';
 
-import { TrackerTorrent, TrackerTorrentFile } from 'src/trackers/tracker.types';
+import { TorrentFileInfo } from 'src/torrents-cache/type/torrent-file-info.type';
+import { TrackerTorrent } from 'src/trackers/tracker.types';
 
 import { ParsedStremioIdSeries } from '../../pipe/stream-id.pipe';
 import { VideoFile } from '../../type/video-file.type';
@@ -25,7 +26,7 @@ export class VideoFileResolver {
   }
 
   resolve(): VideoFile | null {
-    let torrentFile: TrackerTorrentFile | null = null;
+    let torrentFile: TorrentFileInfo | null = null;
 
     if (this.series) {
       torrentFile = this.resolveSeriesFile(this.series);
@@ -56,13 +57,13 @@ export class VideoFileResolver {
       // Fájl információk
       fileName: torrentFile.name,
       fileSize: torrentFile.size,
-      fileIndex: torrentFile.fileIndex,
+      fileIndex: torrentFile.index,
 
       notWebReady: false,
     };
   }
 
-  private resolveLargestFile(): TrackerTorrentFile | null {
+  private resolveLargestFile(): TorrentFileInfo | null {
     const largestfile = maxBy(this.torrent.files, (file) => file.size);
 
     if (!largestfile || !isVideo(largestfile.name)) return null;
@@ -77,7 +78,7 @@ export class VideoFileResolver {
 
   private resolveSeriesFile(
     series: ParsedStremioIdSeries,
-  ): TrackerTorrentFile | null {
+  ): TorrentFileInfo | null {
     const seriesFile = this.torrent.files.find((file) => {
       const normalizedName = file.name.toLowerCase();
       const sampleOrTrash = this.isSampleOrTrash(normalizedName);

@@ -6,21 +6,17 @@ import { mkdir, rm, stat, utimes, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { safeReadFile, safeReaddir } from 'src/common/utils/file.util';
-import {
-  ParsedTorrent,
-  parseTorrent,
-  toTorrentFile,
-} from 'src/common/utils/parse-torrent.util';
+import { parseTorrent } from 'src/common/utils/parse-torrent.util';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { MARKER_FILENAME } from '../torrents-cache.constants';
 import {
-  ParsedTorrentPath,
   TorrentCache,
   TorrentCacheId,
   TorrentsCache,
 } from '../torrents-cache.types';
 import { TorrentCacheToCreate } from '../type/torrent-cache-to-create.type';
+import { TorrentInfo } from '../type/torrent-info.type';
 
 @Injectable()
 export class TorrentsCacheStore implements OnModuleInit {
@@ -38,7 +34,7 @@ export class TorrentsCacheStore implements OnModuleInit {
   }
 
   async create(payload: TorrentCacheToCreate): Promise<TorrentCache> {
-    const { imdbId, tracker, torrentId, parsed } = payload;
+    const { imdbId, tracker, torrentId, torrentBuffer } = payload;
 
     const trackerDirPath = this.buildTrackerDirPath(imdbId, tracker);
     await mkdir(trackerDirPath, { recursive: true });
@@ -50,15 +46,15 @@ export class TorrentsCacheStore implements OnModuleInit {
       torrentId,
     );
 
-    const torrentFile = await toTorrentFile(parsed);
+    await writeFile(torrentFilePath, torrentBuffer);
+    const torrentFile = parseTorrent(torrentBuffer);
 
-    await writeFile(torrentFilePath, torrentFile);
-
-    this.logger.log(`💾 Torrent mentésre került: ${parsed.name}`);
+    this.logger.log(`💾 Torrent mentésre került: ${torrentFile.name}`);
 
     return {
       ...payload,
       torrentFilePath: torrentFilePath,
+      info: torrentFile,
     };
   }
 
@@ -78,9 +74,9 @@ export class TorrentsCacheStore implements OnModuleInit {
       const [torrentId] = torrentDirent.name.split('.');
 
       const path = join(trackerDirPath, torrentDirent.name);
-      const parsed = await this.fileToParseTorrent(path);
+      const torrentInfo = await this.fileToParseTorrent(path);
 
-      if (!parsed) {
+      if (!torrentInfo) {
         this.logger.error(`🚨 A(z) "${path}" nem található.`);
         continue;
       }
@@ -89,7 +85,7 @@ export class TorrentsCacheStore implements OnModuleInit {
         ...payload,
         torrentId,
         torrentFilePath: path,
-        parsed,
+        info: torrentInfo,
       });
     }
 
@@ -103,16 +99,16 @@ export class TorrentsCacheStore implements OnModuleInit {
       payload.torrentId,
     );
 
-    const parsed = await this.fileToParseTorrent(torrentFilePath);
+    const torrentInfo = await this.fileToParseTorrent(torrentFilePath);
 
-    if (!parsed) {
+    if (!torrentInfo) {
       return null;
     }
 
     return {
       ...payload,
       torrentFilePath: torrentFilePath,
-      parsed,
+      info: torrentInfo,
     };
   }
 
@@ -169,22 +165,15 @@ export class TorrentsCacheStore implements OnModuleInit {
 
   private async fileToParseTorrent(
     torrentPath: string,
-  ): Promise<ParsedTorrent | null> {
+  ): Promise<TorrentInfo | null> {
     const fileBuffer = await safeReadFile(torrentPath);
 
     if (!fileBuffer) {
       return null;
     }
 
-    const parsedTorrent = await parseTorrent(new Uint8Array(fileBuffer));
+    const parsedTorrent = parseTorrent(fileBuffer);
     return parsedTorrent;
-  }
-
-  private parseTorrentPath(fullPath: string): ParsedTorrentPath {
-    const path = fullPath.replace(this.torrentsDir, '');
-    const [imdbId, tracker, details] = path.split('/');
-    const [torrentId] = details.split('.');
-    return { imdbId, tracker: tracker as TrackerEnum, torrentId };
   }
 
   async getMarkerTime(trackerDir: string) {

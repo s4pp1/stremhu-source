@@ -4,7 +4,6 @@ import Bottleneck from 'bottleneck';
 import { load } from 'cheerio';
 import { compact, nth } from 'lodash';
 
-import { parseTorrent } from 'src/common/utils/parse-torrent.util';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { FIND_TORRENTS_LIMIT } from '../adapter.contant';
@@ -157,10 +156,9 @@ export class BithumenClient {
         }),
       );
 
-      const bytes = new Uint8Array(response.data);
-      const parsed = await parseTorrent(bytes);
+      const torrentBuffer = Buffer.from(response.data);
 
-      return { torrentId, parsed };
+      return { torrentId, torrentBuffer };
     } catch (error) {
       this.logger.error(
         getTrackerTorrentDownloadErrorMessage(this.tracker, torrentId),

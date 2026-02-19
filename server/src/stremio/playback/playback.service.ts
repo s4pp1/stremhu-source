@@ -49,7 +49,7 @@ export class PlaybackService {
 
     if (torrentCache) {
       torrent = await this.torrentsService.findOneByInfoHash(
-        torrentCache.parsed.infoHash,
+        torrentCache.info.infoHash,
       );
     }
 
