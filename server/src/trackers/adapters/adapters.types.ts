@@ -1,4 +1,3 @@
-import { ParsedTorrent } from 'src/common/utils/parse-torrent.util';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
 
@@ -26,5 +25,5 @@ export interface AdapterTorrent extends AdapterTorrentId {
 
 export interface AdapterParsedTorrent {
   torrentId: string;
-  parsed: ParsedTorrent;
+  torrentBuffer: Buffer;
 }

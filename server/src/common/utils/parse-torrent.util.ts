@@ -1,18 +1,23 @@
-import type { Instance } from 'parse-torrent';
+import { files, hash, info } from '@ctrl/torrent-file';
 
-export type ParsedTorrent = Instance;
-export type ParsedFile = NonNullable<ParsedTorrent['files']>[number];
+import { TorrentFileInfo } from 'src/torrents-cache/type/torrent-file-info.type';
+import { TorrentInfo } from 'src/torrents-cache/type/torrent-info.type';
 
-export async function parseTorrent(buffer: Uint8Array): Promise<ParsedTorrent> {
-  const { default: pT } = await import('parse-torrent');
-  // eslint-disable-next-line @typescript-eslint/await-thenable
-  const parsedTorrent = await pT(buffer);
-  return parsedTorrent;
-}
+export function parseTorrent(buffer: Buffer): TorrentInfo {
+  const infoHash = hash(buffer);
+  const torrentInfo = info(buffer);
+  const fileInfo = files(buffer);
 
-export async function toTorrentFile(
-  parsedTorrent: ParsedTorrent,
-): Promise<Buffer<ArrayBufferLike>> {
-  const { toTorrentFile: toFile } = await import('parse-torrent');
-  return toFile(parsedTorrent);
+  const torrentFiles: TorrentFileInfo[] = fileInfo.files.map((file, index) => ({
+    index,
+    name: file.name,
+    size: file.length,
+  }));
+
+  return {
+    infoHash,
+    name: torrentInfo.name,
+    size: fileInfo.length,
+    files: torrentFiles,
+  };
 }

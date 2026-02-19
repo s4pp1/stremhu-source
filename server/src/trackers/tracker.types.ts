@@ -1,7 +1,7 @@
-import { ParsedTorrent } from 'src/common/utils/parse-torrent.util';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
 import { StreamMediaTypeEnum } from 'src/stremio/enum/stream-media-type.enum';
+import { TorrentFileInfo } from 'src/torrents-cache/type/torrent-file-info.type';
 
 import {
   AdapterParsedTorrent,
@@ -17,16 +17,10 @@ export interface TrackerTorrentId {
   torrentFilePath: string;
 }
 
-export interface TrackerTorrentFile {
-  name: string;
-  size: number;
-  fileIndex: number;
-}
-
 export interface TrackerTorrent extends TrackerTorrentId {
   name: string;
   infoHash: string;
-  files: TrackerTorrentFile[];
+  files: TorrentFileInfo[];
   language: LanguageEnum;
   resolution: ResolutionEnum;
   seeders: number;
@@ -58,5 +52,5 @@ export interface TrackerAdapter {
 
 export interface TrackerDownload {
   torrentId: string;
-  parsed: ParsedTorrent;
+  torrentBuffer: Buffer;
 }

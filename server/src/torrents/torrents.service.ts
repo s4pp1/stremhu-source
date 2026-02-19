@@ -92,7 +92,7 @@ export class TorrentsService
         })
         .catch(() => {
           this.logger.error(
-            `🚨 .torrent fájl betöltése közben hiba történt: ${torrentCache.parsed.name}`,
+            `🚨 .torrent fájl betöltése közben hiba történt: ${torrentCache.info.name}`,
           );
         });
     }

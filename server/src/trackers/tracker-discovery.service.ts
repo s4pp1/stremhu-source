@@ -13,7 +13,6 @@ import {
   TrackerAdapter,
   TrackerSearchQuery,
   TrackerTorrent,
-  TrackerTorrentFile,
 } from './tracker.types';
 import { TrackerTorrentFound } from './type/tracker-torrent-found.type';
 
@@ -59,7 +58,7 @@ export class TrackerDiscoveryService {
     if (torrentCache) {
       return {
         ...torrent,
-        infoHash: torrentCache.parsed.infoHash,
+        infoHash: torrentCache.info.infoHash,
         torrentFilePath: torrentCache.torrentFilePath,
       };
     }
@@ -69,12 +68,12 @@ export class TrackerDiscoveryService {
       tracker,
       torrentId,
       imdbId: torrent.imdbId,
-      parsed: downloaded.parsed,
+      torrentBuffer: downloaded.torrentBuffer,
     });
 
     return {
       ...torrent,
-      infoHash: createdTorrentCache.parsed.infoHash,
+      infoHash: createdTorrentCache.info.infoHash,
       torrentFilePath: createdTorrentCache.torrentFilePath,
     };
   }
@@ -123,22 +122,11 @@ export class TrackerDiscoveryService {
     return cachedTorrents.map((cachedTorrent) => {
       const torrent = torrentsMap[cachedTorrent.torrentId];
 
-      const name = cachedTorrent.parsed.name || '';
-
-      const parsedFiles = cachedTorrent.parsed.files || [];
-      const files: TrackerTorrentFile[] = parsedFiles.map(
-        (parsedFile, index) => ({
-          name: parsedFile.name,
-          size: parsedFile.length,
-          fileIndex: index,
-        }),
-      );
-
       return {
         ...torrent,
-        infoHash: cachedTorrent.parsed.infoHash,
-        name,
-        files,
+        infoHash: cachedTorrent.info.infoHash,
+        name: cachedTorrent.info.name,
+        files: cachedTorrent.info.files,
         torrentFilePath: cachedTorrent.torrentFilePath,
       };
     });
@@ -155,13 +143,13 @@ export class TrackerDiscoveryService {
 
     const results = await Promise.allSettled(
       adapterTorrents.map(async (adapterTorrent) => {
-        const adapterParsedTorrent = await adapter.download(adapterTorrent);
+        const downloadedTorrent = await adapter.download(adapterTorrent);
 
         const createdTorrentCache = await this.torrentsCacheStore.create({
           imdbId: adapterTorrent.imdbId,
-          parsed: adapterParsedTorrent.parsed,
           torrentId: adapterTorrent.torrentId,
           tracker: adapterTorrent.tracker,
+          torrentBuffer: downloadedTorrent.torrentBuffer,
         });
 
         return createdTorrentCache;
