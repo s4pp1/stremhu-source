@@ -1,6 +1,6 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import _ from 'lodash';
+import { isArray } from 'lodash';
 import { Dirent } from 'node:fs';
 import { mkdir, rm, stat, utimes, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
@@ -117,7 +117,7 @@ export class TorrentsCacheStore implements OnModuleInit {
   }
 
   async delete(paths: string[] | string): Promise<void> {
-    if (_.isArray(paths)) {
+    if (isArray(paths)) {
       await Promise.all(paths.map((path) => rm(path, { force: true })));
     } else {
       await rm(paths, { force: true });

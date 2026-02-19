@@ -4,7 +4,7 @@ export function useCopy() {
   const handleCopy = async (value: string): Promise<void> => {
     try {
       await navigator.clipboard.writeText(value)
-      toast.success('Kimásolva a vágólapra')
+      toast.success('Vágólapra másolva')
     } catch {
       toast.error('Másolás sikertelen')
     }

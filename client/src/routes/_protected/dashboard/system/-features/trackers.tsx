@@ -63,7 +63,7 @@ export function Trackers() {
           <CardAction>
             <Button
               size="icon-sm"
-              className="rounded-full bg-green-700 text-white"
+              className="rounded-full"
               onClick={handleTrackerLogin}
             >
               <LogInIcon />
@@ -87,11 +87,7 @@ export function Trackers() {
             </EmptyHeader>
             <EmptyContent>
               <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  className="bg-green-700 text-white"
-                  onClick={handleTrackerLogin}
-                >
+                <Button size="sm" onClick={handleTrackerLogin}>
                   <LogInIcon />
                   Bejelentkezés
                 </Button>

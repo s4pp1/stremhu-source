@@ -8,7 +8,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import type { AxiosInstance, AxiosResponse } from 'axios';
 import { AxiosHeaders, isAxiosError } from 'axios';
-import _ from 'lodash';
+import { get } from 'lodash';
 import { CookieJar } from 'tough-cookie';
 
 import { createAxios } from 'src/trackers/common/create-axios';
@@ -89,7 +89,7 @@ export class InsaneClientFactory {
   }
 
   private isAuthError(res: AxiosResponse) {
-    const requestPath = _.get(res.request, ['path']) as string | undefined;
+    const requestPath = get(res.request, ['path']) as string | undefined;
     const checkPaths = [LOGIN_PATH];
 
     const isLoginPath = checkPaths.some((checkPath) =>

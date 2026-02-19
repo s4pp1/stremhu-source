@@ -1,10 +1,10 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router'
+import { upperFirst } from 'lodash'
 import * as z from 'zod'
 
 import { PreferenceEnum } from '@/shared/lib/source-client'
 import { getMePreference } from '@/shared/queries/me-preferences'
 import { getMetadata } from '@/shared/queries/metadata'
-import { capitalizeFirstLetter } from '@/shared/utils/text.util'
 
 const preferenceParamsSchema = z.object({
   preference: z.enum(PreferenceEnum),
@@ -39,7 +39,7 @@ export const Route = createFileRoute(
     )
 
     return {
-      breadcrumb: `${capitalizeFirstLetter(preferenceName!.label)} konfigurációja`,
+      breadcrumb: `${upperFirst(preferenceName!.label)} konfigurációja`,
     }
   },
 })

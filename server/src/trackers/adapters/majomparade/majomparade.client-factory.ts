@@ -9,7 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import type { AxiosInstance } from 'axios';
 import { AxiosHeaders, isAxiosError } from 'axios';
 import { load } from 'cheerio';
-import _ from 'lodash';
+import { get } from 'lodash';
 import { CookieJar } from 'tough-cookie';
 
 import { createAxios } from 'src/trackers/common/create-axios';
@@ -106,7 +106,7 @@ export class MajomparadeClientFactory {
   private initInterceptors() {
     this.axios.interceptors.response.use(
       async (res) => {
-        const requestPath = _.get(res.request, ['path']) as string | undefined;
+        const requestPath = get(res.request, ['path']) as string | undefined;
         const isLoginPath = requestPath?.includes(LOGIN_PATH);
 
         if (isLoginPath) {

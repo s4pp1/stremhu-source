@@ -40,7 +40,7 @@ function SetupAddressRoute() {
   })
 
   const handleSuccessOrSkip = () => {
-    navigate({ to: '/settings' })
+    navigate({ to: '/dashboard' })
   }
 
   return (

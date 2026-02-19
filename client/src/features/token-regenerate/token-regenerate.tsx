@@ -32,7 +32,7 @@ export function TokenRegenerate(props: TokenRegenerateProps) {
     await confirmDialog.confirm({
       title: 'Biztosan kérsz új kulcsot?',
       description:
-        'Az új kulcs létrehozása után az telepített alkalmazásokban az addon nem fog működni amíg újra nem telepíted!',
+        'Új kulcs létrehozása után az telepített alkalmazásokban az addon nem fog működni amíg újra nem telepíted!',
       onConfirm: async () => {
         try {
           await onSubmit()

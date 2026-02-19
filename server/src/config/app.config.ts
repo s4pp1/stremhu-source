@@ -1,5 +1,5 @@
 import { registerAs } from '@nestjs/config';
-import _ from 'lodash';
+import { parseInt } from 'lodash';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { z } from 'zod';
@@ -28,10 +28,10 @@ export default registerAs('app', () => {
   const description = parsed.data.description;
 
   const httpPort = process.env.HTTP_PORT
-    ? _.parseInt(process.env.HTTP_PORT)
+    ? parseInt(process.env.HTTP_PORT)
     : undefined;
   const httpsPort = process.env.HTTPS_PORT
-    ? _.parseInt(process.env.HTTPS_PORT)
+    ? parseInt(process.env.HTTPS_PORT)
     : undefined;
 
   const configs: ZodConfig<AppConfig> = {

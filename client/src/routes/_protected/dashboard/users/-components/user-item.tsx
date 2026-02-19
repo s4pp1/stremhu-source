@@ -1,7 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { CopyIcon, TrashIcon } from 'lucide-react'
 import type { MouseEvent } from 'react'
-import { toast } from 'sonner'
 
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { Button } from '@/shared/components/ui/button'
@@ -17,6 +16,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/shared/components/ui/tooltip'
+import { useCopy } from '@/shared/hooks/use-copy'
 import { useIntegrationDomain } from '@/shared/hooks/use-integration-domain'
 import { useMetadata } from '@/shared/hooks/use-metadata'
 import type { UserDto } from '@/shared/lib/source-client'
@@ -38,18 +38,7 @@ export function UserItem(props: UserItem) {
 
   const { getUserRoleLabel } = useMetadata()
   const { mutateAsync: deleteUser } = useDeleteUser()
-
-  const handleCopyUrl = async (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
-
-    try {
-      await navigator.clipboard.writeText(urlEndpoint)
-      toast.success('URL kimásolva a vágólapra')
-    } catch {
-      toast.error('Másolás sikertelen')
-    }
-  }
+  const { handleCopy } = useCopy()
 
   const handleDeleteUser = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -85,7 +74,7 @@ export function UserItem(props: UserItem) {
                 <InputGroupButton
                   variant="ghost"
                   size="icon-sm"
-                  onClick={handleCopyUrl}
+                  onClick={() => handleCopy(urlEndpoint)}
                 >
                   <CopyIcon />
                 </InputGroupButton>

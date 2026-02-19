@@ -1,5 +1,5 @@
 import { registerAs } from '@nestjs/config';
-import _ from 'lodash';
+import { parseInt } from 'lodash';
 import { join } from 'node:path';
 import { z } from 'zod';
 
@@ -9,7 +9,7 @@ import ZodUtil, { ZodConfig } from './utils/zod-util';
 
 export default registerAs('torrent', () => {
   const port = process.env.TORRENT_PORT
-    ? _.parseInt(process.env.TORRENT_PORT)
+    ? parseInt(process.env.TORRENT_PORT)
     : undefined;
 
   const configs: ZodConfig<TorrentConfig> = {

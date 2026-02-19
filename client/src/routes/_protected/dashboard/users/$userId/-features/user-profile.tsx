@@ -1,6 +1,7 @@
 import { useForm } from '@tanstack/react-form'
 import { useQueries } from '@tanstack/react-query'
-import _ from 'lodash'
+import { useNavigate } from '@tanstack/react-router'
+import { capitalize } from 'lodash'
 import {
   CopyIcon,
   PencilIcon,
@@ -43,6 +44,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/components/ui/select'
+import { useCopy } from '@/shared/hooks/use-copy'
 import { useIntegrationDomain } from '@/shared/hooks/use-integration-domain'
 import type { UserDto } from '@/shared/lib/source-client'
 import { UserRoleEnum } from '@/shared/lib/source-client'
@@ -68,8 +70,10 @@ export function UserProfile(props: UserProfile) {
   if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
   if (!me) throw new Error(`Nincs "me" a cache-ben`)
 
+  const navigate = useNavigate()
   const confirmDialog = useConfirmDialog()
   const dialogs = useDialogs()
+  const { handleCopy } = useCopy()
 
   const { urlEndpoint } = useIntegrationDomain({
     token: user.token,
@@ -104,21 +108,18 @@ export function UserProfile(props: UserProfile) {
     },
   })
 
-  const handleCopyUrl = async () => {
-    try {
-      await navigator.clipboard.writeText(urlEndpoint)
-      toast.success('URL kimásolva a vágólapra')
-    } catch {
-      toast.error('Másolás sikertelen')
-    }
-  }
-
   const handleDeleteUser = async () => {
     await confirmDialog.confirm({
       title: `Biztos törölni szeretnéd?`,
-      description: `"${user.username}" törlése végleges és nem lehetséges visszaállítani!`,
+      description: (
+        <>
+          <span className="font-bold">{user.username}</span> törlése végleges és
+          nem lehetséges visszaállítani!
+        </>
+      ),
       onConfirm: async () => {
         await deleteUser(user.id)
+        navigate({ to: '/dashboard/users' })
       },
     })
   }
@@ -126,7 +127,7 @@ export function UserProfile(props: UserProfile) {
   return (
     <Card className="break-inside-avoid mb-4">
       <CardHeader>
-        <CardTitle>"{user.username}" felhasználó</CardTitle>
+        <CardTitle>{user.username} felhasználó</CardTitle>
         <CardDescription>Felhasználó profiljának módosítása</CardDescription>
         {user.id !== me.id && (
           <CardAction>
@@ -210,7 +211,7 @@ export function UserProfile(props: UserProfile) {
                       value={userRole.value}
                       className="first-letter:capitalize"
                     >
-                      {_.capitalize(userRole.label)}
+                      {capitalize(userRole.label)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -226,7 +227,7 @@ export function UserProfile(props: UserProfile) {
               <InputGroupButton
                 variant="ghost"
                 size="icon-sm"
-                onClick={handleCopyUrl}
+                onClick={() => handleCopy(urlEndpoint)}
               >
                 <CopyIcon />
               </InputGroupButton>
