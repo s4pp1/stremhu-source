@@ -25,16 +25,16 @@
   },
   "dependencies": {
     "@ctrl/video-filename-parser": "5.4.1",
-    "@nestjs/common": "11.1.13",
-    "@nestjs/config": "4.0.2",
-    "@nestjs/core": "11.1.13",
-    "@nestjs/platform-express": "11.1.13",
-    "@nestjs/schedule": "6.1.0",
+    "@nestjs/common": "11.1.14",
+    "@nestjs/config": "4.0.3",
+    "@nestjs/core": "11.1.14",
+    "@nestjs/platform-express": "11.1.14",
+    "@nestjs/schedule": "6.1.1",
     "@nestjs/serve-static": "5.0.4",
-    "@nestjs/swagger": "11.2.5",
+    "@nestjs/swagger": "11.2.6",
     "@nestjs/typeorm": "11.0.0",
     "@node-rs/argon2": "2.0.2",
-    "axios": "1.13.4",
+    "axios": "1.13.5",
     "axios-retry": "4.5.0",
     "better-sqlite3": "12.6.2",
     "bottleneck": "2.19.5",
@@ -54,7 +54,7 @@
     "parse-torrent": "11.0.19",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
-    "semver": "7.7.3",
+    "semver": "7.7.4",
     "tough-cookie": "6.0.0",
     "typeorm": "0.3.28",
     "zod": "4.3.6"
@@ -64,7 +64,7 @@
     "@eslint/js": "9.39.2",
     "@nestjs/cli": "11.0.16",
     "@nestjs/schematics": "11.0.9",
-    "@nestjs/testing": "11.1.13",
+    "@nestjs/testing": "11.1.14",
     "@trivago/prettier-plugin-sort-imports": "6.0.2",
     "@types/better-sqlite3": "7.6.13",
     "@types/express": "5.0.6",
@@ -90,7 +90,7 @@
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.54.0"
+    "typescript-eslint": "8.56.0"
   },
   "jest": {
     "moduleFileExtensions": [

@@ -6,6 +6,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import type { Request, Response } from 'express';
+import { isArray } from 'lodash';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -25,7 +26,7 @@ export class LoggingInterceptor implements NestInterceptor {
 
     let maskedUrl = url;
 
-    if (token) {
+    if (!isArray(token)) {
       const encodedToken = encodeURIComponent(token);
       maskedUrl = maskedUrl.split(token).join('[USER_TOKEN]');
       if (encodedToken !== token) {
