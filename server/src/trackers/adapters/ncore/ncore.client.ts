@@ -142,11 +142,7 @@ export class NcoreClient {
         .first()
         .attr('href');
 
-      const imdbUrl = $(
-        'a[href*=https://dereferer.me/?https://imdb.com/title/]',
-      )
-        .first()
-        .text();
+      const imdbUrl = $('a[href*=https://imdb.com/title/]').first().text();
 
       const imdbId = last(imdbUrl.split('/'));
 
