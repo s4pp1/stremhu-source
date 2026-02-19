@@ -45,6 +45,10 @@ function RouteComponent() {
     return prefs
   }, [userPreferences, preferences])
 
+  if (availablePrefs.length === 0) {
+    return navigate({ to: '/settings/preferences' })
+  }
+
   const { mutateAsync: createUserPreference } = useCreateUserPreference(userId)
 
   const form = useAppForm({

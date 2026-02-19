@@ -9,6 +9,7 @@ import {
   arrayMove,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
+import { useQuery } from '@tanstack/react-query'
 import type { LinkProps } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
 import { sortBy } from 'lodash'
@@ -38,6 +39,7 @@ import {
 } from '@/shared/components/ui/item'
 import { Separator } from '@/shared/components/ui/separator'
 import type { PreferenceEnum } from '@/shared/lib/source-client'
+import { getMetadata } from '@/shared/queries/metadata'
 import type { PreferenceDto } from '@/shared/type/preference.dto'
 
 type PreferencesSectionProps = {
@@ -48,7 +50,14 @@ type PreferencesSectionProps = {
 }
 
 export function PreferencesSection(props: PreferencesSectionProps) {
+  const { data: metadata } = useQuery(getMetadata)
+  if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
+
   const { preferences, toCreateLink, renderPreference, onReorder } = props
+
+  const disableCreatePreference = useMemo(() => {
+    return metadata.preferences.length === preferences.length
+  }, [metadata.preferences, preferences])
 
   const preferredPreferences = useMemo(
     () =>
@@ -96,13 +105,15 @@ export function PreferencesSection(props: PreferencesSectionProps) {
           szeretnél kizárni. A preferált tulajdonságok a sorrendet javítják, a
           kizárások pedig kiszűrik a nem kívánt találatokat.
         </CardDescription>
-        <CardAction>
-          <Button asChild size="icon-sm" className="rounded-full">
-            <Link {...toCreateLink}>
-              <PlusIcon />
-            </Link>
-          </Button>
-        </CardAction>
+        {!disableCreatePreference && (
+          <CardAction>
+            <Button asChild size="icon-sm" className="rounded-full">
+              <Link {...toCreateLink}>
+                <PlusIcon />
+              </Link>
+            </Button>
+          </CardAction>
+        )}
       </CardHeader>
       <Separator />
       <CardContent className="grid gap-8">
