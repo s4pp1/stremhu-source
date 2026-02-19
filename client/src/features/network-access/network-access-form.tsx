@@ -23,7 +23,7 @@ export const NETWORK_ACCESS_FORM_ID = 'network-access-form'
 export const NETWORK_ACCESS_HEADER = {
   TITLE: 'Elérés beállítása',
   DESCRIPTION:
-    'A Stremio csak biztonságos (HTTPS) kapcsolaton keresztül tud  addont telepíteni. Itt adhatod meg, milyen címen érje el a StremHU Source-ot.',
+    'Bizonyos kliensek (Stremio web) csak biztonságos (HTTPS) kapcsolaton keresztül tudnak addont telepíteni. Itt adhatod meg, milyen címen érje el a StremHU Source-ot.',
 }
 
 const schema = z

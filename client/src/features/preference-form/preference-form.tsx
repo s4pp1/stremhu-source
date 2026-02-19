@@ -48,6 +48,7 @@ export const PreferenceForm = withForm({
           {(values) => {
             const preference = getPreference(values.preference)
             const preferenceItems = preference.items
+            const preferenceItemsCount = preferenceItems.length
 
             const availablePreferenceItems = preferenceItems.filter(
               (preferenceItem) =>
@@ -107,6 +108,9 @@ export const PreferenceForm = withForm({
                             size="icon-sm"
                             variant="destructive"
                             className="rounded-full"
+                            disabled={
+                              preferenceItemsCount - 1 <= values.blocked.length
+                            }
                             onClick={handleAddBlocked}
                           >
                             <BanIcon />

@@ -1,5 +1,5 @@
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
-import _ from 'lodash'
+import { upperFirst } from 'lodash'
 import type { SubmitEventHandler } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -78,13 +78,15 @@ function SetupUserRoute() {
         <Card className="w-sm">
           <CardHeader>
             <CardTitle>
-              {_.upperFirst(getUserRoleLabel(UserRoleEnum.ADMIN))} fiók
+              {upperFirst(getUserRoleLabel(UserRoleEnum.ADMIN))} fiók
               létrehozása
             </CardTitle>
             <CardDescription>
-              Kezdjük a beállítást! Hozd létre az első fiókot, ami "
-              {getUserRoleLabel(UserRoleEnum.ADMIN)}" jogosultsággal fog
-              rendelkezni.
+              Kezdjük a beállítást! Hozd létre az első fiókot, ami{' '}
+              <span className="font-bold">
+                {getUserRoleLabel(UserRoleEnum.ADMIN)}
+              </span>{' '}
+              jogosultsággal fog rendelkezni.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">

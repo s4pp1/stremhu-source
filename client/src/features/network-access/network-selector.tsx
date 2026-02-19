@@ -12,7 +12,7 @@ const accessOptions = [
         Csak a helyi hálózaton használod. A StremHU Source egy biztonságos HTTPS
         címet generál a helyi IP-dhez a{' '}
         <a
-          className="underline italic "
+          className="link-primary"
           href="https://local-ip.medicmobile.org"
           target="_blank"
         >
@@ -27,14 +27,14 @@ const accessOptions = [
     label: 'Távoli elérés saját domainnel',
     description: (
       <>
-        Használd ezt, ha az internetről is el szeretnéd érni a StremHU |
+        Használd ezt, ha az internetről is el szeretnéd érni a StremHU
         Source-ot. Adj meg egy olyan domaint (pl. DDNS-szolgáltatóval, mint a{' '}
         <a
-          className="underline italic "
-          href="https://noip.com/"
+          className="link-primary"
+          href="https://www.duckdns.org"
           target="_blank"
         >
-          https://noip.com
+          https://www.duckdns.org
         </a>
         ), amely a StremHU Source-ot futtató eszközre mutat, és biztosítja a
         HTTPS-kapcsolatot.

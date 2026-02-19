@@ -7,7 +7,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import Bottleneck from 'bottleneck';
 import { load } from 'cheerio';
-import _ from 'lodash';
+import { compact, nth } from 'lodash';
 
 import { parseTorrent } from 'src/common/utils/parse-torrent.util';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
@@ -143,7 +143,7 @@ export class MajomparadeClient {
       const imdbUrl =
         $('a[href*="www.imdb.com/title/"]').first().attr('href') || '';
 
-      const imdbId = _.nth(imdbUrl.split('/'), -2);
+      const imdbId = nth(imdbUrl.split('/'), -2);
 
       if (!downloadPath || !imdbId) {
         throw new Error(
@@ -212,7 +212,7 @@ export class MajomparadeClient {
         return idParam;
       });
 
-      return _.compact(sourceIds);
+      return compact(sourceIds);
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);

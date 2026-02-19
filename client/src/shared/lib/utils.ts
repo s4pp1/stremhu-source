@@ -1,7 +1,7 @@
 import type { ClassValue } from 'clsx'
 import { clsx } from 'clsx'
 import { format } from 'date-fns'
-import _ from 'lodash'
+import { get, isArray } from 'lodash'
 import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: Array<ClassValue>) {
@@ -11,10 +11,10 @@ export function cn(...inputs: Array<ClassValue>) {
 export function parseApiError(error: unknown): string {
   let message = 'Váratlan hiba történt, próbáld újra!'
 
-  const errorMessage: string | Array<string> = _.get(error, ['body', 'message'])
+  const errorMessage: string | Array<string> = get(error, ['body', 'message'])
 
   if (errorMessage) {
-    if (_.isArray(errorMessage)) {
+    if (isArray(errorMessage)) {
       message = errorMessage.join('\n')
     } else {
       message = errorMessage
