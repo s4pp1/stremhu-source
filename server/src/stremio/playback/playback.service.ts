@@ -45,31 +45,32 @@ export class PlaybackService {
       torrentId,
     });
 
-    let torrent: Torrent | null = null;
+    let torrentFilePath: string | undefined;
 
     if (torrentCache) {
-      torrent = await this.torrentsService.findOneByInfoHash(
+      torrentFilePath = torrentCache.torrentFilePath;
+      const torrent = await this.torrentsService.findOneByInfoHash(
         torrentCache.info.infoHash,
       );
+
+      if (torrent) return torrent;
     }
 
-    if (!torrent) {
+    if (!torrentFilePath) {
       const torrentFile = await this.trackerDiscoveryService.findOneTorrent(
         tracker,
         torrentId,
       );
 
-      torrent = await this.torrentsService.findOneByInfoHash(
-        torrentFile.infoHash,
-      );
-
-      if (!torrent) {
-        torrent = await this.torrentsService.addTorrent({
-          ...torrentFile,
-          torrentFilePath: torrentFile.torrentFilePath,
-        });
-      }
+      torrentFilePath = torrentFile.torrentFilePath;
     }
+
+    let torrent = await this.torrentsService.addTorrent({
+      imdbId,
+      torrentId,
+      tracker,
+      torrentFilePath,
+    });
 
     torrent = await this.torrentsService.updateOne(torrent.infoHash, {
       lastPlayedAt: new Date(),

@@ -172,6 +172,16 @@ export class RelayService {
       downloadFullTorrent: payload.downloadFullTorrent,
     });
 
+    this.logger.log(`🎬 "${torrent.name}" nevű torrent hozzáadva a Relay-hez.`);
+
+    return torrent;
+  }
+
+  async addTorrentWithChecking(
+    payload: AddRelayTorrent,
+  ): Promise<RelayTorrent> {
+    const torrent = await this.addTorrent(payload);
+
     let isChecking = [1, 2, 7].includes(torrent.state);
 
     while (isChecking) {
@@ -187,8 +197,6 @@ export class RelayService {
       }
       await setTimeout(2000);
     }
-
-    this.logger.log(`🎬 "${torrent.name}" nevű torrent hozzáadva a Relay-hez.`);
 
     return torrent;
   }

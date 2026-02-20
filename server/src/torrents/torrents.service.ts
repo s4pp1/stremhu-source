@@ -83,7 +83,7 @@ export class TorrentsService
       }
 
       this.relayService
-        .addTorrent({
+        .addTorrentWithChecking({
           torrentFilePath: torrentCache.torrentFilePath,
           downloadFullTorrent: downloadFullTorrent,
         })
