@@ -22,11 +22,23 @@ export const streamProxyMiddleware = createProxyMiddleware({
     return `/stream/${req.infoHash}/${req.fileIndex}`;
   },
   on: {
-    proxyRes(proxyRes) {
-      const headers = proxyRes.headers;
+    proxyReq(proxyReq, req, res) {
+      const destroyProxyReq = () => {
+        if (!proxyReq.destroyed) {
+          proxyReq.destroy();
+        }
+      };
 
-      for (const [key, value] of Object.entries(headers)) {
-        const canonKey = CANON[key] ?? key;
+      req.once('aborted', destroyProxyReq);
+      res.once('close', destroyProxyReq);
+    },
+    proxyRes(proxyRes) {
+      for (const [key, canonKey] of Object.entries(CANON)) {
+        const value = proxyRes.headers[key];
+
+        if (value === undefined) {
+          continue;
+        }
 
         delete proxyRes.headers[key];
         proxyRes.headers[canonKey] = value;
