@@ -6,8 +6,8 @@ import {
   TimerIcon,
   TrashIcon,
 } from 'lucide-react'
-import { useMemo } from 'react'
 import type { JSX, MouseEventHandler } from 'react'
+import { useMemo } from 'react'
 import { toast } from 'sonner'
 
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
@@ -99,7 +99,7 @@ export function TrackerItem(props: Tracker) {
 
     if (keepSeedSeconds) {
       const days = keepSeedSeconds / (24 * 60 * 60)
-      items.push({ label: `${days} nap seedben`, icon: <TimerIcon /> })
+      items.push({ label: `${days} nap után`, icon: <TimerIcon /> })
     }
 
     if (tracker.downloadFullTorrent) {

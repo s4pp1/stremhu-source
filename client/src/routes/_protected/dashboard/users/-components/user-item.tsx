@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { CopyIcon, TrashIcon } from 'lucide-react'
-import type { MouseEvent } from 'react'
+import type { MouseEvent, MouseEventHandler } from 'react'
 
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { Button } from '@/shared/components/ui/button'
@@ -40,6 +40,13 @@ export function UserItem(props: UserItem) {
   const { mutateAsync: deleteUser } = useDeleteUser()
   const { handleCopy } = useCopy()
 
+  const handleCopyLink: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+
+    handleCopy(urlEndpoint)
+  }
+
   const handleDeleteUser = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     event.stopPropagation()
@@ -54,12 +61,12 @@ export function UserItem(props: UserItem) {
   }
 
   return (
-    <Link
-      key={user.id}
-      to="/dashboard/users/$userId"
-      params={{ userId: user.id }}
-    >
-      <Item variant="muted">
+    <Item asChild variant="muted">
+      <Link
+        key={user.id}
+        to="/dashboard/users/$userId"
+        params={{ userId: user.id }}
+      >
         <ItemContent>
           <ItemTitle>
             {user.username}
@@ -74,7 +81,7 @@ export function UserItem(props: UserItem) {
                 <InputGroupButton
                   variant="ghost"
                   size="icon-sm"
-                  onClick={() => handleCopy(urlEndpoint)}
+                  onClick={handleCopyLink}
                 >
                   <CopyIcon />
                 </InputGroupButton>
@@ -97,7 +104,7 @@ export function UserItem(props: UserItem) {
             </Button>
           </ItemActions>
         )}
-      </Item>
-    </Link>
+      </Link>
+    </Item>
   )
 }

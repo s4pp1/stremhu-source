@@ -199,7 +199,7 @@ export function Torrent(props: TorrentProps) {
                     {fullDownload ? (
                       <DropdownMenuItem onClick={handleFullDownload(false)}>
                         <FileDownIcon />
-                        Teljes letöltés megszüntetése
+                        Részleges letöltés
                       </DropdownMenuItem>
                     ) : (
                       <DropdownMenuItem onClick={handleFullDownload(true)}>
@@ -259,11 +259,19 @@ export function Torrent(props: TorrentProps) {
         </Badge>
         <Badge
           variant="secondary"
-          title={`Torrent utolsó lejátszásának időpontja: ${formatDateTime(torrent.createdAt)}`}
+          title={`Torrent utolsó lejátszásának időpontja: ${formatDateTime(torrent.lastPlayedAt)}`}
         >
           <PlayIcon />
           {formatDateTime(torrent.lastPlayedAt)}
         </Badge>
+        {torrent.isPersisted && (
+          <Badge
+            variant="secondary"
+            title="Aktív seedben tartás, a torrent nem törlődik autómatikusan."
+          >
+            <PinIcon />
+          </Badge>
+        )}
       </div>
     </div>
   )
