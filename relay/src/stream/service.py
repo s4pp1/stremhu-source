@@ -189,7 +189,7 @@ class StreamService:
                     current_end_byte = available_end_byte
                     break
 
-                await asyncio.sleep(0.2)
+                await asyncio.sleep(0.1)
 
             async for chunk in self._file_iterator(
                 file_path=stream.file.path,
@@ -278,7 +278,7 @@ class StreamService:
                 continue
 
             stream.torrent.torrent_handle.set_piece_deadline(
-                piece_index, 200 * set_piece_count
+                piece_index, 100 * set_piece_count
             )
             set_piece_count += 1
 
