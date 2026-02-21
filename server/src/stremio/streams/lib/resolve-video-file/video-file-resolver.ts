@@ -5,18 +5,18 @@ import { findIndex, maxBy } from 'lodash';
 import { TorrentFileInfo } from 'src/torrents-cache/type/torrent-file-info.type';
 import { TrackerTorrent } from 'src/trackers/tracker.types';
 
-import { ParsedStremioIdSeries } from '../../pipe/stream-id.pipe';
+import { ParsedStreamSeries } from '../../type/parsed-stream-series.type';
 import { VideoFile } from '../../type/video-file.type';
 import { parseTorrentMetadata } from '../parse-torrent-metadata';
 
 export type VideoFileResolverType = {
   torrent: TrackerTorrent;
-  series?: ParsedStremioIdSeries;
+  series?: ParsedStreamSeries;
 };
 
 export class VideoFileResolver {
   private readonly torrent: TrackerTorrent;
-  private readonly series: ParsedStremioIdSeries | undefined;
+  private readonly series: ParsedStreamSeries | undefined;
 
   constructor(private readonly payload: VideoFileResolverType) {
     const { torrent, series } = this.payload;
@@ -26,7 +26,7 @@ export class VideoFileResolver {
   }
 
   resolve(): VideoFile | null {
-    let torrentFile: TorrentFileInfo | null = null;
+    let torrentFile: TorrentFileInfo | null;
 
     if (this.series) {
       torrentFile = this.resolveSeriesFile(this.series);
@@ -77,7 +77,7 @@ export class VideoFileResolver {
   }
 
   private resolveSeriesFile(
-    series: ParsedStremioIdSeries,
+    series: ParsedStreamSeries,
   ): TorrentFileInfo | null {
     const seriesFile = this.torrent.files.find((file) => {
       const normalizedName = file.name.toLowerCase();

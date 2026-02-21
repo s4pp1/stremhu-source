@@ -5,12 +5,16 @@ import semver from 'semver';
 import { NodeEnvEnum } from 'src/config/enum/node-env.enum';
 import { SettingsService } from 'src/settings/settings.service';
 
+import { ManifestCatalog } from './dto/manifest-catalog.dto';
+import { ManifestDto } from './dto/manifest.dto';
+import { ContentTypeEnum } from './enum/content-type.enum';
+import { ExtraEnum } from './enum/extra.enum';
+import { ShortManifestResourceEnum } from './enum/short-manifest-resource.enum';
 import {
-  ContentTypeEnum,
-  ManifestDto,
-  ShortManifestResourceEnum,
-} from '../dto/manifest.dto';
-import { ADDON_PREFIX_ID } from '../stremio.constants';
+  ADDON_APP_PREFIX_ID,
+  ADDON_STREMHU_PREFIX_ID,
+  SEARCH_ID,
+} from './stremio.constants';
 
 @Injectable()
 export class ManifestService {
@@ -40,15 +44,28 @@ export class ManifestService {
       validVersion = '0.0.0';
     }
 
+    const catalogs: ManifestCatalog[] = [
+      {
+        id: SEARCH_ID,
+        name: '🔍 Torrent - StremHU',
+        type: ContentTypeEnum.MOVIE,
+        extra: [{ name: ExtraEnum.SEARCH, isRequired: true }],
+      },
+    ];
+
     const manifest: ManifestDto = {
       id,
       version: validVersion,
       name,
       description,
-      resources: [ShortManifestResourceEnum.SRTEAM],
+      resources: [
+        ShortManifestResourceEnum.SRTEAM,
+        ShortManifestResourceEnum.CATALOG,
+        ShortManifestResourceEnum.META,
+      ],
       types: [ContentTypeEnum.MOVIE, ContentTypeEnum.SERIES],
-      idPrefixes: ['tt', ADDON_PREFIX_ID],
-      catalogs: [],
+      idPrefixes: ['tt', ADDON_APP_PREFIX_ID, ADDON_STREMHU_PREFIX_ID],
+      catalogs,
       behaviorHints: {
         configurable: true,
         configurationRequired: false,

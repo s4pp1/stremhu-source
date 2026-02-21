@@ -120,7 +120,7 @@ export class NcoreClient {
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new Error(errorMessage);
+      throw new Error(errorMessage, { cause: error });
     }
   }
 
@@ -162,7 +162,7 @@ export class NcoreClient {
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new Error(errorMessage);
+      throw new Error(errorMessage, { cause: error });
     }
   }
 
@@ -218,7 +218,7 @@ export class NcoreClient {
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new Error(errorMessage);
+      throw new Error(errorMessage, { cause: error });
     }
   }
 

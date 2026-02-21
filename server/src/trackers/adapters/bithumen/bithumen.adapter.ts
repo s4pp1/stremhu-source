@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 
+import { MediaTypeEnum } from 'src/common/enum/media-type.enum';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
-import { StreamMediaTypeEnum } from 'src/stremio/enum/stream-media-type.enum';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import {
   LoginRequest,
@@ -46,11 +46,11 @@ export class BithumenAdapter implements TrackerAdapter {
     ];
 
     switch (mediaType) {
-      case StreamMediaTypeEnum.MOVIE:
+      case MediaTypeEnum.MOVIE:
         categories = MOVIE_CATEGORY_FILTERS;
         break;
 
-      case StreamMediaTypeEnum.SERIES:
+      case MediaTypeEnum.SERIES:
         categories = SERIES_CATEGORY_FILTERS;
         break;
     }

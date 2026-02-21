@@ -46,7 +46,27 @@ export class TrackerDiscoveryService {
     return results;
   }
 
-  async findOneTorrent(
+  async findOne(
+    torrentId: string,
+  ): Promise<PromiseSettledResult<TrackerTorrentFound>[]> {
+    const trackers = await this.trackersStore.find();
+
+    if (trackers.length === 0) {
+      throw new Error(
+        '[StremHU Source] Használat előtt konfigurálnod kell tracker bejelentkezést.',
+      );
+    }
+
+    const results = await Promise.allSettled(
+      trackers.map((tracker) => {
+        return this.findOneByTracker(tracker.tracker, torrentId);
+      }),
+    );
+
+    return results;
+  }
+
+  async findOneByTracker(
     tracker: TrackerEnum,
     torrentId: string,
   ): Promise<TrackerTorrentFound> {

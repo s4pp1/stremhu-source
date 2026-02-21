@@ -57,7 +57,7 @@ export class PlaybackService {
     }
 
     if (!torrentFilePath) {
-      const torrentFile = await this.trackerDiscoveryService.findOneTorrent(
+      const torrentFile = await this.trackerDiscoveryService.findOneByTracker(
         tracker,
         torrentId,
       );

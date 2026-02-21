@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 
+import { MediaTypeEnum } from 'src/common/enum/media-type.enum';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
-import { StreamMediaTypeEnum } from 'src/stremio/enum/stream-media-type.enum';
 
 import { TrackerEnum } from '../../enum/tracker.enum';
 import {
@@ -46,11 +46,11 @@ export class NcoreAdapter implements TrackerAdapter {
       ...SERIES_CATEGORY_FILTERS,
     ];
 
-    if (mediaType === StreamMediaTypeEnum.MOVIE) {
+    if (mediaType === MediaTypeEnum.MOVIE) {
       categories = MOVIE_CATEGORY_FILTERS;
     }
 
-    if (mediaType === StreamMediaTypeEnum.SERIES) {
+    if (mediaType === MediaTypeEnum.SERIES) {
       categories = SERIES_CATEGORY_FILTERS;
     }
 
