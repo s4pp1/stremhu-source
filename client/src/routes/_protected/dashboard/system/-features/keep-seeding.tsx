@@ -86,7 +86,7 @@ export function KeepSeeding() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Autómatikus torrent törlés</CardTitle>
+        <CardTitle>Automatikus torrent törlés</CardTitle>
         <CardDescription>
           Minden nap hajnalban lefut az ellenőrzés, de torrent csak akkor kerül
           törlésre, ha a beállított feltételek mindegyike teljesül.

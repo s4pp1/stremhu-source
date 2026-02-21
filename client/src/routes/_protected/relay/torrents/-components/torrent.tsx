@@ -267,7 +267,7 @@ export function Torrent(props: TorrentProps) {
         {torrent.isPersisted && (
           <Badge
             variant="secondary"
-            title="Aktív seedben tartás, a torrent nem törlődik autómatikusan."
+            title="Aktív seedben tartás, a torrent nem törlődik automatikusan."
           >
             <PinIcon />
           </Badge>
