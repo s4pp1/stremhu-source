@@ -2,7 +2,7 @@ import { Outlet, createFileRoute } from '@tanstack/react-router'
 
 import { getUsers } from '@/shared/queries/users'
 
-export const SETTINGS_USERS_NAME = 'Felhasználók'
+export const DASHBOARD_USERS_NAME = 'Felhasználók'
 
 const RouteComponent = () => <Outlet />
 
@@ -12,6 +12,6 @@ export const Route = createFileRoute('/_protected/dashboard/users')({
     await Promise.all([context.queryClient.ensureQueryData(getUsers)])
   },
   loader: () => {
-    return { breadcrumb: SETTINGS_USERS_NAME }
+    return { breadcrumb: DASHBOARD_USERS_NAME }
   },
 })

@@ -6,8 +6,8 @@ import { assertExists } from '@/shared/lib/utils'
 import { getMe } from '@/shared/queries/me'
 
 import { RouteBreadcrumb } from './-components/route-breadcrumb'
-import { SETTINGS_SYSTEM_NAME } from './system/route'
-import { SETTINGS_USERS_NAME } from './users/route'
+import { DASHBOARD_SYSTEM_NAME } from './system/route'
+import { DASHBOARD_USERS_NAME } from './users/route'
 
 export const Route = createFileRoute('/_protected/dashboard')({
   component: SettingsLayout,
@@ -30,7 +30,7 @@ function SettingsLayout() {
               to="/dashboard/system"
               activeProps={{ className: 'bg-background' }}
             >
-              {SETTINGS_SYSTEM_NAME}
+              {DASHBOARD_SYSTEM_NAME}
             </Link>
           </Button>
           <Button asChild variant="ghost" size="sm">
@@ -38,7 +38,7 @@ function SettingsLayout() {
               to="/dashboard/users"
               activeProps={{ className: 'bg-background' }}
             >
-              {SETTINGS_USERS_NAME}
+              {DASHBOARD_USERS_NAME}
             </Link>
           </Button>
         </div>
