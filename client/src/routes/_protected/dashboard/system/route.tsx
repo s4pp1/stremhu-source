@@ -4,7 +4,7 @@ import { getSettings } from '@/shared/queries/settings'
 import { getTrackers } from '@/shared/queries/trackers'
 import { getUsers } from '@/shared/queries/users'
 
-export const SETTINGS_SYSTEM_NAME = 'Rendszer'
+export const DASHBOARD_SYSTEM_NAME = 'Rendszer'
 
 const RouteComponent = () => <Outlet />
 
@@ -18,6 +18,6 @@ export const Route = createFileRoute('/_protected/dashboard/system')({
     ])
   },
   loader: () => {
-    return { breadcrumb: SETTINGS_SYSTEM_NAME }
+    return { breadcrumb: DASHBOARD_SYSTEM_NAME }
   },
 })
