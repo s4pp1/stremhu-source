@@ -72,16 +72,21 @@ export class TrackerDiscoveryService {
   ): Promise<TrackerTorrentFound> {
     const adapter = this.trackerAdapterRegistry.get(tracker);
 
-    const torrent = await adapter.findOne(torrentId);
-    const torrentCache = await this.torrentsCacheStore.findOne(torrent);
+    const torrentCache = await this.torrentsCacheStore.findOne({
+      tracker,
+      torrentId,
+    });
 
     if (torrentCache) {
       return {
-        ...torrent,
+        tracker,
+        torrentId: torrentCache.torrentId,
         infoHash: torrentCache.info.infoHash,
         torrentFilePath: torrentCache.torrentFilePath,
       };
     }
+
+    const torrent = await adapter.findOne(torrentId);
 
     const downloaded = await adapter.download(torrent);
     const createdTorrentCache = await this.torrentsCacheStore.create({
@@ -91,7 +96,8 @@ export class TrackerDiscoveryService {
     });
 
     return {
-      ...torrent,
+      tracker: createdTorrentCache.tracker,
+      torrentId: createdTorrentCache.torrentId,
       infoHash: createdTorrentCache.info.infoHash,
       torrentFilePath: createdTorrentCache.torrentFilePath,
     };
@@ -127,17 +133,6 @@ export class TrackerDiscoveryService {
       ...existCachedTorrents,
       ...downloadedCachedTorrents,
     ];
-
-    // const notAvailableTorrents = differenceWith(
-    //   cachedTorrents,
-    //   torrentsWithImdbId,
-    //   (cachedTorrent, torrent) => torrent.torrentId === cachedTorrent.torrentId,
-    // );
-    // await this.torrentsCacheStore.delete(
-    //   notAvailableTorrents.map(
-    //     (notAvailableTorrent) => notAvailableTorrent.torrentFilePath,
-    //   ),
-    // );
 
     const torrentsMap = keyBy(torrentsWithImdbId, 'torrentId');
 
