@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
@@ -12,8 +12,6 @@ import { ADDON_APP_PREFIX_ID } from '../stremio.constants';
 
 @Injectable()
 export class StremioCatalogsService {
-  private readonly logger = new Logger(StremioCatalogsService.name);
-
   constructor(
     private readonly trackerDiscoveryService: TrackerDiscoveryService,
     private readonly torrentsCacheStore: TorrentsCacheStore,
@@ -36,7 +34,6 @@ export class StremioCatalogsService {
       const preview = await this.getMeta(
         torrent.value.tracker,
         torrent.value.torrentId,
-        torrent.value.imdbId,
       );
 
       if (!preview) {
@@ -52,10 +49,8 @@ export class StremioCatalogsService {
   async getMeta(
     tracker: TrackerEnum,
     torrentId: string,
-    imdbId: string,
   ): Promise<MetaDetailDto | null> {
     const torrentCache = await this.torrentsCacheStore.findOne({
-      imdbId,
       tracker,
       torrentId,
     });
@@ -67,21 +62,15 @@ export class StremioCatalogsService {
     const { name } = torrentCache.info;
 
     return {
-      id: this.buildId(tracker, torrentId, imdbId),
+      id: this.buildId(tracker, torrentId),
       name: name,
       posterShape: PosterShapeEnum.REGULAR,
       type: ContentTypeEnum.MOVIE,
     };
   }
 
-  private buildId(
-    tracker: TrackerEnum,
-    torrentId: string,
-    imdbId: string,
-  ): string {
-    const parts = [tracker, torrentId, imdbId].filter(
-      (part) => part !== undefined,
-    );
+  private buildId(tracker: TrackerEnum, torrentId: string): string {
+    const parts = [tracker, torrentId].filter((part) => part !== undefined);
 
     return `${ADDON_APP_PREFIX_ID}${parts.join(':')}`;
   }

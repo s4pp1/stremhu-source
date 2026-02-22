@@ -57,7 +57,6 @@ export class TorrentsService
 
     for (const persistedTorrent of persistedTorrents) {
       const torrentCache = await this.torrentsCacheStore.findOne({
-        imdbId: persistedTorrent.imdbId,
         tracker: persistedTorrent.tracker,
         torrentId: persistedTorrent.torrentId,
       });
@@ -191,6 +190,7 @@ export class TorrentsService
 
     const persistedTorrent = await this.persistedTorrentsService.create({
       ...rest,
+
       tracker: trackerEnum,
       infoHash: relayTorrent.infoHash,
     });
@@ -309,7 +309,6 @@ export class TorrentsService
   ): Torrent {
     return {
       name: relayTorrent.name,
-      imdbId: persistedTorrent.imdbId,
       tracker: persistedTorrent.tracker,
       torrentId: persistedTorrent.torrentId,
       infoHash: persistedTorrent.infoHash,

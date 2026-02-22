@@ -1,9 +1,4 @@
-import {
-  Inject,
-  Injectable,
-  Logger,
-  ServiceUnavailableException,
-} from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Bottleneck from 'bottleneck';
 import { load } from 'cheerio';
@@ -15,7 +10,7 @@ import { FIND_TORRENTS_LIMIT } from '../adapter.contant';
 import {
   AdapterLoginRequest,
   AdapterParsedTorrent,
-  AdapterTorrentId,
+  AdapterTorrent,
   TRACKER_TOKEN,
 } from '../adapters.types';
 import {
@@ -119,11 +114,11 @@ export class MajomparadeClient {
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new ServiceUnavailableException(errorMessage);
+      throw new Error(errorMessage, { cause: error });
     }
   }
 
-  async findOne(torrentId: string): Promise<AdapterTorrentId> {
+  async findOne(torrentId: string): Promise<AdapterTorrent> {
     try {
       const detailsPath = DETAILS_PATH.replace('{torrentId}', torrentId);
       const detailsUrl = new URL(detailsPath, this.baseUrl);
@@ -144,10 +139,8 @@ export class MajomparadeClient {
 
       const imdbId = nth(imdbUrl.split('/'), -2);
 
-      if (!downloadPath || !imdbId) {
-        throw new Error(
-          `"downloadPath": ${downloadPath} vagy "imdbId": ${imdbId} nem található`,
-        );
+      if (!downloadPath) {
+        throw new Error(`A "downloadPath" nem található!`);
       }
 
       const downloadUrl = new URL(downloadPath, this.baseUrl);
@@ -161,11 +154,11 @@ export class MajomparadeClient {
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new ServiceUnavailableException(errorMessage);
+      throw new Error(errorMessage, { cause: error });
     }
   }
 
-  async download(payload: AdapterTorrentId): Promise<AdapterParsedTorrent> {
+  async download(payload: AdapterTorrent): Promise<AdapterParsedTorrent> {
     const { torrentId, downloadUrl } = payload;
 
     try {
@@ -214,7 +207,7 @@ export class MajomparadeClient {
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new ServiceUnavailableException(errorMessage);
+      throw new Error(errorMessage, { cause: error });
     }
   }
 

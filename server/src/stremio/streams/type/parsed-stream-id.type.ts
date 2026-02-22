@@ -13,7 +13,6 @@ export type ParsedTorrentStreamId = {
   type: StreamIdTypeEnum.TORRENT;
   tracker: TrackerEnum;
   torrentId: string;
-  imdbId: string;
 };
 
 export type ParsedStreamId = ParsedImdbStreamId | ParsedTorrentStreamId;

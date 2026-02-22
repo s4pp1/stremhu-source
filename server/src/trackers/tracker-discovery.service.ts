@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { differenceWith, keyBy } from 'lodash';
 
 import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
-import { TorrentCache } from 'src/torrents-cache/torrents-cache.types';
+import { TorrentCache } from 'src/torrents-cache/type/torrent-cache.type';
 
-import { AdapterTorrentId } from './adapters/adapters.types';
+import { AdapterTorrent } from './adapters/adapters.types';
 import { TrackersStore } from './core/trackers.store';
 import { TrackerEnum } from './enum/tracker.enum';
 import { TrackersMetaService } from './meta/trackers-meta.service';
@@ -87,7 +87,6 @@ export class TrackerDiscoveryService {
     const createdTorrentCache = await this.torrentsCacheStore.create({
       tracker,
       torrentId,
-      imdbId: torrent.imdbId,
       torrentBuffer: downloaded.torrentBuffer,
     });
 
@@ -102,23 +101,26 @@ export class TrackerDiscoveryService {
     adapter: TrackerAdapter,
     query: TrackerSearchQuery,
   ): Promise<TrackerTorrent[]> {
-    const { imdbId } = query;
-
     const torrents = await adapter.find(query);
-    const existCachedTorrents = await this.torrentsCacheStore.find({
-      imdbId,
-      tracker: adapter.tracker,
-    });
+    const torrentsWithImdbId = torrents.filter((torrent) => torrent.imdbId);
+    const torrentIds = torrentsWithImdbId.map(
+      (torrentWithImdbId) => torrentWithImdbId.torrentId,
+    );
+
+    const existCachedTorrents = await this.torrentsCacheStore.findByTorrentId(
+      adapter.tracker,
+      torrentIds,
+    );
 
     const notCachedTorrents = differenceWith(
-      torrents,
+      torrentsWithImdbId,
       existCachedTorrents,
       (torrent, cachedTorrent) => torrent.torrentId === cachedTorrent.torrentId,
     );
     const downloadedCachedTorrents = await this.downloads(
       adapter,
       notCachedTorrents,
-      torrents.length,
+      torrentsWithImdbId.length,
     );
 
     const cachedTorrents = [
@@ -126,24 +128,25 @@ export class TrackerDiscoveryService {
       ...downloadedCachedTorrents,
     ];
 
-    const notAvailableTorrents = differenceWith(
-      cachedTorrents,
-      torrents,
-      (cachedTorrent, torrent) => torrent.torrentId === cachedTorrent.torrentId,
-    );
-    await this.torrentsCacheStore.delete(
-      notAvailableTorrents.map(
-        (notAvailableTorrent) => notAvailableTorrent.torrentFilePath,
-      ),
-    );
+    // const notAvailableTorrents = differenceWith(
+    //   cachedTorrents,
+    //   torrentsWithImdbId,
+    //   (cachedTorrent, torrent) => torrent.torrentId === cachedTorrent.torrentId,
+    // );
+    // await this.torrentsCacheStore.delete(
+    //   notAvailableTorrents.map(
+    //     (notAvailableTorrent) => notAvailableTorrent.torrentFilePath,
+    //   ),
+    // );
 
-    const torrentsMap = keyBy(torrents, 'torrentId');
+    const torrentsMap = keyBy(torrentsWithImdbId, 'torrentId');
 
     return cachedTorrents.map((cachedTorrent) => {
       const torrent = torrentsMap[cachedTorrent.torrentId];
 
       return {
         ...torrent,
+        imdbId: torrent.imdbId!,
         infoHash: cachedTorrent.info.infoHash,
         name: cachedTorrent.info.name,
         files: cachedTorrent.info.files,
@@ -154,7 +157,7 @@ export class TrackerDiscoveryService {
 
   private async downloads(
     adapter: TrackerAdapter,
-    adapterTorrents: AdapterTorrentId[],
+    adapterTorrents: AdapterTorrent[],
     torrentsCount: number,
   ): Promise<TorrentCache[]> {
     if (adapterTorrents.length === 0) {
@@ -166,7 +169,6 @@ export class TrackerDiscoveryService {
         const downloadedTorrent = await adapter.download(adapterTorrent);
 
         const createdTorrentCache = await this.torrentsCacheStore.create({
-          imdbId: adapterTorrent.imdbId,
           torrentId: adapterTorrent.torrentId,
           tracker: adapterTorrent.tracker,
           torrentBuffer: downloadedTorrent.torrentBuffer,

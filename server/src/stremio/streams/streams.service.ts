@@ -27,6 +27,7 @@ import { VideoQualityEnum } from '../../preference-items/enum/video-quality.enum
 import { StreamDto } from './dto/stremio-stream.dto';
 import { StreamIdTypeEnum } from './enum/stream-id-type.enum';
 import { resolveVideoFile } from './lib/resolve-video-file';
+import { isSampleOrTrash } from './lib/resolve-video-file/utils';
 import {
   ParsedImdbStreamId,
   ParsedStreamId,
@@ -193,16 +194,12 @@ export class StreamsService {
       ]).join(' | '),
     ]);
 
-    const bingeGroup = [
-      videoFile.imdbId,
-      videoFile.tracker,
-      videoFile.torrentId,
-    ].join('-');
+    const bingeGroup = [videoFile.tracker, videoFile.torrentId].join('-');
 
     return {
       name: nameArray.join(' | '),
       description: descriptionArray.join('\n'),
-      url: `${endpoint}/api/${user.token}/stream/play/${videoFile.imdbId}/${videoFile.tracker}/${videoFile.torrentId}/${videoFile.fileIndex}`,
+      url: `${endpoint}/api/${user.token}/stream/play/${videoFile.tracker}/${videoFile.torrentId}/${videoFile.fileIndex}`,
       behaviorHints: {
         notWebReady: videoFile.notWebReady,
         bingeGroup,
@@ -304,12 +301,11 @@ export class StreamsService {
     user: User,
     payload: ParsedTorrentStreamId,
   ): Promise<StreamDto[]> {
-    const { tracker, torrentId, imdbId } = payload;
+    const { tracker, torrentId } = payload;
     const endpoint = await this.settingsService.getEndpoint();
     await this.trackerDiscoveryService.findOneByTracker(tracker, torrentId);
 
     const torrentCache = await this.torrentsCacheStore.findOne({
-      imdbId,
       tracker,
       torrentId,
     });
@@ -320,13 +316,17 @@ export class StreamsService {
 
     const { files } = torrentCache.info;
 
-    return files.map((file) => ({
-      name: 'Lejátszás',
+    const videoFiles = files.filter(
+      (file) => !isSampleOrTrash(file.name.toLowerCase()),
+    );
+
+    return videoFiles.map((videoFile) => ({
+      name: `💾 ${formatFilesize(videoFile.size)}`,
       behaviorHints: {
         notWebReady: true,
       },
-      description: file.name,
-      url: `${endpoint}/api/${user.token}/stream/play/${imdbId}/${tracker}/${torrentId}/${file.index}`,
+      description: videoFile.name,
+      url: `${endpoint}/api/${user.token}/stream/play/${tracker}/${torrentId}/${videoFile.index}`,
     }));
   }
 }

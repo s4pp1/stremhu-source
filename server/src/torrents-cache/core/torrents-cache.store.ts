@@ -1,7 +1,6 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { isArray } from 'lodash';
-import { Dirent } from 'node:fs';
 import { mkdir, rm, stat, utimes, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -9,13 +8,9 @@ import { safeReadFile, safeReaddir } from 'src/common/utils/file.util';
 import { parseTorrent } from 'src/common/utils/parse-torrent.util';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
-import { MARKER_FILENAME } from '../torrents-cache.constants';
-import {
-  TorrentCache,
-  TorrentCacheId,
-  TorrentsCache,
-} from '../torrents-cache.types';
+import { TorrentCacheId } from '../type/torrent-cache-id.type';
 import { TorrentCacheToCreate } from '../type/torrent-cache-to-create.type';
+import { TorrentCache } from '../type/torrent-cache.type';
 import { TorrentInfo } from '../type/torrent-info.type';
 
 @Injectable()
@@ -34,17 +29,13 @@ export class TorrentsCacheStore implements OnModuleInit {
   }
 
   async create(payload: TorrentCacheToCreate): Promise<TorrentCache> {
-    const { imdbId, tracker, torrentId, torrentBuffer } = payload;
+    const { tracker, torrentId, torrentBuffer } = payload;
 
-    const trackerDirPath = this.buildTrackerDirPath(imdbId, tracker);
+    const trackerDirPath = this.buildTrackerDirPath(tracker);
     await mkdir(trackerDirPath, { recursive: true });
     await this.touchMarker(trackerDirPath);
 
-    const torrentFilePath = this.buildTorrentFilePath(
-      imdbId,
-      tracker,
-      torrentId,
-    );
+    const torrentFilePath = this.buildTorrentFilePath(tracker, torrentId);
 
     await writeFile(torrentFilePath, torrentBuffer);
     const torrentFile = parseTorrent(torrentBuffer);
@@ -58,31 +49,20 @@ export class TorrentsCacheStore implements OnModuleInit {
     };
   }
 
-  async find(payload: TorrentsCache): Promise<TorrentCache[]> {
-    const { imdbId, tracker } = payload;
-
-    const trackerDirPath = this.buildTrackerDirPath(imdbId, tracker);
-    const torrentDirents = await this.getTorrentDirents(trackerDirPath);
-
-    if (torrentDirents.length !== 0) {
-      await this.touchMarker(trackerDirPath);
-    }
-
+  async findByTorrentId(
+    tracker: TrackerEnum,
+    torrentIds: string[],
+  ): Promise<TorrentCache[]> {
     const parsedTorrents: TorrentCache[] = [];
 
-    for (const torrentDirent of torrentDirents) {
-      const [torrentId] = torrentDirent.name.split('.');
-
-      const path = join(trackerDirPath, torrentDirent.name);
+    for (const torrentId of torrentIds) {
+      const path = this.buildTorrentFilePath(tracker, torrentId);
       const torrentInfo = await this.fileToParseTorrent(path);
 
-      if (!torrentInfo) {
-        this.logger.error(`🚨 A(z) "${path}" nem található.`);
-        continue;
-      }
+      if (!torrentInfo) continue;
 
       parsedTorrents.push({
-        ...payload,
+        tracker,
         torrentId,
         torrentFilePath: path,
         info: torrentInfo,
@@ -94,7 +74,6 @@ export class TorrentsCacheStore implements OnModuleInit {
 
   async findOne(payload: TorrentCacheId): Promise<TorrentCache | null> {
     const torrentFilePath = this.buildTorrentFilePath(
-      payload.imdbId,
       payload.tracker,
       payload.torrentId,
     );
@@ -120,46 +99,27 @@ export class TorrentsCacheStore implements OnModuleInit {
     }
   }
 
-  async findImdbDirents() {
+  async findTrackerDirents() {
     const dirents = await safeReaddir(this.torrentsDir);
     return dirents;
   }
 
-  async findTrackerDirents(imdbId: string) {
-    const trackerDir = join(this.torrentsDir, imdbId);
+  async findTorrentDirents(tracker: TrackerEnum) {
+    const trackerDir = this.buildTrackerDirPath(tracker);
     const dirents = await safeReaddir(trackerDir);
     return dirents;
   }
 
-  isTrackerEnum(value: string) {
-    return Object.values(TrackerEnum).includes(value as TrackerEnum);
+  isTorrentFile(fileName: string): boolean {
+    return fileName.toLowerCase().endsWith('.torrent');
   }
 
-  private async getTorrentDirents(trackerDir: string): Promise<Dirent[]> {
-    const dirents = await safeReaddir(trackerDir);
-    const torrentDirents = dirents.filter((dirents) => {
-      const isFile = dirents.isFile();
-      const isTorrent = dirents.name.toLowerCase().endsWith('.torrent');
-      return isFile && isTorrent;
-    });
-    return torrentDirents;
+  buildTrackerDirPath(tracker: TrackerEnum) {
+    return join(this.torrentsDir, tracker);
   }
 
-  buildImdbIdDirPath(imdbId: string): string {
-    return join(this.torrentsDir, imdbId);
-  }
-
-  buildTrackerDirPath(imdbId: string, tracker: TrackerEnum) {
-    const imdbIdDirPath = this.buildImdbIdDirPath(imdbId);
-    return join(imdbIdDirPath, tracker);
-  }
-
-  private buildTorrentFilePath(
-    imdbId: string,
-    tracker: TrackerEnum,
-    torrentId: string,
-  ) {
-    const trackerDirPath = this.buildTrackerDirPath(imdbId, tracker);
+  private buildTorrentFilePath(tracker: TrackerEnum, torrentId: string) {
+    const trackerDirPath = this.buildTrackerDirPath(tracker);
     return join(trackerDirPath, `${torrentId}.torrent`);
   }
 
@@ -168,18 +128,16 @@ export class TorrentsCacheStore implements OnModuleInit {
   ): Promise<TorrentInfo | null> {
     const fileBuffer = await safeReadFile(torrentPath);
 
-    if (!fileBuffer) {
-      return null;
-    }
+    if (!fileBuffer) return null;
 
+    await this.touchMarker(torrentPath);
     const parsedTorrent = parseTorrent(fileBuffer);
     return parsedTorrent;
   }
 
-  async getMarkerTime(trackerDir: string) {
+  async getMarkerTime(torrentPath: string) {
     try {
-      const markerPath = join(trackerDir, MARKER_FILENAME);
-      const st = await stat(markerPath);
+      const st = await stat(torrentPath);
       return st.mtimeMs;
     } catch {
       const fallbackMs: number = new Date(0).getTime();
@@ -187,10 +145,8 @@ export class TorrentsCacheStore implements OnModuleInit {
     }
   }
 
-  private async touchMarker(trackerTorrentsDir: string) {
+  private async touchMarker(torrentPath: string) {
     const date = new Date();
-    const markerPath = join(trackerTorrentsDir, MARKER_FILENAME);
-    await writeFile(markerPath, '', { flag: 'a' });
-    await utimes(markerPath, date, date);
+    await utimes(torrentPath, date, date);
   }
 }

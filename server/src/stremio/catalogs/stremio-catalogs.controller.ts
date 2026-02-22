@@ -98,17 +98,13 @@ export class StremioCatalogsController {
     mediaType: MediaTypeEnum,
     @Param('id', ParseCatalogIdPipe) id: ParsedCatalogId,
   ): Promise<MetaDto> {
-    const { tracker, torrentId, imdbId } = id;
+    const { tracker, torrentId } = id;
 
     if (mediaType !== MediaTypeEnum.MOVIE) {
       throw new BadRequestException();
     }
 
-    const meta = await this.stremioCatalogService.getMeta(
-      tracker,
-      torrentId,
-      imdbId,
-    );
+    const meta = await this.stremioCatalogService.getMeta(tracker, torrentId);
 
     if (!meta) {
       throw new NotFoundException();

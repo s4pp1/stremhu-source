@@ -35,11 +35,10 @@ export class PlaybackController {
     name: 'tracker',
     enum: TrackerEnum,
   })
-  @Get('/play/:imdbId/:tracker/:torrentId/:fileIdx')
+  @Get('/play/:tracker/:torrentId/:fileIdx')
   async playStream(
     @Req() req: Request,
     @Res() res: Response,
-    @Param('imdbId') imdbId: string,
     @Param('tracker', new ParseEnumPipe(TrackerEnum))
     tracker: TrackerEnum,
     @Param('torrentId') torrentId: string,
@@ -51,7 +50,6 @@ export class PlaybackController {
     );
 
     const relayTorrent = await this.playbackService.preparePlayback({
-      imdbId,
       tracker,
       torrentId,
     });

@@ -22,7 +22,7 @@ export class ParseStreamIdPipe implements PipeTransform<
 
     if (isApp) {
       const appId = value.replace(ADDON_APP_PREFIX_ID, '');
-      const [trackerPart, torrentIdPart, imdbIdPart] = appId.split(':');
+      const [trackerPart, torrentIdPart] = appId.split(':');
 
       let tracker: TrackerEnum | undefined;
       if (isTrackerEnum(trackerPart)) {
@@ -34,22 +34,13 @@ export class ParseStreamIdPipe implements PipeTransform<
         torrentId = torrentIdPart;
       }
 
-      let imdbId: string | undefined;
-      if (isString(imdbIdPart)) {
-        imdbId = imdbIdPart;
-      }
-
-      if (
-        tracker === undefined ||
-        torrentId === undefined ||
-        imdbId === undefined
-      ) {
+      if (tracker === undefined || torrentId === undefined) {
         throw new BadRequestException();
       }
 
       return {
         type: StreamIdTypeEnum.TORRENT,
-        imdbId,
+
         torrentId,
         tracker,
       };

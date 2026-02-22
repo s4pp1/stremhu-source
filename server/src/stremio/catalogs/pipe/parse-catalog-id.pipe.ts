@@ -21,7 +21,7 @@ export class ParseCatalogIdPipe implements PipeTransform<
     }
 
     const parts = metaId.split(':');
-    const [trackerPart, torrentIdPart, imdbIdPart] = parts;
+    const [trackerPart, torrentIdPart] = parts;
 
     let tracker: TrackerEnum | undefined;
     if (isTrackerEnum(trackerPart)) {
@@ -33,19 +33,10 @@ export class ParseCatalogIdPipe implements PipeTransform<
       torrentId = torrentIdPart;
     }
 
-    let imdbId: string | undefined;
-    if (isString(imdbIdPart)) {
-      imdbId = imdbIdPart;
-    }
-
-    if (
-      tracker === undefined ||
-      torrentId === undefined ||
-      imdbId === undefined
-    ) {
+    if (tracker === undefined || torrentId === undefined) {
       throw new BadRequestException();
     }
 
-    return { tracker, torrentId, imdbId };
+    return { tracker, torrentId };
   }
 }

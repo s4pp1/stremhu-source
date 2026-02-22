@@ -1,10 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { rm } from 'node:fs/promises';
+import { join } from 'node:path';
 
 import { AppSettingsService } from 'src/settings/app/app-settings.service';
 import { TorrentsService } from 'src/torrents/torrents.service';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
+import { isTrackerEnum } from 'src/trackers/util/is-tracker-enum';
 
 import { TorrentsCacheStore } from './core/torrents-cache.store';
 
@@ -21,48 +23,22 @@ export class TorrentsCacheService {
   async deleteAllByTracker(tracker: TrackerEnum) {
     const activeTorrents = await this.torrentsService.find();
 
-    const imdbDirents = await this.torrentsCacheStore.findImdbDirents();
+    const trackerDirents = await this.torrentsCacheStore.findTrackerDirents();
 
-    for (const imdbDirent of imdbDirents) {
-      const isDirectory = imdbDirent.isDirectory();
-      if (!isDirectory) continue;
+    for (const trackerDirent of trackerDirents) {
+      const isDirectory = trackerDirent.isDirectory();
+      const isTargetTracker = trackerDirent.name === tracker.toString();
+      if (!isDirectory || !isTargetTracker) continue;
 
-      const trackerDirents = await this.torrentsCacheStore.findTrackerDirents(
-        imdbDirent.name,
+      const trackerDir = this.torrentsCacheStore.buildTrackerDirPath(tracker);
+
+      const hasRunTorrent = activeTorrents.some(
+        (activeTorrent) =>
+          activeTorrent.tracker.toString() === trackerDirent.name,
       );
 
-      for (const trackerDirent of trackerDirents) {
-        const isDirectory = trackerDirent.isDirectory();
-        const isTargetTracker = trackerDirent.name === tracker.toString();
-        if (!isDirectory || !isTargetTracker) continue;
-
-        const trackerDir = this.torrentsCacheStore.buildTrackerDirPath(
-          imdbDirent.name,
-          tracker,
-        );
-
-        const hasRunTorrent = activeTorrents.some(
-          (activeTorrent) =>
-            activeTorrent.imdbId === imdbDirent.name &&
-            activeTorrent.tracker.toString() === trackerDirent.name,
-        );
-
-        if (!hasRunTorrent) {
-          await rm(trackerDir, { recursive: true, force: true });
-        }
-      }
-
-      const remainingTrackerDirs =
-        await this.torrentsCacheStore.findTrackerDirents(imdbDirent.name);
-      const hasTrackerDirs = remainingTrackerDirs.some((dir) =>
-        dir.isDirectory(),
-      );
-
-      if (!hasTrackerDirs) {
-        const trackerDirPath = this.torrentsCacheStore.buildImdbIdDirPath(
-          imdbDirent.name,
-        );
-        await rm(trackerDirPath, { recursive: true, force: true });
+      if (!hasRunTorrent) {
+        await rm(trackerDir, { recursive: true, force: true });
       }
     }
   }
@@ -86,55 +62,62 @@ export class TorrentsCacheService {
     const activeTorrents = await this.torrentsService.find();
 
     const now = Date.now();
-    const imdbDirents = await this.torrentsCacheStore.findImdbDirents();
 
-    for (const imdbDirent of imdbDirents) {
-      const isDirectory = imdbDirent.isDirectory();
-      if (!isDirectory) continue;
+    const trackerDirents = await this.torrentsCacheStore.findTrackerDirents();
 
-      const trackerDirents = await this.torrentsCacheStore.findTrackerDirents(
-        imdbDirent.name,
-      );
+    for (const trackerDirent of trackerDirents) {
+      const isDirectory = trackerDirent.isDirectory();
+      const isTracker = isTrackerEnum(trackerDirent.name);
 
-      for (const trackerDirent of trackerDirents) {
-        const isDirectory = trackerDirent.isDirectory();
-        const isTracker = this.torrentsCacheStore.isTrackerEnum(
+      if (!isDirectory || !isTracker) {
+        const deleteblePath = join(
+          trackerDirent.parentPath,
           trackerDirent.name,
         );
-        if (!isDirectory || !isTracker) continue;
+        await rm(deleteblePath, { recursive: true, force: true });
+        this.logger.log(`🧹 Ismeretlen mappa/file törölve: ${deleteblePath}`);
 
-        const tracker = trackerDirent.name as TrackerEnum;
-        const trackerDir = this.torrentsCacheStore.buildTrackerDirPath(
-          imdbDirent.name,
-          tracker,
+        continue;
+      }
+
+      const tracker = trackerDirent.name as TrackerEnum;
+
+      const torrentDirents =
+        await this.torrentsCacheStore.findTorrentDirents(tracker);
+
+      for (const torrentDirent of torrentDirents) {
+        const isDirectory = torrentDirent.isDirectory();
+        const torrentPath = join(torrentDirent.parentPath, torrentDirent.name);
+
+        if (isDirectory) {
+          await rm(torrentPath, { recursive: true, force: true });
+          this.logger.log(`🧹 Ismeretlen mappa törölve: ${torrentPath}`);
+          continue;
+        }
+
+        const isTorrent = this.torrentsCacheStore.isTorrentFile(
+          torrentDirent.name,
         );
 
+        if (!isTorrent) {
+          await rm(torrentPath, { recursive: true, force: true });
+          this.logger.log(`🧹 Ismeretlen file törölve: ${torrentPath}`);
+          continue;
+        }
+
         const lastUsedMs =
-          await this.torrentsCacheStore.getMarkerTime(trackerDir);
+          await this.torrentsCacheStore.getMarkerTime(torrentPath);
 
         const hasRunTorrent = activeTorrents.some(
           (activeTorrent) =>
-            activeTorrent.imdbId === imdbDirent.name &&
-            activeTorrent.tracker.toString() === trackerDirent.name,
+            activeTorrent.tracker.toString() === trackerDirent.name &&
+            `${activeTorrent.torrentId}.torrent` === torrentDirent.name,
         );
 
         if (!hasRunTorrent && now - lastUsedMs > cacheRetentionMs) {
-          await rm(trackerDir, { recursive: true, force: true });
-          this.logger.log(`🧹 Törölve inaktív torrent cache: ${trackerDir}`);
+          await rm(torrentPath, { recursive: true, force: true });
+          this.logger.log(`🧹 Törölve inaktív torrent cache: ${torrentPath}`);
         }
-      }
-
-      const remainingTrackerDirs =
-        await this.torrentsCacheStore.findTrackerDirents(imdbDirent.name);
-      const hasTrackerDirs = remainingTrackerDirs.some((dir) =>
-        dir.isDirectory(),
-      );
-
-      if (!hasTrackerDirs) {
-        const trackerDirPath = this.torrentsCacheStore.buildImdbIdDirPath(
-          imdbDirent.name,
-        );
-        await rm(trackerDirPath, { recursive: true, force: true });
       }
     }
   }

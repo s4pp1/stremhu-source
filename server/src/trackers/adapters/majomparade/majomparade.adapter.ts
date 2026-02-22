@@ -13,7 +13,7 @@ import {
 import {
   AdapterParsedTorrent,
   AdapterTorrent,
-  AdapterTorrentId,
+  AdapterTorrentWithInfo,
   TRACKER_TOKEN,
 } from '../adapters.types';
 import { MajomparadeClient } from './majomparade.client';
@@ -37,7 +37,7 @@ export class MajomparadeAdapter implements TrackerAdapter {
     await this.client.login(payload);
   }
 
-  async find(query: TrackerSearchQuery): Promise<AdapterTorrent[]> {
+  async find(query: TrackerSearchQuery): Promise<AdapterTorrentWithInfo[]> {
     const { imdbId, mediaType } = query;
 
     let categories: string[] = [
@@ -71,11 +71,11 @@ export class MajomparadeAdapter implements TrackerAdapter {
     });
   }
 
-  async findOne(torrentId: string): Promise<AdapterTorrentId> {
+  async findOne(torrentId: string): Promise<AdapterTorrent> {
     return this.client.findOne(torrentId);
   }
 
-  async download(payload: AdapterTorrentId): Promise<AdapterParsedTorrent> {
+  async download(payload: AdapterTorrent): Promise<AdapterParsedTorrent> {
     return this.client.download(payload);
   }
 

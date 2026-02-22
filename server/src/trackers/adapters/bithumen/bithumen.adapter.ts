@@ -13,7 +13,7 @@ import {
 import {
   AdapterParsedTorrent,
   AdapterTorrent,
-  AdapterTorrentId,
+  AdapterTorrentWithInfo,
   TRACKER_TOKEN,
 } from '../adapters.types';
 import { BithumenClient } from './bithumen.client';
@@ -37,7 +37,7 @@ export class BithumenAdapter implements TrackerAdapter {
     await this.client.login(payload);
   }
 
-  async find(query: TrackerSearchQuery): Promise<AdapterTorrent[]> {
+  async find(query: TrackerSearchQuery): Promise<AdapterTorrentWithInfo[]> {
     const { imdbId, mediaType } = query;
 
     let categories: string[] = [
@@ -73,11 +73,11 @@ export class BithumenAdapter implements TrackerAdapter {
     });
   }
 
-  async findOne(torrentId: string): Promise<AdapterTorrentId> {
+  async findOne(torrentId: string): Promise<AdapterTorrent> {
     return this.client.findOne(torrentId);
   }
 
-  async download(payload: AdapterTorrentId): Promise<AdapterParsedTorrent> {
+  async download(payload: AdapterTorrent): Promise<AdapterParsedTorrent> {
     return this.client.download(payload);
   }
 
