@@ -1,12 +1,12 @@
+import { MediaTypeEnum } from 'src/common/enum/media-type.enum';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
-import { StreamMediaTypeEnum } from 'src/stremio/enum/stream-media-type.enum';
 import { TorrentFileInfo } from 'src/torrents-cache/type/torrent-file-info.type';
 
 import {
   AdapterParsedTorrent,
   AdapterTorrent,
-  AdapterTorrentId,
+  AdapterTorrentWithInfo,
 } from './adapters/adapters.types';
 import { TrackerEnum } from './enum/tracker.enum';
 
@@ -32,7 +32,7 @@ export interface LoginRequest {
 }
 
 export interface TrackerSearchQuery {
-  mediaType?: StreamMediaTypeEnum;
+  mediaType?: MediaTypeEnum;
   imdbId: string;
 }
 
@@ -41,11 +41,11 @@ export interface TrackerAdapter {
 
   login(payload: LoginRequest): Promise<void>;
 
-  find(query: TrackerSearchQuery): Promise<AdapterTorrent[]>;
+  find(query: TrackerSearchQuery): Promise<AdapterTorrentWithInfo[]>;
 
-  findOne(torrentId: string): Promise<AdapterTorrentId>;
+  findOne(torrentId: string): Promise<AdapterTorrent>;
 
-  download(payload: AdapterTorrentId): Promise<AdapterParsedTorrent>;
+  download(payload: AdapterTorrent): Promise<AdapterParsedTorrent>;
 
   seedRequirement(): Promise<string[]>;
 }

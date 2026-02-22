@@ -1,11 +1,7 @@
-import { StreamMediaTypeEnum } from 'src/stremio/enum/stream-media-type.enum';
-import { User } from 'src/users/entity/user.entity';
+import { MediaTypeEnum } from 'src/common/enum/media-type.enum';
 
-import { ParsedStremioIdSeries } from '../pipe/stream-id.pipe';
+import { ParsedStreamId } from './parsed-stream-id.type';
 
 export type FindStreams = {
-  user: User;
-  mediaType: StreamMediaTypeEnum;
-  imdbId: string;
-  series?: ParsedStremioIdSeries;
-};
+  mediaType: MediaTypeEnum;
+} & ParsedStreamId;

@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { compact, orderBy } from 'lodash';
 
 import { CatalogService } from 'src/catalog/catalog.service';
+import { MediaTypeEnum } from 'src/common/enum/media-type.enum';
 import { formatFilesize } from 'src/common/utils/file.util';
 import { AUDIO_QUALITY_LABEL_MAP } from 'src/preference-items/constant/audio-codec.constant';
 import { AUDIO_SPATIAL_LABEL_MAP } from 'src/preference-items/constant/audio-spatial.constant';
@@ -11,6 +12,7 @@ import { VIDEO_QUALITY_LABEL_MAP } from 'src/preference-items/constant/video-qua
 import { AudioQualityEnum } from 'src/preference-items/enum/audio-quality.enum';
 import { SourceEnum } from 'src/preference-items/enum/source.enum';
 import { SettingsService } from 'src/settings/settings.service';
+import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
 import { TorrentsService } from 'src/torrents/torrents.service';
 import { TrackersMetaService } from 'src/trackers/meta/trackers-meta.service';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
@@ -23,9 +25,15 @@ import { UserPreferencesService } from 'src/users/preferences/user-preferences.s
 
 import { VideoQualityEnum } from '../../preference-items/enum/video-quality.enum';
 import { StreamDto } from './dto/stremio-stream.dto';
+import { StreamIdTypeEnum } from './enum/stream-id-type.enum';
 import { resolveVideoFile } from './lib/resolve-video-file';
-import { ParsedStremioIdSeries } from './pipe/stream-id.pipe';
-import { FindStreams } from './type/find-streams.type';
+import { isSampleOrTrash } from './lib/resolve-video-file/utils';
+import {
+  ParsedImdbStreamId,
+  ParsedStreamId,
+  ParsedTorrentStreamId,
+} from './type/parsed-stream-id.type';
+import { ParsedStreamSeries } from './type/parsed-stream-series.type';
 import { VideoFile } from './type/video-file.type';
 import { buildSelectors } from './util/build-selectors';
 
@@ -38,10 +46,30 @@ export class StreamsService {
     private readonly catalogService: CatalogService,
     private readonly torrentsService: TorrentsService,
     private readonly userPreferencesService: UserPreferencesService,
+    private readonly torrentsCacheStore: TorrentsCacheStore,
   ) {}
 
-  async streams(payload: FindStreams): Promise<StreamDto[]> {
-    const { user, mediaType, series } = payload;
+  async streams(
+    user: User,
+    mediaType: MediaTypeEnum,
+    payload: ParsedStreamId,
+  ): Promise<StreamDto[]> {
+    const { type } = payload;
+
+    switch (type) {
+      case StreamIdTypeEnum.IMDB:
+        return this.imdbStreams(user, mediaType, payload);
+      case StreamIdTypeEnum.TORRENT:
+        return this.torrentStreams(user, payload);
+    }
+  }
+
+  private async imdbStreams(
+    user: User,
+    mediaType: MediaTypeEnum,
+    payload: ParsedImdbStreamId,
+  ): Promise<StreamDto[]> {
+    const { series } = payload;
 
     const userPreferences = await this.userPreferencesService.find(user.id);
 
@@ -166,16 +194,12 @@ export class StreamsService {
       ]).join(' | '),
     ]);
 
-    const bingeGroup = [
-      videoFile.imdbId,
-      videoFile.tracker,
-      videoFile.torrentId,
-    ].join('-');
+    const bingeGroup = [videoFile.tracker, videoFile.torrentId].join('-');
 
     return {
       name: nameArray.join(' | '),
       description: descriptionArray.join('\n'),
-      url: `${endpoint}/api/${user.token}/stream/play/${videoFile.imdbId}/${videoFile.tracker}/${videoFile.torrentId}/${videoFile.fileIndex}`,
+      url: `${endpoint}/api/${user.token}/stream/play/${videoFile.tracker}/${videoFile.torrentId}/${videoFile.fileIndex}`,
       behaviorHints: {
         notWebReady: videoFile.notWebReady,
         bingeGroup,
@@ -197,7 +221,7 @@ export class StreamsService {
 
   private resolveVideoFiles(
     torrents: TrackerTorrent[],
-    series?: ParsedStremioIdSeries,
+    series?: ParsedStreamSeries,
   ): VideoFile[] {
     return torrents
       .map((torrent) => resolveVideoFile({ torrent, series }))
@@ -271,5 +295,38 @@ export class StreamsService {
     const sortedVideoFiles = orderBy(videoFiles, iteratees, orders);
 
     return sortedVideoFiles;
+  }
+
+  private async torrentStreams(
+    user: User,
+    payload: ParsedTorrentStreamId,
+  ): Promise<StreamDto[]> {
+    const { tracker, torrentId } = payload;
+    const endpoint = await this.settingsService.getEndpoint();
+    await this.trackerDiscoveryService.findOneByTracker(tracker, torrentId);
+
+    const torrentCache = await this.torrentsCacheStore.findOne({
+      tracker,
+      torrentId,
+    });
+
+    if (!torrentCache) {
+      throw new BadRequestException();
+    }
+
+    const { files } = torrentCache.info;
+
+    const videoFiles = files.filter(
+      (file) => !isSampleOrTrash(file.name.toLowerCase()),
+    );
+
+    return videoFiles.map((videoFile) => ({
+      name: `💾 ${formatFilesize(videoFile.size)}`,
+      behaviorHints: {
+        notWebReady: true,
+      },
+      description: videoFile.name,
+      url: `${endpoint}/api/${user.token}/stream/play/${tracker}/${torrentId}/${videoFile.index}`,
+    }));
   }
 }

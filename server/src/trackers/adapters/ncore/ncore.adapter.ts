@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 
+import { MediaTypeEnum } from 'src/common/enum/media-type.enum';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
-import { StreamMediaTypeEnum } from 'src/stremio/enum/stream-media-type.enum';
 
 import { TrackerEnum } from '../../enum/tracker.enum';
 import {
@@ -13,7 +13,7 @@ import {
 import {
   AdapterParsedTorrent,
   AdapterTorrent,
-  AdapterTorrentId,
+  AdapterTorrentWithInfo,
   TRACKER_TOKEN,
 } from '../adapters.types';
 import { NcoreClient } from './ncore.client';
@@ -38,7 +38,7 @@ export class NcoreAdapter implements TrackerAdapter {
     await this.client.login(payload);
   }
 
-  async find(query: TrackerSearchQuery): Promise<AdapterTorrent[]> {
+  async find(query: TrackerSearchQuery): Promise<AdapterTorrentWithInfo[]> {
     const { imdbId, mediaType } = query;
 
     let categories: NcoreCategory[] = [
@@ -46,11 +46,11 @@ export class NcoreAdapter implements TrackerAdapter {
       ...SERIES_CATEGORY_FILTERS,
     ];
 
-    if (mediaType === StreamMediaTypeEnum.MOVIE) {
+    if (mediaType === MediaTypeEnum.MOVIE) {
       categories = MOVIE_CATEGORY_FILTERS;
     }
 
-    if (mediaType === StreamMediaTypeEnum.SERIES) {
+    if (mediaType === MediaTypeEnum.SERIES) {
       categories = SERIES_CATEGORY_FILTERS;
     }
 
@@ -72,11 +72,11 @@ export class NcoreAdapter implements TrackerAdapter {
     });
   }
 
-  async findOne(torrentId: string): Promise<AdapterTorrentId> {
+  async findOne(torrentId: string): Promise<AdapterTorrent> {
     return this.client.findOne(torrentId);
   }
 
-  async download(payload: AdapterTorrentId): Promise<AdapterParsedTorrent> {
+  async download(payload: AdapterTorrent): Promise<AdapterParsedTorrent> {
     return this.client.download(payload);
   }
 

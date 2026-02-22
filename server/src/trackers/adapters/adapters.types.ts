@@ -10,14 +10,14 @@ export type AdapterLoginRequest = {
   password: string;
 };
 
-export interface AdapterTorrentId {
+export interface AdapterTorrent {
   tracker: TrackerEnum;
   torrentId: string;
-  imdbId: string;
   downloadUrl: string;
+  imdbId?: string;
 }
 
-export interface AdapterTorrent extends AdapterTorrentId {
+export interface AdapterTorrentWithInfo extends AdapterTorrent {
   language: LanguageEnum;
   resolution: ResolutionEnum;
   seeders: number;

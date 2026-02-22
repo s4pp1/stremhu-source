@@ -8,7 +8,6 @@ import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 export type VideoFile = {
-  imdbId: string;
   [PreferenceEnum.TRACKER]: TrackerEnum;
   torrentId: string;
   seeders: number;

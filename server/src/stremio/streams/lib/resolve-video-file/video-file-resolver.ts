@@ -5,18 +5,19 @@ import { findIndex, maxBy } from 'lodash';
 import { TorrentFileInfo } from 'src/torrents-cache/type/torrent-file-info.type';
 import { TrackerTorrent } from 'src/trackers/tracker.types';
 
-import { ParsedStremioIdSeries } from '../../pipe/stream-id.pipe';
+import { ParsedStreamSeries } from '../../type/parsed-stream-series.type';
 import { VideoFile } from '../../type/video-file.type';
 import { parseTorrentMetadata } from '../parse-torrent-metadata';
+import { isSampleOrTrash } from './utils';
 
 export type VideoFileResolverType = {
   torrent: TrackerTorrent;
-  series?: ParsedStremioIdSeries;
+  series?: ParsedStreamSeries;
 };
 
 export class VideoFileResolver {
   private readonly torrent: TrackerTorrent;
-  private readonly series: ParsedStremioIdSeries | undefined;
+  private readonly series: ParsedStreamSeries | undefined;
 
   constructor(private readonly payload: VideoFileResolverType) {
     const { torrent, series } = this.payload;
@@ -26,7 +27,7 @@ export class VideoFileResolver {
   }
 
   resolve(): VideoFile | null {
-    let torrentFile: TorrentFileInfo | null = null;
+    let torrentFile: TorrentFileInfo | null;
 
     if (this.series) {
       torrentFile = this.resolveSeriesFile(this.series);
@@ -44,7 +45,6 @@ export class VideoFileResolver {
 
     return {
       // Torrent információk
-      imdbId: this.torrent.imdbId,
       tracker: this.torrent.tracker,
       torrentId: this.torrent.torrentId,
       infoHash: this.torrent.infoHash,
@@ -77,11 +77,11 @@ export class VideoFileResolver {
   }
 
   private resolveSeriesFile(
-    series: ParsedStremioIdSeries,
+    series: ParsedStreamSeries,
   ): TorrentFileInfo | null {
     const seriesFile = this.torrent.files.find((file) => {
       const normalizedName = file.name.toLowerCase();
-      const sampleOrTrash = this.isSampleOrTrash(normalizedName);
+      const sampleOrTrash = isSampleOrTrash(normalizedName);
       if (sampleOrTrash) return false;
 
       const parsedFilename = filenameParse(file.name, true);
@@ -101,17 +101,5 @@ export class VideoFileResolver {
     if (!seriesFile) return null;
 
     return seriesFile;
-  }
-
-  private isSampleOrTrash(name: string): boolean {
-    const isVideoFile = isVideo(name);
-    if (!isVideoFile) return true;
-
-    return this.isSample(name);
-  }
-
-  private isSample(name: string): boolean {
-    const base = name.replace(/\.[^.]+$/, '');
-    return /(^sample|sample$|sample-|-sample-|-sample)/.test(base);
   }
 }

@@ -10,17 +10,10 @@ import {
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 @Entity('torrents')
-@Unique('unique_torrent_imdb_id_tracker_torrent_id', [
-  'imdbId',
-  'tracker',
-  'torrentId',
-])
+@Unique('unique_torrent_tracker_torrent_id', ['tracker', 'torrentId'])
 export class PersistedTorrent {
   @PrimaryColumn({ name: 'info_hash' })
   infoHash!: string;
-
-  @Column({ name: 'imdb_id' })
-  imdbId!: string;
 
   @Column({ type: 'simple-enum', enum: TrackerEnum })
   tracker!: TrackerEnum;

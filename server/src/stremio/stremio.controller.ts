@@ -9,8 +9,8 @@ import type { Response } from 'express';
 
 import { TokenGuard } from 'src/auth/guards/token.guard';
 
-import { ManifestDto } from '../dto/manifest.dto';
-import { ManifestService } from './manifest.service';
+import { ManifestDto } from './dto/manifest.dto';
+import { ManifestService } from './stremio.service';
 
 @UseGuards(TokenGuard)
 @Controller('/:token')

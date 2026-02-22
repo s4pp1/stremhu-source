@@ -10,12 +10,12 @@ import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import type { Request } from 'express';
 
 import { TokenGuard } from 'src/auth/guards/token.guard';
+import { MediaTypeEnum } from 'src/common/enum/media-type.enum';
 
-import { StreamMediaTypeEnum } from '../enum/stream-media-type.enum';
 import { StreamsResponseDto } from './dto/stremio-stream.dto';
-import type { ParsedStremioId } from './pipe/stream-id.pipe';
-import { StreamIdPipe } from './pipe/stream-id.pipe';
+import { ParseStreamIdPipe } from './pipe/parse-stream-id.pipe';
 import { StreamsService } from './streams.service';
+import type { ParsedStreamId } from './type/parsed-stream-id.type';
 
 @UseGuards(TokenGuard)
 @Controller('/:token/stream')
@@ -34,23 +34,19 @@ export class StreamsController {
   })
   @ApiParam({
     name: 'mediaType',
-    enum: StreamMediaTypeEnum,
+    enum: MediaTypeEnum,
   })
   @ApiOkResponse({ type: StreamsResponseDto })
   @Get('/:mediaType/:id.json')
   async streams(
     @Req() req: Request,
-    @Param('mediaType', new ParseEnumPipe(StreamMediaTypeEnum))
-    mediaType: StreamMediaTypeEnum,
-    @Param('id', StreamIdPipe) id: ParsedStremioId,
+    @Param('mediaType', new ParseEnumPipe(MediaTypeEnum))
+    mediaType: MediaTypeEnum,
+    @Param('id', ParseStreamIdPipe) id: ParsedStreamId,
   ): Promise<StreamsResponseDto> {
     const { user } = req;
 
-    const streams = await this.streamsService.streams({
-      user: user!,
-      mediaType,
-      ...id,
-    });
+    const streams = await this.streamsService.streams(user!, mediaType, id);
 
     return {
       streams: streams,

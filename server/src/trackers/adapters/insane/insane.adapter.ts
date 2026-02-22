@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 
+import { MediaTypeEnum } from 'src/common/enum/media-type.enum';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
-import { StreamMediaTypeEnum } from 'src/stremio/enum/stream-media-type.enum';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import {
   LoginRequest,
@@ -13,7 +13,7 @@ import {
 import {
   AdapterParsedTorrent,
   AdapterTorrent,
-  AdapterTorrentId,
+  AdapterTorrentWithInfo,
   TRACKER_TOKEN,
 } from '../adapters.types';
 import { InsaneClient } from './insane.client';
@@ -38,7 +38,7 @@ export class InsaneAdapter implements TrackerAdapter {
     await this.client.login(payload);
   }
 
-  async find(query: TrackerSearchQuery): Promise<AdapterTorrent[]> {
+  async find(query: TrackerSearchQuery): Promise<AdapterTorrentWithInfo[]> {
     const { imdbId, mediaType } = query;
 
     let categories: string[] = [
@@ -47,11 +47,11 @@ export class InsaneAdapter implements TrackerAdapter {
     ];
 
     switch (mediaType) {
-      case StreamMediaTypeEnum.MOVIE:
+      case MediaTypeEnum.MOVIE:
         categories = MOVIE_CATEGORY_FILTERS;
         break;
 
-      case StreamMediaTypeEnum.SERIES:
+      case MediaTypeEnum.SERIES:
         categories = SERIES_CATEGORY_FILTERS;
         break;
     }
@@ -74,11 +74,11 @@ export class InsaneAdapter implements TrackerAdapter {
     });
   }
 
-  async findOne(torrentId: string): Promise<AdapterTorrentId> {
+  async findOne(torrentId: string): Promise<AdapterTorrent> {
     return this.client.findOne(torrentId);
   }
 
-  async download(payload: AdapterTorrentId): Promise<AdapterParsedTorrent> {
+  async download(payload: AdapterTorrent): Promise<AdapterParsedTorrent> {
     return this.client.download(payload);
   }
 

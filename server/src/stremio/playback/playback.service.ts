@@ -18,9 +18,9 @@ export class PlaybackService {
   ) {}
 
   async preparePlayback(payload: PreparePlay): Promise<Torrent> {
-    const { imdbId, tracker, torrentId } = payload;
+    const { tracker, torrentId } = payload;
 
-    const key = `${imdbId}-${tracker}-${torrentId}`;
+    const key = `$${tracker}-${torrentId}`;
     const running = this.inFlightPlay.get(key);
     if (running) return running;
 
@@ -37,10 +37,9 @@ export class PlaybackService {
   }
 
   private async getTorrent(payload: PreparePlay): Promise<Torrent> {
-    const { imdbId, tracker, torrentId } = payload;
+    const { tracker, torrentId } = payload;
 
     const torrentCache = await this.torrentsCacheStore.findOne({
-      imdbId,
       tracker,
       torrentId,
     });
@@ -57,7 +56,7 @@ export class PlaybackService {
     }
 
     if (!torrentFilePath) {
-      const torrentFile = await this.trackerDiscoveryService.findOneTorrent(
+      const torrentFile = await this.trackerDiscoveryService.findOneByTracker(
         tracker,
         torrentId,
       );
@@ -66,7 +65,6 @@ export class PlaybackService {
     }
 
     let torrent = await this.torrentsService.addTorrent({
-      imdbId,
       torrentId,
       tracker,
       torrentFilePath,

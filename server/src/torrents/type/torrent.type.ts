@@ -12,7 +12,6 @@ export type Torrent = {
   connections: number;
   maxConnections: number;
 
-  imdbId: string;
   tracker: TrackerEnum;
   torrentId: string;
   isPersisted: boolean;
