@@ -278,7 +278,7 @@ class StreamService:
                 continue
 
             stream.torrent.torrent_handle.set_piece_deadline(
-                piece_index, 100 * set_piece_count
+                piece_index, 1000 * set_piece_count
             )
             set_piece_count += 1
 

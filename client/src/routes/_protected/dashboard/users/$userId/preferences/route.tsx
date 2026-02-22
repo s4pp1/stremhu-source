@@ -2,8 +2,6 @@ import { Outlet, createFileRoute } from '@tanstack/react-router'
 
 import { getUserPreferences } from '@/shared/queries/user-preferences'
 
-export const SETTINGS_USERS_NAME = 'Felhasználók'
-
 const RouteComponent = () => <Outlet />
 
 export const Route = createFileRoute(

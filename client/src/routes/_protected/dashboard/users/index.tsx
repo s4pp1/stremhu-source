@@ -18,7 +18,7 @@ import { getMe } from '@/shared/queries/me'
 import { getUsers } from '@/shared/queries/users'
 
 import { UserItem } from './-components/user-item'
-import { SETTINGS_USERS_NAME } from './route'
+import { DASHBOARD_USERS_NAME } from './route'
 
 export const Route = createFileRoute('/_protected/dashboard/users/')({
   component: RouteComponent,
@@ -36,7 +36,7 @@ function RouteComponent() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{SETTINGS_USERS_NAME}</CardTitle>
+        <CardTitle>{DASHBOARD_USERS_NAME}</CardTitle>
         <CardDescription>
           Kezeld a felhasználókat, szerepköröket és hozzáféréseket.
         </CardDescription>
