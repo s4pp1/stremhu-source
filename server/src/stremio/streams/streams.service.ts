@@ -320,7 +320,13 @@ export class StreamsService {
       (file) => !isSampleOrTrash(file.name.toLowerCase()),
     );
 
-    return videoFiles.map((videoFile) => ({
+    const sortedVideoFiles = orderBy(
+      videoFiles,
+      (videoFile) => videoFile.name,
+      ['asc'],
+    );
+
+    return sortedVideoFiles.map((videoFile) => ({
       name: `💾 ${formatFilesize(videoFile.size)}`,
       behaviorHints: {
         notWebReady: true,
