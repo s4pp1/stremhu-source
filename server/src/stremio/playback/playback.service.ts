@@ -45,14 +45,20 @@ export class PlaybackService {
     });
 
     let torrentFilePath: string | undefined;
+    const lastPlayedAt = new Date();
 
     if (torrentCache) {
       torrentFilePath = torrentCache.torrentFilePath;
-      const torrent = await this.torrentsService.findOneByInfoHash(
+      let torrent = await this.torrentsService.findOneByInfoHash(
         torrentCache.info.infoHash,
       );
 
-      if (torrent) return torrent;
+      if (torrent) {
+        torrent = await this.torrentsService.updateOne(torrent.infoHash, {
+          lastPlayedAt,
+        });
+        return torrent;
+      }
     }
 
     if (!torrentFilePath) {
