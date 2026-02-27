@@ -200,9 +200,14 @@ export class NcoreClient {
 
       const $ = load(response.data);
 
-      const hitnrunTorrents = $(
-        '.box_torrent_all a[href*="torrents.php?action=details&id="]',
-      )
+      const content = $('#main_tartalom');
+
+      if (!content.length) {
+        throw new Error('A tartalom nem található.');
+      }
+
+      const hitnrunTorrents = content
+        .find('a[href*="torrents.php?action=details&id="]')
         .map((_, el) => $(el).attr('href'))
         .get();
 
