@@ -56,13 +56,14 @@ export class TorrentMetadataParser {
   }
 
   parse() {
+    const audioSpatial = this.parseAudioSpatial();
     return {
       [PreferenceEnum.LANGUAGE]: this.parseLanguage(),
       [PreferenceEnum.RESOLUTION]: this.parseResolution(),
       [PreferenceEnum.VIDEO_QUALITY]: this.parseVideoQuality(),
       [PreferenceEnum.SOURCE]: this.parseSource(),
       [PreferenceEnum.AUDIO_QUALITY]: this.parseAudioQuality(),
-      [PreferenceEnum.AUDIO_SPATIAL]: this.parseAudioSpatial(),
+      [PreferenceEnum.AUDIO_SPATIAL]: audioSpatial || undefined,
     };
   }
 }

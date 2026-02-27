@@ -15,28 +15,28 @@ import type { Request, Response } from 'express';
 import { TokenGuard } from 'src/auth/guards/token.guard';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
-import { streamProxyMiddleware } from './playback.proxy';
-import { PlaybackService } from './playback.service';
+import { playProxy } from './play.proxy';
+import { PlayService } from './play.service';
 
 @UseGuards(TokenGuard)
-@Controller('/:token/stream')
+@Controller('/:token/play')
 @ApiParam({
   name: 'token',
   required: true,
   type: 'string',
 })
-@ApiTags('Stremio / Playback')
-export class PlaybackController {
-  private readonly logger = new Logger(PlaybackController.name);
+@ApiTags('Play')
+export class PlayController {
+  private readonly logger = new Logger(PlayController.name);
 
-  constructor(private playbackService: PlaybackService) {}
+  constructor(private playService: PlayService) {}
 
   @ApiParam({
     name: 'tracker',
     enum: TrackerEnum,
   })
-  @Get('/play/:tracker/:torrentId/:fileIdx')
-  async playStream(
+  @Get('/:tracker/:torrentId/:fileIdx')
+  async play(
     @Req() req: Request,
     @Res() res: Response,
     @Param('tracker', new ParseEnumPipe(TrackerEnum))
@@ -49,7 +49,7 @@ export class PlaybackController {
       `▶️ Lejátszás indítása "${req.method}"- "${rangeHeader}" range-el.`,
     );
 
-    const relayTorrent = await this.playbackService.preparePlayback({
+    const relayTorrent = await this.playService.preparePlay({
       tracker,
       torrentId,
     });
@@ -57,7 +57,7 @@ export class PlaybackController {
     req.infoHash = relayTorrent.infoHash;
     req.fileIndex = fileIndex;
 
-    return streamProxyMiddleware(req, res, (err) => {
+    return playProxy(req, res, (err) => {
       if (err) {
         this.logger.error(err);
         res.status(502).end();

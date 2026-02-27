@@ -1,4 +1,5 @@
-import { VideoFile } from '../../type/video-file.type';
+import { RowTorrentVideo } from 'src/torrent-videos/type/row-torrent-video.type';
+
 import {
   VideoFileResolver,
   VideoFileResolverType,
@@ -6,7 +7,7 @@ import {
 
 export function resolveVideoFile(
   payload: VideoFileResolverType,
-): VideoFile | null {
+): RowTorrentVideo | null {
   const videoFileResolver = new VideoFileResolver(payload);
   return videoFileResolver.resolve();
 }

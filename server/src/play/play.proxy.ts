@@ -14,7 +14,7 @@ const CANON: Record<string, string> = {
   vary: 'Vary',
 };
 
-export const streamProxyMiddleware = createProxyMiddleware({
+export const playProxy = createProxyMiddleware({
   target: RELAY_BASE_URL,
   changeOrigin: true,
   selfHandleResponse: false,

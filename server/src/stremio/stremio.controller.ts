@@ -10,18 +10,18 @@ import type { Response } from 'express';
 import { TokenGuard } from 'src/auth/guards/token.guard';
 
 import { ManifestDto } from './dto/manifest.dto';
-import { ManifestService } from './stremio.service';
+import { StremioService } from './stremio.service';
 
 @UseGuards(TokenGuard)
-@Controller('/:token')
+@Controller('/:token/stremio')
 @ApiTags('Stremio / Manifest')
 @ApiParam({
   name: 'token',
   required: true,
   type: 'string',
 })
-export class ManifestController {
-  constructor(private readonly manifestService: ManifestService) {}
+export class StremioController {
+  constructor(private readonly stremioService: StremioService) {}
 
   @ApiPermanentRedirectResponse({ description: 'Átirányítás a UI felületre.' })
   @Get('/configure')
@@ -32,6 +32,6 @@ export class ManifestController {
   @ApiResponse({ type: ManifestDto })
   @Get('/manifest.json')
   async manifest(): Promise<ManifestDto> {
-    return this.manifestService.manifest();
+    return this.stremioService.manifest();
   }
 }

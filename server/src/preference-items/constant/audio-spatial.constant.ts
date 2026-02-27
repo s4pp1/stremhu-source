@@ -6,10 +6,10 @@ export const AUDIO_SPATIAL_OPTIONS: AudioSpatialOption[] = [
   { value: AudioSpatialEnum.DOLBY_ATMOS, label: 'Dolby Atmos' },
 ];
 
-export const AUDIO_SPATIAL_LABEL_MAP = AUDIO_SPATIAL_OPTIONS.reduce(
+export const AUDIO_SPATIAL_MAP = AUDIO_SPATIAL_OPTIONS.reduce(
   (previousValue, value) => ({
     ...previousValue,
-    [value.value]: value.label,
+    [value.value]: value,
   }),
-  {} as Record<AudioSpatialEnum, string>,
+  {} as Record<AudioSpatialEnum, AudioSpatialOption>,
 );

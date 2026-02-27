@@ -14,19 +14,19 @@ import { MediaTypeEnum } from 'src/common/enum/media-type.enum';
 
 import { StreamsResponseDto } from './dto/stremio-stream.dto';
 import { ParseStreamIdPipe } from './pipe/parse-stream-id.pipe';
-import { StreamsService } from './streams.service';
+import { StremioStreamsService } from './stremio-streams.service';
 import type { ParsedStreamId } from './type/parsed-stream-id.type';
 
 @UseGuards(TokenGuard)
-@Controller('/:token/stream')
+@Controller('/:token/stremio/stream')
 @ApiParam({
   name: 'token',
   required: true,
   type: 'string',
 })
 @ApiTags('Stremio / Streams')
-export class StreamsController {
-  constructor(private streamsService: StreamsService) {}
+export class StremioStreamsController {
+  constructor(private streamsService: StremioStreamsService) {}
 
   @ApiParam({
     name: 'id',

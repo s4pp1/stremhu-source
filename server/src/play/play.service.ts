@@ -8,7 +8,7 @@ import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service'
 import { PreparePlay } from './type/prepare-play.type';
 
 @Injectable()
-export class PlaybackService {
+export class PlayService {
   private inFlightPlay = new Map<string, Promise<Torrent>>();
 
   constructor(
@@ -17,7 +17,7 @@ export class PlaybackService {
     private readonly trackerDiscoveryService: TrackerDiscoveryService,
   ) {}
 
-  async preparePlayback(payload: PreparePlay): Promise<Torrent> {
+  async preparePlay(payload: PreparePlay): Promise<Torrent> {
     const { tracker, torrentId } = payload;
 
     const key = `$${tracker}-${torrentId}`;

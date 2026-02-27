@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 
 import { AuthModule } from './auth/auth.module';
 import { CatalogModule } from './catalog/catalog.module';
+import { KodiModule } from './kodi/kodi.module';
 import { LocalIpModule } from './local-ip/local-ip.module';
 import { MeModule } from './me/me.module';
 import { MetadataModule } from './metadata/metadata.module';
+import { PlayModule } from './play/play.module';
 import { RelayRuntimeModule } from './relay/relay-runtime.module';
 import { RelayModule } from './relay/relay.module';
 import { SessionsModule } from './sessions/sessions.module';
@@ -31,12 +33,14 @@ import { UsersModule } from './users/users.module';
     SessionsModule,
     UsersModule,
     MeModule,
+    KodiModule,
     MetadataModule,
     TorrentsCacheModule,
     TorrentsModule,
     TrackersModule,
     StremioModule,
     CatalogModule,
+    PlayModule,
   ],
 })
 export class AppFeaturesModule {}

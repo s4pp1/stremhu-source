@@ -6,10 +6,10 @@ export const LANGUAGE_OPTIONS: LanguageOption[] = [
   { label: 'angol', value: LanguageEnum.EN },
 ];
 
-export const LANGUAGE_LABEL_MAP = LANGUAGE_OPTIONS.reduce(
+export const LANGUAGE_MAP = LANGUAGE_OPTIONS.reduce(
   (previousValue, value) => ({
     ...previousValue,
-    [value.value]: value.label,
+    [value.value]: value,
   }),
-  {} as Record<LanguageEnum, string>,
+  {} as Record<LanguageEnum, LanguageOption>,
 );
