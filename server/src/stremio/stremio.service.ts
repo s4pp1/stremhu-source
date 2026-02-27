@@ -17,7 +17,7 @@ import {
 } from './stremio.constants';
 
 @Injectable()
-export class ManifestService {
+export class StremioService {
   constructor(
     private configService: ConfigService,
     private settingsService: SettingsService,

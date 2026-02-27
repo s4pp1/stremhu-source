@@ -25,7 +25,7 @@ import { StremioCatalogsService } from './stremio-catalogs.service';
 import type { ParsedCatalogId } from './type/parsed-catalog-id.type';
 
 @UseGuards(TokenGuard)
-@Controller('/:token')
+@Controller('/:token/stremio')
 @ApiParam({
   name: 'token',
   required: true,

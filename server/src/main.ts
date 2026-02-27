@@ -11,6 +11,7 @@ import path from 'node:path';
 import { THIRTY_DAYS_MS } from './app.constant';
 import { AppModule } from './app.module';
 import { NodeEnvEnum } from './config/enum/node-env.enum';
+import { KodiModule } from './kodi/kodi.module';
 import { SessionsService } from './sessions/sessions.service';
 
 export const EXPRESS = express();
@@ -53,9 +54,20 @@ async function bootstrap() {
     }),
   );
 
+  const kodiSwagger = new DocumentBuilder()
+    .setTitle('StremHU Source - Kodi')
+    .build();
+
+  const kodiSwaggerDoc = SwaggerModule.createDocument(app, kodiSwagger, {
+    operationIdFactory: (_controllerKey, methodKey) => methodKey,
+    include: [KodiModule],
+    deepScanRoutes: true,
+  });
+  SwaggerModule.setup('api/docs/kodi', app, kodiSwaggerDoc);
+
   if (!isProduction) {
     const config = new DocumentBuilder()
-      .setTitle('StremHU')
+      .setTitle('StremHU Source')
       .setDescription('REST API dokumentáció')
       .setVersion('1.0.0')
       .build();

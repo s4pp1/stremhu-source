@@ -15,10 +15,10 @@ export const SOURCE_OPTIONS: SourceOption[] = [
   { value: SourceEnum.UNKNOWN, label: 'Egyéb' },
 ];
 
-export const SOURCE_TYPE_LABEL_MAP = SOURCE_OPTIONS.reduce(
+export const SOURCE_MAP = SOURCE_OPTIONS.reduce(
   (previousValue, value) => ({
     ...previousValue,
-    [value.value]: value.label,
+    [value.value]: value,
   }),
-  {} as Record<SourceEnum, string>,
+  {} as Record<SourceEnum, SourceOption>,
 );

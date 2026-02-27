@@ -12,10 +12,10 @@ export const AUDIO_QUALITY_OPTIONS: AudioQualityOption[] = [
   { value: AudioQualityEnum.UNKNOWN, label: 'Egyéb' },
 ];
 
-export const AUDIO_QUALITY_LABEL_MAP = AUDIO_QUALITY_OPTIONS.reduce(
+export const AUDIO_QUALITY_MAP = AUDIO_QUALITY_OPTIONS.reduce(
   (previousValue, value) => ({
     ...previousValue,
-    [value.value]: value.label,
+    [value.value]: value,
   }),
-  {} as Record<AudioQualityEnum, string>,
+  {} as Record<AudioQualityEnum, AudioQualityOption>,
 );

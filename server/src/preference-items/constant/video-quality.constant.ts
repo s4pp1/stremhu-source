@@ -10,10 +10,10 @@ export const VIDEO_QUALITY_OPTIONS: VideoQualityOption[] = [
   { value: VideoQualityEnum.SDR, label: 'SDR' },
 ];
 
-export const VIDEO_QUALITY_LABEL_MAP = VIDEO_QUALITY_OPTIONS.reduce(
+export const VIDEO_QUALITY_MAP = VIDEO_QUALITY_OPTIONS.reduce(
   (previouItems, item) => ({
     ...previouItems,
-    [item.value]: item.label,
+    [item.value]: item,
   }),
-  {} as Record<VideoQualityEnum, string>,
+  {} as Record<VideoQualityEnum, VideoQualityOption>,
 );

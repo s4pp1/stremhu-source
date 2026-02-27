@@ -13,7 +13,7 @@ export function useIntegrationDomain(props: UseIntegrationDomainProps) {
   if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
 
   const endpointHost = new URL(metadata.endpoint).host
-  const endpoint = `${endpointHost}/api/${token}/manifest.json`
+  const endpoint = `${endpointHost}/api/${token}/stremio/manifest.json`
 
   const appEndpoint = `stremio://${endpoint}`
   const urlEndpoint = `https://${endpoint}`

@@ -14,10 +14,10 @@ export const ALL_RESOLUTION = RESOLUTION_OPTIONS.map(
   (resolution) => resolution.value,
 );
 
-export const RESOLUTION_LABEL_MAP = RESOLUTION_OPTIONS.reduce(
+export const RESOLUTION_MAP = RESOLUTION_OPTIONS.reduce(
   (previousValue, value) => ({
     ...previousValue,
-    [value.value]: value.label,
+    [value.value]: value,
   }),
-  {} as Record<ResolutionEnum, string>,
+  {} as Record<ResolutionEnum, ResolutionOption>,
 );

@@ -5,8 +5,8 @@ import { TorrentsCacheCoreModule } from 'src/torrents-cache/core/torrents-cache-
 import { TorrentsModule } from 'src/torrents/torrents.module';
 import { TrackersModule } from 'src/trackers/trackers.module';
 
-import { PlaybackController } from './playback.controller';
-import { PlaybackService } from './playback.service';
+import { PlayController } from './play.controller';
+import { PlayService } from './play.service';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { PlaybackService } from './playback.service';
     TorrentsModule,
     TrackersModule,
   ],
-  providers: [PlaybackService],
-  controllers: [PlaybackController],
+  providers: [PlayService],
+  controllers: [PlayController],
 })
-export class PlaybackModule {}
+export class PlayModule {}

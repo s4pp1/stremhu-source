@@ -2,11 +2,11 @@ import { filenameParse } from '@ctrl/video-filename-parser';
 import isVideo from 'is-video';
 import { findIndex, maxBy } from 'lodash';
 
+import { ParsedStreamSeries } from 'src/stremio/streams/type/parsed-stream-series.type';
+import { RowTorrentVideo } from 'src/torrent-videos/type/row-torrent-video.type';
 import { TorrentFileInfo } from 'src/torrents-cache/type/torrent-file-info.type';
 import { TrackerTorrent } from 'src/trackers/tracker.types';
 
-import { ParsedStreamSeries } from '../../type/parsed-stream-series.type';
-import { VideoFile } from '../../type/video-file.type';
 import { parseTorrentMetadata } from '../parse-torrent-metadata';
 import { isSampleOrTrash } from './utils';
 
@@ -26,7 +26,7 @@ export class VideoFileResolver {
     this.series = series;
   }
 
-  resolve(): VideoFile | null {
+  resolve(): RowTorrentVideo | null {
     let torrentFile: TorrentFileInfo | null;
 
     if (this.series) {
@@ -59,7 +59,7 @@ export class VideoFileResolver {
       fileSize: torrentFile.size,
       fileIndex: torrentFile.index,
 
-      notWebReady: false,
+      isInRelay: false,
     };
   }
 

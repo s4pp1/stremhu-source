@@ -1,4 +1,4 @@
-import { VideoQualityEnum } from '../../../../../preference-items/enum/video-quality.enum';
+import { VideoQualityEnum } from 'src/preference-items/enum/video-quality.enum';
 
 const PATTERNS: Record<
   Exclude<VideoQualityEnum, VideoQualityEnum.SDR>,
