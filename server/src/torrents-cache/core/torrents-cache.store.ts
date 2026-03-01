@@ -5,7 +5,10 @@ import { mkdir, rm, stat, utimes, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import { safeReadFile, safeReaddir } from 'src/common/utils/file.util';
-import { parseTorrent } from 'src/common/utils/parse-torrent.util';
+import {
+  parseTorrent,
+  parseTorrentOrThrow,
+} from 'src/common/utils/parse-torrent.util';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { TorrentCacheId } from '../type/torrent-cache-id.type';
@@ -31,6 +34,8 @@ export class TorrentsCacheStore implements OnModuleInit {
   async create(payload: TorrentCacheToCreate): Promise<TorrentCache> {
     const { tracker, torrentId, torrentBuffer } = payload;
 
+    const torrentFile = parseTorrentOrThrow(torrentBuffer);
+
     const trackerDirPath = this.buildTrackerDirPath(tracker);
     await mkdir(trackerDirPath, { recursive: true });
     await this.touchMarker(trackerDirPath);
@@ -38,7 +43,6 @@ export class TorrentsCacheStore implements OnModuleInit {
     const torrentFilePath = this.buildTorrentFilePath(tracker, torrentId);
 
     await writeFile(torrentFilePath, torrentBuffer);
-    const torrentFile = parseTorrent(torrentBuffer);
 
     this.logger.log(`💾 Torrent mentésre került: ${torrentFile.name}`);
 

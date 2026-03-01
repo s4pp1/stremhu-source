@@ -1,9 +1,24 @@
 import { files, hash, info } from '@ctrl/torrent-file';
+import { Logger } from '@nestjs/common';
 
 import { TorrentFileInfo } from 'src/torrents-cache/type/torrent-file-info.type';
 import { TorrentInfo } from 'src/torrents-cache/type/torrent-info.type';
 
-export function parseTorrent(buffer: Buffer): TorrentInfo {
+const logger = new Logger('ParseTorrentUtil');
+
+export function parseTorrent(buffer: Buffer): TorrentInfo | null {
+  try {
+    return parseTorrentOrThrow(buffer);
+  } catch (error) {
+    logger.error(
+      `🚨 Nem sikerült feldolgozni a torrent tartalmát: érvénytelen vagy sérült .torrent adat.`,
+      error,
+    );
+    return null;
+  }
+}
+
+export function parseTorrentOrThrow(buffer: Buffer): TorrentInfo {
   const infoHash = hash(buffer);
   const torrentInfo = info(buffer);
   const fileInfo = files(buffer);
