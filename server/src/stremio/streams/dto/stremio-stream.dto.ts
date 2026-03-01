@@ -14,7 +14,7 @@ export class BehaviorHintsDto {
   filename?: string;
 }
 
-export class StreamDto {
+export class StremioStreamDto {
   @ApiProperty()
   name: string;
 
@@ -28,7 +28,7 @@ export class StreamDto {
   behaviorHints: BehaviorHintsDto;
 }
 
-export class StreamsResponseDto {
-  @ApiProperty({ type: StreamDto, isArray: true })
-  streams: StreamDto[];
+export class StremioStreamsResponseDto {
+  @ApiProperty({ type: StremioStreamDto, isArray: true })
+  streams: StremioStreamDto[];
 }

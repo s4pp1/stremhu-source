@@ -17,7 +17,7 @@ export class StremioManifestService {
     ): CancelablePromise<void> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/api/{token}/configure',
+            url: '/api/{token}/stremio/configure',
             path: {
                 'token': token,
             },
@@ -36,7 +36,7 @@ export class StremioManifestService {
     ): CancelablePromise<ManifestDto> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/api/{token}/manifest.json',
+            url: '/api/{token}/stremio/manifest.json',
             path: {
                 'token': token,
             },

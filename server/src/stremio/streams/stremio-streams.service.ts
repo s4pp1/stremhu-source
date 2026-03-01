@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { compact } from 'lodash';
+import { compact, first } from 'lodash';
 
 import { MediaTypeEnum } from 'src/common/enum/media-type.enum';
 import { SourceEnum } from 'src/preference-items/enum/source.enum';
@@ -9,7 +9,7 @@ import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import { User } from 'src/users/entity/user.entity';
 
 import { VideoQualityEnum } from '../../preference-items/enum/video-quality.enum';
-import { StreamDto } from './dto/stremio-stream.dto';
+import { StremioStreamDto } from './dto/stremio-stream.dto';
 import { StreamIdTypeEnum } from './enum/stream-id-type.enum';
 import { ParsedStreamId } from './type/parsed-stream-id.type';
 import { ParsedStreamSeries } from './type/parsed-stream-series.type';
@@ -22,7 +22,7 @@ export class StremioStreamsService {
     user: User,
     mediaType: MediaTypeEnum,
     payload: ParsedStreamId,
-  ): Promise<StreamDto[]> {
+  ): Promise<StremioStreamDto[]> {
     const { type } = payload;
 
     switch (type) {
@@ -43,7 +43,7 @@ export class StremioStreamsService {
     mediaType: MediaTypeEnum,
     imdbId: string,
     series?: ParsedStreamSeries,
-  ): Promise<StreamDto[]> {
+  ): Promise<StremioStreamDto[]> {
     const [torrentVideos, trackerErrors] =
       await this.torrentVideosService.findByImdb({
         user,
@@ -52,17 +52,22 @@ export class StremioStreamsService {
         series,
       });
 
-    const streams: StreamDto[] = torrentVideos.map((torrentVideo) =>
+    let streams: StremioStreamDto[] = torrentVideos.map((torrentVideo) =>
       this.imdbStream(torrentVideo),
     );
-    const streamErrors: StreamDto[] = trackerErrors.map((trackerError) =>
+    const streamErrors: StremioStreamDto[] = trackerErrors.map((trackerError) =>
       this.streamError(trackerError),
     );
+
+    if (user.onlyBestTorrent) {
+      const bestStream = first(streams);
+      streams = bestStream ? [bestStream] : [];
+    }
 
     return [...streams, ...streamErrors];
   }
 
-  private imdbStream(torrentVideo: TorrentVideo): StreamDto {
+  private imdbStream(torrentVideo: TorrentVideo): StremioStreamDto {
     const videoQualities = torrentVideo['video-quality'].filter(
       (videoQuality) => videoQuality.value !== VideoQualityEnum.SDR,
     );
@@ -139,7 +144,7 @@ export class StremioStreamsService {
     user: User,
     tracker: TrackerEnum,
     torrentId: string,
-  ): Promise<StreamDto[]> {
+  ): Promise<StremioStreamDto[]> {
     const baseTorrentVideos = await this.torrentVideosService.findByTorrentId(
       user,
       tracker,

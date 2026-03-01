@@ -12,7 +12,7 @@ import type { Request } from 'express';
 import { TokenGuard } from 'src/auth/guards/token.guard';
 import { MediaTypeEnum } from 'src/common/enum/media-type.enum';
 
-import { StreamsResponseDto } from './dto/stremio-stream.dto';
+import { StremioStreamsResponseDto } from './dto/stremio-stream.dto';
 import { ParseStreamIdPipe } from './pipe/parse-stream-id.pipe';
 import { StremioStreamsService } from './stremio-streams.service';
 import type { ParsedStreamId } from './type/parsed-stream-id.type';
@@ -36,14 +36,14 @@ export class StremioStreamsController {
     name: 'mediaType',
     enum: MediaTypeEnum,
   })
-  @ApiOkResponse({ type: StreamsResponseDto })
+  @ApiOkResponse({ type: StremioStreamsResponseDto })
   @Get('/:mediaType/:id.json')
   async streams(
     @Req() req: Request,
     @Param('mediaType', new ParseEnumPipe(MediaTypeEnum))
     mediaType: MediaTypeEnum,
     @Param('id', ParseStreamIdPipe) id: ParsedStreamId,
-  ): Promise<StreamsResponseDto> {
+  ): Promise<StremioStreamsResponseDto> {
     const { user } = req;
 
     const streams = await this.streamsService.streams(user!, mediaType, id);

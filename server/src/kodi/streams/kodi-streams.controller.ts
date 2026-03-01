@@ -5,7 +5,6 @@ import type { Request } from 'express';
 import { TokenGuard } from 'src/auth/guards/token.guard';
 
 import { FindKodiImdbStreamsDto } from './dto/find-kodi-imdb-streams.dto';
-import { KodiImdbStreamDto } from './dto/kodi-imdb-stream.dto';
 import { KodiImdbStreamsDto } from './dto/kodi-imdb-streams.dto';
 import { KodiStreamsService } from './kodi-streams.service';
 
@@ -31,24 +30,6 @@ export class KodiStreamsController {
 
     const streams = await this.streamsService.imdbStreams(user!, imdbId, query);
 
-    return {
-      streams: streams.map(
-        (stream): KodiImdbStreamDto => ({
-          tracker: stream.tracker,
-          torrentName: stream.torrentName,
-          fileName: stream.fileName,
-          seeders: stream.seeders,
-          size: stream.fileSize,
-          languages: [stream.language],
-          resolution: stream.resolution,
-          videoQualities: stream['video-quality'],
-          audioQuality: stream['audio-quality'],
-          audioSpatial: stream['audio-spatial'],
-          source: stream.source,
-          url: stream.playUrl,
-        }),
-      ),
-      errors: [],
-    };
+    return streams;
   }
 }

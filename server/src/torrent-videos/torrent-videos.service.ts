@@ -145,9 +145,7 @@ export class TorrentVideosService {
       },
     );
 
-    return user.onlyBestTorrent
-      ? [[torrentVideos[0]], trackerErrors]
-      : [torrentVideos, trackerErrors];
+    return [torrentVideos, trackerErrors];
   }
 
   async findByTorrentId(

@@ -4,10 +4,9 @@
 /* eslint-disable */
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-export class StremioPlaybackService {
+export class PlayService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
-     * @param imdbId
      * @param tracker
      * @param torrentId
      * @param fileIdx
@@ -15,8 +14,7 @@ export class StremioPlaybackService {
      * @returns any
      * @throws ApiError
      */
-    public playStream(
-        imdbId: string,
+    public play(
         tracker: 'ncore' | 'bithumen' | 'majomparade' | 'insane',
         torrentId: string,
         fileIdx: number,
@@ -24,9 +22,8 @@ export class StremioPlaybackService {
     ): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/api/{token}/stream/play/{imdbId}/{tracker}/{torrentId}/{fileIdx}',
+            url: '/api/{token}/play/{tracker}/{torrentId}/{fileIdx}',
             path: {
-                'imdbId': imdbId,
                 'tracker': tracker,
                 'torrentId': torrentId,
                 'fileIdx': fileIdx,
