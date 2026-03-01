@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { StreamDto } from './StreamDto';
-export type StreamsResponseDto = {
-    streams: Array<StreamDto>;
-};
-
+export enum PosterShapeEnum {
+    SQUARE = 'square',
+    REGULAR = 'regular',
+    LANDSCAPE = 'landscape',
+}

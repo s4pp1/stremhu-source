@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { BehaviorHintsDto } from './BehaviorHintsDto';
-export type StreamDto = {
+export type StremioStreamDto = {
     name: string;
     description: string;
     url: string;

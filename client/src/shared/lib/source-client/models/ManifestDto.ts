@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ManifestBehaviorHintsDto } from './ManifestBehaviorHintsDto';
 export type ManifestDto = {
     id: string;
     name: string;
@@ -9,12 +10,13 @@ export type ManifestDto = {
     version: string;
     resources: Array<string>;
     types: Array<'movie' | 'series' | 'channel' | 'tv'>;
-    idPrefixes: Record<string, any>;
+    idPrefixes: Array<string>;
     catalogs: Array<string>;
-    addonCatalogs: Record<string, any>;
+    addonCatalogs: Array<string>;
     config: Array<string>;
-    background: Record<string, any>;
-    logo: Record<string, any>;
-    contactEmail: Record<string, any>;
+    background: string;
+    logo: string;
+    contactEmail: string;
+    behaviorHints: ManifestBehaviorHintsDto;
 };
 

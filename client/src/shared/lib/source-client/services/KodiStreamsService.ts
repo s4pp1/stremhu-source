@@ -2,30 +2,35 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { StremioStreamsResponseDto } from '../models/StremioStreamsResponseDto';
+import type { KodiImdbStreamsDto } from '../models/KodiImdbStreamsDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-export class StremioStreamsService {
+export class KodiStreamsService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
     /**
-     * @param mediaType
-     * @param id
+     * @param imdbId
      * @param token
-     * @returns StremioStreamsResponseDto
+     * @param season
+     * @param episode
+     * @returns KodiImdbStreamsDto
      * @throws ApiError
      */
     public streams(
-        mediaType: 'movie' | 'series',
-        id: string,
+        imdbId: string,
         token: string,
-    ): CancelablePromise<StremioStreamsResponseDto> {
+        season?: number,
+        episode?: number,
+    ): CancelablePromise<KodiImdbStreamsDto> {
         return this.httpRequest.request({
             method: 'GET',
-            url: '/api/{token}/stremio/stream/{mediaType}/{id}.json',
+            url: '/api/{token}/kodi/imdb/{imdbId}/streams',
             path: {
-                'mediaType': mediaType,
-                'id': id,
+                'imdbId': imdbId,
                 'token': token,
+            },
+            query: {
+                'season': season,
+                'episode': episode,
             },
         });
     }
