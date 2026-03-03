@@ -5,7 +5,7 @@
 [![Discord – Csatlakozz](https://img.shields.io/badge/Discord-Csatlakozz-5865F2?logo=discord&logoColor=white)](https://discord.gg/jRSPPY5XaN)
 [![Docker – Repository](https://img.shields.io/badge/Docker-Repository-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/s4pp1/stremhu-source)
 
-Self-hostolható Stremio addon, amellyel **közvetlenül magyar trackeroldalakról** streamelhetsz.
+Self-hosted streaming szerver, amellyel **közvetlenül magyar trackerekről** nézheted a tartalmat várakozás nélkül! - [https://stremhu.app](https://stremhu.app)
 
 ![A StremHU Source által betöltött torrentek a Stremio felületén.](./docs/assets/stremio-stremhu-source-list.png)
 
@@ -42,10 +42,3 @@ Self-hostolható Stremio addon, amellyel **közvetlenül magyar trackeroldalakr�
 - [StremHU Source elérése az internetről](./docs/stremhu-source-elerese-az-internetrol.md)
 - [StremHU Source elérése VPN-en keresztül](./docs//stremhu-source-elerese-vpn-en-keresztul.md)
 - [Docker Compose beállítási lehetőségek](./docs/docker-compose-beallitasi-lehetosegek.md)
-
-### GYIK
-
-- **Mi az a [Stremio](https://www.stremio.com/)?**
-  - Streaming alkalmazás, amely addonokon keresztül ér el különböző tartalomforrásokat.
-- **Mi ez az addon?**
-  - Egy magyar trackeroldalakat „megszólító” kiegészítő, amely a találatokat Stremio‑kompatibilis módon jeleníti meg, és biztosítja a letöltés/seedelés/streamelés folyamatát.
