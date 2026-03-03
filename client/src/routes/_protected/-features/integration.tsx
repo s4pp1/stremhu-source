@@ -4,6 +4,7 @@ import {
   CardTitle,
 } from '@/shared/components/ui/card'
 
+import { KodiIntegration } from './kodi-integration'
 import { NuvioIntegration } from './nuvio-integration'
 import { StremioIntegration } from './stremio-integration'
 
@@ -11,9 +12,9 @@ export function Integration() {
   return (
     <div className="grid gap-4">
       <CardHeader className="px-0">
-        <CardTitle>Telepítés</CardTitle>
+        <CardTitle>Támogatott kliensek</CardTitle>
         <CardDescription>
-          Használd a StremHU Source-t a számodra legjobb klienssel.
+          Csatlakoztasd a StremHU Source-ot az általad használt kliensekhez.
         </CardDescription>
       </CardHeader>
       <div className="columns-1 md:columns-2 gap-4">
@@ -22,6 +23,9 @@ export function Integration() {
         </div>
         <div className="break-inside-avoid mb-4">
           <NuvioIntegration />
+        </div>
+        <div className="break-inside-avoid mb-4">
+          <KodiIntegration />
         </div>
       </div>
     </div>

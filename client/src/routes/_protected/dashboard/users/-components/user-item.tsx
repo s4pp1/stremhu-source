@@ -32,7 +32,7 @@ export function UserItem(props: UserItem) {
 
   const confirmDialog = useConfirmDialog()
 
-  const { urlEndpoint } = useIntegrationDomain({
+  const { stremio } = useIntegrationDomain({
     token: user.token,
   })
 
@@ -44,7 +44,7 @@ export function UserItem(props: UserItem) {
     event.preventDefault()
     event.stopPropagation()
 
-    handleCopy(urlEndpoint)
+    handleCopy(stremio.urlEndpoint)
   }
 
   const handleDeleteUser = async (event: MouseEvent<HTMLButtonElement>) => {

@@ -32,7 +32,7 @@ export function StremioIntegration() {
   const { data: me } = useQuery(getMe)
   assertExists(me)
 
-  const { appEndpoint, webEndpoint, urlEndpoint } = useIntegrationDomain({
+  const { stremio } = useIntegrationDomain({
     token: me.token,
   })
 
@@ -43,7 +43,6 @@ export function StremioIntegration() {
       <CardHeader>
         <CardTitle>Stremio</CardTitle>
         <CardDescription>
-          Addon használata Stremio-val -
           <a
             className="link-primary"
             href="https://www.stremio.com"
@@ -71,7 +70,7 @@ export function StremioIntegration() {
               className="rounded-full"
               asChild
             >
-              <a href={appEndpoint} target="_blank">
+              <a href={stremio.appEndpoint} target="_blank">
                 <ExternalLinkIcon />
               </a>
             </Button>
@@ -94,7 +93,7 @@ export function StremioIntegration() {
               className="rounded-full"
               asChild
             >
-              <a href={webEndpoint} target="_blank">
+              <a href={stremio.webEndpoint} target="_blank">
                 <ExternalLinkIcon />
               </a>
             </Button>
@@ -115,7 +114,7 @@ export function StremioIntegration() {
               size="icon-sm"
               variant="default"
               className="rounded-full"
-              onClick={() => handleCopy(urlEndpoint)}
+              onClick={() => handleCopy(stremio.urlEndpoint)}
             >
               <CopyIcon />
             </Button>
