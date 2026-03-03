@@ -22,11 +22,11 @@ import { useIntegrationDomain } from '@/shared/hooks/use-integration-domain'
 import { assertExists } from '@/shared/lib/utils'
 import { getMe } from '@/shared/queries/me'
 
-export function NuvioIntegration() {
+export function KodiIntegration() {
   const { data: me } = useQuery(getMe)
   assertExists(me)
 
-  const { nuvioUrl } = useIntegrationDomain({
+  const { kodiUrl } = useIntegrationDomain({
     token: me.token,
   })
 
@@ -35,14 +35,10 @@ export function NuvioIntegration() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Nuvio</CardTitle>
+        <CardTitle>Kodi</CardTitle>
         <CardDescription>
-          <a
-            className="link-primary"
-            href="https://nuvioapp.space/"
-            target="_blank"
-          >
-            https://nuvioapp.space
+          <a className="link-primary" href="https://kodi.tv/" target="_blank">
+            https://kodi.tv
           </a>
         </CardDescription>
       </CardHeader>
@@ -54,14 +50,14 @@ export function NuvioIntegration() {
           <ItemContent>
             <ItemTitle>URL másolása</ItemTitle>
             <ItemDescription>
-              A kimásolt URL-t illeszd be az addonok közé.
+              Illeszd be a StremHU addon beállításnál az URL-hez.
             </ItemDescription>
           </ItemContent>
           <ItemActions>
             <Button
               size="icon-sm"
               className="rounded-full"
-              onClick={() => handleCopy(nuvioUrl)}
+              onClick={() => handleCopy(kodiUrl)}
             >
               <CopyIcon />
             </Button>

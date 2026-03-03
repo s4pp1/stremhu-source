@@ -75,7 +75,7 @@ export function UserProfile(props: UserProfile) {
   const dialogs = useDialogs()
   const { handleCopy } = useCopy()
 
-  const { urlEndpoint } = useIntegrationDomain({
+  const { stremio } = useIntegrationDomain({
     token: user.token,
   })
 
@@ -222,12 +222,16 @@ export function UserProfile(props: UserProfile) {
         <Field>
           <FieldLabel htmlFor="token">Stremio addon URL</FieldLabel>
           <InputGroup>
-            <InputGroupInput name="token" readOnly value={urlEndpoint} />
+            <InputGroupInput
+              name="token"
+              readOnly
+              value={stremio.urlEndpoint}
+            />
             <InputGroupAddon align="inline-end">
               <InputGroupButton
                 variant="ghost"
                 size="icon-sm"
-                onClick={() => handleCopy(urlEndpoint)}
+                onClick={() => handleCopy(stremio.urlEndpoint)}
               >
                 <CopyIcon />
               </InputGroupButton>
