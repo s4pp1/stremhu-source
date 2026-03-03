@@ -3,7 +3,6 @@ import { useQueries } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { capitalize } from 'lodash'
 import {
-  CopyIcon,
   PencilIcon,
   ShieldUserIcon,
   TrashIcon,
@@ -25,12 +24,6 @@ import {
 } from '@/shared/components/ui/card'
 import { Field, FieldLabel } from '@/shared/components/ui/field'
 import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from '@/shared/components/ui/input-group'
-import {
   Item,
   ItemActions,
   ItemContent,
@@ -44,8 +37,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/components/ui/select'
-import { useCopy } from '@/shared/hooks/use-copy'
-import { useIntegrationDomain } from '@/shared/hooks/use-integration-domain'
 import type { UserDto } from '@/shared/lib/source-client'
 import { UserRoleEnum } from '@/shared/lib/source-client'
 import { parseApiError } from '@/shared/lib/utils'
@@ -73,11 +64,6 @@ export function UserProfile(props: UserProfile) {
   const navigate = useNavigate()
   const confirmDialog = useConfirmDialog()
   const dialogs = useDialogs()
-  const { handleCopy } = useCopy()
-
-  const { stremio } = useIntegrationDomain({
-    token: user.token,
-  })
 
   const { mutateAsync: updateUser } = useUpdateUser()
   const { mutateAsync: deleteUser } = useDeleteUser()
@@ -219,25 +205,6 @@ export function UserProfile(props: UserProfile) {
             </Field>
           )}
         </form.Field>
-        <Field>
-          <FieldLabel htmlFor="token">Stremio addon URL</FieldLabel>
-          <InputGroup>
-            <InputGroupInput
-              name="token"
-              readOnly
-              value={stremio.urlEndpoint}
-            />
-            <InputGroupAddon align="inline-end">
-              <InputGroupButton
-                variant="ghost"
-                size="icon-sm"
-                onClick={() => handleCopy(stremio.urlEndpoint)}
-              >
-                <CopyIcon />
-              </InputGroupButton>
-            </InputGroupAddon>
-          </InputGroup>
-        </Field>
       </CardContent>
     </Card>
   )

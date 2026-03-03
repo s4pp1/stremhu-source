@@ -1,23 +1,15 @@
 import { Link } from '@tanstack/react-router'
-import { CopyIcon, TrashIcon } from 'lucide-react'
-import type { MouseEvent, MouseEventHandler } from 'react'
+import { TrashIcon } from 'lucide-react'
+import type { MouseEvent } from 'react'
 
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { Button } from '@/shared/components/ui/button'
-import { InputGroupButton } from '@/shared/components/ui/input-group'
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemTitle,
 } from '@/shared/components/ui/item'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/shared/components/ui/tooltip'
-import { useCopy } from '@/shared/hooks/use-copy'
-import { useIntegrationDomain } from '@/shared/hooks/use-integration-domain'
 import { useMetadata } from '@/shared/hooks/use-metadata'
 import type { UserDto } from '@/shared/lib/source-client'
 import { useDeleteUser } from '@/shared/queries/users'
@@ -32,20 +24,8 @@ export function UserItem(props: UserItem) {
 
   const confirmDialog = useConfirmDialog()
 
-  const { stremio } = useIntegrationDomain({
-    token: user.token,
-  })
-
   const { getUserRoleLabel } = useMetadata()
   const { mutateAsync: deleteUser } = useDeleteUser()
-  const { handleCopy } = useCopy()
-
-  const handleCopyLink: MouseEventHandler<HTMLButtonElement> = (event) => {
-    event.preventDefault()
-    event.stopPropagation()
-
-    handleCopy(stremio.urlEndpoint)
-  }
 
   const handleDeleteUser = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -61,7 +41,7 @@ export function UserItem(props: UserItem) {
   }
 
   return (
-    <Item asChild variant="muted">
+    <Item asChild variant="muted" className="min-h-[66px]">
       <Link
         key={user.id}
         to="/dashboard/users/$userId"
@@ -74,23 +54,6 @@ export function UserItem(props: UserItem) {
               ({getUserRoleLabel(user.userRole)})
             </span>
           </ItemTitle>
-          <div className="flex gap-2 items-center">
-            {user.token}
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <InputGroupButton
-                  variant="ghost"
-                  size="icon-sm"
-                  onClick={handleCopyLink}
-                >
-                  <CopyIcon />
-                </InputGroupButton>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Felhasználó manifest.json kimásolása addon telepítéshez</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
         </ItemContent>
         {!deleteDisabled && (
           <ItemActions>
