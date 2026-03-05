@@ -9,14 +9,14 @@
 <p align="center">
   <a href="https://discord.gg/jRSPPY5XaN" target="_blank">
     <img src="https://img.shields.io/badge/Discord-Csatlakozz-5865F2?logo=discord&logoColor=white" alt="StremHU Discord" />
-  </a>&nbsp;&nbsp;
+  </a>&nbsp;
   <a href="https://hub.docker.com/r/s4pp1/stremhu-source" target="_blank">
     <img src="https://img.shields.io/badge/Docker-Repository-2496ED?logo=docker&logoColor=white" alt="StremHU Docker Hub" />
   </a>
 </p>
 
-<p align="center">Amennyiben hasznosnak tartod a projektet, kérlek bökj rá ⭐-ra ezzel is támogatva a projektet.</p>
+<p align="center">Amennyiben hasznosnak tartod a projektet, kérlek bökj rá ⭐-ra ezzel is támogatva.</p>
 
 > [!NOTE]
 >
-> A StremHU Source egy szabadidős projekt! Hibajelentéseket és fejlesztési ötleteket szívesen fogadok kulturáltan a StremHU Discord szerverén!
+> A StremHU Source egy szabadidős projekt! Hibajelentéseket és fejlesztési ötleteket szívesen fogadunk kulturáltan a StremHU Discord szerverén!
