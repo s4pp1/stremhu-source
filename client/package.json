@@ -1,7 +1,7 @@
 {
   "name": "@stremhu/source-client",
   "author": "Benedek Bálint",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "private": true,
   "type": "module",
   "scripts": {
