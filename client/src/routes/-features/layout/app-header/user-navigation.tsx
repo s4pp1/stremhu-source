@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import {
   LayoutDashboardIcon,
@@ -17,9 +18,14 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu'
 import { useIsAdmin } from '@/shared/hooks/use-is-admin'
+import { getMe } from '@/shared/queries/me'
 
 export function UserNavigation() {
+  const { data: me } = useQuery(getMe)
+
   const { isAdmin } = useIsAdmin()
+
+  if (!me) return null
 
   return (
     <div className="flex gap-2 items-center">

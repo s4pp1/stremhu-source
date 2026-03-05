@@ -1,44 +1,22 @@
-## StremHU Source
+<p align="center">
+  <a href="https://stremhu.app" target="_blank"><img src="./docs/assets/logo.png" width="100" alt="StremHU Logo" />
+  </a>
+</p>
 
-⭐ Ha tetszik, adj egy csillagot!
+<p align="center">Self-hosted streaming szerver, amellyel <b>közvetlenül magyar trackerekről</b> nézheted a tartalmat várakozás nélkül!</p>
+<p align="center">További információkért és útmutatókért látogass el a <a href="https://stremhu.app" target="_blank">https://stremhu.app</a> oldalra!</p>
 
-[![Discord – Csatlakozz](https://img.shields.io/badge/Discord-Csatlakozz-5865F2?logo=discord&logoColor=white)](https://discord.gg/jRSPPY5XaN)
-[![Docker – Repository](https://img.shields.io/badge/Docker-Repository-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/s4pp1/stremhu-source)
+<p align="center">
+  <a href="https://discord.gg/jRSPPY5XaN" target="_blank">
+    <img src="https://img.shields.io/badge/Discord-Csatlakozz-5865F2?logo=discord&logoColor=white" alt="StremHU Discord" />
+  </a>&nbsp;&nbsp;
+  <a href="https://hub.docker.com/r/s4pp1/stremhu-source" target="_blank">
+    <img src="https://img.shields.io/badge/Docker-Repository-2496ED?logo=docker&logoColor=white" alt="StremHU Docker Hub" />
+  </a>
+</p>
 
-Self-hosted streaming szerver, amellyel **közvetlenül magyar trackerekről** nézheted a tartalmat várakozás nélkül! - [https://stremhu.app](https://stremhu.app)
-
-![A StremHU Source által betöltött torrentek a Stremio felületén.](./docs/assets/stremio-stremhu-source-list.png)
+<p align="center">Amennyiben hasznosnak tartod a projektet, kérlek bökj rá ⭐-ra ezzel is támogatva a projektet.</p>
 
 > [!NOTE]
-> Ez egy szabadidős projekt! Hibajelentéseket és fejlesztési ötleteket szívesen fogadok kulturáltan a Discord-on!
-
-### Támogatott trackerek
-
-- **nCore**
-- **BitHUmen**
-- **iNSANE**
-- **Majomparádé**
-
-### Funkciók
-
-- **Self-host** Dockerrel – távolról is elérheted, és streamelhetsz róla.
-- **Automatikus seeding** a lejátszás után; opcionálisan **Hit’n’Run figyelés**, teljesítés után törlés.
-- **Felhasználókezelés** – mindenki saját preferenciákkal használhatja az addont Stremio-ban, anélkül hogy megosztanád a tracker-hozzáférést.
-- **Helyi hálózaton automatikus HTTPS** támogatás.
-
-> [!TIP]
-> Ajánlott futtatási környezet: 24/7 elérhető gép (pl. NAS).
-
-### Követelmények
-
-- Érvényes fiók a támogatott tracker(ek)hez.
-- Elég tárhely a letöltésekhez.
-- Docker + Docker Compose.
-- Távoli eléréshez saját domain és megfelelő hálózati beállítások.
-
-### StremHU Source beüzemelési segédletek
-
-- [StremHU Source beüzemelése otthon](./docs/stremhu-source-beuzemelese-otthon.md)
-- [StremHU Source elérése az internetről](./docs/stremhu-source-elerese-az-internetrol.md)
-- [StremHU Source elérése VPN-en keresztül](./docs//stremhu-source-elerese-vpn-en-keresztul.md)
-- [Docker Compose beállítási lehetőségek](./docs/docker-compose-beallitasi-lehetosegek.md)
+>
+> A StremHU Source egy szabadidős projekt! Hibajelentéseket és fejlesztési ötleteket szívesen fogadok kulturáltan a StremHU Discord szerverén!
