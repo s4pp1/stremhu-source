@@ -11,6 +11,9 @@ import type {
   UpdateTrackerDto,
 } from '@/shared/lib/source-client'
 
+import { getMePreferences } from './me-preferences'
+import { getUsers } from './users'
+
 export const getTrackers = queryOptions({
   queryKey: ['trackers'],
   queryFn: async () => {
@@ -25,8 +28,8 @@ export function useLoginTracker() {
     mutationFn: async (payload: LoginTrackerDto) => {
       await appClient.trackers.login(payload)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: getTrackers.queryKey })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: getTrackers.queryKey })
     },
   })
 }
@@ -37,8 +40,8 @@ export function useUpdateTracker(tracker: TrackerEnum) {
     mutationFn: async (payload: UpdateTrackerDto) => {
       await appClient.trackers.update(tracker, payload)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: getTrackers.queryKey })
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: getTrackers.queryKey })
     },
   })
 }
@@ -49,8 +52,12 @@ export function useDeleteTracker() {
     mutationFn: async (tracker: TrackerEnum) => {
       await appClient.trackers.delete(tracker)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: getTrackers.queryKey })
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: getTrackers.queryKey }),
+        queryClient.invalidateQueries({ queryKey: getMePreferences.queryKey }),
+        queryClient.invalidateQueries({ queryKey: getUsers.queryKey }),
+      ])
     },
   })
 }

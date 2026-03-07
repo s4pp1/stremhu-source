@@ -37,7 +37,7 @@ export function useCreateUserPreference(userId: string) {
 
 export const getUserPreference = (userId: string, preference: PreferenceEnum) =>
   queryOptions({
-    queryKey: ['users', userId, preference],
+    queryKey: ['users', userId, 'preferences', preference],
     queryFn: async () => {
       const response = await appClient.userPreferences.findOne(
         userId,

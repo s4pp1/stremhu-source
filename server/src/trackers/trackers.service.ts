@@ -9,6 +9,7 @@ import { EntityManager } from 'typeorm';
 
 import { TorrentsCacheService } from 'src/torrents-cache/torrents-cache.service';
 import { TorrentsService } from 'src/torrents/torrents.service';
+import { UserPreferencesService } from 'src/users/preferences/user-preferences.service';
 
 import { TrackersStore } from './core/trackers.store';
 import { TrackerEnum } from './enum/tracker.enum';
@@ -25,6 +26,7 @@ export class TrackersService {
     private readonly trackersMetaService: TrackersMetaService,
     private readonly torrentsService: TorrentsService,
     private readonly torrentsCacheService: TorrentsCacheService,
+    private readonly userPreferencesService: UserPreferencesService,
   ) {}
 
   async login(tracker: TrackerEnum, payload: LoginRequest): Promise<void> {
@@ -108,6 +110,7 @@ export class TrackersService {
       throw new BadRequestException(`A(z) "${tracker}" nem található.`);
     }
 
+    await this.userPreferencesService.deletePreferenceTrackerItem(tracker);
     await this.torrentsService.deleteAllByTracker(tracker);
     await this.torrentsCacheService.deleteAllByTracker(tracker);
     await this.trackersStore.remove(foundTracker, manager);

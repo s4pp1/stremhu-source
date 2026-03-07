@@ -7,6 +7,7 @@ import {
 import { difference, isUndefined, omitBy } from 'lodash';
 
 import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
+import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 import { UserPreferencesStore } from './core/user-preferences.store';
 import { UserPreference as UserPreferenceEntity } from './entity/user-preference.entity';
@@ -144,6 +145,42 @@ export class UserPreferencesService {
     }
 
     await this.reorder(userId);
+  }
+
+  async deletePreferenceTrackerItem(trackerEnum: TrackerEnum) {
+    try {
+      const items = await this.userPreferencesStore.find((qb) => {
+        qb.where('user-preference.preference = :preference', {
+          preference: PreferenceEnum.TRACKER,
+        });
+        return qb;
+      });
+
+      if (items.length === 0) {
+        return;
+      }
+
+      for (const item of items) {
+        const preferred = item.preferred.filter((pref) => pref !== trackerEnum);
+        const blocked = item.blocked.filter((pref) => pref !== trackerEnum);
+
+        if (preferred.length === 0 && blocked.length === 0) {
+          await this.deleteByPreference(item.userId, PreferenceEnum.TRACKER);
+        } else {
+          await this.updateOne(item.userId, PreferenceEnum.TRACKER, {
+            blocked,
+            preferred,
+          });
+        }
+      }
+    } catch (error) {
+      this.logger.error(
+        `🚨 A "${trackerEnum}" törlése közben hiba történt!`,
+        error,
+      );
+
+      throw error;
+    }
   }
 
   async reorder(
