@@ -8,7 +8,6 @@ import {
 import { ConfigService } from '@nestjs/config';
 import type { AxiosInstance } from 'axios';
 import { AxiosHeaders, isAxiosError } from 'axios';
-import { load } from 'cheerio';
 import { get } from 'lodash';
 import { CookieJar } from 'tough-cookie';
 
@@ -23,6 +22,7 @@ import {
   getTrackerRefreshMessage,
 } from '../adapters.utils';
 import { LOGIN_PATH } from './majomparade.constants';
+import { MajomparadeLoginResponse } from './majomparade.types';
 
 @Injectable()
 export class MajomparadeClientFactory {
@@ -74,31 +74,22 @@ export class MajomparadeClientFactory {
 
     const loginUrl = new URL(LOGIN_PATH, this.baseUrl);
 
-    const loginResponse = await axios.get<string>(loginUrl.href, {
-      responseType: 'text',
-    });
-
-    const $login = load(loginResponse.data);
-    const getUnique = $login('.rejtett_input[name="getUnique"]')
-      .first()
-      .attr('value');
-
-    if (!getUnique) {
-      throw new Error('getUnique nem található');
-    }
-
     const form = new URLSearchParams();
-    form.set('nev', username);
-    form.set('jelszo', password);
-    form.set('getUnique', getUnique);
+    form.set('username', username);
+    form.set('password', password);
 
-    const response = await axios.post(`${loginUrl.href}?belepes`, form, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+    const response = await axios.post<MajomparadeLoginResponse>(
+      `${loginUrl.href}`,
+      form,
+      {
+        responseType: 'json',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
       },
-    });
+    );
 
-    if (response.data !== 'location="index.php";') {
+    if (!response.data.success) {
       throw new Error(getTrackerLoginErrorMessage(this.tracker));
     }
   }
@@ -107,7 +98,7 @@ export class MajomparadeClientFactory {
     this.axios.interceptors.response.use(
       async (res) => {
         const requestPath = get(res.request, ['path']) as string | undefined;
-        const isLoginPath = requestPath?.includes(LOGIN_PATH);
+        const isLoginPath = requestPath?.includes('/login/');
 
         if (isLoginPath) {
           await this.relogin();

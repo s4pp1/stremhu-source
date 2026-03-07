@@ -1,18 +1,23 @@
 export enum MajomparadeMovieCategoryEnum {
-  CAM_HUN = '76',
-  CAM = '75',
-  SD_HUN = '24',
-  SD = '38',
-  HD_HUN = '51',
-  HD = '42',
+  CAM_HUN = '6',
+  CAM = '5',
+  SD_HUN = '14',
+  SD = '13',
+  HD_HUN = '12',
+  HD = '11',
 }
 
 export enum MajomparadeSeriesCategoryEnum {
-  SD_HUN = '36',
-  SD = '47',
-  HD_HUN = '6',
-  HD = '7',
+  SD_HUN = '18',
+  SD = '17',
+  HD_HUN = '19',
+  HD = '20',
 }
+
+export type MajomparadeLoginResponse = {
+  success: boolean;
+  text: string;
+};
 
 export type MajomparadeCategory =
   | MajomparadeMovieCategoryEnum
