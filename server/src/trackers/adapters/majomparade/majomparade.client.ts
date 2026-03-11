@@ -79,21 +79,14 @@ export class MajomparadeClient {
 
       const torrentsUrl = new URL(TORRENTS_PATH, this.baseUrl);
 
-      const unixSeconds = Math.floor(Date.now() / 1000);
-
-      torrentsUrl.searchParams.append('tipus', '1');
-      torrentsUrl.searchParams.append('time', `${unixSeconds}`);
-      torrentsUrl.searchParams.append('k', 'yes');
-      torrentsUrl.searchParams.append('tipuska', '0');
-      torrentsUrl.searchParams.append(
-        'name',
-        `https://www.imdb.com/title/${imdbId}/`,
-      );
-      torrentsUrl.searchParams.append('imdb_search', 'yes');
+      torrentsUrl.searchParams.append('action', 'search');
+      torrentsUrl.searchParams.append('search_text', imdbId);
+      torrentsUrl.searchParams.append('sort', '5');
+      torrentsUrl.searchParams.append('order_by', '0');
       torrentsUrl.searchParams.append('page', `${page}`);
 
       categories.forEach((category) => {
-        torrentsUrl.searchParams.append(`category[]`, `${category}`);
+        torrentsUrl.searchParams.append(`categories[]`, `${category}`);
       });
 
       const response = await this.requestLimit(() =>
@@ -131,9 +124,9 @@ export class MajomparadeClient {
 
       const $ = load(response.data);
 
-      const downloadPath = $(`a[href*="download.php?torrent=${torrentId}"]`)
+      const downloadPath = $(`form[action*="/download/${torrentId}"]`)
         .first()
-        .attr('href');
+        .attr('action');
       const imdbUrl =
         $('a[href*="www.imdb.com/title/"]').first().attr('href') || '';
 
@@ -182,6 +175,8 @@ export class MajomparadeClient {
   }
 
   async hitnrun(): Promise<string[]> {
+    throw new Error(`Az új oldalon a HnR még nem érhető el!`);
+
     try {
       const hitAndRunUrl = new URL(HIT_N_RUN_PATH, this.baseUrl);
 
@@ -213,36 +208,37 @@ export class MajomparadeClient {
 
   private processTorrentsHtml(html: string): MajomparadeTorrents {
     const $ = load(html);
-    const torrentRows = $('#table tbody tr').slice(1);
+    const torrentRows = $('article.torrent-card');
 
     const torrents: MajomparadeTorrent[] = [];
 
     torrentRows
       .each((_, torrentRow) => {
-        const torrentColumns = $(torrentRow).children('td');
-
-        const CATEGORY_URL = 'letoltes.php?k=yes&tipus=1&category[]=';
-        const categoryHref = torrentColumns
-          .eq(0)
+        const CATEGORY_URL = '/torrents/?action=search&categories[]=';
+        const categoryHref = $(torrentRow)
           .find(`a[href*="${CATEGORY_URL}"]`)
+          .first()
           .attr('href');
         if (!categoryHref) return;
 
-        const downloadPath = torrentColumns
-          .find(`a[href*="download.php?torrent="]`)
+        const categoryId = categoryHref.replace(CATEGORY_URL, '');
+
+        const DOWNLOAD_URL = '/download/';
+        const downloadPath = $(torrentRow)
+          .find(`a[href*="${DOWNLOAD_URL}"]`)
           .first()
           .attr('href');
         if (!downloadPath) return;
 
-        const torrentId = `${downloadPath}`.replace(
-          'download.php?torrent=',
-          '',
-        );
+        const torrentId = `${downloadPath}`.replace(DOWNLOAD_URL, '');
 
-        const seeders = torrentColumns.eq(8).text();
-
-        const categoryId = categoryHref.replace(CATEGORY_URL, '');
         const downloadUrl = new URL(downloadPath, this.baseUrl);
+
+        const seeders = $(torrentRow)
+          .find('.torrent-card__side .t-stats a')
+          .eq(0)
+          .text()
+          .trim();
 
         torrents.push({
           torrentId,
@@ -253,11 +249,10 @@ export class MajomparadeClient {
       })
       .get();
 
-    const nextLink = $('p b')
-      .filter((_, el) => $(el).text().includes('Következő >>'))
-      .first();
+    const nextPageButton = $('.pagination').first().last();
+    const isDisabled = nextPageButton.hasClass('disabled');
 
-    const hasNextPage = nextLink.length > 0 && nextLink.parent().is('a');
+    const hasNextPage = nextPageButton.length > 0 && !isDisabled;
 
     return {
       results: torrents,
