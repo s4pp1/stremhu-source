@@ -144,7 +144,11 @@ export function AddTrackerDialog(dialog: OpenedDialog & AddTrackerDialog) {
               )}
             />
             <DialogFooter>
-              <form.SubscribeButton variant="outline" onClick={handleClose}>
+              <form.SubscribeButton
+                variant="outline"
+                type="button"
+                onClick={handleClose}
+              >
                 Mégsem
               </form.SubscribeButton>
               <form.SubscribeButton type="submit">
