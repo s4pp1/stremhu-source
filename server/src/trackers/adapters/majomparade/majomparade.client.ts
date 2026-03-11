@@ -175,6 +175,8 @@ export class MajomparadeClient {
   }
 
   async hitnrun(): Promise<string[]> {
+    throw new Error(`Az új oldalon a HnR még nem érhető el!`);
+
     try {
       const hitAndRunUrl = new URL(HIT_N_RUN_PATH, this.baseUrl);
 
