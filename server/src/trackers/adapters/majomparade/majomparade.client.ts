@@ -249,7 +249,7 @@ export class MajomparadeClient {
       })
       .get();
 
-    const nextPageButton = $('.pagination').first().last();
+    const nextPageButton = $('.pagination').first().children().last();
     const isDisabled = nextPageButton.hasClass('disabled');
 
     const hasNextPage = nextPageButton.length > 0 && !isDisabled;
