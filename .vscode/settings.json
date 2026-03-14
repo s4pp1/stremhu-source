@@ -8,13 +8,15 @@
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
   },
-  "python.analysis.typeCheckingMode": "strict",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit",
     "source.fixAll.ruff": "explicit"
   },
   "ruff.enable": true,
-  "python.analysis.autoImportCompletions": true,
-  "python.analysis.extraPaths": ["./relay/src"]
+  "basedpyright.analysis.typeCheckingMode": "strict",
+  "basedpyright.analysis.autoImportCompletions": true,
+  "basedpyright.analysis.extraPaths": ["${workspaceFolder}/relay/src"],
+  "python.languageServer": "None",
+  "python.useEnvironmentsExtension": false
 }

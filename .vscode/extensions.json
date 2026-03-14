@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "detachhead.basedpyright",
+    "dbaeumer.vscode-eslint",
+    "ms-python.python",
+    "esbenp.prettier-vscode",
+    "charliermarsh.ruff",
+    "bradlc.vscode-tailwindcss",
+    "editorconfig.editorconfig"
+  ]
+}

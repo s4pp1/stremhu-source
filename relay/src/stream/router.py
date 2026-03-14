@@ -39,6 +39,7 @@ async def stream(
     headers = {
         "Accept-Ranges": "bytes",
         "Cache-Control": "no-store, no-transform",
+        "Connection": "close",
     }
 
     if range_header is None:

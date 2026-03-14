@@ -43,6 +43,9 @@ export const playProxy = createProxyMiddleware({
         delete proxyRes.headers[key];
         proxyRes.headers[canonKey] = value;
       }
+
+      proxyRes.headers['Connection'] = 'close';
+      delete proxyRes.headers['Keep-Alive'];
     },
   },
 });
