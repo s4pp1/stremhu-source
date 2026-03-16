@@ -18,5 +18,6 @@
   "basedpyright.analysis.autoImportCompletions": true,
   "basedpyright.analysis.extraPaths": ["${workspaceFolder}/relay/src"],
   "python.languageServer": "None",
-  "python.useEnvironmentsExtension": false
+  "python.defaultInterpreterPath": "${workspaceFolder}/.conda/bin/python",
+  "python.terminal.activateEnvInCurrentTerminal": true
 }

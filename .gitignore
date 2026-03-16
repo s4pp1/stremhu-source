@@ -9,3 +9,8 @@
 stremhu.tar.gz
 
 AGENTS.md
+/node_modules
+/.conda/
+__pycache__/
+*.py[cod]
+*$py.class
