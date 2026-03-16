@@ -1,71 +1,58 @@
-# ---- Base (Ubuntu + Node.js + Python) ----
-FROM ubuntu:24.04 AS base
+# ---- Node.js Build Stage ----
+FROM node:22-alpine AS node-build
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl ca-certificates python3 python3-pip python3-venv python-is-python3 \
-    && update-ca-certificates \
-    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
-    && apt-get install -y --no-install-recommends nodejs \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# ---- Build ----
-FROM base AS build
-
+WORKDIR /app
 ARG APP_VERSION=0.0.0
 
-# Server build
+# Build Server
+COPY server ./server
 WORKDIR /app/server
-COPY server ./
-
 RUN node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));p.version='${APP_VERSION}';fs.writeFileSync('package.json', JSON.stringify(p,null,2));"
 
 RUN npm ci
 RUN npm run build
 RUN npm prune --omit=dev
 
-# Client build
+# Build Client
 WORKDIR /app/client
 COPY client ./
 RUN npm ci
 RUN npm run build
 
-# libtorrent engine dependenciák
+# ---- Python Build Stage ----
+FROM python:3.12-alpine AS python-build
+
 WORKDIR /app/relay
-COPY relay/requirements.txt ./requirements.txt
-COPY relay/logging.prod.ini ./logging.prod.ini
-COPY relay/src ./src
 
+COPY relay/requirements.txt ./
 
-RUN python3 -m venv /opt/venv \
-    && /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
+RUN python -m venv /opt/venv && \
+  /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
 
-# ---- Runtime ----
-FROM base AS runtime
+# ---- Runtime Stage ----
+FROM node:22-alpine AS runtime
 
-# Venv átmásolása
-COPY --from=build /opt/venv /opt/venv
+COPY --from=python:3.12-alpine /usr/local /usr/local
+
+RUN apk add --no-cache libstdc++ libgcc ca-certificates
 
 WORKDIR /app
 
-# Server kód átmásolása a build-ből
-COPY --from=build /app/server/package.json ./server/
-COPY --from=build /app/server/node_modules ./server/node_modules
-COPY --from=build /app/server/dist ./server/dist
+COPY --from=python-build /opt/venv /opt/venv
+COPY --from=node-build /app/server/package.json ./server/
+COPY --from=node-build /app/server/node_modules ./server/node_modules
+COPY --from=node-build /app/server/dist ./server/dist
+COPY --from=node-build /app/client/dist ./client/dist
+COPY relay /app/relay
 
-# Client átmásolása a build-ből
-COPY --from=build /app/client/dist ./client/dist
-
-# libtorrent engine kód és dependencia
-COPY --from=build /app/relay /app/relay
-
-WORKDIR /app/server
-
+# Environment setup
 ENV NODE_ENV=production
 ENV PYTHONPATH=/app/relay/src
-ENV PATH="/opt/venv/bin:${PATH}"
+ENV PATH="/opt/venv/bin:/usr/local/bin:${PATH}"
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 ENV SSL_CERT_DIR=/etc/ssl/certs
+
+WORKDIR /app/server
 
 EXPOSE 3000/tcp
 EXPOSE 3443/tcp
