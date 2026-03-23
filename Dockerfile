@@ -1,5 +1,5 @@
 # ---- Node.js Build Stage ----
-FROM node:22-alpine AS node-build
+FROM node:22-bookworm-slim AS node-build
 
 WORKDIR /app
 ARG APP_VERSION=0.0.0
@@ -20,7 +20,7 @@ RUN npm ci
 RUN npm run build
 
 # ---- Python Build Stage ----
-FROM python:3.12-alpine AS python-build
+FROM python:3.12-slim-bookworm AS python-build
 
 WORKDIR /app/relay
 
@@ -30,11 +30,14 @@ RUN python -m venv /opt/venv && \
   /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
 
 # ---- Runtime Stage ----
-FROM node:22-alpine AS runtime
+FROM node:22-bookworm-slim AS runtime
 
-COPY --from=python:3.12-alpine /usr/local /usr/local
+COPY --from=python:3.12-slim-bookworm /usr/local /usr/local
 
-RUN apk add --no-cache libstdc++ libgcc ca-certificates
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  ca-certificates \
+  libstdc++6 \
+  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
