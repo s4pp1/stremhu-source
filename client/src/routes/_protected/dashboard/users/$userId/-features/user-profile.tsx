@@ -111,7 +111,7 @@ export function UserProfile(props: UserProfile) {
   }
 
   return (
-    <Card className="break-inside-avoid mb-4">
+    <Card>
       <CardHeader>
         <CardTitle>{user.username} felhasználó</CardTitle>
         <CardDescription>Felhasználó profiljának módosítása</CardDescription>

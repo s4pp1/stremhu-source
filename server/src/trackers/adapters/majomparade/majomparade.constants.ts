@@ -13,4 +13,4 @@ export const SERIES_CATEGORY_FILTERS = Object.values(
 export const LOGIN_PATH = '/login/do';
 export const TORRENTS_PATH = '/torrents';
 export const DETAILS_PATH = '/torrent/{torrentId}';
-export const HIT_N_RUN_PATH = '/hitnrun.php';
+export const HIT_N_RUN_PATH = '/hnr';

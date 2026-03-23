@@ -175,8 +175,6 @@ export class MajomparadeClient {
   }
 
   async hitnrun(): Promise<string[]> {
-    throw new Error(`Az új oldalon a HnR még nem érhető el!`);
-
     try {
       const hitAndRunUrl = new URL(HIT_N_RUN_PATH, this.baseUrl);
 
@@ -188,17 +186,23 @@ export class MajomparadeClient {
 
       const $ = load(response.data);
 
-      const hitnrunTorrents = $('.also td a[href*="details.php?id="]')
+      const content = $('#main-section');
+
+      if (!content.length) {
+        throw new Error('Az elvárt tartalom nem érhető el.');
+      }
+
+      const hrefs = content
+        .find('table a[href*="/torrent/"]')
         .map((_, el) => $(el).attr('href'))
         .get();
 
-      const sourceIds = hitnrunTorrents.map((hitnrunTorrent) => {
-        const url = new URL(hitnrunTorrent, this.baseUrl);
-        const idParam = url.searchParams.get('id');
-        return idParam;
+      const torrentIds = compact(hrefs).map((href) => {
+        const torrentId = href.replace('/torrent/', '');
+        return torrentId;
       });
 
-      return compact(sourceIds);
+      return torrentIds;
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
