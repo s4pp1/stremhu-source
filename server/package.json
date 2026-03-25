@@ -28,8 +28,8 @@
     "@ctrl/video-filename-parser": "5.4.1",
     "@nestjs/common": "11.1.17",
     "@nestjs/config": "4.0.3",
-    "@nestjs/core": "11.1.16",
-    "@nestjs/platform-express": "11.1.16",
+    "@nestjs/core": "11.1.17",
+    "@nestjs/platform-express": "11.1.17",
     "@nestjs/schedule": "6.1.1",
     "@nestjs/serve-static": "5.0.4",
     "@nestjs/swagger": "11.2.6",
@@ -48,7 +48,7 @@
     "http-proxy-middleware": "3.0.5",
     "ip-address": "10.1.0",
     "is-video": "2.0.0",
-    "jose": "6.2.1",
+    "jose": "6.2.2",
     "lodash": "4.17.23",
     "ms": "2.1.3",
     "reflect-metadata": "0.2.2",
@@ -71,10 +71,10 @@
     "@types/jest": "30.0.0",
     "@types/lodash": "4.17.24",
     "@types/ms": "2.1.0",
-    "@types/node": "^22",
+    "@types/node": "22.19.15",
     "@types/semver": "7.7.1",
     "@types/supertest": "7.2.0",
-    "eslint": "10.0.3",
+    "eslint": "10.1.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.5",
     "globals": "17.4.0",
@@ -88,7 +88,7 @@
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.57.1"
+    "typescript-eslint": "8.57.2"
   },
   "jest": {
     "moduleFileExtensions": [
