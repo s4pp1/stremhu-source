@@ -34,9 +34,8 @@ FROM node:22-bookworm-slim AS runtime
 
 COPY --from=python:3.12-slim-bookworm /usr/local /usr/local
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-  ca-certificates \
-  libstdc++6 \
+RUN apt-get update && apt-get upgrade -y && \
+  apt-get install -y --no-install-recommends ca-certificates libstdc++6 \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
