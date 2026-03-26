@@ -43,7 +43,7 @@
     "class-transformer": "0.5.1",
     "class-validator": "0.15.1",
     "express-session": "1.19.0",
-    "filesize": "11.0.13",
+    "filesize": "11.0.14",
     "http-cookie-agent": "7.0.3",
     "http-proxy-middleware": "3.0.5",
     "ip-address": "10.1.0",

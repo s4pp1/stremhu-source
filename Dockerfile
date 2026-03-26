@@ -9,6 +9,7 @@ COPY server ./server
 WORKDIR /app/server
 RUN node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));p.version='${APP_VERSION}';fs.writeFileSync('package.json', JSON.stringify(p,null,2));"
 
+RUN npm install -g npm@latest
 RUN npm ci
 RUN npm run build
 RUN npm prune --omit=dev
@@ -39,6 +40,7 @@ RUN apt-get update && apt-get upgrade -y && \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+RUN npm install -g npm@latest
 
 COPY --from=python-build /opt/venv /opt/venv
 COPY --from=node-build /app/server/package.json ./server/
