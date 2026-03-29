@@ -29,11 +29,17 @@
       }
     },
     {
-      "name": "Attach libtorrent engine (FastApi)",
       "type": "debugpy",
-      "request": "attach",
-      "connect": { "host": "127.0.0.1", "port": 5678 },
-      "justMyCode": false
+      "request": "launch",
+      "name": "Relay (FastApi)",
+      "module": "uvicorn",
+      "args": ["main:app", "--host", "127.0.0.1", "--port", "4300", "--reload"],
+      "cwd": "${workspaceFolder}/relay/src",
+      "subProcess": true,
+      "jinja": true,
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/relay/src"
+      }
     }
   ]
 }

@@ -29,6 +29,10 @@ export default registerAs('torrent', () => {
       value: join(process.cwd(), '../data/torrents'),
       zod: z.string().trim().nonempty(),
     },
+    'relay-auto-start': {
+      value: process.env.RELAY_AUTO_START !== 'false',
+      zod: z.boolean(),
+    },
   };
 
   return ZodUtil.validate<TorrentConfig>(configs);

@@ -1,20 +1,22 @@
 import { Module } from '@nestjs/common';
 
+import { RelaySettingsModule } from 'src/settings/relay/relay-settings.module';
 import { PersistedTorrentsModule } from 'src/torrents/persisted/persisted-torrents.module';
 import { TrackersCoreModule } from 'src/trackers/core/trackers-core.module';
 import { TrackersModule } from 'src/trackers/trackers.module';
 
-import { RelayRuntimeService } from './relay-runtime.service';
+import { RelaySyncService } from './relay-sync.service';
 import { RelayModule } from './relay.module';
 
 @Module({
   imports: [
     RelayModule,
+    RelaySettingsModule,
     PersistedTorrentsModule,
     TrackersCoreModule,
-
     TrackersModule,
   ],
-  providers: [RelayRuntimeService],
+  providers: [RelaySyncService],
+  exports: [RelaySyncService],
 })
-export class RelayRuntimeModule {}
+export class RelaySyncModule {}

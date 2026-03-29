@@ -4,5 +4,6 @@
 /* eslint-disable */
 export type Health = {
     ok?: boolean;
+    startTime: number;
 };
 

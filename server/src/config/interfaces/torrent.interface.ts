@@ -5,4 +5,5 @@ export interface TorrentConfig {
   port: number;
   'downloads-dir': string;
   'torrents-dir': string;
+  'relay-auto-start': boolean;
 }
