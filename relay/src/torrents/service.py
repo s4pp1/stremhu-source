@@ -144,7 +144,7 @@ class TorrentsService:
             download_speed=status.download_payload_rate,
             upload_speed=status.upload_payload_rate,
             downloaded=status.total_done,
-            uploaded=status.total_payload_upload,
+            uploaded=status.all_time_upload,
             state=status.state,
             progress=status.progress,
             total=total,
