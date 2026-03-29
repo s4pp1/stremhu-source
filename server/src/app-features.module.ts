@@ -7,7 +7,7 @@ import { LocalIpModule } from './local-ip/local-ip.module';
 import { MeModule } from './me/me.module';
 import { MetadataModule } from './metadata/metadata.module';
 import { PlayModule } from './play/play.module';
-import { RelayRuntimeModule } from './relay/relay-runtime.module';
+import { RelaySyncModule } from './relay/relay-sync.module';
 import { RelayModule } from './relay/relay.module';
 import { SessionsModule } from './sessions/sessions.module';
 import { AppSettingsModule } from './settings/app/app-settings.module';
@@ -25,7 +25,7 @@ import { UsersModule } from './users/users.module';
     SettingsModule,
     AppSettingsModule,
     RelayModule,
-    RelayRuntimeModule,
+    RelaySyncModule,
     RelaySettingsModule,
     SetupModule,
     LocalIpModule,

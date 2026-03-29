@@ -4,7 +4,8 @@ import { ConfigService } from '@nestjs/config';
 import { RelaySettingsModule } from 'src/settings/relay/relay-settings.module';
 
 import { RelayClient } from './client';
-import { RELAY_BASE_URL } from './relay.content';
+import { RelayRuntimeService } from './relay-runtime.service';
+import { RELAY_BASE_URL } from './relay.constant';
 import { RelayService } from './relay.service';
 import { RELAY_CLIENT } from './relay.token';
 
@@ -20,8 +21,9 @@ import { RELAY_CLIENT } from './relay.token';
         });
       },
     },
+    RelayRuntimeService,
     RelayService,
   ],
-  exports: [RelayService],
+  exports: [RelayService, RelayRuntimeService],
 })
 export class RelayModule {}

@@ -4,6 +4,7 @@ import time
 from typing import Any, Dict, List
 
 import libtorrent as libtorrent
+from config import config
 from fastapi import HTTPException
 from libtorrent_client.schemas import (
     UpdateSettings,
@@ -16,8 +17,16 @@ logger = logging.getLogger(__name__)
 class LibtorrentClientService:
     def __init__(self):
         self.libtorrent_session = libtorrent.session()
+
+        alert_mask = (  # pyright: ignore[reportUnknownVariableType]
+            libtorrent.alert.category_t.error_notification  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
+            | libtorrent.alert.category_t.storage_notification  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
+            | libtorrent.alert.category_t.status_notification  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
+        )
+
         self.libtorrent_session.apply_settings(
             {
+                "alert_mask": alert_mask,
                 "listen_interfaces": "0.0.0.0:6881,[::]:6881",
                 "connections_limit": 200,
                 "enable_dht": False,
@@ -81,11 +90,12 @@ class LibtorrentClientService:
 
     def add_torrent(
         self,
-        save_path: str,
         torrent_file_path: str,
         priority: int,
     ) -> libtorrent.torrent_handle:
-        save_path = os.path.abspath(save_path)
+        save_path = str(config.downloads_dir.absolute())
+        resume_data_dir = config.resume_data_dir
+
         torrent_file_path = os.path.abspath(torrent_file_path)
 
         if not os.path.isfile(torrent_file_path):
@@ -94,10 +104,23 @@ class LibtorrentClientService:
             )
 
         torrent_info = libtorrent.torrent_info(torrent_file_path)
+        info_hash_str = str(torrent_info.info_hash())
+        resume_file_path = resume_data_dir / f"{info_hash_str}.resume"
 
-        os.makedirs(save_path, exist_ok=True)
+        params = None
+        if resume_file_path.exists():
+            try:
+                with open(resume_file_path, "rb") as f:
+                    resume_data = f.read()
+                    params = libtorrent.read_resume_data(resume_data)
+            except Exception as e:
+                logger.error(
+                    f"Hiba történt a(z) {info_hash_str} torrent adatok visszaállítása közben: {e}"
+                )
 
-        params = libtorrent.add_torrent_params()
+        if params is None:
+            params = libtorrent.add_torrent_params()
+
         params.ti = torrent_info
         params.save_path = save_path
         params.storage_mode = libtorrent.storage_mode_t.storage_mode_sparse
@@ -174,6 +197,7 @@ class LibtorrentClientService:
         self,
         info_hash: libtorrent.sha1_hash,
     ):
+
         torrent_handle = self.get_torrent_or_raise(
             info_hash=info_hash,
         )
@@ -182,6 +206,50 @@ class LibtorrentClientService:
             torrent_handle,
             libtorrent.options_t.delete_files,
         )
+
+        info_hash_str = str(info_hash)
+        resume_file_path = config.resume_data_dir / f"{info_hash_str}.resume"
+        if resume_file_path.exists():
+            try:
+                os.remove(resume_file_path)
+            except OSError as e:
+                logger.error(
+                    f"Hiba történt a(z) {info_hash_str} torrent visszaállítási adatok törlése közben: {e}"
+                )
+
+    def trigger_save_resume_data(self):
+        for torrent_handle in self.libtorrent_session.get_torrents():
+            if torrent_handle.is_valid():
+                torrent_handle.save_resume_data(
+                    libtorrent.save_resume_flags_t.flush_disk_cache
+                )
+
+    def process_alerts(self):
+        alerts = self.libtorrent_session.pop_alerts()
+        resume_data_dir = config.resume_data_dir
+        os.makedirs(resume_data_dir, exist_ok=True)
+
+        for alert in alerts:
+            if isinstance(alert, libtorrent.save_resume_data_alert):
+                try:
+                    resume_data = libtorrent.bencode(
+                        libtorrent.write_resume_data(alert.params)
+                    )
+                    torrent_handle = alert.handle
+                    if torrent_handle.is_valid():
+                        info_hash_str = str(torrent_handle.info_hash())
+                        resume_file = resume_data_dir / f"{info_hash_str}.resume"
+
+                        with open(resume_file, "wb") as f:
+                            f.write(resume_data)
+                except Exception as e:
+                    logger.error(
+                        f"Hiba történt a torrent visszaállítási adatok mentése közben: {e}"
+                    )
+            elif isinstance(alert, libtorrent.save_resume_data_failed_alert):
+                logger.error(
+                    f"Hiba történt a torrent visszaállítási adatok mentése közben: {alert.message()}"
+                )
 
     def parse_info_hash(
         self,

@@ -46,10 +46,6 @@ class AddTorrent(BaseModel):
     )
 
     torrent_file_path: str
-    save_path: str = Field(
-        ...,
-        description="A torrents mappa abszolút elérési úrja.",
-    )
     download_full_torrent: Optional[bool] = False
 
 

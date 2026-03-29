@@ -21,9 +21,6 @@ export class PersistedTorrent {
   @Column({ name: 'torrent_id' })
   torrentId!: string;
 
-  @Column({ type: 'integer', default: 0 })
-  uploaded: number;
-
   @Column({ name: 'is_persisted', type: 'boolean', default: false })
   isPersisted: boolean;
 

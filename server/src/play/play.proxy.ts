@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
-import { RELAY_BASE_URL } from 'src/relay/relay.content';
+import { RELAY_BASE_URL } from 'src/relay/relay.constant';
 
 const CANON: Record<string, string> = {
   'accept-ranges': 'Accept-Ranges',

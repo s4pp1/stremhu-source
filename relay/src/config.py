@@ -1,4 +1,4 @@
-from __future__ import annotations
+from pathlib import Path
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -9,6 +9,18 @@ class Config(BaseSettings):
 
     lib_torrent_port: int = Field(6881)
     port: int = Field(4300)
+
+    base_data_dir: Path = Field(
+        default=Path(__file__).resolve().parent.parent.parent / "data"
+    )
+
+    @property
+    def downloads_dir(self) -> Path:
+        return self.base_data_dir / "downloads"
+
+    @property
+    def resume_data_dir(self) -> Path:
+        return self.base_data_dir / "resumes"
 
 
 config = Config()  # type: ignore[call-arg]

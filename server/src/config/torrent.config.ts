@@ -21,13 +21,13 @@ export default registerAs('torrent', () => {
       value: port || 6881,
       zod: z.number().positive(),
     },
-    'downloads-dir': {
-      value: join(process.cwd(), '../data/downloads'),
-      zod: z.string().trim().nonempty(),
-    },
     'torrents-dir': {
       value: join(process.cwd(), '../data/torrents'),
       zod: z.string().trim().nonempty(),
+    },
+    'relay-auto-start': {
+      value: process.env.RELAY_AUTO_START !== 'false',
+      zod: z.boolean(),
     },
   };
 
