@@ -1,5 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import axios from 'axios';
 import { spawn } from 'node:child_process';
 import { join } from 'node:path';
 import { setTimeout as sleep } from 'node:timers/promises';
@@ -59,7 +60,7 @@ export class RelayRuntimeService {
         '--port',
         RELAY_BASE_URL_PORT,
         '--log-config',
-        '../logging.prod.ini',
+        '../logging.ini',
       ];
 
       this.libtorrentEngineProcess = spawn('python', args, {
@@ -120,8 +121,6 @@ export class RelayRuntimeService {
 
     this.restartCount = 0;
 
-    this.logger.log('✅ StremHU Relay (libtorrent) elindult');
-
     this.startHeartbeat();
   }
 
@@ -131,21 +130,17 @@ export class RelayRuntimeService {
 
     this.isShuttingDown = true;
     this.status$.next(RelayStatus.OFFLINE);
+
     this.libtorrentEngineProcess.kill();
+
+    await new Promise((resolve) => {
+      this.libtorrentEngineProcess!.on('exit', () => resolve(true));
+      this.libtorrentEngineProcess!.on('close', () => resolve(true));
+
+      setTimeout(() => resolve(true), 5000);
+    });
+
     this.libtorrentEngineProcess = null;
-
-    let stopped = false;
-
-    while (!stopped) {
-      try {
-        await this.relayClient.monitoring.health();
-        await sleep(500);
-      } catch {
-        stopped = true;
-      }
-    }
-
-    this.logger.log('✅ StremHU Relay (libtorrent) leállítva.');
   }
 
   getStatus$() {
@@ -201,23 +196,18 @@ export class RelayRuntimeService {
     } catch (err) {
       if (this.isShuttingDown) throw err;
 
-      const error = err as Record<string, unknown>;
-      const message =
-        typeof error?.message === 'string' ? error.message : String(err);
-      const code = typeof error?.code === 'string' ? error.code : undefined;
+      if (axios.isAxiosError(err)) {
+        const isConnectionError = err.code === 'ECONNREFUSED';
 
-      const isConnectionError =
-        code === 'ECONNREFUSED' ||
-        message.includes('ECONNREFUSED') ||
-        message.includes('Network Error');
-
-      if (isConnectionError) {
-        this.logger.warn(
-          '[Relay] Kapcsolódási hiba az API hívás közben. Újrapróbálkozás...',
-        );
-        this.status$.next(RelayStatus.OFFLINE);
-        return this.request(fn);
+        if (isConnectionError) {
+          this.logger.warn(
+            '[Relay] Kapcsolódási hiba az API hívás közben. Újrapróbálkozás...',
+          );
+          this.status$.next(RelayStatus.OFFLINE);
+          return this.request(fn);
+        }
       }
+
       throw err;
     }
   }

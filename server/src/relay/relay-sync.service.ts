@@ -92,12 +92,17 @@ export class RelaySyncService
     }
 
     await this.relayRuntimeService.shutdown();
+    this.logger.log('✅ StremHU Relay leállítva.');
   }
 
   private async onRelayOnline() {
     await this.flushUploadedStatsToDB();
     await this.syncSettings();
     await this.syncTorrents();
+
+    this.logger.log(
+      '✅ StremHU Relay szinkronozáció és konfiguráció befejezve.',
+    );
   }
 
   private async syncUploadStats() {
@@ -162,14 +167,10 @@ export class RelaySyncService
 
   private async syncSettings() {
     try {
-      this.logger.log('⚙️ Beállítások szinkronizálása a Relay-be...');
-
       const port = this.configService.getOrThrow<number>('torrent.port');
       const setting = await this.relaySettingsService.get();
 
       await this.relayService.updateConfig({ ...setting, port });
-
-      this.logger.log('✅ Relay beállítások szinkronizálva.');
     } catch (err) {
       this.logger.error(
         '🚨 Nem sikerült szinkronizálni a Relay beállításokat!',
@@ -179,12 +180,8 @@ export class RelaySyncService
   }
 
   private async syncTorrents() {
-    this.logger.log('🔄 Torrentek szinkronizálása a Relay-be...');
-
-    // Torrentek lekérése és visszarakása a kliensbe
     const persistedTorrents = await this.persistedTorrentsService.find();
 
-    // Tracker-ek letöltése
     const trackers = await this.trackersStore.find();
 
     for (const persistedTorrent of persistedTorrents) {

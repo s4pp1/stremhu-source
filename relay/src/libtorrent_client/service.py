@@ -16,8 +16,16 @@ logger = logging.getLogger(__name__)
 class LibtorrentClientService:
     def __init__(self):
         self.libtorrent_session = libtorrent.session()
+
+        alert_mask = (  # pyright: ignore[reportUnknownVariableType]
+            libtorrent.alert.category_t.error_notification  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
+            | libtorrent.alert.category_t.storage_notification  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
+            | libtorrent.alert.category_t.status_notification  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
+        )
+
         self.libtorrent_session.apply_settings(
             {
+                "alert_mask": alert_mask,
                 "listen_interfaces": "0.0.0.0:6881,[::]:6881",
                 "connections_limit": 200,
                 "enable_dht": False,
@@ -97,7 +105,21 @@ class LibtorrentClientService:
 
         os.makedirs(save_path, exist_ok=True)
 
-        params = libtorrent.add_torrent_params()
+        info_hashHex = str(torrent_info.info_hash())
+        resume_file_path = os.path.join(save_path, f"{info_hashHex}.resume")
+
+        params = None
+        if os.path.isfile(resume_file_path):
+            try:
+                with open(resume_file_path, "rb") as f:
+                    resume_data = f.read()
+                    params = libtorrent.read_resume_data(resume_data)
+            except Exception as e:
+                logger.error(f"Failed to parse resume data for {info_hashHex}: {e}")
+
+        if params is None:
+            params = libtorrent.add_torrent_params()
+
         params.ti = torrent_info
         params.save_path = save_path
         params.storage_mode = libtorrent.storage_mode_t.storage_mode_sparse
@@ -174,6 +196,7 @@ class LibtorrentClientService:
         self,
         info_hash: libtorrent.sha1_hash,
     ):
+
         torrent_handle = self.get_torrent_or_raise(
             info_hash=info_hash,
         )
@@ -182,6 +205,45 @@ class LibtorrentClientService:
             torrent_handle,
             libtorrent.options_t.delete_files,
         )
+
+        save_path = torrent_handle.status().save_path
+        info_hash_str = str(info_hash)
+
+        resume_file_path = os.path.join(save_path, f"{info_hash_str}.resume")
+        if os.path.isfile(resume_file_path):
+            try:
+                os.remove(resume_file_path)
+            except OSError as e:
+                logger.error(f"Failed to delete resume data for {info_hash_str}: {e}")
+
+    def trigger_save_resume_data(self):
+        for torrent_handle in self.libtorrent_session.get_torrents():
+            if torrent_handle.is_valid():
+                torrent_handle.save_resume_data(
+                    libtorrent.save_resume_flags_t.flush_disk_cache
+                )
+
+    def process_alerts(self):
+        alerts = self.libtorrent_session.pop_alerts()
+        for alert in alerts:
+            if isinstance(alert, libtorrent.save_resume_data_alert):
+                try:
+                    resume_data = libtorrent.bencode(
+                        libtorrent.write_resume_data(alert.params)
+                    )
+                    torrent_handle = alert.handle
+                    if torrent_handle.is_valid():
+                        info_hash = str(torrent_handle.info_hash())
+                        save_path = torrent_handle.status().save_path
+                        resume_file = os.path.join(save_path, f"{info_hash}.resume")
+
+                        os.makedirs(save_path, exist_ok=True)
+                        with open(resume_file, "wb") as f:
+                            f.write(resume_data)
+                except Exception as e:
+                    logger.error(f"Failed to write resume data: {e}")
+            elif isinstance(alert, libtorrent.save_resume_data_failed_alert):
+                logger.error(f"Failed to generate resume data: {alert.message()}")
 
     def parse_info_hash(
         self,
