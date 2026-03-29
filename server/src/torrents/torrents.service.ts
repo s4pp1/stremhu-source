@@ -216,7 +216,7 @@ export class TorrentsService {
       total: relayTorrent.total,
       connections: relayTorrent.connections,
       maxConnections: relayTorrent.maxConnections,
-      uploaded: relayTorrent.uploaded + persistedTorrent.uploaded,
+      uploaded: relayTorrent.uploaded,
       downloadSpeed: relayTorrent.downloadSpeed,
       uploadSpeed: relayTorrent.uploadSpeed,
       lastPlayedAt: persistedTorrent.lastPlayedAt,

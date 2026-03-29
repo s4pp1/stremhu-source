@@ -7,6 +7,7 @@ import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
+from config import config
 from fastapi import FastAPI
 from libtorrent_client.background_tasks import alert_loop, resume_save_loop
 from libtorrent_client.dependencies import get_libtorrent_client_service
@@ -32,6 +33,11 @@ async def lifespan(app: FastAPI):
     with (out_dir / "openapi.json").open("w", encoding="utf-8") as f:
         json.dump(app.openapi(), f, indent=2, ensure_ascii=False)
 
+    # Könyvtárstruktúra biztosítása
+    config.downloads_dir.mkdir(parents=True, exist_ok=True)
+    config.resume_data_dir.mkdir(parents=True, exist_ok=True)
+
+    # Háttérfeladatok indítása
     alert_task = asyncio.create_task(alert_loop())
     save_task = asyncio.create_task(resume_save_loop())
 

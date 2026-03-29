@@ -34,7 +34,6 @@ class TorrentsService:
             priority = PRIO_1
 
         torrent_handle = self.libtorrent_client_service.add_torrent(
-            save_path=payload.save_path,
             torrent_file_path=payload.torrent_file_path,
             priority=priority,
         )

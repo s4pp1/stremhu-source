@@ -1,5 +1,4 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { setTimeout as sleep } from 'node:timers/promises';
 
 import {
@@ -15,18 +14,12 @@ import { AddRelayTorrent } from './type/add-relay-torrent.type';
 @Injectable()
 export class RelayService {
   private readonly logger = new Logger(RelayService.name);
-  private readonly downloadsDir: string;
 
   constructor(
     @Inject(RELAY_CLIENT)
     private readonly relayClient: RelayClient,
-    private readonly configService: ConfigService,
     private readonly relayRuntimeService: RelayRuntimeService,
-  ) {
-    this.downloadsDir = this.configService.getOrThrow<string>(
-      'torrent.downloads-dir',
-    );
-  }
+  ) {}
 
   async updateConfig(payload: UpdateSettings) {
     await this.relayRuntimeService.request(() =>
@@ -53,7 +46,6 @@ export class RelayService {
   async addTorrent(payload: AddRelayTorrent): Promise<RelayTorrent> {
     const torrent = await this.relayRuntimeService.request(() =>
       this.relayClient.torrents.addTorrent({
-        savePath: this.downloadsDir,
         torrentFilePath: payload.torrentFilePath,
         downloadFullTorrent: payload.downloadFullTorrent,
       }),

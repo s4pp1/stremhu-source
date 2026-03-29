@@ -4,10 +4,6 @@
 /* eslint-disable */
 export type AddTorrent = {
     torrentFilePath: string;
-    /**
-     * A torrents mappa abszolút elérési úrja.
-     */
-    savePath: string;
     downloadFullTorrent?: (boolean | null);
 };
 
