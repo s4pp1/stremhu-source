@@ -1,5 +1,5 @@
 # ---- Node.js Build Stage ----
-FROM node:22-bookworm-slim AS node-build
+FROM node:24-bookworm-slim AS node-build
 
 WORKDIR /app
 ARG APP_VERSION=0.0.0
@@ -31,7 +31,7 @@ RUN python -m venv /opt/venv && \
   /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
 
 # ---- Runtime Stage ----
-FROM node:22-bookworm-slim AS runtime
+FROM node:24-bookworm-slim AS runtime
 
 COPY --from=python:3.12-slim-bookworm /usr/local /usr/local
 

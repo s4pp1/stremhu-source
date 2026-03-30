@@ -17,6 +17,7 @@ import { SessionsService } from './sessions/sessions.service';
 export const EXPRESS = express();
 
 async function bootstrap() {
+  process.title = 'stremhu-source';
   const app = await NestFactory.create(AppModule, new ExpressAdapter(EXPRESS));
 
   const configService = app.get(ConfigService);

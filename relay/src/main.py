@@ -16,6 +16,13 @@ from setting.router import router as setting_router
 from stream.router import router as stream_router
 from torrents.router import router as torrents_router
 
+try:
+    import setproctitle
+
+    setproctitle.setproctitle("stremhu-relay")
+except ImportError:
+    pass
+
 
 class HealthCheckFilter(logging.Filter):
     def filter(self, record: logging.LogRecord) -> bool:
