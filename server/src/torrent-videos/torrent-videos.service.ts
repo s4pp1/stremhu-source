@@ -217,7 +217,7 @@ export class TorrentVideosService {
 
     const filteredTorrentVideos = torrentVideos.filter((torrentVideo) => {
       if (torrentSeed !== null) {
-        const isSeedFilter = torrentVideo.seeders < torrentSeed;
+        const isSeedFilter = torrentVideo.seeders <= torrentSeed;
         if (isSeedFilter) return false;
       }
 
