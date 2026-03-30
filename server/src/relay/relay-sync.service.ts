@@ -42,18 +42,16 @@ export class RelaySyncService
   }
 
   async onApplicationShutdown(signal?: string) {
-    this.logger.log(`🛑 Torrent kliens leállítása... signal: ${signal}`);
+    this.logger.log(`🛑 Relay leállítása... signal: ${signal}`);
     await this.relayRuntimeService.shutdown();
-    this.logger.log('✅ StremHU Relay leállítva.');
+    this.logger.log('✅ Relay leállítva.');
   }
 
   private async onRelayOnline() {
     await this.syncSettings();
     await this.syncTorrents();
 
-    this.logger.log(
-      '✅ StremHU Relay szinkronozáció és konfiguráció befejezve.',
-    );
+    this.logger.log('✅ Relay szinkronizáció és konfiguráció befejezve.');
   }
 
   private async syncSettings() {
@@ -63,10 +61,7 @@ export class RelaySyncService
 
       await this.relayService.updateConfig({ ...setting, port });
     } catch (err) {
-      this.logger.error(
-        '🚨 Nem sikerült szinkronizálni a Relay beállításokat!',
-        err,
-      );
+      this.logger.error('🚨 Relay szinkronizáció sikertelen!', err);
     }
   }
 

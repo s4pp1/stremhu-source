@@ -151,7 +151,7 @@ export class RelayRuntimeService {
     if (!this.autoStart) {
       this.status$.next(RelayStatus.OFFLINE);
       this.logger.warn(
-        `[Relay] Manuális mód: a Relay leállt vagy nem elérhető. Kérlek indítsd el manuálisan!`,
+        `Relay leállt vagy nem elérhető. Kérlek indítsd el manuálisan!`,
       );
       return;
     }
@@ -159,7 +159,7 @@ export class RelayRuntimeService {
     if (this.restartCount >= MAX_RESTARTS) {
       this.status$.next(RelayStatus.CRITICAL_ERROR);
       this.logger.error(
-        `🚨 [Relay] Elértük az újraindítási limitet (${MAX_RESTARTS}). Az alkalmazás leáll.`,
+        `🚨 Relay elérte az újraindítási limitet (${MAX_RESTARTS}). Az alkalmazás leáll.`,
       );
       process.exit(1);
     }
@@ -167,15 +167,15 @@ export class RelayRuntimeService {
     this.restartCount++;
     this.status$.next(RelayStatus.RESTARTING);
     this.logger.warn(
-      `[Relay] Újrainditas hiba miatt ${RESTART_DELAY_MS}ms múlva.`,
+      `Relay újraindítása hiba miatt ${RESTART_DELAY_MS}ms múlva.`,
     );
 
     await sleep(RESTART_DELAY_MS);
 
     try {
       await this.bootstrap();
-    } catch (err: any) {
-      this.logger.error(`[Relay] Sikertelen újraindítás.`, err);
+    } catch (err) {
+      this.logger.error(`Relay sikertelen újraindítás.`, err);
       void this.restartEngine();
     }
   }
@@ -200,9 +200,7 @@ export class RelayRuntimeService {
         const isConnectionError = err.code === 'ECONNREFUSED';
 
         if (isConnectionError) {
-          this.logger.warn(
-            '[Relay] Kapcsolódási hiba az API hívás közben. Újrapróbálkozás...',
-          );
+          this.logger.warn('Relay API kapcsolódási hiba. Újrapróbálkozás...');
           this.status$.next(RelayStatus.OFFLINE);
           return this.request(fn);
         }
@@ -236,7 +234,7 @@ export class RelayRuntimeService {
         currentStartTime !== this.lastRelayStartTime
       ) {
         this.logger.warn(
-          '[Relay] Transzparens újraindulás detektálva (start_time változás). Szinkronizáció kényszerítése...',
+          'Relay újraindulás detektálva. Szinkronizáció kényszerítése...',
         );
         this.status$.next(RelayStatus.OFFLINE);
         this.status$.next(RelayStatus.ONLINE);
@@ -246,12 +244,10 @@ export class RelayRuntimeService {
 
       if (this.status$.value !== RelayStatus.ONLINE) {
         this.status$.next(RelayStatus.ONLINE);
-        this.logger.log(
-          '✅ StremHU Relay (libtorrent) újra elérhető (heartbeat recovery)',
-        );
+        this.logger.log('✅ Relay újra elérhető');
       }
     } catch (err) {
-      this.logger.error(`[Relay] Heartbeat hiba.`, err);
+      this.logger.error(`🚨 Relay nem érhető el, újraindítás...`, err);
       this.status$.next(RelayStatus.OFFLINE);
 
       if (this.autoStart) {
