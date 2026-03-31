@@ -67,6 +67,7 @@ export class RelayRuntimeService {
         cwd: relayPath,
         env: {
           ...process.env,
+          RELAY_AUTO_START: 'true',
           PYTHONPATH: relayPath,
         },
         stdio: ['ignore', 'pipe', 'pipe'],
