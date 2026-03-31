@@ -9,6 +9,7 @@ class Config(BaseSettings):
 
     lib_torrent_port: int = Field(6881)
     port: int = Field(4300)
+    relay_auto_start: bool = Field(False)
 
     base_data_dir: Path = Field(
         default=Path(__file__).resolve().parent.parent.parent / "data"

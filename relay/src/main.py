@@ -3,7 +3,6 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -31,7 +30,7 @@ class HealthCheckFilter(logging.Filter):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    if os.environ.get("RELAY_AUTO_START") == "true":
+    if config.relay_auto_start:
         logging.getLogger("uvicorn.access").addFilter(HealthCheckFilter())
 
     base_dir = Path(__file__).resolve().parent
