@@ -5,7 +5,7 @@
       "type": "node",
       "request": "launch",
       "name": "Server (Nest.js)",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "${workspaceFolder}/.conda/bin/npm",
       "runtimeArgs": ["run", "start:debug", "--", "--inspect-brk"],
       "cwd": "${workspaceFolder}/server",
       "autoAttachChildProcesses": true,
@@ -19,7 +19,7 @@
       "request": "launch",
       "name": "Client (React.js)",
       "cwd": "${workspaceFolder}/client",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "${workspaceFolder}/.conda/bin/npm",
       "runtimeArgs": ["run", "dev"],
       "console": "integratedTerminal",
       "serverReadyAction": {
