@@ -1,6 +1,6 @@
-libtorrent==2.0.11
-fastapi==0.135.2
+fastapi==0.135.3
 uvicorn[standard]==0.42.0
+libtorrent==2.0.11
 types-libtorrent==2.0.11.20250816
 pydantic==2.12.5
 pydantic-settings==2.13.1

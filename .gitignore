@@ -9,6 +9,7 @@
 stremhu.tar.gz
 
 AGENTS.md
+.cursorrules
 /node_modules
 /.conda/
 __pycache__/
