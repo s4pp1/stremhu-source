@@ -25,7 +25,7 @@ FROM python:3.12-slim-bookworm AS python-build
 
 WORKDIR /app/relay
 
-COPY relay/requirements.txt ./
+COPY requirements.txt ./
 
 RUN python -m venv /opt/venv && \
   /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
