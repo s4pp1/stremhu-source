@@ -12,6 +12,7 @@ import { THIRTY_DAYS_MS } from './app.constant';
 import { AppModule } from './app.module';
 import { NodeEnvEnum } from './config/enum/node-env.enum';
 import { KodiModule } from './kodi/kodi.module';
+import { PairingsModule } from './pairings/pairings.module';
 import { SessionsService } from './sessions/sessions.service';
 
 export const EXPRESS = express();
@@ -61,7 +62,7 @@ async function bootstrap() {
 
   const kodiSwaggerDoc = SwaggerModule.createDocument(app, kodiSwagger, {
     operationIdFactory: (_controllerKey, methodKey) => methodKey,
-    include: [KodiModule],
+    include: [KodiModule, PairingsModule],
     deepScanRoutes: true,
   });
   SwaggerModule.setup('api/docs/kodi', app, kodiSwaggerDoc);
