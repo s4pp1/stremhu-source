@@ -1,16 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, SerializeOptions } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 
-import { HealthDto } from './common/dto/health.dto';
+import { HealthDto } from './dto/health.dto';
 
 @Controller('/')
-@ApiTags('App')
-export class AppController {
+@ApiTags('Monitoring')
+export class MonitoringController {
   constructor(private readonly configService: ConfigService) {}
 
+  @SerializeOptions({ type: HealthDto })
   @Get('/health')
-  @ApiResponse({ status: 200, type: HealthDto })
   health(): HealthDto {
     const version = this.configService.getOrThrow<string>('app.version');
 

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ClassConstructor, Expose } from 'class-transformer';
+import { ClassConstructor, Expose, Type } from 'class-transformer';
 import { Equals, IsArray, IsString } from 'class-validator';
 
 import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
@@ -32,8 +32,9 @@ export class TrackerPreferenceMetaDto extends BasePreferenceMetaDto {
   value: PreferenceEnum.TRACKER;
 
   /** Tracker elemek listája */
-  @Expose()
   @IsArray()
+  @Type(() => TrackerMetaDto)
+  @Expose()
   items: TrackerMetaDto[];
 }
 
@@ -45,8 +46,9 @@ export class LanguagePreferenceMetaDto extends BasePreferenceMetaDto {
   value: PreferenceEnum.LANGUAGE;
 
   /** Nyelv elemek listája */
-  @Expose()
   @IsArray()
+  @Type(() => LanguageMetaDto)
+  @Expose()
   items: LanguageMetaDto[];
 }
 
@@ -58,8 +60,9 @@ export class ResolutionPreferenceMetaDto extends BasePreferenceMetaDto {
   value: PreferenceEnum.RESOLUTION;
 
   /** Felbontás elemek listája */
-  @Expose()
   @IsArray()
+  @Type(() => ResolutionMetaDto)
+  @Expose()
   items: ResolutionMetaDto[];
 }
 
@@ -71,8 +74,9 @@ export class VideoQualityPreferenceMetaDto extends BasePreferenceMetaDto {
   value: PreferenceEnum.VIDEO_QUALITY;
 
   /** Videó minőség elemek listája */
-  @Expose()
   @IsArray()
+  @Type(() => VideoQualityMetaDto)
+  @Expose()
   items: VideoQualityMetaDto[];
 }
 
@@ -84,8 +88,9 @@ export class SourcePreferenceMetaDto extends BasePreferenceMetaDto {
   value: PreferenceEnum.SOURCE;
 
   /** Forrás elemek listája */
-  @Expose()
   @IsArray()
+  @Type(() => SourceMetaDto)
+  @Expose()
   items: SourceMetaDto[];
 }
 
@@ -97,8 +102,9 @@ export class AudioQualityPreferenceMetaDto extends BasePreferenceMetaDto {
   value: PreferenceEnum.AUDIO_QUALITY;
 
   /** Audió minőség elemek listája */
-  @Expose()
   @IsArray()
+  @Type(() => AudioQualityMetaDto)
+  @Expose()
   items: AudioQualityMetaDto[];
 }
 
@@ -110,8 +116,9 @@ export class AudioSpatialPreferenceMetaDto extends BasePreferenceMetaDto {
   value: PreferenceEnum.AUDIO_SPATIAL;
 
   /** Térhatású hang elemek listája */
-  @Expose()
   @IsArray()
+  @Type(() => AudioSpatialMetaDto)
+  @Expose()
   items: AudioSpatialMetaDto[];
 }
 

@@ -1,10 +1,17 @@
-import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Put,
+  SerializeOptions,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { toDto } from 'src/common/utils/to-dto';
 import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
 import { AppSettingsService } from './app/app-settings.service';
@@ -24,21 +31,21 @@ export class SettingsController {
     private readonly appSettingsService: AppSettingsService,
   ) {}
 
-  @ApiResponse({ status: 200, type: SettingDto })
+  @SerializeOptions({ type: SettingDto })
   @Get('/')
   async findOne(): Promise<SettingDto> {
     const setting = await this.appSettingsService.get();
-    return toDto(SettingDto, setting);
+    return setting;
   }
 
-  @ApiResponse({ status: 200, type: SettingDto })
+  @SerializeOptions({ type: SettingDto })
   @Put('/')
   async update(@Body() body: UpdateSettingDto): Promise<SettingDto> {
     const setting = await this.settingsService.update(body);
     return setting;
   }
 
-  @ApiResponse({ status: 200, type: LocalUrlDto })
+  @SerializeOptions({ type: LocalUrlDto })
   @Post('/local-url')
   buildLocalUrl(@Body() body: LocalUrlRequestDto): LocalUrlDto {
     const localUrl = this.settingsService.buildLocalUrl(body.ipv4);

@@ -7,14 +7,14 @@ import {
   ParseEnumPipe,
   Post,
   Put,
+  SerializeOptions,
   UseGuards,
 } from '@nestjs/common';
-import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { toDto } from 'src/common/utils/to-dto';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import { TrackersService } from 'src/trackers/trackers.service';
 import { UserRoleEnum } from 'src/users/enum/user-role.enum';
@@ -36,33 +36,29 @@ export class TrackersController {
     private readonly trackerMaintenanceService: TrackerMaintenanceService,
   ) {}
 
-  @ApiResponse({ status: 201 })
   @Post('/')
-  async login(@Body() body: LoginTrackerDto) {
+  async login(@Body() body: LoginTrackerDto): Promise<void> {
     const { tracker, ...rest } = body;
     await this.trackersService.login(tracker, rest);
   }
 
-  @ApiResponse({ status: 200, type: TrackerDto, isArray: true })
+  @SerializeOptions({ type: TrackerDto })
   @Get('/')
   async trackers(): Promise<TrackerDto[]> {
     const trackerCredentials = await this.trackersStore.find();
-    return trackerCredentials.map((trackerCredential) =>
-      toDto(TrackerDto, trackerCredential),
-    );
+    return trackerCredentials;
   }
 
-  @ApiResponse({ status: 200 })
   @Post('/cleanup')
-  async cleanup() {
+  async cleanup(): Promise<void> {
     return this.trackerMaintenanceService.runTrackersCleanup();
   }
 
+  @SerializeOptions({ type: TrackerDto })
   @ApiParam({
     name: 'tracker',
     enum: TrackerEnum,
   })
-  @ApiResponse({ status: 200 })
   @Put('/:tracker')
   async update(
     @Param('tracker', new ParseEnumPipe(TrackerEnum)) tracker: TrackerEnum,
@@ -73,18 +69,17 @@ export class TrackersController {
       payload,
     );
 
-    return toDto(TrackerDto, updatedItem);
+    return updatedItem;
   }
 
   @ApiParam({
     name: 'tracker',
     enum: TrackerEnum,
   })
-  @ApiResponse({ status: 200 })
   @Delete('/:tracker')
   async delete(
     @Param('tracker', new ParseEnumPipe(TrackerEnum)) tracker: TrackerEnum,
-  ) {
+  ): Promise<void> {
     await this.trackersService.delete(tracker);
   }
 }

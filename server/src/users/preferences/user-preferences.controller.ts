@@ -18,14 +18,14 @@ import {
   ApiTags,
   getSchemaPath,
 } from '@nestjs/swagger';
+import { plainToInstance } from 'class-transformer';
 
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { toDto } from 'src/common/utils/to-dto';
-import type { PreferenceDto } from 'src/preferences/dto/preference.dto';
 import {
   PREFERENCE_SWAGGER_MODELS,
+  type PreferenceDto,
   preferenceDtoMap,
 } from 'src/preferences/dto/preference.dto';
 import { ReorderPreferencesDto } from 'src/preferences/dto/reorder-preferences.dto';
@@ -60,7 +60,10 @@ export class UserPreferencesController {
       userId,
       payload,
     );
-    return toDto(preferenceDtoMap[userPreference.preference], userPreference);
+    return plainToInstance(
+      preferenceDtoMap[userPreference.preference],
+      userPreference,
+    );
   }
 
   @ApiResponse({
@@ -79,7 +82,10 @@ export class UserPreferencesController {
     const userPreferences = await this.userPreferencesService.find(userId);
 
     return userPreferences.map((userPreference) =>
-      toDto(preferenceDtoMap[userPreference.preference], userPreference),
+      plainToInstance(
+        preferenceDtoMap[userPreference.preference],
+        userPreference,
+      ),
     );
   }
 
@@ -105,7 +111,10 @@ export class UserPreferencesController {
     );
 
     return userPreferences.map((userPreference) =>
-      toDto(preferenceDtoMap[userPreference.preference], userPreference),
+      plainToInstance(
+        preferenceDtoMap[userPreference.preference],
+        userPreference,
+      ),
     );
   }
 
@@ -135,7 +144,10 @@ export class UserPreferencesController {
         preference,
       );
 
-    return toDto(preferenceDtoMap[userPreference.preference], userPreference);
+    return plainToInstance(
+      preferenceDtoMap[userPreference.preference],
+      userPreference,
+    );
   }
 
   @ApiParam({
@@ -172,7 +184,10 @@ export class UserPreferencesController {
       payload,
     );
 
-    return toDto(preferenceDtoMap[userPreference.preference], userPreference);
+    return plainToInstance(
+      preferenceDtoMap[userPreference.preference],
+      userPreference,
+    );
   }
 
   @ApiParam({ name: 'preference', type: 'enum', enum: PreferenceEnum })

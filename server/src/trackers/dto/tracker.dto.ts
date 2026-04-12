@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Expose } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
 
 import { IsNullable } from 'src/common/validators/is-nullable';
@@ -16,10 +16,6 @@ export class TrackerDto {
   @IsString()
   @Expose()
   username: string;
-
-  @Exclude()
-  @Expose()
-  password: string;
 
   /** Teljes torrent letöltése */
   @IsBoolean()

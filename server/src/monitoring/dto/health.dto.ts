@@ -3,7 +3,7 @@ import { IsString } from 'class-validator';
 
 export class HealthDto {
   /** Az alkalmazás verziója */
-  @IsString()
   @Expose()
+  @IsString()
   version: string;
 }

@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 import { ContentTypeEnum } from '../enum/content-type.enum';
 import { ShortManifestResourceEnum } from '../enum/short-manifest-resource.enum';
@@ -37,14 +37,17 @@ export class ManifestDto {
   idPrefixes?: string[];
 
   /** Katalógusok listája */
+  @Type(() => ManifestCatalog)
   @Expose()
   catalogs: ManifestCatalog[];
 
   /** Külső addon katalógusok */
+  @Type(() => ManifestCatalog)
   @Expose()
   addonCatalogs?: ManifestCatalog[];
 
   /** Konfigurációs beállítások */
+  @Type(() => ManifestConfigDto)
   @Expose()
   config?: ManifestConfigDto[];
 
@@ -61,6 +64,7 @@ export class ManifestDto {
   contactEmail?: string;
 
   /** Viselkedési tippek */
+  @Type(() => ManifestBehaviorHintsDto)
   @Expose()
   behaviorHints?: ManifestBehaviorHintsDto;
 }
