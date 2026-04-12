@@ -1,9 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 import { IsNumber, IsOptional } from 'class-validator';
 
 export class UpdateExternalSettingDto {
+  /** Port azonosító */
   @IsOptional()
   @IsNumber()
-  @ApiProperty({ type: 'number', required: false })
+  @Expose()
   port?: number;
 }

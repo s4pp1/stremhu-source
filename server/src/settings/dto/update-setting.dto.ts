@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 import {
   IsBoolean,
   IsNumber,
@@ -14,11 +14,13 @@ import { IsNullable } from 'src/common/validators/is-nullable';
 import { NoPathDomain } from 'src/common/validators/no-path-domain';
 
 export class UpdateSettingDto {
+  /** Local IP engedélyezése */
   @IsOptional()
   @IsBoolean()
-  @ApiProperty({ required: false })
+  @Expose()
   enebledlocalIp?: boolean;
 
+  /** Cím */
   @IsOptional()
   @ValidateIf((setting: UpdateSettingDto) => setting.enebledlocalIp === false)
   @IsUrl({
@@ -32,29 +34,33 @@ export class UpdateSettingDto {
   @Validate(NoPathDomain)
   @ValidateIf((setting: UpdateSettingDto) => setting.enebledlocalIp === true)
   @Validate(IsIPv4)
-  @ApiProperty({ required: false })
+  @Expose()
   address?: string;
 
+  /** Hit and Run védelem */
   @IsOptional()
   @IsBoolean()
-  @ApiProperty({ required: false })
+  @Expose()
   hitAndRun?: boolean;
 
+  /** Seedben tartás ideje (másodperc) */
   @IsOptional()
   @IsNullable()
   @IsNumber()
-  @ApiProperty({ type: 'number', required: false })
+  @Expose()
   keepSeedSeconds?: number;
 
+  /** Cache megőrzési ideje (másodperc) */
   @IsOptional()
   @IsNullable()
   @IsNumber()
-  @ApiProperty({ type: 'number', required: false })
+  @Expose()
   cacheRetentionSeconds?: number;
 
+  /** Katalógus token */
   @IsOptional()
   @IsNullable()
   @IsString()
-  @ApiProperty({ type: 'string', nullable: true, required: false })
+  @Expose()
   catalogToken?: string | null;
 }

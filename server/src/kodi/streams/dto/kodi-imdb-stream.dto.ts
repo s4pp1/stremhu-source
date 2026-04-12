@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 import { IsArray } from 'class-validator';
 
 import { AudioQualityMetaDto } from 'src/metadata/dto/audio-quality-meta.dto';
@@ -10,59 +10,53 @@ import { TrackerMetaDto } from 'src/metadata/dto/tracker-meta.dto';
 import { VideoQualityMetaDto } from 'src/metadata/dto/video-quality-meta.dto';
 
 export class KodiImdbStreamDto {
-  @ApiProperty({ type: 'string' })
+  /** Torrent fájl neve */
+  @Expose()
   torrentName: string;
 
-  @ApiProperty({ type: 'string' })
+  /** Fájlnév a torrenten belül */
+  @Expose()
   fileName: string;
 
-  @ApiProperty({ type: 'integer' })
+  /** Seederek száma */
+  @Expose()
   seeders: number;
 
-  @ApiProperty({ type: 'string' })
+  /** Emberi formátumú méret (pl. 2.5 GB) */
+  @Expose()
   size: string;
 
-  @ApiProperty({
-    type: TrackerMetaDto,
-  })
+  /** Tracker adatai */
+  @Expose()
   tracker: TrackerMetaDto;
 
+  /** Nyelvek listája */
+  @Expose()
   @IsArray()
-  @ApiProperty({
-    type: LanguageMetaDto,
-    isArray: true,
-  })
   languages: LanguageMetaDto[];
 
-  @ApiProperty({
-    type: ResolutionMetaDto,
-  })
+  /** Felbontás adatai */
+  @Expose()
   resolution: ResolutionMetaDto;
 
+  /** Videó minőségi jellemzők */
+  @Expose()
   @IsArray()
-  @ApiProperty({
-    type: VideoQualityMetaDto,
-    isArray: true,
-  })
   videoQualities: VideoQualityMetaDto[];
 
-  @ApiProperty({
-    type: AudioQualityMetaDto,
-    required: false,
-  })
+  /** Audió minőség */
+  @Expose()
   audioQuality?: AudioQualityMetaDto;
 
-  @ApiProperty({
-    type: AudioSpatialMetaDto,
-    required: false,
-  })
+  /** Térhatású hang jellemzők */
+  @Expose()
   audioSpatial?: AudioSpatialMetaDto;
 
-  @ApiProperty({
-    type: SourceMetaDto,
-  })
+  /** Forrás adatai */
+  @Expose()
   source: SourceMetaDto;
 
-  @ApiProperty()
+  /** Stream URL */
+  @Expose()
   url: string;
 }

@@ -1,15 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 export class MetaLinkDto {
   /** Megjelenített név pl. "Action", "Christopher Nolan" */
-  @ApiProperty()
+  @Expose()
   name: string;
 
   /** Kategória pl. "Genres" | "Cast" | "Writers" | "Directors"*/
-  @ApiProperty()
+  @Expose()
   category: string;
 
   /** URL – lehet stremio:/// meta link is */
-  @ApiProperty()
+  @Expose()
   url: string;
 }

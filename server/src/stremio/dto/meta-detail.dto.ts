@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 import { MetaDetailBehaviorHintsDto } from './meta-detail-behaviour-hints.dto';
 import { MetaPreviewDto } from './meta-preview.dto';
@@ -13,61 +13,54 @@ export class MetaDetailDto extends MetaPreviewDto {
    *
    * e.g. "2010-12-06T05:00:00.000Z"
    */
-  @ApiProperty({ required: false })
+  @Expose()
   released?: string;
 
-  @ApiProperty({ required: false })
+  /** Megjelenés éve */
+  @Expose()
   year?: string;
 
-  @ApiProperty({ type: () => MetaTrailerDto, isArray: true, required: false })
+  /** Előzetesek listája */
+  @Expose()
   trailers?: MetaTrailerDto[];
 
   /**
-   * Used for channel and series.
+   * Csatornákhoz és sorozatokhoz használatos.
    *
-   * If you do not provide this (e.g. for movie), Stremio assumes this meta item has one video, and it's ID is equal to the meta item id.
+   * Ha nincs megadva (pl. filmnél), a Stremio feltételezi, hogy egy videó van, aminek az ID-ja megegyezik a meta ID-val.
    */
-  @ApiProperty({ type: () => MetaVideoDto, isArray: true, required: false })
+  @Expose()
   videos?: MetaVideoDto[];
 
   /**
-   * Human-readable expected runtime.
+   * Várható játékidő emberi formátumban.
    *
    * e.g. "120m"
    */
-  @ApiProperty({ required: false })
+  @Expose()
   runtime?: string;
 
-  /**
-   * Spoken language.
-   */
-  @ApiProperty({ required: false })
+  /** Beszélt nyelv */
+  @Expose()
   language?: string;
 
-  /**
-   * Official country of origin.
-   */
-  @ApiProperty({ required: false })
+  /** Származási ország */
+  @Expose()
   country?: string;
 
-  /**
-   * Human-readable that describes all the significant awards.
-   */
-  @ApiProperty({ required: false })
+  /** Díjak leírása */
+  @Expose()
   awards?: string;
 
-  /**
-   * URL to official website.
-   */
-  @ApiProperty({ required: false })
+  /** Hivatalos weboldal URL */
+  @Expose()
   website?: string;
 
-  @ApiProperty({
-    type: () => MetaDetailBehaviorHintsDto,
-    required: false,
-  })
+  /** Viselkedési tippek */
+  @Expose()
   behaviorHints?: MetaDetailBehaviorHintsDto;
 
-  @ApiProperty({ type: 'string', isArray: true, required: false })
+  /** Írók listája */
+  @Expose()
   writer?: string[];
 }

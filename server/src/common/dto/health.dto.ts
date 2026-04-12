@@ -1,8 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 import { IsString } from 'class-validator';
 
 export class HealthDto {
+  /** Az alkalmazás verziója */
   @IsString()
-  @ApiProperty()
+  @Expose()
   version: string;
 }

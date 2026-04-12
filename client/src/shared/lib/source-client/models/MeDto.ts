@@ -4,6 +4,9 @@
 /* eslint-disable */
 import type { UserDto } from './UserDto';
 export type MeDto = {
+    /**
+     * Saját felhasználói adatok
+     */
     me: UserDto | null;
 };
 

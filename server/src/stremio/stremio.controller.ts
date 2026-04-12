@@ -26,7 +26,7 @@ export class StremioController {
   @ApiPermanentRedirectResponse({ description: 'Átirányítás a UI felületre.' })
   @Get('/configure')
   configure(@Res() res: Response) {
-    res.status(308).redirect('/');
+    res.redirect(308, '/');
   }
 
   @ApiResponse({ type: ManifestDto })

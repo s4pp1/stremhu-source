@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import {
   IsBoolean,
+  IsDate,
   IsEnum,
   IsNumber,
-  IsOptional,
   IsString,
   IsUUID,
 } from 'class-validator';
@@ -14,33 +14,45 @@ import { IsNullable } from 'src/common/validators/is-nullable';
 import { UserRoleEnum } from '../enum/user-role.enum';
 
 export class UserDto {
+  /** Felhasználó egyedi azonosítója */
+  @Expose()
   @IsUUID()
-  @ApiProperty({ format: 'uuid' })
   id: string;
 
+  /** Felhasználónév */
+  @Expose()
   @IsString()
-  @ApiProperty()
   username: string;
 
-  @Exclude()
-  @IsOptional()
+  /** API token */
+  @Expose()
   @IsString()
-  passwordHash: string | null;
-
-  @IsString()
-  @ApiProperty()
   token: string;
 
+  /** Felhasználói szerepkör */
+  @Expose()
   @IsEnum(UserRoleEnum)
   @ApiProperty({ enum: UserRoleEnum, enumName: 'UserRoleEnum' })
   userRole: UserRoleEnum;
 
+  /** Torrent seed limit */
+  @Expose()
   @IsNullable()
   @IsNumber()
-  @ApiProperty({ type: 'number', nullable: true })
   torrentSeed: number | null;
 
+  /** Csak a legjobb torrentek megjelenítése */
+  @Expose()
   @IsBoolean()
-  @ApiProperty({ type: 'boolean' })
   onlyBestTorrent: boolean;
+
+  /** Utolsó frissítés időpontja */
+  @Expose()
+  @IsDate()
+  updatedAt: Date;
+
+  /** Létrehozás időpontja */
+  @Expose()
+  @IsDate()
+  createdAt: Date;
 }

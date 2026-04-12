@@ -5,9 +5,21 @@
 import type { LanguageMetaDto } from './LanguageMetaDto';
 import type { PreferenceEnum } from './PreferenceEnum';
 export type LanguagePreferenceMetaDto = {
-    label: string;
-    description: string;
+    /**
+     * Nyelv preferencia azonosító
+     */
     value: PreferenceEnum;
+    /**
+     * Nyelv elemek listája
+     */
     items: Array<LanguageMetaDto>;
+    /**
+     * Megjelenített név
+     */
+    label: string;
+    /**
+     * Leírás
+     */
+    description: string;
 };
 

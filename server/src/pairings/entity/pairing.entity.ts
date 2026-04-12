@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 import { User } from '../../users/entity/user.entity';
-import { PairingStatus } from '../enum/pairing-status.enum';
+import { PairingStatusEnum } from '../enum/pairing-status.enum';
 
 @Entity('pairings')
 export class Pairing {
@@ -26,10 +26,10 @@ export class Pairing {
 
   @Column({
     type: 'simple-enum',
-    enum: PairingStatus,
-    default: PairingStatus.PENDING,
+    enum: PairingStatusEnum,
+    default: PairingStatusEnum.PENDING,
   })
-  status: PairingStatus;
+  status: PairingStatusEnum;
 
   @Column({ name: 'user_id', type: 'uuid', nullable: true })
   userId: string | null;

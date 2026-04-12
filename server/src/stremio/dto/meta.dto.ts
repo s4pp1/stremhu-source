@@ -1,9 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 import { MetaDetailDto } from './meta-detail.dto';
 import { StremioCacheDto } from './stremio-cache.dto';
 
 export class MetaDto extends StremioCacheDto {
-  @ApiProperty({ type: MetaDetailDto })
+  /** Meta adatok részletei */
+  @Expose()
   meta: MetaDetailDto;
 }

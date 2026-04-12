@@ -2,6 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+/**
+ * Type of the content.
+ */
 export enum ContentTypeEnum {
     MOVIE = 'movie',
     SERIES = 'series',

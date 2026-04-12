@@ -10,22 +10,17 @@ import {
 import { UserRoleEnum } from '../enum/user-role.enum';
 
 export class UpdateUserDto {
+  /** Felhasználónév */
   @IsOptional()
   @IsString()
-  @ApiProperty({
-    type: 'string',
-    required: false,
-  })
   username?: string;
 
+  /** Jelszó */
   @IsOptional()
   @IsString()
-  @ApiProperty({
-    type: 'string',
-    required: false,
-  })
   password?: string;
 
+  /** Felhasználói szerepkör */
   @IsOptional()
   @IsEnum(UserRoleEnum)
   @ApiProperty({
@@ -35,13 +30,13 @@ export class UpdateUserDto {
   })
   userRole?: UserRoleEnum;
 
+  /** Torrent seed limit */
   @IsOptional()
   @IsNumber()
-  @ApiProperty({ type: 'number', nullable: true, required: false })
   torrentSeed?: number | null;
 
+  /** Csak a legjobb torrentek megjelenítése */
   @IsOptional()
   @IsBoolean()
-  @ApiProperty({ type: 'boolean', required: false })
   onlyBestTorrent?: boolean;
 }

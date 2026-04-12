@@ -1,6 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 export class PairVerifyDto {
-  @ApiProperty()
+  /** Sikeres volt-e a párosítás jóváhagyása */
+  @Expose()
   success: boolean;
 }

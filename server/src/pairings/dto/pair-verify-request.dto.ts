@@ -1,8 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
 export class PairVerifyRequestDto {
-  @ApiProperty()
+  /** A megjelenő 4 jegyű kód */
   @IsString()
   userCode: string;
 }

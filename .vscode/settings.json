@@ -3,7 +3,9 @@
     "**/routeTree.gen.ts": true
   },
   "search.exclude": {
-    "**/routeTree.gen.ts": true
+    "**/routeTree.gen.ts": true,
+    "**/dist": true,
+    "**/node_modules": true
   },
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
@@ -19,5 +21,14 @@
   "basedpyright.analysis.extraPaths": ["${workspaceFolder}/relay/src"],
   "python.languageServer": "None",
   "python.defaultInterpreterPath": "${workspaceFolder}/.conda/bin/python",
-  "python.terminal.activateEnvInCurrentTerminal": true
+  "python.terminal.activateEnvInCurrentTerminal": true,
+  "terminal.integrated.env.osx": {
+    "PATH": "${workspaceFolder}/.conda/bin:${env:PATH}"
+  },
+  "terminal.integrated.env.linux": {
+    "PATH": "${workspaceFolder}/.conda/bin:${env:PATH}"
+  },
+  "terminal.integrated.env.windows": {
+    "PATH": "${workspaceFolder}/.conda/Scripts;${workspaceFolder}/.conda;${env:PATH}"
+  }
 }

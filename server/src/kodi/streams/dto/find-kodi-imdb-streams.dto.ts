@@ -1,8 +1,8 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsInt, Min, ValidateIf } from 'class-validator';
 
 export class FindKodiImdbStreamsDto {
+  /** Évad száma */
   @ValidateIf(
     (payload: FindKodiImdbStreamsDto) =>
       payload.season !== undefined || payload.episode !== undefined,
@@ -10,9 +10,9 @@ export class FindKodiImdbStreamsDto {
   @Type(() => Number)
   @IsInt()
   @Min(1)
-  @ApiPropertyOptional({ type: 'integer' })
   season?: number;
 
+  /** Epizód száma */
   @ValidateIf(
     (payload: FindKodiImdbStreamsDto) =>
       payload.season !== undefined || payload.episode !== undefined,
@@ -20,6 +20,5 @@ export class FindKodiImdbStreamsDto {
   @Type(() => Number)
   @IsInt()
   @Min(1)
-  @ApiPropertyOptional({ type: 'integer' })
   episode?: number;
 }

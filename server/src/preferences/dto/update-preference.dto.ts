@@ -15,18 +15,17 @@ export class UpdateTrackerPreferenceDto {
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.TRACKER,
   })
   preference: PreferenceEnum.TRACKER;
 
   @IsOptional()
   @IsEnum(TrackerEnum, { each: true })
-  @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum', isArray: true })
+  @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum' })
   preferred?: TrackerEnum[];
 
   @IsOptional()
   @IsEnum(TrackerEnum, { each: true })
-  @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum', isArray: true })
+  @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum' })
   blocked?: TrackerEnum[];
 }
 
@@ -35,18 +34,17 @@ export class UpdateLanguagePreferenceDto {
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.LANGUAGE,
   })
   preference: PreferenceEnum.LANGUAGE;
 
   @IsOptional()
   @IsEnum(LanguageEnum, { each: true })
-  @ApiProperty({ enum: LanguageEnum, enumName: 'LanguageEnum', isArray: true })
+  @ApiProperty({ enum: LanguageEnum, enumName: 'LanguageEnum' })
   preferred?: LanguageEnum[];
 
   @IsOptional()
   @IsEnum(LanguageEnum, { each: true })
-  @ApiProperty({ enum: LanguageEnum, enumName: 'LanguageEnum', isArray: true })
+  @ApiProperty({ enum: LanguageEnum, enumName: 'LanguageEnum' })
   blocked?: LanguageEnum[];
 }
 
@@ -55,7 +53,6 @@ export class UpdateResolutionPreferenceDto {
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.RESOLUTION,
   })
   preference: PreferenceEnum.RESOLUTION;
 
@@ -64,7 +61,6 @@ export class UpdateResolutionPreferenceDto {
   @ApiProperty({
     enum: ResolutionEnum,
     enumName: 'ResolutionEnum',
-    isArray: true,
   })
   preferred?: ResolutionEnum[];
 
@@ -73,7 +69,6 @@ export class UpdateResolutionPreferenceDto {
   @ApiProperty({
     enum: ResolutionEnum,
     enumName: 'ResolutionEnum',
-    isArray: true,
   })
   blocked?: ResolutionEnum[];
 }
@@ -83,7 +78,6 @@ export class UpdateVideoPreferenceDto {
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.VIDEO_QUALITY,
   })
   preference: PreferenceEnum.VIDEO_QUALITY;
 
@@ -92,7 +86,6 @@ export class UpdateVideoPreferenceDto {
   @ApiProperty({
     enum: VideoQualityEnum,
     enumName: 'VideoQualityEnum',
-    isArray: true,
   })
   preferred?: VideoQualityEnum[];
 
@@ -101,7 +94,6 @@ export class UpdateVideoPreferenceDto {
   @ApiProperty({
     enum: VideoQualityEnum,
     enumName: 'VideoQualityEnum',
-    isArray: true,
   })
   blocked?: VideoQualityEnum[];
 }
@@ -111,7 +103,6 @@ export class UpdateSourcePreferenceDto {
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.SOURCE,
   })
   preference: PreferenceEnum.SOURCE;
 
@@ -120,7 +111,6 @@ export class UpdateSourcePreferenceDto {
   @ApiProperty({
     enum: SourceEnum,
     enumName: 'SourceEnum',
-    isArray: true,
   })
   preferred?: SourceEnum[];
 
@@ -129,7 +119,6 @@ export class UpdateSourcePreferenceDto {
   @ApiProperty({
     enum: SourceEnum,
     enumName: 'SourceEnum',
-    isArray: true,
   })
   blocked?: SourceEnum[];
 }
@@ -139,7 +128,6 @@ export class UpdateAudioPreferenceDto {
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.AUDIO_QUALITY,
   })
   preference: PreferenceEnum.AUDIO_QUALITY;
 
@@ -148,7 +136,6 @@ export class UpdateAudioPreferenceDto {
   @ApiProperty({
     enum: AudioQualityEnum,
     enumName: 'AudioQualityEnum',
-    isArray: true,
   })
   preferred?: AudioQualityEnum[];
 
@@ -157,7 +144,6 @@ export class UpdateAudioPreferenceDto {
   @ApiProperty({
     enum: AudioQualityEnum,
     enumName: 'AudioQualityEnum',
-    isArray: true,
   })
   blocked?: AudioQualityEnum[];
 }

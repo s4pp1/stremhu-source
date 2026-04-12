@@ -1,14 +1,13 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, MinLength } from 'class-validator';
 
 export class CreateUserDto {
+  /** Felhasználónév */
   @IsString()
-  @ApiProperty()
   username: string;
 
+  /** Jelszó */
   @IsOptional()
   @IsString()
   @MinLength(1, { message: 'A jelszó nem lehet üres' })
-  @ApiProperty({ type: String, nullable: true })
   password: string | null;
 }

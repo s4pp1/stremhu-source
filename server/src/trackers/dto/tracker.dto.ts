@@ -1,41 +1,50 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
 
 import { IsNullable } from 'src/common/validators/is-nullable';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 export class TrackerDto {
+  /** Tracker azonosító */
   @IsEnum(TrackerEnum)
   @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum' })
+  @Expose()
   tracker: TrackerEnum;
 
+  /** Felhasználónév */
   @IsString()
-  @ApiProperty()
+  @Expose()
   username: string;
 
   @Exclude()
+  @Expose()
   password: string;
 
+  /** Teljes torrent letöltése */
   @IsBoolean()
-  @ApiProperty({ type: 'boolean' })
+  @Expose()
   downloadFullTorrent: boolean;
 
+  /** Hit and Run védelem állapota */
   @IsNullable()
   @IsBoolean()
-  @ApiProperty({ type: 'boolean', nullable: true })
+  @Expose()
   hitAndRun: boolean | null;
 
+  /** Seedben tartás ideje (másodperc) */
   @IsNullable()
   @IsNumber()
-  @ApiProperty({ type: 'integer', nullable: true })
+  @Expose()
   keepSeedSeconds: number | null;
 
+  /** Utolsó frissítés időpontja */
   @IsDate()
-  @ApiProperty()
+  @Expose()
   updatedAt: Date;
 
+  /** Létrehozás időpontja */
   @IsDate()
-  @ApiProperty()
+  @Expose()
   createdAt: Date;
 }

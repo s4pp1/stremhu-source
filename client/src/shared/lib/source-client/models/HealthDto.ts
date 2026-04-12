@@ -3,6 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export type HealthDto = {
+    /**
+     * Az alkalmazás verziója
+     */
     version: string;
 };
 

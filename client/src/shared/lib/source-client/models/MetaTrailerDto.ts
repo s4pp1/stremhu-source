@@ -3,7 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 export type MetaTrailerDto = {
+    /**
+     * YouTube azonosító
+     */
     ytId: string;
+    /**
+     * Előzetes leírása
+     */
     description: string;
 };
 

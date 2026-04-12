@@ -1,19 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 import { IsArray } from 'class-validator';
 
 import { KodiImdbStreamDto } from './kodi-imdb-stream.dto';
 
 export class KodiImdbStreamsDto {
+  /** Elérhető streamek listája */
+  @Expose()
   @IsArray()
-  @ApiProperty({
-    type: KodiImdbStreamDto,
-    isArray: true,
-  })
   streams: KodiImdbStreamDto[];
 
-  @ApiProperty({
-    type: 'string',
-    isArray: true,
-  })
+  /** Hibák listája */
+  @Expose()
   errors: string[];
 }

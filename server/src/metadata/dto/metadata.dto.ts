@@ -1,7 +1,5 @@
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
-import { IsArray, IsString } from 'class-validator';
-
-import { HealthDto } from 'src/common/dto/health.dto';
+import { Expose } from 'class-transformer';
 
 import {
   PREFERENCE_META_SWAGGER_MODELS,
@@ -11,19 +9,19 @@ import { TrackerMetaDto } from './tracker-meta.dto';
 import { UserRoleMetaDto } from './user-role-meta.dto';
 
 @ApiExtraModels(...PREFERENCE_META_SWAGGER_MODELS)
-export class MetadataDto extends HealthDto {
-  @IsArray()
-  @ApiProperty({ type: UserRoleMetaDto, isArray: true })
-  userRoles: UserRoleMetaDto[];
-
-  @IsArray()
+export class MetadataDto {
+  /** Elérhető trackerek */
+  @Expose()
   @ApiProperty({ type: TrackerMetaDto, isArray: true })
   trackers: TrackerMetaDto[];
 
-  @IsString()
-  @ApiProperty()
-  endpoint: string;
+  /** Elérhető felhasználói szerepkörök */
+  @Expose()
+  @ApiProperty({ type: UserRoleMetaDto, isArray: true })
+  userRoles: UserRoleMetaDto[];
 
+  /** Elérhető preferenciák listája */
+  @Expose()
   @ApiProperty({
     type: 'array',
     items: {
@@ -33,4 +31,14 @@ export class MetadataDto extends HealthDto {
     },
   })
   preferences: PreferenceMetaDto[];
+
+  /** Az alkalmazás verziója */
+  @Expose()
+  @ApiProperty()
+  version: string;
+
+  /** API végpont URL */
+  @Expose()
+  @ApiProperty()
+  endpoint: string;
 }

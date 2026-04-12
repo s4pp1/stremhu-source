@@ -5,9 +5,21 @@
 import type { PreferenceEnum } from './PreferenceEnum';
 import type { TrackerMetaDto } from './TrackerMetaDto';
 export type TrackerPreferenceMetaDto = {
-    label: string;
-    description: string;
+    /**
+     * Tracker preferencia azonosító
+     */
     value: PreferenceEnum;
+    /**
+     * Tracker elemek listája
+     */
     items: Array<TrackerMetaDto>;
+    /**
+     * Megjelenített név
+     */
+    label: string;
+    /**
+     * Leírás
+     */
+    description: string;
 };
 

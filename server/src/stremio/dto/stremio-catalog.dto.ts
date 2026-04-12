@@ -1,9 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 import { MetaPreviewDto } from './meta-preview.dto';
 import { StremioCacheDto } from './stremio-cache.dto';
 
 export class StremioCatalogDto extends StremioCacheDto {
-  @ApiProperty({ type: () => MetaPreviewDto, isArray: true })
+  /** Meta adatok előnézeteinek listája */
+  @Expose()
   metas: MetaPreviewDto[];
 }

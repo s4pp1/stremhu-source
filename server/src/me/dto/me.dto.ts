@@ -1,8 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 import { UserDto } from 'src/users/dto/user.dto';
 
 export class MeDto {
-  @ApiProperty({ type: UserDto, nullable: true })
+  /** Saját felhasználói adatok */
+  @Expose()
   me: UserDto | null;
 }

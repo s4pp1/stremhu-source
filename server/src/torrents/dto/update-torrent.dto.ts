@@ -1,17 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsOptional } from 'class-validator';
 
 import { IsNullable } from 'src/common/validators/is-nullable';
 
 export class UpdateTorrentDto {
+  /** Mentve van-e az adatbázisba */
   @IsOptional()
   @IsBoolean()
-  @ApiProperty({ type: 'boolean', required: false })
   isPersisted?: boolean;
 
+  /** Teljes letöltés állapota */
   @IsOptional()
   @IsNullable()
   @IsBoolean()
-  @ApiProperty({ type: 'boolean', required: false, nullable: true })
   fullDownload?: boolean | null;
 }

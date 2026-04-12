@@ -1,23 +1,26 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 import { IsBoolean, IsNumber, IsOptional } from 'class-validator';
 
 import { IsNullable } from 'src/common/validators/is-nullable';
 
 export class UpdateTrackerDto {
+  /** Hit and Run védelem állapota */
   @IsOptional()
   @IsNullable()
   @IsBoolean()
-  @ApiProperty({ type: 'boolean', required: false, nullable: true })
+  @Expose()
   hitAndRun?: boolean | null;
 
+  /** Seedben tartás ideje (másodperc) */
   @IsOptional()
   @IsNullable()
   @IsNumber()
-  @ApiProperty({ type: 'number', required: false, nullable: true })
+  @Expose()
   keepSeedSeconds?: number | null;
 
+  /** Teljes torrent letöltése */
   @IsOptional()
   @IsBoolean()
-  @ApiProperty({ type: 'boolean', required: false })
+  @Expose()
   downloadFullTorrent?: boolean;
 }

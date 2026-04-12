@@ -1,18 +1,22 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 import { ContentTypeEnum } from '../enum/content-type.enum';
 import { ManifestExtraDto } from './manifest-extra.dto';
 
 export class ManifestCatalog {
-  @ApiProperty({ enum: ContentTypeEnum })
+  /** Tartalom típusa */
+  @Expose()
   type: ContentTypeEnum;
 
-  @ApiProperty()
+  /** Katalógus azonosító */
+  @Expose()
   id: string;
 
-  @ApiProperty()
+  /** Katalógus neve */
+  @Expose()
   name: string;
 
-  @ApiProperty({ type: ManifestExtraDto, isArray: true })
+  /** Extra szűrési paraméterek */
+  @Expose()
   extra?: ManifestExtraDto[];
 }

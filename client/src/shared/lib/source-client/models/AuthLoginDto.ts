@@ -3,7 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 export type AuthLoginDto = {
+    /**
+     * Felhasználónév
+     */
     username: string;
+    /**
+     * Jelszó
+     */
     password: string;
 };
 

@@ -4,7 +4,13 @@
 /* eslint-disable */
 import type { SourceEnum } from './SourceEnum';
 export type SourceMetaDto = {
+    /**
+     * Forrás értéke
+     */
     value: SourceEnum;
+    /**
+     * Megjelenített név
+     */
     label: string;
 };
 

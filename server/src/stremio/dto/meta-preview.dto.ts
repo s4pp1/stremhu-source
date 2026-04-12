@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 import { ContentTypeEnum } from '../enum/content-type.enum';
 import { PosterShapeEnum } from '../enum/poster-shape.enum';
@@ -11,22 +12,23 @@ export class MetaPreviewDto {
    *
    * Example: 'yt_id:UCrDkAvwZum-UTjHmzDI2iIw'
    */
-  @ApiProperty()
+  @Expose()
   id: string;
 
-  @ApiProperty({ type: 'string', required: false })
+  /** IMDb azonosító */
   imdb_id?: string;
 
   /**
    * Type of the content.
    */
   @ApiProperty({ enum: ContentTypeEnum, enumName: 'ContentTypeEnum' })
+  @Expose()
   type: ContentTypeEnum;
 
   /**
    * Name of the content.
    */
-  @ApiProperty()
+  @Expose()
   name: string;
 
   /**
@@ -37,7 +39,7 @@ export class MetaPreviewDto {
    * You can use any resolution, as long as the file size is below 100kb.
    * Below 50kb is recommended
    */
-  @ApiProperty({ required: false })
+  @Expose()
   poster?: string;
 
   /**
@@ -46,6 +48,7 @@ export class MetaPreviewDto {
    * Defaults to 'regular'.
    */
   @ApiProperty({ enum: PosterShapeEnum, enumName: 'PosterShapeEnum' })
+  @Expose()
   posterShape?: PosterShapeEnum;
 
   /**
@@ -55,7 +58,7 @@ export class MetaPreviewDto {
    *
    * URL to PNG, max file size 500kb.
    */
-  @ApiProperty({ required: false })
+  @Expose()
   background?: string;
 
   /**
@@ -65,28 +68,33 @@ export class MetaPreviewDto {
    *
    * URL to PNG.
    */
-  @ApiProperty({ required: false })
+  @Expose()
   logo?: string;
 
   /**
    * A few sentences describing your content.
    */
-  @ApiProperty({ required: false })
+  @Expose()
   description?: string;
 
-  @ApiProperty({ type: 'string', required: false })
+  /** IMDb értékelés */
+  @Expose()
   imdbRating?: string;
 
-  @ApiProperty({ required: false })
+  /** Megjelenési információk */
+  @Expose()
   releaseInfo?: string;
 
-  @ApiProperty({ type: 'string', isArray: true, required: false })
+  /** Műfajok listája */
+  @Expose()
   genres?: string[];
 
-  @ApiProperty({ type: 'string', isArray: true, required: false })
+  /** Szereplőgárda */
+  @Expose()
   cast?: string[];
 
-  @ApiProperty({ type: 'string', isArray: true, required: false })
+  /** Rendező(k) */
+  @Expose()
   director?: string[];
 
   /**
@@ -94,6 +102,6 @@ export class MetaPreviewDto {
    *
    * example: array of actor / genre / director links.
    */
-  @ApiProperty({ type: () => MetaLinkDto, isArray: true, required: false })
+  @Expose()
   links?: MetaLinkDto[];
 }

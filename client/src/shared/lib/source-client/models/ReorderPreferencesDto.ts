@@ -4,6 +4,9 @@
 /* eslint-disable */
 import type { PreferenceEnum } from './PreferenceEnum';
 export type ReorderPreferencesDto = {
+    /**
+     * A preferenciák új sorrendje
+     */
     preferences: Array<PreferenceEnum>;
 };
 

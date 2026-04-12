@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { User } from '../users/entity/user.entity';
 import { PairingsStore } from './core/pairings.store';
-import { PairingStatus } from './enum/pairing-status.enum';
+import { PairingStatusEnum } from './enum/pairing-status.enum';
 
 const PAIRING_EXPIRY_MS = 10 * 60 * 1000;
 
@@ -42,7 +42,7 @@ export class PairingsService {
       userCode,
       deviceCode,
       expiresAt,
-      status: PairingStatus.PENDING,
+      status: PairingStatusEnum.PENDING,
     });
 
     await this.pairingsStore.createOrUpdate(pairing);
@@ -70,15 +70,15 @@ export class PairingsService {
     if (pairing.expiresAt < new Date()) {
       await this.pairingsStore.createOrUpdate({
         ...pairing,
-        status: PairingStatus.EXPIRED,
+        status: PairingStatusEnum.EXPIRED,
       });
 
       throw new UnauthorizedException('A párosítási kód lejárt!');
     }
 
-    if (pairing.status === PairingStatus.LINKED && pairing.user) {
+    if (pairing.status === PairingStatusEnum.LINKED && pairing.user) {
       return {
-        status: PairingStatus.LINKED,
+        status: PairingStatusEnum.LINKED,
         token: pairing.user.token,
       };
     }
@@ -100,14 +100,14 @@ export class PairingsService {
     if (pairing.expiresAt < new Date()) {
       await this.pairingsStore.createOrUpdate({
         ...pairing,
-        status: PairingStatus.EXPIRED,
+        status: PairingStatusEnum.EXPIRED,
       });
       throw new UnauthorizedException('A kód már lejárt!');
     }
 
     await this.pairingsStore.createOrUpdate({
       ...pairing,
-      status: PairingStatus.LINKED,
+      status: PairingStatusEnum.LINKED,
       userId: user.id,
     });
 

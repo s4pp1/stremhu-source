@@ -3,9 +3,21 @@
 /* tslint:disable */
 /* eslint-disable */
 export type ManifestBehaviorHintsDto = {
-    adult: Record<string, any>;
-    p2p: Record<string, any>;
-    configurable: boolean;
-    configurationRequired: boolean;
+    /**
+     * Felnőtt tartalom-e
+     */
+    adult?: boolean;
+    /**
+     * P2P alapú-e
+     */
+    p2p?: boolean;
+    /**
+     * Konfigurálható-e
+     */
+    configurable?: boolean;
+    /**
+     * Kötelező-e a konfiguráció
+     */
+    configurationRequired?: boolean;
 };
 

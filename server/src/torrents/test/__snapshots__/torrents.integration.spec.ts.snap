@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Torrents (Integration) TorrentsController /torrents (GET) 1`] = `
+[
+  {
+    "infoHash": "mock-hash",
+    "isPersisted": true,
+    "name": "mock-torrent",
+  },
+]
+`;
+
+exports[`Torrents (Integration) TorrentsController /torrents/:infoHash (PUT) 1`] = `
+{
+  "infoHash": "mock-hash",
+  "isPersisted": true,
+  "name": "mock-torrent",
+}
+`;

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ClassConstructor } from 'class-transformer';
+import { ClassConstructor, Expose } from 'class-transformer';
 import { Equals, IsArray, IsString } from 'class-validator';
 
 import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
@@ -13,131 +13,105 @@ import { TrackerMetaDto } from './tracker-meta.dto';
 import { VideoQualityMetaDto } from './video-quality-meta.dto';
 
 export class BasePreferenceMetaDto {
+  /** Megjelenített név */
+  @Expose()
   @IsString()
-  @ApiProperty()
   label: string;
 
+  /** Leírás */
+  @Expose()
   @IsString()
-  @ApiProperty()
   description: string;
 }
 
 export class TrackerPreferenceMetaDto extends BasePreferenceMetaDto {
+  /** Tracker preferencia azonosító */
+  @Expose()
   @Equals(PreferenceEnum.TRACKER)
-  @ApiProperty({
-    enum: PreferenceEnum,
-    enumName: 'PreferenceEnum',
-    example: PreferenceEnum.TRACKER,
-  })
+  @ApiProperty({ enum: PreferenceEnum, enumName: 'PreferenceEnum' })
   value: PreferenceEnum.TRACKER;
 
+  /** Tracker elemek listája */
+  @Expose()
   @IsArray()
-  @ApiProperty({
-    type: TrackerMetaDto,
-    isArray: true,
-  })
   items: TrackerMetaDto[];
 }
 
 export class LanguagePreferenceMetaDto extends BasePreferenceMetaDto {
+  /** Nyelv preferencia azonosító */
+  @Expose()
   @Equals(PreferenceEnum.LANGUAGE)
-  @ApiProperty({
-    enum: PreferenceEnum,
-    enumName: 'PreferenceEnum',
-    example: PreferenceEnum.LANGUAGE,
-  })
+  @ApiProperty({ enum: PreferenceEnum, enumName: 'PreferenceEnum' })
   value: PreferenceEnum.LANGUAGE;
 
+  /** Nyelv elemek listája */
+  @Expose()
   @IsArray()
-  @ApiProperty({
-    type: LanguageMetaDto,
-    isArray: true,
-  })
   items: LanguageMetaDto[];
 }
 
 export class ResolutionPreferenceMetaDto extends BasePreferenceMetaDto {
+  /** Felbontás preferencia azonosító */
+  @Expose()
   @Equals(PreferenceEnum.RESOLUTION)
-  @ApiProperty({
-    enum: PreferenceEnum,
-    enumName: 'PreferenceEnum',
-    example: PreferenceEnum.RESOLUTION,
-  })
+  @ApiProperty({ enum: PreferenceEnum, enumName: 'PreferenceEnum' })
   value: PreferenceEnum.RESOLUTION;
 
+  /** Felbontás elemek listája */
+  @Expose()
   @IsArray()
-  @ApiProperty({
-    type: ResolutionMetaDto,
-    isArray: true,
-  })
   items: ResolutionMetaDto[];
 }
 
 export class VideoQualityPreferenceMetaDto extends BasePreferenceMetaDto {
+  /** Videó minőség preferencia azonosító */
+  @Expose()
   @Equals(PreferenceEnum.VIDEO_QUALITY)
-  @ApiProperty({
-    enum: PreferenceEnum,
-    enumName: 'PreferenceEnum',
-    example: PreferenceEnum.VIDEO_QUALITY,
-  })
+  @ApiProperty({ enum: PreferenceEnum, enumName: 'PreferenceEnum' })
   value: PreferenceEnum.VIDEO_QUALITY;
 
+  /** Videó minőség elemek listája */
+  @Expose()
   @IsArray()
-  @ApiProperty({
-    type: VideoQualityMetaDto,
-    isArray: true,
-  })
   items: VideoQualityMetaDto[];
 }
 
 export class SourcePreferenceMetaDto extends BasePreferenceMetaDto {
+  /** Forrás preferencia azonosító */
+  @Expose()
   @Equals(PreferenceEnum.SOURCE)
-  @ApiProperty({
-    enum: PreferenceEnum,
-    enumName: 'PreferenceEnum',
-    example: PreferenceEnum.SOURCE,
-  })
+  @ApiProperty({ enum: PreferenceEnum, enumName: 'PreferenceEnum' })
   value: PreferenceEnum.SOURCE;
 
+  /** Forrás elemek listája */
+  @Expose()
   @IsArray()
-  @ApiProperty({
-    type: SourceMetaDto,
-    isArray: true,
-  })
   items: SourceMetaDto[];
 }
 
 export class AudioQualityPreferenceMetaDto extends BasePreferenceMetaDto {
+  /** Audió minőség preferencia azonosító */
+  @Expose()
   @Equals(PreferenceEnum.AUDIO_QUALITY)
-  @ApiProperty({
-    enum: PreferenceEnum,
-    enumName: 'PreferenceEnum',
-    example: PreferenceEnum.AUDIO_QUALITY,
-  })
+  @ApiProperty({ enum: PreferenceEnum, enumName: 'PreferenceEnum' })
   value: PreferenceEnum.AUDIO_QUALITY;
 
+  /** Audió minőség elemek listája */
+  @Expose()
   @IsArray()
-  @ApiProperty({
-    type: AudioQualityMetaDto,
-    isArray: true,
-  })
   items: AudioQualityMetaDto[];
 }
 
 export class AudioSpatialPreferenceMetaDto extends BasePreferenceMetaDto {
+  /** Térhatású hang preferencia azonosító */
+  @Expose()
   @Equals(PreferenceEnum.AUDIO_SPATIAL)
-  @ApiProperty({
-    enum: PreferenceEnum,
-    enumName: 'PreferenceEnum',
-    example: PreferenceEnum.AUDIO_SPATIAL,
-  })
+  @ApiProperty({ enum: PreferenceEnum, enumName: 'PreferenceEnum' })
   value: PreferenceEnum.AUDIO_SPATIAL;
 
+  /** Térhatású hang elemek listája */
+  @Expose()
   @IsArray()
-  @ApiProperty({
-    type: AudioSpatialMetaDto,
-    isArray: true,
-  })
   items: AudioSpatialMetaDto[];
 }
 

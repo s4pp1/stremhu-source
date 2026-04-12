@@ -4,8 +4,17 @@
 /* eslint-disable */
 import type { TrackerEnum } from './TrackerEnum';
 export type LoginTrackerDto = {
+    /**
+     * Tracker azonosító
+     */
     tracker: TrackerEnum;
+    /**
+     * Felhasználónév
+     */
     username: string;
+    /**
+     * Jelszó
+     */
     password: string;
 };
 

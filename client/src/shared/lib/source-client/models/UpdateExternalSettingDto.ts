@@ -3,6 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export type UpdateExternalSettingDto = {
+    /**
+     * Port azonosító
+     */
     port?: number;
 };
 
