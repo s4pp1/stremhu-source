@@ -5,9 +5,21 @@
 import type { PreferenceEnum } from './PreferenceEnum';
 import type { SourceMetaDto } from './SourceMetaDto';
 export type SourcePreferenceMetaDto = {
-    label: string;
-    description: string;
+    /**
+     * Forrás preferencia azonosító
+     */
     value: PreferenceEnum;
+    /**
+     * Forrás elemek listája
+     */
     items: Array<SourceMetaDto>;
+    /**
+     * Megjelenített név
+     */
+    label: string;
+    /**
+     * Leírás
+     */
+    description: string;
 };
 

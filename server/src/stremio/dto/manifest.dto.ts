@@ -1,5 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
-
 import { ContentTypeEnum } from '../enum/content-type.enum';
 import { ShortManifestResourceEnum } from '../enum/short-manifest-resource.enum';
 import { FullManifestResourceDto } from './full-manifest-resource.dto';
@@ -8,47 +6,45 @@ import { ManifestCatalog } from './manifest-catalog.dto';
 import { ManifestConfigDto } from './manifest-config.dto';
 
 export class ManifestDto {
-  @ApiProperty()
+  /** Addon egyedi azonosítója */
   id: string;
 
-  @ApiProperty()
+  /** Addon neve */
   name: string;
 
-  @ApiProperty()
+  /** Addon leírása */
   description: string;
 
-  @ApiProperty()
+  /** Addon verziója */
   version: string;
 
-  @ApiProperty({
-    type: Array<ShortManifestResourceEnum | FullManifestResourceDto>,
-  })
+  /** Támogatott erőforrások listája */
   resources: Array<ShortManifestResourceEnum | FullManifestResourceDto>;
 
-  @ApiProperty({ enum: ContentTypeEnum, isArray: true })
+  /** Támogatott tartalom típusok */
   types: ContentTypeEnum[];
 
-  @ApiProperty()
+  /** ID előtagok */
   idPrefixes?: string[];
 
-  @ApiProperty()
+  /** Katalógusok listája */
   catalogs: ManifestCatalog[];
 
-  @ApiProperty()
+  /** Külső addon katalógusok */
   addonCatalogs?: ManifestCatalog[];
 
-  @ApiProperty()
+  /** Konfigurációs beállítások */
   config?: ManifestConfigDto[];
 
-  @ApiProperty()
+  /** Háttérkép URL */
   background?: string;
 
-  @ApiProperty()
+  /** Logo URL */
   logo?: string;
 
-  @ApiProperty()
+  /** Kapcsolati email */
   contactEmail?: string;
 
-  @ApiProperty({ type: ManifestBehaviorHintsDto })
+  /** Viselkedési tippek */
   behaviorHints?: ManifestBehaviorHintsDto;
 }

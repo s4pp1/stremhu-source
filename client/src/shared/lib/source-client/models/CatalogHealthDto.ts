@@ -3,6 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export type CatalogHealthDto = {
+    /**
+     * Katalógus verziója
+     */
     version: string;
 };
 

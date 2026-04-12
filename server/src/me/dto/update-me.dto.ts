@@ -1,30 +1,23 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateMeDto {
+  /** Felhasználónév */
   @IsOptional()
   @IsString()
-  @ApiProperty({
-    type: 'string',
-    required: false,
-  })
   username?: string;
 
+  /** Jelszó */
   @IsOptional()
   @IsString()
-  @ApiProperty({
-    type: 'string',
-    required: false,
-  })
   password?: string;
 
+  /** Torrent seed limit */
   @IsOptional()
   @IsNumber()
-  @ApiProperty({ type: 'number', nullable: true, required: false })
   torrentSeed?: number | null;
 
+  /** Csak a legjobb torrentek megjelenítése */
   @IsOptional()
   @IsBoolean()
-  @ApiProperty({ type: 'boolean', required: false })
   onlyBestTorrent?: boolean;
 }

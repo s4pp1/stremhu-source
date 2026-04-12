@@ -4,7 +4,13 @@
 /* eslint-disable */
 import type { ResolutionEnum } from './ResolutionEnum';
 export type ResolutionMetaDto = {
+    /**
+     * Felbontás értéke
+     */
     value: ResolutionEnum;
+    /**
+     * Megjelenített név
+     */
     label: string;
 };
 

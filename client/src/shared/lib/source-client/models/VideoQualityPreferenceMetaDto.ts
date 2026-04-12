@@ -5,9 +5,21 @@
 import type { PreferenceEnum } from './PreferenceEnum';
 import type { VideoQualityMetaDto } from './VideoQualityMetaDto';
 export type VideoQualityPreferenceMetaDto = {
-    label: string;
-    description: string;
+    /**
+     * Videó minőség preferencia azonosító
+     */
     value: PreferenceEnum;
+    /**
+     * Videó minőség elemek listája
+     */
     items: Array<VideoQualityMetaDto>;
+    /**
+     * Megjelenített név
+     */
+    label: string;
+    /**
+     * Leírás
+     */
+    description: string;
 };
 

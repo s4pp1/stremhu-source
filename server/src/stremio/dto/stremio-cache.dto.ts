@@ -1,20 +1,17 @@
-import { ApiProperty } from '@nestjs/swagger';
-
 export class StremioCacheDto {
   /**
-   * (in seconds) sets the Cache-Control header to max-age=$cacheMaxAge
-   * and overwrites the global cache time set in serveHTTP options.
+   * (másodpercben) Beállítja a Cache-Control fejléc max-age értékét ($cacheMaxAge).
+   * Felülírja a serveHTTP opciókban megadott globális cache időt.
    */
-  @ApiProperty({ required: false })
   cacheMaxAge?: number;
+
   /**
-   * (in seconds) sets the Cache-Control header to stale-while-revalidate=$staleRevalidate.
+   * (másodpercben) Beállítja a Cache-Control fejléc stale-while-revalidate értékét ($staleRevalidate).
    */
-  @ApiProperty({ required: false })
   staleRevalidate?: number;
+
   /**
-   * (in seconds) sets the Cache-Control header to stale-if-error=$staleError.
+   * (másodpercben) Beállítja a Cache-Control fejléc stale-if-error értékét ($staleError).
    */
-  @ApiProperty({ required: false })
   staleError?: number;
 }

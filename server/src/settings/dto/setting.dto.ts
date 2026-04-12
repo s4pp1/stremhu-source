@@ -1,31 +1,30 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 import { IsNullable } from 'src/common/validators/is-nullable';
 
 export class SettingDto {
+  /** Local IP engedélyezése */
   @IsBoolean()
-  @ApiProperty()
   enebledlocalIp: boolean;
 
+  /** Cím */
   @IsString()
   @IsNullable()
-  @ApiProperty({ type: 'string', nullable: true })
   address: string | null;
 
+  /** Hit and Run védelem */
   @IsBoolean()
-  @ApiProperty()
   hitAndRun: boolean;
 
+  /** Seedben tartás ideje (másodperc) */
   @IsNumber()
-  @ApiProperty({ type: 'number' })
   keepSeedSeconds: number;
 
+  /** Cache megőrzési ideje (másodperc) */
   @IsNumber()
-  @ApiProperty({ type: 'number' })
   cacheRetentionSeconds: number;
 
+  /** Katalógus token */
   @IsString()
-  @ApiProperty({ type: 'string', nullable: true })
   catalogToken: string | null;
 }

@@ -4,11 +4,12 @@ import { IsEnum, IsString } from 'class-validator';
 import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
 
 export class ResolutionMetaDto {
+  /** Felbontás értéke */
   @IsEnum(ResolutionEnum)
   @ApiProperty({ enum: ResolutionEnum, enumName: 'ResolutionEnum' })
   value: ResolutionEnum;
 
+  /** Megjelenített név */
   @IsString()
-  @ApiProperty()
   label: string;
 }

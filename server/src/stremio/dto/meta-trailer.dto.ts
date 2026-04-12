@@ -1,9 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-
 export class MetaTrailerDto {
-  @ApiProperty()
+  /** YouTube azonosító */
   ytId: string;
 
-  @ApiProperty()
+  /** Előzetes leírása */
   description: string;
 }

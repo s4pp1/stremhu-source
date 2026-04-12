@@ -1,7 +1,10 @@
 export class MetaDetailBehaviorHintsDto {
   /**
-   * Set to a Video Object id in order to open the Detail page directly to that video's streams.
+   * Alapértelmezett videó azonosító.
+   * Ha meg van adva, a részletező oldal közvetlenül ennek a videónak a streamjeit nyitja meg.
    */
   defaultVideoId?: string;
+
+  /** Vannak-e időzített videók */
   hasScheduledVideos?: boolean;
 }

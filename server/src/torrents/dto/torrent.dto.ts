@@ -3,48 +3,49 @@ import { ApiProperty } from '@nestjs/swagger';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 export class TorrentDto {
+  /** Tracker azonosító */
   @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum' })
   tracker: TrackerEnum;
 
-  @ApiProperty()
+  /** Torrent neve */
   name: string;
 
-  @ApiProperty()
+  /** Letöltési sebesség */
   downloadSpeed: number;
 
-  @ApiProperty()
+  /** Feltöltési sebesség */
   uploadSpeed: number;
 
-  @ApiProperty()
+  /** Haladás (0-1) */
   progress: number;
 
-  @ApiProperty()
+  /** Letöltött adat mennyisége */
   downloaded: number;
 
-  @ApiProperty()
+  /** Feltöltött adat mennyisége */
   uploaded: number;
 
-  @ApiProperty()
+  /** Teljes méret */
   total: number;
 
-  @ApiProperty()
+  /** Info hash */
   infoHash: string;
 
-  @ApiProperty()
+  /** Egyedi torrent azonosító */
   torrentId: string;
 
-  @ApiProperty()
+  /** Mentve van-e az adatbázisba */
   isPersisted: boolean;
 
-  @ApiProperty({ type: 'boolean', nullable: true })
+  /** Teljes letöltés állapota */
   fullDownload: boolean | null;
 
-  @ApiProperty({ type: 'string', format: 'date-time' })
+  /** Utolsó lejátszás időpontja */
   lastPlayedAt: Date;
 
-  @ApiProperty({ type: 'string', format: 'date-time' })
+  /** Utolsó frissítés időpontja */
   updatedAt: Date;
 
-  @ApiProperty({ type: 'string', format: 'date-time' })
+  /** Létrehozás időpontja */
   createdAt: Date;
 }

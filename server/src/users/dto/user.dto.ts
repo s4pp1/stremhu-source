@@ -14,12 +14,12 @@ import { IsNullable } from 'src/common/validators/is-nullable';
 import { UserRoleEnum } from '../enum/user-role.enum';
 
 export class UserDto {
+  /** Felhasználó egyedi azonosítója */
   @IsUUID()
-  @ApiProperty({ format: 'uuid' })
   id: string;
 
+  /** Felhasználónév */
   @IsString()
-  @ApiProperty()
   username: string;
 
   @Exclude()
@@ -27,20 +27,21 @@ export class UserDto {
   @IsString()
   passwordHash: string | null;
 
+  /** API token */
   @IsString()
-  @ApiProperty()
   token: string;
 
+  /** Felhasználói szerepkör */
   @IsEnum(UserRoleEnum)
   @ApiProperty({ enum: UserRoleEnum, enumName: 'UserRoleEnum' })
   userRole: UserRoleEnum;
 
+  /** Torrent seed limit */
   @IsNullable()
   @IsNumber()
-  @ApiProperty({ type: 'number', nullable: true })
   torrentSeed: number | null;
 
+  /** Csak a legjobb torrentek megjelenítése */
   @IsBoolean()
-  @ApiProperty({ type: 'boolean' })
   onlyBestTorrent: boolean;
 }

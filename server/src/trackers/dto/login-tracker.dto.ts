@@ -4,18 +4,16 @@ import { IsEnum, IsString } from 'class-validator';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 export class LoginTrackerDto {
+  /** Tracker azonosító */
   @IsEnum(TrackerEnum)
-  @ApiProperty({
-    enum: TrackerEnum,
-    enumName: 'TrackerEnum',
-  })
+  @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum' })
   tracker: TrackerEnum;
 
+  /** Felhasználónév */
   @IsString()
-  @ApiProperty()
   username: string;
 
+  /** Jelszó */
   @IsString()
-  @ApiProperty()
   password: string;
 }

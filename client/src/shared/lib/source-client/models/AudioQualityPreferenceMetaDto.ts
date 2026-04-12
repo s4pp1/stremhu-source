@@ -5,9 +5,21 @@
 import type { AudioQualityMetaDto } from './AudioQualityMetaDto';
 import type { PreferenceEnum } from './PreferenceEnum';
 export type AudioQualityPreferenceMetaDto = {
-    label: string;
-    description: string;
+    /**
+     * Audió minőség preferencia azonosító
+     */
     value: PreferenceEnum;
+    /**
+     * Audió minőség elemek listája
+     */
     items: Array<AudioQualityMetaDto>;
+    /**
+     * Megjelenített név
+     */
+    label: string;
+    /**
+     * Leírás
+     */
+    description: string;
 };
 

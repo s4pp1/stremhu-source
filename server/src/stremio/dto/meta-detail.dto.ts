@@ -1,5 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
-
 import { MetaDetailBehaviorHintsDto } from './meta-detail-behaviour-hints.dto';
 import { MetaPreviewDto } from './meta-preview.dto';
 import { MetaTrailerDto } from './meta-trailer.dto';
@@ -13,61 +11,43 @@ export class MetaDetailDto extends MetaPreviewDto {
    *
    * e.g. "2010-12-06T05:00:00.000Z"
    */
-  @ApiProperty({ required: false })
   released?: string;
 
-  @ApiProperty({ required: false })
+  /** Megjelenés éve */
   year?: string;
 
-  @ApiProperty({ type: () => MetaTrailerDto, isArray: true, required: false })
+  /** Előzetesek listája */
   trailers?: MetaTrailerDto[];
 
   /**
-   * Used for channel and series.
+   * Csatornákhoz és sorozatokhoz használatos.
    *
-   * If you do not provide this (e.g. for movie), Stremio assumes this meta item has one video, and it's ID is equal to the meta item id.
+   * Ha nincs megadva (pl. filmnél), a Stremio feltételezi, hogy egy videó van, aminek az ID-ja megegyezik a meta ID-val.
    */
-  @ApiProperty({ type: () => MetaVideoDto, isArray: true, required: false })
   videos?: MetaVideoDto[];
 
   /**
-   * Human-readable expected runtime.
+   * Várható játékidő emberi formátumban.
    *
    * e.g. "120m"
    */
-  @ApiProperty({ required: false })
   runtime?: string;
 
-  /**
-   * Spoken language.
-   */
-  @ApiProperty({ required: false })
+  /** Beszélt nyelv */
   language?: string;
 
-  /**
-   * Official country of origin.
-   */
-  @ApiProperty({ required: false })
+  /** Származási ország */
   country?: string;
 
-  /**
-   * Human-readable that describes all the significant awards.
-   */
-  @ApiProperty({ required: false })
+  /** Díjak leírása */
   awards?: string;
 
-  /**
-   * URL to official website.
-   */
-  @ApiProperty({ required: false })
+  /** Hivatalos weboldal URL */
   website?: string;
 
-  @ApiProperty({
-    type: () => MetaDetailBehaviorHintsDto,
-    required: false,
-  })
+  /** Viselkedési tippek */
   behaviorHints?: MetaDetailBehaviorHintsDto;
 
-  @ApiProperty({ type: 'string', isArray: true, required: false })
+  /** Írók listája */
   writer?: string[];
 }

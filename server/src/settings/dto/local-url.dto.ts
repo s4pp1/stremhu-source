@@ -1,8 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
 export class LocalUrlDto {
+  /** Helyi elérési út */
   @IsString()
-  @ApiProperty()
   localUrl: string;
 }

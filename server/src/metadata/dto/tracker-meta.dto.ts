@@ -4,23 +4,24 @@ import { IsBoolean, IsEnum, IsString } from 'class-validator';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 export class TrackerMetaDto {
+  /** Tracker azonosító */
   @IsEnum(TrackerEnum)
   @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum' })
   value: TrackerEnum;
 
+  /** Megjelenített név */
   @IsString()
-  @ApiProperty()
   label: string;
 
+  /** Szükséges-e a teljes letöltés */
   @IsBoolean()
-  @ApiProperty()
   requiresFullDownload: boolean;
 
+  /** Weboldal URL */
   @IsString()
-  @ApiProperty()
   url: string;
 
+  /** Részletek útvonala */
   @IsString()
-  @ApiProperty()
   detailsPath: string;
 }

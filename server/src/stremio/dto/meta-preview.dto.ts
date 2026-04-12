@@ -11,10 +11,9 @@ export class MetaPreviewDto {
    *
    * Example: 'yt_id:UCrDkAvwZum-UTjHmzDI2iIw'
    */
-  @ApiProperty()
   id: string;
 
-  @ApiProperty({ type: 'string', required: false })
+  /** IMDb azonosító */
   imdb_id?: string;
 
   /**
@@ -26,7 +25,6 @@ export class MetaPreviewDto {
   /**
    * Name of the content.
    */
-  @ApiProperty()
   name: string;
 
   /**
@@ -37,7 +35,6 @@ export class MetaPreviewDto {
    * You can use any resolution, as long as the file size is below 100kb.
    * Below 50kb is recommended
    */
-  @ApiProperty({ required: false })
   poster?: string;
 
   /**
@@ -55,7 +52,6 @@ export class MetaPreviewDto {
    *
    * URL to PNG, max file size 500kb.
    */
-  @ApiProperty({ required: false })
   background?: string;
 
   /**
@@ -65,28 +61,26 @@ export class MetaPreviewDto {
    *
    * URL to PNG.
    */
-  @ApiProperty({ required: false })
   logo?: string;
 
   /**
    * A few sentences describing your content.
    */
-  @ApiProperty({ required: false })
   description?: string;
 
-  @ApiProperty({ type: 'string', required: false })
+  /** IMDb értékelés */
   imdbRating?: string;
 
-  @ApiProperty({ required: false })
+  /** Megjelenési információk */
   releaseInfo?: string;
 
-  @ApiProperty({ type: 'string', isArray: true, required: false })
+  /** Műfajok listája */
   genres?: string[];
 
-  @ApiProperty({ type: 'string', isArray: true, required: false })
+  /** Szereplőgárda */
   cast?: string[];
 
-  @ApiProperty({ type: 'string', isArray: true, required: false })
+  /** Rendező(k) */
   director?: string[];
 
   /**
@@ -94,6 +88,5 @@ export class MetaPreviewDto {
    *
    * example: array of actor / genre / director links.
    */
-  @ApiProperty({ type: () => MetaLinkDto, isArray: true, required: false })
   links?: MetaLinkDto[];
 }

@@ -1,6 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
-
 export class PairVerifyDto {
-  @ApiProperty()
+  /** Sikeres volt-e a párosítás jóváhagyása */
   success: boolean;
 }

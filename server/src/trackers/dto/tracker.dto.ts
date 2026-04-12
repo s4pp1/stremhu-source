@@ -6,36 +6,37 @@ import { IsNullable } from 'src/common/validators/is-nullable';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
 export class TrackerDto {
+  /** Tracker azonosító */
   @IsEnum(TrackerEnum)
   @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum' })
   tracker: TrackerEnum;
 
+  /** Felhasználónév */
   @IsString()
-  @ApiProperty()
   username: string;
 
   @Exclude()
   password: string;
 
+  /** Teljes torrent letöltése */
   @IsBoolean()
-  @ApiProperty({ type: 'boolean' })
   downloadFullTorrent: boolean;
 
+  /** Hit and Run védelem állapota */
   @IsNullable()
   @IsBoolean()
-  @ApiProperty({ type: 'boolean', nullable: true })
   hitAndRun: boolean | null;
 
+  /** Seedben tartás ideje (másodperc) */
   @IsNullable()
   @IsNumber()
-  @ApiProperty({ type: 'integer', nullable: true })
   keepSeedSeconds: number | null;
 
+  /** Utolsó frissítés időpontja */
   @IsDate()
-  @ApiProperty()
   updatedAt: Date;
 
+  /** Létrehozás időpontja */
   @IsDate()
-  @ApiProperty()
   createdAt: Date;
 }

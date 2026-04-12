@@ -4,7 +4,13 @@
 /* eslint-disable */
 import type { VideoQualityEnum } from './VideoQualityEnum';
 export type VideoQualityMetaDto = {
+    /**
+     * Videó minőség értéke
+     */
     value: VideoQualityEnum;
+    /**
+     * Megjelenített név
+     */
     label: string;
 };
 

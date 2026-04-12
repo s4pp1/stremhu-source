@@ -3,7 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 export type CreateUserDto = {
+    /**
+     * Felhasználónév
+     */
     username: string;
+    /**
+     * Jelszó
+     */
     password: string | null;
 };
 

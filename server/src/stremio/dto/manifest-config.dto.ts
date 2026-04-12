@@ -1,23 +1,21 @@
-import { ApiProperty } from '@nestjs/swagger';
-
 import { ManifestConfigTypeEnum } from '../enum/manifest-config-type.enum';
 
 export class ManifestConfigDto {
-  @ApiProperty()
+  /** Konfigurációs kulcs */
   key: string;
 
-  @ApiProperty({ enum: ManifestConfigTypeEnum })
+  /** Konfiguráció típusa */
   type: ManifestConfigTypeEnum;
 
-  @ApiProperty()
+  /** Alapértelmezett érték */
   default?: string;
 
-  @ApiProperty()
+  /** Megjelenített cím */
   title?: string;
 
-  @ApiProperty()
+  /** Választható opciók */
   options?: string[];
 
-  @ApiProperty()
+  /** Kötelező-e a megadása */
   required?: string;
 }

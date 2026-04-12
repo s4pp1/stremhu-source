@@ -4,7 +4,13 @@
 /* eslint-disable */
 import type { AudioSpatialEnum } from './AudioSpatialEnum';
 export type AudioSpatialMetaDto = {
+    /**
+     * Térhatású hang értéke
+     */
     value: AudioSpatialEnum;
+    /**
+     * Megjelenített név
+     */
     label: string;
 };
 

@@ -17,16 +17,15 @@ export class TrackerPreferenceDto {
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.TRACKER,
   })
   preference: PreferenceEnum.TRACKER;
 
   @IsEnum(TrackerEnum, { each: true })
-  @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum', isArray: true })
+  @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum' })
   preferred: TrackerEnum[];
 
   @IsEnum(TrackerEnum, { each: true })
-  @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum', isArray: true })
+  @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum' })
   blocked: TrackerEnum[];
 }
 
@@ -35,16 +34,15 @@ export class LanguagePreferenceDto {
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.LANGUAGE,
   })
   preference: PreferenceEnum.LANGUAGE;
 
   @IsEnum(LanguageEnum, { each: true })
-  @ApiProperty({ enum: LanguageEnum, enumName: 'LanguageEnum', isArray: true })
+  @ApiProperty({ enum: LanguageEnum, enumName: 'LanguageEnum' })
   preferred: LanguageEnum[];
 
   @IsEnum(LanguageEnum, { each: true })
-  @ApiProperty({ enum: LanguageEnum, enumName: 'LanguageEnum', isArray: true })
+  @ApiProperty({ enum: LanguageEnum, enumName: 'LanguageEnum' })
   blocked: LanguageEnum[];
 }
 
@@ -53,7 +51,6 @@ export class ResolutionPreferenceDto {
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.RESOLUTION,
   })
   preference: PreferenceEnum.RESOLUTION;
 
@@ -61,7 +58,6 @@ export class ResolutionPreferenceDto {
   @ApiProperty({
     enum: ResolutionEnum,
     enumName: 'ResolutionEnum',
-    isArray: true,
   })
   preferred: ResolutionEnum[];
 
@@ -69,7 +65,6 @@ export class ResolutionPreferenceDto {
   @ApiProperty({
     enum: ResolutionEnum,
     enumName: 'ResolutionEnum',
-    isArray: true,
   })
   blocked: ResolutionEnum[];
 }
@@ -79,7 +74,6 @@ export class VideoQualityPreferenceDto {
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.VIDEO_QUALITY,
   })
   preference: PreferenceEnum.VIDEO_QUALITY;
 
@@ -87,7 +81,6 @@ export class VideoQualityPreferenceDto {
   @ApiProperty({
     enum: VideoQualityEnum,
     enumName: 'VideoQualityEnum',
-    isArray: true,
   })
   preferred: VideoQualityEnum[];
 
@@ -95,7 +88,6 @@ export class VideoQualityPreferenceDto {
   @ApiProperty({
     enum: VideoQualityEnum,
     enumName: 'VideoQualityEnum',
-    isArray: true,
   })
   blocked: VideoQualityEnum[];
 }
@@ -105,7 +97,6 @@ export class SourcePreferenceDto {
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.SOURCE,
   })
   preference: PreferenceEnum.SOURCE;
 
@@ -113,7 +104,6 @@ export class SourcePreferenceDto {
   @ApiProperty({
     enum: SourceEnum,
     enumName: 'SourceEnum',
-    isArray: true,
   })
   preferred: SourceEnum[];
 
@@ -121,7 +111,6 @@ export class SourcePreferenceDto {
   @ApiProperty({
     enum: SourceEnum,
     enumName: 'SourceEnum',
-    isArray: true,
   })
   blocked: SourceEnum[];
 }
@@ -131,7 +120,6 @@ export class AudioQualityPreferenceDto {
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.AUDIO_QUALITY,
   })
   preference: PreferenceEnum.AUDIO_QUALITY;
 
@@ -139,7 +127,6 @@ export class AudioQualityPreferenceDto {
   @ApiProperty({
     enum: AudioQualityEnum,
     enumName: 'AudioQualityEnum',
-    isArray: true,
   })
   preferred: AudioQualityEnum[];
 
@@ -147,7 +134,6 @@ export class AudioQualityPreferenceDto {
   @ApiProperty({
     enum: AudioQualityEnum,
     enumName: 'AudioQualityEnum',
-    isArray: true,
   })
   blocked: AudioQualityEnum[];
 }
@@ -157,7 +143,6 @@ export class AudioSpatialPreferenceDto {
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.AUDIO_SPATIAL,
   })
   preference: PreferenceEnum.AUDIO_SPATIAL;
 
@@ -165,7 +150,6 @@ export class AudioSpatialPreferenceDto {
   @ApiProperty({
     enum: AudioSpatialEnum,
     enumName: 'AudioSpatialEnum',
-    isArray: true,
   })
   preferred: AudioSpatialEnum[];
 
@@ -173,7 +157,6 @@ export class AudioSpatialPreferenceDto {
   @ApiProperty({
     enum: AudioSpatialEnum,
     enumName: 'AudioSpatialEnum',
-    isArray: true,
   })
   blocked: AudioSpatialEnum[];
 }

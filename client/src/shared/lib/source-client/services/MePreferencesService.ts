@@ -22,7 +22,7 @@ export class MePreferencesService {
      */
     public create(
         requestBody: (TrackerPreferenceDto | LanguagePreferenceDto | ResolutionPreferenceDto | VideoQualityPreferenceDto | SourcePreferenceDto | AudioQualityPreferenceDto | AudioSpatialPreferenceDto),
-    ): CancelablePromise<any> {
+    ): CancelablePromise<Record<string, any>> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/me/preference',

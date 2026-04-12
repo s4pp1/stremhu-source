@@ -3,9 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export type BehaviorHintsDto = {
-    countryWhitelist: Array<string>;
+    countryWhitelist?: Array<string>;
     notWebReady: boolean;
-    bingeGroup: string;
-    filename: string;
+    bingeGroup?: string;
+    filename?: string;
 };
 

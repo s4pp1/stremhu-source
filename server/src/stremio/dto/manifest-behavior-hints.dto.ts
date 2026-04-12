@@ -1,15 +1,13 @@
-import { ApiProperty } from '@nestjs/swagger';
-
 export class ManifestBehaviorHintsDto {
-  @ApiProperty()
-  adult?: boolean | undefined;
+  /** Felnőtt tartalom-e */
+  adult?: boolean;
 
-  @ApiProperty()
-  p2p?: boolean | undefined;
+  /** P2P alapú-e */
+  p2p?: boolean;
 
-  @ApiProperty()
+  /** Konfigurálható-e */
   configurable?: boolean;
 
-  @ApiProperty()
+  /** Kötelező-e a konfiguráció */
   configurationRequired?: boolean;
 }

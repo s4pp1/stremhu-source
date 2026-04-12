@@ -5,9 +5,21 @@
 import type { PreferenceEnum } from './PreferenceEnum';
 import type { ResolutionMetaDto } from './ResolutionMetaDto';
 export type ResolutionPreferenceMetaDto = {
-    label: string;
-    description: string;
+    /**
+     * Felbontás preferencia azonosító
+     */
     value: PreferenceEnum;
+    /**
+     * Felbontás elemek listája
+     */
     items: Array<ResolutionMetaDto>;
+    /**
+     * Megjelenített név
+     */
+    label: string;
+    /**
+     * Leírás
+     */
+    description: string;
 };
 

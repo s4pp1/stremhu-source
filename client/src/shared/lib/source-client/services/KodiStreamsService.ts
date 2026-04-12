@@ -10,8 +10,8 @@ export class KodiStreamsService {
     /**
      * @param imdbId
      * @param token
-     * @param season
-     * @param episode
+     * @param season Évad száma
+     * @param episode Epizód száma
      * @returns KodiImdbStreamsDto
      * @throws ApiError
      */

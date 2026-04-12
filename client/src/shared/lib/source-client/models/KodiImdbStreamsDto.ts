@@ -4,7 +4,13 @@
 /* eslint-disable */
 import type { KodiImdbStreamDto } from './KodiImdbStreamDto';
 export type KodiImdbStreamsDto = {
+    /**
+     * Elérhető streamek listája
+     */
     streams: Array<KodiImdbStreamDto>;
+    /**
+     * Hibák listája
+     */
     errors: Array<string>;
 };
 

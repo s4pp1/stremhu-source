@@ -12,18 +12,19 @@ import { UserRoleMetaDto } from './user-role-meta.dto';
 
 @ApiExtraModels(...PREFERENCE_META_SWAGGER_MODELS)
 export class MetadataDto extends HealthDto {
+  /** Felhasználói szerepkörök listája */
   @IsArray()
-  @ApiProperty({ type: UserRoleMetaDto, isArray: true })
   userRoles: UserRoleMetaDto[];
 
+  /** Trackerek listája */
   @IsArray()
-  @ApiProperty({ type: TrackerMetaDto, isArray: true })
   trackers: TrackerMetaDto[];
 
+  /** API végpont */
   @IsString()
-  @ApiProperty()
   endpoint: string;
 
+  /** Preferenciák listája (különböző típusú elemekkel) */
   @ApiProperty({
     type: 'array',
     items: {

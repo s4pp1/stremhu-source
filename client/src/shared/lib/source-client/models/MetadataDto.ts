@@ -12,10 +12,25 @@ import type { TrackerPreferenceMetaDto } from './TrackerPreferenceMetaDto';
 import type { UserRoleMetaDto } from './UserRoleMetaDto';
 import type { VideoQualityPreferenceMetaDto } from './VideoQualityPreferenceMetaDto';
 export type MetadataDto = {
-    version: string;
-    userRoles: Array<UserRoleMetaDto>;
-    trackers: Array<TrackerMetaDto>;
-    endpoint: string;
+    /**
+     * Preferenciák listája (különböző típusú elemekkel)
+     */
     preferences: Array<(TrackerPreferenceMetaDto | LanguagePreferenceMetaDto | ResolutionPreferenceMetaDto | VideoQualityPreferenceMetaDto | SourcePreferenceMetaDto | AudioQualityPreferenceMetaDto | AudioSpatialPreferenceMetaDto)>;
+    /**
+     * Felhasználói szerepkörök listája
+     */
+    userRoles: Array<UserRoleMetaDto>;
+    /**
+     * Trackerek listája
+     */
+    trackers: Array<TrackerMetaDto>;
+    /**
+     * API végpont
+     */
+    endpoint: string;
+    /**
+     * Az alkalmazás verziója
+     */
+    version: string;
 };
 

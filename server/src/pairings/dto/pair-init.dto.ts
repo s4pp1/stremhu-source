@@ -1,12 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
-
 export class PairInitDto {
-  @ApiProperty()
+  /** A 4 jegyű kód, amit a felhasználónak be kell gépelnie */
   userCode: string;
 
-  @ApiProperty()
+  /** Az eszköz egyedi azonosítója a státusz lekérdezéséhez */
   deviceCode: string;
 
-  @ApiProperty()
+  /** A kód lejárati ideje */
   expiresAt: Date;
 }

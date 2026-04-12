@@ -1,17 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger';
-
 import { ExtraEnum } from '../enum/extra.enum';
 
 export class ManifestExtraDto {
-  @ApiProperty({ enum: ExtraEnum })
+  /** Extra paraméter neve */
   name: ExtraEnum;
 
-  @ApiProperty()
+  /** Kötelező-e a paraméter */
   isRequired?: boolean;
 
-  @ApiProperty()
+  /** Választható opciók */
   options?: string[];
 
-  @ApiProperty()
+  /** Maximálisan választható opciók száma */
   optionsLimit?: number;
 }

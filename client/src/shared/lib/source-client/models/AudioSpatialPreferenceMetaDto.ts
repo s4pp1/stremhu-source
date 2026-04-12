@@ -5,9 +5,21 @@
 import type { AudioSpatialMetaDto } from './AudioSpatialMetaDto';
 import type { PreferenceEnum } from './PreferenceEnum';
 export type AudioSpatialPreferenceMetaDto = {
-    label: string;
-    description: string;
+    /**
+     * Térhatású hang preferencia azonosító
+     */
     value: PreferenceEnum;
+    /**
+     * Térhatású hang elemek listája
+     */
     items: Array<AudioSpatialMetaDto>;
+    /**
+     * Megjelenített név
+     */
+    label: string;
+    /**
+     * Leírás
+     */
+    description: string;
 };
 

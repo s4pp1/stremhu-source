@@ -13,131 +13,110 @@ import { TrackerMetaDto } from './tracker-meta.dto';
 import { VideoQualityMetaDto } from './video-quality-meta.dto';
 
 export class BasePreferenceMetaDto {
+  /** Megjelenített név */
   @IsString()
-  @ApiProperty()
   label: string;
 
+  /** Leírás */
   @IsString()
-  @ApiProperty()
   description: string;
 }
 
 export class TrackerPreferenceMetaDto extends BasePreferenceMetaDto {
+  /** Tracker preferencia azonosító */
   @Equals(PreferenceEnum.TRACKER)
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.TRACKER,
   })
   value: PreferenceEnum.TRACKER;
 
+  /** Tracker elemek listája */
   @IsArray()
-  @ApiProperty({
-    type: TrackerMetaDto,
-    isArray: true,
-  })
   items: TrackerMetaDto[];
 }
 
 export class LanguagePreferenceMetaDto extends BasePreferenceMetaDto {
+  /** Nyelv preferencia azonosító */
   @Equals(PreferenceEnum.LANGUAGE)
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.LANGUAGE,
   })
   value: PreferenceEnum.LANGUAGE;
 
+  /** Nyelv elemek listája */
   @IsArray()
-  @ApiProperty({
-    type: LanguageMetaDto,
-    isArray: true,
-  })
   items: LanguageMetaDto[];
 }
 
 export class ResolutionPreferenceMetaDto extends BasePreferenceMetaDto {
+  /** Felbontás preferencia azonosító */
   @Equals(PreferenceEnum.RESOLUTION)
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.RESOLUTION,
   })
   value: PreferenceEnum.RESOLUTION;
 
+  /** Felbontás elemek listája */
   @IsArray()
-  @ApiProperty({
-    type: ResolutionMetaDto,
-    isArray: true,
-  })
   items: ResolutionMetaDto[];
 }
 
 export class VideoQualityPreferenceMetaDto extends BasePreferenceMetaDto {
+  /** Videó minőség preferencia azonosító */
   @Equals(PreferenceEnum.VIDEO_QUALITY)
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.VIDEO_QUALITY,
   })
   value: PreferenceEnum.VIDEO_QUALITY;
 
+  /** Videó minőség elemek listája */
   @IsArray()
-  @ApiProperty({
-    type: VideoQualityMetaDto,
-    isArray: true,
-  })
   items: VideoQualityMetaDto[];
 }
 
 export class SourcePreferenceMetaDto extends BasePreferenceMetaDto {
+  /** Forrás preferencia azonosító */
   @Equals(PreferenceEnum.SOURCE)
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.SOURCE,
   })
   value: PreferenceEnum.SOURCE;
 
+  /** Forrás elemek listája */
   @IsArray()
-  @ApiProperty({
-    type: SourceMetaDto,
-    isArray: true,
-  })
   items: SourceMetaDto[];
 }
 
 export class AudioQualityPreferenceMetaDto extends BasePreferenceMetaDto {
+  /** Audió minőség preferencia azonosító */
   @Equals(PreferenceEnum.AUDIO_QUALITY)
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.AUDIO_QUALITY,
   })
   value: PreferenceEnum.AUDIO_QUALITY;
 
+  /** Audió minőség elemek listája */
   @IsArray()
-  @ApiProperty({
-    type: AudioQualityMetaDto,
-    isArray: true,
-  })
   items: AudioQualityMetaDto[];
 }
 
 export class AudioSpatialPreferenceMetaDto extends BasePreferenceMetaDto {
+  /** Térhatású hang preferencia azonosító */
   @Equals(PreferenceEnum.AUDIO_SPATIAL)
   @ApiProperty({
     enum: PreferenceEnum,
     enumName: 'PreferenceEnum',
-    example: PreferenceEnum.AUDIO_SPATIAL,
   })
   value: PreferenceEnum.AUDIO_SPATIAL;
 
+  /** Térhatású hang elemek listája */
   @IsArray()
-  @ApiProperty({
-    type: AudioSpatialMetaDto,
-    isArray: true,
-  })
   items: AudioSpatialMetaDto[];
 }
 

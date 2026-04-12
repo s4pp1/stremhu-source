@@ -3,8 +3,17 @@
 /* tslint:disable */
 /* eslint-disable */
 export type UpdateTrackerDto = {
+    /**
+     * Hit and Run védelem állapota
+     */
     hitAndRun?: boolean | null;
+    /**
+     * Seedben tartás ideje (másodperc)
+     */
     keepSeedSeconds?: number | null;
+    /**
+     * Teljes torrent letöltése
+     */
     downloadFullTorrent?: boolean;
 };
 

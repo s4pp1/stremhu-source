@@ -1,28 +1,27 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsNumber } from 'class-validator';
 
 export class RelaySettingsDto {
+  /** Port azonosító */
   @IsNumber()
-  @ApiProperty()
   port: number;
 
+  /** Letöltési korlát */
   @IsNumber()
-  @ApiProperty()
   downloadLimit: number;
 
+  /** Feltöltési korlát */
   @IsNumber()
-  @ApiProperty()
   uploadLimit: number;
 
+  /** Kapcsolatok korlátja */
   @IsNumber()
-  @ApiProperty()
   connectionsLimit: number;
 
+  /** Torrentenkénti kapcsolatok korlátja */
   @IsNumber()
-  @ApiProperty()
   torrentConnectionsLimit: number;
 
+  /** UPnP és NAT-PMP engedélyezése */
   @IsBoolean()
-  @ApiProperty()
   enableUpnpAndNatpmp: boolean;
 }

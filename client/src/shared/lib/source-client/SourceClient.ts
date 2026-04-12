@@ -12,6 +12,7 @@ import { KodiStreamsService } from './services/KodiStreamsService';
 import { MeService } from './services/MeService';
 import { MePreferencesService } from './services/MePreferencesService';
 import { MetadataService } from './services/MetadataService';
+import { PairingsService } from './services/PairingsService';
 import { PlayService } from './services/PlayService';
 import { SettingsService } from './services/SettingsService';
 import { StremHuCatalogService } from './services/StremHuCatalogService';
@@ -32,6 +33,7 @@ export class SourceClient {
     public readonly me: MeService;
     public readonly mePreferences: MePreferencesService;
     public readonly metadata: MetadataService;
+    public readonly pairings: PairingsService;
     public readonly play: PlayService;
     public readonly settings: SettingsService;
     public readonly stremHuCatalog: StremHuCatalogService;
@@ -63,6 +65,7 @@ export class SourceClient {
         this.me = new MeService(this.request);
         this.mePreferences = new MePreferencesService(this.request);
         this.metadata = new MetadataService(this.request);
+        this.pairings = new PairingsService(this.request);
         this.play = new PlayService(this.request);
         this.settings = new SettingsService(this.request);
         this.stremHuCatalog = new StremHuCatalogService(this.request);

@@ -3,6 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export type LocalUrlRequestDto = {
+    /**
+     * IPv4 cím a helyi URL generálásához
+     */
     ipv4: string;
 };
 

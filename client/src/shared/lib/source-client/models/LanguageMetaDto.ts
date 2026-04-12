@@ -4,7 +4,13 @@
 /* eslint-disable */
 import type { LanguageEnum } from './LanguageEnum';
 export type LanguageMetaDto = {
+    /**
+     * Nyelv értéke
+     */
     value: LanguageEnum;
+    /**
+     * Megjelenített név
+     */
     label: string;
 };
 
