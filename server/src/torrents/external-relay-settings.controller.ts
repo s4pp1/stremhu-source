@@ -1,12 +1,11 @@
 import { Body, Controller, Put, UseGuards } from '@nestjs/common';
-import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { TokenGuard } from 'src/auth/guards/token.guard';
 import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
-import { SettingDto } from '../settings/dto/setting.dto';
 import { UpdateExternalSettingDto } from '../settings/dto/update-external-setting.dto';
 import { RelaySettingsService } from '../settings/relay/relay-settings.service';
 import { TorrentsService } from './torrents.service';
@@ -26,7 +25,6 @@ export class ExternalRelaySettingsController {
     private readonly torrentsService: TorrentsService,
   ) {}
 
-  @ApiResponse({ status: 200, type: SettingDto })
   @Put('/')
   async update(@Body() body: UpdateExternalSettingDto): Promise<void> {
     const settings = await this.relaySettingsService.update(body);

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 import { ContentTypeEnum } from '../enum/content-type.enum';
 import { PosterShapeEnum } from '../enum/poster-shape.enum';
@@ -16,6 +16,7 @@ export class MetaPreviewDto {
   id: string;
 
   /** IMDb azonosító */
+  @Expose()
   imdb_id?: string;
 
   /**
@@ -102,6 +103,7 @@ export class MetaPreviewDto {
    *
    * example: array of actor / genre / director links.
    */
+  @Type(() => MetaLinkDto)
   @Expose()
   links?: MetaLinkDto[];
 }

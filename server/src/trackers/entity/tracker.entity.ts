@@ -11,29 +11,29 @@ import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 @Entity('trackers')
 export class Tracker {
   @PrimaryColumn({ type: 'simple-enum', enum: TrackerEnum })
-  tracker!: TrackerEnum;
+  tracker: TrackerEnum;
 
   @Column({ type: 'text' })
-  username!: string;
+  username: string;
 
   @Column({ type: 'text' })
-  password!: string;
+  password: string;
 
   @Column({ name: 'hit_and_run', type: 'boolean', nullable: true })
-  hitAndRun!: boolean | null;
+  hitAndRun: boolean | null;
 
   @Column({ name: 'keep_seed_seconds', type: 'int', nullable: true })
-  keepSeedSeconds!: number | null;
+  keepSeedSeconds: number | null;
 
   @Column({ name: 'download_full_torrent', type: 'boolean', default: false })
-  downloadFullTorrent!: boolean;
+  downloadFullTorrent: boolean;
 
   @Column({ name: 'order_index', default: 0 })
-  orderIndex!: number;
+  orderIndex: number;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt?: Date;
+  updatedAt: Date;
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt?: Date;
+  createdAt: Date;
 }

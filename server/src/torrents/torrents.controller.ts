@@ -5,15 +5,15 @@ import {
   Get,
   Param,
   Put,
+  SerializeOptions,
   UseGuards,
 } from '@nestjs/common';
-import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { orderBy } from 'lodash';
 
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { toDto } from 'src/common/utils/to-dto';
 import { RelaySettingsService } from 'src/settings/relay/relay-settings.service';
 import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
@@ -33,24 +33,26 @@ export class TorrentsController {
     private readonly relaySettingsService: RelaySettingsService,
   ) {}
 
+  @SerializeOptions({ type: RelaySettingsDto })
   @Get('/settings')
-  @ApiResponse({ status: 200, type: RelaySettingsDto })
-  async settings() {
+  async settings(): Promise<RelaySettingsDto> {
     const settings = await this.relaySettingsService.get();
-    return toDto(RelaySettingsDto, settings);
+    return settings;
   }
 
+  @SerializeOptions({ type: RelaySettingsDto })
   @Put('/settings')
-  @ApiResponse({ status: 200, type: TorrentDto, isArray: true })
-  async updateSettings(@Body() payload: UpdateRelaySettingsDto) {
+  async updateSettings(
+    @Body() payload: UpdateRelaySettingsDto,
+  ): Promise<RelaySettingsDto> {
     const settings = await this.relaySettingsService.update(payload);
     await this.torrentsService.updateTorrentClient(settings);
 
-    return toDto(RelaySettingsDto, settings);
+    return settings;
   }
 
+  @SerializeOptions({ type: TorrentDto })
   @Get('/torrents')
-  @ApiResponse({ status: 200, type: TorrentDto, isArray: true })
   async find(): Promise<TorrentDto[]> {
     const torrents = await this.torrentsService.find();
 
@@ -60,26 +62,24 @@ export class TorrentsController {
       ['desc', 'asc'],
     );
 
-    return sortedTorrents.map((torrent) => {
-      return toDto(TorrentDto, torrent);
-    });
+    return sortedTorrents;
   }
 
+  @SerializeOptions({ type: TorrentDto })
   @Put('/torrents/:infoHash')
   @ApiParam({ name: 'infoHash', type: 'string' })
-  @ApiResponse({ status: 200, type: TorrentDto })
   async update(
     @Param('infoHash') infoHash: string,
     @Body() payload: UpdateTorrentDto,
   ): Promise<TorrentDto> {
     const torrent = await this.torrentsService.updateOne(infoHash, payload);
 
-    return toDto(TorrentDto, torrent);
+    return torrent;
   }
 
   @Delete('/torrents/:infoHash')
   @ApiParam({ name: 'infoHash', type: 'string' })
-  async delete(@Param('infoHash') infoHash: string) {
+  async delete(@Param('infoHash') infoHash: string): Promise<void> {
     await this.torrentsService.delete(infoHash);
   }
 }

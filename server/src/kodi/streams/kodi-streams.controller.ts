@@ -1,5 +1,13 @@
-import { Controller, Get, Param, Query, Req, UseGuards } from '@nestjs/common';
-import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  Req,
+  SerializeOptions,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 import type { Request } from 'express';
 
 import { TokenGuard } from 'src/auth/guards/token.guard';
@@ -19,7 +27,7 @@ import { KodiStreamsService } from './kodi-streams.service';
 export class KodiStreamsController {
   constructor(private readonly streamsService: KodiStreamsService) {}
 
-  @ApiOkResponse({ type: KodiImdbStreamsDto })
+  @SerializeOptions({ type: KodiImdbStreamsDto })
   @Get('/imdb/:imdbId/streams')
   async streams(
     @Req() req: Request,

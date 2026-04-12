@@ -1,8 +1,13 @@
-import { Controller, Get, Res, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Res,
+  SerializeOptions,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiParam,
   ApiPermanentRedirectResponse,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import type { Response } from 'express';
@@ -29,7 +34,7 @@ export class StremioController {
     res.redirect(308, '/');
   }
 
-  @ApiResponse({ type: ManifestDto })
+  @SerializeOptions({ type: ManifestDto })
   @Get('/manifest.json')
   async manifest(): Promise<ManifestDto> {
     return this.stremioService.manifest();

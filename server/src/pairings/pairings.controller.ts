@@ -4,6 +4,7 @@ import {
   HttpCode,
   Post,
   Req,
+  SerializeOptions,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -23,17 +24,20 @@ import { PairingsService } from './pairings.service';
 export class PairingsController {
   constructor(private readonly pairingsService: PairingsService) {}
 
+  @SerializeOptions({ type: PairInitDto })
   @Post('/init')
   async init(): Promise<PairInitDto> {
     return this.pairingsService.generatePairingCodes();
   }
 
+  @SerializeOptions({ type: PairStatusDto })
   @Post('/status')
   @HttpCode(200)
   async status(@Body() payload: PairStatusRequestDto): Promise<PairStatusDto> {
     return this.pairingsService.pollPairingStatus(payload.deviceCode);
   }
 
+  @SerializeOptions({ type: PairVerifyDto })
   @UseGuards(AuthGuard)
   @Post('/verify')
   @HttpCode(200)

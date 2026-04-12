@@ -1,8 +1,14 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
-import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  SerializeOptions,
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import type { Request } from 'express';
 
-import { toDto } from 'src/common/utils/to-dto';
 import { UserDto } from 'src/users/dto/user.dto';
 
 import { CreateSetupDto } from './dto/create-setup.dto';
@@ -14,7 +20,7 @@ import { SetupService } from './setup.service';
 export class SetupController {
   constructor(private readonly setupService: SetupService) {}
 
-  @ApiResponse({ status: 201, type: UserDto })
+  @SerializeOptions({ type: UserDto })
   @Post('/')
   async create(
     @Req() req: Request,
@@ -23,11 +29,11 @@ export class SetupController {
     const user = await this.setupService.create(payload);
     req.session.userId = user.id;
 
-    return toDto(UserDto, user);
+    return user;
   }
 
+  @SerializeOptions({ type: StatusDto })
   @Get('/status')
-  @ApiOkResponse({ type: StatusDto })
   async status(): Promise<StatusDto> {
     const status = await this.setupService.status();
     return status;

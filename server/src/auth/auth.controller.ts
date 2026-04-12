@@ -5,12 +5,12 @@ import {
   Post,
   Req,
   Res,
+  SerializeOptions,
   UseGuards,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { type Request, type Response } from 'express';
 
-import { toDto } from 'src/common/utils/to-dto';
 import { UserDto } from 'src/users/dto/user.dto';
 
 import { AuthService } from './auth.service';
@@ -22,7 +22,7 @@ import { AuthGuard } from './guards/auth.guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @ApiResponse({ status: 201, type: UserDto })
+  @SerializeOptions({ type: UserDto })
   @Post('login')
   async login(
     @Req() req: Request,
@@ -34,7 +34,7 @@ export class AuthController {
     );
     req.session.userId = user.id;
 
-    return toDto(UserDto, user);
+    return user;
   }
 
   @UseGuards(AuthGuard)

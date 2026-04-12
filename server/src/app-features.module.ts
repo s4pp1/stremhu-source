@@ -6,6 +6,7 @@ import { KodiModule } from './kodi/kodi.module';
 import { LocalIpModule } from './local-ip/local-ip.module';
 import { MeModule } from './me/me.module';
 import { MetadataModule } from './metadata/metadata.module';
+import { MonitoringModule } from './monitoring/monitoring.module';
 import { PairingsModule } from './pairings/pairings.module';
 import { PlayModule } from './play/play.module';
 import { RelaySyncModule } from './relay/relay-sync.module';
@@ -23,6 +24,7 @@ import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
+    MonitoringModule,
     SettingsModule,
     AppSettingsModule,
     RelayModule,

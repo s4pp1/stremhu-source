@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { IsArray } from 'class-validator';
 
 import { AudioQualityMetaDto } from 'src/metadata/dto/audio-quality-meta.dto';
@@ -27,32 +27,39 @@ export class KodiImdbStreamDto {
   size: string;
 
   /** Tracker adatai */
+  @Type(() => TrackerMetaDto)
   @Expose()
   tracker: TrackerMetaDto;
 
   /** Nyelvek listája */
-  @Expose()
   @IsArray()
+  @Type(() => LanguageMetaDto)
+  @Expose()
   languages: LanguageMetaDto[];
 
   /** Felbontás adatai */
+  @Type(() => ResolutionMetaDto)
   @Expose()
   resolution: ResolutionMetaDto;
 
   /** Videó minőségi jellemzők */
-  @Expose()
   @IsArray()
+  @Type(() => VideoQualityMetaDto)
+  @Expose()
   videoQualities: VideoQualityMetaDto[];
 
   /** Audió minőség */
+  @Type(() => AudioQualityMetaDto)
   @Expose()
   audioQuality?: AudioQualityMetaDto;
 
   /** Térhatású hang jellemzők */
+  @Type(() => AudioSpatialMetaDto)
   @Expose()
   audioSpatial?: AudioSpatialMetaDto;
 
   /** Forrás adatai */
+  @Type(() => SourceMetaDto)
   @Expose()
   source: SourceMetaDto;
 

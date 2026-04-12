@@ -4,9 +4,10 @@ import {
   Param,
   ParseEnumPipe,
   Req,
+  SerializeOptions,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 import type { Request } from 'express';
 
 import { TokenGuard } from 'src/auth/guards/token.guard';
@@ -36,7 +37,7 @@ export class StremioStreamsController {
     name: 'mediaType',
     enum: MediaTypeEnum,
   })
-  @ApiOkResponse({ type: StremioStreamsResponseDto })
+  @SerializeOptions({ type: StremioStreamsResponseDto })
   @Get('/:mediaType/:id.json')
   async streams(
     @Req() req: Request,

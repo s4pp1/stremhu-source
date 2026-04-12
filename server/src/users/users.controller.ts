@@ -9,15 +9,15 @@ import {
   Post,
   Put,
   Req,
+  SerializeOptions,
   UseGuards,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import type { Request } from 'express';
 
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { toDto } from 'src/common/utils/to-dto';
 
 import { UsersStore } from './core/users.store';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -36,7 +36,7 @@ export class UsersController {
     private readonly usersService: UsersService,
   ) {}
 
-  @ApiResponse({ status: 201, type: UserDto })
+  @SerializeOptions({ type: UserDto })
   @Post('/')
   async create(@Body() payload: CreateUserDto): Promise<UserDto> {
     const user = await this.usersService.create({
@@ -44,35 +44,35 @@ export class UsersController {
       userRole: UserRoleEnum.USER,
     });
 
-    return toDto(UserDto, user);
+    return user;
   }
 
-  @ApiResponse({ status: 200, type: UserDto, isArray: true })
+  @SerializeOptions({ type: UserDto })
   @Get('/')
   async find(): Promise<UserDto[]> {
     const users = await this.usersStore.find();
 
-    return users.map((user) => toDto(UserDto, user));
+    return users;
   }
 
-  @ApiResponse({ status: 200, type: UserDto })
+  @SerializeOptions({ type: UserDto })
   @Get('/:userId')
   async findOne(
     @Param('userId', new ParseUUIDPipe()) userId: string,
   ): Promise<UserDto> {
     const user = await this.usersStore.findOneByIdOrThrow(userId);
 
-    return toDto(UserDto, user);
+    return user;
   }
 
-  @ApiResponse({ status: 200, type: UserDto })
+  @SerializeOptions({ type: UserDto })
   @Put('/:userId')
   async updateOne(
     @Req() req: Request,
     @Param('userId', new ParseUUIDPipe()) userId: string,
     @Body() payload: UpdateUserDto,
   ): Promise<UserDto> {
-    const { id, userRole } = req.user || {};
+    const { id, userRole } = req.user!;
 
     if (
       id === userId &&
@@ -86,20 +86,19 @@ export class UsersController {
 
     const updatedUser = await this.usersService.updateOrThrow(userId, payload);
 
-    return toDto(UserDto, updatedUser);
+    return updatedUser;
   }
 
-  @ApiResponse({ status: 201, type: UserDto })
+  @SerializeOptions({ type: UserDto })
   @Put('/:userId/token/regenerate')
   async regenerateToken(
     @Param('userId', new ParseUUIDPipe()) userId: string,
   ): Promise<UserDto> {
     const user = await this.usersService.regenerateToken(userId);
 
-    return toDto(UserDto, user);
+    return user;
   }
 
-  @ApiResponse({ status: 200 })
   @Delete('/:userId')
   async deleteOne(
     @Req() req: Request,

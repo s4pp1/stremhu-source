@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 import { MetaDetailBehaviorHintsDto } from './meta-detail-behaviour-hints.dto';
 import { MetaPreviewDto } from './meta-preview.dto';
@@ -21,6 +21,7 @@ export class MetaDetailDto extends MetaPreviewDto {
   year?: string;
 
   /** Előzetesek listája */
+  @Type(() => MetaTrailerDto)
   @Expose()
   trailers?: MetaTrailerDto[];
 
@@ -29,6 +30,7 @@ export class MetaDetailDto extends MetaPreviewDto {
    *
    * Ha nincs megadva (pl. filmnél), a Stremio feltételezi, hogy egy videó van, aminek az ID-ja megegyezik a meta ID-val.
    */
+  @Type(() => MetaVideoDto)
   @Expose()
   videos?: MetaVideoDto[];
 
@@ -57,6 +59,7 @@ export class MetaDetailDto extends MetaPreviewDto {
   website?: string;
 
   /** Viselkedési tippek */
+  @Type(() => MetaDetailBehaviorHintsDto)
   @Expose()
   behaviorHints?: MetaDetailBehaviorHintsDto;
 

@@ -1,5 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, SerializeOptions } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { MetadataDto } from './dto/metadata.dto';
 import { MetadataService } from './metadata.service';
@@ -9,9 +9,10 @@ import { MetadataService } from './metadata.service';
 export class MetadataController {
   constructor(private readonly metadataService: MetadataService) {}
 
+  @SerializeOptions({ type: MetadataDto })
   @Get('/')
-  @ApiResponse({ status: 200, type: MetadataDto })
   async metadata(): Promise<MetadataDto> {
-    return this.metadataService.get();
+    const metadata = await this.metadataService.get();
+    return metadata;
   }
 }
