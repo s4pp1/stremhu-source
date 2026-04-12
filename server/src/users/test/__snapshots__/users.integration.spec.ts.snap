@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Users (Integration) UsersController / (GET) 1`] = `
+[
+  {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "onlyBestTorrent": false,
+    "token": "mock-token",
+    "torrentSeed": null,
+    "userRole": "user",
+    "username": "testuser",
+  },
+]
+`;
+
+exports[`Users (Integration) UsersController / (POST) 1`] = `
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "onlyBestTorrent": false,
+  "token": "mock-token",
+  "torrentSeed": null,
+  "userRole": "user",
+  "username": "testuser",
+}
+`;
+
+exports[`Users (Integration) UsersController /:userId (GET) 1`] = `
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "onlyBestTorrent": false,
+  "token": "mock-token",
+  "torrentSeed": null,
+  "userRole": "user",
+  "username": "testuser",
+}
+`;
+
+exports[`Users (Integration) UsersController /:userId (PUT) 1`] = `
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "onlyBestTorrent": false,
+  "token": "mock-token",
+  "torrentSeed": null,
+  "userRole": "user",
+  "username": "testuser",
+}
+`;
+
+exports[`Users (Integration) UsersController /:userId/token/regenerate (PUT) 1`] = `
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "onlyBestTorrent": false,
+  "token": "mock-token",
+  "torrentSeed": null,
+  "userRole": "user",
+  "username": "testuser",
+}
+`;

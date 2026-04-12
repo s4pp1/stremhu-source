@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Trackers (Integration) TrackersController / (GET) 1`] = `
+[
+  {
+    "tracker": "ncore",
+    "username": "testuser",
+  },
+]
+`;
+
+exports[`Trackers (Integration) TrackersController /:tracker (PUT) 1`] = `
+{
+  "tracker": "ncore",
+  "username": "testuser",
+}
+`;

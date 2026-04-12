@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`MePreferences (Integration) MePreferencesController / (GET) 1`] = `
+[
+  {
+    "blocked": [],
+    "order": 0,
+    "preference": "language",
+    "preferred": [
+      "hu",
+    ],
+    "userId": "123e4567-e89b-12d3-a456-426614174000",
+  },
+]
+`;
+
+exports[`MePreferences (Integration) MePreferencesController / (POST) 1`] = `
+{
+  "blocked": [],
+  "order": 0,
+  "preference": "language",
+  "preferred": [
+    "hu",
+  ],
+  "userId": "123e4567-e89b-12d3-a456-426614174000",
+}
+`;
+
+exports[`MePreferences (Integration) MePreferencesController /:preference (GET) 1`] = `
+{
+  "blocked": [],
+  "order": 0,
+  "preference": "language",
+  "preferred": [
+    "hu",
+  ],
+  "userId": "123e4567-e89b-12d3-a456-426614174000",
+}
+`;
+
+exports[`MePreferences (Integration) MePreferencesController /:preference (PUT) 1`] = `
+{
+  "blocked": [],
+  "order": 0,
+  "preference": "language",
+  "preferred": [
+    "hu",
+  ],
+  "userId": "123e4567-e89b-12d3-a456-426614174000",
+}
+`;
+
+exports[`MePreferences (Integration) MePreferencesController /reorder (POST) 1`] = `
+[
+  {
+    "blocked": [],
+    "order": 0,
+    "preference": "language",
+    "preferred": [
+      "hu",
+    ],
+    "userId": "123e4567-e89b-12d3-a456-426614174000",
+  },
+]
+`;

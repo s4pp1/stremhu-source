@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Setup (Integration) SetupController / (POST) 1`] = `
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "token": "mock-token",
+  "userRole": "admin",
+  "username": "admin",
+}
+`;

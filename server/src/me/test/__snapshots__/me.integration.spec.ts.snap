@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Me (Integration) MeController / (GET) 1`] = `
+{
+  "me": {
+    "createdAt": "2026-04-12T10:00:00.000Z",
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "onlyBestTorrent": false,
+    "token": "mock-token",
+    "torrentSeed": null,
+    "updatedAt": "2026-04-12T10:00:00.000Z",
+    "userRole": "user",
+    "username": "testuser",
+  },
+}
+`;
+
+exports[`Me (Integration) MeController / (PUT) 1`] = `
+{
+  "createdAt": "2026-04-12T10:00:00.000Z",
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "onlyBestTorrent": false,
+  "token": "mock-token",
+  "torrentSeed": null,
+  "updatedAt": "2026-04-12T10:00:00.000Z",
+  "userRole": "user",
+  "username": "testuser",
+}
+`;
+
+exports[`Me (Integration) MeController /token/regenerate (PUT) 1`] = `
+{
+  "createdAt": "2026-04-12T10:00:00.000Z",
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "onlyBestTorrent": false,
+  "token": "mock-token",
+  "torrentSeed": null,
+  "updatedAt": "2026-04-12T10:00:00.000Z",
+  "userRole": "user",
+  "username": "testuser",
+}
+`;

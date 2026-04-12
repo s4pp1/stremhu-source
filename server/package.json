@@ -23,6 +23,9 @@
     "generate:catalog:openapi": "openapi --input https://catalog.stremhu.app/api/docs/public-json -c axios -o ./src/catalog-client/client/ --name CatalogClient",
     "generate:relay:openapi": "openapi --input ../relay/openapi/openapi.json -c axios -o ./src/relay/client/ --name RelayClient"
   },
+  "engines": {
+    "node": "24.14.1"
+  },
   "dependencies": {
     "@ctrl/torrent-file": "4.5.0",
     "@ctrl/video-filename-parser": "5.4.1",
@@ -80,6 +83,7 @@
     "eslint-plugin-prettier": "5.5.5",
     "globals": "17.4.0",
     "jest": "30.3.0",
+    "jest-junit": "16.0.0",
     "openapi-typescript-codegen": "0.30.0",
     "prettier": "3.8.1",
     "source-map-support": "0.5.21",
@@ -90,22 +94,5 @@
     "tsconfig-paths": "4.2.0",
     "typescript": "5.9.3",
     "typescript-eslint": "8.58.1"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   }
 }

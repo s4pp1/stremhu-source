@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="55" failures="0" errors="0" time="3.213">
+  <testsuite name="Me (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:32" time="0.501" tests="3">
+    <testcase classname="Me (Integration) MeController / (GET)" name="Me (Integration) MeController / (GET)" time="0.02">
+    </testcase>
+    <testcase classname="Me (Integration) MeController / (PUT)" name="Me (Integration) MeController / (PUT)" time="0.008">
+    </testcase>
+    <testcase classname="Me (Integration) MeController /token/regenerate (PUT)" name="Me (Integration) MeController /token/regenerate (PUT)" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="UserPreferences (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:32" time="0.155" tests="6">
+    <testcase classname="UserPreferences (Integration) UserPreferencesController / (POST)" name="UserPreferences (Integration) UserPreferencesController / (POST)" time="0.012">
+    </testcase>
+    <testcase classname="UserPreferences (Integration) UserPreferencesController / (GET)" name="UserPreferences (Integration) UserPreferencesController / (GET)" time="0.002">
+    </testcase>
+    <testcase classname="UserPreferences (Integration) UserPreferencesController /reorder (POST)" name="UserPreferences (Integration) UserPreferencesController /reorder (POST)" time="0.002">
+    </testcase>
+    <testcase classname="UserPreferences (Integration) UserPreferencesController /:preference (GET)" name="UserPreferences (Integration) UserPreferencesController /:preference (GET)" time="0.002">
+    </testcase>
+    <testcase classname="UserPreferences (Integration) UserPreferencesController /:preference (PUT)" name="UserPreferences (Integration) UserPreferencesController /:preference (PUT)" time="0.001">
+    </testcase>
+    <testcase classname="UserPreferences (Integration) UserPreferencesController /:preference (DELETE)" name="UserPreferences (Integration) UserPreferencesController /:preference (DELETE)" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="MePreferences (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:32" time="0.158" tests="6">
+    <testcase classname="MePreferences (Integration) MePreferencesController / (POST)" name="MePreferences (Integration) MePreferencesController / (POST)" time="0.006">
+    </testcase>
+    <testcase classname="MePreferences (Integration) MePreferencesController / (GET)" name="MePreferences (Integration) MePreferencesController / (GET)" time="0.001">
+    </testcase>
+    <testcase classname="MePreferences (Integration) MePreferencesController /reorder (POST)" name="MePreferences (Integration) MePreferencesController /reorder (POST)" time="0.002">
+    </testcase>
+    <testcase classname="MePreferences (Integration) MePreferencesController /:preference (GET)" name="MePreferences (Integration) MePreferencesController /:preference (GET)" time="0.002">
+    </testcase>
+    <testcase classname="MePreferences (Integration) MePreferencesController /:preference (PUT)" name="MePreferences (Integration) MePreferencesController /:preference (PUT)" time="0.002">
+    </testcase>
+    <testcase classname="MePreferences (Integration) MePreferencesController /:preference (DELETE)" name="MePreferences (Integration) MePreferencesController /:preference (DELETE)" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Auth (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:32" time="0.128" tests="2">
+    <testcase classname="Auth (Integration) AuthController /login (POST)" name="Auth (Integration) AuthController /login (POST)" time="0.005">
+    </testcase>
+    <testcase classname="Auth (Integration) AuthController /logout (POST)" name="Auth (Integration) AuthController /logout (POST)" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Setup (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:33" time="0.107" tests="2">
+    <testcase classname="Setup (Integration) SetupController / (POST)" name="Setup (Integration) SetupController / (POST)" time="0.006">
+    </testcase>
+    <testcase classname="Setup (Integration) SetupController /status (GET)" name="Setup (Integration) SetupController /status (GET)" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Torrents (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:33" time="0.144" tests="5">
+    <testcase classname="Torrents (Integration) TorrentsController /settings (GET)" name="Torrents (Integration) TorrentsController /settings (GET)" time="0.005">
+    </testcase>
+    <testcase classname="Torrents (Integration) TorrentsController /settings (PUT)" name="Torrents (Integration) TorrentsController /settings (PUT)" time="0.003">
+    </testcase>
+    <testcase classname="Torrents (Integration) TorrentsController /torrents (GET)" name="Torrents (Integration) TorrentsController /torrents (GET)" time="0.003">
+    </testcase>
+    <testcase classname="Torrents (Integration) TorrentsController /torrents/:infoHash (PUT)" name="Torrents (Integration) TorrentsController /torrents/:infoHash (PUT)" time="0.002">
+    </testcase>
+    <testcase classname="Torrents (Integration) TorrentsController /torrents/:infoHash (DELETE)" name="Torrents (Integration) TorrentsController /torrents/:infoHash (DELETE)" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Stremio (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:33" time="0.14" tests="2">
+    <testcase classname="Stremio (Integration) StremioController /configure (GET)" name="Stremio (Integration) StremioController /configure (GET)" time="0.004">
+    </testcase>
+    <testcase classname="Stremio (Integration) StremioController /manifest.json (GET)" name="Stremio (Integration) StremioController /manifest.json (GET)" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Settings (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:33" time="0.133" tests="3">
+    <testcase classname="Settings (Integration) SettingsController / (GET)" name="Settings (Integration) SettingsController / (GET)" time="0.005">
+    </testcase>
+    <testcase classname="Settings (Integration) SettingsController / (PUT)" name="Settings (Integration) SettingsController / (PUT)" time="0.003">
+    </testcase>
+    <testcase classname="Settings (Integration) SettingsController /local-url (POST)" name="Settings (Integration) SettingsController /local-url (POST)" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Users (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:33" time="0.126" tests="7">
+    <testcase classname="Users (Integration) UsersController / (POST)" name="Users (Integration) UsersController / (POST)" time="0.007">
+    </testcase>
+    <testcase classname="Users (Integration) UsersController / (GET)" name="Users (Integration) UsersController / (GET)" time="0.001">
+    </testcase>
+    <testcase classname="Users (Integration) UsersController /:userId (GET)" name="Users (Integration) UsersController /:userId (GET)" time="0.001">
+    </testcase>
+    <testcase classname="Users (Integration) UsersController /:userId (PUT)" name="Users (Integration) UsersController /:userId (PUT)" time="0.002">
+    </testcase>
+    <testcase classname="Users (Integration) UsersController /:userId/token/regenerate (PUT)" name="Users (Integration) UsersController /:userId/token/regenerate (PUT)" time="0.001">
+    </testcase>
+    <testcase classname="Users (Integration) UsersController /:userId (DELETE)" name="Users (Integration) UsersController /:userId (DELETE)" time="0.001">
+    </testcase>
+    <testcase classname="Users (Integration) UsersController /:userId (DELETE) - self deletion forbidden" name="Users (Integration) UsersController /:userId (DELETE) - self deletion forbidden" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Trackers (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:33" time="0.137" tests="5">
+    <testcase classname="Trackers (Integration) TrackersController / (POST)" name="Trackers (Integration) TrackersController / (POST)" time="0.011">
+    </testcase>
+    <testcase classname="Trackers (Integration) TrackersController / (GET)" name="Trackers (Integration) TrackersController / (GET)" time="0.002">
+    </testcase>
+    <testcase classname="Trackers (Integration) TrackersController /cleanup (POST)" name="Trackers (Integration) TrackersController /cleanup (POST)" time="0.002">
+    </testcase>
+    <testcase classname="Trackers (Integration) TrackersController /:tracker (PUT)" name="Trackers (Integration) TrackersController /:tracker (PUT)" time="0.002">
+    </testcase>
+    <testcase classname="Trackers (Integration) TrackersController /:tracker (DELETE)" name="Trackers (Integration) TrackersController /:tracker (DELETE)" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Pairings (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:33" time="0.18" tests="3">
+    <testcase classname="Pairings (Integration) PairingsController /init (POST)" name="Pairings (Integration) PairingsController /init (POST)" time="0.009">
+    </testcase>
+    <testcase classname="Pairings (Integration) PairingsController /status (POST)" name="Pairings (Integration) PairingsController /status (POST)" time="0.003">
+    </testcase>
+    <testcase classname="Pairings (Integration) PairingsController /verify (POST)" name="Pairings (Integration) PairingsController /verify (POST)" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="StremioStreams (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:34" time="0.137" tests="2">
+    <testcase classname="StremioStreams (Integration) StremioStreamsController /:mediaType/:id.json (GET) - Movie" name="StremioStreams (Integration) StremioStreamsController /:mediaType/:id.json (GET) - Movie" time="0.009">
+    </testcase>
+    <testcase classname="StremioStreams (Integration) StremioStreamsController /:mediaType/:id.json (GET) - Series" name="StremioStreams (Integration) StremioStreamsController /:mediaType/:id.json (GET) - Series" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="StremioCatalogs (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:34" time="0.128" tests="2">
+    <testcase classname="StremioCatalogs (Integration) StremioCatalogsController /catalog/:mediaType/:catalogId.json (GET) - Search" name="StremioCatalogs (Integration) StremioCatalogsController /catalog/:mediaType/:catalogId.json (GET) - Search" time="0.009">
+    </testcase>
+    <testcase classname="StremioCatalogs (Integration) StremioCatalogsController /meta/:mediaType/:id.json (GET)" name="StremioCatalogs (Integration) StremioCatalogsController /meta/:mediaType/:id.json (GET)" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="Play (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:34" time="0.131" tests="1">
+    <testcase classname="Play (Integration) PlayController /:tracker/:torrentId/:fileIdx (GET)" name="Play (Integration) PlayController /:tracker/:torrentId/:fileIdx (GET)" time="0.009">
+    </testcase>
+  </testsuite>
+  <testsuite name="TorrentsCache (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:34" time="0.119" tests="1">
+    <testcase classname="TorrentsCache (Integration) TorrentsCacheController /cleanup (POST)" name="TorrentsCache (Integration) TorrentsCacheController /cleanup (POST)" time="0.008">
+    </testcase>
+  </testsuite>
+  <testsuite name="ExternalRelaySettings (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:34" time="0.125" tests="1">
+    <testcase classname="ExternalRelaySettings (Integration) ExternalRelaySettingsController /:token/external/relay/settings (PUT)" name="ExternalRelaySettings (Integration) ExternalRelaySettingsController /:token/external/relay/settings (PUT)" time="0.01">
+    </testcase>
+  </testsuite>
+  <testsuite name="Metadata (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:34" time="0.11" tests="1">
+    <testcase classname="Metadata (Integration) MetadataController / (GET)" name="Metadata (Integration) MetadataController / (GET)" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="App (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:34" time="0.101" tests="1">
+    <testcase classname="App (Integration) AppController /health (GET)" name="App (Integration) AppController /health (GET)" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="Catalog (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:34" time="0.101" tests="1">
+    <testcase classname="Catalog (Integration) CatalogController /health (GET)" name="Catalog (Integration) CatalogController /health (GET)" time="0.008">
+    </testcase>
+  </testsuite>
+  <testsuite name="KodiStreams (Integration)" errors="0" failures="0" skipped="0" timestamp="2026-04-12T11:47:35" time="0.13" tests="1">
+    <testcase classname="KodiStreams (Integration) KodiStreamsController /imdb/:imdbId/streams (GET)" name="KodiStreams (Integration) KodiStreamsController /imdb/:imdbId/streams (GET)" time="0.009">
+    </testcase>
+  </testsuite>
+</testsuites>
