@@ -11,7 +11,7 @@ import {
   ItemTitle,
 } from '@/shared/components/ui/item'
 import { useMetadata } from '@/shared/hooks/use-metadata'
-import type { UserDto } from '@/shared/lib/source-client'
+import type { UserDto } from '@/shared/lib/source/source-client'
 import { useDeleteUser } from '@/shared/queries/users'
 
 type UserItem = {

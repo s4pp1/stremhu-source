@@ -1,4 +1,4 @@
-import type { UserDto } from '@/shared/lib/source-client'
+import type { UserDto } from '@/shared/lib/source/source-client'
 
 export type ChangePasswordOptions = {
   user?: UserDto

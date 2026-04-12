@@ -4,14 +4,14 @@ import { format } from 'date-fns'
 import { get, isArray } from 'lodash'
 import { twMerge } from 'tailwind-merge'
 
-export function cn(...inputs: Array<ClassValue>) {
+export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 export function parseApiError(error: unknown): string {
   let message = 'Váratlan hiba történt, próbáld újra!'
 
-  const errorMessage: string | Array<string> = get(error, ['body', 'message'])
+  const errorMessage: string | string[] = get(error, ['body', 'message'])
 
   if (errorMessage) {
     if (isArray(errorMessage)) {

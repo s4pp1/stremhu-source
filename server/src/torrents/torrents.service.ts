@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 
-import { RelayTorrent, UpdateSettings } from 'src/relay/client';
+import { RelayTorrent, UpdateSettings } from 'src/relay/client/relay-client';
 import { RelayService } from 'src/relay/relay.service';
 import { TrackersStore } from 'src/trackers/core/trackers.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';

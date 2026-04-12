@@ -4,7 +4,6 @@ import {
   useQueryClient,
 } from '@tanstack/react-query'
 
-import { appClient } from '../lib/client'
 import type {
   AudioQualityEnum,
   LanguageEnum,
@@ -14,21 +13,29 @@ import type {
   SourceEnum,
   TrackerEnum,
   VideoQualityEnum,
-} from '../lib/source-client'
+} from '../lib/source/source-client'
+import {
+  mePreferencesCreate,
+  mePreferencesDelete,
+  mePreferencesFind,
+  mePreferencesFindOne,
+  mePreferencesReorder,
+  mePreferencesUpdate,
+} from '../lib/source/source-client'
 import type { PreferenceDto } from '../type/preference.dto'
 
 export type PreferenceItemDto =
-  | Array<TrackerEnum>
-  | Array<LanguageEnum>
-  | Array<ResolutionEnum>
-  | Array<VideoQualityEnum>
-  | Array<SourceEnum>
-  | Array<AudioQualityEnum>
+  | TrackerEnum[]
+  | LanguageEnum[]
+  | ResolutionEnum[]
+  | VideoQualityEnum[]
+  | SourceEnum[]
+  | AudioQualityEnum[]
 
 export const getMePreferences = queryOptions({
   queryKey: ['me', 'preferences'],
   queryFn: async () => {
-    const response = await appClient.mePreferences.find()
+    const response = await mePreferencesFind()
     return response
   },
 })
@@ -38,7 +45,7 @@ export function useCreateMePreference() {
 
   return useMutation({
     mutationFn: async (payload: PreferenceDto) => {
-      await appClient.mePreferences.create(payload)
+      await mePreferencesCreate(payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })
@@ -50,7 +57,7 @@ export const getMePreference = (preference: PreferenceEnum) =>
   queryOptions({
     queryKey: ['me', 'preferences', preference],
     queryFn: async () => {
-      const response = await appClient.mePreferences.findOne(preference)
+      const response = await mePreferencesFindOne(preference)
       return response
     },
   })
@@ -60,7 +67,7 @@ export function useUpdateMePreference() {
 
   return useMutation({
     mutationFn: async (payload: PreferenceDto) => {
-      await appClient.mePreferences.update(payload.preference, payload)
+      await mePreferencesUpdate(payload.preference, payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })
@@ -73,7 +80,7 @@ export function useReorderMePreference() {
 
   return useMutation({
     mutationFn: async (payload: ReorderPreferencesDto) => {
-      await appClient.mePreferences.reorder(payload)
+      await mePreferencesReorder(payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })
@@ -86,7 +93,7 @@ export function useDeleteMePreference() {
 
   return useMutation({
     mutationFn: async (preference: PreferenceEnum) => {
-      await appClient.mePreferences.delete(preference)
+      await mePreferencesDelete(preference)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })

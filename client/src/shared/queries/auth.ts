@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { appClient } from '@/shared/lib/client'
-import type { AuthLoginDto, CreateSetupDto } from '@/shared/lib/source-client'
-
+import type { AuthLoginDto, CreateSetupDto } from '../lib/source/source-client'
+import { authLogin, authLogout, setupCreate } from '../lib/source/source-client'
 import { getMe } from './me'
 import { getSettingsStatus } from './settings-setup'
 
@@ -10,7 +9,7 @@ export function useLogin() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (payload: AuthLoginDto) => {
-      const me = await appClient.authentication.login(payload)
+      const me = await authLogin(payload)
       return me
     },
     onSuccess: async () => {
@@ -24,7 +23,7 @@ export function useLogout() {
 
   return useMutation({
     mutationFn: async () => {
-      await appClient.authentication.logout()
+      await authLogout()
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: getMe.queryKey })
@@ -38,7 +37,7 @@ export function useRegistration() {
 
   return useMutation({
     mutationFn: async (payload: CreateSetupDto) => {
-      await appClient.settings.create(payload)
+      await setupCreate(payload)
     },
     onSuccess: async () => {
       await queryClient.fetchQuery({ ...getMe, staleTime: 0 })

@@ -7,13 +7,13 @@ import {
   ItemTitle,
 } from '@/shared/components/ui/item'
 import { useMetadata } from '@/shared/hooks/use-metadata'
-import type { PreferenceEnum } from '@/shared/lib/source-client'
+import type { PreferenceEnum } from '@/shared/lib/source/source-client'
 import type { PreferenceItemEnum } from '@/shared/type/preference-item.enum'
 
 export interface PreferenceItemProps {
   preference: PreferenceEnum
   preferenceItem: PreferenceItemEnum
-  actions?: Array<ReactNode>
+  actions?: ReactNode[]
 }
 
 export function PreferenceItem(props: PreferenceItemProps) {

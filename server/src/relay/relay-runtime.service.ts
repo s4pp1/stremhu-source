@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { spawn } from 'node:child_process';
@@ -7,14 +7,13 @@ import { setTimeout as sleep } from 'node:timers/promises';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { RelayClient } from './client';
+import { health } from './client/relay-client';
 import {
   HEARTBEAT_INTERVAL_MS,
   MAX_RESTARTS,
   RELAY_BASE_URL_PORT,
   RESTART_DELAY_MS,
 } from './relay.constant';
-import { RELAY_CLIENT } from './relay.token';
 import { RelayStatus } from './type/relay-status.enum';
 
 @Injectable()
@@ -33,11 +32,7 @@ export class RelayRuntimeService {
     RelayStatus.INITIALIZING,
   );
 
-  constructor(
-    @Inject(RELAY_CLIENT)
-    private readonly relayClient: RelayClient,
-    private readonly configService: ConfigService,
-  ) {
+  constructor(private readonly configService: ConfigService) {
     this.autoStart = this.configService.getOrThrow<boolean>(
       'torrent.relay-auto-start',
     );
@@ -109,8 +104,8 @@ export class RelayRuntimeService {
 
     while (!started) {
       try {
-        const health = await this.relayClient.monitoring.health();
-        this.lastRelayStartTime = health.startTime;
+        const response = await health();
+        this.lastRelayStartTime = response.startTime;
 
         started = true;
       } catch {
@@ -227,7 +222,7 @@ export class RelayRuntimeService {
     this.isHeartbeating = true;
 
     try {
-      const response = await this.relayClient.monitoring.health();
+      const response = await health();
       const currentStartTime = response.startTime;
 
       if (

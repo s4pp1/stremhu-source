@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 
-import { UserRoleEnum } from '@/shared/lib/source-client'
+import { UserRoleEnum } from '@/shared/lib/source/source-client'
 import { getMe } from '@/shared/queries/me'
 import { getSettingsStatus } from '@/shared/queries/settings-setup'
 
@@ -19,7 +19,7 @@ export const Route = createFileRoute('/_protected')({
     const onSetup = location.pathname.startsWith('/setup/address')
 
     if (!hasAddress && !onSetup) {
-      if (me.userRole !== UserRoleEnum.ADMIN) {
+      if (me.userRole !== UserRoleEnum.admin) {
         throw new Error(
           `Az addon konfigurációja még nem készült el. Kérd meg az adminisztrátort a beállítás befejezésére.`,
         )

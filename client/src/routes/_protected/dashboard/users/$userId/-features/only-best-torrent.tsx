@@ -11,7 +11,7 @@ import {
 } from '@/shared/components/ui/card'
 import { Label } from '@/shared/components/ui/label'
 import { Switch } from '@/shared/components/ui/switch'
-import type { UserDto } from '@/shared/lib/source-client'
+import type { UserDto } from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import { useUpdateUser } from '@/shared/queries/users'
 import { onlyBestTorrentSchema } from '@/shared/schemas'

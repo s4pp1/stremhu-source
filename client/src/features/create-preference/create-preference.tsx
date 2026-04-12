@@ -20,7 +20,7 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group'
 import { Separator } from '@/shared/components/ui/separator'
 import { withForm } from '@/shared/contexts/form-context'
-import type { PreferenceEnum } from '@/shared/lib/source-client'
+import type { PreferenceEnum } from '@/shared/lib/source/source-client'
 import type { PreferenceMetaDto } from '@/shared/type/preference-meta.dto'
 
 import { PreferenceForm } from '../preference-form/preference-form'
@@ -28,7 +28,7 @@ import { preferenceFormValues } from '../preference-form/preference-form-values'
 
 export const CreatePreference = withForm({
   props: {
-    preferences: [] as Array<PreferenceMetaDto>,
+    preferences: [] as PreferenceMetaDto[],
     toBackLink: {} as LinkProps,
   },
   defaultValues: preferenceFormValues,

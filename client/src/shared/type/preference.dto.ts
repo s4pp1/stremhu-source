@@ -6,7 +6,7 @@ import type {
   SourcePreferenceDto,
   TrackerPreferenceDto,
   VideoQualityPreferenceDto,
-} from '../lib/source-client'
+} from '../lib/source/source-client'
 
 export type PreferenceDto =
   | TrackerPreferenceDto

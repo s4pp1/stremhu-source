@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from '@/shared/components/ui/select'
 import { useAppForm } from '@/shared/contexts/form-context'
-import { TrackerEnum } from '@/shared/lib/source-client'
+import { TrackerEnum } from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import { getMetadata } from '@/shared/queries/metadata'
 import { useLoginTracker } from '@/shared/queries/trackers'

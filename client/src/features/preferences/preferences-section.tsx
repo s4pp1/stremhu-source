@@ -38,15 +38,15 @@ import {
   ItemTitle,
 } from '@/shared/components/ui/item'
 import { Separator } from '@/shared/components/ui/separator'
-import type { PreferenceEnum } from '@/shared/lib/source-client'
+import type { PreferenceEnum } from '@/shared/lib/source/source-client'
 import { getMetadata } from '@/shared/queries/metadata'
 import type { PreferenceDto } from '@/shared/type/preference.dto'
 
 type PreferencesSectionProps = {
-  preferences: Array<PreferenceDto>
+  preferences: PreferenceDto[]
   toCreateLink: LinkProps
   renderPreference: (preference: PreferenceDto) => ReactNode
-  onReorder: (preferences: Array<PreferenceEnum>) => Promise<void>
+  onReorder: (preferences: PreferenceEnum[]) => Promise<void>
 }
 
 export function PreferencesSection(props: PreferencesSectionProps) {

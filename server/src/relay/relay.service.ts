@@ -1,43 +1,38 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { setTimeout as sleep } from 'node:timers/promises';
 
 import {
-  RelayClient,
   RelayTorrent,
   UpdateRelayTorrent,
   UpdateSettings,
-} from './client';
+  addTorrent,
+  deleteTorrent,
+  getTorrent,
+  getTorrentState,
+  getTorrents,
+  update,
+  updateTorrent,
+} from './client/relay-client';
 import { RelayRuntimeService } from './relay-runtime.service';
-import { RELAY_CLIENT } from './relay.token';
 import { AddRelayTorrent } from './type/add-relay-torrent.type';
 
 @Injectable()
 export class RelayService {
   private readonly logger = new Logger(RelayService.name);
 
-  constructor(
-    @Inject(RELAY_CLIENT)
-    private readonly relayClient: RelayClient,
-    private readonly relayRuntimeService: RelayRuntimeService,
-  ) {}
+  constructor(private readonly relayRuntimeService: RelayRuntimeService) {}
 
   async updateConfig(payload: UpdateSettings) {
-    await this.relayRuntimeService.request(() =>
-      this.relayClient.setting.update(payload),
-    );
+    await this.relayRuntimeService.request(() => update(payload));
   }
 
   async getTorrents(): Promise<RelayTorrent[]> {
-    return this.relayRuntimeService.request(() =>
-      this.relayClient.torrents.getTorrents(),
-    );
+    return this.relayRuntimeService.request(() => getTorrents());
   }
 
   async getTorrent(infoHash: string): Promise<RelayTorrent | null> {
     try {
-      return await this.relayRuntimeService.request(() =>
-        this.relayClient.torrents.getTorrent(infoHash),
-      );
+      return await this.relayRuntimeService.request(() => getTorrent(infoHash));
     } catch {
       return null;
     }
@@ -45,7 +40,7 @@ export class RelayService {
 
   async addTorrent(payload: AddRelayTorrent): Promise<RelayTorrent> {
     const torrent = await this.relayRuntimeService.request(() =>
-      this.relayClient.torrents.addTorrent({
+      addTorrent({
         torrentFilePath: payload.torrentFilePath,
         downloadFullTorrent: payload.downloadFullTorrent,
       }),
@@ -64,8 +59,7 @@ export class RelayService {
     let isChecking = [1, 2, 7].includes(torrent.state);
 
     while (isChecking) {
-      const { state, progress } =
-        await this.relayClient.torrents.getTorrentState(torrent.infoHash);
+      const { state, progress } = await getTorrentState(torrent.infoHash);
 
       isChecking = [1, 2, 7].includes(state);
       if (isChecking) {
@@ -85,13 +79,13 @@ export class RelayService {
     payload: UpdateRelayTorrent,
   ): Promise<RelayTorrent> {
     return this.relayRuntimeService.request(() =>
-      this.relayClient.torrents.updateTorrent(infoHash, payload),
+      updateTorrent(infoHash, payload),
     );
   }
 
   async deleteTorrent(infoHash: string): Promise<RelayTorrent> {
     const torrent = await this.relayRuntimeService.request(() =>
-      this.relayClient.torrents.deleteTorrent(infoHash),
+      deleteTorrent(infoHash),
     );
 
     this.logger.log(`🗑️ "${infoHash}" torrent törölve a Relay-ből.`);

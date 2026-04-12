@@ -20,7 +20,7 @@ import {
   EmptyTitle,
 } from '@/shared/components/ui/empty'
 import { Separator } from '@/shared/components/ui/separator'
-import type { TrackerEnum } from '@/shared/lib/source-client'
+import type { TrackerEnum } from '@/shared/lib/source/source-client'
 import { assertExists } from '@/shared/lib/utils'
 import { getMetadata } from '@/shared/queries/metadata'
 import { getTrackers } from '@/shared/queries/trackers'
@@ -39,7 +39,7 @@ export function Trackers() {
 
   const renderTrackerLogin = metadata.trackers.length !== trackers.length
 
-  const activeTrackers: Array<TrackerEnum> = trackers.map(
+  const activeTrackers: TrackerEnum[] = trackers.map(
     (tracker) => tracker.tracker,
   )
 

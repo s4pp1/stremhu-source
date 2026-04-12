@@ -1,8 +1,8 @@
-import { PreferenceEnum } from '@/shared/lib/source-client'
+import { PreferenceEnum } from '@/shared/lib/source/source-client'
 import type { PreferenceDto } from '@/shared/type/preference.dto'
 
 export const preferenceFormValues: PreferenceDto = {
-  preference: PreferenceEnum.LANGUAGE,
+  preference: PreferenceEnum.language,
   preferred: [],
   blocked: [],
 }

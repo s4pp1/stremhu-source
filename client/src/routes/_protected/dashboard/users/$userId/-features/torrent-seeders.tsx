@@ -12,7 +12,7 @@ import {
 import { Label } from '@/shared/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group'
 import { SEED_OPTIONS } from '@/shared/constants'
-import type { UserDto } from '@/shared/lib/source-client'
+import type { UserDto } from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import { useUpdateUser } from '@/shared/queries/users'
 import { torrentSeedSchema } from '@/shared/schemas'
