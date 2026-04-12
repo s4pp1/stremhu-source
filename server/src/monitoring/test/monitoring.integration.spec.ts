@@ -8,7 +8,7 @@ import { Reflector } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 
-import { AppController } from '../app.controller';
+import { MonitoringController } from '../monitoring.controller';
 
 // Mocking ConfigService
 jest.mock('@nestjs/config', () => ({
@@ -17,7 +17,7 @@ jest.mock('@nestjs/config', () => ({
   })),
 }));
 
-describe('App (Integration)', () => {
+describe('Monitoring (Integration)', () => {
   let app: INestApplication;
 
   const mockVersion = '1.0.0';
@@ -27,7 +27,7 @@ describe('App (Integration)', () => {
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      controllers: [AppController],
+      controllers: [MonitoringController],
       providers: [
         {
           provide: ConfigService,
@@ -59,7 +59,7 @@ describe('App (Integration)', () => {
     jest.clearAllMocks();
   });
 
-  describe('AppController', () => {
+  describe('MonitoringController', () => {
     it('/health (GET)', async () => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const response = await request(app.getHttpServer())
