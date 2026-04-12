@@ -44,11 +44,12 @@ describe('Users (Integration)', () => {
   const mockUser: UserDto = {
     id: mockUserId,
     username: 'testuser',
-    passwordHash: null,
     token: 'mock-token',
     userRole: UserRoleEnum.USER,
     torrentSeed: null,
     onlyBestTorrent: false,
+    updatedAt: new Date('2026-04-12T10:00:00Z'),
+    createdAt: new Date('2026-04-12T10:00:00Z'),
   };
 
   const mockAdmin: User = {

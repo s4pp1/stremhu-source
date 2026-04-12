@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 import { ContentTypeEnum } from '../enum/content-type.enum';
 import { PosterShapeEnum } from '../enum/poster-shape.enum';
@@ -11,6 +12,7 @@ export class MetaPreviewDto {
    *
    * Example: 'yt_id:UCrDkAvwZum-UTjHmzDI2iIw'
    */
+  @Expose()
   id: string;
 
   /** IMDb azonosító */
@@ -20,11 +22,13 @@ export class MetaPreviewDto {
    * Type of the content.
    */
   @ApiProperty({ enum: ContentTypeEnum, enumName: 'ContentTypeEnum' })
+  @Expose()
   type: ContentTypeEnum;
 
   /**
    * Name of the content.
    */
+  @Expose()
   name: string;
 
   /**
@@ -35,6 +39,7 @@ export class MetaPreviewDto {
    * You can use any resolution, as long as the file size is below 100kb.
    * Below 50kb is recommended
    */
+  @Expose()
   poster?: string;
 
   /**
@@ -43,6 +48,7 @@ export class MetaPreviewDto {
    * Defaults to 'regular'.
    */
   @ApiProperty({ enum: PosterShapeEnum, enumName: 'PosterShapeEnum' })
+  @Expose()
   posterShape?: PosterShapeEnum;
 
   /**
@@ -52,6 +58,7 @@ export class MetaPreviewDto {
    *
    * URL to PNG, max file size 500kb.
    */
+  @Expose()
   background?: string;
 
   /**
@@ -61,26 +68,33 @@ export class MetaPreviewDto {
    *
    * URL to PNG.
    */
+  @Expose()
   logo?: string;
 
   /**
    * A few sentences describing your content.
    */
+  @Expose()
   description?: string;
 
   /** IMDb értékelés */
+  @Expose()
   imdbRating?: string;
 
   /** Megjelenési információk */
+  @Expose()
   releaseInfo?: string;
 
   /** Műfajok listája */
+  @Expose()
   genres?: string[];
 
   /** Szereplőgárda */
+  @Expose()
   cast?: string[];
 
   /** Rendező(k) */
+  @Expose()
   director?: string[];
 
   /**
@@ -88,5 +102,6 @@ export class MetaPreviewDto {
    *
    * example: array of actor / genre / director links.
    */
+  @Expose()
   links?: MetaLinkDto[];
 }

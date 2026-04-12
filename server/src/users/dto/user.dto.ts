@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import {
   IsBoolean,
+  IsDate,
   IsEnum,
   IsNumber,
-  IsOptional,
   IsString,
   IsUUID,
 } from 'class-validator';
@@ -15,33 +15,44 @@ import { UserRoleEnum } from '../enum/user-role.enum';
 
 export class UserDto {
   /** Felhasználó egyedi azonosítója */
+  @Expose()
   @IsUUID()
   id: string;
 
   /** Felhasználónév */
+  @Expose()
   @IsString()
   username: string;
 
-  @Exclude()
-  @IsOptional()
-  @IsString()
-  passwordHash: string | null;
-
   /** API token */
+  @Expose()
   @IsString()
   token: string;
 
   /** Felhasználói szerepkör */
+  @Expose()
   @IsEnum(UserRoleEnum)
   @ApiProperty({ enum: UserRoleEnum, enumName: 'UserRoleEnum' })
   userRole: UserRoleEnum;
 
   /** Torrent seed limit */
+  @Expose()
   @IsNullable()
   @IsNumber()
   torrentSeed: number | null;
 
   /** Csak a legjobb torrentek megjelenítése */
+  @Expose()
   @IsBoolean()
   onlyBestTorrent: boolean;
+
+  /** Utolsó frissítés időpontja */
+  @Expose()
+  @IsDate()
+  updatedAt: Date;
+
+  /** Létrehozás időpontja */
+  @Expose()
+  @IsDate()
+  createdAt: Date;
 }

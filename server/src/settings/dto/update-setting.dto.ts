@@ -1,3 +1,4 @@
+import { Expose } from 'class-transformer';
 import {
   IsBoolean,
   IsNumber,
@@ -16,6 +17,7 @@ export class UpdateSettingDto {
   /** Local IP engedélyezése */
   @IsOptional()
   @IsBoolean()
+  @Expose()
   enebledlocalIp?: boolean;
 
   /** Cím */
@@ -32,28 +34,33 @@ export class UpdateSettingDto {
   @Validate(NoPathDomain)
   @ValidateIf((setting: UpdateSettingDto) => setting.enebledlocalIp === true)
   @Validate(IsIPv4)
+  @Expose()
   address?: string;
 
   /** Hit and Run védelem */
   @IsOptional()
   @IsBoolean()
+  @Expose()
   hitAndRun?: boolean;
 
   /** Seedben tartás ideje (másodperc) */
   @IsOptional()
   @IsNullable()
   @IsNumber()
+  @Expose()
   keepSeedSeconds?: number;
 
   /** Cache megőrzési ideje (másodperc) */
   @IsOptional()
   @IsNullable()
   @IsNumber()
+  @Expose()
   cacheRetentionSeconds?: number;
 
   /** Katalógus token */
   @IsOptional()
   @IsNullable()
   @IsString()
+  @Expose()
   catalogToken?: string | null;
 }

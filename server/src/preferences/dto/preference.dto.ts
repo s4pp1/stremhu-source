@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import type { ClassConstructor } from 'class-transformer';
+import { ClassConstructor, Expose } from 'class-transformer';
 import { Equals, IsEnum } from 'class-validator';
 
 import { AudioSpatialEnum } from 'src/preference-items/enum/audio-feature.enum';
@@ -13,6 +13,7 @@ import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import { PreferenceEnum } from '../enum/preference.enum';
 
 export class TrackerPreferenceDto {
+  @Expose()
   @Equals(PreferenceEnum.TRACKER)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -20,16 +21,19 @@ export class TrackerPreferenceDto {
   })
   preference: PreferenceEnum.TRACKER;
 
+  @Expose()
   @IsEnum(TrackerEnum, { each: true })
   @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum' })
   preferred: TrackerEnum[];
 
+  @Expose()
   @IsEnum(TrackerEnum, { each: true })
   @ApiProperty({ enum: TrackerEnum, enumName: 'TrackerEnum' })
   blocked: TrackerEnum[];
 }
 
 export class LanguagePreferenceDto {
+  @Expose()
   @Equals(PreferenceEnum.LANGUAGE)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -37,16 +41,19 @@ export class LanguagePreferenceDto {
   })
   preference: PreferenceEnum.LANGUAGE;
 
+  @Expose()
   @IsEnum(LanguageEnum, { each: true })
   @ApiProperty({ enum: LanguageEnum, enumName: 'LanguageEnum' })
   preferred: LanguageEnum[];
 
+  @Expose()
   @IsEnum(LanguageEnum, { each: true })
   @ApiProperty({ enum: LanguageEnum, enumName: 'LanguageEnum' })
   blocked: LanguageEnum[];
 }
 
 export class ResolutionPreferenceDto {
+  @Expose()
   @Equals(PreferenceEnum.RESOLUTION)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -54,6 +61,7 @@ export class ResolutionPreferenceDto {
   })
   preference: PreferenceEnum.RESOLUTION;
 
+  @Expose()
   @IsEnum(ResolutionEnum, { each: true })
   @ApiProperty({
     enum: ResolutionEnum,
@@ -61,6 +69,7 @@ export class ResolutionPreferenceDto {
   })
   preferred: ResolutionEnum[];
 
+  @Expose()
   @IsEnum(ResolutionEnum, { each: true })
   @ApiProperty({
     enum: ResolutionEnum,
@@ -70,6 +79,7 @@ export class ResolutionPreferenceDto {
 }
 
 export class VideoQualityPreferenceDto {
+  @Expose()
   @Equals(PreferenceEnum.VIDEO_QUALITY)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -77,6 +87,7 @@ export class VideoQualityPreferenceDto {
   })
   preference: PreferenceEnum.VIDEO_QUALITY;
 
+  @Expose()
   @IsEnum(VideoQualityEnum, { each: true })
   @ApiProperty({
     enum: VideoQualityEnum,
@@ -84,6 +95,7 @@ export class VideoQualityPreferenceDto {
   })
   preferred: VideoQualityEnum[];
 
+  @Expose()
   @IsEnum(VideoQualityEnum, { each: true })
   @ApiProperty({
     enum: VideoQualityEnum,
@@ -93,6 +105,7 @@ export class VideoQualityPreferenceDto {
 }
 
 export class SourcePreferenceDto {
+  @Expose()
   @Equals(PreferenceEnum.SOURCE)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -100,22 +113,25 @@ export class SourcePreferenceDto {
   })
   preference: PreferenceEnum.SOURCE;
 
+  @Expose()
   @IsEnum(SourceEnum, { each: true })
   @ApiProperty({
     enum: SourceEnum,
-    enumName: 'SourceEnum',
+    enumName: 'ResolutionEnum',
   })
   preferred: SourceEnum[];
 
+  @Expose()
   @IsEnum(SourceEnum, { each: true })
   @ApiProperty({
     enum: SourceEnum,
-    enumName: 'SourceEnum',
+    enumName: 'ResolutionEnum',
   })
   blocked: SourceEnum[];
 }
 
 export class AudioQualityPreferenceDto {
+  @Expose()
   @Equals(PreferenceEnum.AUDIO_QUALITY)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -123,6 +139,7 @@ export class AudioQualityPreferenceDto {
   })
   preference: PreferenceEnum.AUDIO_QUALITY;
 
+  @Expose()
   @IsEnum(AudioQualityEnum, { each: true })
   @ApiProperty({
     enum: AudioQualityEnum,
@@ -130,6 +147,7 @@ export class AudioQualityPreferenceDto {
   })
   preferred: AudioQualityEnum[];
 
+  @Expose()
   @IsEnum(AudioQualityEnum, { each: true })
   @ApiProperty({
     enum: AudioQualityEnum,
@@ -139,6 +157,7 @@ export class AudioQualityPreferenceDto {
 }
 
 export class AudioSpatialPreferenceDto {
+  @Expose()
   @Equals(PreferenceEnum.AUDIO_SPATIAL)
   @ApiProperty({
     enum: PreferenceEnum,
@@ -146,6 +165,7 @@ export class AudioSpatialPreferenceDto {
   })
   preference: PreferenceEnum.AUDIO_SPATIAL;
 
+  @Expose()
   @IsEnum(AudioSpatialEnum, { each: true })
   @ApiProperty({
     enum: AudioSpatialEnum,
@@ -153,6 +173,7 @@ export class AudioSpatialPreferenceDto {
   })
   preferred: AudioSpatialEnum[];
 
+  @Expose()
   @IsEnum(AudioSpatialEnum, { each: true })
   @ApiProperty({
     enum: AudioSpatialEnum,
