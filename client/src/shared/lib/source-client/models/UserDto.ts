@@ -16,7 +16,6 @@ export type UserDto = {
      * Felhasználónév
      */
     username: string;
-    passwordHash: string | null;
     /**
      * API token
      */
@@ -29,5 +28,13 @@ export type UserDto = {
      * Csak a legjobb torrentek megjelenítése
      */
     onlyBestTorrent: boolean;
+    /**
+     * Utolsó frissítés időpontja
+     */
+    updatedAt: string;
+    /**
+     * Létrehozás időpontja
+     */
+    createdAt: string;
 };
 

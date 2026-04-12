@@ -1,10 +1,14 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
-import { PreferenceMetaDto } from './preference-meta.dto';
+import {
+  PREFERENCE_META_SWAGGER_MODELS,
+  PreferenceMetaDto,
+} from './preference-meta.dto';
 import { TrackerMetaDto } from './tracker-meta.dto';
 import { UserRoleMetaDto } from './user-role-meta.dto';
 
+@ApiExtraModels(...PREFERENCE_META_SWAGGER_MODELS)
 export class MetadataDto {
   /** Elérhető trackerek */
   @Expose()
@@ -19,16 +23,12 @@ export class MetadataDto {
   /** Elérhető preferenciák listája */
   @Expose()
   @ApiProperty({
-    isArray: true,
-    oneOf: [
-      { $ref: '#/components/schemas/TrackerPreferenceMetaDto' },
-      { $ref: '#/components/schemas/LanguagePreferenceMetaDto' },
-      { $ref: '#/components/schemas/ResolutionPreferenceMetaDto' },
-      { $ref: '#/components/schemas/VideoQualityPreferenceMetaDto' },
-      { $ref: '#/components/schemas/SourcePreferenceMetaDto' },
-      { $ref: '#/components/schemas/AudioQualityPreferenceMetaDto' },
-      { $ref: '#/components/schemas/AudioSpatialPreferenceMetaDto' },
-    ],
+    type: 'array',
+    items: {
+      oneOf: PREFERENCE_META_SWAGGER_MODELS.map((model) => ({
+        $ref: getSchemaPath(model),
+      })),
+    },
   })
   preferences: PreferenceMetaDto[];
 

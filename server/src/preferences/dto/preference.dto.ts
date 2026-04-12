@@ -117,7 +117,7 @@ export class SourcePreferenceDto {
   @IsEnum(SourceEnum, { each: true })
   @ApiProperty({
     enum: SourceEnum,
-    enumName: 'ResolutionEnum',
+    enumName: 'SourceEnum',
   })
   preferred: SourceEnum[];
 
@@ -125,7 +125,7 @@ export class SourcePreferenceDto {
   @IsEnum(SourceEnum, { each: true })
   @ApiProperty({
     enum: SourceEnum,
-    enumName: 'ResolutionEnum',
+    enumName: 'SourceEnum',
   })
   blocked: SourceEnum[];
 }

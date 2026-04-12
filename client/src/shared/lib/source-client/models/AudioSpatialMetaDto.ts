@@ -5,7 +5,7 @@
 import type { AudioSpatialEnum } from './AudioSpatialEnum';
 export type AudioSpatialMetaDto = {
     /**
-     * Térhatású hang értéke
+     * Térhatású hang jellemző értéke
      */
     value: AudioSpatialEnum;
     /**

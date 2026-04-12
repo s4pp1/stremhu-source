@@ -5,7 +5,7 @@
 import type { SourceEnum } from './SourceEnum';
 export type SourceMetaDto = {
     /**
-     * Forrás típusa
+     * Forrás értéke
      */
     value: SourceEnum;
     /**
