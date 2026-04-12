@@ -37,8 +37,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/shared/components/ui/select'
-import type { UserDto } from '@/shared/lib/source-client'
-import { UserRoleEnum } from '@/shared/lib/source-client'
+import type { UserDto } from '@/shared/lib/source/source-client'
+import { UserRoleEnum } from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import { getMe } from '@/shared/queries/me'
 import { getMetadata } from '@/shared/queries/metadata'

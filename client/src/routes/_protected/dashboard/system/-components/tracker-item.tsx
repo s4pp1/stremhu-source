@@ -23,7 +23,7 @@ import {
   ItemTitle,
 } from '@/shared/components/ui/item'
 import { useMetadata } from '@/shared/hooks/use-metadata'
-import type { TrackerDto } from '@/shared/lib/source-client'
+import type { TrackerDto } from '@/shared/lib/source/source-client'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
 import { getSettings } from '@/shared/queries/settings'
 import { useDeleteTracker } from '@/shared/queries/trackers'
@@ -79,7 +79,7 @@ export function TrackerItem(props: Tracker) {
   }
 
   const tags = useMemo(() => {
-    const items: Array<{ label: string; icon: JSX.Element }> = []
+    const items: { label: string; icon: JSX.Element }[] = []
 
     let hitAndRun = setting.hitAndRun
 

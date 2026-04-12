@@ -6,13 +6,13 @@ import type {
   SourceEnum,
   TrackerEnum,
   VideoQualityEnum,
-} from '../lib/source-client'
+} from '../lib/source/source-client'
 
 export type PreferenceItemDto =
-  | Array<TrackerEnum>
-  | Array<LanguageEnum>
-  | Array<ResolutionEnum>
-  | Array<VideoQualityEnum>
-  | Array<SourceEnum>
-  | Array<AudioQualityEnum>
-  | Array<AudioSpatialEnum>
+  | TrackerEnum[]
+  | LanguageEnum[]
+  | ResolutionEnum[]
+  | VideoQualityEnum[]
+  | SourceEnum[]
+  | AudioQualityEnum[]
+  | AudioSpatialEnum[]

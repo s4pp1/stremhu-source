@@ -1,11 +1,11 @@
 import { useMutation } from '@tanstack/react-query'
 
-import { appClient } from '../lib/client'
+import { torrentsCacheCleanup } from '../lib/source/source-client'
 
 export function useCleanupTorrentsCache() {
   return useMutation({
     mutationFn: async () => {
-      await appClient.torrentsCache.cleanup()
+      await torrentsCacheCleanup()
     },
   })
 }

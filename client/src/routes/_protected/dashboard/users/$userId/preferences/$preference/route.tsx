@@ -2,7 +2,7 @@ import { Outlet, createFileRoute } from '@tanstack/react-router'
 import { upperFirst } from 'lodash'
 import * as z from 'zod'
 
-import { PreferenceEnum } from '@/shared/lib/source-client'
+import { PreferenceEnum } from '@/shared/lib/source/source-client'
 import { getMetadata } from '@/shared/queries/metadata'
 import { getUserPreference } from '@/shared/queries/user-preferences'
 

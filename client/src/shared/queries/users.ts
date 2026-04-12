@@ -4,15 +4,25 @@ import {
   useQueryClient,
 } from '@tanstack/react-query'
 
-import { appClient } from '@/shared/lib/client'
-import type { CreateUserDto, UpdateUserDto } from '@/shared/lib/source-client'
+import type {
+  CreateUserDto,
+  UpdateUserDto,
+} from '@/shared/lib/source/source-client'
+import {
+  usersCreate,
+  usersDeleteOne,
+  usersFind,
+  usersFindOne,
+  usersRegenerateToken,
+  usersUpdateOne,
+} from '@/shared/lib/source/source-client'
 
 import { getMe } from './me'
 
 export const getUsers = queryOptions({
   queryKey: ['users'],
   queryFn: async () => {
-    const users = await appClient.users.find()
+    const users = await usersFind()
     return users
   },
 })
@@ -21,7 +31,7 @@ export const getUser = (userId: string) =>
   queryOptions({
     queryKey: ['users', userId],
     queryFn: async () => {
-      const user = await appClient.users.findOne(userId)
+      const user = await usersFindOne(userId)
       return user
     },
   })
@@ -30,7 +40,7 @@ export function useAddUser() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (payload: CreateUserDto) => {
-      const user = await appClient.users.create(payload)
+      const user = await usersCreate(payload)
       return user
     },
     onSuccess: () => {
@@ -43,7 +53,7 @@ export function useDeleteUser() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (userId: string) => {
-      await appClient.users.deleteOne(userId)
+      await usersDeleteOne(userId)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getUsers.queryKey })
@@ -55,7 +65,7 @@ export function useRegenerateUserToken() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (userId: string) => {
-      const user = await appClient.users.regenerateToken(userId)
+      const user = await usersRegenerateToken(userId)
       return user
     },
     onSuccess: (updated) => {
@@ -74,7 +84,7 @@ export function useUpdateUser() {
   return useMutation({
     mutationFn: async (data: { userId: string; payload: UpdateUserDto }) => {
       const { userId, payload } = data
-      const user = await appClient.users.updateOne(userId, payload)
+      const user = await usersUpdateOne(userId, payload)
       return user
     },
     onSuccess: (updated) => {

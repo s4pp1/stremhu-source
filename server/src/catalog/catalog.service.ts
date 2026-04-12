@@ -1,24 +1,34 @@
 import {
   BadRequestException,
-  Inject,
   Injectable,
   Logger,
+  OnModuleInit,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 import { AppSettingsService } from 'src/settings/app/app-settings.service';
 
-import { CATALOG_CLIENT } from './catalog-client.token';
 import { ResolveImdbId, ResolvedImdbId } from './catalog.types';
-import { CatalogClient, HealthDto } from './client';
+import {
+  HealthDto,
+  imdbResolverResolveSpecial,
+  monitoringHealthCheckWithToken,
+} from './client/catalog-client';
+import { CATALOG_AXIOS_INSTANCE } from './client/catalog-client-instance';
 
 @Injectable()
-export class CatalogService {
+export class CatalogService implements OnModuleInit {
   private readonly logger = new Logger(CatalogService.name);
 
   constructor(
-    @Inject(CATALOG_CLIENT) private readonly client: CatalogClient,
     private appSettingsService: AppSettingsService,
+    private configService: ConfigService,
   ) {}
+
+  onModuleInit() {
+    CATALOG_AXIOS_INSTANCE.defaults.baseURL =
+      this.configService.getOrThrow<string>('app.stremhu-catalog-url');
+  }
 
   async catalogHealthCheck(catalogToken?: string): Promise<HealthDto> {
     let token = catalogToken || null;
@@ -33,8 +43,7 @@ export class CatalogService {
     }
 
     try {
-      const healthCheck =
-        await this.client.monitoring.healthCheckWithToken(token);
+      const healthCheck = await monitoringHealthCheckWithToken(token);
 
       return healthCheck;
     } catch {
@@ -52,13 +61,10 @@ export class CatalogService {
     if (!catalogToken) return { imdbId };
 
     try {
-      const { episodeImdbId } = await this.client.imdb.resolveSpecial(
-        catalogToken,
-        {
-          episodeNumber: episode,
-          imdbId: imdbId,
-        },
-      );
+      const { episodeImdbId } = await imdbResolverResolveSpecial(catalogToken, {
+        episodeNumber: episode,
+        imdbId: imdbId,
+      });
 
       return { imdbId: episodeImdbId, originalImdbId: imdbId };
     } catch {

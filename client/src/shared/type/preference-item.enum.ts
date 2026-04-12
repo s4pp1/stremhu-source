@@ -6,7 +6,7 @@ import type {
   SourceEnum,
   TrackerEnum,
   VideoQualityEnum,
-} from '../lib/source-client'
+} from '../lib/source/source-client'
 
 export type PreferenceItemEnum =
   | TrackerEnum

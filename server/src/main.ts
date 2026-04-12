@@ -56,12 +56,15 @@ async function bootstrap() {
     }),
   );
 
+  const operationIdFactory = (controllerKey: string, methodKey: string) =>
+    `${controllerKey.replace('Controller', '')}${methodKey.charAt(0).toUpperCase() + methodKey.slice(1)}`;
+
   const kodiSwagger = new DocumentBuilder()
     .setTitle('StremHU Source - Kodi')
     .build();
 
   const kodiSwaggerDoc = SwaggerModule.createDocument(app, kodiSwagger, {
-    operationIdFactory: (_controllerKey, methodKey) => methodKey,
+    operationIdFactory,
     include: [KodiModule, PairingsModule],
     deepScanRoutes: true,
   });
@@ -75,7 +78,7 @@ async function bootstrap() {
       .build();
 
     const document = SwaggerModule.createDocument(app, config, {
-      operationIdFactory: (_controllerKey, methodKey) => methodKey,
+      operationIdFactory,
     });
     SwaggerModule.setup('api/docs', app, document);
 

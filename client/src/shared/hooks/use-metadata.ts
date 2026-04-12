@@ -4,7 +4,7 @@ import type {
   PreferenceEnum,
   TrackerEnum,
   UserRoleEnum,
-} from '@/shared/lib/source-client'
+} from '@/shared/lib/source/source-client'
 import { getMetadata } from '@/shared/queries/metadata'
 
 import type { PreferenceItemMeta } from '../type/preference-item-meta'

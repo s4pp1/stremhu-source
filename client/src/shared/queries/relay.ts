@@ -4,13 +4,16 @@ import {
   useQueryClient,
 } from '@tanstack/react-query'
 
-import { appClient } from '../lib/client'
-import type { UpdateRelaySettingsDto } from '../lib/source-client'
+import type { UpdateRelaySettingsDto } from '../lib/source/source-client'
+import {
+  torrentsSettings,
+  torrentsUpdateSettings,
+} from '../lib/source/source-client'
 
 export const getRelaySettings = queryOptions({
   queryKey: ['relay-settings'],
   queryFn: async () => {
-    const settings = await appClient.torrents.settings()
+    const settings = await torrentsSettings()
     return settings
   },
 })
@@ -19,7 +22,7 @@ export function useUpdateRelaySetting() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (payload: UpdateRelaySettingsDto) => {
-      const setting = await appClient.torrents.updateSettings(payload)
+      const setting = await torrentsUpdateSettings(payload)
       return setting
     },
     onSuccess: async () => {

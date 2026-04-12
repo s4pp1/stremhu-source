@@ -1,7 +1,7 @@
-import type { TrackerEnum } from '@/shared/lib/source-client'
+import type { TrackerEnum } from '@/shared/lib/source/source-client'
 
 export type AddTrackerOptions = {
-  activeTrackers: Array<TrackerEnum>
+  activeTrackers: TrackerEnum[]
 }
 
 export type AddTrackerDialog = {

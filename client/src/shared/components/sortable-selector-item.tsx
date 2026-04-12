@@ -8,7 +8,7 @@ import type {
   ResolutionEnum,
   SourceEnum,
   VideoQualityEnum,
-} from '@/shared/lib/source-client'
+} from '@/shared/lib/source/source-client'
 
 import { Button } from './ui/button'
 import { Label } from './ui/label'

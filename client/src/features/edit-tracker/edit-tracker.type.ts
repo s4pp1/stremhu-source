@@ -1,4 +1,4 @@
-import type { TrackerDto } from '@/shared/lib/source-client'
+import type { TrackerDto } from '@/shared/lib/source/source-client'
 
 export type EditTrackerOptions = {
   tracker: TrackerDto

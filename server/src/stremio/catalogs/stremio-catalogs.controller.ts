@@ -37,10 +37,7 @@ export class StremioCatalogsController {
 
   constructor(private stremioCatalogService: StremioCatalogsService) {}
 
-  @Get([
-    '/catalog/:mediaType/:catalogId.json',
-    '/catalog/:mediaType/:catalogId/:extra.json',
-  ])
+  @Get('/catalog/:mediaType/:catalogId.json')
   @ApiParam({
     name: 'mediaType',
     required: true,
@@ -52,7 +49,38 @@ export class StremioCatalogsController {
     @Param('mediaType', new ParseEnumPipe(MediaTypeEnum))
     mediaType: MediaTypeEnum,
     @Param('catalogId') catalogId: string,
+  ): Promise<StremioCatalogDto> {
+    return this.getCatalog(mediaType, catalogId);
+  }
+
+  @Get('/catalog/:mediaType/:catalogId/:extra.json')
+  @ApiParam({
+    name: 'mediaType',
+    required: true,
+    enum: MediaTypeEnum,
+    enumName: 'MediaTypeEnum',
+  })
+  @ApiParam({
+    name: 'extra',
+    required: true,
+    type: 'string',
+    description:
+      'Kiegészítő szűrési paraméterek az útvonalban, például keresési kifejezés, eltolás (lapozás) vagy műfaj (pl. "search=film+neve&skip=20").',
+  })
+  @ApiOkResponse({ type: StremioCatalogDto })
+  async catalogWithExtra(
+    @Param('mediaType', new ParseEnumPipe(MediaTypeEnum))
+    mediaType: MediaTypeEnum,
+    @Param('catalogId') catalogId: string,
     @Param('extra', ParseExtraPipe) extra: ParsedExtra,
+  ): Promise<StremioCatalogDto> {
+    return this.getCatalog(mediaType, catalogId, extra);
+  }
+
+  private async getCatalog(
+    mediaType: MediaTypeEnum,
+    catalogId: string,
+    extra: ParsedExtra = {},
   ): Promise<StremioCatalogDto> {
     const { search } = extra;
     if (

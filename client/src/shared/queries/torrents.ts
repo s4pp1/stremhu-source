@@ -4,17 +4,20 @@ import {
   useQueryClient,
 } from '@tanstack/react-query'
 
-import { appClient } from '@/shared/lib/client'
-
-import type { UpdateTorrentDto } from '../lib/source-client'
+import type { UpdateTorrentDto } from '../lib/source/source-client'
+import {
+  torrentsDelete,
+  torrentsFind,
+  torrentsUpdate,
+} from '../lib/source/source-client'
 
 export const getTorrents = queryOptions({
   queryKey: ['torrents'],
   refetchInterval: 5000,
   queryFn: async () => {
-    const torrents = await appClient.torrents.find()
+    const response = await torrentsFind()
 
-    return torrents
+    return response
   },
 })
 
@@ -23,7 +26,7 @@ export function useUpdateTorrent(infoHash: string) {
 
   return useMutation({
     mutationFn: async (payload: UpdateTorrentDto) => {
-      await appClient.torrents.update(infoHash, payload)
+      await torrentsUpdate(infoHash, payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['torrents'] })
@@ -36,7 +39,7 @@ export function useDeleteTorrent() {
 
   return useMutation({
     mutationFn: async (infoHash: string) => {
-      await appClient.torrents.delete(infoHash)
+      await torrentsDelete(infoHash)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['torrents'] })

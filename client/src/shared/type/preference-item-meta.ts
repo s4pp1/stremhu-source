@@ -6,7 +6,7 @@ import type {
   SourceMetaDto,
   TrackerMetaDto,
   VideoQualityMetaDto,
-} from '../lib/source-client'
+} from '../lib/source/source-client'
 
 export type PreferenceItemMeta =
   | TrackerMetaDto

@@ -14,7 +14,7 @@ import {
 } from '@/shared/components/ui/card'
 import { useAppForm } from '@/shared/contexts/form-context'
 import { useMetadata } from '@/shared/hooks/use-metadata'
-import { UserRoleEnum } from '@/shared/lib/source-client'
+import { UserRoleEnum } from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import { useRegistration } from '@/shared/queries/auth'
 import { getSettingsStatus } from '@/shared/queries/settings-setup'
@@ -78,13 +78,13 @@ function SetupUserRoute() {
         <Card className="w-sm">
           <CardHeader>
             <CardTitle>
-              {upperFirst(getUserRoleLabel(UserRoleEnum.ADMIN))} fiók
+              {upperFirst(getUserRoleLabel(UserRoleEnum.admin))} fiók
               létrehozása
             </CardTitle>
             <CardDescription>
               Kezdjük a beállítást! Hozd létre az első fiókot, ami{' '}
               <span className="font-bold">
-                {getUserRoleLabel(UserRoleEnum.ADMIN)}
+                {getUserRoleLabel(UserRoleEnum.admin)}
               </span>{' '}
               jogosultsággal fog rendelkezni.
             </CardDescription>

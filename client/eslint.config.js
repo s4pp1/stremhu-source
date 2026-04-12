@@ -6,6 +6,7 @@ export default [
   {
     rules: {
       'import/order': 'off',
+      '@typescript-eslint/array-type': ['error', { default: 'array' }],
     },
   },
 ]

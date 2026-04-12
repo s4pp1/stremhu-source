@@ -4,7 +4,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Preference } from '@/features/preferences/preference'
 import { PreferencesSection } from '@/features/preferences/preferences-section'
 import { Separator } from '@/shared/components/ui/separator'
-import type { PreferenceEnum } from '@/shared/lib/source-client'
+import type { PreferenceEnum } from '@/shared/lib/source/source-client'
 import { assertExists } from '@/shared/lib/utils'
 import {
   getMePreferences,
@@ -26,7 +26,7 @@ function RouteComponent() {
   const { mutateAsync: reorderMePreference } = useReorderMePreference()
   const { mutateAsync: deleteMePreference } = useDeleteMePreference()
 
-  const handleReorder = async (preferences: Array<PreferenceEnum>) => {
+  const handleReorder = async (preferences: PreferenceEnum[]) => {
     await reorderMePreference({
       preferences,
     })

@@ -38,7 +38,7 @@ import {
   ItemTitle,
 } from '@/shared/components/ui/item'
 import { useMetadata } from '@/shared/hooks/use-metadata'
-import type { TorrentDto } from '@/shared/lib/source-client'
+import type { TorrentDto } from '@/shared/lib/source/source-client'
 import { assertExists, formatDateTime, parseApiError } from '@/shared/lib/utils'
 import { useDeleteTorrent, useUpdateTorrent } from '@/shared/queries/torrents'
 import { getTrackers } from '@/shared/queries/trackers'

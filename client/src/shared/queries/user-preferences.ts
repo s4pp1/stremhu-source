@@ -4,18 +4,25 @@ import {
   useQueryClient,
 } from '@tanstack/react-query'
 
-import { appClient } from '../lib/client'
 import type {
   PreferenceEnum,
   ReorderPreferencesDto,
-} from '../lib/source-client'
+} from '../lib/source/source-client'
+import {
+  userPreferencesCreate,
+  userPreferencesDelete,
+  userPreferencesFind,
+  userPreferencesFindOne,
+  userPreferencesReorder,
+  userPreferencesUpdate,
+} from '../lib/source/source-client'
 import type { PreferenceDto } from '../type/preference.dto'
 
 export const getUserPreferences = (userId: string) =>
   queryOptions({
     queryKey: ['users', userId, 'preferences'],
     queryFn: async () => {
-      const response = await appClient.userPreferences.find(userId)
+      const response = await userPreferencesFind(userId)
       return response
     },
   })
@@ -25,7 +32,7 @@ export function useCreateUserPreference(userId: string) {
 
   return useMutation({
     mutationFn: async (payload: PreferenceDto) => {
-      await appClient.userPreferences.create(userId, payload)
+      await userPreferencesCreate(userId, payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -39,10 +46,7 @@ export const getUserPreference = (userId: string, preference: PreferenceEnum) =>
   queryOptions({
     queryKey: ['users', userId, 'preferences', preference],
     queryFn: async () => {
-      const response = await appClient.userPreferences.findOne(
-        userId,
-        preference,
-      )
+      const response = await userPreferencesFindOne(userId, preference)
       return response
     },
   })
@@ -52,11 +56,7 @@ export function useUpdateUserPreference(userId: string) {
 
   return useMutation({
     mutationFn: async (payload: PreferenceDto) => {
-      await appClient.userPreferences.update(
-        userId,
-        payload.preference,
-        payload,
-      )
+      await userPreferencesUpdate(userId, payload.preference, payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -71,7 +71,7 @@ export function useReorderUserPreference(userId: string) {
 
   return useMutation({
     mutationFn: async (payload: ReorderPreferencesDto) => {
-      await appClient.userPreferences.reorder(userId, payload)
+      await userPreferencesReorder(userId, payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -86,7 +86,7 @@ export function useDeleteUserPreference(userId: string) {
 
   return useMutation({
     mutationFn: async (preference: PreferenceEnum) => {
-      await appClient.userPreferences.delete(userId, preference)
+      await userPreferencesDelete(userId, preference)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

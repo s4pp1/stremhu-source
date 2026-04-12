@@ -4,15 +4,18 @@ import {
   useQueryClient,
 } from '@tanstack/react-query'
 
-import { appClient } from '@/shared/lib/client'
-
-import type { UpdateMeDto } from '../lib/source-client'
+import type { UpdateMeDto } from '../lib/source/source-client'
+import {
+  meMe,
+  meRegenerateToken,
+  meUpdateMe,
+} from '../lib/source/source-client'
 import { getUsers } from './users'
 
 export const getMe = queryOptions({
   queryKey: ['me'],
   queryFn: async () => {
-    const response = await appClient.me.me()
+    const response = await meMe()
     return response.me
   },
 })
@@ -21,7 +24,7 @@ export function useRegenerateMeToken() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async () => {
-      const me = await appClient.me.regenerateToken()
+      const me = await meRegenerateToken()
       return me
     },
     onSuccess: (updated) => {
@@ -35,7 +38,7 @@ export function useUpdateMe() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (payload: UpdateMeDto) => {
-      const me = await appClient.me.updateMe(payload)
+      const me = await meUpdateMe(payload)
       return me
     },
     onSuccess: (updated) => {
