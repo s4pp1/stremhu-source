@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import semver from 'semver';
 
 import { NodeEnvEnum } from 'src/config/enum/node-env.enum';
-import { SettingsService } from 'src/settings/settings.service';
+import { SettingsCoreService } from 'src/settings/core/settings-core.service';
 
 import { ManifestCatalog } from '../dto/manifest-catalog.dto';
 import { ManifestDto } from '../dto/manifest.dto';
@@ -20,7 +20,7 @@ import {
 export class StremioCoreService {
   constructor(
     private configService: ConfigService,
-    private settingsService: SettingsService,
+    private settingsCoreService: SettingsCoreService,
   ) {}
 
   async manifest(): Promise<ManifestDto> {
@@ -29,7 +29,7 @@ export class StremioCoreService {
     const description =
       this.configService.getOrThrow<string>('app.description');
 
-    const endpoint = await this.settingsService.getEndpoint();
+    const endpoint = await this.settingsCoreService.getEndpoint();
 
     let id = 'hu.stremhu-source.addon';
     let validVersion = semver.clean(version);

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { CatalogModule } from 'src/catalog/catalog.module';
-import { SettingsModule } from 'src/settings/settings.module';
+import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
 import { TorrentsCacheCoreModule } from 'src/torrents-cache/core/torrents-cache-core.module';
 import { TorrentsModule } from 'src/torrents/torrents.module';
 import { TrackersMetaModule } from 'src/trackers/meta/trackers-meta.module';
@@ -12,7 +12,7 @@ import { TorrentVideosService } from './torrent-videos.service';
 
 @Module({
   imports: [
-    SettingsModule,
+    SettingsCoreModule,
     TrackersModule,
     TrackersMetaModule,
     CatalogModule,

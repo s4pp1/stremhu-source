@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { AppSettingsService } from 'src/settings/app/app-settings.service';
+import { SettingsCoreService } from 'src/settings/core/settings-core.service';
 
 import { ResolveImdbId, ResolvedImdbId } from './catalog.types';
 import {
@@ -21,7 +21,7 @@ export class CatalogService implements OnModuleInit {
   private readonly logger = new Logger(CatalogService.name);
 
   constructor(
-    private appSettingsService: AppSettingsService,
+    private settingsCoreService: SettingsCoreService,
     private configService: ConfigService,
   ) {}
 
@@ -34,7 +34,7 @@ export class CatalogService implements OnModuleInit {
     let token = catalogToken || null;
 
     if (!catalogToken) {
-      const setting = await this.appSettingsService.get();
+      const setting = await this.settingsCoreService.appSettings();
       token = setting.catalogToken;
     }
 
@@ -57,7 +57,7 @@ export class CatalogService implements OnModuleInit {
 
     if (season !== 0) return { imdbId: payload.imdbId };
 
-    const { catalogToken } = await this.appSettingsService.get();
+    const { catalogToken } = await this.settingsCoreService.appSettings();
     if (!catalogToken) return { imdbId };
 
     try {

@@ -14,7 +14,7 @@ import { orderBy } from 'lodash';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { RelaySettingsService } from 'src/settings/relay/relay-settings.service';
+import { SettingsCoreService } from 'src/settings/core/settings-core.service';
 import { UserRoleEnum } from 'src/users/enum/user-role.enum';
 
 import { RelaySettingsDto } from './dto/relay-settings.dto';
@@ -30,13 +30,13 @@ import { TorrentsService } from './torrents.service';
 export class TorrentsController {
   constructor(
     private readonly torrentsService: TorrentsService,
-    private readonly relaySettingsService: RelaySettingsService,
+    private readonly settingsCoreService: SettingsCoreService,
   ) {}
 
   @SerializeOptions({ type: RelaySettingsDto })
   @Get('/settings')
   async settings(): Promise<RelaySettingsDto> {
-    const settings = await this.relaySettingsService.get();
+    const settings = await this.settingsCoreService.relaySettings();
     return settings;
   }
 
@@ -45,7 +45,8 @@ export class TorrentsController {
   async updateSettings(
     @Body() payload: UpdateRelaySettingsDto,
   ): Promise<RelaySettingsDto> {
-    const settings = await this.relaySettingsService.update(payload);
+    const settings =
+      await this.settingsCoreService.updateRelaySettings(payload);
     await this.torrentsService.updateTorrentClient(settings);
 
     return settings;

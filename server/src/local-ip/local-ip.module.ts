@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 
-import { AppSettingsModule } from 'src/settings/app/app-settings.module';
+import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
 
 import { LocalIpService } from './local-ip.service';
 
 @Module({
-  imports: [AppSettingsModule],
+  imports: [SettingsCoreModule],
   providers: [LocalIpService],
   exports: [LocalIpService],
 })

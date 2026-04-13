@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 
-import { AppSettingsModule } from 'src/settings/app/app-settings.module';
+import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
 
 import { CatalogController } from './catalog.controller';
 import { CatalogService } from './catalog.service';
 
 @Module({
-  imports: [AppSettingsModule],
+  imports: [SettingsCoreModule],
   providers: [CatalogService],
   controllers: [CatalogController],
   exports: [CatalogService],

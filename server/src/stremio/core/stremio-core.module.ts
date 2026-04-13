@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 
-import { SettingsModule } from 'src/settings/settings.module';
+import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
 
 import { StremioCoreService } from './stremio-core.service';
 
 @Module({
-  imports: [SettingsModule],
+  imports: [SettingsCoreModule],
   providers: [StremioCoreService],
   exports: [StremioCoreService],
 })

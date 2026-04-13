@@ -4,17 +4,16 @@ import { ConfigService } from '@nestjs/config';
 import { CatalogService } from 'src/catalog/catalog.service';
 import { LocalIpService } from 'src/local-ip/local-ip.service';
 
-import { AppSettings, AppSettingsService } from './app/app-settings.service';
-import { RelaySettingsService } from './relay/relay-settings.service';
+import { SettingsCoreService } from '../core/settings-core.service';
+import { AppSettings } from '../type/app-settings.type';
 
 @Injectable()
-export class SettingsService implements OnModuleInit {
-  private readonly logger = new Logger(SettingsService.name);
+export class SettingsSyncService implements OnModuleInit {
+  private readonly logger = new Logger(SettingsSyncService.name);
 
   constructor(
     private readonly configService: ConfigService,
-    private readonly appSettingsService: AppSettingsService,
-    private readonly relaySettingsService: RelaySettingsService,
+    private readonly settingsCoreService: SettingsCoreService,
     private readonly catalogService: CatalogService,
     private readonly localIpService: LocalIpService,
   ) {}
@@ -26,8 +25,8 @@ export class SettingsService implements OnModuleInit {
 
     try {
       await Promise.all([
-        this.appSettingsService.update({}),
-        this.relaySettingsService.update({ port }),
+        this.settingsCoreService.updateAppSettings({}),
+        this.settingsCoreService.updateRelaySettings({ port }),
       ]);
     } catch (error) {
       this.logger.fatal(
@@ -38,8 +37,8 @@ export class SettingsService implements OnModuleInit {
   }
 
   async update(payload: Partial<AppSettings>): Promise<AppSettings> {
-    const current = await this.appSettingsService.get();
-    const updated = await this.appSettingsService.update(payload);
+    const current = await this.settingsCoreService.appSettings();
+    const updated = await this.settingsCoreService.updateAppSettings(payload);
 
     // StremHU Catalog token frissítése
     if (
@@ -57,26 +56,5 @@ export class SettingsService implements OnModuleInit {
     }
 
     return updated;
-  }
-
-  async getEndpoint() {
-    const setting = await this.appSettingsService.get();
-
-    let endpoint = this.buildLocalUrl('127.0.0.1');
-
-    if (setting.enebledlocalIp && setting.address) {
-      endpoint = this.buildLocalUrl(setting.address);
-    }
-
-    if (!setting.enebledlocalIp && setting.address) {
-      endpoint = setting.address;
-    }
-
-    return endpoint;
-  }
-
-  buildLocalUrl(ipAddress: string) {
-    const httpsPort = this.configService.getOrThrow<number>('app.https-port');
-    return `https://${ipAddress.split('.').join('-')}.local-ip.medicmobile.org:${httpsPort}`;
   }
 }

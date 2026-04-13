@@ -1,13 +1,10 @@
 import { Module } from '@nestjs/common';
 
-import { RelaySettingsModule } from 'src/settings/relay/relay-settings.module';
+import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
 
-import { RelayRuntimeService } from './relay-runtime.service';
-import { RelayService } from './relay.service';
+import { RelayCoreModule } from './core/relay-core.module';
 
 @Module({
-  imports: [RelaySettingsModule],
-  providers: [RelayRuntimeService, RelayService],
-  exports: [RelayService, RelayRuntimeService],
+  imports: [RelayCoreModule, SettingsCoreModule],
 })
 export class RelayModule {}

@@ -9,7 +9,7 @@ import request from 'supertest';
 
 import { AuthGuard } from '../../auth/guards/auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
-import { RelaySettingsService } from '../../settings/relay/relay-settings.service';
+import { SettingsCoreService } from '../../settings/core/settings-core.service';
 import { TorrentsController } from '../torrents.controller';
 import { TorrentsService } from '../torrents.service';
 
@@ -23,11 +23,11 @@ jest.mock('../torrents.service', () => ({
   })),
 }));
 
-// Mocking RelaySettingsService
-jest.mock('../../settings/relay/relay-settings.service', () => ({
-  RelaySettingsService: jest.fn().mockImplementation(() => ({
-    get: jest.fn(),
-    update: jest.fn(),
+// Mocking SettingsCoreService
+jest.mock('../../settings/core/settings-core.service', () => ({
+  SettingsCoreService: jest.fn().mockImplementation(() => ({
+    relaySettings: jest.fn(),
+    updateRelaySettings: jest.fn(),
   })),
 }));
 
@@ -52,9 +52,9 @@ describe('Torrents (Integration)', () => {
     delete: jest.fn().mockResolvedValue(undefined),
   };
 
-  const mockRelaySettingsService = {
-    get: jest.fn().mockResolvedValue(mockRelaySettings),
-    update: jest.fn().mockResolvedValue(mockRelaySettings),
+  const mockSettingsCoreService = {
+    relaySettings: jest.fn().mockResolvedValue(mockRelaySettings),
+    updateRelaySettings: jest.fn().mockResolvedValue(mockRelaySettings),
   };
 
   beforeAll(async () => {
@@ -66,8 +66,8 @@ describe('Torrents (Integration)', () => {
           useValue: mockTorrentsService,
         },
         {
-          provide: RelaySettingsService,
-          useValue: mockRelaySettingsService,
+          provide: SettingsCoreService,
+          useValue: mockSettingsCoreService,
         },
       ],
     })
@@ -108,7 +108,7 @@ describe('Torrents (Integration)', () => {
         .expect(200);
 
       expect(response.body).toEqual(mockRelaySettings);
-      expect(mockRelaySettingsService.get).toHaveBeenCalled();
+      expect(mockSettingsCoreService.relaySettings).toHaveBeenCalled();
     });
 
     it('/settings (PUT)', async () => {
@@ -120,7 +120,7 @@ describe('Torrents (Integration)', () => {
         .expect(200);
 
       expect(response.body).toEqual(mockRelaySettings);
-      expect(mockRelaySettingsService.update).toHaveBeenCalledWith(
+      expect(mockSettingsCoreService.updateRelaySettings).toHaveBeenCalledWith(
         expect.objectContaining(payload),
       );
       expect(mockTorrentsService.updateTorrentClient).toHaveBeenCalledWith(

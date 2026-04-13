@@ -6,14 +6,15 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { RelayRuntimeService } from 'src/relay/relay-runtime.service';
-import { RelayService } from 'src/relay/relay.service';
+import { RelayRuntimeCoreService } from 'src/relay/core/relay-core-runtime.service';
 import { RelayStatus } from 'src/relay/type/relay-status.enum';
-import { RelaySettingsService } from 'src/settings/relay/relay-settings.service';
+import { SettingsCoreService } from 'src/settings/core/settings-core.service';
 import { PersistedTorrentsService } from 'src/torrents/persisted/persisted-torrents.service';
 import { TrackersStore } from 'src/trackers/core/trackers.store';
 import { TrackerDiscoveryService } from 'src/trackers/tracker-discovery.service';
 import { TrackerTorrentFound } from 'src/trackers/type/tracker-torrent-found.type';
+
+import { RelayCoreService } from './core/relay-core.service';
 
 @Injectable()
 export class RelaySyncService
@@ -24,26 +25,26 @@ export class RelaySyncService
   constructor(
     private readonly configService: ConfigService,
     private readonly persistedTorrentsService: PersistedTorrentsService,
-    private readonly relayService: RelayService,
-    private readonly relayRuntimeService: RelayRuntimeService,
-    private readonly relaySettingsService: RelaySettingsService,
+    private readonly relayCoreService: RelayCoreService,
+    private readonly relayRuntimeCoreService: RelayRuntimeCoreService,
+    private readonly settingsCoreService: SettingsCoreService,
     private readonly trackersStore: TrackersStore,
     private readonly trackerDiscoveryService: TrackerDiscoveryService,
   ) {}
 
   onApplicationBootstrap() {
-    this.relayRuntimeService.getStatus$().subscribe((status) => {
+    this.relayRuntimeCoreService.getStatus$().subscribe((status) => {
       if (status === RelayStatus.ONLINE) {
         void this.onRelayOnline();
       }
     });
 
-    void this.relayRuntimeService.bootstrap();
+    void this.relayRuntimeCoreService.bootstrap();
   }
 
   async onApplicationShutdown(signal?: string) {
     this.logger.log(`🛑 Relay leállítása... signal: ${signal}`);
-    await this.relayRuntimeService.shutdown();
+    await this.relayRuntimeCoreService.shutdown();
     this.logger.log('✅ Relay leállítva.');
   }
 
@@ -57,9 +58,9 @@ export class RelaySyncService
   private async syncSettings() {
     try {
       const port = this.configService.getOrThrow<number>('torrent.port');
-      const setting = await this.relaySettingsService.get();
+      const setting = await this.settingsCoreService.relaySettings();
 
-      await this.relayService.updateConfig({ ...setting, port });
+      await this.relayCoreService.updateConfig({ ...setting, port });
     } catch (err) {
       this.logger.error('🚨 Relay szinkronizáció sikertelen!', err);
     }
@@ -104,7 +105,7 @@ export class RelaySyncService
     downloadFullTorrent: boolean,
   ) {
     try {
-      await this.relayService.addTorrent({
+      await this.relayCoreService.addTorrent({
         torrentFilePath: torrentCache.torrentFilePath,
         downloadFullTorrent,
       });

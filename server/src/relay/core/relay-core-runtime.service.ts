@@ -7,18 +7,18 @@ import { setTimeout as sleep } from 'node:timers/promises';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { health } from './client/relay-client';
+import { health } from '../client/relay-client';
 import {
   HEARTBEAT_INTERVAL_MS,
   MAX_RESTARTS,
   RELAY_BASE_URL_PORT,
   RESTART_DELAY_MS,
-} from './relay.constant';
-import { RelayStatus } from './type/relay-status.enum';
+} from '../relay.constant';
+import { RelayStatus } from '../type/relay-status.enum';
 
 @Injectable()
-export class RelayRuntimeService {
-  private readonly logger = new Logger(RelayRuntimeService.name);
+export class RelayRuntimeCoreService {
+  private readonly logger = new Logger(RelayRuntimeCoreService.name);
 
   private libtorrentEngineProcess: ReturnType<typeof spawn> | null = null;
   private isShuttingDown = false;

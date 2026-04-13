@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 
 import { AuthModule } from 'src/auth/auth.module';
-import { RelayModule } from 'src/relay/relay.module';
-import { RelaySettingsModule } from 'src/settings/relay/relay-settings.module';
+import { RelayCoreModule } from 'src/relay/core/relay-core.module';
+import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
 import { TrackersCoreModule } from 'src/trackers/core/trackers-core.module';
 
 import { ExternalRelaySettingsController } from './integrations/external-relay-settings.controller';
@@ -16,9 +16,9 @@ import { TorrentsService } from './torrents.service';
     AuthModule,
     PersistedTorrentsCoreModule,
     PersistedTorrentsModule,
-    RelayModule,
+    RelayCoreModule,
     TrackersCoreModule,
-    RelaySettingsModule,
+    SettingsCoreModule,
   ],
   providers: [TorrentsService],
   controllers: [TorrentsController, ExternalRelaySettingsController],

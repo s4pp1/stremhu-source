@@ -12,34 +12,38 @@ import {
   getTorrents,
   update,
   updateTorrent,
-} from './client/relay-client';
-import { RelayRuntimeService } from './relay-runtime.service';
-import { AddRelayTorrent } from './type/add-relay-torrent.type';
+} from '../client/relay-client';
+import { AddRelayTorrent } from '../type/add-relay-torrent.type';
+import { RelayRuntimeCoreService } from './relay-core-runtime.service';
 
 @Injectable()
-export class RelayService {
-  private readonly logger = new Logger(RelayService.name);
+export class RelayCoreService {
+  private readonly logger = new Logger(RelayCoreService.name);
 
-  constructor(private readonly relayRuntimeService: RelayRuntimeService) {}
+  constructor(
+    private readonly relayRuntimeCoreService: RelayRuntimeCoreService,
+  ) {}
 
   async updateConfig(payload: UpdateSettings) {
-    await this.relayRuntimeService.request(() => update(payload));
+    await this.relayRuntimeCoreService.request(() => update(payload));
   }
 
   async getTorrents(): Promise<RelayTorrent[]> {
-    return this.relayRuntimeService.request(() => getTorrents());
+    return this.relayRuntimeCoreService.request(() => getTorrents());
   }
 
   async getTorrent(infoHash: string): Promise<RelayTorrent | null> {
     try {
-      return await this.relayRuntimeService.request(() => getTorrent(infoHash));
+      return await this.relayRuntimeCoreService.request(() =>
+        getTorrent(infoHash),
+      );
     } catch {
       return null;
     }
   }
 
   async addTorrent(payload: AddRelayTorrent): Promise<RelayTorrent> {
-    const torrent = await this.relayRuntimeService.request(() =>
+    const torrent = await this.relayRuntimeCoreService.request(() =>
       addTorrent({
         torrentFilePath: payload.torrentFilePath,
         downloadFullTorrent: payload.downloadFullTorrent,
@@ -78,13 +82,13 @@ export class RelayService {
     infoHash: string,
     payload: UpdateRelayTorrent,
   ): Promise<RelayTorrent> {
-    return this.relayRuntimeService.request(() =>
+    return this.relayRuntimeCoreService.request(() =>
       updateTorrent(infoHash, payload),
     );
   }
 
   async deleteTorrent(infoHash: string): Promise<RelayTorrent> {
-    const torrent = await this.relayRuntimeService.request(() =>
+    const torrent = await this.relayRuntimeCoreService.request(() =>
       deleteTorrent(infoHash),
     );
 

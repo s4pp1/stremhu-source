@@ -9,14 +9,14 @@ import request from 'supertest';
 
 import { RolesGuard } from '../../../auth/guards/roles.guard';
 import { TokenGuard } from '../../../auth/guards/token.guard';
-import { RelaySettingsService } from '../../../settings/relay/relay-settings.service';
+import { SettingsCoreService } from '../../../settings/core/settings-core.service';
 import { TorrentsService } from '../../torrents.service';
 import { ExternalRelaySettingsController } from '../external-relay-settings.controller';
 
-// Mocking RelaySettingsService
-jest.mock('../../../settings/relay/relay-settings.service', () => ({
-  RelaySettingsService: jest.fn().mockImplementation(() => ({
-    update: jest.fn(),
+// Mocking SettingsCoreService
+jest.mock('../../../settings/core/settings-core.service', () => ({
+  SettingsCoreService: jest.fn().mockImplementation(() => ({
+    updateRelaySettings: jest.fn(),
   })),
 }));
 
@@ -36,8 +36,8 @@ describe('ExternalRelaySettings (Integration)', () => {
     downloadLimit: 0,
   };
 
-  const mockRelaySettingsService = {
-    update: jest.fn().mockResolvedValue(mockRelaySettings),
+  const mockSettingsCoreService = {
+    updateRelaySettings: jest.fn().mockResolvedValue(mockRelaySettings),
   };
 
   const mockTorrentsService = {
@@ -49,8 +49,8 @@ describe('ExternalRelaySettings (Integration)', () => {
       controllers: [ExternalRelaySettingsController],
       providers: [
         {
-          provide: RelaySettingsService,
-          useValue: mockRelaySettingsService,
+          provide: SettingsCoreService,
+          useValue: mockSettingsCoreService,
         },
         {
           provide: TorrentsService,
@@ -96,7 +96,7 @@ describe('ExternalRelaySettings (Integration)', () => {
         .send(payload)
         .expect(200);
 
-      expect(mockRelaySettingsService.update).toHaveBeenCalledWith(
+      expect(mockSettingsCoreService.updateRelaySettings).toHaveBeenCalledWith(
         expect.objectContaining(payload),
       );
       expect(mockTorrentsService.updateTorrentClient).toHaveBeenCalledWith(
