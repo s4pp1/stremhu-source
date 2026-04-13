@@ -12,8 +12,6 @@ import { PlayModule } from './play/play.module';
 import { RelaySyncModule } from './relay/relay-sync.module';
 import { RelayModule } from './relay/relay.module';
 import { SessionsModule } from './sessions/sessions.module';
-import { AppSettingsModule } from './settings/app/app-settings.module';
-import { RelaySettingsModule } from './settings/relay/relay-settings.module';
 import { SettingsModule } from './settings/settings.module';
 import { SetupModule } from './settings/setup/setup.module';
 import { StremioModule } from './stremio/stremio.module';
@@ -26,10 +24,8 @@ import { UsersModule } from './users/users.module';
   imports: [
     MonitoringModule,
     SettingsModule,
-    AppSettingsModule,
     RelayModule,
     RelaySyncModule,
-    RelaySettingsModule,
     SetupModule,
     LocalIpModule,
     AuthModule,

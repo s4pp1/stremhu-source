@@ -14,7 +14,7 @@ import { VideoQualityEnum } from 'src/preference-items/enum/video-quality.enum';
 import { AudioQualityOption } from 'src/preference-items/type/audio-codec-option.type';
 import { AudioSpatialOption } from 'src/preference-items/type/audio-spatial-option.type';
 import { PreferenceEnum } from 'src/preferences/enum/preference.enum';
-import { SettingsService } from 'src/settings/settings.service';
+import { SettingsCoreService } from 'src/settings/core/settings-core.service';
 import { ParsedStreamSeries } from 'src/stremio/streams/type/parsed-stream-series.type';
 import { buildSelectors } from 'src/stremio/streams/util/build-selectors';
 import { TorrentsCacheStore } from 'src/torrents-cache/core/torrents-cache.store';
@@ -39,7 +39,7 @@ import { TorrentVideo } from './type/torrent-video.type';
 export class TorrentVideosService {
   constructor(
     private readonly trackerDiscoveryService: TrackerDiscoveryService,
-    private readonly settingsService: SettingsService,
+    private readonly settingsCoreService: SettingsCoreService,
     private readonly catalogService: CatalogService,
     private readonly torrentsService: TorrentsService,
     private readonly userPreferencesService: UserPreferencesService,
@@ -93,7 +93,7 @@ export class TorrentVideosService {
       userPreferences,
     );
 
-    const endpoint = await this.settingsService.getEndpoint();
+    const endpoint = await this.settingsCoreService.getEndpoint();
 
     const torrentVideos: TorrentVideo[] = sortedRowTorrentVideos.map(
       (rowTorrentVideo) => {
@@ -153,7 +153,7 @@ export class TorrentVideosService {
     tracker: TrackerEnum,
     torrentId: string,
   ): Promise<BaseTorrentVideo[]> {
-    const endpoint = await this.settingsService.getEndpoint();
+    const endpoint = await this.settingsCoreService.getEndpoint();
     await this.trackerDiscoveryService.findOneByTracker(tracker, torrentId);
 
     const torrentCache = await this.torrentsCacheStore.findOne({

@@ -12,8 +12,9 @@ import { THIRTY_DAYS_MS } from './app.constant';
 import { AppModule } from './app.module';
 import { NodeEnvEnum } from './config/enum/node-env.enum';
 import { KodiStreamsIntegrationModule } from './kodi/streams/integration/kodi-streams-integration.module';
-import { PairingsModule } from './pairings/pairings.module';
+import { PairingsIntegrationModule } from './pairings/integration/pairings-integration.module';
 import { PlayIntegrationModule } from './play/integration/play-integration.module';
+import { RelaySettingsIntegrationModule } from './relay/settings/integration/relay-settings-integration.module';
 import { SessionsService } from './sessions/sessions.service';
 import { StremioCatalogsIntegrationModule } from './stremio/catalogs/integration/stremio-catalogs-integration.module';
 import { StremioIntegrationModule } from './stremio/integration/stremio-integration.module';
@@ -81,8 +82,9 @@ async function bootstrap() {
         StremioStreamsIntegrationModule,
         StremioCatalogsIntegrationModule,
         KodiStreamsIntegrationModule,
+        RelaySettingsIntegrationModule,
         PlayIntegrationModule,
-        PairingsModule,
+        PairingsIntegrationModule,
       ],
     },
   );

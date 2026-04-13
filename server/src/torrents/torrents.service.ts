@@ -1,7 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 
-import { RelayTorrent, UpdateSettings } from 'src/relay/client/relay-client';
-import { RelayService } from 'src/relay/relay.service';
+import { RelayTorrent } from 'src/relay/client/relay-client';
+import { RelayCoreService } from 'src/relay/core/relay-core.service';
 import { TrackersStore } from 'src/trackers/core/trackers.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 
@@ -19,14 +19,14 @@ export class TorrentsService {
   constructor(
     private readonly persistedTorrentsStore: PersistedTorrentsStore,
     private readonly persistedTorrentsService: PersistedTorrentsService,
-    private readonly relayService: RelayService,
+    private readonly relayCoreService: RelayCoreService,
     private readonly trackersStore: TrackersStore,
   ) {}
 
   async find(): Promise<Torrent[]> {
     const [persistedTorrents, relayTorrents] = await Promise.all([
       this.persistedTorrentsService.find(),
-      this.relayService.getTorrents(),
+      this.relayCoreService.getTorrents(),
     ]);
 
     const persistedTorrentMap = new Map(
@@ -57,7 +57,7 @@ export class TorrentsService {
   async findOneByInfoHash(infoHash: string): Promise<Torrent | null> {
     const [persistedTorrent, relayTorrent] = await Promise.all([
       this.persistedTorrentsService.findOneByInfoHash(infoHash),
-      this.relayService.getTorrent(infoHash),
+      this.relayCoreService.getTorrent(infoHash),
     ]);
 
     if (!persistedTorrent || !relayTorrent) return null;
@@ -80,7 +80,7 @@ export class TorrentsService {
 
     const tracker = await this.trackersStore.findOneByTracker(trackerEnum);
 
-    const relayTorrent = await this.relayService.addTorrent({
+    const relayTorrent = await this.relayCoreService.addTorrent({
       torrentFilePath,
       downloadFullTorrent: tracker?.downloadFullTorrent ?? false,
     });
@@ -113,7 +113,7 @@ export class TorrentsService {
         fullDownload = tracker?.downloadFullTorrent ?? false;
       }
 
-      await this.relayService.updateTorrent(infoHash, {
+      await this.relayCoreService.updateTorrent(infoHash, {
         downloadFullTorrent: fullDownload,
       });
     }
@@ -158,10 +158,6 @@ export class TorrentsService {
     );
   }
 
-  async updateTorrentClient(payload: UpdateSettings) {
-    await this.relayService.updateConfig(payload);
-  }
-
   async deleteAllByTracker(tracker: TrackerEnum): Promise<void> {
     const persistedTorrents = await this.persistedTorrentsStore.find((qb) => {
       qb.where(
@@ -187,7 +183,7 @@ export class TorrentsService {
       const torrent = await this.findOneByInfoHashOrThrow(infoHash);
 
       await Promise.all([
-        this.relayService.deleteTorrent(torrent.infoHash),
+        this.relayCoreService.deleteTorrent(torrent.infoHash),
         this.persistedTorrentsService.deleteByInfoHash(torrent.infoHash),
       ]);
     } catch (error) {

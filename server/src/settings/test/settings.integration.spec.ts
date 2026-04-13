@@ -9,22 +9,22 @@ import request from 'supertest';
 
 import { AuthGuard } from '../../auth/guards/auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
-import { AppSettingsService } from '../app/app-settings.service';
+import { SettingsCoreService } from '../core/settings-core.service';
 import { SettingsController } from '../settings.controller';
-import { SettingsService } from '../settings.service';
+import { SettingsSyncService } from '../sync/settings-sync.service';
 
-// Mocking SettingsService
-jest.mock('../settings.service', () => ({
-  SettingsService: jest.fn().mockImplementation(() => ({
-    update: jest.fn(),
+// Mocking SettingsCoreService
+jest.mock('../core/settings-core.service', () => ({
+  SettingsCoreService: jest.fn().mockImplementation(() => ({
+    appSettings: jest.fn(),
     buildLocalUrl: jest.fn(),
   })),
 }));
 
-// Mocking AppSettingsService
-jest.mock('../app/app-settings.service', () => ({
-  AppSettingsService: jest.fn().mockImplementation(() => ({
-    get: jest.fn(),
+// Mocking SettingsSyncService
+jest.mock('../sync/settings-sync.service', () => ({
+  SettingsSyncService: jest.fn().mockImplementation(() => ({
+    update: jest.fn(),
   })),
 }));
 
@@ -36,13 +36,13 @@ describe('Settings (Integration)', () => {
     tmdbApiKey: 'mock-api-key',
   };
 
-  const mockSettingsService = {
+  const mockSettingsSyncService = {
     update: jest.fn().mockResolvedValue(mockSettings),
-    buildLocalUrl: jest.fn().mockReturnValue('http://192.168.1.1:3000'),
   };
 
-  const mockAppSettingsService = {
-    get: jest.fn().mockResolvedValue(mockSettings),
+  const mockSettingsCoreService = {
+    appSettings: jest.fn().mockResolvedValue(mockSettings),
+    buildLocalUrl: jest.fn().mockReturnValue('http://192.168.1.1:3000'),
   };
 
   beforeAll(async () => {
@@ -50,12 +50,12 @@ describe('Settings (Integration)', () => {
       controllers: [SettingsController],
       providers: [
         {
-          provide: SettingsService,
-          useValue: mockSettingsService,
+          provide: SettingsSyncService,
+          useValue: mockSettingsSyncService,
         },
         {
-          provide: AppSettingsService,
-          useValue: mockAppSettingsService,
+          provide: SettingsCoreService,
+          useValue: mockSettingsCoreService,
         },
       ],
     })
@@ -96,7 +96,7 @@ describe('Settings (Integration)', () => {
         .expect(200);
 
       expect(response.body).toEqual(mockSettings);
-      expect(mockAppSettingsService.get).toHaveBeenCalled();
+      expect(mockSettingsCoreService.appSettings).toHaveBeenCalled();
     });
 
     it('/ (PUT)', async () => {
@@ -108,7 +108,7 @@ describe('Settings (Integration)', () => {
         .expect(200);
 
       expect(response.body).toEqual(mockSettings);
-      expect(mockSettingsService.update).toHaveBeenCalledWith(
+      expect(mockSettingsSyncService.update).toHaveBeenCalledWith(
         expect.objectContaining(payload),
       );
     });
@@ -122,7 +122,7 @@ describe('Settings (Integration)', () => {
         .expect(201);
 
       expect(response.body).toEqual({ localUrl: 'http://192.168.1.1:3000' });
-      expect(mockSettingsService.buildLocalUrl).toHaveBeenCalledWith(
+      expect(mockSettingsCoreService.buildLocalUrl).toHaveBeenCalledWith(
         payload.ipv4,
       );
     });

@@ -3,7 +3,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { rm } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import { AppSettingsService } from 'src/settings/app/app-settings.service';
+import { SettingsCoreService } from 'src/settings/core/settings-core.service';
 import { TorrentsService } from 'src/torrents/torrents.service';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
 import { isTrackerEnum } from 'src/trackers/util/is-tracker-enum';
@@ -16,7 +16,7 @@ export class TorrentsCacheService {
 
   constructor(
     private readonly torrentsCacheStore: TorrentsCacheStore,
-    private readonly appSettingsService: AppSettingsService,
+    private readonly settingsCoreService: SettingsCoreService,
     private readonly torrentsService: TorrentsService,
   ) {}
 
@@ -48,7 +48,7 @@ export class TorrentsCacheService {
     let cacheRetentionSeconds = retentionSeconds ?? null;
 
     if (cacheRetentionSeconds === null) {
-      const setting = await this.appSettingsService.get();
+      const setting = await this.settingsCoreService.appSettings();
 
       if (setting.cacheRetentionSeconds > 0) {
         cacheRetentionSeconds = setting.cacheRetentionSeconds;

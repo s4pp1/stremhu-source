@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { SettingsModule } from 'src/settings/settings.module';
+import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
 import { TrackersMetaModule } from 'src/trackers/meta/trackers-meta.module';
 import { TrackersModule } from 'src/trackers/trackers.module';
 
@@ -9,7 +9,7 @@ import { MetadataService } from './metadata.service';
 import { PreferencesMetadataService } from './preferences-metadata.service';
 
 @Module({
-  imports: [SettingsModule, TrackersModule, TrackersMetaModule],
+  imports: [SettingsCoreModule, TrackersModule, TrackersMetaModule],
   providers: [MetadataService, PreferencesMetadataService],
   controllers: [MetadataController],
   exports: [MetadataService, PreferencesMetadataService],

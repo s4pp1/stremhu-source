@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
-import {
-  AppSettings,
-  AppSettingsService,
-} from 'src/settings/app/app-settings.service';
+import { SettingsCoreService } from 'src/settings/core/settings-core.service';
+import { AppSettings } from 'src/settings/type/app-settings.type';
 import { TorrentsService } from 'src/torrents/torrents.service';
 
 import { TrackersStore } from './core/trackers.store';
@@ -17,14 +15,14 @@ export class TrackerMaintenanceService {
     private readonly trackerAdapterRegistry: TrackerAdapterRegistry,
     private readonly trackersStore: TrackersStore,
     private readonly torrentsService: TorrentsService,
-    private readonly appSettingsService: AppSettingsService,
+    private readonly settingsCoreService: SettingsCoreService,
   ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_4AM)
   async runTrackersCleanup(): Promise<void> {
     const [trackers, setting] = await Promise.all([
       this.trackersStore.find(),
-      this.appSettingsService.get(),
+      this.settingsCoreService.appSettings(),
     ]);
 
     await Promise.all(

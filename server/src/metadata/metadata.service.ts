@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { USER_ROLE_OPTIONS } from 'src/common/constant/user-role.constant';
-import { SettingsService } from 'src/settings/settings.service';
+import { SettingsCoreService } from 'src/settings/core/settings-core.service';
 import { TrackersMetaService } from 'src/trackers/meta/trackers-meta.service';
 
 import { MetadataDto } from './dto/metadata.dto';
@@ -12,7 +12,7 @@ import { PreferencesMetadataService } from './preferences-metadata.service';
 export class MetadataService {
   constructor(
     private readonly configService: ConfigService,
-    private readonly settingsService: SettingsService,
+    private readonly settingsCoreService: SettingsCoreService,
     private readonly trackersMetaService: TrackersMetaService,
     private readonly preferencesMetadataService: PreferencesMetadataService,
   ) {}
@@ -36,7 +36,7 @@ export class MetadataService {
   }
 
   async getEndpoint() {
-    const endpoint = await this.settingsService.getEndpoint();
+    const endpoint = await this.settingsCoreService.getEndpoint();
     return endpoint;
   }
 
