@@ -1,7 +1,7 @@
 import { queryOptions, useMutation } from '@tanstack/react-query'
 
 import {
-  appHealth,
+  monitoringHealth,
   settingsBuildLocalUrl,
 } from '@/shared/lib/source/source-client'
 import { sleep } from '@/shared/lib/utils'
@@ -13,7 +13,7 @@ export function getHealth(appUrl: string) {
     queryFn: async () => {
       await sleep(1000)
 
-      const response = await appHealth({
+      const response = await monitoringHealth({
         baseURL: appUrl,
         timeout: 5_000,
       })
