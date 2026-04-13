@@ -1,15 +1,14 @@
 import { Module } from '@nestjs/common';
 
-import { AuthModule } from 'src/auth/auth.module';
-
 import { PairingsCoreModule } from './core/pairings-core.module';
-import { PairingsController } from './pairings.controller';
-import { PairingsService } from './pairings.service';
+import { PairingsIntegrationModule } from './integration/pairings-integration.module';
+import { PairingsInternalModule } from './internal/pairings-internal.module';
 
 @Module({
-  imports: [AuthModule, PairingsCoreModule],
-  providers: [PairingsService],
-  controllers: [PairingsController],
-  exports: [PairingsService],
+  imports: [
+    PairingsCoreModule,
+    PairingsInternalModule,
+    PairingsIntegrationModule,
+  ],
 })
 export class PairingsModule {}

@@ -1,16 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { AuthModule } from 'src/auth/auth.module';
-import { TorrentsCacheCoreModule } from 'src/torrents-cache/core/torrents-cache-core.module';
-import { TrackersModule } from 'src/trackers/trackers.module';
-import { UsersModule } from 'src/users/users.module';
-
-import { StremioCatalogsController } from './stremio-catalogs.controller';
-import { StremioCatalogsService } from './stremio-catalogs.service';
+import { StremioCatalogsCoreModule } from './core/stremio-catalogs-core.module';
+import { StremioCatalogsIntegrationModule } from './integration/stremio-catalogs-integration.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, TrackersModule, TorrentsCacheCoreModule],
-  controllers: [StremioCatalogsController],
-  providers: [StremioCatalogsService],
+  imports: [StremioCatalogsCoreModule, StremioCatalogsIntegrationModule],
 })
 export class StremioCatalogsModule {}

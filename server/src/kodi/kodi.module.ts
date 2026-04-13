@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { KodiStreamsModule } from './streams/kodi-streams.module';
+import { KodiStreamsCoreModule } from './streams/core/kodi-streams-core.module';
+import { KodiStreamsIntegrationModule } from './streams/integration/kodi-streams-integration.module';
 
 @Module({
-  imports: [KodiStreamsModule],
+  imports: [KodiStreamsCoreModule, KodiStreamsIntegrationModule],
 })
 export class KodiModule {}
