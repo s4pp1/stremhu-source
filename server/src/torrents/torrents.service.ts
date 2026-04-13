@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 
-import { RelayTorrent, UpdateSettings } from 'src/relay/client/relay-client';
+import { RelayTorrent } from 'src/relay/client/relay-client';
 import { RelayCoreService } from 'src/relay/core/relay-core.service';
 import { TrackersStore } from 'src/trackers/core/trackers.store';
 import { TrackerEnum } from 'src/trackers/enum/tracker.enum';
@@ -156,10 +156,6 @@ export class TorrentsService {
         this.delete(persistedTorrent.infoHash),
       ),
     );
-  }
-
-  async updateTorrentClient(payload: UpdateSettings) {
-    await this.relayCoreService.updateConfig(payload);
   }
 
   async deleteAllByTracker(tracker: TrackerEnum): Promise<void> {

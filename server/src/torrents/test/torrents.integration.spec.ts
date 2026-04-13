@@ -9,7 +9,6 @@ import request from 'supertest';
 
 import { AuthGuard } from '../../auth/guards/auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
-import { SettingsCoreService } from '../../settings/core/settings-core.service';
 import { TorrentsController } from '../torrents.controller';
 import { TorrentsService } from '../torrents.service';
 
@@ -23,21 +22,8 @@ jest.mock('../torrents.service', () => ({
   })),
 }));
 
-// Mocking SettingsCoreService
-jest.mock('../../settings/core/settings-core.service', () => ({
-  SettingsCoreService: jest.fn().mockImplementation(() => ({
-    relaySettings: jest.fn(),
-    updateRelaySettings: jest.fn(),
-  })),
-}));
-
 describe('Torrents (Integration)', () => {
   let app: INestApplication;
-
-  const mockRelaySettings = {
-    port: 6881,
-    downloadLimit: 0,
-  };
 
   const mockTorrent = {
     infoHash: 'mock-hash',
@@ -52,11 +38,6 @@ describe('Torrents (Integration)', () => {
     delete: jest.fn().mockResolvedValue(undefined),
   };
 
-  const mockSettingsCoreService = {
-    relaySettings: jest.fn().mockResolvedValue(mockRelaySettings),
-    updateRelaySettings: jest.fn().mockResolvedValue(mockRelaySettings),
-  };
-
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       controllers: [TorrentsController],
@@ -64,10 +45,6 @@ describe('Torrents (Integration)', () => {
         {
           provide: TorrentsService,
           useValue: mockTorrentsService,
-        },
-        {
-          provide: SettingsCoreService,
-          useValue: mockSettingsCoreService,
         },
       ],
     })
@@ -101,48 +78,21 @@ describe('Torrents (Integration)', () => {
   });
 
   describe('TorrentsController', () => {
-    it('/settings (GET)', async () => {
+    it('/ (GET)', async () => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const response = await request(app.getHttpServer())
-        .get('/relay/settings')
-        .expect(200);
-
-      expect(response.body).toEqual(mockRelaySettings);
-      expect(mockSettingsCoreService.relaySettings).toHaveBeenCalled();
-    });
-
-    it('/settings (PUT)', async () => {
-      const payload = { port: 1234 };
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const response = await request(app.getHttpServer())
-        .put('/relay/settings')
-        .send(payload)
-        .expect(200);
-
-      expect(response.body).toEqual(mockRelaySettings);
-      expect(mockSettingsCoreService.updateRelaySettings).toHaveBeenCalledWith(
-        expect.objectContaining(payload),
-      );
-      expect(mockTorrentsService.updateTorrentClient).toHaveBeenCalledWith(
-        mockRelaySettings,
-      );
-    });
-
-    it('/torrents (GET)', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const response = await request(app.getHttpServer())
-        .get('/relay/torrents')
+        .get('/torrents')
         .expect(200);
 
       expect(response.body).toMatchSnapshot();
       expect(mockTorrentsService.find).toHaveBeenCalled();
     });
 
-    it('/torrents/:infoHash (PUT)', async () => {
+    it('/:infoHash (PUT)', async () => {
       const payload = { isPersisted: false };
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const response = await request(app.getHttpServer())
-        .put(`/relay/torrents/${mockTorrent.infoHash}`)
+        .put(`/torrents/${mockTorrent.infoHash}`)
         .send(payload)
         .expect(200);
 
@@ -153,10 +103,10 @@ describe('Torrents (Integration)', () => {
       );
     });
 
-    it('/torrents/:infoHash (DELETE)', async () => {
+    it('/:infoHash (DELETE)', async () => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       await request(app.getHttpServer())
-        .delete(`/relay/torrents/${mockTorrent.infoHash}`)
+        .delete(`/torrents/${mockTorrent.infoHash}`)
         .expect(200);
 
       expect(mockTorrentsService.delete).toHaveBeenCalledWith(

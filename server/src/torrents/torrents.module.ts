@@ -2,10 +2,8 @@ import { Module } from '@nestjs/common';
 
 import { AuthModule } from 'src/auth/auth.module';
 import { RelayCoreModule } from 'src/relay/core/relay-core.module';
-import { SettingsCoreModule } from 'src/settings/core/settings-core.module';
 import { TrackersCoreModule } from 'src/trackers/core/trackers-core.module';
 
-import { ExternalRelaySettingsController } from './integrations/external-relay-settings.controller';
 import { PersistedTorrentsCoreModule } from './persisted/core/persisted-torrents-core.module';
 import { PersistedTorrentsModule } from './persisted/persisted-torrents.module';
 import { TorrentsController } from './torrents.controller';
@@ -18,10 +16,9 @@ import { TorrentsService } from './torrents.service';
     PersistedTorrentsModule,
     RelayCoreModule,
     TrackersCoreModule,
-    SettingsCoreModule,
   ],
   providers: [TorrentsService],
-  controllers: [TorrentsController, ExternalRelaySettingsController],
+  controllers: [TorrentsController],
   exports: [TorrentsService],
 })
 export class TorrentsModule {}

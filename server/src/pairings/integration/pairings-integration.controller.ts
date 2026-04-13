@@ -13,7 +13,7 @@ import { PairStatusRequestDto } from '../dto/pair-status-request.dto';
 import { PairStatusDto } from '../dto/pair-status.dto';
 
 @Controller('auth/pair')
-@ApiTags('Pairings')
+@ApiTags('Párosítás')
 export class PairingsIntegrationController {
   constructor(private readonly pairingsService: PairingsCoreService) {}
 
