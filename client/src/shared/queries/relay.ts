@@ -6,14 +6,14 @@ import {
 
 import type { UpdateRelaySettingsDto } from '../lib/source/source-client'
 import {
-  torrentsSettings,
-  torrentsUpdateSettings,
+  relaySettingsInternalGet,
+  relaySettingsInternalUpdate,
 } from '../lib/source/source-client'
 
 export const getRelaySettings = queryOptions({
   queryKey: ['relay-settings'],
   queryFn: async () => {
-    const settings = await torrentsSettings()
+    const settings = await relaySettingsInternalGet()
     return settings
   },
 })
@@ -22,7 +22,7 @@ export function useUpdateRelaySetting() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (payload: UpdateRelaySettingsDto) => {
-      const setting = await torrentsUpdateSettings(payload)
+      const setting = await relaySettingsInternalUpdate(payload)
       return setting
     },
     onSuccess: async () => {
