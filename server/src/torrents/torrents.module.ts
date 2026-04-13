@@ -5,7 +5,7 @@ import { RelayModule } from 'src/relay/relay.module';
 import { RelaySettingsModule } from 'src/settings/relay/relay-settings.module';
 import { TrackersCoreModule } from 'src/trackers/core/trackers-core.module';
 
-import { ExternalRelaySettingsController } from './external-relay-settings.controller';
+import { ExternalRelaySettingsController } from './integrations/external-relay-settings.controller';
 import { PersistedTorrentsCoreModule } from './persisted/core/persisted-torrents-core.module';
 import { PersistedTorrentsModule } from './persisted/persisted-torrents.module';
 import { TorrentsController } from './torrents.controller';

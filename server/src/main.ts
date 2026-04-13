@@ -11,9 +11,13 @@ import path from 'node:path';
 import { THIRTY_DAYS_MS } from './app.constant';
 import { AppModule } from './app.module';
 import { NodeEnvEnum } from './config/enum/node-env.enum';
-import { KodiModule } from './kodi/kodi.module';
+import { KodiStreamsIntegrationModule } from './kodi/streams/integration/kodi-streams-integration.module';
 import { PairingsModule } from './pairings/pairings.module';
+import { PlayIntegrationModule } from './play/integration/play-integration.module';
 import { SessionsService } from './sessions/sessions.service';
+import { StremioCatalogsIntegrationModule } from './stremio/catalogs/integration/stremio-catalogs-integration.module';
+import { StremioIntegrationModule } from './stremio/integration/stremio-integration.module';
+import { StremioStreamsIntegrationModule } from './stremio/streams/integration/stremio-streams-integration.module';
 
 export const EXPRESS = express();
 
@@ -28,7 +32,7 @@ async function bootstrap() {
   const secret = configService.getOrThrow<string>('auth.session-secret');
   const openapiDir = configService.getOrThrow<string>('app.openapi-dir');
 
-  const isProduction = nodeEnv === NodeEnvEnum.PRODUCTION;
+  const isProd = nodeEnv === NodeEnvEnum.PRODUCTION;
 
   app.enableShutdownHooks();
 
@@ -45,7 +49,7 @@ async function bootstrap() {
       resave: false,
       saveUninitialized: false,
       rolling: true,
-      proxy: isProduction,
+      proxy: isProd,
       name: 'stremhu.source',
       cookie: {
         httpOnly: true,
@@ -59,18 +63,32 @@ async function bootstrap() {
   const operationIdFactory = (controllerKey: string, methodKey: string) =>
     `${controllerKey.replace('Controller', '')}${methodKey.charAt(0).toUpperCase() + methodKey.slice(1)}`;
 
-  const kodiSwagger = new DocumentBuilder()
-    .setTitle('StremHU Source - Kodi')
+  const integrationsSwagger = new DocumentBuilder()
+    .setTitle('StremHU Source - Külső integrációk')
+    .setDescription(
+      'API külső szolgáltatások számára token alapú hitelesítéssel.',
+    )
+    .setVersion('1.0.0')
     .build();
 
-  const kodiSwaggerDoc = SwaggerModule.createDocument(app, kodiSwagger, {
-    operationIdFactory,
-    include: [KodiModule, PairingsModule],
-    deepScanRoutes: true,
-  });
-  SwaggerModule.setup('api/docs/kodi', app, kodiSwaggerDoc);
+  const integrationsSwaggerDoc = SwaggerModule.createDocument(
+    app,
+    integrationsSwagger,
+    {
+      operationIdFactory,
+      include: [
+        StremioIntegrationModule,
+        StremioStreamsIntegrationModule,
+        StremioCatalogsIntegrationModule,
+        KodiStreamsIntegrationModule,
+        PlayIntegrationModule,
+        PairingsModule,
+      ],
+    },
+  );
+  SwaggerModule.setup('api/docs/integrations', app, integrationsSwaggerDoc);
 
-  if (!isProduction) {
+  if (!isProd) {
     const config = new DocumentBuilder()
       .setTitle('StremHU Source')
       .setDescription('REST API dokumentáció')

@@ -1,21 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { AuthModule } from 'src/auth/auth.module';
-import { TorrentsCacheCoreModule } from 'src/torrents-cache/core/torrents-cache-core.module';
-import { TorrentsModule } from 'src/torrents/torrents.module';
-import { TrackersModule } from 'src/trackers/trackers.module';
-
-import { PlayController } from './play.controller';
-import { PlayService } from './play.service';
+import { PlayCoreModule } from './core/play-core.module';
+import { PlayIntegrationModule } from './integration/play-integration.module';
 
 @Module({
-  imports: [
-    AuthModule,
-    TorrentsCacheCoreModule,
-    TorrentsModule,
-    TrackersModule,
-  ],
-  providers: [PlayService],
-  controllers: [PlayController],
+  imports: [PlayCoreModule, PlayIntegrationModule],
 })
 export class PlayModule {}
