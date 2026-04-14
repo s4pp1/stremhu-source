@@ -11,7 +11,11 @@ export function cn(...inputs: ClassValue[]) {
 export function parseApiError(error: unknown): string {
   let message = 'Váratlan hiba történt, próbáld újra!'
 
-  const errorMessage: string | string[] = get(error, ['body', 'message'])
+  const errorMessage: string | string[] = get(error, [
+    'response',
+    'data',
+    'message',
+  ])
 
   if (errorMessage) {
     if (isArray(errorMessage)) {

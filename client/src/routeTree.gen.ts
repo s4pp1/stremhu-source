@@ -21,6 +21,7 @@ import { Route as SetupUserIndexRouteImport } from './routes/setup/user/index'
 import { Route as ProtectedSettingsIndexRouteImport } from './routes/_protected/settings/index'
 import { Route as ProtectedRelayIndexRouteImport } from './routes/_protected/relay/index'
 import { Route as ProtectedDashboardIndexRouteImport } from './routes/_protected/dashboard/index'
+import { Route as ProtectedActivateIndexRouteImport } from './routes/_protected/activate/index'
 import { Route as ProtectedSettingsPreferencesRouteRouteImport } from './routes/_protected/settings/preferences/route'
 import { Route as ProtectedSettingsAccountRouteRouteImport } from './routes/_protected/settings/account/route'
 import { Route as ProtectedRelayTorrentsRouteRouteImport } from './routes/_protected/relay/torrents/route'
@@ -104,6 +105,11 @@ const ProtectedDashboardIndexRoute = ProtectedDashboardIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ProtectedDashboardRouteRoute,
+} as any)
+const ProtectedActivateIndexRoute = ProtectedActivateIndexRouteImport.update({
+  id: '/activate/',
+  path: '/activate/',
+  getParentRoute: () => ProtectedRoute,
 } as any)
 const ProtectedSettingsPreferencesRouteRoute =
   ProtectedSettingsPreferencesRouteRouteImport.update({
@@ -265,6 +271,7 @@ export interface FileRoutesByFullPath {
   '/relay/torrents': typeof ProtectedRelayTorrentsRouteRouteWithChildren
   '/settings/account': typeof ProtectedSettingsAccountRouteRouteWithChildren
   '/settings/preferences': typeof ProtectedSettingsPreferencesRouteRouteWithChildren
+  '/activate/': typeof ProtectedActivateIndexRoute
   '/dashboard/': typeof ProtectedDashboardIndexRoute
   '/relay/': typeof ProtectedRelayIndexRoute
   '/settings/': typeof ProtectedSettingsIndexRoute
@@ -293,6 +300,7 @@ export interface FileRoutesByTo {
   '/': typeof ProtectedIndexRoute
   '/login': typeof LoginIndexRoute
   '/setup': typeof SetupIndexRoute
+  '/activate': typeof ProtectedActivateIndexRoute
   '/dashboard': typeof ProtectedDashboardIndexRoute
   '/relay': typeof ProtectedRelayIndexRoute
   '/settings': typeof ProtectedSettingsIndexRoute
@@ -327,6 +335,7 @@ export interface FileRoutesById {
   '/_protected/relay/torrents': typeof ProtectedRelayTorrentsRouteRouteWithChildren
   '/_protected/settings/account': typeof ProtectedSettingsAccountRouteRouteWithChildren
   '/_protected/settings/preferences': typeof ProtectedSettingsPreferencesRouteRouteWithChildren
+  '/_protected/activate/': typeof ProtectedActivateIndexRoute
   '/_protected/dashboard/': typeof ProtectedDashboardIndexRoute
   '/_protected/relay/': typeof ProtectedRelayIndexRoute
   '/_protected/settings/': typeof ProtectedSettingsIndexRoute
@@ -366,6 +375,7 @@ export interface FileRouteTypes {
     | '/relay/torrents'
     | '/settings/account'
     | '/settings/preferences'
+    | '/activate/'
     | '/dashboard/'
     | '/relay/'
     | '/settings/'
@@ -394,6 +404,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/setup'
+    | '/activate'
     | '/dashboard'
     | '/relay'
     | '/settings'
@@ -427,6 +438,7 @@ export interface FileRouteTypes {
     | '/_protected/relay/torrents'
     | '/_protected/settings/account'
     | '/_protected/settings/preferences'
+    | '/_protected/activate/'
     | '/_protected/dashboard/'
     | '/_protected/relay/'
     | '/_protected/settings/'
@@ -544,6 +556,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/'
       preLoaderRoute: typeof ProtectedDashboardIndexRouteImport
       parentRoute: typeof ProtectedDashboardRouteRoute
+    }
+    '/_protected/activate/': {
+      id: '/_protected/activate/'
+      path: '/activate'
+      fullPath: '/activate/'
+      preLoaderRoute: typeof ProtectedActivateIndexRouteImport
+      parentRoute: typeof ProtectedRoute
     }
     '/_protected/settings/preferences': {
       id: '/_protected/settings/preferences'
@@ -956,6 +975,7 @@ interface ProtectedRouteChildren {
   ProtectedRelayRouteRoute: typeof ProtectedRelayRouteRouteWithChildren
   ProtectedSettingsRouteRoute: typeof ProtectedSettingsRouteRouteWithChildren
   ProtectedIndexRoute: typeof ProtectedIndexRoute
+  ProtectedActivateIndexRoute: typeof ProtectedActivateIndexRoute
   ProtectedSetupAddressIndexRoute: typeof ProtectedSetupAddressIndexRoute
 }
 
@@ -964,6 +984,7 @@ const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedRelayRouteRoute: ProtectedRelayRouteRouteWithChildren,
   ProtectedSettingsRouteRoute: ProtectedSettingsRouteRouteWithChildren,
   ProtectedIndexRoute: ProtectedIndexRoute,
+  ProtectedActivateIndexRoute: ProtectedActivateIndexRoute,
   ProtectedSetupAddressIndexRoute: ProtectedSetupAddressIndexRoute,
 }
 
