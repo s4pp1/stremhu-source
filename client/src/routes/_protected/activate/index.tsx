@@ -38,9 +38,11 @@ function RouteComponent() {
     validators: {
       onChange: schema,
     },
-    onSubmit: async ({ value }) => {
+    onSubmit: async ({ value, formApi }) => {
       try {
         await pairVerify(value)
+        toast.success('A bejelentkezés sikeresen megerősítve!')
+        formApi.reset()
       } catch (error) {
         const message = parseApiError(error)
         toast.error(message)
@@ -63,16 +65,19 @@ function RouteComponent() {
       >
         <Card className="w-sm">
           <CardHeader>
-            <CardTitle>Fiókomhoz párosítás</CardTitle>
+            <CardTitle>Bejelentkezés megerősítése</CardTitle>
             <CardDescription>
-              A kliensben megjelenő 4-jegyű kódot add meg a párosításhoz.
+              A kliensben megjelenő 4-jegyű kódot add meg a bejelentkezés
+              megerősítéséhez.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 justify-center">
             <form.AppField
               name="userCode"
               children={(field) => {
-                const hasError = field.state.meta.errors.length > 0
+                const hasError =
+                  field.state.meta.errors.length > 0 &&
+                  field.form.state.submissionAttempts > 0
                 return (
                   <InputOTP
                     maxLength={4}
@@ -91,7 +96,9 @@ function RouteComponent() {
             />
           </CardContent>
           <CardFooter className="grid gap-4">
-            <form.SubscribeButton type="submit">Párosítás</form.SubscribeButton>
+            <form.SubscribeButton type="submit">
+              Megerősítés
+            </form.SubscribeButton>
           </CardFooter>
         </Card>
       </form>
