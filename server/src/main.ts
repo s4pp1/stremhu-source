@@ -12,6 +12,7 @@ import { THIRTY_DAYS_MS } from './app.constant';
 import { AppModule } from './app.module';
 import { NodeEnvEnum } from './config/enum/node-env.enum';
 import { KodiStreamsIntegrationModule } from './kodi/streams/integration/kodi-streams-integration.module';
+import { MonitoringModule } from './monitoring/monitoring.module';
 import { PairingsIntegrationModule } from './pairings/integration/pairings-integration.module';
 import { PlayIntegrationModule } from './play/integration/play-integration.module';
 import { RelaySettingsIntegrationModule } from './relay/settings/integration/relay-settings-integration.module';
@@ -65,10 +66,8 @@ async function bootstrap() {
     `${controllerKey.replace('Controller', '')}${methodKey.charAt(0).toUpperCase() + methodKey.slice(1)}`;
 
   const integrationsSwagger = new DocumentBuilder()
-    .setTitle('StremHU Source - Külső integrációk')
-    .setDescription(
-      'API külső szolgáltatások számára token alapú hitelesítéssel.',
-    )
+    .setTitle('StremHU Source - REST API')
+    .setDescription('REST API token alapú hitelesítéssel.')
     .setVersion('1.0.0')
     .build();
 
@@ -78,21 +77,22 @@ async function bootstrap() {
     {
       operationIdFactory,
       include: [
+        MonitoringModule,
+        PairingsIntegrationModule,
         StremioIntegrationModule,
         StremioStreamsIntegrationModule,
         StremioCatalogsIntegrationModule,
         KodiStreamsIntegrationModule,
         RelaySettingsIntegrationModule,
         PlayIntegrationModule,
-        PairingsIntegrationModule,
       ],
     },
   );
-  SwaggerModule.setup('api/docs/integrations', app, integrationsSwaggerDoc);
+  SwaggerModule.setup('api/docs', app, integrationsSwaggerDoc);
 
   if (!isProd) {
     const config = new DocumentBuilder()
-      .setTitle('StremHU Source')
+      .setTitle('StremHU Source - REST API')
       .setDescription('REST API dokumentáció')
       .setVersion('1.0.0')
       .build();
@@ -100,7 +100,7 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config, {
       operationIdFactory,
     });
-    SwaggerModule.setup('api/docs', app, document);
+    SwaggerModule.setup('api/docs/internal', app, document);
 
     await mkdir(openapiDir, { recursive: true });
 
