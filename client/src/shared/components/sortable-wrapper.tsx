@@ -29,6 +29,8 @@ export function SortableWrapper<T>(
       rect.current && {
         width: rect.current.width,
         height: rect.current.height,
+        cursor: 'grabbing',
+        zIndex: 100,
       }),
   }
 

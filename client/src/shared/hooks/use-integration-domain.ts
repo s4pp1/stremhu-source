@@ -31,6 +31,5 @@ export function useIntegrationDomain(props: UseIntegrationDomainProps) {
   return {
     stremio,
     nuvioUrl: `${metadata.endpoint}/api/${token}/stremio/manifest.json`,
-    kodiUrl: `${metadata.endpoint}/api/${token}`,
   }
 }
