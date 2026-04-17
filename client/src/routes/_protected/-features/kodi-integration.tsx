@@ -1,7 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
+import { useSuspenseQueries } from '@tanstack/react-query'
 import { CopyIcon, LinkIcon } from 'lucide-react'
 
-import { Button } from '@/shared/components/ui/button'
 import {
   Card,
   CardContent,
@@ -9,26 +8,18 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
+import { Field } from '@/shared/components/ui/field'
 import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemMedia,
-  ItemTitle,
-} from '@/shared/components/ui/item'
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '@/shared/components/ui/input-group'
 import { useCopy } from '@/shared/hooks/use-copy'
-import { useIntegrationDomain } from '@/shared/hooks/use-integration-domain'
-import { assertExists } from '@/shared/lib/utils'
-import { getMe } from '@/shared/queries/me'
+import { getMetadata } from '@/shared/queries/metadata'
 
 export function KodiIntegration() {
-  const { data: me } = useQuery(getMe)
-  assertExists(me)
-
-  const { kodiUrl } = useIntegrationDomain({
-    token: me.token,
-  })
+  const [{ data: metadata }] = useSuspenseQueries({ queries: [getMetadata] })
 
   const { handleCopy } = useCopy()
 
@@ -43,26 +34,23 @@ export function KodiIntegration() {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
-        <Item variant="default" className="p-0">
-          <ItemMedia variant="icon">
-            <LinkIcon />
-          </ItemMedia>
-          <ItemContent>
-            <ItemTitle>URL másolása</ItemTitle>
-            <ItemDescription>
-              Illeszd be a StremHU addon beállításnál az URL-hez.
-            </ItemDescription>
-          </ItemContent>
-          <ItemActions>
-            <Button
-              size="icon-sm"
-              className="rounded-full"
-              onClick={() => handleCopy(kodiUrl)}
-            >
-              <CopyIcon />
-            </Button>
-          </ItemActions>
-        </Item>
+        <p className="text-sm text-muted-foreground">
+          StremHU addon bejelentkezés folyamatánál a következő URL-t kell
+          megadni.
+        </p>
+        <Field className="max-w-sm">
+          <InputGroup>
+            <InputGroupInput value={metadata.endpoint} />
+            <InputGroupAddon align="inline-start">
+              <LinkIcon />
+            </InputGroupAddon>
+            <InputGroupAddon align="inline-end">
+              <InputGroupButton onClick={() => handleCopy(metadata.endpoint)}>
+                <CopyIcon />
+              </InputGroupButton>
+            </InputGroupAddon>
+          </InputGroup>
+        </Field>
       </CardContent>
     </Card>
   )

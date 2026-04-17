@@ -30,7 +30,7 @@ function UserRoute() {
   })
   assertExists(user)
 
-  const { stremio, nuvioUrl, kodiUrl } = useIntegrationDomain({
+  const { stremio, nuvioUrl } = useIntegrationDomain({
     token: user.token,
   })
 
@@ -77,20 +77,6 @@ function UserRoute() {
               size="icon-sm"
               className="rounded-full"
               onClick={() => handleCopy(nuvioUrl)}
-            >
-              <CopyIcon />
-            </Button>
-          </ItemActions>
-        </Item>
-        <Item variant="muted">
-          <ItemContent>
-            <ItemTitle>Kodi URL</ItemTitle>
-          </ItemContent>
-          <ItemActions>
-            <Button
-              size="icon-sm"
-              className="rounded-full"
-              onClick={() => handleCopy(kodiUrl)}
             >
               <CopyIcon />
             </Button>
