@@ -8,7 +8,7 @@ import ZodUtil, { ZodConfig } from './utils/zod-util';
 export default registerAs('database', () => {
   const configs: ZodConfig<DatabaseConfig> = {
     'db-path': {
-      value: join(process.cwd(), '../data/database/app.db'),
+      value: join(process.cwd(), '../data/system/database/app.db'),
       zod: z.string().trim().nonempty(),
     },
   };
