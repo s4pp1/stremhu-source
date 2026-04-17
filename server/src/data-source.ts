@@ -6,7 +6,7 @@ dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: 'better-sqlite3',
-  database: join(process.cwd(), '../data/database/app.db'),
+  database: join(process.cwd(), '../data/system/database/app.db'),
   entities: ['src/**/*.entity.ts'],
   migrations: ['src/@migrations/*.ts'],
   synchronize: false,

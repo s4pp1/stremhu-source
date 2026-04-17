@@ -22,7 +22,7 @@ export default registerAs('torrent', () => {
       zod: z.number().positive(),
     },
     'torrents-dir': {
-      value: join(process.cwd(), '../data/torrents'),
+      value: join(process.cwd(), '../data/system/torrents'),
       zod: z.string().trim().nonempty(),
     },
     'relay-auto-start': {

@@ -21,7 +21,7 @@ class Config(BaseSettings):
 
     @property
     def resume_data_dir(self) -> Path:
-        return self.base_data_dir / "resumes"
+        return self.base_data_dir / "system" / "resumes"
 
 
 config = Config()  # type: ignore[call-arg]
