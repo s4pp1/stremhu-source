@@ -7,6 +7,11 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
 jobs:
   build:
     name: Test & Build
@@ -23,9 +28,59 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
+          cache: "npm"
+          cache-dependency-path: "${{ inputs.working-directory }}/package-lock.json"
 
       - name: Install Dependencies
         run: npm ci
+
+      - name: Lint
+        if: github.event_name == 'pull_request'
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          eslint_flags: "."
+          tool_name: "${{ inputs.working-directory }} - eslint"
+          workdir: ${{ inputs.working-directory }}
+
+      - name: Typecheck
+        if: github.event_name == 'pull_request'
+        uses: EPMatt/reviewdog-action-tsc@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          tool_name: "${{ inputs.working-directory }} - tsc"
+          workdir: ${{ inputs.working-directory }}
+
+      - name: Prettier
+        if: github.event_name == 'pull_request'
+        uses: EPMatt/reviewdog-action-prettier@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          tool_name: "${{ inputs.working-directory }} - Prettier"
+          workdir: ${{ inputs.working-directory }}
+
+      - name: Test
+        run: npm run test --if-present
+
+      - name: Check for Test Results
+        id: check_tests
+        run: |
+          if [ -f "junit.xml" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: (success() || failure()) && steps.check_tests.outputs.exists == 'true'
+        with:
+          name: "${{ inputs.working-directory }} - tests"
+          path: "${{ inputs.working-directory }}/junit.xml"
+          reporter: jest-junit
 
       - name: Build
         run: npm run build

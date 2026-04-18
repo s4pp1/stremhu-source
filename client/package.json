@@ -7,8 +7,6 @@
   "scripts": {
     "build": "vite build && tsc",
     "dev": "vite --port 3100",
-    "serve": "vite preview",
-    "test": "vitest run",
     "generate:api": "orval"
   },
   "dependencies": {
@@ -66,6 +64,7 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.1",
+    "eslint": "10.2.1",
     "jsdom": "29.0.2",
     "orval": "8.8.0",
     "prettier": "3.8.3",
