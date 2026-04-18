@@ -32,12 +32,14 @@ jobs:
     uses: ./.github/workflows/reusable-test-and-build.yaml
     with:
       working-directory: ./server
+    secrets: inherit
 
   client:
     name: Client
     uses: ./.github/workflows/reusable-test-and-build.yaml
     with:
       working-directory: ./client
+    secrets: inherit
 
   build-and-push:
     name: Build Docker image and Publish

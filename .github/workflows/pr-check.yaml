@@ -2,7 +2,7 @@ name: PR Check
 
 on:
   pull_request:
-    branches: [main]
+    branches: [ main ]
     paths:
       - "client/**"
       - "server/**"
@@ -14,9 +14,11 @@ jobs:
     uses: ./.github/workflows/reusable-test-and-build.yaml
     with:
       working-directory: ./server
+    secrets: inherit
 
   client:
     name: Client
     uses: ./.github/workflows/reusable-test-and-build.yaml
     with:
       working-directory: ./client
+    secrets: inherit
