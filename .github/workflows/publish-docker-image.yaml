@@ -27,6 +27,11 @@ on:
         required: false
         default: false
 
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
 jobs:
   server:
     name: Server
