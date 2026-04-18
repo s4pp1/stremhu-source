@@ -7,8 +7,6 @@
   "scripts": {
     "build": "vite build && tsc",
     "dev": "vite --port 3100",
-    "serve": "vite preview",
-    "test": "vitest run",
     "generate:api": "orval"
   },
   "dependencies": {
