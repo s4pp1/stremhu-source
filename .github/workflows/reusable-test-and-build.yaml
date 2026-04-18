@@ -34,6 +34,11 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Setup reviewdog
+        uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_version: latest
+
       - name: Lint
         if: github.event_name == 'pull_request'
         uses: reviewdog/action-eslint@v1

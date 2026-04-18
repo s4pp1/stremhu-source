@@ -23,7 +23,7 @@
     "generate:api": "orval"
   },
   "engines": {
-    "node": "24.14.1"
+    "node": "24"
   },
   "dependencies": {
     "@ctrl/torrent-file": "4.5.0",
