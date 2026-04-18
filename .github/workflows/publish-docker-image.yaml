@@ -13,6 +13,7 @@ on:
       - "server/**"
       - "relay/**"
       - "Dockerfile"
+      - ".github/workflows/**"
 
   workflow_dispatch:
     inputs:
