@@ -28,6 +28,7 @@ import { PreferenceValue } from 'src/users/preferences/type/preference-value.typ
 import { UserPreference } from 'src/users/preferences/type/user-preference.type';
 import { UserPreferencesService } from 'src/users/preferences/user-preferences.service';
 
+import { MediaTypeEnum } from 'src/common/enum/media-type.enum';
 import { resolveVideoFile } from './lib/resolve-video-file';
 import { isSampleOrTrash } from './lib/resolve-video-file/utils';
 import { BaseTorrentVideo } from './type/base-torrent-video.type';
@@ -45,7 +46,7 @@ export class TorrentVideosService {
     private readonly userPreferencesService: UserPreferencesService,
     private readonly torrentsCacheStore: TorrentsCacheStore,
     private readonly trackersMetaService: TrackersMetaService,
-  ) {}
+  ) { }
 
   async findByImdb(payload: FindByImdb): Promise<[TorrentVideo[], string[]]> {
     const { user, mediaType, imdbId, series } = payload;
@@ -59,11 +60,12 @@ export class TorrentVideosService {
     });
 
     const isSpecial = typeof originalImdbId === 'string';
+    const nullableMediaType = !isSpecial ? mediaType : undefined;
 
     const torrents = await this.trackerDiscoveryService.findTorrents({
       imdbId: imdbId,
-      mediaType: !isSpecial ? mediaType : undefined,
-      series: !isSpecial ? series : undefined,
+      mediaType: nullableMediaType,
+      series: nullableMediaType === MediaTypeEnum.SERIES ? series : undefined,
     });
 
     let trackerTorrents: TrackerTorrent[] = [];
