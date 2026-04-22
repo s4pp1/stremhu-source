@@ -5,4 +5,5 @@ export const TRACKER_LABEL: Record<TrackerEnum, string> = {
   [TrackerEnum.BITHUMEN]: 'BitHUmen',
   [TrackerEnum.INSANE]: 'iNSANE',
   [TrackerEnum.MAJOMPARADE]: 'Majomparádé',
+  [TrackerEnum.FILELIST]: 'Filelist',
 };

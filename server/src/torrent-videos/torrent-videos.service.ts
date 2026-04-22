@@ -63,6 +63,7 @@ export class TorrentVideosService {
     const torrents = await this.trackerDiscoveryService.findTorrents({
       imdbId: imdbId,
       mediaType: !isSpecial ? mediaType : undefined,
+      series: !isSpecial ? series : undefined,
     });
 
     let trackerTorrents: TrackerTorrent[] = [];
