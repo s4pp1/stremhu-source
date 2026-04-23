@@ -1,0 +1,83 @@
+name: Test Report
+
+on:
+  workflow_run:
+    workflows: [ "PR Check" ]
+    types:
+      - completed
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success' ||
+      github.event.workflow_run.conclusion == 'failure'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.workflow_run.head_repository.full_name }}
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Setup reviewdog
+        uses: reviewdog/action-setup@v1
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Get PR Number
+        id: pr
+        run: |
+          if [ -f "analysis-results-server/pr-number.txt" ]; then
+            echo "nr=$(cat analysis-results-server/pr-number.txt)" >> $GITHUB_OUTPUT
+          elif [ -f "analysis-results-client/pr-number.txt" ]; then
+            echo "nr=$(cat analysis-results-client/pr-number.txt)" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Report Analysis (Server)
+        shell: bash
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CI_PULL_REQUEST: ${{ steps.pr.outputs.nr }}
+        run: |
+          if [ -d "analysis-results-server" ]; then
+            cd server
+            cat ../analysis-results-server/eslint-report.txt | reviewdog -f=eslint -reporter=github-pr-review -name="Server - eslint" -filter-mode=added -fail-on-error=false
+            cat ../analysis-results-server/tsc-report.txt | reviewdog -f=tsc -reporter=github-pr-review -name="Server - tsc" -filter-mode=added -fail-on-error=false
+            cat ../analysis-results-server/prettier-report.txt | reviewdog -f=prettier -reporter=github-pr-review -name="Server - prettier" -filter-mode=added -fail-on-error=false
+            cd ..
+          fi
+
+      - name: Report Analysis (Client)
+        shell: bash
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CI_PULL_REQUEST: ${{ steps.pr.outputs.nr }}
+        run: |
+          if [ -d "analysis-results-client" ]; then
+            cd client
+            cat ../analysis-results-client/eslint-report.txt | reviewdog -f=eslint -reporter=github-pr-review -name="Client - eslint" -filter-mode=added -fail-on-error=false
+            cat ../analysis-results-client/tsc-report.txt | reviewdog -f=tsc -reporter=github-pr-review -name="Client - tsc" -filter-mode=added -fail-on-error=false
+            cat ../analysis-results-client/prettier-report.txt | reviewdog -f=prettier -reporter=github-pr-review -name="Client - prettier" -filter-mode=added -fail-on-error=false
+            cd ..
+          fi
+
+      - name: Server Test Report
+        uses: dorny/test-reporter@v1
+        with:
+          artifact: test-results-server
+          name: "Server - tests"
+          path: "junit.xml"
+          reporter: jest-junit
+
+      - name: Client Test Report
+        uses: dorny/test-reporter@v1
+        with:
+          artifact: test-results-client
+          name: "Client - tests"
+          path: "junit.xml"
+          reporter: jest-junit
