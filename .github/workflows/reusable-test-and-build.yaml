@@ -7,11 +7,6 @@ on:
         required: true
         type: string
 
-permissions:
-  contents: read
-  checks: write
-  pull-requests: write
-
 jobs:
   build:
     name: Test & Build
@@ -34,40 +29,30 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Setup reviewdog
-        uses: reviewdog/action-setup@v1
-        with:
-          reviewdog_version: latest
-
-      - name: Lint
+      - name: Lint Check
         if: github.event_name == 'pull_request'
         run: npx eslint . --format stylish > eslint-report.txt || true
         continue-on-error: true
 
-      - name: Typecheck
+      - name: Type Check
         if: github.event_name == 'pull_request'
         run: npx tsc --noEmit > tsc-report.txt || true
         continue-on-error: true
 
-      - name: Prettier
+      - name: Prettier Check
         if: github.event_name == 'pull_request'
         run: npx prettier --check . > prettier-report.txt || true
         continue-on-error: true
 
-      - name: Save PR Number
-        if: github.event_name == 'pull_request'
-        run: echo ${{ github.event.pull_request.number }} > pr-number.txt
-
       - name: Upload Analysis Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: github.event_name == 'pull_request'
         with:
-          name: analysis-results-${{ github.job }}
+          name: analysis-results
           path: |
             ${{ inputs.working-directory }}/eslint-report.txt
             ${{ inputs.working-directory }}/tsc-report.txt
             ${{ inputs.working-directory }}/prettier-report.txt
-            ${{ inputs.working-directory }}/pr-number.txt
 
       - name: Test
         run: npm run test --if-present
@@ -82,10 +67,10 @@ jobs:
           fi
 
       - name: Upload Test Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always() && steps.check_tests.outputs.exists == 'true'
         with:
-          name: test-results-${{ github.job }}
+          name: test-results
           path: "${{ inputs.working-directory }}/junit.xml"
 
       - name: Build
