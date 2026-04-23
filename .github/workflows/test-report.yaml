@@ -76,16 +76,14 @@ jobs:
         if: steps.check_artifacts.outputs.server_exists == 'true'
         uses: dorny/test-reporter@v1
         with:
-          artifact: test-results-server
           name: "Server - tests"
-          path: "**/junit.xml"
+          path: "test-results-server/**/junit.xml"
           reporter: jest-junit
 
       - name: Client Test Report
         if: steps.check_artifacts.outputs.client_exists == 'true'
         uses: dorny/test-reporter@v1
         with:
-          artifact: test-results-client
           name: "Client - tests"
-          path: "**/junit.xml"
+          path: "test-results-client/**/junit.xml"
           reporter: jest-junit
