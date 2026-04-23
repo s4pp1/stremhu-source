@@ -32,10 +32,10 @@ jobs:
       - name: Get PR Number
         id: pr
         run: |
-          if [ -f "analysis-results-server/pr-number.txt" ]; then
-            echo "nr=$(cat analysis-results-server/pr-number.txt)" >> $GITHUB_OUTPUT
-          elif [ -f "analysis-results-client/pr-number.txt" ]; then
-            echo "nr=$(cat analysis-results-client/pr-number.txt)" >> $GITHUB_OUTPUT
+          if [ -f "analysis-results-server/server/pr-number.txt" ]; then
+            echo "nr=$(cat analysis-results-server/server/pr-number.txt)" >> $GITHUB_OUTPUT
+          elif [ -f "analysis-results-client/client/pr-number.txt" ]; then
+            echo "nr=$(cat analysis-results-client/client/pr-number.txt)" >> $GITHUB_OUTPUT
           fi
 
       - name: Report Analysis (Server)
@@ -44,11 +44,11 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CI_PULL_REQUEST: ${{ steps.pr.outputs.nr }}
         run: |
-          if [ -d "analysis-results-server" ]; then
+          if [ -d "analysis-results-server/server" ]; then
             cd server
-            cat ../analysis-results-server/eslint-report.txt | reviewdog -f=eslint -reporter=github-pr-review -name="Server - eslint" -filter-mode=added -fail-on-error=false
-            cat ../analysis-results-server/tsc-report.txt | reviewdog -f=tsc -reporter=github-pr-review -name="Server - tsc" -filter-mode=added -fail-on-error=false
-            cat ../analysis-results-server/prettier-report.txt | reviewdog -f=prettier -reporter=github-pr-review -name="Server - prettier" -filter-mode=added -fail-on-error=false
+            cat ../analysis-results-server/server/eslint-report.txt | reviewdog -f=eslint -reporter=github-pr-review -name="Server - eslint" -filter-mode=added -fail-on-error=false
+            cat ../analysis-results-server/server/tsc-report.txt | reviewdog -f=tsc -reporter=github-pr-review -name="Server - tsc" -filter-mode=added -fail-on-error=false
+            cat ../analysis-results-server/server/prettier-report.txt | reviewdog -f=prettier -reporter=github-pr-review -name="Server - prettier" -filter-mode=added -fail-on-error=false
             cd ..
           fi
 
@@ -58,11 +58,11 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CI_PULL_REQUEST: ${{ steps.pr.outputs.nr }}
         run: |
-          if [ -d "analysis-results-client" ]; then
+          if [ -d "analysis-results-client/client" ]; then
             cd client
-            cat ../analysis-results-client/eslint-report.txt | reviewdog -f=eslint -reporter=github-pr-review -name="Client - eslint" -filter-mode=added -fail-on-error=false
-            cat ../analysis-results-client/tsc-report.txt | reviewdog -f=tsc -reporter=github-pr-review -name="Client - tsc" -filter-mode=added -fail-on-error=false
-            cat ../analysis-results-client/prettier-report.txt | reviewdog -f=prettier -reporter=github-pr-review -name="Client - prettier" -filter-mode=added -fail-on-error=false
+            cat ../analysis-results-client/client/eslint-report.txt | reviewdog -f=eslint -reporter=github-pr-review -name="Client - eslint" -filter-mode=added -fail-on-error=false
+            cat ../analysis-results-client/client/tsc-report.txt | reviewdog -f=tsc -reporter=github-pr-review -name="Client - tsc" -filter-mode=added -fail-on-error=false
+            cat ../analysis-results-client/client/prettier-report.txt | reviewdog -f=prettier -reporter=github-pr-review -name="Client - prettier" -filter-mode=added -fail-on-error=false
             cd ..
           fi
 
@@ -71,7 +71,7 @@ jobs:
         with:
           artifact: test-results-server
           name: "Server - tests"
-          path: "junit.xml"
+          path: "**/junit.xml"
           reporter: jest-junit
 
       - name: Client Test Report
@@ -79,5 +79,5 @@ jobs:
         with:
           artifact: test-results-client
           name: "Client - tests"
-          path: "junit.xml"
+          path: "**/junit.xml"
           reporter: jest-junit

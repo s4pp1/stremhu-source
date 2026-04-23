@@ -64,10 +64,10 @@ jobs:
         with:
           name: analysis-results-${{ github.job }}
           path: |
-            eslint-report.txt
-            tsc-report.txt
-            prettier-report.txt
-            pr-number.txt
+            ${{ inputs.working-directory }}/eslint-report.txt
+            ${{ inputs.working-directory }}/tsc-report.txt
+            ${{ inputs.working-directory }}/prettier-report.txt
+            ${{ inputs.working-directory }}/pr-number.txt
 
       - name: Test
         run: npm run test --if-present
