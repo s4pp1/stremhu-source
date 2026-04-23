@@ -7,11 +7,6 @@ on:
         required: true
         type: string
 
-permissions:
-  contents: read
-  checks: write
-  pull-requests: write
-
 jobs:
   build:
     name: Test & Build
