@@ -6,6 +6,9 @@ on:
       working-directory:
         required: true
         type: string
+      name:
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -62,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: github.event_name == 'pull_request'
         with:
-          name: analysis-results-${{ github.job }}
+          name: analysis-results-${{ inputs.name }}
           path: |
             ${{ inputs.working-directory }}/eslint-report.txt
             ${{ inputs.working-directory }}/tsc-report.txt
@@ -85,7 +88,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always() && steps.check_tests.outputs.exists == 'true'
         with:
-          name: test-results-${{ github.job }}
+          name: test-results-${{ inputs.name }}
           path: "${{ inputs.working-directory }}/junit.xml"
 
       - name: Build
