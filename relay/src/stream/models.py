@@ -1,12 +1,11 @@
 from __future__ import annotations
 
+import math
 from pathlib import Path
 from typing import Dict, List, Optional
 
 import libtorrent as libtorrent
 from common.constants import (
-    PREFETCH_HIGH_PIECES,
-    PREFETCH_NORMAL_PIECES,
     PRIO_2,
     PRIO_5,
     PRIO_7,
@@ -58,7 +57,14 @@ class Torrent:
         for priority_index, _ in enumerate(priorities):
             for file_index in self.files:
                 file = self.files[file_index]
+
+                if not file.metadata_probed:
+                    continue
+
                 file_range = range(file.start_piece_index, file.end_piece_index + 1)
+
+                prefetch_high_pieces = file.prefetch_pieces * 2
+                prefetch_normal_pieces = prefetch_high_pieces * 2
 
                 if priority_index in file_range:
                     priority = priorities[priority_index]
@@ -77,11 +83,11 @@ class Torrent:
                         if priority_index in stream_range:
                             stream_range_index = stream_range.index(priority_index)
 
-                            if stream_range_index < PREFETCH_HIGH_PIECES:
+                            if stream_range_index < prefetch_high_pieces:
                                 priority = PRIO_7
 
                             elif (
-                                stream_range_index < PREFETCH_NORMAL_PIECES
+                                stream_range_index < prefetch_normal_pieces
                                 and priority < PRIO_5
                             ):
                                 priority = PRIO_5
@@ -118,6 +124,13 @@ class File:
         self.end_piece_index = (file_entry.offset + file_size - 1) // torrent.piece_size
 
         self.streams: Dict[str, "Stream"] = {}
+
+        # Prefetch beállítások
+        max_by_bytes = math.ceil(1024 * 1024 / torrent.piece_size)
+        self.prefetch_pieces = max(1, min(4, max_by_bytes))
+
+        # Metaadat állapot
+        self.metadata_probed = self.is_available
 
 
 class Stream:
