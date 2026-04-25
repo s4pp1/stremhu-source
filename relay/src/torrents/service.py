@@ -38,6 +38,8 @@ class TorrentsService:
             priority=priority,
         )
 
+        self.stream_service.register_torrent(torrent_handle)
+
         return self._build_torrent(torrent_handle)
 
     def get_torrents(self) -> List[RelayTorrent]:
