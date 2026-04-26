@@ -37,6 +37,8 @@ class LibtorrentClientService:
                 "piece_timeout": 20,
                 "request_timeout": 15,
                 "unchoke_interval": 10,
+                "disk_io_write_mode": 1,
+                "disk_io_read_mode": 1,
             }
         )
 

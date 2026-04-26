@@ -6,6 +6,7 @@ from typing import Dict, List, Optional
 
 import libtorrent as libtorrent
 from common.constants import (
+    CHUNK_SIZE,
     PRIO_2,
     PRIO_5,
     PRIO_7,
@@ -30,6 +31,7 @@ class Torrent:
         self.torrent_info = torrent_info
 
         self.piece_size = torrent_info.piece_length()
+        self.chunk_piece_count = math.ceil(CHUNK_SIZE / self.piece_size)
         self.default_priorities = priorities
 
         self.files: Dict[int, File] = {}

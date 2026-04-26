@@ -10,6 +10,7 @@ import content_types
 import libtorrent as libtorrent
 import pydash
 from common.constants import (
+    CHUNK_SIZE,
     METADATA_FETCH_SIZE,
     PRIO_7,
 )
@@ -284,7 +285,7 @@ class StreamService:
                 if await request.is_disconnected():
                     return
 
-                chunk = file_handle.read(min(1024 * 1024, remaining))
+                chunk = file_handle.read(min(CHUNK_SIZE, remaining))
 
                 if not chunk:
                     return
@@ -298,21 +299,24 @@ class StreamService:
         stream: Stream,
     ):
         # Prefetch beállítása
-        priorities, critical_piece_index, prefetch_piece_count = stream.get_priorities()
+        priorities, critical_piece_index, stream_pieces_range = stream.get_priorities()
 
         stream.torrent.torrent_handle.prioritize_pieces(priorities)
 
         # Kritikus piece kérése
         set_piece_count = 1
-        for count_index in range(prefetch_piece_count):
-            if set_piece_count > stream.file.prefetch_pieces:
+        for count_index in range(stream_pieces_range):
+            prefetch_piece_index = (
+                stream.torrent.chunk_piece_count + stream.file.prefetch_pieces
+            )
+            if set_piece_count > prefetch_piece_index:
                 break
 
             piece_index = critical_piece_index + count_index
             if stream.torrent.torrent_handle.have_piece(piece_index):
                 continue
 
-            deadline = 1000 + (set_piece_count - 1) * 100
+            deadline = 1000 + (set_piece_count - 1) * 200
             stream.torrent.torrent_handle.set_piece_deadline(piece_index, deadline)
             set_piece_count += 1
 
@@ -331,7 +335,9 @@ class StreamService:
             return stream.file.end_byte
 
         if piece_or_file_available.piece_available:
-            next_stream_piece_index = stream.stream_start_piece_index + 1
+            next_stream_piece_index = (
+                stream.stream_start_piece_index + stream.torrent.chunk_piece_count
+            )
             available_end_byte = (
                 (next_stream_piece_index * stream.torrent.piece_size)
                 - stream.file.offset
@@ -360,10 +366,9 @@ class StreamService:
             piece_or_file_available.file_available = True
             return piece_or_file_available
 
-        max_wait_pieces = math.ceil(stream.file.prefetch_pieces / 2)
         stream_end_piece_index = min(
             stream.stream_end_piece_index,
-            stream.stream_start_piece_index + max_wait_pieces,
+            stream.stream_start_piece_index + stream.torrent.chunk_piece_count,
         )
         prefech_pieces = range(
             stream.stream_start_piece_index,
@@ -461,9 +466,13 @@ class StreamService:
 
             if bitrate:
                 piece_size = file.torrent.piece_size
-                bytes_in_10_sec = (bitrate / 8) * 10
-                pieces_in_10_sec = math.ceil(bytes_in_10_sec / piece_size)
-                file.prefetch_pieces = pieces_in_10_sec
+                bytes_in_sec = bitrate / 8
+                bytes_in_15_sec = bytes_in_sec * 15
+                pieces_in_15_sec = math.ceil(bytes_in_15_sec / piece_size)
+                file.prefetch_pieces = pieces_in_15_sec
+                logger.error(
+                    f"bytes_in_sec: {bytes_in_sec}, bytes_in_15_sec: {bytes_in_15_sec}, piece_size: {piece_size}, prefetch_pieces: {pieces_in_15_sec}"
+                )
         except Exception as e:
             logger.error(
                 f"Hiba történt a(z) {file.file_index} indexű torrent metadata elemzése közben: {e}"
