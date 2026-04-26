@@ -7,3 +7,5 @@ pydantic-settings==2.13.1
 debugpy==1.8.20
 content-types==0.3.0
 setproctitle==1.3.7
+python-ffmpeg==2.0.12
+pydash==8.0.6
