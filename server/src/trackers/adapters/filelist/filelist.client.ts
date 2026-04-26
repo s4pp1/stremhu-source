@@ -58,41 +58,14 @@ export class FilelistClient {
   }
 
   find(payload: FilelistTorrentsQuery): Promise<FilelistTorrent[]> {
-    return this.findWithResolvedSearchParams(payload);
-  }
-
-  private async findWithResolvedSearchParams(
-    payload: FilelistTorrentsQuery,
-  ): Promise<FilelistTorrent[]> {
-    const {
-      searchTerm,
-      searchIn,
-    } = payload.series != null ? {
-      searchTerm: `s${payload.series.season.toString().padStart(2, '0')} ${payload.imdbId.replace('tt', '')}`,
-      searchIn: FilelistSearchInByEnum.NAME_DESCRIPTION,
-    } : {
-        searchTerm: payload.imdbId,
-        searchIn: FilelistSearchInByEnum.IMDB,
-      };
-
-    const imdbResults = await this.findAll(
-      payload,
-      searchTerm,
-      searchIn,
-    );
-
-    return imdbResults;
+    return this.findAll(payload);
   }
 
   private async findAll(
     payload: FilelistTorrentsQuery,
-    searchTerm: string,
-    searchIn: FilelistSearchInByEnum,
     page: number = 0,
     accumulator: FilelistTorrent[] = [],
   ): Promise<FilelistTorrent[]> {
-    this.logger.log(`[${this.tracker}] Searching for torrents: ${searchTerm} in ${searchIn} on page ${page}`);
-
     if (accumulator.length > FIND_TORRENTS_LIMIT) {
       return accumulator;
     }
@@ -101,14 +74,19 @@ export class FilelistClient {
       const { imdbId, categories } = payload;
       const torrentsUrl = new URL(TORRENTS_PATH, this.baseUrl);
 
-      torrentsUrl.searchParams.append('search', searchTerm);
-      torrentsUrl.searchParams.append('searchin', searchIn.toString());
-      torrentsUrl.searchParams.append('sort', FilelistSortByEnum.PEERS.toString());
+      torrentsUrl.searchParams.append('search', imdbId.replace('tt', ''));
+      torrentsUrl.searchParams.append(
+        'searchin',
+        FilelistSearchInByEnum.IMDB.toString(),
+      );
+      torrentsUrl.searchParams.append(
+        'sort',
+        FilelistSortByEnum.PEERS.toString(),
+      );
       torrentsUrl.searchParams.append('incldead', '0');
       torrentsUrl.searchParams.append('page', `${page}`);
 
       categories.forEach((category, index) => {
-        // torrentsUrl.searchParams.append(`cats[${index}]`, category);
         torrentsUrl.searchParams.append(`cats[${index}]`, category);
       });
 
@@ -118,7 +96,7 @@ export class FilelistClient {
         }),
       );
 
-      const data = this.processTorrentsHtml(response.data);
+      const data = this.processTorrentsHtml(response.data, page);
       const results = data.results
         .filter((torrent) => categories.includes(torrent.category))
         .map((torrent) => ({
@@ -128,7 +106,7 @@ export class FilelistClient {
       accumulator = [...accumulator, ...results];
 
       if (data.hasNextPage) {
-        return this.findAll(payload, searchTerm, searchIn, page + 1, accumulator);
+        return this.findAll(payload, page + 1, accumulator);
       }
 
       return accumulator.filter((torrent) => torrent.imdbId === imdbId);
@@ -219,7 +197,10 @@ export class FilelistClient {
     }
   }
 
-  private processTorrentsHtml(html: unknown): FilelistTorrents {
+  private processTorrentsHtml(
+    html: unknown,
+    currentPage: number,
+  ): FilelistTorrents {
     if (typeof html !== 'string') {
       return { results: [], hasNextPage: false };
     }
@@ -287,9 +268,12 @@ export class FilelistClient {
       .get()
       .filter((torrent) => torrent.torrentId && torrent.downloadUrl);
 
+    const nextPageParam = `page=${currentPage + 1}`;
     const hasNextPage =
-      $('a').filter((_, el) => $(el).text().trim().includes('Next')).length >
-      0;
+      $('a[href]').filter((_, el) => {
+        const href = $(el).attr('href') || '';
+        return href.includes(nextPageParam);
+      }).length > 0;
 
     return { results: torrents, hasNextPage };
   }

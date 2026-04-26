@@ -32,14 +32,14 @@ export class FilelistAdapter implements TrackerAdapter {
   constructor(
     @Inject(TRACKER_TOKEN) readonly tracker: TrackerEnum,
     private client: FilelistClient,
-  ) {}
+  ) { }
 
   async login(payload: LoginRequest): Promise<void> {
     await this.client.login(payload);
   }
 
   async find(query: TrackerSearchQuery): Promise<AdapterTorrentWithInfo[]> {
-    const { imdbId, mediaType, series } = query;
+    const { imdbId, mediaType } = query;
 
     let categories: string[] = [
       ...MOVIE_CATEGORY_FILTERS,
@@ -54,7 +54,7 @@ export class FilelistAdapter implements TrackerAdapter {
       categories = SERIES_CATEGORY_FILTERS;
     }
 
-    const torrents = await this.client.find({ imdbId, categories, series });
+    const torrents = await this.client.find({ imdbId, categories });
 
     return torrents.map((torrent) => {
       const resolution = this.resolveTorrentResolution(torrent.category);

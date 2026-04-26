@@ -28,7 +28,6 @@ import { PreferenceValue } from 'src/users/preferences/type/preference-value.typ
 import { UserPreference } from 'src/users/preferences/type/user-preference.type';
 import { UserPreferencesService } from 'src/users/preferences/user-preferences.service';
 
-import { MediaTypeEnum } from 'src/common/enum/media-type.enum';
 import { resolveVideoFile } from './lib/resolve-video-file';
 import { isSampleOrTrash } from './lib/resolve-video-file/utils';
 import { BaseTorrentVideo } from './type/base-torrent-video.type';
@@ -65,7 +64,6 @@ export class TorrentVideosService {
     const torrents = await this.trackerDiscoveryService.findTorrents({
       imdbId: imdbId,
       mediaType: nullableMediaType,
-      series: nullableMediaType === MediaTypeEnum.SERIES ? series : undefined,
     });
 
     let trackerTorrents: TrackerTorrent[] = [];

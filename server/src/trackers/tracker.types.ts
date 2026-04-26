@@ -1,7 +1,6 @@
 import { MediaTypeEnum } from 'src/common/enum/media-type.enum';
 import { LanguageEnum } from 'src/preference-items/enum/language.enum';
 import { ResolutionEnum } from 'src/preference-items/enum/resolution.enum';
-import { ParsedStreamSeries } from 'src/stremio/streams/type/parsed-stream-series.type';
 import { TorrentFileInfo } from 'src/torrents-cache/type/torrent-file-info.type';
 
 import {
@@ -35,7 +34,6 @@ export interface LoginRequest {
 export interface TrackerSearchQuery {
   mediaType?: MediaTypeEnum;
   imdbId: string;
-  series?: ParsedStreamSeries;
 }
 
 export interface TrackerAdapter {
