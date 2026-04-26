@@ -126,7 +126,7 @@ class File:
         self.streams: Dict[str, "Stream"] = {}
 
         # Prefetch beállítások
-        max_by_bytes = math.ceil(1024 * 1024 / torrent.piece_size)
+        max_by_bytes = math.ceil(5 * 1024 * 1024 / torrent.piece_size)
         self.prefetch_pieces = max(1, min(4, max_by_bytes))
 
         # Metaadat állapot
