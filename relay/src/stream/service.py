@@ -225,13 +225,16 @@ class StreamService:
                 stream_end_byte=stream.end_byte,
             )
 
-            current_end_byte = None
+            self._prioritize(
+                stream=stream,
+            )
 
+            current_end_byte = None
             while current_end_byte is None:
                 if await request.is_disconnected():
                     return
 
-                available_end_byte = self._check_piece_and_prioritize(
+                available_end_byte = self._check_piece(
                     stream=stream,
                 )
 
@@ -290,7 +293,30 @@ class StreamService:
 
                 yield chunk
 
-    def _check_piece_and_prioritize(
+    def _prioritize(
+        self,
+        stream: Stream,
+    ):
+        # Prefetch beállítása
+        priorities, critical_piece_index, prefetch_piece_count = stream.get_priorities()
+
+        stream.torrent.torrent_handle.prioritize_pieces(priorities)
+
+        # Kritikus piece kérése
+        set_piece_count = 1
+        for count_index in range(prefetch_piece_count):
+            if set_piece_count > stream.file.prefetch_pieces:
+                break
+
+            piece_index = critical_piece_index + count_index
+            if stream.torrent.torrent_handle.have_piece(piece_index):
+                continue
+
+            deadline = 1000 + (set_piece_count - 1) * 100
+            stream.torrent.torrent_handle.set_piece_deadline(piece_index, deadline)
+            set_piece_count += 1
+
+    def _check_piece(
         self,
         stream: Stream,
     ) -> int | None:
@@ -311,26 +337,6 @@ class StreamService:
                 - stream.file.offset
                 - 1
             )
-
-        # Prefetch beállítása
-        priorities, critical_piece_index, prefetch_piece_count = stream.get_priorities()
-
-        stream.torrent.torrent_handle.prioritize_pieces(priorities)
-
-        # Kritikus piece kérése
-        set_piece_count = 1
-        for count_index in range(prefetch_piece_count):
-            if set_piece_count > stream.file.prefetch_pieces:
-                break
-
-            piece_index = critical_piece_index + count_index
-            if stream.torrent.torrent_handle.have_piece(piece_index):
-                continue
-
-            stream.torrent.torrent_handle.set_piece_deadline(
-                piece_index, 1000 * set_piece_count
-            )
-            set_piece_count += 1
 
         return available_end_byte
 
@@ -354,13 +360,14 @@ class StreamService:
             piece_or_file_available.file_available = True
             return piece_or_file_available
 
+        max_wait_pieces = math.ceil(stream.file.prefetch_pieces / 2)
         stream_end_piece_index = min(
             stream.stream_end_piece_index,
-            stream.stream_start_piece_index,
+            stream.stream_start_piece_index + max_wait_pieces,
         )
         prefech_pieces = range(
             stream.stream_start_piece_index,
-            stream_end_piece_index + 1,
+            stream_end_piece_index,
         )
 
         pieces_available = True
