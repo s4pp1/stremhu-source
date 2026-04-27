@@ -35,6 +35,89 @@ class StreamService:
         self.torrents: Dict[str, Torrent] = {}
         self._metadata_tasks: Dict[str, asyncio.Task[None]] = {}
 
+    async def priority_manager_loop(self):
+        while True:
+            try:
+                for torrent in self.torrents.values():
+                    any_active_streams = False
+
+                    for file in torrent.files.values():
+                        if file.streams or not file.metadata_probed:
+                            any_active_streams = True
+                            break
+
+                    if any_active_streams:
+                        for file in torrent.files.values():
+                            if not file.streams:
+                                continue
+
+                            piece_deadlines: Dict[int, int] = {}
+                            for stream in file.streams.values():
+                                stream_deadlines = self._calculate_stream_deadlines(
+                                    stream
+                                )
+                                for piece_index, deadline in stream_deadlines.items():
+                                    if piece_index not in piece_deadlines:
+                                        piece_deadlines[piece_index] = deadline
+                                    else:
+                                        piece_deadlines[piece_index] = min(
+                                            piece_deadlines[piece_index], deadline
+                                        )
+
+                            for piece_index, deadline in piece_deadlines.items():
+                                torrent.torrent_handle.set_piece_deadline(
+                                    piece_index, deadline
+                                )
+            except Exception as e:
+                logger.error(f"Priority manager error: {e}")
+
+            await asyncio.sleep(0.5)
+
+    def _calculate_stream_deadlines(
+        self,
+        stream: Stream,
+    ) -> Dict[int, int]:
+        deadlines: Dict[int, int] = {}
+
+        status = stream.torrent.torrent_handle.status()
+        download_rate = status.download_payload_rate
+
+        if download_rate == 0:
+            download_rate = 125 * 1024 * 1024
+
+        prefetch_window_bytes = download_rate * 2
+        prefetch_piece_count = math.ceil(
+            prefetch_window_bytes / stream.torrent.piece_size
+        )
+
+        stream_pieces_range = (
+            stream.stream_end_piece_index - stream.stream_start_piece_index + 1
+        )
+
+        increment_ms = 100
+        if stream.file.bitrate and stream.file.bitrate > 0:
+            piece_duration_ms = (
+                stream.torrent.piece_size * 8 / stream.file.bitrate
+            ) * 1000
+            increment_ms = int(piece_duration_ms)
+
+        set_piece_count = 1
+        skip_piece_count = 0
+        for count_index in range(stream_pieces_range):
+            if set_piece_count > prefetch_piece_count:
+                break
+
+            piece_index = stream.stream_start_piece_index + count_index
+            if stream.torrent.torrent_handle.have_piece(piece_index):
+                skip_piece_count += 1
+                continue
+
+            deadline = 0 + (set_piece_count - 1 + skip_piece_count) * increment_ms
+            deadlines[piece_index] = deadline
+            set_piece_count += 1
+
+        return deadlines
+
     def register_torrent(self, torrent_handle: libtorrent.torrent_handle) -> Torrent:
         info_hash_str = str(torrent_handle.info_hash())
 
@@ -84,6 +167,9 @@ class StreamService:
                 404,
                 f"A(z) {file_index} indexű fájl nem videó fájl vagy nem található a torrentben.",
             )
+
+        priorities = torrent.get_priorities()
+        torrent.torrent_handle.prioritize_pieces(priorities)
 
         # Metaadat lekérés indítása ha szükséges
         metadata_key = f"{info_hash}_{file_index}"
@@ -226,10 +312,6 @@ class StreamService:
                 stream_end_byte=stream.end_byte,
             )
 
-            self._prioritize(
-                stream=stream,
-            )
-
             current_end_byte = None
             while current_end_byte is None:
                 if await request.is_disconnected():
@@ -293,32 +375,6 @@ class StreamService:
                 remaining -= len(chunk)
 
                 yield chunk
-
-    def _prioritize(
-        self,
-        stream: Stream,
-    ):
-        # Prefetch beállítása
-        priorities, critical_piece_index, stream_pieces_range = stream.get_priorities()
-
-        stream.torrent.torrent_handle.prioritize_pieces(priorities)
-
-        # Kritikus piece kérése
-        set_piece_count = 1
-        for count_index in range(stream_pieces_range):
-            prefetch_piece_index = (
-                stream.torrent.chunk_piece_count + stream.file.prefetch_pieces
-            )
-            if set_piece_count > prefetch_piece_index:
-                break
-
-            piece_index = critical_piece_index + count_index
-            if stream.torrent.torrent_handle.have_piece(piece_index):
-                continue
-
-            deadline = 1000 + (set_piece_count - 1) * 200
-            stream.torrent.torrent_handle.set_piece_deadline(piece_index, deadline)
-            set_piece_count += 1
 
     def _check_piece(
         self,
@@ -426,7 +482,7 @@ class StreamService:
 
             for metadata_piece in metadata_pieces:
                 if not file.torrent.torrent_handle.have_piece(metadata_piece):
-                    file.torrent.torrent_handle.set_piece_deadline(metadata_piece, 1000)
+                    file.torrent.torrent_handle.set_piece_deadline(metadata_piece, 0)
 
             while not all(
                 file.torrent.torrent_handle.have_piece(metadata_piece)
@@ -465,14 +521,7 @@ class StreamService:
                     bitrate = None
 
             if bitrate:
-                piece_size = file.torrent.piece_size
-                bytes_in_sec = bitrate / 8
-                bytes_in_15_sec = bytes_in_sec * 15
-                pieces_in_15_sec = math.ceil(bytes_in_15_sec / piece_size)
-                file.prefetch_pieces = pieces_in_15_sec
-                logger.error(
-                    f"bytes_in_sec: {bytes_in_sec}, bytes_in_15_sec: {bytes_in_15_sec}, piece_size: {piece_size}, prefetch_pieces: {pieces_in_15_sec}"
-                )
+                file.bitrate = bitrate
         except Exception as e:
             logger.error(
                 f"Hiba történt a(z) {file.file_index} indexű torrent metadata elemzése közben: {e}"
