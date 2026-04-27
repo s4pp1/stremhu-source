@@ -103,7 +103,6 @@ class StreamService:
         configured_piece_count = 0
         downloaded_piece_count = 0
 
-        logger.error(f"stream_pieces_range: {stream_pieces_range}")
         for count_index in range(stream_pieces_range):
             if configured_piece_count > prefetch_piece_count:
                 break
