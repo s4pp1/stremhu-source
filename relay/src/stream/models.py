@@ -7,7 +7,7 @@ from typing import Dict, List, Optional
 import libtorrent as libtorrent
 from common.constants import (
     CHUNK_SIZE,
-    PRIO_2,
+    PRIO_3,
 )
 from fastapi import HTTPException
 
@@ -25,6 +25,7 @@ class Torrent:
 
         priorities = torrent_handle.piece_priorities().copy()
 
+        self.info_hash = str(torrent_handle.info_hash())
         self.torrent_handle = torrent_handle
         self.torrent_info = torrent_info
 
@@ -55,12 +56,12 @@ class Torrent:
         priorities = self.default_priorities.copy()
 
         for file in self.files.values():
-            if file.streams or file.metadata_probed:
+            if file.streams:
                 for piece_index in range(
                     file.start_piece_index, file.end_piece_index + 1
                 ):
-                    if priorities[piece_index] < PRIO_2:
-                        priorities[piece_index] = PRIO_2
+                    if priorities[piece_index] < PRIO_3:
+                        priorities[piece_index] = PRIO_3
 
         return priorities
 
@@ -94,9 +95,7 @@ class File:
         self.streams: Dict[str, "Stream"] = {}
 
         # Metaadat állapot
-        self.metadata_probed = self.is_available
         self.bitrate: Optional[int] = None
-
 
 
 class Stream:

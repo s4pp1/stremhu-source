@@ -27,9 +27,17 @@ async def stream(
     range_header: str | None = Header(None, alias="Range"),
     stream_service: StreamService = Depends(get_stream_service),
 ):
-    stream = await stream_service.prepare_for_stream(
+    file = stream_service.validate_torrent_file(
         info_hash=info_hash,
         file_index=file_index,
+    )
+
+    await stream_service.detect_metadata(
+        file=file,
+    )
+
+    stream = await stream_service.prepare_for_stream(
+        file=file,
         range_header=range_header,
     )
 
