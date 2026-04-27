@@ -6,9 +6,8 @@ from typing import Dict, List, Optional
 
 import libtorrent as libtorrent
 from common.constants import (
+    CHUNK_SIZE,
     PRIO_2,
-    PRIO_5,
-    PRIO_7,
 )
 from fastapi import HTTPException
 
@@ -30,6 +29,7 @@ class Torrent:
         self.torrent_info = torrent_info
 
         self.piece_size = torrent_info.piece_length()
+        self.chunk_piece_count = math.ceil(CHUNK_SIZE / self.piece_size)
         self.default_priorities = priorities
 
         self.files: Dict[int, File] = {}
@@ -54,45 +54,13 @@ class Torrent:
     def get_priorities(self) -> List[int]:
         priorities = self.default_priorities.copy()
 
-        for priority_index, _ in enumerate(priorities):
-            for file_index in self.files:
-                file = self.files[file_index]
-
-                if not file.metadata_probed:
-                    continue
-
-                file_range = range(file.start_piece_index, file.end_piece_index + 1)
-
-                prefetch_high_pieces = file.prefetch_pieces * 2
-                prefetch_normal_pieces = prefetch_high_pieces * 2
-
-                if priority_index in file_range:
-                    priority = priorities[priority_index]
-
-                    if priority < PRIO_2:
-                        priority = PRIO_2
-
-                    for stream_index in file.streams:
-                        stream = file.streams[stream_index]
-
-                        stream_range = range(
-                            stream.stream_start_piece_index,
-                            stream.stream_end_piece_index + 1,
-                        )
-
-                        if priority_index in stream_range:
-                            stream_range_index = stream_range.index(priority_index)
-
-                            if stream_range_index < prefetch_high_pieces:
-                                priority = PRIO_7
-
-                            elif (
-                                stream_range_index < prefetch_normal_pieces
-                                and priority < PRIO_5
-                            ):
-                                priority = PRIO_5
-
-                    priorities[priority_index] = priority
+        for file in self.files.values():
+            if file.streams or file.metadata_probed:
+                for piece_index in range(
+                    file.start_piece_index, file.end_piece_index + 1
+                ):
+                    if priorities[piece_index] < PRIO_2:
+                        priorities[piece_index] = PRIO_2
 
         return priorities
 
@@ -125,12 +93,10 @@ class File:
 
         self.streams: Dict[str, "Stream"] = {}
 
-        # Prefetch beállítások
-        max_by_bytes = math.ceil(5 * 1024 * 1024 / torrent.piece_size)
-        self.prefetch_pieces = max(1, min(4, max_by_bytes))
-
         # Metaadat állapot
         self.metadata_probed = self.is_available
+        self.bitrate: Optional[int] = None
+
 
 
 class Stream:
@@ -170,15 +136,6 @@ class Stream:
         self.stream_end_piece_index = stream_end_piece_index
 
         return stream_start_piece_index, stream_end_piece_index
-
-    def get_priorities(self):
-        priorities = self.torrent.get_priorities()
-
-        stream_pieces_range = range(
-            self.stream_start_piece_index, self.stream_end_piece_index
-        )
-
-        return priorities, self.stream_start_piece_index, len(stream_pieces_range)
 
     def _get_byte_to_piece(
         self,

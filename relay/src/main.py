@@ -12,6 +12,7 @@ from libtorrent_client.background_tasks import alert_loop, resume_save_loop
 from libtorrent_client.dependencies import get_libtorrent_client_service
 from monitoring.router import router as monitoring_router
 from setting.router import router as setting_router
+from stream.dependencies import get_stream_service
 from stream.router import router as stream_router
 from torrents.router import router as torrents_router
 
@@ -47,12 +48,18 @@ async def lifespan(app: FastAPI):
     alert_task = asyncio.create_task(alert_loop())
     save_task = asyncio.create_task(resume_save_loop())
 
+    libtorrent_client_service = get_libtorrent_client_service()
+    stream_service = get_stream_service(
+        libtorrent_client_service=libtorrent_client_service
+    )
+    priority_manager_task = asyncio.create_task(stream_service.priority_manager_loop())
+
     yield
 
+    priority_manager_task.cancel()
     save_task.cancel()
     alert_task.cancel()
 
-    libtorrent_client_service = get_libtorrent_client_service()
     libtorrent_client_service.trigger_save_resume_data()
 
     await asyncio.sleep(1)
