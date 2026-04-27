@@ -12,7 +12,6 @@ import pydash
 from common.constants import (
     CHUNK_SIZE,
     METADATA_FETCH_SIZE,
-    PRIO_7,
 )
 from fastapi import HTTPException, Request
 from ffmpeg.asyncio import FFmpeg  # type: ignore
@@ -42,7 +41,7 @@ class StreamService:
                     any_active_streams = False
 
                     for file in torrent.files.values():
-                        if file.streams or not file.metadata_probed:
+                        if file.streams:
                             any_active_streams = True
                             break
 
@@ -69,9 +68,9 @@ class StreamService:
                                     piece_index, deadline
                                 )
             except Exception as e:
-                logger.error(f"Priority manager error: {e}")
+                logger.error(f"Hiba történt a prioritáskezelőben: {e}")
 
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.25)
 
     def _calculate_stream_deadlines(
         self,
@@ -94,29 +93,150 @@ class StreamService:
             stream.stream_end_piece_index - stream.stream_start_piece_index + 1
         )
 
-        increment_ms = 100
+        increment_ms = 200
         if stream.file.bitrate and stream.file.bitrate > 0:
             piece_duration_ms = (
                 stream.torrent.piece_size * 8 / stream.file.bitrate
             ) * 1000
             increment_ms = int(piece_duration_ms)
 
-        set_piece_count = 1
-        skip_piece_count = 0
+        configured_piece_count = 0
+        downloaded_piece_count = 0
+
+        logger.error(f"stream_pieces_range: {stream_pieces_range}")
         for count_index in range(stream_pieces_range):
-            if set_piece_count > prefetch_piece_count:
+            if configured_piece_count > prefetch_piece_count:
                 break
 
             piece_index = stream.stream_start_piece_index + count_index
             if stream.torrent.torrent_handle.have_piece(piece_index):
-                skip_piece_count += 1
+                downloaded_piece_count += 1
                 continue
 
-            deadline = 0 + (set_piece_count - 1 + skip_piece_count) * increment_ms
+            base_deadline = (
+                configured_piece_count + downloaded_piece_count
+            ) * increment_ms
+
+            CRITICAL_WINDOW_MS = 3000
+            deadline = max(0, base_deadline - CRITICAL_WINDOW_MS)
+
             deadlines[piece_index] = deadline
-            set_piece_count += 1
+            configured_piece_count += 1
 
         return deadlines
+
+    def validate_torrent_file(
+        self,
+        info_hash: str,
+        file_index: int,
+    ) -> File:
+        torrent = self.torrents.get(info_hash)
+        if not torrent:
+            raise HTTPException(404, f'A(z) "{info_hash}" torrent nem található.')
+
+        file = torrent.get_or_raise_file(file_index)
+
+        return file
+
+    async def detect_metadata(
+        self,
+        file: File,
+    ):
+        metadata_key = f"{file.torrent.info_hash}_{file.file_index}"
+        if not file.bitrate:
+            task = self._metadata_tasks.get(metadata_key)
+
+            if not task:
+                task = asyncio.create_task(
+                    self._probe_metadata_task(
+                        file=file,
+                    )
+                )
+                self._metadata_tasks[metadata_key] = task
+
+            await task
+
+    async def _probe_metadata_task(
+        self,
+        file: File,
+    ):
+        try:
+            metadata_pieces: set[int] = set()
+            needed_metadata_pieces = math.ceil(
+                METADATA_FETCH_SIZE / file.torrent.piece_size
+            )
+            metadata_pieces.update(
+                range(
+                    file.start_piece_index,
+                    min(
+                        file.start_piece_index + needed_metadata_pieces,
+                        file.end_piece_index + 1,
+                    ),
+                )
+            )
+            metadata_pieces.update(
+                range(
+                    max(
+                        file.start_piece_index,
+                        file.end_piece_index - needed_metadata_pieces + 1,
+                    ),
+                    file.end_piece_index + 1,
+                )
+            )
+
+            priorities = file.torrent.get_priorities()
+            file.torrent.torrent_handle.prioritize_pieces(priorities)
+
+            for metadata_piece in metadata_pieces:
+                if not file.torrent.torrent_handle.have_piece(metadata_piece):
+                    file.torrent.torrent_handle.set_piece_deadline(metadata_piece, 0)
+
+            while not all(
+                file.torrent.torrent_handle.have_piece(metadata_piece)
+                for metadata_piece in metadata_pieces
+            ):
+                await asyncio.sleep(0.5)
+
+            ffprobe = FFmpeg(executable="ffprobe").input(  # type: ignore
+                url=str(file.path),
+                options={
+                    "print_format": "json",
+                    "show_format": None,
+                    "show_streams": None,
+                },
+            )
+
+            output = await ffprobe.execute()
+            media = json.loads(output.decode("utf-8"))
+
+            bitrate_raw = pydash.get(media, "format.bit_rate")
+            if bitrate_raw is None:
+                bitrate_raw = (
+                    pydash.chain(media)
+                    .get("streams", [])
+                    .filter(lambda s: "bit_rate" in s)
+                    .last()
+                    .get("bit_rate")
+                    .value()
+                )
+
+            bitrate: Optional[int] = None
+            if bitrate_raw is not None:
+                try:
+                    bitrate = int(bitrate_raw)
+                except (ValueError, TypeError):
+                    bitrate = None
+
+            if bitrate:
+                file.bitrate = bitrate
+        except Exception as e:
+            logger.error(
+                f"Hiba történt a(z) {file.file_index} indexű torrent metadata elemzése közben: {e}"
+            )
+        finally:
+            info_hash = str(file.torrent.torrent_handle.info_hash())
+            metadata_key = f"{info_hash}_{file.file_index}"
+            self._metadata_tasks.pop(metadata_key, None)
 
     def register_torrent(self, torrent_handle: libtorrent.torrent_handle) -> Torrent:
         info_hash_str = str(torrent_handle.info_hash())
@@ -147,53 +267,22 @@ class StreamService:
 
     async def prepare_for_stream(
         self,
-        info_hash: str,
-        file_index: int,
+        file: File,
         range_header: str | None = None,
     ) -> Stream:
-        info_hash_sha1 = libtorrent.sha1_hash(bytes.fromhex(info_hash))
-        torrent_handle = self.libtorrent_client_service.get_torrent_or_raise(
-            info_hash_sha1
-        )
 
-        info_hash_str = str(torrent_handle.info_hash())
-        torrent = self.torrents.get(info_hash_str)
-        if not torrent:
-            torrent = self.register_torrent(torrent_handle)
-
-        torrent_file = torrent.get_file(file_index)
-        if not torrent_file:
-            raise HTTPException(
-                404,
-                f"A(z) {file_index} indexű fájl nem videó fájl vagy nem található a torrentben.",
-            )
-
-        priorities = torrent.get_priorities()
-        torrent.torrent_handle.prioritize_pieces(priorities)
-
-        # Metaadat lekérés indítása ha szükséges
-        metadata_key = f"{info_hash}_{file_index}"
-        if not torrent_file.metadata_probed:
-            if metadata_key not in self._metadata_tasks:
-                self._metadata_tasks[metadata_key] = asyncio.create_task(
-                    self._probe_metadata_task(
-                        file=torrent_file,
-                    )
-                )
-
-            task = self._metadata_tasks.get(metadata_key)
-            if task:
-                await task
+        priorities = file.torrent.get_priorities()
+        file.torrent.torrent_handle.prioritize_pieces(priorities)
 
         parsed_range_header = self._parse_range_header(
-            file_size=torrent_file.size,
+            file_size=file.size,
             range_header=range_header,
         )
 
         stream = Stream(
             stream_id=uuid4().hex,
-            torrent=torrent,
-            file=torrent_file,
+            torrent=file.torrent,
+            file=file,
             stream_start_byte=parsed_range_header.start_byte,
             stream_end_byte=parsed_range_header.end_byte,
         )
@@ -445,92 +534,6 @@ class StreamService:
         piece_or_file_available.piece_available = pieces_available
 
         return piece_or_file_available
-
-    async def _probe_metadata_task(
-        self,
-        file: File,
-    ):
-        try:
-            metadata_pieces: set[int] = set()
-            needed_metadata_pieces = math.ceil(
-                METADATA_FETCH_SIZE / file.torrent.piece_size
-            )
-            metadata_pieces.update(
-                range(
-                    file.start_piece_index,
-                    min(
-                        file.start_piece_index + needed_metadata_pieces,
-                        file.end_piece_index + 1,
-                    ),
-                )
-            )
-            metadata_pieces.update(
-                range(
-                    max(
-                        file.start_piece_index,
-                        file.end_piece_index - needed_metadata_pieces + 1,
-                    ),
-                    file.end_piece_index + 1,
-                )
-            )
-
-            priorities = file.torrent.get_priorities()
-            for metadata_piece in metadata_pieces:
-                priorities[metadata_piece] = PRIO_7
-
-            file.torrent.torrent_handle.prioritize_pieces(priorities)
-
-            for metadata_piece in metadata_pieces:
-                if not file.torrent.torrent_handle.have_piece(metadata_piece):
-                    file.torrent.torrent_handle.set_piece_deadline(metadata_piece, 0)
-
-            while not all(
-                file.torrent.torrent_handle.have_piece(metadata_piece)
-                for metadata_piece in metadata_pieces
-            ):
-                await asyncio.sleep(0.5)
-
-            ffprobe = FFmpeg(executable="ffprobe").input(  # type: ignore
-                url=str(file.path),
-                options={
-                    "print_format": "json",
-                    "show_format": None,
-                    "show_streams": None,
-                },
-            )
-
-            output = await ffprobe.execute()
-            media = json.loads(output.decode("utf-8"))
-
-            bitrate_raw = pydash.get(media, "format.bit_rate")
-            if bitrate_raw is None:
-                bitrate_raw = (
-                    pydash.chain(media)
-                    .get("streams", [])
-                    .filter(lambda s: "bit_rate" in s)
-                    .last()
-                    .get("bit_rate")
-                    .value()
-                )
-
-            bitrate: Optional[int] = None
-            if bitrate_raw is not None:
-                try:
-                    bitrate = int(bitrate_raw)
-                except (ValueError, TypeError):
-                    bitrate = None
-
-            if bitrate:
-                file.bitrate = bitrate
-        except Exception as e:
-            logger.error(
-                f"Hiba történt a(z) {file.file_index} indexű torrent metadata elemzése közben: {e}"
-            )
-        finally:
-            file.metadata_probed = True
-            info_hash = str(file.torrent.torrent_handle.info_hash())
-            metadata_key = f"{info_hash}_{file.file_index}"
-            self._metadata_tasks.pop(metadata_key, None)
 
     def _end_stream(
         self,
