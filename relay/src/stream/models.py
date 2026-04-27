@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import math
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 import libtorrent as libtorrent
 from common.constants import (
     CHUNK_SIZE,
-    PRIO_3,
+    PRIO_2,
+    PRIO_7,
 )
 from fastapi import HTTPException
 
@@ -52,18 +53,33 @@ class Torrent:
             raise KeyError(f'A(z) "{file_index}" nem létezik.')
         return file
 
-    def get_priorities(self) -> List[int]:
+    def get_priorities_and_deadlines(self) -> Tuple[List[int], Dict[int, int]]:
         priorities = self.default_priorities.copy()
+        piece_deadlines: Dict[int, int] = {}
 
         for file in self.files.values():
-            if file.streams:
-                for piece_index in range(
-                    file.start_piece_index, file.end_piece_index + 1
-                ):
-                    if priorities[piece_index] < PRIO_3:
-                        priorities[piece_index] = PRIO_3
+            if not file.streams:
+                continue
 
-        return priorities
+            for piece_index in range(file.start_piece_index, file.end_piece_index + 1):
+                if priorities[piece_index] < PRIO_2:
+                    priorities[piece_index] = PRIO_2
+
+            for stream in file.streams.values():
+                stream_deadlines = stream.calculate_deadlines()
+                for piece_index, deadline in stream_deadlines.items():
+                    if piece_index not in piece_deadlines:
+                        piece_deadlines[piece_index] = deadline
+                    else:
+                        piece_deadlines[piece_index] = min(
+                            piece_deadlines[piece_index], deadline
+                        )
+
+        for piece_index, deadline in piece_deadlines.items():
+            if deadline <= 30000:
+                priorities[piece_index] = PRIO_7
+
+        return priorities, piece_deadlines
 
 
 class File:
@@ -150,3 +166,39 @@ class Stream:
         ) // self.torrent.piece_size
 
         return stream_start_piece_index, stream_end_piece_index
+
+    def calculate_deadlines(self) -> Dict[int, int]:
+        deadlines: Dict[int, int] = {}
+
+        stream_pieces_range = (
+            self.stream_end_piece_index - self.stream_start_piece_index + 1
+        )
+
+        increment_ms = 200
+        if self.file.bitrate and self.file.bitrate > 0:
+            piece_duration_ms = (self.torrent.piece_size * 8 / self.file.bitrate) * 1000
+            increment_ms = int(piece_duration_ms)
+
+        configured_piece_count = 0
+        downloaded_piece_count = 0
+
+        for count_index in range(stream_pieces_range):
+            piece_index = self.stream_start_piece_index + count_index
+            if self.torrent.torrent_handle.have_piece(piece_index):
+                downloaded_piece_count += 1
+                continue
+
+            base_deadline = (
+                configured_piece_count + downloaded_piece_count
+            ) * increment_ms
+
+            if base_deadline > 30000:
+                break
+
+            CRITICAL_WINDOW_MS = 3000
+            deadline = max(0, base_deadline - CRITICAL_WINDOW_MS)
+
+            deadlines[piece_index] = deadline
+            configured_piece_count += 1
+
+        return deadlines

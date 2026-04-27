@@ -38,91 +38,24 @@ class StreamService:
         while True:
             try:
                 for torrent in self.torrents.values():
-                    any_active_streams = False
-
-                    for file in torrent.files.values():
-                        if file.streams:
-                            any_active_streams = True
-                            break
+                    any_active_streams = any(
+                        file.streams for file in torrent.files.values()
+                    )
 
                     if any_active_streams:
-                        for file in torrent.files.values():
-                            if not file.streams:
-                                continue
+                        priorities, piece_deadlines = (
+                            torrent.get_priorities_and_deadlines()
+                        )
 
-                            piece_deadlines: Dict[int, int] = {}
-                            for stream in file.streams.values():
-                                stream_deadlines = self._calculate_stream_deadlines(
-                                    stream
-                                )
-                                for piece_index, deadline in stream_deadlines.items():
-                                    if piece_index not in piece_deadlines:
-                                        piece_deadlines[piece_index] = deadline
-                                    else:
-                                        piece_deadlines[piece_index] = min(
-                                            piece_deadlines[piece_index], deadline
-                                        )
-
-                            for piece_index, deadline in piece_deadlines.items():
-                                torrent.torrent_handle.set_piece_deadline(
-                                    piece_index, deadline
-                                )
+                        for piece_index, deadline in piece_deadlines.items():
+                            torrent.torrent_handle.set_piece_deadline(
+                                piece_index, deadline
+                            )
+                        torrent.torrent_handle.prioritize_pieces(priorities)
             except Exception as e:
                 logger.error(f"Hiba történt a prioritáskezelőben: {e}")
 
             await asyncio.sleep(0.25)
-
-    def _calculate_stream_deadlines(
-        self,
-        stream: Stream,
-    ) -> Dict[int, int]:
-        deadlines: Dict[int, int] = {}
-
-        status = stream.torrent.torrent_handle.status()
-        download_rate = status.download_payload_rate
-
-        if download_rate == 0:
-            download_rate = 125 * 1024 * 1024
-
-        prefetch_window_bytes = download_rate * 2
-        prefetch_piece_count = math.ceil(
-            prefetch_window_bytes / stream.torrent.piece_size
-        )
-
-        stream_pieces_range = (
-            stream.stream_end_piece_index - stream.stream_start_piece_index + 1
-        )
-
-        increment_ms = 200
-        if stream.file.bitrate and stream.file.bitrate > 0:
-            piece_duration_ms = (
-                stream.torrent.piece_size * 8 / stream.file.bitrate
-            ) * 1000
-            increment_ms = int(piece_duration_ms)
-
-        configured_piece_count = 0
-        downloaded_piece_count = 0
-
-        for count_index in range(stream_pieces_range):
-            if configured_piece_count > prefetch_piece_count:
-                break
-
-            piece_index = stream.stream_start_piece_index + count_index
-            if stream.torrent.torrent_handle.have_piece(piece_index):
-                downloaded_piece_count += 1
-                continue
-
-            base_deadline = (
-                configured_piece_count + downloaded_piece_count
-            ) * increment_ms
-
-            CRITICAL_WINDOW_MS = 3000
-            deadline = max(0, base_deadline - CRITICAL_WINDOW_MS)
-
-            deadlines[piece_index] = deadline
-            configured_piece_count += 1
-
-        return deadlines
 
     def validate_torrent_file(
         self,
@@ -183,7 +116,7 @@ class StreamService:
                 )
             )
 
-            priorities = file.torrent.get_priorities()
+            priorities = file.torrent.default_priorities.copy()
             file.torrent.torrent_handle.prioritize_pieces(priorities)
 
             for metadata_piece in metadata_pieces:
@@ -269,10 +202,6 @@ class StreamService:
         file: File,
         range_header: str | None = None,
     ) -> Stream:
-
-        priorities = file.torrent.get_priorities()
-        file.torrent.torrent_handle.prioritize_pieces(priorities)
-
         parsed_range_header = self._parse_range_header(
             file_size=file.size,
             range_header=range_header,
