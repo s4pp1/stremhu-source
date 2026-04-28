@@ -15,6 +15,11 @@ jobs:
       run:
         working-directory: ${{ inputs.working-directory }}
 
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+
     steps:
       - name: Git Checkout
         uses: actions/checkout@v6
@@ -29,30 +34,36 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Lint Check
+      - name: Lint
         if: github.event_name == 'pull_request'
-        run: npx eslint . --format stylish > eslint-report.txt || true
-        continue-on-error: true
-
-      - name: Type Check
-        if: github.event_name == 'pull_request'
-        run: npx tsc --noEmit > tsc-report.txt || true
-        continue-on-error: true
-
-      - name: Prettier Check
-        if: github.event_name == 'pull_request'
-        run: npx prettier --check . > prettier-report.txt || true
-        continue-on-error: true
-
-      - name: Upload Analysis Results
-        uses: actions/upload-artifact@v7
-        if: github.event_name == 'pull_request'
+        uses: reviewdog/action-eslint@v1
         with:
-          name: analysis-results
-          path: |
-            ${{ inputs.working-directory }}/eslint-report.txt
-            ${{ inputs.working-directory }}/tsc-report.txt
-            ${{ inputs.working-directory }}/prettier-report.txt
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          eslint_flags: "."
+          tool_name: "${{ inputs.working-directory }} - eslint"
+          workdir: ${{ inputs.working-directory }}
+          fail_level: error
+
+      - name: Typecheck
+        if: github.event_name == 'pull_request'
+        uses: EPMatt/reviewdog-action-tsc@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          tool_name: "${{ inputs.working-directory }} - tsc"
+          workdir: ${{ inputs.working-directory }}
+          fail_level: error
+
+      - name: Prettier
+        if: github.event_name == 'pull_request'
+        uses: EPMatt/reviewdog-action-prettier@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          tool_name: "${{ inputs.working-directory }} - Prettier"
+          workdir: ${{ inputs.working-directory }}
+          fail_level: error
 
       - name: Test
         run: npm run test --if-present

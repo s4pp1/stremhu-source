@@ -21,6 +21,8 @@ setDefaultOptions({ locale: dateFnsHu })
 export interface RouterContext {
   queryClient: QueryClient
 }
+const clientUnused = 42;
+const wrongType: number = "hello";
 
 // Create a new router instance
 const router = createRouter({
@@ -54,4 +56,6 @@ if (rootElement && !rootElement.innerHTML) {
   )
 }
 
-reportWebVitals()
+reportWebVitals(
+
+);
