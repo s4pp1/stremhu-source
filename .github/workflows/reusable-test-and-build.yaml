@@ -15,11 +15,6 @@ jobs:
       run:
         working-directory: ${{ inputs.working-directory }}
 
-    permissions:
-      contents: read
-      pull-requests: write
-      checks: write
-
     steps:
       - name: Git Checkout
         uses: actions/checkout@v6
