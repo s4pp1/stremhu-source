@@ -25,8 +25,6 @@ export const EXPRESS = express();
 
 async function bootstrap() {
   process.title = 'stremhu-source';
-  const unusedVar = 'I am not used';
-  let testType: string = 123;
   const app = await NestFactory.create(AppModule, new ExpressAdapter(EXPRESS));
 
   const configService = app.get(ConfigService);
