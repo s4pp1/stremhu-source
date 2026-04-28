@@ -133,7 +133,6 @@ async function bootstrap() {
   });
 }
 
-bootstrap()
-  .catch((error) => {
-      console.error(error);
-  });
+bootstrap().catch((error) => {
+  console.error(error);
+});
