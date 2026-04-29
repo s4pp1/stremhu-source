@@ -42,11 +42,6 @@ async def stream(
         range_header=range_header,
     )
 
-    logger.error(
-        f"-->  info_hash: {info_hash}, file_index: {file_index}, range_header: {range_header}"
-    )
-    logger.error(f"-->  stream_start_piece_index: {stream.stream_start_piece_index}")
-
     content_type = content_types.get_content_type(stream.file.name)
     media_type = content_type or "application/octet-stream"
 
