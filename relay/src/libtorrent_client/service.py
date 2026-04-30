@@ -32,13 +32,13 @@ class LibtorrentClientService:
                 "enable_dht": False,
                 "enable_lsd": False,
                 "auto_sequential": False,
-                "peer_timeout": 30,
+                "peer_timeout": 10,
                 "piece_extent_affinity": True,
-                "piece_timeout": 20,
-                "request_timeout": 15,
-                "unchoke_interval": 10,
-                "disk_io_write_mode": 1,
-                "disk_io_read_mode": 1,
+                "piece_timeout": 5,
+                "request_timeout": 5,
+                "unchoke_interval": 1,
+                "disk_io_write_mode": 2,
+                "disk_io_read_mode": 2,
             }
         )
 
