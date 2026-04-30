@@ -45,7 +45,7 @@ export class TorrentVideosService {
     private readonly userPreferencesService: UserPreferencesService,
     private readonly torrentsCacheStore: TorrentsCacheStore,
     private readonly trackersMetaService: TrackersMetaService,
-  ) {}
+  ) { }
 
   async findByImdb(payload: FindByImdb): Promise<[TorrentVideo[], string[]]> {
     const { user, mediaType, imdbId, series } = payload;
@@ -59,10 +59,11 @@ export class TorrentVideosService {
     });
 
     const isSpecial = typeof originalImdbId === 'string';
+    const nullableMediaType = !isSpecial ? mediaType : undefined;
 
     const torrents = await this.trackerDiscoveryService.findTorrents({
       imdbId: imdbId,
-      mediaType: !isSpecial ? mediaType : undefined,
+      mediaType: nullableMediaType,
     });
 
     let trackerTorrents: TrackerTorrent[] = [];

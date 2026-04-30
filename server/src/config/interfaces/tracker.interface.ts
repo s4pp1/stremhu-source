@@ -10,4 +10,7 @@ export interface TrackerConfig {
 
   'majomparade-url': string;
   'majomparade-max-concurrent': number;
+
+  'filelist-url': string;
+  'filelist-max-concurrent': number;
 }
