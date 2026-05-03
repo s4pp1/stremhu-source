@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import logging
+
 import content_types
 from fastapi import APIRouter, Depends, Header, Request, Response
 from fastapi.responses import StreamingResponse
@@ -10,6 +12,8 @@ router = APIRouter(
     prefix="/stream",
     tags=["Stream"],
 )
+
+logger = logging.getLogger(__name__)
 
 
 @router.get(
@@ -27,9 +31,14 @@ async def stream(
     range_header: str | None = Header(None, alias="Range"),
     stream_service: StreamService = Depends(get_stream_service),
 ):
-    stream = await stream_service.prepare_for_stream(
+
+    file = stream_service.validate_torrent_file(
         info_hash=info_hash,
         file_index=file_index,
+    )
+
+    stream = stream_service.prepare_for_stream(
+        file=file,
         range_header=range_header,
     )
 
@@ -53,6 +62,7 @@ async def stream(
         )
 
     if request.method == "HEAD":
+        stream.drop()
         return Response(
             status_code=status_code,
             headers=headers,

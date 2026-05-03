@@ -8,7 +8,6 @@ from config import config
 from fastapi import HTTPException
 from libtorrent_client.schemas import (
     UpdateSettings,
-    UpdateTorrent,
 )
 
 logger = logging.getLogger(__name__)
@@ -32,11 +31,13 @@ class LibtorrentClientService:
                 "enable_dht": False,
                 "enable_lsd": False,
                 "auto_sequential": False,
-                "peer_timeout": 30,
+                "peer_timeout": 10,
                 "piece_extent_affinity": True,
-                "piece_timeout": 20,
-                "request_timeout": 15,
-                "unchoke_interval": 10,
+                "piece_timeout": 5,
+                "request_timeout": 5,
+                "unchoke_interval": 1,
+                "disk_io_write_mode": 1,
+                "disk_io_read_mode": 1,
             }
         )
 
@@ -175,21 +176,6 @@ class LibtorrentClientService:
 
         if torrent_handle is None:
             raise HTTPException(404, f'"{info_hash}" torrent nem található.')
-
-        return torrent_handle
-
-    def update_torrent_or_raise(
-        self,
-        info_hash: libtorrent.sha1_hash,
-        payload: UpdateTorrent,
-    ):
-        torrent_handle = self.get_torrent_or_raise(
-            info_hash=info_hash,
-        )
-
-        if payload.priority is not None:
-            priorities = torrent_handle.piece_priorities()
-            torrent_handle.prioritize_pieces([payload.priority] * len(priorities))
 
         return torrent_handle
 

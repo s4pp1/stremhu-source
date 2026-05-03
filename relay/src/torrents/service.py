@@ -66,6 +66,9 @@ class TorrentsService:
         payload: UpdateRelayTorrent,
     ):
         info_hash_sha1 = self.libtorrent_client_service.parse_info_hash(info_hash)
+        torrent_handle = self.libtorrent_client_service.get_torrent_or_raise(
+            info_hash=info_hash_sha1
+        )
 
         update_torrent = UpdateTorrent(
             priority=None,
@@ -76,10 +79,11 @@ class TorrentsService:
         elif payload.download_full_torrent is False:
             update_torrent.priority = PRIO_0
 
-        torrent_handle = self.libtorrent_client_service.update_torrent_or_raise(
-            info_hash=info_hash_sha1,
-            payload=update_torrent,
-        )
+        if update_torrent.priority is not None:
+            self.stream_service.update_torrent_priority(
+                info_hash=info_hash,
+                priority=update_torrent.priority,
+            )
 
         return self._build_torrent(torrent_handle)
 

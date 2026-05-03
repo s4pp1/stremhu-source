@@ -12,6 +12,7 @@ const CANON: Record<string, string> = {
   connection: 'Connection',
   'keep-alive': 'Keep-Alive',
   vary: 'Vary',
+  'x-accel-buffering': 'X-Accel-Buffering',
 };
 
 export const playIntegrationProxy = createProxyMiddleware({
@@ -43,9 +44,6 @@ export const playIntegrationProxy = createProxyMiddleware({
         delete proxyRes.headers[key];
         proxyRes.headers[canonKey] = value;
       }
-
-      proxyRes.headers['Connection'] = 'close';
-      delete proxyRes.headers['Keep-Alive'];
     },
   },
 });
