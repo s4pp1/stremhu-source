@@ -142,9 +142,9 @@ export const PreferenceForm = withForm({
               const { active, over } = event
               if (!over || active.id === over.id) return
 
-              const preferredItems = [...preferred] as Array<
-                (typeof preferred)[number]
-              >
+              const preferredItems = [
+                ...preferred,
+              ] as (typeof preferred)[number][]
               const oldIndex = preferredItems.findIndex(
                 (value) => value === active.id,
               )

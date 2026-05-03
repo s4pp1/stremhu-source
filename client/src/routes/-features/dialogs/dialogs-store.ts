@@ -38,7 +38,7 @@ export type OpenedDialog = BaserOpenedDialog & {
 }
 
 type DialogsStore = {
-  dialogs: Array<OpenedDialog>
+  dialogs: OpenedDialog[]
   openDialog: (dialog: OpenDialog) => string
   closeDialog: (id: string) => void
 }
