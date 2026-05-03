@@ -45,7 +45,7 @@ export class TorrentVideosService {
     private readonly userPreferencesService: UserPreferencesService,
     private readonly torrentsCacheStore: TorrentsCacheStore,
     private readonly trackersMetaService: TrackersMetaService,
-  ) { }
+  ) {}
 
   async findByImdb(payload: FindByImdb): Promise<[TorrentVideo[], string[]]> {
     const { user, mediaType, imdbId, series } = payload;

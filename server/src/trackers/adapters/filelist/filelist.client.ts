@@ -215,8 +215,7 @@ export class FilelistClient {
           $(torrentRow)
             .find('a[href^="browse.php?cat="], a[href^="/browse.php?cat="]')
             .first()
-            .attr('href') ||
-          '';
+            .attr('href') || '';
         const categoryUrl = new URL(categoryHref, this.baseUrl);
         const category = categoryUrl.searchParams.get('cat') || '';
 
@@ -288,8 +287,7 @@ export class FilelistClient {
     const hasSnatchListMarker =
       pageText.includes('snatchlist') ||
       pageText.includes('snatch list') ||
-      $('a[href*="snatchlist.php"], form[action*="snatchlist.php"]').length >
-      0;
+      $('a[href*="snatchlist.php"], form[action*="snatchlist.php"]').length > 0;
 
     if (!hasSnatchListMarker) {
       throw new Error('A Filelist SnatchList nem talalhato.');

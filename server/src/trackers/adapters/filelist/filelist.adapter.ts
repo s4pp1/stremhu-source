@@ -32,7 +32,7 @@ export class FilelistAdapter implements TrackerAdapter {
   constructor(
     @Inject(TRACKER_TOKEN) readonly tracker: TrackerEnum,
     private client: FilelistClient,
-  ) { }
+  ) {}
 
   async login(payload: LoginRequest): Promise<void> {
     await this.client.login(payload);
@@ -58,7 +58,7 @@ export class FilelistAdapter implements TrackerAdapter {
 
     return torrents.map((torrent) => {
       const resolution = this.resolveTorrentResolution(torrent.category);
-      const language = this.resolveVideoLanguage(torrent.category);
+      const language = LanguageEnum.EN;
 
       return {
         tracker: this.tracker,
@@ -104,9 +104,5 @@ export class FilelistAdapter implements TrackerAdapter {
       case FilelistSeriesCategoryEnum.UHD:
         return ResolutionEnum.R2160P;
     }
-  }
-
-  private resolveVideoLanguage(_category: FilelistCategory): LanguageEnum {
-    return LanguageEnum.EN;
   }
 }
