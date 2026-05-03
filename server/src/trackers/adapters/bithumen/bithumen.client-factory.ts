@@ -96,12 +96,14 @@ export class BithumenClientFactory {
       }
     } catch (error) {
       if (isAxiosError(error) && error.status === 401) {
-        throw new Error(getTrackerLoginErrorMessage(this.tracker));
+        throw new Error(getTrackerLoginErrorMessage(this.tracker), {
+          cause: error,
+        });
       }
 
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new Error(errorMessage);
+      throw new Error(errorMessage, { cause: error });
     }
   }
 
@@ -136,7 +138,7 @@ export class BithumenClientFactory {
     } catch (error) {
       const errorMessage = getTrackerStructureErrorMessage(this.tracker);
       this.logger.error(errorMessage, error);
-      throw new Error(errorMessage);
+      throw new Error(errorMessage, { cause: error });
     }
   }
 

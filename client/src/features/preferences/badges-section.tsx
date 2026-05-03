@@ -8,7 +8,7 @@ type BadgesSectionItem = {
 
 type BadgesSectionProps = {
   title: string
-  items: Array<BadgesSectionItem>
+  items: BadgesSectionItem[]
 }
 
 export function BadgesSection(props: BadgesSectionProps) {

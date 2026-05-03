@@ -7,7 +7,9 @@
   "scripts": {
     "build": "vite build && tsc",
     "dev": "vite --port 3100",
-    "generate:api": "orval"
+    "generate:api": "orval",
+    "lint": "eslint ./src",
+    "format": "prettier --check ./src"
   },
   "engines": {
     "node": "24"

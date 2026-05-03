@@ -1,4 +1,4 @@
-import { z, type ZodType, type ZodRawShape } from 'zod';
+import { type ZodType, z } from 'zod';
 
 type ConfigProps = {
   value: unknown;
@@ -18,7 +18,7 @@ export default class ZodUtil {
       shape[String(k)] = schemas[k];
     }
 
-    const schema = z.object(shape as unknown as ZodRawShape);
+    const schema = z.object(shape);
     const parsed = schema.safeParse(values);
 
     if (!parsed.success) {

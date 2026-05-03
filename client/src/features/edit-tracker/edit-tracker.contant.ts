@@ -1,7 +1,7 @@
-import { EditTrackerOptionEnum } from './edit-tracker.type'
 import type { EditTrackerOption } from './edit-tracker.type'
+import { EditTrackerOptionEnum } from './edit-tracker.type'
 
-export const HIT_AND_RUN_OPTIONS: Array<EditTrackerOption> = [
+export const HIT_AND_RUN_OPTIONS: EditTrackerOption[] = [
   {
     value: EditTrackerOptionEnum.INHERIT,
     label: 'Globál beállítás használata',
