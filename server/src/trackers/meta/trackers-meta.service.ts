@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { DETAILS_PATH as BITHUMEN_DETAILS_PATH } from '../adapters/bithumen/bithumen.constants';
+import { DETAILS_PATH as FILELIST_DETAILS_PATH } from '../adapters/filelist/filelist.constants';
 import { DETAILS_PATH as INSANE_DETAILS_PATH } from '../adapters/insane/insane.constants';
 import { DETAILS_PATH as MAJOMPARADE_DETAILS_PATH } from '../adapters/majomparade/majomparade.constants';
 import { DETAILS_PATH as NCORE_DETAILS_PATH } from '../adapters/ncore/ncore.constants';
@@ -22,6 +23,9 @@ export class TrackersMetaService {
       this.configService.getOrThrow<string>('tracker.insane-url');
     const majomparadeUrl = this.configService.getOrThrow<string>(
       'tracker.majomparade-url',
+    );
+    const filelistUrl = this.configService.getOrThrow<string>(
+      'tracker.filelist-url',
     );
 
     this.trackers = [
@@ -52,6 +56,13 @@ export class TrackersMetaService {
         requiresFullDownload: true,
         url: majomparadeUrl,
         detailsPath: MAJOMPARADE_DETAILS_PATH,
+      },
+      {
+        value: TrackerEnum.FILELIST,
+        label: TRACKER_LABEL[TrackerEnum.FILELIST],
+        requiresFullDownload: false,
+        url: filelistUrl,
+        detailsPath: FILELIST_DETAILS_PATH,
       },
     ];
   }

@@ -8,6 +8,7 @@ import { TorrentsModule } from 'src/torrents/torrents.module';
 import { UserPreferencesModule } from 'src/users/preferences/user-preferences.module';
 
 import { BithumenModule } from './adapters/bithumen/bithumen.module';
+import { FilelistModule } from './adapters/filelist/filelist.module';
 import { InsaneModule } from './adapters/insane/insane.module';
 import { MajomparadeModule } from './adapters/majomparade/majomparade.module';
 import { NcoreModule } from './adapters/ncore/ncore.module';
@@ -32,6 +33,7 @@ import { TrackersService } from './trackers.service';
     BithumenModule,
     InsaneModule,
     MajomparadeModule,
+    FilelistModule,
     UserPreferencesModule,
   ],
   providers: [

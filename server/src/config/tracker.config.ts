@@ -46,6 +46,15 @@ export default registerAs('tracker', () => {
       value: getMaxConcurrent('MAJOMPARADE_MAX_CONCURRENT') || 5,
       zod: z.number().positive(),
     },
+
+    'filelist-url': {
+      value: process.env.FILELIST_URL ?? 'https://filelist.io',
+      zod: z.string().trim().nonempty(),
+    },
+    'filelist-max-concurrent': {
+      value: getMaxConcurrent('FILELIST_MAX_CONCURRENT') || 5,
+      zod: z.number().positive(),
+    },
   };
 
   return ZodUtil.validate<TrackerConfig>(configs);

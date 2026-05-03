@@ -3,4 +3,5 @@ export enum TrackerEnum {
   BITHUMEN = 'bithumen',
   MAJOMPARADE = 'majomparade',
   INSANE = 'insane',
+  FILELIST = 'filelist',
 }

@@ -59,10 +59,11 @@ export class TorrentVideosService {
     });
 
     const isSpecial = typeof originalImdbId === 'string';
+    const nullableMediaType = !isSpecial ? mediaType : undefined;
 
     const torrents = await this.trackerDiscoveryService.findTorrents({
       imdbId: imdbId,
-      mediaType: !isSpecial ? mediaType : undefined,
+      mediaType: nullableMediaType,
     });
 
     let trackerTorrents: TrackerTorrent[] = [];

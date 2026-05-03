@@ -161,6 +161,7 @@ export const TrackerEnum = {
   bithumen: 'bithumen',
   majomparade: 'majomparade',
   insane: 'insane',
+  filelist: 'filelist',
 } as const
 
 export interface LoginTrackerDto {
@@ -1259,7 +1260,7 @@ export const trackersCleanup = (
 }
 
 export const trackersUpdate = (
-  tracker: 'ncore' | 'bithumen' | 'majomparade' | 'insane',
+  tracker: 'ncore' | 'bithumen' | 'majomparade' | 'insane' | 'filelist',
   updateTrackerDto: UpdateTrackerDto,
   options?: SecondParameter<typeof sourceClientInstance<TrackerDto>>,
 ) => {
@@ -1275,7 +1276,7 @@ export const trackersUpdate = (
 }
 
 export const trackersDelete = (
-  tracker: 'ncore' | 'bithumen' | 'majomparade' | 'insane',
+  tracker: 'ncore' | 'bithumen' | 'majomparade' | 'insane' | 'filelist',
   options?: SecondParameter<typeof sourceClientInstance<void>>,
 ) => {
   return sourceClientInstance<void>(
@@ -1911,7 +1912,7 @@ export const stremioCatalogsIntegrationMeta = (
 
 export const playIntegrationPlay = (
   token: string,
-  tracker: 'ncore' | 'bithumen' | 'majomparade' | 'insane',
+  tracker: 'ncore' | 'bithumen' | 'majomparade' | 'insane' | 'filelist',
   torrentId: string,
   fileIdx: number,
   options?: SecondParameter<typeof sourceClientInstance<void>>,
