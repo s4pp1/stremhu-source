@@ -15,7 +15,12 @@
   </a>
 </p>
 
-<p align="center">Amennyiben hasznosnak tartod a projektet, kérlek bökj rá ⭐-ra ezzel is támogatva.</p>
+<p align="center">
+  Ha hasznosnak találod a projektet, támogasd egy ⭐-gal, és ha teheted, hívj meg egy kávéra! ☕<br><br>
+  <a href='https://ko-fi.com/s4pp1' target='_blank'>
+    <img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi5.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+  </a>
+</p>
 
 > [!NOTE]
 >
