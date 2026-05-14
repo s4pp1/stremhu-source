@@ -1,5 +1,9 @@
 import { ParsedStreamSeries } from 'src/stremio/streams/type/parsed-stream-series.type';
 
+export enum FilelistCommonCategoryEnum {
+  ANIME = '24',
+}
+
 export enum FilelistMovieCategoryEnum {
   SD = '1',
   DVD = '2',
@@ -7,13 +11,14 @@ export enum FilelistMovieCategoryEnum {
   UHD = '6',
   BLU_RAY = '20',
   UHD_BLU_RAY = '26',
+  ANIME = FilelistCommonCategoryEnum.ANIME,
 }
 
 export enum FilelistSeriesCategoryEnum {
-  TV = '14',
   HD = '21',
   SD = '23',
   UHD = '27',
+  ANIME = FilelistCommonCategoryEnum.ANIME,
 }
 
 export type FilelistCategory =

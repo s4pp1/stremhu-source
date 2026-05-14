@@ -3,7 +3,9 @@ import {
   FilelistSeriesCategoryEnum,
 } from './filelist.types';
 
-export const MOVIE_CATEGORY_FILTERS = Object.values(FilelistMovieCategoryEnum);
+export const MOVIE_CATEGORY_FILTERS = Object.values(
+  FilelistMovieCategoryEnum
+);
 export const SERIES_CATEGORY_FILTERS = Object.values(
   FilelistSeriesCategoryEnum,
 );

@@ -88,7 +88,6 @@ export class FilelistAdapter implements TrackerAdapter {
     switch (category) {
       case FilelistMovieCategoryEnum.SD:
       case FilelistMovieCategoryEnum.DVD:
-      case FilelistSeriesCategoryEnum.TV:
       case FilelistSeriesCategoryEnum.SD:
         return ResolutionEnum.R480P;
 
@@ -97,6 +96,8 @@ export class FilelistAdapter implements TrackerAdapter {
         return ResolutionEnum.R720P;
 
       case FilelistMovieCategoryEnum.BLU_RAY:
+      case FilelistMovieCategoryEnum.ANIME:
+      case FilelistSeriesCategoryEnum.ANIME:
         return ResolutionEnum.R1080P;
 
       case FilelistMovieCategoryEnum.UHD:
