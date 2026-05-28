@@ -30,7 +30,7 @@ class LibtorrentClientService:
                 "connections_limit": 200,
                 "enable_dht": False,
                 "enable_lsd": False,
-                "auto_sequential": False,
+                "auto_sequential": True,
                 "peer_timeout": 10,
                 "piece_extent_affinity": True,
                 "piece_timeout": 5,
@@ -125,6 +125,7 @@ class LibtorrentClientService:
         params.ti = torrent_info
         params.save_path = save_path
         params.storage_mode = libtorrent.storage_mode_t.storage_mode_sparse
+        params.download_limit = 5000000 # 40 Mbps
 
         torrent_handle = self.libtorrent_session.add_torrent(params)
         torrent_handle.set_max_connections(self.torrent_connections_limit)
