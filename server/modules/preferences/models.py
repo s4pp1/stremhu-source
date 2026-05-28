@@ -41,6 +41,11 @@ class PreferenceDefinitionModel(Base):
         ForeignKey("preferences.id", ondelete="CASCADE"),
     )
 
+    preference: Mapped["PreferenceModel"] = relationship(
+        "PreferenceModel",
+        init=False,
+    )
+
     id: Mapped[str] = mapped_column(
         primary_key=True,
         default_factory=lambda: str(uuid.uuid4()),

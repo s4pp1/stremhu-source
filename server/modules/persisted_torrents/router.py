@@ -1,11 +1,14 @@
 import libtorrent as libtorrent
 from fastapi import APIRouter, Depends
+from modules.auth.dependencies import SessionGuard
 from modules.persisted_torrents.dependencies import get_torrents_service
 from modules.persisted_torrents.schemas import (
     RelayTorrent,
     TorrentUpdate,
 )
 from modules.persisted_torrents.service import TorrentsService
+from modules.roles.enums import UserRole
+from modules.users.models import UserModel
 
 router = APIRouter(
     prefix="/torrents",
@@ -19,6 +22,7 @@ router = APIRouter(
 )
 def get_list(
     torrents_service: TorrentsService = Depends(get_torrents_service),
+    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
 ):
     return torrents_service.get_torrents()
 
@@ -30,6 +34,7 @@ def get_list(
 def get_one(
     info_hash: str,
     torrents_service: TorrentsService = Depends(get_torrents_service),
+    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
 ):
     return torrents_service.get_or_raise(info_hash)
 
@@ -43,6 +48,7 @@ def update(
     info_hash: str,
     req: TorrentUpdate,
     torrents_service: TorrentsService = Depends(get_torrents_service),
+    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
 ):
     return torrents_service.update(
         info_hash=info_hash,
@@ -58,6 +64,7 @@ def update(
 def delete(
     info_hash: str,
     torrents_service: TorrentsService = Depends(get_torrents_service),
+    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
 ):
     return torrents_service.delete(
         info_hash=info_hash,

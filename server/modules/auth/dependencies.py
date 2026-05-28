@@ -24,6 +24,7 @@ class SessionGuard:
 
         user = users_service.get_by_id(user_id)
         if not user:
+            request.session.clear()
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="A munkamenethez tartozó felhasználó nem található.",
@@ -48,7 +49,12 @@ class OptionalSessionGuard:
         if not user_id:
             return None
 
-        return users_service.get_by_id(user_id)
+        user = users_service.get_by_id(user_id)
+        if not user:
+            request.session.clear()
+            return None
+
+        return user
 
 
 class ApiKeyGuard:

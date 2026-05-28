@@ -144,6 +144,7 @@ app.add_middleware(
 api_router = APIRouter(prefix="/api")
 api_router.include_router(monitoring_router)
 api_router.include_router(auth_router)
+api_router.include_router(pairings_router)
 api_router.include_router(users_router)
 api_router.include_router(me_router)
 api_router.include_router(setting_router)
@@ -151,7 +152,7 @@ api_router.include_router(torrents_router)
 api_router.include_router(torrent_files_router)
 api_router.include_router(stream_router)
 api_router.include_router(stremio_router)
-api_router.include_router(pairings_router)
+
 
 app.include_router(api_router)
 

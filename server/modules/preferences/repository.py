@@ -44,9 +44,12 @@ class UserPreferencesRepository:
         return (
             self.db.query(UserPreferenceModel)
             .options(
+                joinedload(UserPreferenceModel.definition).joinedload(
+                    PreferenceDefinitionModel.preference
+                ),
                 joinedload(UserPreferenceModel.definition)
                 .joinedload(PreferenceDefinitionModel.definition_attributes)
-                .joinedload(PreferenceDefinitionAttributeModel.attribute)
+                .joinedload(PreferenceDefinitionAttributeModel.attribute),
             )
             .filter(UserPreferenceModel.user_id == user_id)
             .order_by(UserPreferenceModel.order.asc())
@@ -60,9 +63,12 @@ class UserPreferencesRepository:
         return (
             self.db.query(UserPreferenceModel)
             .options(
+                joinedload(UserPreferenceModel.definition).joinedload(
+                    PreferenceDefinitionModel.preference
+                ),
                 joinedload(UserPreferenceModel.definition)
                 .joinedload(PreferenceDefinitionModel.definition_attributes)
-                .joinedload(PreferenceDefinitionAttributeModel.attribute)
+                .joinedload(PreferenceDefinitionAttributeModel.attribute),
             )
             .join(UserPreferenceModel.definition)
             .filter(
@@ -131,9 +137,12 @@ class SystemPreferencesRepository:
         return (
             self.db.query(SystemPreferenceModel)
             .options(
+                joinedload(SystemPreferenceModel.definition).joinedload(
+                    PreferenceDefinitionModel.preference
+                ),
                 joinedload(SystemPreferenceModel.definition)
                 .joinedload(PreferenceDefinitionModel.definition_attributes)
-                .joinedload(PreferenceDefinitionAttributeModel.attribute)
+                .joinedload(PreferenceDefinitionAttributeModel.attribute),
             )
             .order_by(SystemPreferenceModel.order.asc())
             .all()
@@ -146,9 +155,12 @@ class SystemPreferencesRepository:
         return (
             self.db.query(SystemPreferenceModel)
             .options(
+                joinedload(SystemPreferenceModel.definition).joinedload(
+                    PreferenceDefinitionModel.preference
+                ),
                 joinedload(SystemPreferenceModel.definition)
                 .joinedload(PreferenceDefinitionModel.definition_attributes)
-                .joinedload(PreferenceDefinitionAttributeModel.attribute)
+                .joinedload(PreferenceDefinitionAttributeModel.attribute),
             )
             .join(SystemPreferenceModel.definition)
             .filter(PreferenceDefinitionModel.preference_id == preference)
