@@ -1,92 +1,92 @@
 import logging
 
-from config import config
-from modules.relay.schemas import RelaySettingsUpdate
-from modules.relay.service import RelayService
+from modules.settings.enums import SettingsKeyEnum
 from modules.settings.repository import SettingsRepository
 from modules.settings.schemas import (
-    AppSettings,
+    NetworkSettings,
     RelaySettings,
-    UpdateAppSettings,
-    UpdateRelaySettings,
+    RelaySettingsUpdate,
+    SystemSettings,
+    SystemSettingsSave,
 )
+from pydantic import TypeAdapter
 
 logger = logging.getLogger(__name__)
-
-APP_SETTINGS_KEY = "app"
-TORRENT_SETTINGS_KEY = "torrent"
 
 
 class SettingsService:
     def __init__(
         self,
-        repository: SettingsRepository,
-        relay_service: RelayService,
+        settings_repository: SettingsRepository,
     ):
-        self._repository = repository
-        self._relay_service = relay_service
+        self._settings_repository = settings_repository
 
-    def get_app_settings(self) -> AppSettings:
-        record = self._repository.find_one(APP_SETTINGS_KEY)
-        data = record.value if record else {}
-        return AppSettings.model_validate(data)
+    # System Settings
 
-    def update_app_settings(self, payload: UpdateAppSettings) -> AppSettings:
-        current = self.get_app_settings()
-        updated_data = current.model_copy(
-            update=payload.model_dump(exclude_unset=True)
-        ).model_dump()
-        self._repository.create_or_update(APP_SETTINGS_KEY, updated_data)
-        return AppSettings.model_validate(updated_data)
+    def save_system(self, payload: SystemSettingsSave) -> SystemSettings:
+        system_settings = self.get_system()
+        if not system_settings:
+            system_settings = SystemSettings()
 
-    def get_relay_settings(self) -> RelaySettings:
-        record = self._repository.find_one(TORRENT_SETTINGS_KEY)
-        data = record.value if record else {}
-        return RelaySettings.model_validate(data)
+        data = payload.model_dump(exclude_unset=True)
+        updated_data = system_settings.model_copy(update=data).model_dump()
 
-    def update_relay_settings(self, payload: UpdateRelaySettings) -> RelaySettings:
-        current = self.get_relay_settings()
-        updated_data = current.model_copy(
-            update=payload.model_dump(exclude_unset=True)
-        ).model_dump()
-        self._repository.create_or_update(TORRENT_SETTINGS_KEY, updated_data)
+        self._settings_repository.save(SettingsKeyEnum.SYSTEM, updated_data)
 
-        settings = RelaySettings.model_validate(updated_data)
-        self._apply_libtorrent_settings(settings)
+        return SystemSettings.model_validate(updated_data)
 
-        return settings
+    def get_system(self) -> SystemSettings | None:
+        record = self._settings_repository.find_one(SettingsKeyEnum.SYSTEM.value)
+        if not record or not record.value:
+            return None
+        return SystemSettings.model_validate(record.value)
 
-    def initialize_defaults(self):
-        """Inicializálja a beállításokat alapértelmezett értékekkel, ha még nem léteznek."""
-        logger.info("⚙️ Konfigurációk inicializálása és szinkronizálása...")
+    def get_system_or_raise(self) -> SystemSettings:
+        system_settings = self.get_system()
+        if not system_settings:
+            raise ValueError("A rendszerbeállítások nem léteznek.")
+        return system_settings
 
-        # App Settings
-        if not self._repository.find_one(APP_SETTINGS_KEY):
-            defaults = AppSettings().model_dump()
-            self._repository.create_or_update(APP_SETTINGS_KEY, defaults)
+    # Relay Settings
 
-        # Relay Settings
-        if not self._repository.find_one(TORRENT_SETTINGS_KEY):
-            defaults = RelaySettings(port=config.libtorrent_port).model_dump()
-            self._repository.create_or_update(TORRENT_SETTINGS_KEY, defaults)
+    def save_relay(self, payload: RelaySettingsUpdate) -> RelaySettings:
+        relay_settings = self.get_relay()
+        if not relay_settings:
+            relay_settings = RelaySettings()
 
-        # Alkalmazzuk a mentett libtorrent beállításokat induláskor
-        settings = self.get_relay_settings()
-        self._apply_libtorrent_settings(settings)
+        data = payload.model_dump(exclude_unset=True)
+        updated_data = relay_settings.model_copy(update=data).model_dump()
 
-    def _apply_libtorrent_settings(self, settings: RelaySettings):
-        libtorrent_update = RelaySettingsUpdate(
-            download_limit=settings.download_limit,
-            upload_limit=settings.upload_limit,
-            port=settings.port,
-            connections_limit=settings.connections_limit,
-            torrent_connections_limit=settings.torrent_connections_limit,
-            enable_upnp_and_natpmp=settings.enable_upnp_and_natpmp,
-        )
-        try:
-            self._relay_service.update_settings(libtorrent_update)
-            logger.info("⚙️ Libtorrent beállítások sikeresen alkalmazva.")
-        except Exception as e:
-            logger.error(
-                f"🚨 Hiba történt a libtorrent beállítások alkalmazása során: {e}"
-            )
+        self._settings_repository.save(SettingsKeyEnum.RELAY, updated_data)
+
+        return RelaySettings.model_validate(updated_data)
+
+    def get_relay(self) -> RelaySettings | None:
+        record = self._settings_repository.find_one(SettingsKeyEnum.RELAY.value)
+        if not record or not record.value:
+            return None
+        return RelaySettings.model_validate(record.value)
+
+    def get_relay_or_raise(self) -> RelaySettings:
+        relay_settings = self.get_relay()
+        if not relay_settings:
+            raise ValueError("A Relay beállítások nem léteznek.")
+        return relay_settings
+
+    # Network Settings
+
+    def save_network(self, payload: NetworkSettings) -> NetworkSettings:
+        self._settings_repository.save(SettingsKeyEnum.NETWORK, payload.model_dump())
+        return payload
+
+    def get_network(self) -> NetworkSettings | None:
+        record = self._settings_repository.find_one(SettingsKeyEnum.NETWORK.value)
+        if not record or not record.value:
+            return None
+        return TypeAdapter(NetworkSettings).validate_python(record.value)
+
+    def get_network_or_raise(self) -> NetworkSettings:
+        network_settings = self.get_network()
+        if not network_settings:
+            raise ValueError("Nincs beállítva hálózati elérés")
+        return network_settings

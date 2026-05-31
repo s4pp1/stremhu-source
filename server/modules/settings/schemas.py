@@ -1,10 +1,74 @@
+from enum import Enum
+from typing import Annotated, Literal
 from uuid import uuid4
 
+from config import config
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
 
 
-class AppSettings(BaseModel):
+class NetworkModeEnum(str, Enum):
+    LOCAL = "local"
+    AUTO = "auto"
+    MANUAL = "manual"
+
+
+class NetworkConnectionEnum(str, Enum):
+    LOCAL = "local"
+    PUBLIC = "public"
+
+
+class NetworkLocalSettings(BaseModel):
+    model_config = ConfigDict(
+        validate_by_name=True,
+        alias_generator=to_camel,
+    )
+
+    mode: Literal[NetworkModeEnum.LOCAL] = NetworkModeEnum.LOCAL
+    host: str
+    ip: str
+    fullchain: str
+    privkey: str
+    expires_at: int
+
+
+class NetworkAutoSettings(BaseModel):
+    model_config = ConfigDict(
+        validate_by_name=True,
+        alias_generator=to_camel,
+    )
+
+    mode: Literal[NetworkModeEnum.AUTO] = NetworkModeEnum.AUTO
+    host: str
+    token: str
+    email: str
+    connection: NetworkConnectionEnum
+    provider: str
+    ip: str
+    account_key: str
+    fullchain: str
+    privkey: str
+    expires_at: int
+
+
+class NetworkManualSettings(BaseModel):
+    model_config = ConfigDict(
+        validate_by_name=True,
+        alias_generator=to_camel,
+    )
+
+    mode: Literal[NetworkModeEnum.MANUAL] = NetworkModeEnum.MANUAL
+    host: str
+    reverse_proxy: bool
+
+
+NetworkSettings = Annotated[
+    NetworkLocalSettings | NetworkAutoSettings | NetworkManualSettings,
+    Field(discriminator="mode"),
+]
+
+
+class SystemSettings(BaseModel):
     model_config = ConfigDict(
         validate_by_name=True,
         alias_generator=to_camel,
@@ -19,13 +83,12 @@ class AppSettings(BaseModel):
     catalog_token: str | None = None
 
 
-class UpdateAppSettings(BaseModel):
+class SystemSettingsSave(BaseModel):
     model_config = ConfigDict(
         validate_by_name=True,
         alias_generator=to_camel,
     )
 
-    instance_id: str | None = None
     hit_and_run: bool | None = None
     keep_seed_seconds: int | None = None
     cache_retention_seconds: int | None = None
@@ -38,7 +101,7 @@ class RelaySettings(BaseModel):
         alias_generator=to_camel,
     )
 
-    port: int = 6881
+    port: int = Field(default_factory=lambda: config.libtorrent_port)
     download_limit: int = 0
     upload_limit: int = 0
     connections_limit: int = 200
@@ -46,7 +109,7 @@ class RelaySettings(BaseModel):
     enable_upnp_and_natpmp: bool = False
 
 
-class UpdateRelaySettings(BaseModel):
+class RelaySettingsUpdate(BaseModel):
     model_config = ConfigDict(
         validate_by_name=True,
         alias_generator=to_camel,

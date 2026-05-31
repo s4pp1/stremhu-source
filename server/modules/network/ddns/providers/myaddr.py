@@ -1,0 +1,58 @@
+import logging
+
+import httpx
+from modules.network.ddns.base import BaseDDNSProvider
+from modules.network.ddns.schemas import DDNSIpUpdate, DDNSTxtUpdate
+
+logger = logging.getLogger(__name__)
+
+
+class MyAddrProvider(BaseDDNSProvider):
+    @property
+    def id(self) -> str:
+        return "myaddr"
+
+    @property
+    def name(self) -> str:
+        return "MyAddr"
+
+    @property
+    def website_url(self) -> str:
+        return "https://myaddr.tools"
+
+    async def validate(self, host: str, provider_token: str) -> None:
+        params = {"key": provider_token}
+        try:
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                response = await client.get(f"{self.website_url}/update", params=params)
+                response.raise_for_status()
+
+            if "OK" not in response.text:
+                raise ValueError(
+                    f"MyAddr hitelesítés sikertelen. Válasz: {response.text}"
+                )
+        except Exception as e:
+            logger.error("MyAddr validációs hiba: %s", e)
+            raise ValueError(f"MyAddr validációs hiba: {e}") from e
+
+    async def update(self, payload: DDNSIpUpdate | DDNSTxtUpdate) -> None:
+        params = {"key": payload.provider_token}
+
+        if isinstance(payload, DDNSIpUpdate):
+            params["ip"] = payload.ip
+
+        if isinstance(payload, DDNSTxtUpdate):
+            if payload.clear_txt:
+                return
+
+            params["acme_challenge"] = payload.txt
+
+        try:
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                response = await client.get(f"{self.website_url}/update", params=params)
+                response.raise_for_status()
+            if "OK" not in response.text:
+                raise ValueError(f"MyAddr DDNS frissítése sikertelen: {response.text}")
+        except Exception as e:
+            logger.error("MyAddr frissítési hiba: %s", e)
+            raise ValueError(f"MyAddr frissítési hiba: {e}") from e

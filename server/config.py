@@ -22,10 +22,14 @@ class Config(BaseSettings):
     description: str = "Torrentalapú streaming magyar trackeroldalakra építve."
     stremhu_catalog_url: str = "https://catalog.stremhu.app"
     session_secret: str = "stremhu-source"
+    host_ip: str = ""
 
     # Server Ports
-    libtorrent_port: int = 6881
     port: int = 4300
+
+    @property
+    def libtorrent_port(self) -> int:
+        return 6881
 
     @property
     def base_data_dir(self) -> Path:
@@ -42,6 +46,12 @@ class Config(BaseSettings):
     @property
     def database_url(self) -> str:
         return f"sqlite:///{self.system_dir}/stremhu.db"
+
+    @property
+    def acme_directory_url(self) -> str:
+        if self.node_env == NodeEnv.DEVELOPMENT:
+            return "https://acme-staging-v02.api.letsencrypt.org/directory"
+        return "https://acme-v02.api.letsencrypt.org/directory"
 
     @property
     def openapi_dir(self) -> Path:
