@@ -1,10 +1,7 @@
-from common.logger import logger
-
 import httpx
+from common.logger import logger
 from modules.network.ddns.base import BaseDDNSProvider
 from modules.network.ddns.schemas import DDNSIpUpdate, DDNSTxtUpdate
-
-BASE_URL = "https://www.duckdns.org/update"
 
 
 class DuckDnsProvider(BaseDDNSProvider):
@@ -27,7 +24,7 @@ class DuckDnsProvider(BaseDDNSProvider):
         }
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:
-                response = await client.get(f"{BASE_URL}/update", params=params)
+                response = await client.get(f"{self.website_url}/update", params=params)
                 response.raise_for_status()
 
             if "OK" not in response.text:
@@ -55,7 +52,7 @@ class DuckDnsProvider(BaseDDNSProvider):
 
         try:
             async with httpx.AsyncClient(timeout=10.0) as client:
-                response = await client.get(f"{BASE_URL}/update", params=params)
+                response = await client.get(f"{self.website_url}/update", params=params)
                 response.raise_for_status()
             if "OK" not in response.text:
                 raise ValueError(f"DuckDNS frissítése sikertelen: {response.text}")

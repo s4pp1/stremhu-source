@@ -1,8 +1,8 @@
-from common.logger import logger
-
 import httpx
+from common.logger import logger
 from modules.network.ddns.base import BaseDDNSProvider
 from modules.network.ddns.schemas import DDNSIpUpdate, DDNSTxtUpdate
+
 
 class MyAddrProvider(BaseDDNSProvider):
     @property

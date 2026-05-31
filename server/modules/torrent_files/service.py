@@ -1,10 +1,11 @@
 import datetime
-from common.logger import logger
 
+from common.logger import logger
 from fastapi import HTTPException
 from modules.torrent_files.models import TorrentFileModel
 from modules.torrent_files.repository import TorrentFilesRepository
 from modules.torrent_files.schemas import TorrentFilesFilter
+
 
 class TorrentFilesService:
     def __init__(
@@ -121,10 +122,7 @@ class TorrentFilesService:
             if is_expired:
                 try:
                     self._torrent_files_repository.delete(torrent_file)
-                    logger.info(
-                        f"🧹 Inaktív, elavult torrent gyorsítótár rekord törölve a DB-ből: {torrent_file.indexer_id} - {torrent_file.torrent_id}"
-                    )
-                except Exception as e:
-                    logger.error(
-                        f"Nem sikerült törölni a(z) {torrent_file.indexer_id} - {torrent_file.torrent_id} elavult rekordot: {e}"
+                except Exception:
+                    logger.exception(
+                        f"Nem sikerült törölni a(z) {torrent_file.indexer_id} - {torrent_file.torrent_id} elavult torrentet az adatbázisból."
                     )

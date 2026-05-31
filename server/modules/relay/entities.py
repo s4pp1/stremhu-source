@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-from common.logger import logger
 import math
 from collections.abc import AsyncIterator
 from pathlib import Path
@@ -15,9 +14,11 @@ from common.constants import (
     PRIO_5,
     PRIO_7,
 )
+from common.logger import logger
 from common.torrent_info import TorrentFileInfo, TorrentInfo
 from fastapi import Request
 from modules.relay.schemas import PieceOrFileAvailable
+
 
 class Torrent:
     def __init__(
@@ -27,6 +28,7 @@ class Torrent:
     ):
         self.info_hash = torrent_info.info_hash
         self.torrent_handle = torrent_handle
+        self.total_size = torrent_info.size
 
         self.piece_size = torrent_info.piece_size
         self.chunk_piece_count = math.ceil(CHUNK_SIZE / self.piece_size)
@@ -60,8 +62,8 @@ class Torrent:
 
             self._active_deadlines = list(piece_deadlines.keys())
 
-        except Exception as e:
-            logger.error(f"Hiba történt a prioritáskezelőben: {e}")
+        except Exception:
+            logger.exception("Hiba történt a prioritáskezelőben.")
 
     def get_file(
         self,
@@ -340,7 +342,7 @@ class Stream:
                 if await request.is_disconnected():
                     return
 
-                available_end_byte = self._check_piece()
+                available_end_byte = await asyncio.to_thread(self._check_piece)
 
                 if available_end_byte is not None:
                     current_end_byte = available_end_byte

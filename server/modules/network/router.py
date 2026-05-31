@@ -22,3 +22,14 @@ async def config(
 ):
     await network_service.setup(payload)
     return {"message": "Network setup started"}
+
+
+@router.delete(
+    "/reset",
+)
+def reset(
+    network_service: NetworkService = Depends(get_network_service),
+    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+):
+    network_service.setup_local()
+    return {"message": "Network reset started"}

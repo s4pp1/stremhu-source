@@ -1,9 +1,9 @@
 import asyncio
-from common.logger import logger
 from collections.abc import Callable
 from typing import Any
 
 import libtorrent as libtorrent
+from common.logger import logger
 from common.torrent_info import parse_torrent_info
 from config import config
 from fastapi import HTTPException
@@ -12,6 +12,7 @@ from modules.relay.schemas import (
     RelaySettingsUpdate,
     RelayTorrent,
 )
+
 
 class RelayService:
     def __init__(
@@ -54,8 +55,9 @@ class RelayService:
 
     async def priority_manager_loop(self):
         while True:
-            for torrent in self._torrents.values():
-                torrent.priority_manager()
+            torrents = list(self._torrents.values())
+            for torrent in torrents:
+                await asyncio.to_thread(torrent.priority_manager)
             await asyncio.sleep(0.1)
 
     def update_settings(

@@ -7,6 +7,7 @@ from api import api_router
 from common.logger import logger
 from config import NodeEnv, config
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.routing import APIRoute
 from fastapi.staticfiles import StaticFiles
 from modules.relay.background_tasks import alert_loop, resume_save_loop
@@ -90,6 +91,14 @@ app = FastAPI(
     redoc_url="/api/redoc",
     openapi_url="/api/openapi.json",
     generate_unique_id_function=custom_generate_unique_id,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.add_middleware(

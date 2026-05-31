@@ -26,11 +26,13 @@ class TorrentFileModel(Base):
     )
 
     torrent_id: Mapped[str] = mapped_column(sa.String, primary_key=True)
+
     info_hash: Mapped[str] = mapped_column(
         sa.String,
         index=True,
         init=False,
     )
+
     torrent_bytes: Mapped[bytes] = mapped_column(sa.LargeBinary)
 
     last_used_at: Mapped[datetime.datetime] = mapped_column(

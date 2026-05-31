@@ -36,6 +36,7 @@ router = APIRouter(
 @router.get(
     "/manifest.json",
     response_model=Manifest,
+    response_model_exclude_none=True,
 )
 def manifest(
     stremio_service: StremioService = Depends(get_stremio_service),
