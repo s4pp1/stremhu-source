@@ -41,7 +41,6 @@ def get_one(
 @router.put(
     "/{info_hash}",
     response_model=Torrent,
-    operation_id="update_torrent",
 )
 def update(
     info_hash: str,
@@ -59,7 +58,6 @@ def update(
 @router.delete(
     "/{info_hash}",
     status_code=204,
-    operation_id="delete_torrent",
 )
 def delete(
     info_hash: str,

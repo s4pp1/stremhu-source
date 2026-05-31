@@ -18,7 +18,6 @@ router = APIRouter(
 @router.get(
     "/",
     response_model=SystemSettings,
-    operation_id="get_app_settings",
 )
 def get_app_settings(
     settings_service: SettingsService = Depends(get_settings_service),
@@ -30,7 +29,6 @@ def get_app_settings(
 @router.put(
     "/",
     response_model=SystemSettings,
-    operation_id="update_app_settings",
 )
 def update_app_settings(
     payload: SystemSettingsSave,

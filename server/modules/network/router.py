@@ -14,7 +14,6 @@ router = APIRouter(
 
 @router.post(
     "/config",
-    operation_id="network_config",
 )
 async def config(
     payload: NetworkSetup,

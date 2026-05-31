@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends
 from modules.auth.dependencies import SessionGuard
 from modules.pairings.dependencies import get_pairings_service
 from modules.pairings.schemas import (
@@ -17,7 +17,6 @@ router = APIRouter(prefix="/auth/pair", tags=["Pairing"])
 @router.post(
     "/init",
     response_model=PairInit,
-    status_code=status.HTTP_201_CREATED,
     openapi_extra={"x-external": True},
 )
 def init(
@@ -31,10 +30,9 @@ def init(
 @router.post(
     "/status",
     response_model=PairStatus,
-    status_code=status.HTTP_200_OK,
     openapi_extra={"x-external": True},
 )
-def status_endpoint(
+def status(
     payload: PairStatusRequest,
     pairings_service: PairingsService = Depends(get_pairings_service),
 ) -> PairStatus:
@@ -46,7 +44,6 @@ def status_endpoint(
 @router.post(
     "/verify",
     response_model=PairVerify,
-    status_code=status.HTTP_200_OK,
 )
 def verify(
     payload: PairVerifyRequest,

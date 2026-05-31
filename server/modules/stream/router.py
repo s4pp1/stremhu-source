@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from common.logger import logger
-
 import content_types
 from fastapi import APIRouter, Depends, Header, Path, Request, Response
 from fastapi.responses import StreamingResponse
@@ -15,13 +13,12 @@ router = APIRouter(
     tags=["Stream"],
 )
 
+
 @router.get(
     "/{indexer_id}/{torrent_id}/{file_index}/{session_id}",
-    operation_id="get_stream_file",
 )
 @router.head(
     "/{indexer_id}/{torrent_id}/{file_index}/{session_id}",
-    operation_id="head_stream_file",
 )
 async def stream(
     request: Request,

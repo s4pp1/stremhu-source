@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from modules.auth.dependencies import OptionalSessionGuard, SessionGuard
 from modules.me.schemas import (
-    ReorderPreferences,
-    UpdateMe,
-    UserPreferenceCreate,
-    UserPreferenceUpdate,
+    MePreferenceCreateRequest,
+    MePreferencesReorderRequest,
+    MePreferenceUpdateRequest,
+    MeUpdateRequest,
 )
 from modules.preferences.dependencies import get_user_preferences_service
 from modules.preferences.enums import PreferenceEnum
@@ -12,32 +12,29 @@ from modules.preferences.schemas import Preference
 from modules.preferences.user_service import UserPreferencesService
 from modules.users.dependencies import get_users_service
 from modules.users.models import UserModel
-from modules.users.schemas import UpdateUser, User
+from modules.users.schemas import User, UserUpdateRequest
 from modules.users.service import UsersService
 
 router = APIRouter(prefix="/me", tags=["Me"])
 
 
-# ─── Profile Endpoints ──────────────────────────────────────────────
-
-
 @router.get("/", response_model=User | None)
-def get_me(
+def get(
     current_user: UserModel | None = Depends(OptionalSessionGuard()),
 ) -> UserModel | None:
     return current_user
 
 
 @router.put("/", response_model=User)
-def update_me(
-    payload: UpdateMe,
+def update(
+    payload: MeUpdateRequest,
     users_service: UsersService = Depends(get_users_service),
     current_user: UserModel = Depends(SessionGuard()),
 ) -> UserModel:
     """
     Updates the current user's profile information.
     """
-    update_user_payload = UpdateUser(
+    update_user_payload = UserUpdateRequest(
         username=payload.username,
         password=payload.password,
         torrent_seed=payload.torrent_seed,
@@ -47,18 +44,15 @@ def update_me(
     return users_service.update(current_user.id, update_user_payload)
 
 
-@router.put("/token/regenerate", response_model=User)
-def regenerate_token(
+@router.put("/api-key/regenerate", response_model=User)
+def regenerate_api_key(
     users_service: UsersService = Depends(get_users_service),
     current_user: UserModel = Depends(SessionGuard()),
 ) -> UserModel:
     """
-    Regenerates the current user's API token.
+    Regenerates the current user's API key.
     """
     return users_service.regenerate_token(current_user.id)
-
-
-# ─── Preference Endpoints (/me/preference) ─────────────────────────
 
 
 @router.get("/preferences", response_model=list[Preference])
@@ -75,7 +69,7 @@ def get_preferences(
 
 @router.post("/preferences", response_model=Preference)
 def create_preference(
-    payload: UserPreferenceCreate,
+    payload: MePreferenceCreateRequest,
     preferences_service: UserPreferencesService = Depends(get_user_preferences_service),
     current_user: UserModel = Depends(SessionGuard()),
 ) -> Preference:
@@ -86,19 +80,6 @@ def create_preference(
         current_user.id, payload.preference, payload.preferred
     )
     return Preference.from_model(model)
-
-
-@router.post("/preferences/reorder", response_model=list[Preference])
-def reorder_preferences(
-    payload: ReorderPreferences,
-    preferences_service: UserPreferencesService = Depends(get_user_preferences_service),
-    current_user: UserModel = Depends(SessionGuard()),
-) -> list[Preference]:
-    """
-    Reorders the priority of preference categories.
-    """
-    models = preferences_service.reorder(current_user.id, payload.preferences)
-    return [Preference.from_model(model) for model in models]
 
 
 @router.get("/preferences/{preference}", response_model=Preference)
@@ -119,10 +100,23 @@ def get_preference(
     return Preference.from_model(model)
 
 
+@router.post("/preferences/reorder", response_model=list[Preference])
+def reorder_preferences(
+    payload: MePreferencesReorderRequest,
+    preferences_service: UserPreferencesService = Depends(get_user_preferences_service),
+    current_user: UserModel = Depends(SessionGuard()),
+) -> list[Preference]:
+    """
+    Reorders the priority of preference categories.
+    """
+    models = preferences_service.reorder(current_user.id, payload.preferences)
+    return [Preference.from_model(model) for model in models]
+
+
 @router.put("/preferences/{preference}", response_model=Preference)
 def update_preference(
     preference: PreferenceEnum,
-    payload: UserPreferenceUpdate,
+    payload: MePreferenceUpdateRequest,
     preferences_service: UserPreferencesService = Depends(get_user_preferences_service),
     current_user: UserModel = Depends(SessionGuard()),
 ) -> Preference:

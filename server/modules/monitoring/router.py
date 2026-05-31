@@ -11,7 +11,6 @@ START_TIME = time.time()
 @router.get(
     "/health",
     response_model=Health,
-    operation_id="health",
     tags=["Monitoring"],
 )
 def health() -> Health:

@@ -1,5 +1,4 @@
 from common.logger import logger
-
 from fastapi import APIRouter, Depends, Path, status
 from fastapi.responses import RedirectResponse
 from modules.auth.dependencies import ApiKeyGuard
@@ -37,7 +36,6 @@ router = APIRouter(
 @router.get(
     "/manifest.json",
     response_model=Manifest,
-    operation_id="stremio_manifest",
 )
 def manifest(
     stremio_service: StremioService = Depends(get_stremio_service),
@@ -49,7 +47,6 @@ def manifest(
 @router.get(
     "/configure",
     status_code=status.HTTP_308_PERMANENT_REDIRECT,
-    operation_id="stremio_configure",
 )
 def configure(
     _: UserModel = Depends(ApiKeyGuard()),
@@ -84,7 +81,6 @@ async def streams(
 @router.get(
     "/catalog/{media_type}/{catalog_id}.json",
     response_model=StremioCatalogResponse,
-    operation_id="stremio_catalog",
 )
 async def catalog(
     media_type: MediaType,
@@ -98,7 +94,6 @@ async def catalog(
 @router.get(
     "/catalog/{media_type}/{catalog_id}/{extra}.json",
     response_model=StremioCatalogResponse,
-    operation_id="stremio_catalog_with_extra",
 )
 async def catalog_with_extra(
     media_type: MediaType = Path(..., description="A média típusa"),
@@ -148,7 +143,6 @@ async def _get_catalog(
 @router.get(
     "/meta/{media_type}/{meta_id}.json",
     response_model=MetaResponse,
-    operation_id="stremio_meta",
 )
 async def meta(
     media_type: MediaType = Path(..., description="A média típusa"),

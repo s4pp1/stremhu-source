@@ -13,7 +13,6 @@ router = APIRouter(
 
 @router.post(
     "/cleanup",
-    operation_id="cleanup_torrent_files",
 )
 def cleanup(
     torrent_files_service: TorrentFilesService = Depends(get_torrent_files_service),

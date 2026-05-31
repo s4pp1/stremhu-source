@@ -70,12 +70,26 @@ async def lifespan(app: FastAPI):
     logger.info("✅ Leállítási szekvencia sikeresen lefutott.")
 
 
+def custom_generate_unique_id(route: APIRoute) -> str:
+    method = next(iter(route.methods)).lower() if route.methods else "get"
+    name = route.name
+
+    if method == "head" and not name.startswith("head"):
+        name = f"head_{name}"
+
+    if route.tags:
+        return f"{pydash.snake_case(route.tags[0])}_{name}"
+
+    return name
+
+
 app = FastAPI(
     title="StremHU Source",
     lifespan=lifespan,
     docs_url="/api/docs",
     redoc_url="/api/redoc",
     openapi_url="/api/openapi.json",
+    generate_unique_id_function=custom_generate_unique_id,
 )
 
 app.add_middleware(

@@ -4,7 +4,7 @@ from argon2 import PasswordHasher
 from fastapi import HTTPException, status
 from modules.users.models import UserModel
 from modules.users.repository import UsersRepository
-from modules.users.schemas import CreateUser, UpdateUser
+from modules.users.schemas import UserCreateRequest, UserUpdateRequest
 
 
 class UsersService:
@@ -14,7 +14,10 @@ class UsersService:
     def get_list(self) -> list[UserModel]:
         return self._users_repository.find()
 
-    def create(self, payload: CreateUser) -> UserModel:
+    def create(
+        self,
+        payload: UserCreateRequest,
+    ) -> UserModel:
         self._check_exist_username(payload.username)
 
         password_hash = self._hash_password(payload.password)
@@ -62,7 +65,11 @@ class UsersService:
     def count(self) -> int:
         return self._users_repository.count()
 
-    def update(self, user_id: str, payload: UpdateUser) -> UserModel:
+    def update(
+        self,
+        user_id: str,
+        payload: UserUpdateRequest,
+    ) -> UserModel:
         user = self.get_by_id_or_raise(user_id)
 
         update_data = payload.model_dump(exclude_unset=True)

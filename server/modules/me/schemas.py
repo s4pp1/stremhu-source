@@ -3,7 +3,7 @@ from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
 
-class UpdateMe(BaseModel):
+class MeUpdateRequest(BaseModel):
     model_config = ConfigDict(
         validate_by_name=True,
         alias_generator=to_camel,
@@ -15,7 +15,7 @@ class UpdateMe(BaseModel):
     only_best_torrent: bool | None = None
 
 
-class UserPreferenceCreate(BaseModel):
+class MePreferenceCreateRequest(BaseModel):
     model_config = ConfigDict(
         validate_by_name=True,
         alias_generator=to_camel,
@@ -25,7 +25,7 @@ class UserPreferenceCreate(BaseModel):
     preferred: list[str]
 
 
-class UserPreferenceUpdate(BaseModel):
+class MePreferenceUpdateRequest(BaseModel):
     model_config = ConfigDict(
         validate_by_name=True,
         alias_generator=to_camel,
@@ -34,7 +34,7 @@ class UserPreferenceUpdate(BaseModel):
     preferred: list[str]
 
 
-class ReorderPreferences(BaseModel):
+class MePreferencesReorderRequest(BaseModel):
     model_config = ConfigDict(
         validate_by_name=True,
         alias_generator=to_camel,

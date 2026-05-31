@@ -1,10 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from modules.auth.dependencies import SessionGuard
-from modules.me.schemas import (
-    ReorderPreferences,
-    UserPreferenceCreate,
-    UserPreferenceUpdate,
-)
 from modules.preferences.dependencies import get_user_preferences_service
 from modules.preferences.enums import PreferenceEnum
 from modules.preferences.schemas import Preference
@@ -12,7 +7,14 @@ from modules.preferences.user_service import UserPreferencesService
 from modules.roles.enums import UserRole
 from modules.users.dependencies import get_users_service
 from modules.users.models import UserModel
-from modules.users.schemas import CreateUser, UpdateUser, User
+from modules.users.schemas import (
+    User,
+    UserCreateRequest,
+    UserPreferenceCreateRequest,
+    UserPreferencesReorderRequest,
+    UserPreferenceUpdateRequest,
+    UserUpdateRequest,
+)
 from modules.users.service import UsersService
 
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -22,7 +24,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
     "/",
     response_model=list[User],
 )
-def find(
+def get_list(
     users_service: UsersService = Depends(get_users_service),
     _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
 ) -> list[UserModel]:
@@ -33,7 +35,7 @@ def find(
     "/{user_id}",
     response_model=User,
 )
-def find_by_id(
+def get(
     user_id: str,
     users_service: UsersService = Depends(get_users_service),
     _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
@@ -47,7 +49,7 @@ def find_by_id(
     status_code=status.HTTP_201_CREATED,
 )
 def create(
-    payload: CreateUser,
+    payload: UserCreateRequest,
     users_service: UsersService = Depends(get_users_service),
     _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
 ) -> UserModel:
@@ -60,7 +62,7 @@ def create(
 )
 def update(
     user_id: str,
-    payload: UpdateUser,
+    payload: UserUpdateRequest,
     users_service: UsersService = Depends(get_users_service),
     _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
 ) -> UserModel:
@@ -68,10 +70,10 @@ def update(
 
 
 @router.put(
-    "/{user_id}/token/regenerate",
+    "/{user_id}/api_key/regenerate",
     response_model=User,
 )
-def regenerate_token(
+def regenerate_api_key(
     user_id: str,
     users_service: UsersService = Depends(get_users_service),
     _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
@@ -89,9 +91,6 @@ def delete(
     current_user: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
 ) -> None:
     users_service.delete(user_id, current_user)
-
-
-# ─── User Preference Endpoints (Admin access) ───────────────────────
 
 
 @router.get("/{user_id}/preferences", response_model=list[Preference])
@@ -112,7 +111,7 @@ def get_preferences(
 @router.post("/{user_id}/preferences", response_model=Preference)
 def create_preference(
     user_id: str,
-    payload: UserPreferenceCreate,
+    payload: UserPreferenceCreateRequest,
     users_service: UsersService = Depends(get_users_service),
     preferences_service: UserPreferencesService = Depends(get_user_preferences_service),
     _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
@@ -128,7 +127,7 @@ def create_preference(
 @router.post("/{user_id}/preferences/reorder", response_model=list[Preference])
 def reorder_preferences(
     user_id: str,
-    payload: ReorderPreferences,
+    payload: UserPreferencesReorderRequest,
     users_service: UsersService = Depends(get_users_service),
     preferences_service: UserPreferencesService = Depends(get_user_preferences_service),
     _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
@@ -166,7 +165,7 @@ def get_preference(
 def update_preference(
     user_id: str,
     preference: PreferenceEnum,
-    payload: UserPreferenceUpdate,
+    payload: UserPreferenceUpdateRequest,
     users_service: UsersService = Depends(get_users_service),
     preferences_service: UserPreferencesService = Depends(get_user_preferences_service),
     _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),

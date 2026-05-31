@@ -1,24 +1,23 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from modules.auth.dependencies import SessionGuard, get_auth_service
-from modules.auth.schemas import AuthLogin
+from modules.auth.schemas import LoginRequest, RegisterRequest
 from modules.auth.service import AuthService
 from modules.roles.enums import UserRole
 from modules.users.dependencies import get_users_service
 from modules.users.models import UserModel
-from modules.users.schemas import CreateUser, User
+from modules.users.schemas import User, UserCreateRequest
 from modules.users.service import UsersService
 
-router = APIRouter(prefix="/auth", tags=["Authentication"])
+router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
 @router.post(
     "/register",
     response_model=User,
     status_code=status.HTTP_201_CREATED,
-    operation_id="register",
 )
 def register(
-    payload: AuthLogin,
+    payload: RegisterRequest,
     users_service: UsersService = Depends(get_users_service),
 ) -> UserModel:
     if users_service.count() > 0:
@@ -27,7 +26,7 @@ def register(
             detail="A regisztráció le van tiltva, mert már létezik felhasználó a rendszerben.",
         )
 
-    user_model = CreateUser(
+    user_model = UserCreateRequest(
         username=payload.username,
         password=payload.password,
         role_id=UserRole.ADMIN,
@@ -38,11 +37,10 @@ def register(
 @router.post(
     "/login",
     response_model=User,
-    operation_id="login",
 )
 def login(
     req: Request,
-    payload: AuthLogin,
+    payload: LoginRequest,
     auth_service: AuthService = Depends(get_auth_service),
 ) -> UserModel:
     user = auth_service.validate(payload.username, payload.password)
@@ -53,11 +51,10 @@ def login(
 @router.post(
     "/logout",
     status_code=status.HTTP_200_OK,
-    operation_id="logout",
 )
 def logout(
     req: Request,
-    current_user: UserModel = Depends(SessionGuard()),
+    _: UserModel = Depends(SessionGuard()),
 ):
     req.session.clear()
     return {"message": "Sikeres kijelentkezés"}
