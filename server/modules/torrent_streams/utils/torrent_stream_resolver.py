@@ -1,4 +1,5 @@
 import re
+import uuid
 
 import content_types
 import PTN
@@ -9,6 +10,7 @@ from modules.stremio.schemas import ParsedStreamSeries
 from modules.torrent_files.models import TorrentFileModel
 from modules.torrent_streams.schemas import TorrentStream
 from modules.torrent_streams.utils.metadata_parser import TorrentMetadataParser
+from modules.users.models import UserModel
 
 
 def is_video(filename: str) -> bool:
@@ -34,11 +36,15 @@ class TorrentStreamResolver:
         torrent_file: TorrentFileModel,
         series: ParsedStreamSeries | None,
         attribute_map: dict[str, AttributeModel],
+        app_url: str,
+        user: UserModel,
     ):
         self._indexer_torrent = indexer_torrent
         self._torrent_file = torrent_file
         self._series = series
         self._attribute_map = attribute_map
+        self._app_url = app_url
+        self._user = user
 
     def resolve(self) -> TorrentStream | None:
         if self._series:
@@ -57,17 +63,22 @@ class TorrentStreamResolver:
 
         parsed_attributes = parse_attributes.parse()
 
+        indexer_id = self._indexer_torrent.indexer_account.indexer_id
+        torrent_id = self._torrent_file.torrent_id
+        file_index = torrent_file.index
+        session_id = str(uuid.uuid4())
+
         return TorrentStream(
             indexer_account=self._indexer_torrent.indexer_account,
-            torrent_id=self._torrent_file.torrent_id,
+            torrent_id=torrent_id,
             info_hash=self._torrent_file.info_hash,
             seeders=self._indexer_torrent.seeders,
             torrent_name=self._torrent_file.info.name,
             attributes=parsed_attributes,
             file_name=torrent_file.name,
             file_size=torrent_file.size,
-            file_index=torrent_file.index,
-            play_url="",
+            file_index=file_index,
+            play_url=f"{self._app_url}/api/{self._user.token}/stream/{indexer_id}/{torrent_id}/{file_index}/{session_id}",
             is_persisted_torrent=False,
         )
 

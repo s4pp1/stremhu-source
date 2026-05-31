@@ -51,8 +51,12 @@ class TorrentsService:
         )
 
         torrent = self._torrent_repository.create(torrent_model)
+
+        priority = PRIO_1 if torrent.full_download else PRIO_0
+
         relay_torrent = self._relay_service.add_torrent(
             torrent_bytes=torrent.torrent_file.torrent_bytes,
+            priority=priority,
         )
 
         return TorrentPair(torrent=torrent, relay=relay_torrent)
@@ -146,3 +150,37 @@ class TorrentsService:
         if persisted:
             persisted.resume_bytes = resume_bytes
             self._torrent_repository.update(persisted)
+
+    def restore_torrents(self) -> None:
+        """Rendszerindítást követően betölti/visszaállítja a torrenteket az adatbázisból a libtorrent-be."""
+        logger.info("🔄 Torrentek visszaállítása az adatbázisból...")
+        torrents = self._torrent_repository.find()
+
+        count = 0
+        for torrent in torrents:
+            if not torrent.torrent_file or not torrent.torrent_file.torrent_bytes:
+                logger.warning(
+                    "⚠️ Nem sikerült visszaállítani a torrentet (%s): hiányzik a .torrent fájl!",
+                    torrent.info_hash,
+                )
+                continue
+
+            try:
+                # Meghatározzuk a kezdeti prioritást
+                # (Ha full_download be van kapcsolva, akkor PRIO_1, különben PRIO_0)
+                priority = PRIO_1 if torrent.full_download else PRIO_0
+
+                self._relay_service.add_torrent(
+                    torrent_bytes=torrent.torrent_file.torrent_bytes,
+                    priority=priority,
+                    resume_bytes=torrent.resume_bytes,
+                )
+                count += 1
+            except Exception as e:
+                logger.error(
+                    "❌ Hiba a torrent (%s) visszaállítása közben: %s",
+                    torrent.info_hash,
+                    e,
+                )
+
+        logger.info("✅ Sikeresen visszaállítva %d/%d torrent.", count, len(torrents))

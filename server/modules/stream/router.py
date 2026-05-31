@@ -35,7 +35,7 @@ async def stream(
     range_header: str | None = Header(None, alias="Range"),
     stream_service: StreamService = Depends(get_stream_service),
     current_user: UserModel = Depends(ApiKeyGuard()),
-):
+) -> Response:
 
     parsed_range_header, file = await stream_service.prepare_for_stream(
         range_header=range_header,

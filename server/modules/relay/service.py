@@ -123,7 +123,7 @@ class RelayService:
     def add_torrent(
         self,
         torrent_bytes: bytes,
-        priority: int = 1,
+        priority: int = 0,
         resume_bytes: bytes | None = None,
     ) -> RelayTorrent:
         save_path = str(config.downloads_dir.absolute())

@@ -34,6 +34,7 @@ from modules.torrent_files.background_tasks import run_torrent_files_retention_c
 from modules.torrent_files.router import router as torrent_files_router
 from modules.torrents.background_tasks import (
     register_persisted_torrents_callbacks,
+    restore_torrents,
 )
 from modules.torrents.router import router as torrents_router
 from modules.users.router import router as users_router
@@ -143,6 +144,7 @@ async def lifespan(app: FastAPI):
 
     relay_service = get_relay_service()
     register_persisted_torrents_callbacks()
+    restore_torrents()
 
     priority_manager_task = asyncio.create_task(relay_service.priority_manager_loop())
 

@@ -21,7 +21,8 @@ def get_list(
     torrents_service: TorrentsService = Depends(get_torrents_service),
     _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
 ):
-    return torrents_service.get_torrents()
+    torrent_pairs = torrents_service.get_torrents()
+    return [Torrent.from_torrent_pair(torrent_pair) for torrent_pair in torrent_pairs]
 
 
 @router.get(

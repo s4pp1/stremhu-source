@@ -36,20 +36,15 @@ class NetworkService:
         self._system_service = system_service
         self._in_progress = False
 
-    async def initialize_defaults(self):
-        """Inicializálja a hálózati beállításokat, ha még nem léteznek."""
-        try:
-            network_settings = self._settings_service.get_network()
+    def get_app_url(self) -> str:
+        network_settings = self._settings_service.get_network_or_raise()
+        if (
+            network_settings.mode == NetworkModeEnum.MANUAL
+            and network_settings.reverse_proxy
+        ):
+            return f"https://{network_settings.host}"
 
-            if not network_settings:
-                logger.info(
-                    "⚙️ Hálózati elérés inicializálása (Alapértelmezett: Local)..."
-                )
-                self.setup_local()
-        except Exception as e:
-            logger.error(
-                "Hiba történt a hálózati alapbeállítások betöltése közben: %s", e
-            )
+        return f"https://{network_settings.host}:{config.port}"
 
     def setup_local(self) -> tuple[NetworkSettings, SelfSignedCertificate]:
         certs = self._ssl_service.generate_self_signed_certificate(config.host_ip)

@@ -6,6 +6,7 @@ import humanize
 from modules.attributes.service import AttributesService
 from modules.indexers.schemas import DownloadedTorrentFile, IndexerTorrent
 from modules.indexers.service import IndexersService
+from modules.network.service import NetworkService
 from modules.preferences.enums import PreferenceEnum
 from modules.stremio.schemas import ParsedStreamSeries
 from modules.torrent_files.models import TorrentFileModel
@@ -32,12 +33,14 @@ class TorrentStreamsService:
         torrent_files_service: TorrentFilesService,
         torrents_service: TorrentsService,
         attributes_service: AttributesService,
+        network_service: NetworkService,
     ):
         self.db = db
         self._indexers_service = indexers_service
         self._torrents_service = torrents_service
         self._torrent_files_service = torrent_files_service
         self._attributes_service = attributes_service
+        self._network_service = network_service
 
     async def find_by_imdb(
         self,
@@ -45,14 +48,16 @@ class TorrentStreamsService:
         imdb_id: str,
         series: ParsedStreamSeries | None = None,
     ) -> tuple[list[TorrentStream], list[str]]:
-        attributes_map = await asyncio.to_thread(
-            self._attributes_service.get_all_as_map
-        )
-
         (
             indexer_torrents,
             indexer_errors,
         ) = await self._indexers_service.get_torrents_by_imdb_id(imdb_id)
+
+        attributes_map = await asyncio.to_thread(
+            self._attributes_service.get_all_as_map
+        )
+
+        app_url = await asyncio.to_thread(self._network_service.get_app_url)
 
         torrent_file_ids: list[TorrentFileIdentifier] = [
             TorrentFileIdentifier(
@@ -133,6 +138,8 @@ class TorrentStreamsService:
                 torrent_file=torrent_file,
                 series=series,
                 attribute_map=attributes_map,
+                app_url=app_url,
+                user=user,
             ).resolve()
 
             if torrent_stream:
@@ -149,14 +156,18 @@ class TorrentStreamsService:
         self,
         indexer_id: str,
         torrent_id: str,
+        user: UserModel,
     ) -> TorrentStream | None:
-        attributes_map = await asyncio.to_thread(
-            self._attributes_service.get_all_as_map
-        )
 
         indexer_torrent = await self._indexers_service.get_torrent_by_torrent_id(
             indexer_id, torrent_id
         )
+
+        attributes_map = await asyncio.to_thread(
+            self._attributes_service.get_all_as_map
+        )
+
+        app_url = await asyncio.to_thread(self._network_service.get_app_url)
 
         current_torrent_file = await asyncio.to_thread(
             self._torrent_files_service.get_one,
@@ -182,6 +193,8 @@ class TorrentStreamsService:
             torrent_file=current_torrent_file,
             series=None,
             attribute_map=attributes_map,
+            app_url=app_url,
+            user=user,
         ).resolve()
 
         return torrent_stream

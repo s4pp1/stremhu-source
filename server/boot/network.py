@@ -1,4 +1,3 @@
-import ipaddress
 import os
 import socket
 from pathlib import Path
@@ -71,9 +70,9 @@ def _ensure_db_network_settings(host_ip: str) -> NetworkSettings:
                     "🔄 [ÖNGYÓGYÍTÁS] A felhasználói kizárás megelőzése érdekében a rendszer automatikusan\n"
                     "   visszaállítja a Helyi (Local) ön-aláírt SSL módot az adatbázisban...\n"
                 )
+
                 local_settings, _ = network_service.setup_local()
                 settings_service.save_network(local_settings)
-                # Frissítjük a lokális változót a további boot ellenőrzésekhez
                 network_settings = local_settings
                 return network_settings
 
@@ -89,25 +88,7 @@ def _ensure_db_network_settings(host_ip: str) -> NetworkSettings:
     return local_settings
 
 
-def _check_host_ip(host_ip: str | None) -> str:
-    if not host_ip:
-        raise ValueError(
-            "🚨 Hiba: A HOST_IP környezeti változó vagy konfigurációs érték megadása kötelező! "
-            "Kérlek állítsd be a docker-compose.yml-ben vagy a .env fájlban (pl. HOST_IP=192.168.1.52)!"
-        )
-
-    try:
-        ip_obj = ipaddress.ip_address(host_ip)
-    except ValueError:
-        raise ValueError(
-            f"🚨 Hiba: A megadott HOST_IP ({host_ip}) formátuma érvénytelen! Kérlek érvényes IPv4 címet adj meg!"
-        )
-
-    if not ip_obj.is_private and host_ip != "127.0.0.1":
-        raise ValueError(
-            f"🚨 Hiba: A megadott HOST_IP ({host_ip}) nem egy helyi/privát IP-cím! A helyi eléréshez magánhálózati IP szükséges!"
-        )
-
+def _check_host_ip(host_ip: str) -> str:
     try:
         test_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         test_sock.connect((host_ip, 9))

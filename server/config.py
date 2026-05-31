@@ -1,6 +1,8 @@
+import ipaddress
 from enum import Enum
 from pathlib import Path
 
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -22,7 +24,24 @@ class Config(BaseSettings):
     description: str = "Torrentalapú streaming magyar trackeroldalakra építve."
     stremhu_catalog_url: str = "https://catalog.stremhu.app"
     session_secret: str = "stremhu-source"
-    host_ip: str = ""
+    host_ip: str = Field(default="", min_length=1)
+
+    @field_validator("host_ip")
+    @classmethod
+    def validate_host_ip(cls, value: str) -> str:
+        try:
+            ip_obj = ipaddress.ip_address(value)
+        except ValueError:
+            raise ValueError(
+                f"🚨 Hiba: A megadott HOST_IP ({value}) formátuma érvénytelen! Kérlek érvényes IPv4 címet adj meg!"
+            )
+
+        if not ip_obj.is_private and value != "127.0.0.1":
+            raise ValueError(
+                f"🚨 Hiba: A megadott HOST_IP ({value}) nem egy helyi/privát IP-cím! A helyi eléréshez magánhálózati IP szükséges!"
+            )
+
+        return value
 
     # Server Ports
     port: int = 4300

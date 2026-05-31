@@ -41,19 +41,27 @@ class StreamService:
         )
 
         if torrent_pair is None:
-            indexer_torrent = await self._indexers_service.get_torrent_by_torrent_id(
-                indexer_id=indexer_id, torrent_id=torrent_id
-            )
-            downloaded_torrent_file = await self._indexers_service.download_torrent(
+            torrent_file = self._torrent_files_service.get_one(
                 indexer_id=indexer_id,
                 torrent_id=torrent_id,
-                download_url=indexer_torrent.download_url,
             )
-            torrent_file = self._torrent_files_service.create(
-                indexer_id=indexer_id,
-                torrent_id=torrent_id,
-                torrent_bytes=downloaded_torrent_file.torrent_bytes,
-            )
+
+            if torrent_file is None:
+                indexer_torrent = (
+                    await self._indexers_service.get_torrent_by_torrent_id(
+                        indexer_id=indexer_id, torrent_id=torrent_id
+                    )
+                )
+                downloaded_torrent_file = await self._indexers_service.download_torrent(
+                    indexer_id=indexer_id,
+                    torrent_id=torrent_id,
+                    download_url=indexer_torrent.download_url,
+                )
+                torrent_file = self._torrent_files_service.create(
+                    indexer_id=indexer_id,
+                    torrent_id=torrent_id,
+                    torrent_bytes=downloaded_torrent_file.torrent_bytes,
+                )
 
             self._validate_file(torrent_file, file_index)
             torrent_pair = self._torrents_service.create_from_torrent_file(torrent_file)

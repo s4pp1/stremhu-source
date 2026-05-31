@@ -24,3 +24,12 @@ def _get_bg_service(db) -> TorrentsService:
 def register_persisted_torrents_callbacks() -> None:
     relay_service = get_relay_service()
     relay_service.on_save_resume.append(handle_save_resume_data)
+
+
+def restore_torrents() -> None:
+    try:
+        with db_session() as db:
+            service = _get_bg_service(db)
+            service.restore_torrents()
+    except Exception as e:
+        logger.error(f"Hiba a torrentek visszaállítása során: {e}")

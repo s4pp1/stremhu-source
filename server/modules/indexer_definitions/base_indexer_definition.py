@@ -31,6 +31,33 @@ _DEFAULT_HEADERS = {
 }
 
 
+class IndexerClient(httpx.AsyncClient):
+    def __init__(self, definition: "BaseIndexerDefinition", *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._definition = definition
+
+    async def request(
+        self, method: str, url: httpx.URL | str, **kwargs
+    ) -> httpx.Response:
+        # Concurrency limit (szemafor) kezelése
+        async with self._definition._semaphore:
+            response = await super().request(method, url, **kwargs)
+        # Hitelesítési hibák detektálása a kliens szintű válaszon
+        auth_error = self._definition._detect_authentication_error(response)
+        if auth_error == AuthenticationErrorEnum.CREDENTIAL_ERROR:
+            raise AuthenticationException(
+                f"Sikertelen bejelentkezés a(z) {self._definition.name} fiókba."
+            )
+        if auth_error == AuthenticationErrorEnum.SESSION_ERROR:
+            # Újra-bejelentkezés (a cookie-k frissülnek a kliensben)
+            await self._definition.relogin()
+
+            # Kérés újraindítása (az új cookie-k automatikusan bekerülnek!)
+            async with self._definition._semaphore:
+                response = await super().request(method, url, **kwargs)
+        return response
+
+
 class IndexerTransport(httpx.AsyncBaseTransport):
     def __init__(
         self,
@@ -89,15 +116,12 @@ class BaseIndexerDefinition(ABC):
         self._semaphore = asyncio.Semaphore(self.max_concurrent)
         self._login_in_progress: asyncio.Future | None = None
 
-        base_transport = httpx.AsyncHTTPTransport()
-        interceptor_transport = IndexerTransport(base_transport, self)
-
-        self._client = httpx.AsyncClient(
+        self._client = IndexerClient(
+            definition=self,
             base_url=self.url,
             follow_redirects=True,
             headers=_DEFAULT_HEADERS,
             timeout=20.0,
-            transport=interceptor_transport,
         )
 
         if indexer_account_storage:

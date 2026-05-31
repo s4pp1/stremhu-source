@@ -47,6 +47,9 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
     ) -> AuthenticationErrorEnum | None:
         final_path = str(response.url.path)
         original_url = str(response.request.url)
+        if response.history:
+            original_url = str(response.history[0].url)
+
         ended_up_at_login = self.login_path in final_path
 
         if ended_up_at_login:
