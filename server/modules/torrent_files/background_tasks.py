@@ -1,12 +1,7 @@
-import logging
+from common.logger import logger
 
 from common.database import db_session
-from modules.relay.dependencies import get_relay_service
-from modules.torrent_files.repository import TorrentFilesRepository
-from modules.torrent_files.service import TorrentFilesService
-
-logger = logging.getLogger(__name__)
-
+from modules.torrent_files.dependencies import create_torrent_files_service
 
 def run_torrent_files_retention_cleanup():
     """Tisztító feladat az elavult és inaktív torrent gyorsítótár rekordokhoz (APScheduler-hez)."""
@@ -16,11 +11,7 @@ def run_torrent_files_retention_cleanup():
 
     try:
         with db_session() as db:
-            torrent_files_repository = TorrentFilesRepository(db)
-            libtorrent_service = get_relay_service()
-            torrent_files_service = TorrentFilesService(
-                torrent_files_repository, libtorrent_service
-            )
+            torrent_files_service = create_torrent_files_service(db)
             torrent_files_service.run_retention_cleanup()
         logger.info("✅ Automatikus gyorsítótár tisztítás sikeresen befejeződött.")
     except Exception as e:

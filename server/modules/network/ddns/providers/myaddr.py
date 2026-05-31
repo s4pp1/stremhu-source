@@ -1,11 +1,8 @@
-import logging
+from common.logger import logger
 
 import httpx
 from modules.network.ddns.base import BaseDDNSProvider
 from modules.network.ddns.schemas import DDNSIpUpdate, DDNSTxtUpdate
-
-logger = logging.getLogger(__name__)
-
 
 class MyAddrProvider(BaseDDNSProvider):
     @property

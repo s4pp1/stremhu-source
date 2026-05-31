@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import logging
+from common.logger import logger
 
 import content_types
 from fastapi import APIRouter, Depends, Header, Path, Request, Response
@@ -14,9 +14,6 @@ router = APIRouter(
     prefix="/{api_key}/stream",
     tags=["Stream"],
 )
-
-logger = logging.getLogger(__name__)
-
 
 @router.get(
     "/{indexer_id}/{torrent_id}/{file_index}/{session_id}",

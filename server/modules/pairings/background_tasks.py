@@ -1,11 +1,8 @@
-import logging
+from common.logger import logger
 
 from common.database import db_session
 from modules.pairings.repository import PairingsRepository
 from modules.pairings.service import PairingsService
-
-logger = logging.getLogger(__name__)
-
 
 def run_expired_pairings_cleanup():
     """Tisztító feladat az elavult eszközpárosítási kódokhoz (APScheduler-hez)."""

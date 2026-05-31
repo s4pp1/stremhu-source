@@ -1,8 +1,8 @@
 import asyncio
-import logging
 import time
 
 import httpx
+from common.logger import logger
 from config import config
 from modules.network.ddns.schemas import DDNSIpUpdate
 from modules.network.ddns.service import DDNSService
@@ -18,8 +18,6 @@ from modules.settings.schemas import (
 )
 from modules.settings.service import SettingsService
 from modules.system.service import SystemService
-
-logger = logging.getLogger(__name__)
 
 
 class NetworkService:

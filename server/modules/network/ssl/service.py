@@ -1,8 +1,8 @@
 import datetime
 import ipaddress
-import logging
 
 from acme import challenges, client, errors as acme_errors, messages
+from common.logger import logger
 from config import config
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
@@ -16,8 +16,6 @@ from modules.network.ssl.schemas import (
     AcmeCertificateGenerate,
     SelfSignedCertificate,
 )
-
-logger = logging.getLogger(__name__)
 
 
 class SslService:

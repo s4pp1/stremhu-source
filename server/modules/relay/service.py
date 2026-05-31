@@ -1,5 +1,5 @@
 import asyncio
-import logging
+from common.logger import logger
 from collections.abc import Callable
 from typing import Any
 
@@ -12,9 +12,6 @@ from modules.relay.schemas import (
     RelaySettingsUpdate,
     RelayTorrent,
 )
-
-logger = logging.getLogger(__name__)
-
 
 class RelayService:
     def __init__(

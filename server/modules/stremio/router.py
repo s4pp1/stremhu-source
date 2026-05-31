@@ -1,4 +1,4 @@
-import logging
+from common.logger import logger
 
 from fastapi import APIRouter, Depends, Path, status
 from fastapi.responses import RedirectResponse
@@ -22,8 +22,6 @@ from modules.stremio.schemas import (
 )
 from modules.stremio.service import StremioService
 from modules.users.models import UserModel
-
-logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/{api_key}/stremio",

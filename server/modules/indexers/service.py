@@ -1,6 +1,6 @@
 import asyncio
-import logging
 
+from common.logger import logger
 from fastapi import HTTPException, status
 from modules.indexer_accounts.models import IndexerAccountModel
 from modules.indexer_accounts.schemas import IndexerAccountCreate
@@ -12,9 +12,9 @@ from modules.indexer_definitions.exceptions import (
 from modules.indexer_definitions.schemas import IndexerDefinitionLogin
 from modules.indexer_definitions.service import IndexerDefinitionsService
 from modules.indexers.schemas import DownloadedTorrentFile, IndexerLogin, IndexerTorrent
+from modules.settings.schemas import SystemSettings
+from modules.settings.service import SettingsService
 from modules.torrents.service import TorrentsService
-
-logger = logging.getLogger(__name__)
 
 
 class IndexersService:
@@ -23,10 +23,12 @@ class IndexersService:
         indexer_definitions_service: IndexerDefinitionsService,
         indexer_accounts_service: IndexerAccountsService,
         torrents_service: TorrentsService,
+        settings_service: SettingsService,
     ):
         self._indexer_definitions_service = indexer_definitions_service
         self._indexer_accounts_service = indexer_accounts_service
         self._torrents_service = torrents_service
+        self._settings_service = settings_service
 
     async def login(self, payload: IndexerLogin) -> IndexerAccountModel:
         indexer_definition = self._indexer_definitions_service.get_by_id(
@@ -200,3 +202,74 @@ class IndexersService:
             torrent_id=torrent_id,
             torrent_bytes=torrent_bytes,
         )
+
+    async def cleanup_torrents_by_rules(self) -> None:
+        """Karbantartási takarítás futtatása a bejelentkezett indexerekre a seed/hit and run szabályok alapján."""
+
+        indexer_accounts = await asyncio.to_thread(
+            self._indexer_accounts_service.get_list
+        )
+        system_settings = await asyncio.to_thread(
+            self._settings_service.get_system_or_raise
+        )
+
+        tasks = [
+            self.cleanup_torrent_by_rules(indexer_account, system_settings)
+            for indexer_account in indexer_accounts
+        ]
+        await asyncio.gather(*tasks)
+
+    async def cleanup_torrent_by_rules(
+        self,
+        indexer_account: IndexerAccountModel,
+        system_settings: SystemSettings | None = None,
+    ) -> None:
+        try:
+            if system_settings is None:
+                system_settings = await asyncio.to_thread(
+                    self._settings_service.get_system_or_raise
+                )
+
+            indexer_definition = self._indexer_definitions_service.get_by_id(
+                indexer_account.indexer_id
+            )
+
+            # Hit and Run beállítás
+            enabled_hit_and_run = system_settings.hit_and_run
+            if indexer_account.hit_and_run is not None:
+                enabled_hit_and_run = indexer_account.hit_and_run
+
+            not_completed_torrent_ids: list[str] | None = None
+            if enabled_hit_and_run:
+                # Meghívjuk az adapter hit and run listáját
+                not_completed_torrent_ids = (
+                    await indexer_definition.find_hit_and_run_ids()
+                )
+
+            # Keep Seed beállítás
+            keep_seed_seconds: int | None = (
+                system_settings.keep_seed_seconds
+                if system_settings.keep_seed_seconds > 0
+                else None
+            )
+            if indexer_account.keep_seed_seconds is not None:
+                keep_seed_seconds = indexer_account.keep_seed_seconds
+
+            if not_completed_torrent_ids is None and keep_seed_seconds is None:
+                return
+
+            # Futtatjuk a letöltött torrentek takarítását
+            await asyncio.to_thread(
+                self._torrents_service.cleanup_tracker_torrents,
+                indexer_id=indexer_account.indexer_id,
+                keep_seed_seconds=keep_seed_seconds,
+                not_completed_torrent_ids=not_completed_torrent_ids,
+            )
+            logger.info(
+                f"✅ Sikeres takarítás lefutott az indexerhez: {indexer_account.indexer_id}"
+            )
+        except Exception as ex:
+            logger.error(
+                f"🚨 Hiba történt a(z) '{indexer_account.indexer_id}' indexer takarítása során: {ex}",
+                exc_info=ex,
+            )

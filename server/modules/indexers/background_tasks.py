@@ -1,9 +1,6 @@
-import logging
-
 from common.database import db_session
+from common.logger import logger
 from modules.indexers.dependencies import create_indexers_service
-
-logger = logging.getLogger(__name__)
 
 
 async def run_indexers_cleanup() -> None:
@@ -12,7 +9,7 @@ async def run_indexers_cleanup() -> None:
     try:
         with db_session() as db:
             indexers_service = create_indexers_service(db)
-            await indexers_service.run_maintenance_cleanup()
+            await indexers_service.cleanup_torrents_by_rules()
         logger.info("✅ Az indexerek karbantartási takarítása befejeződött.")
     except Exception as e:
         logger.error(

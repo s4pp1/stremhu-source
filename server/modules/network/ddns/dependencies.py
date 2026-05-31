@@ -1,8 +1,11 @@
+from functools import lru_cache
+
 from modules.network.ddns.service import DDNSService
 
 
+@lru_cache(maxsize=1)
 def create_ddns_service() -> DDNSService:
-    """Létrehozza a DDNSService példányát."""
+    """Létrehozza a DDNSService globális példányát (Singleton)."""
     return DDNSService()
 
 

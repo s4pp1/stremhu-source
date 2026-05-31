@@ -1,10 +1,7 @@
 import asyncio
-import logging
+from common.logger import logger
 import os
 import sys
-
-logger = logging.getLogger(__name__)
-
 
 class SystemService:
     async def restart(self):

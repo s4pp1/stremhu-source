@@ -1,4 +1,4 @@
-import logging
+from common.logger import logger
 
 import libtorrent as libtorrent
 from fastapi import HTTPException
@@ -11,9 +11,6 @@ from modules.stream.schemas import (
 from modules.torrent_files.models import TorrentFileModel
 from modules.torrent_files.service import TorrentFilesService
 from modules.torrents.service import TorrentPair, TorrentsService
-
-logger = logging.getLogger(__name__)
-
 
 class StreamService:
     def __init__(

@@ -1,4 +1,4 @@
-import logging
+from common.logger import logger
 
 import httpx
 from config import config
@@ -6,9 +6,6 @@ from modules.network.ddns import discover_dns_providers
 from modules.network.ddns.base import BaseDDNSProvider
 from modules.network.ddns.schemas import DDNSIpUpdate, DDNSTxtUpdate
 from modules.settings.schemas import NetworkConnectionEnum
-
-logger = logging.getLogger(__name__)
-
 
 class DDNSService:
     def __init__(self):

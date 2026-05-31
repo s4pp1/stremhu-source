@@ -1,13 +1,10 @@
-import logging
-
+from common.logger import logger
 from fastapi import HTTPException, status
 from modules.indexer_definitions.base_indexer_definition import BaseIndexerDefinition
 from modules.indexer_definitions.integrations import discover_indexer_definitions
 from modules.indexer_definitions.models import IndexerDefinitionModel
 from modules.indexer_definitions.protocols import IndexerAccountStorage
 from sqlalchemy.orm import Session
-
-logger = logging.getLogger(__name__)
 
 
 class IndexerDefinitionsService:
@@ -51,15 +48,11 @@ class IndexerDefinitionsService:
             await adapter.close()
 
     def sync_to_db(self, db: Session):
-        """Szinkronizálja az integrations/ mappából dinamikusan felderített indexereket az adatbázissal (Upsert + Delete)."""
-        logger.info(
-            "🔄 Szinkronizálás: Támogatott indexerek szinkronizálása az adatbázissal..."
-        )
+        """Szinkronizálja az integrations/ mappából dinamikusan felderített indexereket az adatbázissal."""
 
         discovered_definitions = self.get_list()
         discovered_ids = {instance.id for instance in discovered_definitions}
 
-        # 1. Töröljük a DB-ből azokat a trackereket, amelyek kikerültek az integrations/ mappából
         deleted_count = (
             db.query(IndexerDefinitionModel)
             .filter(IndexerDefinitionModel.id.not_in(discovered_ids))
@@ -70,7 +63,6 @@ class IndexerDefinitionsService:
                 f"🗑️ Törölve {deleted_count} elavult indexer definíció a DB-ből."
             )
 
-        # 2. Beszúrás és frissítés (Upsert)
         for instance in discovered_definitions:
             db_definition = (
                 db.query(IndexerDefinitionModel)

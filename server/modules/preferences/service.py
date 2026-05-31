@@ -1,10 +1,7 @@
-import logging
-
+from common.logger import logger
 from modules.preferences.models import PreferenceModel
 from modules.preferences.seeds import DEFAULT_PREFERENCES
 from sqlalchemy.orm import Session
-
-logger = logging.getLogger(__name__)
 
 
 class PreferencesService:
@@ -12,19 +9,14 @@ class PreferencesService:
         self.db = db
 
     def sync_to_db(self):
-        """Synchronizes the list of preference categories in the codebase with the database.
+        """Szinkronizálja a kódbázisban definiált preferenciákat az adatbázissal.
 
-        Updates existing ones, inserts new ones, and deletes those that were removed
-        from the code (along with all linked records via ON DELETE CASCADE).
+        Frissíti a meglévőket, beszúrja az újakat, és törli azokat, amelyek
+        kikerültek a kódból.
         """
-        logger.info(
-            "🔄 Szinkronizálás: Preferencia kategóriák szinkronizálása az adatbázissal..."
-        )
 
         code_ids = {pref.id for pref in DEFAULT_PREFERENCES}
 
-        # 1. Töröljük a DB-ből azokat a kategóriákat, amelyek kikerültek a kódból
-        # A cascade idegen kulcsok miatt ez automatikusan törli a hozzájuk tartozó attribútumokat/beállításokat is!
         deleted_count = (
             self.db.query(PreferenceModel)
             .filter(PreferenceModel.id.not_in(code_ids))
@@ -33,7 +25,6 @@ class PreferencesService:
         if deleted_count > 0:
             logger.info(f"🗑️ Törölve {deleted_count} elavult kategória a DB-ből.")
 
-        # 2. Beszúrás és frissítés (Upsert)
         for pref in DEFAULT_PREFERENCES:
             db_pref = (
                 self.db.query(PreferenceModel)

@@ -1,11 +1,7 @@
-import logging
-
 from fastapi import HTTPException, status
 from modules.indexer_accounts.models import IndexerAccountModel
 from modules.indexer_accounts.repository import IndexerAccountsRepository
 from modules.indexer_accounts.schemas import IndexerAccountCreate
-
-logger = logging.getLogger(__name__)
 
 
 class IndexerAccountsService:

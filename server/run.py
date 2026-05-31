@@ -34,15 +34,15 @@ def start_server():
 
     if global_url:
         print(
-            f"⚠️ Amennyiben a domain-en nem éred el a szervert, használd a {local_url} címet."
+            f"⚠️  Amennyiben a domain-en nem éred el a szervert, használd a {local_url} címet."
         )
     else:
         print(
-            f"⚠️ A szerver a {local_url} címen érhető el, de végezd el a DNS konfigurációt."
+            f"⚠️  A szerver a {local_url} címen érhető el, de végezd el a DNS konfigurációt."
         )
 
     if global_url:
-        print(f"🚀 A szerver a {global_url} címen érhető el.")
+        print(f"🚀  A szerver a {global_url} címen érhető el.")
 
     uvicorn.run(
         "main:app",

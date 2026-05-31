@@ -1,11 +1,8 @@
-import logging
-
+from common.logger import logger
 from modules.attributes.models import AttributeModel
 from modules.attributes.repository import AttributesRepository
 from modules.attributes.seeds import DEFAULT_ATTRIBUTES
 from modules.preferences.enums import PreferenceEnum
-
-logger = logging.getLogger(__name__)
 
 
 class AttributesService:
@@ -26,23 +23,18 @@ class AttributesService:
         return {model.id: model for model in self.get_all()}
 
     def sync_to_db(self) -> None:
-        """Synchronizes the list of attributes in the codebase with the database.
+        """Szinkronizálja a kódbázisban definiált attribútumokat az adatbázissal.
 
-        Updates existing ones, inserts new ones, and deletes those that were removed
-        from the code (along with their database relations via ON DELETE CASCADE).
+        Frissíti a meglévőket, beszúrja az újakat, és törli azokat, amelyek
+        kikerültek a kódból.
         """
-        logger.info(
-            "🔄 Szinkronizálás: Attribútumok szinkronizálása az adatbázissal..."
-        )
 
         code_ids = {attr.id for attr in DEFAULT_ATTRIBUTES}
 
-        # 1. Töröljük azokat az attribútumokat a DB-ből, amelyek kikerültek a kódból
         deleted_count = self._repository.delete_excluding_ids(code_ids)
         if deleted_count > 0:
             logger.info(f"🗑️ Törölve {deleted_count} elavult attribútum a DB-ből.")
 
-        # 2. Beszúrás és frissítés (Upsert)
         for code_attribute in DEFAULT_ATTRIBUTES:
             db_attribute = self._repository.find_by_id(code_attribute.id)
 

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-import logging
+from common.logger import logger
 import math
 from collections.abc import AsyncIterator
 from pathlib import Path
@@ -18,9 +18,6 @@ from common.constants import (
 from common.torrent_info import TorrentFileInfo, TorrentInfo
 from fastapi import Request
 from modules.relay.schemas import PieceOrFileAvailable
-
-logger = logging.getLogger(__name__)
-
 
 class Torrent:
     def __init__(

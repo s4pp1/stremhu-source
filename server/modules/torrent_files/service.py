@@ -1,13 +1,10 @@
 import datetime
-import logging
+from common.logger import logger
 
 from fastapi import HTTPException
 from modules.torrent_files.models import TorrentFileModel
 from modules.torrent_files.repository import TorrentFilesRepository
 from modules.torrent_files.schemas import TorrentFilesFilter
-
-logger = logging.getLogger(__name__)
-
 
 class TorrentFilesService:
     def __init__(

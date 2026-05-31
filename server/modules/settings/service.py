@@ -1,5 +1,3 @@
-import logging
-
 from modules.settings.enums import SettingsKeyEnum
 from modules.settings.repository import SettingsRepository
 from modules.settings.schemas import (
@@ -10,8 +8,6 @@ from modules.settings.schemas import (
     SystemSettingsSave,
 )
 from pydantic import TypeAdapter
-
-logger = logging.getLogger(__name__)
 
 
 class SettingsService:

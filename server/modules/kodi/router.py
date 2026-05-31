@@ -1,5 +1,3 @@
-import logging
-
 from fastapi import APIRouter, Depends, Path
 from modules.auth.dependencies import ApiKeyGuard
 from modules.kodi.dependencies import get_kodi_service
@@ -9,8 +7,6 @@ from modules.kodi.schemas import (
 )
 from modules.kodi.service import KodiService
 from modules.users.models import UserModel
-
-logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/{api_key}/kodi",
