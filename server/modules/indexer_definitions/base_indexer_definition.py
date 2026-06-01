@@ -58,53 +58,6 @@ class IndexerClient(httpx.AsyncClient):
         return response
 
 
-class IndexerTransport(httpx.AsyncBaseTransport):
-    def __init__(
-        self,
-        transport: httpx.AsyncBaseTransport,
-        definition: "BaseIndexerDefinition",
-    ):
-        self._transport = transport
-        self._definition = definition
-
-    async def handle_async_request(self, request: httpx.Request) -> httpx.Response:
-
-        async with self._definition._semaphore:
-            response = await self._transport.handle_async_request(request)
-            response.request = request
-
-        await response.aread()
-
-        # Ignore intermediate redirect responses
-        if 300 <= response.status_code < 400:
-            return response
-
-        auth_error = self._definition._detect_authentication_error(response)
-
-        if auth_error == AuthenticationErrorEnum.CREDENTIAL_ERROR:
-            raise AuthenticationException(
-                f"Sikertelen bejelentkezés a(z) {self._definition.name} fiókba."
-            )
-
-        if auth_error == AuthenticationErrorEnum.SESSION_ERROR:
-            await self._definition.relogin()
-
-            cookie = "; ".join(
-                [
-                    f"{key}={value}"
-                    for key, value in self._definition._client.cookies.items()
-                ]
-            )
-
-            request.headers["cookie"] = cookie
-
-            async with self._definition._semaphore:
-                response = await self._transport.handle_async_request(request)
-                response.request = request
-
-        return response
-
-
 class BaseIndexerDefinition(ABC):
     def __init__(
         self,
@@ -141,7 +94,7 @@ class BaseIndexerDefinition(ABC):
 
     @property
     def max_concurrent(self) -> int:
-        """Max egyidejű HTTP kérések száma (a NestJS maxConcurrent megfelelője)."""
+        """Max egyidejű HTTP kérések száma."""
         return 5
 
     # --- Absztrakt tulajdonságok ---
@@ -302,7 +255,6 @@ class BaseIndexerDefinition(ABC):
         page: int | None,
         accumulator: list[IndexerDefinitionTorrent],
     ) -> list[IndexerDefinitionTorrent]:
-        """Rekurzív lapozó logika - a NestJS findAll() privát metódus portolása."""
         if len(accumulator) > _TORRENTS_LIMIT:
             return accumulator
 
@@ -313,11 +265,10 @@ class BaseIndexerDefinition(ABC):
             if result.next_page is not None:
                 return await self._find_all(imdb_id, result.next_page, accumulator)
 
-            # Szűrés az egyező IMDB ID-ra – a NestJS logikájával azonos
             return [t for t in accumulator if t.imdb_id == imdb_id]
         except Exception as e:
             error_msg = f"{self.name} nem érhető el vagy megváltozott a struktúrája."
-            self.logger.error(error_msg, exc_info=e)
+            self.logger.exception(error_msg)
             raise TrackerException(error_msg) from e
 
     async def relogin(self) -> None:

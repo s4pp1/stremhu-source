@@ -16,9 +16,11 @@ router = APIRouter(
 
 @router.get(
     "/{indexer_id}/{torrent_id}/{file_index}/{session_id}",
+    openapi_extra={"x-external": True},
 )
 @router.head(
     "/{indexer_id}/{torrent_id}/{file_index}/{session_id}",
+    openapi_extra={"x-external": True},
 )
 async def stream(
     request: Request,

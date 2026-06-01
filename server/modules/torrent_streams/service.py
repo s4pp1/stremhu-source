@@ -1,5 +1,4 @@
 import asyncio
-from common.logger import logger
 from collections.abc import Awaitable
 
 import humanize
@@ -21,6 +20,7 @@ from modules.torrent_streams.utils.torrent_stream_resolver import (
 from modules.torrents.service import TorrentPair, TorrentsService
 from modules.users.models import UserModel
 from sqlalchemy.orm import Session
+
 
 class TorrentStreamsService:
     def __init__(

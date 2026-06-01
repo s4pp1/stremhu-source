@@ -1,7 +1,7 @@
 from modules.torrent_files.models import TorrentFileModel
 from modules.torrent_files.schemas import TorrentFilesFilter
 from sqlalchemy import and_, or_
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 
 class TorrentFilesRepository:
@@ -30,7 +30,9 @@ class TorrentFilesRepository:
         self,
         filter: TorrentFilesFilter | None = None,
     ) -> list[TorrentFileModel]:
-        query = self.db.query(TorrentFileModel)
+        query = self.db.query(TorrentFileModel).options(
+            joinedload(TorrentFileModel.indexer_account)
+        )
 
         if filter:
             if filter.indexer_id:

@@ -34,4 +34,4 @@ class IndexerAccountsService:
         return indexer_account
 
     def get_list(self) -> list[IndexerAccountModel]:
-        return list(self._indexer_accounts_repository.find_all())
+        return self._indexer_accounts_repository.find_all()
