@@ -1,29 +1,35 @@
 from datetime import datetime
 
+import sqlalchemy as sa
 from common.database import Base
-from sqlalchemy import DateTime, Index, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 
 class Playback(Base):
     __tablename__ = "playbacks"
-    # Indexet teszünk a user_id-ra és a torrent_id-ra a gyors dashboard lekérésekhez,
-    # valamint a last_seen_at-re, mivel folyamatosan szűrni fogunk az időre!
     __table_args__ = (
-        Index("ix_playback_user_torrent", "user_id", "torrent_id"),
-        Index("ix_playback_last_seen", "last_seen_at"),
+        sa.Index(
+            "ix_playback_user_torrent_file_index", "user_id", "torrent_id", "file_index"
+        ),
+        sa.Index("ix_playback_last_seen", "last_seen_at"),
     )
 
-    # A kliens (Stremio/Nuvio URL) által küldött UUID lesz a kulcs
-    session_id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    session_id: Mapped[str] = mapped_column(
+        sa.String,
+        primary_key=True,
+    )
 
-    user_id: Mapped[str] = mapped_column(String(255), nullable=False)
-    torrent_id: Mapped[str] = mapped_column(String(255), nullable=False)
+    user_id: Mapped[str] = mapped_column(sa.String)
 
-    # Opcionális, de hasznos: a User-Agent-ből kinyert kliens típus (stremio, nuvio, vlc)
-    client_type: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    indexer_id: Mapped[str] = mapped_column(sa.String)
 
-    # Ezt frissíti minden egyes beérkező HTTP Range Request (heartbeat)
+    torrent_id: Mapped[str] = mapped_column(sa.String)
+
+    file_index: Mapped[int] = mapped_column(sa.Integer)
+
+    client_type: Mapped[str | None] = mapped_column(sa.String)
+
     last_seen_at: Mapped[datetime] = mapped_column(
-        DateTime, default_factory=datetime.now, nullable=False
+        sa.DateTime,
+        default_factory=datetime.now,
     )

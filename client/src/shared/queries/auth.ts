@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import type {
-  AuthLoginDto,
-  CreateSetupDto,
-  PairVerifyRequestDto,
+  LoginRequest,
+  PairVerifyRequest,
+  RegisterRequest,
 } from '../lib/source/source-client'
 import {
   authLogin,
   authLogout,
-  pairingsInternalVerify,
-  setupCreate,
+  authRegister,
+  pairingVerify,
 } from '../lib/source/source-client'
 import { getMe } from './me'
 import { getSettingsStatus } from './settings-setup'
@@ -17,7 +17,7 @@ import { getSettingsStatus } from './settings-setup'
 export function useLogin() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (payload: AuthLoginDto) => {
+    mutationFn: async (payload: LoginRequest) => {
       const response = await authLogin(payload)
       return response
     },
@@ -45,8 +45,8 @@ export function useRegistration() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (payload: CreateSetupDto) => {
-      await setupCreate(payload)
+    mutationFn: async (payload: RegisterRequest) => {
+      await authRegister(payload)
     },
     onSuccess: async () => {
       await queryClient.fetchQuery({ ...getMe, staleTime: 0 })
@@ -57,8 +57,8 @@ export function useRegistration() {
 
 export function usePairVerify() {
   return useMutation({
-    mutationFn: async (payload: PairVerifyRequestDto) => {
-      const response = await pairingsInternalVerify(payload)
+    mutationFn: async (payload: PairVerifyRequest) => {
+      const response = await pairingVerify(payload)
       return response
     },
   })

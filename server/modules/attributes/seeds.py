@@ -9,6 +9,8 @@ from modules.attributes.enums import (
 from modules.attributes.models import AttributeModel
 from modules.preferences.enums import PreferenceEnum
 
+# TODO: Pattern hozzáadása, ami majd a regex-et tárolja
+
 DEFAULT_ATTRIBUTES = [
     # Resolutions
     AttributeModel(

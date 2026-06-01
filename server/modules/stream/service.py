@@ -1,5 +1,3 @@
-from common.logger import logger
-
 import libtorrent as libtorrent
 from fastapi import HTTPException
 from modules.indexers.service import IndexersService
@@ -11,6 +9,7 @@ from modules.stream.schemas import (
 from modules.torrent_files.models import TorrentFileModel
 from modules.torrent_files.service import TorrentFilesService
 from modules.torrents.service import TorrentPair, TorrentsService
+
 
 class StreamService:
     def __init__(

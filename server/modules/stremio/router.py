@@ -1,8 +1,6 @@
-from common.logger import logger
 from fastapi import APIRouter, Depends, Path, status
 from fastapi.responses import RedirectResponse
 from modules.auth.dependencies import ApiKeyGuard
-from modules.stremio.constants import SEARCH_ID
 from modules.stremio.dependencies import (
     get_parsed_catalog_id,
     get_parsed_extra,
@@ -28,11 +26,6 @@ router = APIRouter(
 )
 
 
-# ──────────────────────────────────────────────
-# Manifest & Configure
-# ──────────────────────────────────────────────
-
-
 @router.get(
     "/manifest.json",
     response_model=Manifest,
@@ -43,7 +36,7 @@ def manifest(
     stremio_service: StremioService = Depends(get_stremio_service),
     user: UserModel = Depends(ApiKeyGuard()),
 ) -> Manifest:
-    return stremio_service.manifest()
+    return stremio_service.manifest(user)
 
 
 @router.get(
@@ -54,12 +47,10 @@ def manifest(
 def configure(
     _: UserModel = Depends(ApiKeyGuard()),
 ) -> RedirectResponse:
-    return RedirectResponse(url="/", status_code=status.HTTP_308_PERMANENT_REDIRECT)
-
-
-# ──────────────────────────────────────────────
-# Streams
-# ──────────────────────────────────────────────
+    return RedirectResponse(
+        url="/",
+        status_code=status.HTTP_308_PERMANENT_REDIRECT,
+    )
 
 
 @router.get(
@@ -77,11 +68,6 @@ async def streams(
     return StremioStreams(streams=streams)
 
 
-# ──────────────────────────────────────────────
-# Catalogs
-# ──────────────────────────────────────────────
-
-
 @router.get(
     "/catalog/{media_type}/{catalog_id}.json",
     response_model=StremioCatalogResponse,
@@ -93,7 +79,10 @@ async def catalog(
     stremio_service: StremioService = Depends(get_stremio_service),
     current_user: UserModel = Depends(ApiKeyGuard()),
 ) -> StremioCatalogResponse:
-    return await _get_catalog(stremio_service, media_type, catalog_id)
+    return await stremio_service.get_catalog(
+        media_type,
+        catalog_id,
+    )
 
 
 @router.get(
@@ -106,44 +95,13 @@ async def catalog_with_extra(
     catalog_id: str = Path(..., description="A katalógus azonosítója"),
     parsed_extra: ParsedExtra = Depends(get_parsed_extra),
     stremio_service: StremioService = Depends(get_stremio_service),
-    current_user: UserModel = Depends(ApiKeyGuard()),
+    _: UserModel = Depends(ApiKeyGuard()),
 ) -> StremioCatalogResponse:
-    return await _get_catalog(stremio_service, media_type, catalog_id, parsed_extra)
-
-
-async def _get_catalog(
-    stremio_service: StremioService,
-    media_type: MediaType,
-    catalog_id: str,
-    extra: ParsedExtra | None = None,
-) -> StremioCatalogResponse:
-    """Közös katalógus logika – a NestJS getCatalog() privát metódus portolása."""
-    if extra is None:
-        extra = ParsedExtra()
-
-    search = extra.search
-
-    if media_type != MediaType.MOVIE or catalog_id != SEARCH_ID or not search:
-        return StremioCatalogResponse(metas=[])
-
-    parts = search.split("-", 1)
-    if len(parts) < 2 or parts[0] != "t":
-        return StremioCatalogResponse(metas=[])
-
-    torrent_id = parts[1]
-
-    try:
-        meta_previews = await stremio_service.get_metas(torrent_id)
-    except Exception as e:
-        logger.error("A lista lekérésénél hiba történt: %s", e)
-        meta_previews = []
-
-    return StremioCatalogResponse(metas=meta_previews)
-
-
-# ──────────────────────────────────────────────
-# Meta
-# ──────────────────────────────────────────────
+    return await stremio_service.get_catalog(
+        media_type,
+        catalog_id,
+        parsed_extra,
+    )
 
 
 @router.get(
@@ -160,7 +118,10 @@ async def meta(
     if media_type != MediaType.MOVIE or parsed_id is None:
         return MetaResponse(meta={})
 
-    result = await stremio_service.get_meta(parsed_id.tracker_id, parsed_id.torrent_id)
+    result = await stremio_service.get_meta(
+        tracker_id=parsed_id.tracker_id,
+        torrent_id=parsed_id.torrent_id,
+    )
 
     if not result:
         return MetaResponse(meta={})

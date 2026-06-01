@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { TokenRegenerate } from '@/features/token-regenerate/token-regenerate'
-import { useRegenerateMeToken } from '@/shared/queries/me'
+import { useRegenerateApiKey } from '@/shared/queries/me'
 
 import { LoginAndSecurity } from './-features/login-and-security'
 
@@ -10,10 +10,10 @@ export const Route = createFileRoute('/_protected/settings/account/')({
 })
 
 function RouteComponent() {
-  const { mutateAsync: regenerateMeToken } = useRegenerateMeToken()
+  const { mutateAsync: regenerateApiKey } = useRegenerateApiKey()
 
   const handleRegenerateToken = async () => {
-    await regenerateMeToken()
+    await regenerateApiKey()
   }
 
   return (

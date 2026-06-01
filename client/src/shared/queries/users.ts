@@ -10,11 +10,11 @@ import type {
 } from '@/shared/lib/source/source-client'
 import {
   usersCreate,
-  usersDeleteOne,
-  usersFind,
-  usersFindOne,
-  usersRegenerateToken,
-  usersUpdateOne,
+  usersDelete,
+  usersGet,
+  usersGetList,
+  usersRegenerateApiKey,
+  usersUpdate,
 } from '@/shared/lib/source/source-client'
 
 import { getMe } from './me'
@@ -22,7 +22,7 @@ import { getMe } from './me'
 export const getUsers = queryOptions({
   queryKey: ['users'],
   queryFn: async () => {
-    const users = await usersFind()
+    const users = await usersGetList()
     return users
   },
 })
@@ -31,7 +31,7 @@ export const getUser = (userId: string) =>
   queryOptions({
     queryKey: ['users', userId],
     queryFn: async () => {
-      const user = await usersFindOne(userId)
+      const user = await usersGet(userId)
       return user
     },
   })
@@ -53,7 +53,7 @@ export function useDeleteUser() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (userId: string) => {
-      await usersDeleteOne(userId)
+      await usersDelete(userId)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: getUsers.queryKey })
@@ -65,7 +65,7 @@ export function useRegenerateUserToken() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (userId: string) => {
-      const user = await usersRegenerateToken(userId)
+      const user = await usersRegenerateApiKey(userId)
       return user
     },
     onSuccess: (updated) => {
@@ -84,7 +84,7 @@ export function useUpdateUser() {
   return useMutation({
     mutationFn: async (data: { userId: string; payload: UpdateUserDto }) => {
       const { userId, payload } = data
-      const user = await usersUpdateOne(userId, payload)
+      const user = await usersUpdate(userId, payload)
       return user
     },
     onSuccess: (updated) => {

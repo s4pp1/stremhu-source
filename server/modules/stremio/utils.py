@@ -113,13 +113,13 @@ def parse_extra(value: str | None) -> ParsedExtra:
         if len(key_value) != 2:
             continue
 
-        key, val = key_value
+        key, value = key_value
 
         if key == "skip":
-            skip = int(val)
+            skip = int(value)
         elif key == "search":
-            search = val
+            search = value
         elif key == "genre":
-            genre = val
+            genre = value
 
     return ParsedExtra(search=search, genre=genre, skip=skip)
