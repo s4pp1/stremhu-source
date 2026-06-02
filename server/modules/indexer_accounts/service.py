@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
 from modules.indexer_accounts.models import IndexerAccountModel
 from modules.indexer_accounts.repository import IndexerAccountsRepository
-from modules.indexer_accounts.schemas import IndexerAccountCreate
+from modules.indexer_accounts.schemas import IndexerAccountCreate, IndexerAccountUpdate
 
 
 class IndexerAccountsService:
@@ -21,11 +21,14 @@ class IndexerAccountsService:
             )
         return self._indexer_accounts_repository.create(payload)
 
-    def get_by_id(self, indexer_definition_id: str) -> IndexerAccountModel | None:
-        return self._indexer_accounts_repository.find_by_id(indexer_definition_id)
+    def find_list(self) -> list[IndexerAccountModel]:
+        return self._indexer_accounts_repository.find_list()
 
-    def get_by_id_or_raise(self, indexer_definition_id: str) -> IndexerAccountModel:
-        indexer_account = self.get_by_id(indexer_definition_id)
+    def find_by_id(self, indexer_id: str) -> IndexerAccountModel | None:
+        return self._indexer_accounts_repository.find_by_id(indexer_id)
+
+    def get_by_id(self, indexer_id: str) -> IndexerAccountModel:
+        indexer_account = self.find_by_id(indexer_id)
         if indexer_account is None:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -33,5 +36,17 @@ class IndexerAccountsService:
             )
         return indexer_account
 
-    def get_list(self) -> list[IndexerAccountModel]:
-        return self._indexer_accounts_repository.find_all()
+    def update(
+        self,
+        indexer_id: str,
+        payload: IndexerAccountUpdate,
+    ) -> None:
+        indexer_account = self.get_by_id(indexer_id)
+        if payload.hit_and_run is not None:
+            indexer_account.hit_and_run = payload.hit_and_run
+        if payload.keep_seed_seconds is not None:
+            indexer_account.keep_seed_seconds = payload.keep_seed_seconds
+        if payload.download_full_torrent is not None:
+            indexer_account.download_full_torrent = payload.download_full_torrent
+
+        self._indexer_accounts_repository.update(indexer_account)

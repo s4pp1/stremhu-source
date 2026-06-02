@@ -23,7 +23,7 @@ class IndexerAccountsRepository:
 
         return model
 
-    def find_all(self) -> list[IndexerAccountModel]:
+    def find_list(self) -> list[IndexerAccountModel]:
         return self.db.query(IndexerAccountModel).all()
 
     def find_by_id(self, indexer_id: str) -> IndexerAccountModel | None:

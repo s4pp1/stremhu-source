@@ -13,20 +13,7 @@ class TorrentFilesRepository:
         self.db.flush()
         return model
 
-    def find_one(self, indexer_id: str, torrent_id: str) -> TorrentFileModel | None:
-        return (
-            self.db.query(TorrentFileModel)
-            .filter_by(
-                indexer_id=indexer_id,
-                torrent_id=torrent_id,
-            )
-            .first()
-        )
-
-    def find_by_info_hash(self, info_hash: str) -> TorrentFileModel | None:
-        return self.db.query(TorrentFileModel).filter_by(info_hash=info_hash).first()
-
-    def find_all(
+    def find_list(
         self,
         filter: TorrentFilesFilter | None = None,
     ) -> list[TorrentFileModel]:
@@ -52,6 +39,19 @@ class TorrentFilesRepository:
                 query = query.filter(~TorrentFileModel.torrent.has())
 
         return query.all()
+
+    def find_by_id(self, indexer_id: str, torrent_id: str) -> TorrentFileModel | None:
+        return (
+            self.db.query(TorrentFileModel)
+            .filter_by(
+                indexer_id=indexer_id,
+                torrent_id=torrent_id,
+            )
+            .first()
+        )
+
+    def find_by_info_hash(self, info_hash: str) -> TorrentFileModel | None:
+        return self.db.query(TorrentFileModel).filter_by(info_hash=info_hash).first()
 
     def delete(self, model: TorrentFileModel) -> None:
         self.db.delete(model)

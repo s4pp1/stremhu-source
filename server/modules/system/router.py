@@ -10,16 +10,16 @@ from modules.settings.service import SettingsService
 from modules.users.models import UserModel
 
 router = APIRouter(
-    prefix="/setting",
-    tags=["Setting"],
+    prefix="/system",
+    tags=["System"],
 )
 
 
 @router.get(
-    "/",
+    "/settings",
     response_model=SystemSettings,
 )
-def get_app_settings(
+def get_settings(
     settings_service: SettingsService = Depends(get_settings_service),
     _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
 ) -> SystemSettings:
@@ -27,10 +27,10 @@ def get_app_settings(
 
 
 @router.put(
-    "/",
+    "/settings",
     response_model=SystemSettings,
 )
-def update_app_settings(
+def update_settings(
     payload: SystemSettingsSave,
     settings_service: SettingsService = Depends(get_settings_service),
     _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),

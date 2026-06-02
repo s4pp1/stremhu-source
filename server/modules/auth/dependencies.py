@@ -75,7 +75,7 @@ class ApiKeyGuard:
                 detail="Az API kulcs nincs megadva.",
             )
 
-        user = users_service.get_by_token(api_key)
+        user = users_service.find_by_api_key(api_key)
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,

@@ -21,7 +21,7 @@ class TorrentFilesService:
         torrent_bytes: bytes,
     ) -> TorrentFileModel:
         """Elmenti a .torrent fájl bájtjait az adatbázisba."""
-        torrent_file = self.get_one(
+        torrent_file = self.find_by_id(
             indexer_id=indexer_id,
             torrent_id=torrent_id,
         )
@@ -40,22 +40,22 @@ class TorrentFilesService:
             )
         )
 
-    def get_list(
+    def find_list(
         self, filter: TorrentFilesFilter | None = None
     ) -> list[TorrentFileModel]:
-        return self._torrent_files_repository.find_all(filter)
+        return self._torrent_files_repository.find_list(filter)
 
-    def get_one(self, indexer_id: str, torrent_id: str) -> TorrentFileModel | None:
-        return self._torrent_files_repository.find_one(
+    def find_by_id(self, indexer_id: str, torrent_id: str) -> TorrentFileModel | None:
+        return self._torrent_files_repository.find_by_id(
             indexer_id=indexer_id,
             torrent_id=torrent_id,
         )
 
-    def get_by_info_hash(self, info_hash: str) -> TorrentFileModel | None:
+    def find_by_info_hash(self, info_hash: str) -> TorrentFileModel | None:
         return self._torrent_files_repository.find_by_info_hash(info_hash)
 
-    def get_one_or_raise(self, indexer_id: str, torrent_id: str) -> TorrentFileModel:
-        record = self.get_one(indexer_id, torrent_id)
+    def get_by_id(self, indexer_id: str, torrent_id: str) -> TorrentFileModel:
+        record = self.find_by_id(indexer_id, torrent_id)
         if not record:
             raise HTTPException(
                 status_code=404,
@@ -65,7 +65,7 @@ class TorrentFilesService:
 
     def delete(self, indexer_id: str, torrent_id: str) -> None:
         """Töröl egy konkrét gyorsítótárazott .torrent rekordot az adatbázisból."""
-        record = self._torrent_files_repository.find_one(
+        record = self._torrent_files_repository.find_by_id(
             indexer_id=indexer_id,
             torrent_id=torrent_id,
         )
@@ -80,9 +80,9 @@ class TorrentFilesService:
                     f"Hiba történt a(z) {indexer_id} - {torrent_id} rekord törlése során: {e}"
                 )
 
-    def delete_all_by_indexer(self, indexer_id: str) -> None:
+    def delete_all_by_indexer_id(self, indexer_id: str) -> None:
         """Törli az indexer összes inaktív .torrent rekordját az adatbázisból."""
-        torrent_files = self._torrent_files_repository.find_all(
+        torrent_files = self._torrent_files_repository.find_list(
             TorrentFilesFilter(
                 indexer_id=indexer_id,
                 exclude_persisted=True,
@@ -109,7 +109,7 @@ class TorrentFilesService:
 
         now = datetime.datetime.now()
 
-        torrent_files = self._torrent_files_repository.find_all(
+        torrent_files = self._torrent_files_repository.find_list(
             filter=TorrentFilesFilter(
                 exclude_persisted=True,
             )

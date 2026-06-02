@@ -80,7 +80,7 @@ def regenerate_api_key(
     users_service: UsersService = Depends(get_users_service),
     _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
 ) -> UserModel:
-    return users_service.regenerate_token(user_id)
+    return users_service.regenerate_api_key(user_id)
 
 
 @router.delete(

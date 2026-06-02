@@ -1,15 +1,14 @@
 import asyncio
-from common.logger import logger
 import os
 import sys
 
+from common.logger import logger
+
+
 class SystemService:
     async def restart(self):
-        """Ütemezi a szerverfolyamat automatikus újraindítását."""
-        logger.info("⏱️ Szerver újraindítás ütemezve 2 másodperc múlva...")
         await asyncio.sleep(2)
         try:
-            logger.info("🚀 Szerver újraindítása folyamatban...")
             os.execv(sys.executable, [sys.executable] + sys.argv)
         except Exception as e:
             logger.critical(

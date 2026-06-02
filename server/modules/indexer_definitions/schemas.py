@@ -1,15 +1,8 @@
 from modules.attributes.models import AttributeModel
-from pydantic import BaseModel, ConfigDict
-from pydantic.alias_generators import to_camel
+from pydantic import BaseModel
 
 
 class IndexerDefinition(BaseModel):
-    model_config = ConfigDict(
-        from_attributes=True,
-        populate_by_name=True,
-        alias_generator=to_camel,
-    )
-
     id: str
     name: str
     url: str

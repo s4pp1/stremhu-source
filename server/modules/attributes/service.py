@@ -9,7 +9,7 @@ class AttributesService:
         """Initializes the service with the attributes repository."""
         self._repository = repository
 
-    def get_all(self) -> list[AttributeModel]:
+    def find_list(self) -> list[AttributeModel]:
         """Fetches all attributes."""
         return self._repository.find_all()
 
@@ -19,7 +19,7 @@ class AttributesService:
 
     def get_all_as_map(self) -> dict[str, AttributeModel]:
         """Fetches all attributes as a dictionary mapping ID to AttributeModel."""
-        return {model.id: model for model in self.get_all()}
+        return {model.id: model for model in self.find_list()}
 
     def sync_to_db(self) -> None:
         """Szinkronizálja a kódbázisban definiált attribútumokat az adatbázissal.

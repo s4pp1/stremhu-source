@@ -15,8 +15,8 @@ class UsersRepository:
     def find_by_username(self, username: str) -> UserModel | None:
         return self.db.query(UserModel).filter_by(username=username).first()
 
-    def find_by_token(self, token: str) -> UserModel | None:
-        return self.db.query(UserModel).filter_by(token=token).first()
+    def find_by_api_key(self, api_key: str) -> UserModel | None:
+        return self.db.query(UserModel).filter_by(api_key=api_key).first()
 
     def count(self) -> int:
         return self.db.query(UserModel).count()

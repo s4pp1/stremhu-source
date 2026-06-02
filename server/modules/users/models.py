@@ -25,7 +25,6 @@ class UserModel(Base):
         sa.String,
         unique=True,
         index=True,
-        nullable=False,
     )
 
     id: Mapped[str] = mapped_column(
@@ -37,39 +36,33 @@ class UserModel(Base):
     password_hash: Mapped[str | None] = mapped_column(
         sa.Text,
         default=None,
-        nullable=True,
     )
 
-    token: Mapped[str] = mapped_column(
+    api_key: Mapped[str] = mapped_column(
         sa.String,
         default_factory=lambda: str(uuid.uuid4()),
         index=True,
-        nullable=False,
     )
 
     role_id: Mapped[UserRole] = mapped_column(
         sa.ForeignKey("roles.id"),
         default=UserRole.USER,
-        nullable=False,
     )
 
     role: Mapped["RoleModel"] = relationship("RoleModel", init=False)
 
     torrent_seed: Mapped[int | None] = mapped_column(
         default=None,
-        nullable=True,
     )
 
     only_best_torrent: Mapped[bool] = mapped_column(
         default=False,
-        nullable=False,
     )
 
     created_at: Mapped[datetime] = mapped_column(
         UTCDateTime,
         default_factory=datetime.now,
         server_default=sa.func.now(),
-        nullable=False,
     )
 
     updated_at: Mapped[datetime] = mapped_column(
@@ -77,5 +70,4 @@ class UserModel(Base):
         default_factory=datetime.now,
         server_default=sa.func.now(),
         onupdate=sa.func.now(),
-        nullable=False,
     )

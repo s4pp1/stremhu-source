@@ -1,7 +1,6 @@
-from common.logger import logger
-
 import libtorrent as libtorrent
 from common.constants import PRIO_0, PRIO_1
+from common.logger import logger
 from fastapi import HTTPException
 from modules.relay.service import RelayService
 from modules.torrent_files.models import TorrentFileModel
@@ -9,6 +8,7 @@ from modules.torrent_files.service import TorrentFilesService
 from modules.torrents.models import TorrentModel
 from modules.torrents.repository import TorrentRepository
 from modules.torrents.schemas import TorrentPair, TorrentUpdate
+
 
 class TorrentsService:
     def __init__(
@@ -58,7 +58,7 @@ class TorrentsService:
 
         return TorrentPair(torrent=torrent, relay=relay_torrent)
 
-    def get_one(
+    def find_by_id(
         self,
         indexer_id: str,
         torrent_id: str,
@@ -73,7 +73,7 @@ class TorrentsService:
         relay_torrent = self._relay_service.get_torrent_or_raise(torrent.info_hash)
         return TorrentPair(torrent=torrent, relay=relay_torrent)
 
-    def get_or_raise(
+    def get_by_info_hash(
         self,
         info_hash: str,
     ) -> TorrentPair:
@@ -111,6 +111,16 @@ class TorrentsService:
         relay_torrent = self._relay_service.get_torrent_or_raise(info_hash)
         return TorrentPair(torrent=persisted, relay=relay_torrent)
 
+    def bulk_update_by_indexer_id(
+        self,
+        indexer_id: str,
+        payload: TorrentUpdate,
+    ) -> None:
+        torrents = self._torrent_repository.find_by_indexer_id(indexer_id)
+
+        for torrent in torrents:
+            self.update(torrent.info_hash, payload)
+
     def delete(
         self,
         info_hash: str,
@@ -118,11 +128,11 @@ class TorrentsService:
         self._torrent_repository.delete(info_hash=info_hash)
         self._relay_service.delete_torrent(info_hash=info_hash)
 
-    def delete_all_by_indexer(self, indexer_id: str) -> None:
-        torrents = self._torrent_repository.find_by_indexer(indexer_id)
+    def delete_all_by_indexer_id(self, indexer_id: str) -> None:
+        torrents = self._torrent_repository.find_by_indexer_id(indexer_id)
         for torrent in torrents:
             self.delete(torrent.info_hash)
-        self._torrent_files_service.delete_all_by_indexer(indexer_id)
+        self._torrent_files_service.delete_all_by_indexer_id(indexer_id)
 
     def cleanup_tracker_torrents(
         self,

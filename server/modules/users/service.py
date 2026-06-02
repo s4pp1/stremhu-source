@@ -26,7 +26,7 @@ class UsersService:
             username=payload.username,
             password_hash=password_hash,
             role_id=payload.role_id,
-            token=str(uuid.uuid4()),
+            api_key=str(uuid.uuid4()),
             torrent_seed=payload.torrent_seed,
             only_best_torrent=payload.only_best_torrent,
         )
@@ -37,7 +37,7 @@ class UsersService:
             username=payload.username,
             password_hash=password_hash,
             role_id=payload.role_id,
-            token=str(uuid.uuid4()),
+            api_key=str(uuid.uuid4()),
             torrent_seed=payload.torrent_seed,
             only_best_torrent=payload.only_best_torrent,
         )
@@ -59,8 +59,8 @@ class UsersService:
     def find_by_username(self, username: str) -> UserModel | None:
         return self._users_repository.find_by_username(username)
 
-    def find_by_token(self, token: str) -> UserModel | None:
-        return self._users_repository.find_by_token(token)
+    def find_by_api_key(self, api_key: str) -> UserModel | None:
+        return self._users_repository.find_by_api_key(api_key)
 
     def count(self) -> int:
         return self._users_repository.count()
@@ -89,9 +89,9 @@ class UsersService:
 
         return self._users_repository.create(user)
 
-    def regenerate_token(self, user_id: str) -> UserModel:
+    def regenerate_api_key(self, user_id: str) -> UserModel:
         user = self.get_by_id(user_id)
-        user.token = str(uuid.uuid4())
+        user.api_key = str(uuid.uuid4())
         return self._users_repository.create(user)
 
     def delete(self, user_id: str, current_user: UserModel) -> None:

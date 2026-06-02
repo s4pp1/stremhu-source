@@ -3,7 +3,7 @@ import asyncio
 from common.logger import logger
 from fastapi import HTTPException, status
 from modules.indexer_accounts.models import IndexerAccountModel
-from modules.indexer_accounts.schemas import IndexerAccountCreate
+from modules.indexer_accounts.schemas import IndexerAccountCreate, IndexerAccountUpdate
 from modules.indexer_accounts.service import IndexerAccountsService
 from modules.indexer_definitions.exceptions import (
     AuthenticationException,
@@ -11,9 +11,14 @@ from modules.indexer_definitions.exceptions import (
 )
 from modules.indexer_definitions.schemas import IndexerDefinitionLogin
 from modules.indexer_definitions.service import IndexerDefinitionsService
-from modules.indexers.schemas import DownloadedTorrentFile, IndexerLogin, IndexerTorrent
+from modules.indexers.schemas.internal import (
+    DownloadedTorrentFile,
+    IndexerLogin,
+    IndexerTorrent,
+)
 from modules.settings.schemas import SystemSettings
 from modules.settings.service import SettingsService
+from modules.torrents.schemas import TorrentUpdate
 from modules.torrents.service import TorrentsService
 
 
@@ -81,11 +86,41 @@ class IndexersService:
                 detail="Bejelentkezés közben hiba történt, próbáld újra!",
             )
 
+    async def update(
+        self,
+        indexer_id: str,
+        payload: IndexerAccountUpdate,
+    ) -> None:
+        indexer_definition = self._indexer_definitions_service.get_by_id(indexer_id)
+
+        if (
+            payload.download_full_torrent is not None
+            and payload.download_full_torrent
+            != indexer_definition.requires_full_download
+        ):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Nem lehetséges a '{indexer_definition.name}' letöltési beállításának módosítása!",
+            )
+        else:
+            self._torrents_service.bulk_update_by_indexer_id(
+                indexer_id=indexer_id,
+                payload=TorrentUpdate(
+                    download_full_torrent=payload.download_full_torrent,
+                ),
+            )
+
+        self._indexer_accounts_service.update(indexer_id, payload)
+
+    async def delete(self, indexer_id: str) -> None:
+        pass
+
     async def get_torrents_by_torrent_id(
-        self, torrent_id: str
+        self,
+        torrent_id: str,
     ) -> tuple[list[IndexerTorrent], list[str]]:
         indexer_accounts = await asyncio.to_thread(
-            self._indexer_accounts_service.get_list
+            self._indexer_accounts_service.find_list
         )
 
         async def fetch_and_map(indexer_account: IndexerAccountModel) -> IndexerTorrent:
@@ -124,7 +159,7 @@ class IndexersService:
         torrent_id: str,
     ) -> IndexerTorrent:
         indexer_account = await asyncio.to_thread(
-            self._indexer_accounts_service.get_by_id_or_raise, indexer_id
+            self._indexer_accounts_service.get_by_id, indexer_id
         )
 
         indexer_definition = self._indexer_definitions_service.get_by_id(
@@ -143,10 +178,11 @@ class IndexersService:
         )
 
     async def get_torrents_by_imdb_id(
-        self, imdb_id: str
+        self,
+        imdb_id: str,
     ) -> tuple[list[IndexerTorrent], list[str]]:
         indexer_accounts = await asyncio.to_thread(
-            self._indexer_accounts_service.get_list
+            self._indexer_accounts_service.find_list
         )
 
         async def fetch_and_map(
@@ -186,10 +222,13 @@ class IndexersService:
         return indexer_torrents, errors
 
     async def download_torrent(
-        self, indexer_id: str, torrent_id: str, download_url: str
+        self,
+        indexer_id: str,
+        torrent_id: str,
+        download_url: str,
     ) -> DownloadedTorrentFile:
         indexer_account = await asyncio.to_thread(
-            self._indexer_accounts_service.get_by_id_or_raise, indexer_id
+            self._indexer_accounts_service.get_by_id, indexer_id
         )
 
         indexer_definition = self._indexer_definitions_service.get_by_id(
@@ -207,7 +246,7 @@ class IndexersService:
         """Karbantartási takarítás futtatása a bejelentkezett indexerekre a seed/hit and run szabályok alapján."""
 
         indexer_accounts = await asyncio.to_thread(
-            self._indexer_accounts_service.get_list
+            self._indexer_accounts_service.find_list
         )
         system_settings = await asyncio.to_thread(
             self._settings_service.get_system_or_raise

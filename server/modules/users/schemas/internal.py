@@ -27,7 +27,7 @@ class UserUpdate(BaseModel):
 class User(BaseUser):
     id: str
     role: Role
-    token: str
+    api_key: str
     updated_at: datetime
     created_at: datetime
 

@@ -54,7 +54,7 @@ def regenerate_api_key(
     """
     Regenerates the current user's API key.
     """
-    return users_service.regenerate_token(current_user.id)
+    return users_service.regenerate_api_key(current_user.id)
 
 
 @router.get("/preferences", response_model=list[Preference])

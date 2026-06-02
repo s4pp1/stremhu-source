@@ -36,7 +36,7 @@ class TorrentRepository:
     def delete(self, info_hash: str) -> None:
         self.db.query(TorrentModel).filter_by(info_hash=info_hash).delete()
 
-    def find_by_indexer(self, indexer_id: str) -> list[TorrentModel]:
+    def find_by_indexer_id(self, indexer_id: str) -> list[TorrentModel]:
         return self.db.query(TorrentModel).filter_by(indexer_id=indexer_id).all()
 
     def find_for_cleanup(

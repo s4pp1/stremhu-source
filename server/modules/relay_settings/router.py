@@ -10,16 +10,16 @@ from modules.settings.schemas import (
 from modules.users.models import UserModel
 
 router = APIRouter(
-    prefix="/setting/relay",
-    tags=["Setting"],
+    prefix="/relay",
+    tags=["Relay"],
 )
 
 
 @router.get(
-    "/",
+    "/settings",
     response_model=RelaySettings,
 )
-def get_relay_settings(
+def get_settings(
     relay_settings_service: RelaySettingsService = Depends(get_relay_settings_service),
     _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
 ) -> RelaySettings:
@@ -27,10 +27,10 @@ def get_relay_settings(
 
 
 @router.put(
-    "/",
+    "/settings",
     response_model=RelaySettings,
 )
-def update_relay_settings(
+def update_settings(
     payload: RelaySettingsUpdateRequest,
     relay_settings_service: RelaySettingsService = Depends(get_relay_settings_service),
     _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
