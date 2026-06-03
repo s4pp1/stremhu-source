@@ -1,8 +1,8 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 
+import { getTrackers } from '@/shared/queries/indexers'
 import { getRelaySettings } from '@/shared/queries/relay'
 import { getTorrents } from '@/shared/queries/torrents'
-import { getTrackers } from '@/shared/queries/trackers'
 
 export const RELAY_TORRENTS_NAME = 'Torrentek'
 

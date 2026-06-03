@@ -17,7 +17,7 @@ export default defineConfig(({ command }) => ({
   },
   server: {
     proxy: {
-      '/api': 'http://localhost:3000',
+      '/api': 'https://localhost:7070',
     },
   },
   build: {

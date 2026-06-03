@@ -40,8 +40,8 @@ import {
 import { useMetadata } from '@/shared/hooks/use-metadata'
 import type { TorrentDto } from '@/shared/lib/source/source-client'
 import { assertExists, formatDateTime, parseApiError } from '@/shared/lib/utils'
+import { getTrackers } from '@/shared/queries/indexers'
 import { useDeleteTorrent, useUpdateTorrent } from '@/shared/queries/torrents'
-import { getTrackers } from '@/shared/queries/trackers'
 import { formatFilesize } from '@/shared/utils/file.util'
 
 interface TorrentProps {

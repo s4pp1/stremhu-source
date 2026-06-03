@@ -22,8 +22,8 @@ import {
 import { Separator } from '@/shared/components/ui/separator'
 import type { TrackerEnum } from '@/shared/lib/source/source-client'
 import { assertExists } from '@/shared/lib/utils'
+import { getTrackers } from '@/shared/queries/indexers'
 import { getMetadata } from '@/shared/queries/metadata'
-import { getTrackers } from '@/shared/queries/trackers'
 
 import { TrackerItem } from '../-components/tracker-item'
 

@@ -324,23 +324,15 @@ export interface NetworkManualSetup {
   reverseProxy: boolean
 }
 
-export interface PairInit {
+export interface PairInitResponse {
   userCode: string
   deviceCode: string
   expiresAt: string
 }
 
-export interface PairStatus {
+export interface PairStatusResponse {
   status: string
   token?: string | null
-}
-
-export interface PairStatusRequest {
-  deviceCode: string
-}
-
-export interface PairVerify {
-  success: boolean
 }
 
 export interface PairVerifyRequest {
@@ -397,12 +389,15 @@ export interface StremioStreams {
   streams: StremioStream[]
 }
 
+export interface SuccessResponse {
+  success: boolean
+  message?: string | null
+}
+
 export interface SystemSettingsResponse {
-  instanceId?: string
   hitAndRun?: boolean
   keepSeedSeconds?: number
   cacheRetentionSeconds?: number
-  catalogToken?: string | null
 }
 
 export interface SystemSettingsUpdateRequest {
@@ -577,9 +572,9 @@ export const authLogout = (
  * @summary Init
  */
 export const pairingInit = (
-  options?: SecondParameter<typeof sourceClientInstance<PairInit>>,
+  options?: SecondParameter<typeof sourceClientInstance<PairInitResponse>>,
 ) => {
-  return sourceClientInstance<PairInit>(
+  return sourceClientInstance<PairInitResponse>(
     { url: `/api/auth/pair/init`, method: 'POST' },
     options,
   )
@@ -590,16 +585,11 @@ export const pairingInit = (
  * @summary Status
  */
 export const pairingStatus = (
-  pairStatusRequest: PairStatusRequest,
-  options?: SecondParameter<typeof sourceClientInstance<PairStatus>>,
+  deviceCode: string,
+  options?: SecondParameter<typeof sourceClientInstance<PairStatusResponse>>,
 ) => {
-  return sourceClientInstance<PairStatus>(
-    {
-      url: `/api/auth/pair/status`,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      data: pairStatusRequest,
-    },
+  return sourceClientInstance<PairStatusResponse>(
+    { url: `/api/auth/pair/status/${deviceCode}`, method: 'GET' },
     options,
   )
 }
@@ -610,9 +600,9 @@ export const pairingStatus = (
  */
 export const pairingVerify = (
   pairVerifyRequest: PairVerifyRequest,
-  options?: SecondParameter<typeof sourceClientInstance<PairVerify>>,
+  options?: SecondParameter<typeof sourceClientInstance<SuccessResponse>>,
 ) => {
-  return sourceClientInstance<PairVerify>(
+  return sourceClientInstance<SuccessResponse>(
     {
       url: `/api/auth/pair/verify`,
       method: 'POST',

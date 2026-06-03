@@ -5,8 +5,8 @@ import {
 } from '@tanstack/react-query'
 
 import type {
-  CreateUserDto,
-  UpdateUserDto,
+  UserCreateRequest,
+  UserUpdateRequest,
 } from '@/shared/lib/source/source-client'
 import {
   usersCreate,
@@ -39,7 +39,7 @@ export const getUser = (userId: string) =>
 export function useAddUser() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (payload: CreateUserDto) => {
+    mutationFn: async (payload: UserCreateRequest) => {
       const user = await usersCreate(payload)
       return user
     },
@@ -70,7 +70,7 @@ export function useRegenerateUserToken() {
     },
     onSuccess: (updated) => {
       queryClient.invalidateQueries({ queryKey: getUsers.queryKey })
-      queryClient.setQueryData(getMe.queryKey, (prev) => {
+      queryClient.setQueryData(getMe().queryKey, (prev) => {
         if (!prev) return prev
         const isSelf = prev.id === updated.id
         return isSelf ? updated : prev
@@ -82,14 +82,17 @@ export function useRegenerateUserToken() {
 export function useUpdateUser() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async (data: { userId: string; payload: UpdateUserDto }) => {
+    mutationFn: async (data: {
+      userId: string
+      payload: UserUpdateRequest
+    }) => {
       const { userId, payload } = data
       const user = await usersUpdate(userId, payload)
       return user
     },
     onSuccess: (updated) => {
       queryClient.invalidateQueries({ queryKey: getUsers.queryKey })
-      queryClient.setQueryData(getMe.queryKey, (prev) => {
+      queryClient.setQueryData(getMe().queryKey, (prev) => {
         if (!prev) return prev
         const isSelf = prev.id === updated.id
         return isSelf ? updated : prev

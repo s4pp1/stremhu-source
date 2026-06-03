@@ -25,8 +25,8 @@ import {
 import { useMetadata } from '@/shared/hooks/use-metadata'
 import type { TrackerDto } from '@/shared/lib/source/source-client'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
+import { useDeleteTracker } from '@/shared/queries/indexers'
 import { getSettings } from '@/shared/queries/settings'
-import { useDeleteTracker } from '@/shared/queries/trackers'
 
 type Tracker = {
   tracker: TrackerDto

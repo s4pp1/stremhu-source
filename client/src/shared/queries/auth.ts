@@ -12,7 +12,6 @@ import {
   pairingVerify,
 } from '../lib/source/source-client'
 import { getMe } from './me'
-import { getSettingsStatus } from './settings-setup'
 
 export function useLogin() {
   const queryClient = useQueryClient()
@@ -22,7 +21,7 @@ export function useLogin() {
       return response
     },
     onSuccess: async () => {
-      await queryClient.fetchQuery({ ...getMe, staleTime: 0 })
+      await queryClient.fetchQuery({ ...getMe(), staleTime: 0 })
     },
   })
 }
@@ -35,7 +34,7 @@ export function useLogout() {
       await authLogout()
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: getMe.queryKey })
+      await queryClient.invalidateQueries({ queryKey: getMe().queryKey })
       queryClient.clear()
     },
   })
@@ -49,8 +48,7 @@ export function useRegistration() {
       await authRegister(payload)
     },
     onSuccess: async () => {
-      await queryClient.fetchQuery({ ...getMe, staleTime: 0 })
-      await queryClient.fetchQuery({ ...getSettingsStatus, staleTime: 0 })
+      await queryClient.fetchQuery({ ...getMe(), staleTime: 0 })
     },
   })
 }

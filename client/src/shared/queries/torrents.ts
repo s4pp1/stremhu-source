@@ -4,10 +4,10 @@ import {
   useQueryClient,
 } from '@tanstack/react-query'
 
-import type { UpdateTorrentDto } from '../lib/source/source-client'
+import type { TorrentUpdateRequest } from '../lib/source/source-client'
 import {
   torrentsDelete,
-  torrentsFind,
+  torrentsGetList,
   torrentsUpdate,
 } from '../lib/source/source-client'
 
@@ -15,7 +15,7 @@ export const getTorrents = queryOptions({
   queryKey: ['torrents'],
   refetchInterval: 5000,
   queryFn: async () => {
-    const response = await torrentsFind()
+    const response = await torrentsGetList()
 
     return response
   },
@@ -25,7 +25,7 @@ export function useUpdateTorrent(infoHash: string) {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (payload: UpdateTorrentDto) => {
+    mutationFn: async (payload: TorrentUpdateRequest) => {
       await torrentsUpdate(infoHash, payload)
     },
     onSuccess: () => {

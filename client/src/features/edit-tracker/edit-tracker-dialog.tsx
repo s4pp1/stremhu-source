@@ -34,7 +34,7 @@ import { Switch } from '@/shared/components/ui/switch'
 import { useAppForm } from '@/shared/contexts/form-context'
 import { useMetadata } from '@/shared/hooks/use-metadata'
 import { parseApiError } from '@/shared/lib/utils'
-import { useUpdateTracker } from '@/shared/queries/trackers'
+import { useUpdateTracker } from '@/shared/queries/indexers'
 
 import { HIT_AND_RUN_OPTIONS } from './edit-tracker.contant'
 import type { EditTrackerDialog } from './edit-tracker.type'

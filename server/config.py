@@ -22,29 +22,11 @@ class Config(BaseSettings):
     node_env: NodeEnv = NodeEnv.PRODUCTION
     version: str = "0.0.0"
     description: str = "Torrentalapú streaming magyar trackeroldalakra építve."
-    stremhu_catalog_url: str = "https://catalog.stremhu.app"
     session_secret: str = "stremhu-source"
     host_ip: str = Field(default="", min_length=1)
 
-    @field_validator("host_ip")
-    @classmethod
-    def validate_host_ip(cls, value: str) -> str:
-        try:
-            ip_obj = ipaddress.ip_address(value)
-        except ValueError:
-            raise ValueError(
-                f"🚨 Hiba: A megadott HOST_IP ({value}) formátuma érvénytelen! Kérlek érvényes IPv4 címet adj meg!"
-            )
-
-        if not ip_obj.is_private and value != "127.0.0.1":
-            raise ValueError(
-                f"🚨 Hiba: A megadott HOST_IP ({value}) nem egy helyi/privát IP-cím! A helyi eléréshez magánhálózati IP szükséges!"
-            )
-
-        return value
-
     # Server Ports
-    port: int = 4300
+    port: int = 7070
 
     @property
     def libtorrent_port(self) -> int:
@@ -79,6 +61,23 @@ class Config(BaseSettings):
     @property
     def client_path(self) -> Path:
         return Path(__file__).resolve().parent / "client"
+
+    @field_validator("host_ip")
+    @classmethod
+    def validate_host_ip(cls, value: str) -> str:
+        try:
+            ip_obj = ipaddress.ip_address(value)
+        except ValueError:
+            raise ValueError(
+                f"🚨 Hiba: A megadott HOST_IP ({value}) formátuma érvénytelen! Kérlek érvényes IPv4 címet adj meg!"
+            )
+
+        if not ip_obj.is_private and value != "127.0.0.1":
+            raise ValueError(
+                f"🚨 Hiba: A megadott HOST_IP ({value}) nem egy helyi/privát IP-cím! A helyi eléréshez magánhálózati IP szükséges!"
+            )
+
+        return value
 
 
 config = Config()

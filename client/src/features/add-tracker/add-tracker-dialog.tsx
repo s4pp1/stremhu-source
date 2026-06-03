@@ -24,8 +24,8 @@ import {
 import { useAppForm } from '@/shared/contexts/form-context'
 import { TrackerEnum } from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
+import { useLoginTracker } from '@/shared/queries/indexers'
 import { getMetadata } from '@/shared/queries/metadata'
-import { useLoginTracker } from '@/shared/queries/trackers'
 
 import type { AddTrackerDialog } from './add-tracker.types'
 

@@ -1,5 +1,4 @@
 from typing import Annotated, Literal
-from uuid import uuid4
 
 from config import config
 from modules.settings.enums import NetworkConnectionEnum, NetworkModeEnum
@@ -58,13 +57,9 @@ NetworkSettings = Annotated[
 
 
 class SystemSettings(BaseModel):
-    instance_id: str = Field(
-        default_factory=lambda: str(uuid4()),
-    )
     hit_and_run: bool = True
     keep_seed_seconds: int = 0
     cache_retention_seconds: int = 14 * 24 * 60 * 60  # 14 nap másodpercekben
-    catalog_token: str | None = None
 
 
 class SystemSettingsUpdate(BaseModel):
