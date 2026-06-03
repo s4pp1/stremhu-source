@@ -6,7 +6,7 @@
  */
 import { sourceClientInstance } from './source-client-instance'
 
-export interface Attribute {
+export interface AttributeResponse {
   id: string
   name: string
 }
@@ -71,7 +71,24 @@ export interface Health {
   startTime: number
 }
 
-export interface Indexer {
+export interface IndexerDefinition {
+  id: string
+  name: string
+  url: string
+  details_path: string
+  requires_full_download: boolean
+}
+
+export type IndexerLoginRequestCookies = { [key: string]: string } | null
+
+export interface IndexerLoginRequest {
+  username: string
+  password: string
+  cookies?: IndexerLoginRequestCookies
+  indexerId: string
+}
+
+export interface IndexerResponse {
   id: string
   username: string
   downloadFullTorrent: boolean
@@ -81,36 +98,19 @@ export interface Indexer {
   createdAt: string
 }
 
-export interface IndexerDefinition {
-  id: string
-  name: string
-  url: string
-  detailsPath: string
-  requiresFullDownload: boolean
-}
-
-export type IndexerLoginCookies = { [key: string]: string } | null
-
-export interface IndexerLogin {
-  username: string
-  password: string
-  cookies?: IndexerLoginCookies
-  indexer_id: string
-}
-
-export interface IndexerUpdate {
+export interface IndexerUpdateRequest {
+  downloadFullTorrent?: boolean | null
   hitAndRun?: boolean | null
   keepSeedSeconds?: number | null
-  downloadFullTorrent?: boolean | null
 }
 
 export interface KodiImdbStream {
   torrentName: string
   fileName: string
-  seeders: number
+  seeders?: number | null
   size: string
   indexer: IndexerDefinition
-  attributes?: Attribute[]
+  attributes?: AttributeResponse[]
   url: string
 }
 
@@ -185,21 +185,8 @@ export interface Manifest {
   behaviorHints?: ManifestBehaviorHints | null
 }
 
-export type PreferenceEnum =
-  (typeof PreferenceEnum)[keyof typeof PreferenceEnum]
-
-export const PreferenceEnum = {
-  site: 'site',
-  language: 'language',
-  resolution: 'resolution',
-  'video-quality': 'video-quality',
-  source: 'source',
-  'audio-quality': 'audio-quality',
-  'audio-spatial': 'audio-spatial',
-} as const
-
 export interface MePreferenceCreateRequest {
-  preference: PreferenceEnum
+  preferenceId: string
   preferred: string[]
 }
 
@@ -208,7 +195,7 @@ export interface MePreferenceUpdateRequest {
 }
 
 export interface MePreferencesReorderRequest {
-  preferences: PreferenceEnum[]
+  preferenceIds: string[]
 }
 
 export interface MeUpdateRequest {
@@ -267,7 +254,7 @@ export interface MetaDetail {
   type: ContentType
   name: string
   poster?: string | null
-  posterShape?: PosterShape | null
+  posterShape?: PosterShape
   background?: string | null
   logo?: string | null
   description?: string | null
@@ -296,7 +283,7 @@ export interface MetaPreview {
   type: ContentType
   name: string
   poster?: string | null
-  posterShape?: PosterShape | null
+  posterShape?: PosterShape
   background?: string | null
   logo?: string | null
   description?: string | null
@@ -360,11 +347,11 @@ export interface PairVerifyRequest {
   userCode: string
 }
 
-export interface Preference {
-  id: PreferenceEnum
+export interface PreferenceResponse {
+  id: string
   name: string
   description: string
-  preferred: Attribute[]
+  attributes: AttributeResponse[]
 }
 
 export interface RegisterRequest {
@@ -372,7 +359,7 @@ export interface RegisterRequest {
   password: string
 }
 
-export interface RelaySettings {
+export interface RelaySettingsResponse {
   port?: number
   downloadLimit?: number
   uploadLimit?: number
@@ -390,7 +377,7 @@ export interface RelaySettingsUpdateRequest {
   enableUpnpAndNatpmp?: boolean | null
 }
 
-export interface Role {
+export interface RoleResponse {
   id: string
   name: string
 }
@@ -410,7 +397,7 @@ export interface StremioStreams {
   streams: StremioStream[]
 }
 
-export interface SystemSettings {
+export interface SystemSettingsResponse {
   instanceId?: string
   hitAndRun?: boolean
   keepSeedSeconds?: number
@@ -418,14 +405,14 @@ export interface SystemSettings {
   catalogToken?: string | null
 }
 
-export interface SystemSettingsSave {
+export interface SystemSettingsUpdateRequest {
   hitAndRun?: boolean | null
   keepSeedSeconds?: number | null
   cacheRetentionSeconds?: number | null
   catalogToken?: string | null
 }
 
-export interface Torrent {
+export interface TorrentResponse {
   infoHash: string
   indexerDefinition: IndexerDefinition
   torrentId: string
@@ -442,20 +429,9 @@ export interface Torrent {
   createdAt: string
 }
 
-export interface TorrentUpdate {
+export interface TorrentUpdateRequest {
   isPersisted?: boolean | null
   downloadFullTorrent?: boolean | null
-}
-
-export interface User {
-  username: string
-  torrentSeed?: number | null
-  onlyBestTorrent?: boolean
-  id: string
-  role: Role
-  token: string
-  updatedAt: string
-  createdAt: string
 }
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
@@ -469,21 +445,32 @@ export interface UserCreateRequest {
   username: string
   torrentSeed?: number | null
   onlyBestTorrent?: boolean
-  password: string
+  password?: string | null
   roleId?: UserRole
 }
 
 export interface UserPreferenceCreateRequest {
-  preference: PreferenceEnum
-  preferred: string[]
+  preferenceId: string
+  attributeIds: string[]
 }
 
 export interface UserPreferenceUpdateRequest {
-  preferred: string[]
+  attributeIds: string[]
 }
 
 export interface UserPreferencesReorderRequest {
-  preferences: PreferenceEnum[]
+  preferenceIds: string[]
+}
+
+export interface UserResponse {
+  username: string
+  torrentSeed?: number | null
+  onlyBestTorrent?: boolean
+  id: string
+  role: RoleResponse
+  apiKey: string
+  updatedAt: string
+  createdAt: string
 }
 
 export interface UserUpdateRequest {
@@ -502,6 +489,30 @@ export type KodiGetStreamsParams = {
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
 
 /**
+ * @summary Find List
+ */
+export const attributesFindList = (
+  options?: SecondParameter<typeof sourceClientInstance<AttributeResponse[]>>,
+) => {
+  return sourceClientInstance<AttributeResponse[]>(
+    { url: `/api/attributes/`, method: 'GET' },
+    options,
+  )
+}
+
+/**
+ * @summary Get All
+ */
+export const preferencesGetAll = (
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse[]>>,
+) => {
+  return sourceClientInstance<PreferenceResponse[]>(
+    { url: `/api/preferences/`, method: 'GET' },
+    options,
+  )
+}
+
+/**
  * @summary Health
  */
 export const monitoringHealth = (
@@ -518,9 +529,9 @@ export const monitoringHealth = (
  */
 export const authRegister = (
   registerRequest: RegisterRequest,
-  options?: SecondParameter<typeof sourceClientInstance<User>>,
+  options?: SecondParameter<typeof sourceClientInstance<UserResponse>>,
 ) => {
-  return sourceClientInstance<User>(
+  return sourceClientInstance<UserResponse>(
     {
       url: `/api/auth/register`,
       method: 'POST',
@@ -536,9 +547,9 @@ export const authRegister = (
  */
 export const authLogin = (
   loginRequest: LoginRequest,
-  options?: SecondParameter<typeof sourceClientInstance<User>>,
+  options?: SecondParameter<typeof sourceClientInstance<UserResponse>>,
 ) => {
-  return sourceClientInstance<User>(
+  return sourceClientInstance<UserResponse>(
     {
       url: `/api/auth/login`,
       method: 'POST',
@@ -616,9 +627,9 @@ export const pairingVerify = (
  * @summary Get List
  */
 export const usersGetList = (
-  options?: SecondParameter<typeof sourceClientInstance<User[]>>,
+  options?: SecondParameter<typeof sourceClientInstance<UserResponse[]>>,
 ) => {
-  return sourceClientInstance<User[]>(
+  return sourceClientInstance<UserResponse[]>(
     { url: `/api/users/`, method: 'GET' },
     options,
   )
@@ -629,9 +640,9 @@ export const usersGetList = (
  */
 export const usersCreate = (
   userCreateRequest: UserCreateRequest,
-  options?: SecondParameter<typeof sourceClientInstance<User>>,
+  options?: SecondParameter<typeof sourceClientInstance<UserResponse>>,
 ) => {
-  return sourceClientInstance<User>(
+  return sourceClientInstance<UserResponse>(
     {
       url: `/api/users/`,
       method: 'POST',
@@ -647,9 +658,9 @@ export const usersCreate = (
  */
 export const usersGet = (
   userId: string,
-  options?: SecondParameter<typeof sourceClientInstance<User>>,
+  options?: SecondParameter<typeof sourceClientInstance<UserResponse>>,
 ) => {
-  return sourceClientInstance<User>(
+  return sourceClientInstance<UserResponse>(
     { url: `/api/users/${userId}`, method: 'GET' },
     options,
   )
@@ -661,9 +672,9 @@ export const usersGet = (
 export const usersUpdate = (
   userId: string,
   userUpdateRequest: UserUpdateRequest,
-  options?: SecondParameter<typeof sourceClientInstance<User>>,
+  options?: SecondParameter<typeof sourceClientInstance<UserResponse>>,
 ) => {
-  return sourceClientInstance<User>(
+  return sourceClientInstance<UserResponse>(
     {
       url: `/api/users/${userId}`,
       method: 'PUT',
@@ -692,9 +703,9 @@ export const usersDelete = (
  */
 export const usersRegenerateApiKey = (
   userId: string,
-  options?: SecondParameter<typeof sourceClientInstance<User>>,
+  options?: SecondParameter<typeof sourceClientInstance<UserResponse>>,
 ) => {
-  return sourceClientInstance<User>(
+  return sourceClientInstance<UserResponse>(
     { url: `/api/users/${userId}/api_key/regenerate`, method: 'PUT' },
     options,
   )
@@ -706,9 +717,9 @@ export const usersRegenerateApiKey = (
  */
 export const usersGetPreferences = (
   userId: string,
-  options?: SecondParameter<typeof sourceClientInstance<Preference[]>>,
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse[]>>,
 ) => {
-  return sourceClientInstance<Preference[]>(
+  return sourceClientInstance<PreferenceResponse[]>(
     { url: `/api/users/${userId}/preferences`, method: 'GET' },
     options,
   )
@@ -721,9 +732,9 @@ export const usersGetPreferences = (
 export const usersCreatePreference = (
   userId: string,
   userPreferenceCreateRequest: UserPreferenceCreateRequest,
-  options?: SecondParameter<typeof sourceClientInstance<Preference>>,
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse>>,
 ) => {
-  return sourceClientInstance<Preference>(
+  return sourceClientInstance<PreferenceResponse>(
     {
       url: `/api/users/${userId}/preferences`,
       method: 'POST',
@@ -741,9 +752,9 @@ export const usersCreatePreference = (
 export const usersReorderPreferences = (
   userId: string,
   userPreferencesReorderRequest: UserPreferencesReorderRequest,
-  options?: SecondParameter<typeof sourceClientInstance<Preference[]>>,
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse[]>>,
 ) => {
-  return sourceClientInstance<Preference[]>(
+  return sourceClientInstance<PreferenceResponse[]>(
     {
       url: `/api/users/${userId}/preferences/reorder`,
       method: 'POST',
@@ -760,11 +771,11 @@ export const usersReorderPreferences = (
  */
 export const usersGetPreference = (
   userId: string,
-  preference: PreferenceEnum,
-  options?: SecondParameter<typeof sourceClientInstance<Preference>>,
+  preferenceId: string,
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse>>,
 ) => {
-  return sourceClientInstance<Preference>(
-    { url: `/api/users/${userId}/preferences/${preference}`, method: 'GET' },
+  return sourceClientInstance<PreferenceResponse>(
+    { url: `/api/users/${userId}/preferences/${preferenceId}`, method: 'GET' },
     options,
   )
 }
@@ -775,13 +786,13 @@ export const usersGetPreference = (
  */
 export const usersUpdatePreference = (
   userId: string,
-  preference: PreferenceEnum,
+  preferenceId: string,
   userPreferenceUpdateRequest: UserPreferenceUpdateRequest,
-  options?: SecondParameter<typeof sourceClientInstance<Preference>>,
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse>>,
 ) => {
-  return sourceClientInstance<Preference>(
+  return sourceClientInstance<PreferenceResponse>(
     {
-      url: `/api/users/${userId}/preferences/${preference}`,
+      url: `/api/users/${userId}/preferences/${preferenceId}`,
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       data: userPreferenceUpdateRequest,
@@ -796,11 +807,14 @@ export const usersUpdatePreference = (
  */
 export const usersDeletePreference = (
   userId: string,
-  preference: PreferenceEnum,
+  preferenceId: string,
   options?: SecondParameter<typeof sourceClientInstance<void>>,
 ) => {
   return sourceClientInstance<void>(
-    { url: `/api/users/${userId}/preferences/${preference}`, method: 'DELETE' },
+    {
+      url: `/api/users/${userId}/preferences/${preferenceId}`,
+      method: 'DELETE',
+    },
     options,
   )
 }
@@ -809,9 +823,9 @@ export const usersDeletePreference = (
  * @summary Get
  */
 export const meGet = (
-  options?: SecondParameter<typeof sourceClientInstance<User | null>>,
+  options?: SecondParameter<typeof sourceClientInstance<UserResponse | null>>,
 ) => {
-  return sourceClientInstance<User | null>(
+  return sourceClientInstance<UserResponse | null>(
     { url: `/api/me/`, method: 'GET' },
     options,
   )
@@ -823,9 +837,9 @@ export const meGet = (
  */
 export const meUpdate = (
   meUpdateRequest: MeUpdateRequest,
-  options?: SecondParameter<typeof sourceClientInstance<User>>,
+  options?: SecondParameter<typeof sourceClientInstance<UserResponse>>,
 ) => {
-  return sourceClientInstance<User>(
+  return sourceClientInstance<UserResponse>(
     {
       url: `/api/me/`,
       method: 'PUT',
@@ -841,9 +855,9 @@ export const meUpdate = (
  * @summary Regenerate Api Key
  */
 export const meRegenerateApiKey = (
-  options?: SecondParameter<typeof sourceClientInstance<User>>,
+  options?: SecondParameter<typeof sourceClientInstance<UserResponse>>,
 ) => {
-  return sourceClientInstance<User>(
+  return sourceClientInstance<UserResponse>(
     { url: `/api/me/api-key/regenerate`, method: 'PUT' },
     options,
   )
@@ -854,9 +868,9 @@ export const meRegenerateApiKey = (
  * @summary Get Preferences
  */
 export const meGetPreferences = (
-  options?: SecondParameter<typeof sourceClientInstance<Preference[]>>,
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse[]>>,
 ) => {
-  return sourceClientInstance<Preference[]>(
+  return sourceClientInstance<PreferenceResponse[]>(
     { url: `/api/me/preferences`, method: 'GET' },
     options,
   )
@@ -868,9 +882,9 @@ export const meGetPreferences = (
  */
 export const meCreatePreference = (
   mePreferenceCreateRequest: MePreferenceCreateRequest,
-  options?: SecondParameter<typeof sourceClientInstance<Preference>>,
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse>>,
 ) => {
-  return sourceClientInstance<Preference>(
+  return sourceClientInstance<PreferenceResponse>(
     {
       url: `/api/me/preferences`,
       method: 'POST',
@@ -886,11 +900,11 @@ export const meCreatePreference = (
  * @summary Get Preference
  */
 export const meGetPreference = (
-  preference: PreferenceEnum,
-  options?: SecondParameter<typeof sourceClientInstance<Preference>>,
+  preferenceId: string,
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse>>,
 ) => {
-  return sourceClientInstance<Preference>(
-    { url: `/api/me/preferences/${preference}`, method: 'GET' },
+  return sourceClientInstance<PreferenceResponse>(
+    { url: `/api/me/preferences/${preferenceId}`, method: 'GET' },
     options,
   )
 }
@@ -900,13 +914,13 @@ export const meGetPreference = (
  * @summary Update Preference
  */
 export const meUpdatePreference = (
-  preference: PreferenceEnum,
+  preferenceId: string,
   mePreferenceUpdateRequest: MePreferenceUpdateRequest,
-  options?: SecondParameter<typeof sourceClientInstance<Preference>>,
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse>>,
 ) => {
-  return sourceClientInstance<Preference>(
+  return sourceClientInstance<PreferenceResponse>(
     {
-      url: `/api/me/preferences/${preference}`,
+      url: `/api/me/preferences/${preferenceId}`,
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       data: mePreferenceUpdateRequest,
@@ -920,11 +934,11 @@ export const meUpdatePreference = (
  * @summary Delete Preference
  */
 export const meDeletePreference = (
-  preference: PreferenceEnum,
+  preferenceId: string,
   options?: SecondParameter<typeof sourceClientInstance<void>>,
 ) => {
   return sourceClientInstance<void>(
-    { url: `/api/me/preferences/${preference}`, method: 'DELETE' },
+    { url: `/api/me/preferences/${preferenceId}`, method: 'DELETE' },
     options,
   )
 }
@@ -935,9 +949,9 @@ export const meDeletePreference = (
  */
 export const meReorderPreferences = (
   mePreferencesReorderRequest: MePreferencesReorderRequest,
-  options?: SecondParameter<typeof sourceClientInstance<Preference[]>>,
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse[]>>,
 ) => {
-  return sourceClientInstance<Preference[]>(
+  return sourceClientInstance<PreferenceResponse[]>(
     {
       url: `/api/me/preferences/reorder`,
       method: 'POST',
@@ -949,57 +963,61 @@ export const meReorderPreferences = (
 }
 
 /**
- * @summary Get App Settings
+ * @summary Get Settings
  */
-export const settingGetAppSettings = (
-  options?: SecondParameter<typeof sourceClientInstance<SystemSettings>>,
+export const systemGetSettings = (
+  options?: SecondParameter<
+    typeof sourceClientInstance<SystemSettingsResponse>
+  >,
 ) => {
-  return sourceClientInstance<SystemSettings>(
-    { url: `/api/setting/`, method: 'GET' },
+  return sourceClientInstance<SystemSettingsResponse>(
+    { url: `/api/system/settings`, method: 'GET' },
     options,
   )
 }
 
 /**
- * @summary Update App Settings
+ * @summary Update Settings
  */
-export const settingUpdateAppSettings = (
-  systemSettingsSave: SystemSettingsSave,
-  options?: SecondParameter<typeof sourceClientInstance<SystemSettings>>,
+export const systemUpdateSettings = (
+  systemSettingsUpdateRequest: SystemSettingsUpdateRequest,
+  options?: SecondParameter<
+    typeof sourceClientInstance<SystemSettingsResponse>
+  >,
 ) => {
-  return sourceClientInstance<SystemSettings>(
+  return sourceClientInstance<SystemSettingsResponse>(
     {
-      url: `/api/setting/`,
+      url: `/api/system/settings`,
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      data: systemSettingsSave,
+      data: systemSettingsUpdateRequest,
     },
     options,
   )
 }
 
 /**
- * @summary Get Relay Settings
+ * @summary Get Settings
  */
-export const settingGetRelaySettings = (
-  options?: SecondParameter<typeof sourceClientInstance<RelaySettings>>,
+export const relayGetSettings = (
+  options?: SecondParameter<typeof sourceClientInstance<RelaySettingsResponse>>,
 ) => {
-  return sourceClientInstance<RelaySettings>(
-    { url: `/api/setting/relay/`, method: 'GET' },
+  return sourceClientInstance<RelaySettingsResponse>(
+    { url: `/api/relay/settings`, method: 'GET' },
     options,
   )
 }
 
 /**
- * @summary Update Relay Settings
+ * @summary Update Settings
  */
-export const settingUpdateRelaySettings = (
+export const relayUpdateSettings = (
   relaySettingsUpdateRequest: RelaySettingsUpdateRequest,
-  options?: SecondParameter<typeof sourceClientInstance<RelaySettings>>,
+  options?: SecondParameter<typeof sourceClientInstance<RelaySettingsResponse>>,
 ) => {
-  return sourceClientInstance<RelaySettings>(
+  return sourceClientInstance<RelaySettingsResponse>(
     {
-      url: `/api/setting/relay/`,
+      url: `/api/relay/settings`,
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       data: relaySettingsUpdateRequest,
@@ -1042,9 +1060,9 @@ export const networkReset = (
  * @summary Get List
  */
 export const torrentsGetList = (
-  options?: SecondParameter<typeof sourceClientInstance<Torrent[]>>,
+  options?: SecondParameter<typeof sourceClientInstance<TorrentResponse[]>>,
 ) => {
-  return sourceClientInstance<Torrent[]>(
+  return sourceClientInstance<TorrentResponse[]>(
     { url: `/api/torrents/`, method: 'GET' },
     options,
   )
@@ -1055,9 +1073,9 @@ export const torrentsGetList = (
  */
 export const torrentsGetOne = (
   infoHash: string,
-  options?: SecondParameter<typeof sourceClientInstance<Torrent>>,
+  options?: SecondParameter<typeof sourceClientInstance<TorrentResponse>>,
 ) => {
-  return sourceClientInstance<Torrent>(
+  return sourceClientInstance<TorrentResponse>(
     { url: `/api/torrents/${infoHash}`, method: 'GET' },
     options,
   )
@@ -1068,15 +1086,15 @@ export const torrentsGetOne = (
  */
 export const torrentsUpdate = (
   infoHash: string,
-  torrentUpdate: TorrentUpdate,
-  options?: SecondParameter<typeof sourceClientInstance<Torrent>>,
+  torrentUpdateRequest: TorrentUpdateRequest,
+  options?: SecondParameter<typeof sourceClientInstance<TorrentResponse>>,
 ) => {
-  return sourceClientInstance<Torrent>(
+  return sourceClientInstance<TorrentResponse>(
     {
       url: `/api/torrents/${infoHash}`,
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      data: torrentUpdate,
+      data: torrentUpdateRequest,
     },
     options,
   )
@@ -1276,9 +1294,9 @@ export const kodiGetStreams = (
  * @summary Get List
  */
 export const indexersGetList = (
-  options?: SecondParameter<typeof sourceClientInstance<Indexer[]>>,
+  options?: SecondParameter<typeof sourceClientInstance<IndexerResponse[]>>,
 ) => {
-  return sourceClientInstance<Indexer[]>(
+  return sourceClientInstance<IndexerResponse[]>(
     { url: `/api/indexers/`, method: 'GET' },
     options,
   )
@@ -1289,15 +1307,15 @@ export const indexersGetList = (
  * @summary Login
  */
 export const indexersLogin = (
-  indexerLogin: IndexerLogin,
-  options?: SecondParameter<typeof sourceClientInstance<Indexer>>,
+  indexerLoginRequest: IndexerLoginRequest,
+  options?: SecondParameter<typeof sourceClientInstance<IndexerResponse>>,
 ) => {
-  return sourceClientInstance<Indexer>(
+  return sourceClientInstance<IndexerResponse>(
     {
-      url: `/api/indexers/`,
+      url: `/api/indexers/login`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      data: indexerLogin,
+      data: indexerLoginRequest,
     },
     options,
   )
@@ -1321,16 +1339,16 @@ export const indexersCleanup = (
  * @summary Update
  */
 export const indexersUpdate = (
-  id: string,
-  indexerUpdate: IndexerUpdate,
-  options?: SecondParameter<typeof sourceClientInstance<Indexer>>,
+  indexerId: string,
+  indexerUpdateRequest: IndexerUpdateRequest,
+  options?: SecondParameter<typeof sourceClientInstance<IndexerResponse>>,
 ) => {
-  return sourceClientInstance<Indexer>(
+  return sourceClientInstance<IndexerResponse>(
     {
-      url: `/api/indexers/${id}`,
+      url: `/api/indexers/${indexerId}`,
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      data: indexerUpdate,
+      data: indexerUpdateRequest,
     },
     options,
   )
@@ -1341,15 +1359,21 @@ export const indexersUpdate = (
  * @summary Delete
  */
 export const indexersDelete = (
-  id: string,
+  indexerId: string,
   options?: SecondParameter<typeof sourceClientInstance<void>>,
 ) => {
   return sourceClientInstance<void>(
-    { url: `/api/indexers/${id}`, method: 'DELETE' },
+    { url: `/api/indexers/${indexerId}`, method: 'DELETE' },
     options,
   )
 }
 
+export type AttributesFindListResult = NonNullable<
+  Awaited<ReturnType<typeof attributesFindList>>
+>
+export type PreferencesGetAllResult = NonNullable<
+  Awaited<ReturnType<typeof preferencesGetAll>>
+>
 export type MonitoringHealthResult = NonNullable<
   Awaited<ReturnType<typeof monitoringHealth>>
 >
@@ -1426,17 +1450,17 @@ export type MeDeletePreferenceResult = NonNullable<
 export type MeReorderPreferencesResult = NonNullable<
   Awaited<ReturnType<typeof meReorderPreferences>>
 >
-export type SettingGetAppSettingsResult = NonNullable<
-  Awaited<ReturnType<typeof settingGetAppSettings>>
+export type SystemGetSettingsResult = NonNullable<
+  Awaited<ReturnType<typeof systemGetSettings>>
 >
-export type SettingUpdateAppSettingsResult = NonNullable<
-  Awaited<ReturnType<typeof settingUpdateAppSettings>>
+export type SystemUpdateSettingsResult = NonNullable<
+  Awaited<ReturnType<typeof systemUpdateSettings>>
 >
-export type SettingGetRelaySettingsResult = NonNullable<
-  Awaited<ReturnType<typeof settingGetRelaySettings>>
+export type RelayGetSettingsResult = NonNullable<
+  Awaited<ReturnType<typeof relayGetSettings>>
 >
-export type SettingUpdateRelaySettingsResult = NonNullable<
-  Awaited<ReturnType<typeof settingUpdateRelaySettings>>
+export type RelayUpdateSettingsResult = NonNullable<
+  Awaited<ReturnType<typeof relayUpdateSettings>>
 >
 export type NetworkConfigResult = NonNullable<
   Awaited<ReturnType<typeof networkConfig>>

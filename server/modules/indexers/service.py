@@ -16,9 +16,9 @@ from modules.indexers.schemas.internal import (
     IndexerLogin,
     IndexerTorrent,
 )
-from modules.settings.schemas import SystemSettings
+from modules.settings.schemas.internal import SystemSettings
 from modules.settings.service import SettingsService
-from modules.torrents.schemas import TorrentUpdate
+from modules.torrents.schemas.internal import TorrentUpdate
 from modules.torrents.service import TorrentsService
 
 

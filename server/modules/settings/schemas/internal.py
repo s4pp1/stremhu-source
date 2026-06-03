@@ -1,21 +1,10 @@
-from enum import Enum
 from typing import Annotated, Literal
 from uuid import uuid4
 
 from config import config
+from modules.settings.enums import NetworkConnectionEnum, NetworkModeEnum
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
-
-
-class NetworkModeEnum(str, Enum):
-    LOCAL = "local"
-    AUTO = "auto"
-    MANUAL = "manual"
-
-
-class NetworkConnectionEnum(str, Enum):
-    LOCAL = "local"
-    PUBLIC = "public"
 
 
 class NetworkLocalSettings(BaseModel):
@@ -69,11 +58,6 @@ NetworkSettings = Annotated[
 
 
 class SystemSettings(BaseModel):
-    model_config = ConfigDict(
-        validate_by_name=True,
-        alias_generator=to_camel,
-    )
-
     instance_id: str = Field(
         default_factory=lambda: str(uuid4()),
     )
@@ -83,12 +67,7 @@ class SystemSettings(BaseModel):
     catalog_token: str | None = None
 
 
-class SystemSettingsSave(BaseModel):
-    model_config = ConfigDict(
-        validate_by_name=True,
-        alias_generator=to_camel,
-    )
-
+class SystemSettingsUpdate(BaseModel):
     hit_and_run: bool | None = None
     keep_seed_seconds: int | None = None
     cache_retention_seconds: int | None = None
@@ -96,11 +75,6 @@ class SystemSettingsSave(BaseModel):
 
 
 class RelaySettings(BaseModel):
-    model_config = ConfigDict(
-        validate_by_name=True,
-        alias_generator=to_camel,
-    )
-
     port: int = Field(default_factory=lambda: config.libtorrent_port)
     download_limit: int = 0
     upload_limit: int = 0
@@ -110,11 +84,6 @@ class RelaySettings(BaseModel):
 
 
 class RelaySettingsUpdate(BaseModel):
-    model_config = ConfigDict(
-        validate_by_name=True,
-        alias_generator=to_camel,
-    )
-
     port: int | None = None
     download_limit: int | None = None
     upload_limit: int | None = None

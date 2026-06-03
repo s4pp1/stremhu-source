@@ -10,7 +10,8 @@ from modules.torrent_source_provider.service import (
 from modules.torrent_streams.schemas import (
     TorrentStream,
 )
-from modules.torrents.service import TorrentPair, TorrentsService
+from modules.torrents.schemas.internal import TorrentWithRelay
+from modules.torrents.service import TorrentsService
 from modules.users.models import UserModel
 from sqlalchemy.orm import Session
 
@@ -116,8 +117,12 @@ class TorrentStreamsService:
         torrent_streams: list[TorrentStream],
         user: UserModel,
     ) -> list[TorrentStream]:
-        torrent_pairs: list[TorrentPair] = self._torrents_service.get_torrents()
-        active_hashes = {torrent_pair.info_hash for torrent_pair in torrent_pairs}
+        torrent_with_relays: list[TorrentWithRelay] = (
+            self._torrents_service.get_torrents()
+        )
+        active_hashes = {
+            torrent_with_relay.info_hash for torrent_with_relay in torrent_with_relays
+        }
 
         for stream in torrent_streams:
             stream.is_persisted_torrent = stream.info_hash in active_hashes

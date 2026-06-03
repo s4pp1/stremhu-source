@@ -9,7 +9,7 @@ from modules.network.ddns.service import DDNSService
 from modules.network.schemas import NetworkSetup
 from modules.network.ssl.schemas import AcmeCertificateGenerate, SelfSignedCertificate
 from modules.network.ssl.service import SslService
-from modules.settings.schemas import (
+from modules.settings.schemas.internal import (
     NetworkAutoSettings,
     NetworkLocalSettings,
     NetworkManualSettings,

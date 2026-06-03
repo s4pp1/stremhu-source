@@ -1,6 +1,6 @@
 from typing import Annotated, Literal
 
-from modules.settings.schemas import NetworkConnectionEnum, NetworkModeEnum
+from modules.settings.enums import NetworkConnectionEnum, NetworkModeEnum
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
 

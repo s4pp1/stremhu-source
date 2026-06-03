@@ -8,7 +8,8 @@ from modules.stream.schemas import (
 )
 from modules.torrent_files.models import TorrentFileModel
 from modules.torrent_files.service import TorrentFilesService
-from modules.torrents.service import TorrentPair, TorrentsService
+from modules.torrents.schemas.internal import TorrentWithRelay
+from modules.torrents.service import TorrentsService
 
 
 class StreamService:
@@ -31,12 +32,12 @@ class StreamService:
         torrent_id: str,
         file_index: int,
     ) -> tuple[ParsedRangeHeader, File]:
-        torrent_pair: TorrentPair | None = self._torrents_service.find_by_id(
+        torrent_with_relay: TorrentWithRelay | None = self._torrents_service.find_by_id(
             indexer_id=indexer_id,
             torrent_id=torrent_id,
         )
 
-        if torrent_pair is None:
+        if torrent_with_relay is None:
             torrent_file = self._torrent_files_service.find_by_id(
                 indexer_id=indexer_id,
                 torrent_id=torrent_id,
@@ -60,10 +61,12 @@ class StreamService:
                 )
 
             self._validate_file(torrent_file, file_index)
-            torrent_pair = self._torrents_service.create_from_torrent_file(torrent_file)
+            torrent_with_relay = self._torrents_service.create_from_torrent_file(
+                torrent_file
+            )
 
         file = self._relay_service.get_torrent_file(
-            info_hash=torrent_pair.info_hash,
+            info_hash=torrent_with_relay.info_hash,
             file_index=file_index,
         )
 

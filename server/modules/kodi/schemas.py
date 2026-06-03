@@ -1,5 +1,5 @@
 import humanize
-from modules.attributes.schemas import Attribute
+from modules.attributes.schemas.api import AttributeResponse
 from modules.indexer_definitions.schemas import IndexerDefinition
 from modules.torrent_streams.schemas import TorrentStream
 from pydantic import BaseModel, ConfigDict, Field
@@ -47,10 +47,10 @@ class KodiImdbStream(BaseModel):
 
     torrent_name: str
     file_name: str
-    seeders: int
+    seeders: int | None = Field(default=0)
     size: str
     indexer: IndexerDefinition
-    attributes: list[Attribute] = []
+    attributes: list[AttributeResponse] = []
     url: str
 
 
@@ -79,7 +79,7 @@ class KodiImdbStreams(BaseModel):
                     torrent_stream.indexer_account.indexer_definition
                 ),
                 attributes=[
-                    Attribute.model_validate(attribute)
+                    AttributeResponse.model_validate(attribute)
                     for attribute in torrent_stream.attributes
                 ],
                 url=torrent_stream.play_url,

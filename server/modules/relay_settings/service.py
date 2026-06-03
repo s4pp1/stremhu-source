@@ -1,7 +1,7 @@
 from common.logger import logger
 from modules.relay.schemas import RelaySettingsUpdate as RelayLibtorrentUpdate
 from modules.relay.service import RelayService
-from modules.settings.schemas import RelaySettings, RelaySettingsUpdate
+from modules.settings.schemas.internal import RelaySettings, RelaySettingsUpdate
 from modules.settings.service import SettingsService
 
 

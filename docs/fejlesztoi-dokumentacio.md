@@ -12,9 +12,10 @@ A Python környezet kezeléséhez:
 
 - `conda env create -p ./.conda -f environment.yaml` – Létrehozza a környezetet a helyi `.conda` mappába.
 - `conda env update -p ./.conda -f environment.yaml --prune` – Frissíti a környezetet és törli a feleslegessé vált csomagokat.
+
 ### Kódminőség és típusellenőrzés (Linting & Typing)
 
-- `.conda/bin/basedpyright server` – Típusellenőrzés futtatása.
-- `.conda/bin/ruff check server` – Statikus kódellenőrzés (linter).
-- `.conda/bin/ruff check server --fix` – Kódhibák automatikus javítása.
-- `.conda/bin/ruff format server` – Kód formázása.
+- `basedpyright server` – Típusellenőrzés futtatása.
+- `ruff check server` – Statikus kódellenőrzés (linter).
+- `ruff check server --fix` – Kódhibák automatikus javítása.
+- `ruff format server` – Kód formázása.

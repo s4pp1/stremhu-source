@@ -2,10 +2,12 @@ import datetime
 import random
 import uuid
 
+from common.schemas.internal import Success
 from fastapi import HTTPException, status
 from modules.pairings.enums import PairingStatusEnum
 from modules.pairings.models import PairingModel
 from modules.pairings.repository import PairingsRepository
+from modules.pairings.schemas.internal import PairInit, PairStatus
 from modules.users.models import UserModel
 
 
@@ -13,7 +15,7 @@ class PairingsService:
     def __init__(self, pairings_repository: PairingsRepository):
         self._pairings_repository = pairings_repository
 
-    def generate_pairing_codes(self) -> dict:
+    def generate_pairing_codes(self) -> PairInit:
         user_code = ""
         is_unique = False
 
@@ -23,16 +25,8 @@ class PairingsService:
             existing = self._pairings_repository.find_by_user_code(user_code)
             if not existing:
                 is_unique = True
-            else:
-                # If there is an existing pairing but it is already expired, we can overwrite or treat it as unique.
-                # However, to be absolutely safe, we check if it is expired:
-                if existing.expires_at < datetime.datetime.now():
-                    # We can delete the expired one and use this code
-                    self._pairings_repository.delete(existing)
-                    is_unique = True
 
         device_code = str(uuid.uuid4())
-        # 10 minutes expiry
         expires_at = datetime.datetime.now() + datetime.timedelta(minutes=10)
 
         pairing = PairingModel(
@@ -43,13 +37,13 @@ class PairingsService:
         )
         self._pairings_repository.create(pairing)
 
-        return {
-            "user_code": user_code,
-            "device_code": device_code,
-            "expires_at": expires_at,
-        }
+        return PairInit(
+            user_code=user_code,
+            device_code=device_code,
+            expires_at=expires_at,
+        )
 
-    def poll_pairing_status(self, device_code: str) -> dict:
+    def poll_pairing_status(self, device_code: str) -> PairStatus:
         pairing = self._pairings_repository.find_by_device_code(device_code)
 
         if not pairing:
@@ -71,16 +65,14 @@ class PairingsService:
         if pairing.status == PairingStatusEnum.LINKED and pairing.user_id:
             # We must load the user to return their API token
             if pairing.user:
-                return {
-                    "status": PairingStatusEnum.LINKED,
-                    "token": pairing.user.api_key,
-                }
+                return PairStatus(
+                    status=PairingStatusEnum.LINKED,
+                    token=pairing.user.api_key,
+                )
 
-        return {
-            "status": pairing.status,
-        }
+        return PairStatus(status=pairing.status)
 
-    def authorize_pairing_code(self, user_code: str, user: UserModel) -> dict:
+    def authorize_pairing_code(self, user_code: str, user: UserModel) -> Success:
         pairing = self._pairings_repository.find_by_user_code(user_code)
 
         if not pairing:
@@ -102,7 +94,7 @@ class PairingsService:
         pairing.user_id = user.id
         self._pairings_repository.create(pairing)
 
-        return {"success": True}
+        return Success(success=True)
 
     def cleanup_expired_pairings(self) -> None:
         expired = self._pairings_repository.find_expired()

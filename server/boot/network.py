@@ -7,10 +7,10 @@ from common.database import db_session
 from config import config
 from modules.network.dependencies import create_network_service
 from modules.settings.dependencies import create_settings_service
-from modules.settings.schemas import (
+from modules.settings.enums import (
     NetworkModeEnum,
-    NetworkSettings,
 )
+from modules.settings.schemas.internal import NetworkSettings
 
 
 def get_network_settings() -> NetworkSettings:
@@ -18,7 +18,7 @@ def get_network_settings() -> NetworkSettings:
     try:
         with db_session() as db:
             settings_service = create_settings_service(db)
-            network_settings = settings_service.get_network_or_raise()
+            network_settings = settings_service.get_network()
             return network_settings
     except Exception as e:
         print(
@@ -43,13 +43,11 @@ def write_certs_to_disk(fullchain: str, privkey: str) -> tuple[Path, Path]:
 
 def _ensure_db_network_settings(host_ip: str) -> NetworkSettings:
     """Ellenőrzi az adatbázisban a hálózati beállításokat, és szükség esetén generálja a tanúsítványt."""
-    from common.database import db_session
-    from modules.settings.dependencies import create_settings_service
 
     with db_session() as db:
         settings_service = create_settings_service(db)
         network_service = create_network_service(db)
-        network_settings = settings_service.get_network()
+        network_settings = settings_service.find_network()
 
         # ÖNGYÓGYÍTÓ LOGIKA (Self-healing recovery):
         # Ha MANUAL módban vagyunk, nincs reverse_proxy, de az egyedi tanúsítványfájlok hiányoznak,

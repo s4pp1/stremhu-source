@@ -1,6 +1,6 @@
 from common.database import db_session
 from modules.settings.dependencies import create_settings_service
-from modules.settings.schemas import RelaySettingsUpdate, SystemSettingsSave
+from modules.settings.schemas.internal import RelaySettingsUpdate, SystemSettingsUpdate
 
 
 def ensure_default_settings():
@@ -10,7 +10,7 @@ def ensure_default_settings():
             settings_service = create_settings_service(db)
 
             # System Settings inicializálása/frissítése
-            settings_service.save_system(SystemSettingsSave())
+            settings_service.save_system(SystemSettingsUpdate())
 
             # Relay Settings inicializálása/frissítése
             settings_service.save_relay(RelaySettingsUpdate())

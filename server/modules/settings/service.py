@@ -1,11 +1,11 @@
 from modules.settings.enums import SettingsKeyEnum
 from modules.settings.repository import SettingsRepository
-from modules.settings.schemas import (
+from modules.settings.schemas.internal import (
     NetworkSettings,
     RelaySettings,
     RelaySettingsUpdate,
     SystemSettings,
-    SystemSettingsSave,
+    SystemSettingsUpdate,
 )
 from pydantic import TypeAdapter
 
@@ -19,7 +19,7 @@ class SettingsService:
 
     # System Settings
 
-    def save_system(self, payload: SystemSettingsSave) -> SystemSettings:
+    def save_system(self, payload: SystemSettingsUpdate) -> SystemSettings:
         system_settings = self.find_system()
         if not system_settings:
             system_settings = SystemSettings()

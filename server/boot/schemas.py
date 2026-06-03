@@ -1,4 +1,4 @@
-from modules.settings.schemas import NetworkModeEnum
+from modules.settings.enums import NetworkModeEnum
 from pydantic import BaseModel
 
 

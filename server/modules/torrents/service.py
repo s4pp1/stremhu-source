@@ -7,7 +7,7 @@ from modules.torrent_files.models import TorrentFileModel
 from modules.torrent_files.service import TorrentFilesService
 from modules.torrents.models import TorrentModel
 from modules.torrents.repository import TorrentRepository
-from modules.torrents.schemas import TorrentPair, TorrentUpdate
+from modules.torrents.schemas.internal import TorrentUpdate, TorrentWithRelay
 
 
 class TorrentsService:
@@ -21,26 +21,10 @@ class TorrentsService:
         self._torrent_files_service = torrent_files_service
         self._relay_service = relay_service
 
-    def get_torrents(self) -> list[TorrentPair]:
-        torrents = self._torrent_repository.find()
-        relay_torrents = self._relay_service.get_torrents()
-
-        relay_torrent_map = {
-            relay_torrent.info_hash: relay_torrent for relay_torrent in relay_torrents
-        }
-
-        result: list[TorrentPair] = []
-        for torrent in torrents:
-            if torrent.torrent_file and torrent.torrent_file.info_hash:
-                info_hash = torrent.torrent_file.info_hash
-                if info_hash in relay_torrent_map:
-                    result.append(
-                        TorrentPair(torrent=torrent, relay=relay_torrent_map[info_hash])
-                    )
-
-        return result
-
-    def create_from_torrent_file(self, torrent_file: TorrentFileModel) -> TorrentPair:
+    def create_from_torrent_file(
+        self,
+        torrent_file: TorrentFileModel,
+    ) -> TorrentWithRelay:
         torrent_model = TorrentModel(
             indexer_id=torrent_file.indexer_id,
             torrent_id=torrent_file.torrent_id,
@@ -56,13 +40,34 @@ class TorrentsService:
             priority=priority,
         )
 
-        return TorrentPair(torrent=torrent, relay=relay_torrent)
+        return TorrentWithRelay(torrent=torrent, relay=relay_torrent)
+
+    def get_torrents(self) -> list[TorrentWithRelay]:
+        torrents = self._torrent_repository.find()
+        relay_torrents = self._relay_service.get_torrents()
+
+        relay_torrent_map = {
+            relay_torrent.info_hash: relay_torrent for relay_torrent in relay_torrents
+        }
+
+        result: list[TorrentWithRelay] = []
+        for torrent in torrents:
+            if torrent.torrent_file and torrent.torrent_file.info_hash:
+                info_hash = torrent.torrent_file.info_hash
+                if info_hash in relay_torrent_map:
+                    result.append(
+                        TorrentWithRelay(
+                            torrent=torrent, relay=relay_torrent_map[info_hash]
+                        )
+                    )
+
+        return result
 
     def find_by_id(
         self,
         indexer_id: str,
         torrent_id: str,
-    ) -> TorrentPair | None:
+    ) -> TorrentWithRelay | None:
         torrent = self._torrent_repository.find_by_id(
             indexer_id=indexer_id,
             torrent_id=torrent_id,
@@ -71,25 +76,25 @@ class TorrentsService:
             return None
 
         relay_torrent = self._relay_service.get_torrent_or_raise(torrent.info_hash)
-        return TorrentPair(torrent=torrent, relay=relay_torrent)
+        return TorrentWithRelay(torrent=torrent, relay=relay_torrent)
 
     def get_by_info_hash(
         self,
         info_hash: str,
-    ) -> TorrentPair:
+    ) -> TorrentWithRelay:
         torrent = self._torrent_repository.find_by_info_hash(info_hash)
         if torrent is None:
             raise HTTPException(404, "A torrent nem található")
 
         relay_torrent = self._relay_service.get_torrent_or_raise(info_hash)
 
-        return TorrentPair(torrent=torrent, relay=relay_torrent)
+        return TorrentWithRelay(torrent=torrent, relay=relay_torrent)
 
     def update(
         self,
         info_hash: str,
         payload: TorrentUpdate,
-    ) -> TorrentPair:
+    ) -> TorrentWithRelay:
         persisted = self._torrent_repository.find_by_info_hash(info_hash)
         if persisted is None:
             raise HTTPException(404, "A torrent nem található")
@@ -109,7 +114,7 @@ class TorrentsService:
         self._torrent_repository.update(persisted)
 
         relay_torrent = self._relay_service.get_torrent_or_raise(info_hash)
-        return TorrentPair(torrent=persisted, relay=relay_torrent)
+        return TorrentWithRelay(torrent=persisted, relay=relay_torrent)
 
     def bulk_update_by_indexer_id(
         self,

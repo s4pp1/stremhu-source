@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-from modules.settings.schemas import NetworkModeEnum
+from modules.settings.enums import NetworkModeEnum
 
 # Biztosítjuk, hogy a gyökér könyvtár benne legyen a Python keresési útvonalában
 sys.path.insert(0, str(Path(__file__).resolve().parent))
