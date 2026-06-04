@@ -17,13 +17,9 @@ import {
 } from '@/shared/components/ui/card'
 import { Separator } from '@/shared/components/ui/separator'
 import { useAppForm } from '@/shared/contexts/form-context'
-import { useMetadata } from '@/shared/hooks/use-metadata'
+import type { PreferenceCreateRequest } from '@/shared/lib/source/source-client'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
-import {
-  getMePreference,
-  useUpdateMePreference,
-} from '@/shared/queries/me-preferences'
-import type { PreferenceDto } from '@/shared/type/preference.dto'
+import { getMePreference, useUpdateMePreference } from '@/shared/queries/me'
 
 import { PreferenceForm } from '../../../../../features/preference-form/preference-form'
 
@@ -42,21 +38,17 @@ function RouteComponent() {
   const [{ data: mePreference }] = useQueries({
     queries: [getMePreference(preference)],
   })
-
   assertExists(mePreference)
 
-  const { getPreference } = useMetadata()
-
-  const preferenceMeta = getPreference(preference)
-
-  const { mutateAsync: updateMePreference } = useUpdateMePreference()
+  const { mutateAsync: updateMePreference } = useUpdateMePreference(
+    mePreference.id,
+  )
 
   const form = useAppForm({
     defaultValues: {
-      preference: mePreference.preference,
-      preferred: mePreference.preferred,
-      blocked: mePreference.blocked,
-    } as PreferenceDto,
+      preferenceId: mePreference.id,
+      attributeIds: [],
+    } as PreferenceCreateRequest,
     onSubmit: async ({ value }) => {
       try {
         await updateMePreference(value)
@@ -80,13 +72,13 @@ function RouteComponent() {
         <Card>
           <CardHeader>
             <CardTitle>
-              <span className="capitalize">{preferenceMeta.label}</span>{' '}
+              <span className="capitalize">{mePreference.name}</span>{' '}
               konfigurációja
             </CardTitle>
           </CardHeader>
           <Separator />
           <CardContent className="grid gap-4">
-            <PreferenceForm form={form} />
+            <PreferenceForm form={form} preference={mePreference} />
           </CardContent>
           <CardFooter className="gap-4 justify-end">
             <form.SubscribeButton asChild variant="outline">
@@ -94,10 +86,7 @@ function RouteComponent() {
             </form.SubscribeButton>
             <form.Subscribe
               selector={(state) => {
-                const disabled =
-                  state.values.preferred.length === 0 &&
-                  state.values.blocked.length === 0
-
+                const disabled = state.values.attributeIds.length === 0
                 return disabled
               }}
             >

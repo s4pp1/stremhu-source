@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { create } from 'zustand'
 import { useShallow } from 'zustand/react/shallow'
 
-import type { AddTrackerDialog } from '@/features/add-tracker/add-tracker.types'
+import type { AddIndexerDialog } from '@/features/add-indexer/add-indexer.types'
 import type { AddUserDialog } from '@/features/add-user/add-user.types'
 import type { ChangePasswordDialog } from '@/features/change-password/change-password.types'
 import type { ChangeUsernameDialog } from '@/features/change-username/change-username.types'
@@ -17,7 +17,7 @@ type BaseOpenDialog = {
 export type OpenDialog = BaseOpenDialog &
   (
     | ConfirmDialog
-    | AddTrackerDialog
+    | AddIndexerDialog
     | ChangeUsernameDialog
     | ChangePasswordDialog
     | AddUserDialog

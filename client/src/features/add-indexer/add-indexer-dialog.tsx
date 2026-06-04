@@ -1,3 +1,4 @@
+import { useSuspenseQueries } from '@tanstack/react-query'
 import type { MouseEventHandler, SubmitEventHandler } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -22,9 +23,12 @@ import {
 } from '@/shared/components/ui/select'
 import { useAppForm } from '@/shared/contexts/form-context'
 import { parseApiError } from '@/shared/lib/utils'
-import { useIndexerLogin } from '@/shared/queries/indexers'
+import {
+  getIndexerDefinitions,
+  useIndexerLogin,
+} from '@/shared/queries/indexers'
 
-import type { AddTrackerDialog } from './add-tracker.types'
+import type { AddIndexerDialog } from './add-indexer.types'
 
 const schema = z.object({
   indexerId: z.string(),
@@ -32,16 +36,20 @@ const schema = z.object({
   password: z.string().trim().nonempty('A jelszó kitöltése kötelező'),
 })
 
-export function AddTrackerDialog(dialog: OpenedDialog & AddTrackerDialog) {
-  const { activeTrackers } = dialog.options
+export function AddIndexerDialog(dialog: OpenedDialog & AddIndexerDialog) {
+  const [{ data: indexerDefinitions }] = useSuspenseQueries({
+    queries: [getIndexerDefinitions],
+  })
+
+  const { activeIndexerIds } = dialog.options
 
   const dialogsStore = useDialogsStore()
 
   const { mutateAsync: loginIndexer } = useIndexerLogin()
 
-  const { indexers } = metadata
-
-  const inactiveTrackers = []
+  const inactiveTrackers = indexerDefinitions.filter(
+    (indexer) => !activeIndexerIds.includes(indexer.id),
+  )
 
   const form = useAppForm({
     defaultValues: {
@@ -94,7 +102,7 @@ export function AddTrackerDialog(dialog: OpenedDialog & AddTrackerDialog) {
                 bejelentkezési adataidat.
               </DialogDescription>
             </DialogHeader>
-            <form.Field name="tracker">
+            <form.Field name="indexerId">
               {(field) => (
                 <Field>
                   <FieldLabel htmlFor={field.name}>Tracker</FieldLabel>
@@ -108,8 +116,8 @@ export function AddTrackerDialog(dialog: OpenedDialog & AddTrackerDialog) {
                     </SelectTrigger>
                     <SelectContent>
                       {inactiveTrackers.map((indexer) => (
-                        <SelectItem key={indexer.value} value={indexer.value}>
-                          {indexer.label}
+                        <SelectItem key={indexer.id} value={indexer.id}>
+                          {indexer.name}
                         </SelectItem>
                       ))}
                     </SelectContent>

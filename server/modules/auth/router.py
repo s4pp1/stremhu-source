@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from modules.auth.dependencies import SessionGuard, get_auth_service
 from modules.auth.schemas.api import LoginRequest, RegisterRequest
 from modules.auth.service import AuthService
-from modules.roles.enums import UserRole
+from modules.roles.constants import UserRoleKey
 from modules.users.dependencies import get_users_service
 from modules.users.models import UserModel
 from modules.users.schemas.api import UserResponse
@@ -31,7 +31,7 @@ def register(
     user_model = UserCreate(
         username=payload.username,
         password=payload.password,
-        role_id=UserRole.ADMIN,
+        role_id=UserRoleKey.ADMIN,
     )
     user = users_service.create(user_model)
 

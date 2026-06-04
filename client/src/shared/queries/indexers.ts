@@ -10,6 +10,7 @@ import type {
 } from '../lib/source/source-client'
 import {
   indexersDelete,
+  indexersGetDefinitionList,
   indexersGetList,
   indexersLogin,
   indexersUpdate,
@@ -21,6 +22,14 @@ export const getIndexers = queryOptions({
   queryKey: ['indexers'],
   queryFn: async () => {
     const indexers = await indexersGetList()
+    return indexers
+  },
+})
+
+export const getIndexerDefinitions = queryOptions({
+  queryKey: ['indexer-definitions'],
+  queryFn: async () => {
+    const indexers = await indexersGetDefinitionList()
     return indexers
   },
 })

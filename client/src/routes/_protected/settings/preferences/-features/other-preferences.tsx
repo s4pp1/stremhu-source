@@ -16,7 +16,6 @@ import { Switch } from '@/shared/components/ui/switch'
 import { SEED_OPTIONS } from '@/shared/constants'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
 import { getMe, useUpdateMe } from '@/shared/queries/me'
-import { getMetadata } from '@/shared/queries/metadata'
 import { onlyBestTorrentSchema, torrentSeedSchema } from '@/shared/schemas'
 
 export const validatorSchema = z.object({
@@ -25,11 +24,10 @@ export const validatorSchema = z.object({
 })
 
 export function OtherPreferences() {
-  const [{ data: me }, { data: metadata }] = useQueries({
-    queries: [getMe, getMetadata],
+  const [{ data: me }] = useQueries({
+    queries: [getMe()],
   })
   assertExists(me)
-  assertExists(metadata)
 
   const { mutateAsync: updateMe } = useUpdateMe()
 

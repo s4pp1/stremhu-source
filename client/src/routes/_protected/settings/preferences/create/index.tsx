@@ -6,13 +6,10 @@ import { toast } from 'sonner'
 
 import { CreatePreference } from '@/features/create-preference/create-preference'
 import { useAppForm } from '@/shared/contexts/form-context'
+import type { PreferenceCreateRequest } from '@/shared/lib/source/source-client'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
-import {
-  getMePreferences,
-  useCreateMePreference,
-} from '@/shared/queries/me-preferences'
-import { getMetadata } from '@/shared/queries/metadata'
-import type { PreferenceDto } from '@/shared/type/preference.dto'
+import { getMePreferences, useCreateMePreference } from '@/shared/queries/me'
+import { getPreferences } from '@/shared/queries/preferences'
 
 export const Route = createFileRoute(
   '/_protected/settings/preferences/create/',
@@ -23,20 +20,16 @@ export const Route = createFileRoute(
 function RouteComponent() {
   const navigate = useNavigate()
 
-  const [{ data: metadata }, { data: mePreferences }] = useQueries({
-    queries: [getMetadata, getMePreferences],
+  const [{ data: preferences }, { data: mePreferences }] = useQueries({
+    queries: [getPreferences, getMePreferences()],
   })
-  assertExists(metadata)
+  assertExists(preferences)
   assertExists(mePreferences)
 
-  const { preferences } = metadata
-
   const availablePrefs = useMemo(() => {
-    const currentPrefs = mePreferences.map(
-      (mePreference) => mePreference.preference,
-    )
+    const currentPrefs = mePreferences.map((mePreference) => mePreference.id)
     const prefs = preferences.filter(
-      (preference) => !currentPrefs.includes(preference.value),
+      (preference) => !currentPrefs.includes(preference.id),
     )
 
     return prefs
@@ -50,10 +43,9 @@ function RouteComponent() {
 
   const form = useAppForm({
     defaultValues: {
-      preference: availablePrefs[0].value,
-      preferred: [],
-      blocked: [],
-    } as PreferenceDto,
+      preferenceId: availablePrefs[0].id,
+      attributeIds: [],
+    } as PreferenceCreateRequest,
     onSubmit: async ({ value }) => {
       try {
         await createMePreference(value)

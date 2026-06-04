@@ -6,27 +6,20 @@ import {
   ItemHeader,
   ItemTitle,
 } from '@/shared/components/ui/item'
-import { useMetadata } from '@/shared/hooks/use-metadata'
-import type { PreferenceEnum } from '@/shared/lib/source/source-client'
-import type { PreferenceItemEnum } from '@/shared/type/preference-item.enum'
+import type { AttributeResponse } from '@/shared/lib/source/source-client'
 
 export interface PreferenceItemProps {
-  preference: PreferenceEnum
-  preferenceItem: PreferenceItemEnum
+  attribute: AttributeResponse
   actions?: ReactNode[]
 }
 
 export function PreferenceItem(props: PreferenceItemProps) {
-  const { preference, preferenceItem, actions } = props
-
-  const { getPreferenceItem } = useMetadata()
-
-  const item = getPreferenceItem(preference, preferenceItem)
+  const { attribute, actions } = props
 
   return (
     <Item variant="muted">
       <ItemHeader>
-        <ItemTitle>{item.label}</ItemTitle>
+        <ItemTitle>{attribute.name}</ItemTitle>
         {actions !== undefined && <ItemActions>{actions}</ItemActions>}
       </ItemHeader>
     </Item>

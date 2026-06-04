@@ -4,13 +4,12 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Preference } from '@/features/preferences/preference'
 import { PreferencesSection } from '@/features/preferences/preferences-section'
 import { Separator } from '@/shared/components/ui/separator'
-import type { PreferenceEnum } from '@/shared/lib/source/source-client'
 import { assertExists } from '@/shared/lib/utils'
 import {
   getMePreferences,
   useDeleteMePreference,
   useReorderMePreference,
-} from '@/shared/queries/me-preferences'
+} from '@/shared/queries/me'
 import type { PreferenceDto } from '@/shared/type/preference.dto'
 
 import { OtherPreferences } from './-features/other-preferences'
@@ -20,15 +19,15 @@ export const Route = createFileRoute('/_protected/settings/preferences/')({
 })
 
 function RouteComponent() {
-  const { data: mePreferences } = useQuery(getMePreferences)
+  const { data: mePreferences } = useQuery(getMePreferences())
   assertExists(mePreferences)
 
   const { mutateAsync: reorderMePreference } = useReorderMePreference()
   const { mutateAsync: deleteMePreference } = useDeleteMePreference()
 
-  const handleReorder = async (preferences: PreferenceEnum[]) => {
+  const handleReorder = async (preferenceIds: string[]) => {
     await reorderMePreference({
-      preferences,
+      preferenceIds,
     })
   }
 
@@ -46,7 +45,7 @@ function RouteComponent() {
             preference={preference}
             toEditLink={{
               to: '/settings/preferences/$preference',
-              params: { preference: preference.preference },
+              params: { preference: preference.id },
             }}
             onDelete={handleDelete}
           />

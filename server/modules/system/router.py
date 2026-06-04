@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from modules.auth.dependencies import SessionGuard
-from modules.roles.enums import UserRole
+from modules.roles.constants import UserRoleKey
 from modules.settings.dependencies import get_settings_service
 from modules.settings.schemas.api import (
     SystemSettingsResponse,
@@ -36,7 +36,7 @@ def get_status(
 )
 def get_settings(
     settings_service: SettingsService = Depends(get_settings_service),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ):
     return settings_service.get_system()
 
@@ -48,7 +48,7 @@ def get_settings(
 def update_settings(
     payload: SystemSettingsUpdateRequest,
     settings_service: SettingsService = Depends(get_settings_service),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ):
     return settings_service.save_system(payload)
 
@@ -58,6 +58,6 @@ def update_settings(
 )
 def cleanup(
     torrent_files_service: TorrentFilesService = Depends(get_torrent_files_service),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ):
     torrent_files_service.run_retention_cleanup(retention_seconds=0)

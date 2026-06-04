@@ -25,7 +25,7 @@ import { getIndexers } from '@/shared/queries/indexers'
 
 import { IndexerItem } from '../-components/indexer-item'
 
-export function Trackers() {
+export function Indexers() {
   const [{ data: indexers }] = useQueries({
     queries: [getIndexers],
   })
@@ -40,8 +40,10 @@ export function Trackers() {
     e.preventDefault()
     e.stopPropagation()
     dialogs.openDialog({
-      type: 'ADD_TRACKER',
-      options: { activeTrackers: [] },
+      type: 'ADD_INDEXER',
+      options: {
+        activeIndexerIds: indexers.map((indexer) => indexer.indexerId),
+      },
     })
   }
 
@@ -67,7 +69,7 @@ export function Trackers() {
       <Separator />
       <CardContent className="grid gap-4">
         {indexers.map((indexer) => (
-          <IndexerItem key={indexer.id} indexer={indexer} />
+          <IndexerItem key={indexer.indexerId} indexer={indexer} />
         ))}
         {indexers.length === 0 && (
           <Empty className="p-2 md:p-2">

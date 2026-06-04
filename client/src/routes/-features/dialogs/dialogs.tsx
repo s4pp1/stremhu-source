@@ -1,7 +1,7 @@
 import type { ComponentType } from 'react'
 import { Fragment } from 'react/jsx-runtime'
 
-import { AddTrackerDialog } from '@/features/add-tracker/add-tracker-dialog'
+import { AddIndexerDialog } from '@/features/add-indexer/add-indexer-dialog'
 import { AddUserDialog } from '@/features/add-user/add-user-dialog'
 import { ChangePasswordDialog } from '@/features/change-password/change-password-dialog'
 import { ChangeUsernameDialog } from '@/features/change-username/change-username-dialog'
@@ -17,7 +17,7 @@ type DialogComponentMap = {
 
 const dialogComponents = {
   CONFIRM: ConfirmDialog,
-  ADD_TRACKER: AddTrackerDialog,
+  ADD_INDEXER: AddIndexerDialog,
   CHANGE_USERNAME: ChangeUsernameDialog,
   CHANGE_PASSWORD: ChangePasswordDialog,
   ADD_USER: AddUserDialog,

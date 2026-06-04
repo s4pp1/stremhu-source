@@ -6,13 +6,13 @@ import { toast } from 'sonner'
 
 import { CreatePreference } from '@/features/create-preference/create-preference'
 import { useAppForm } from '@/shared/contexts/form-context'
+import type { PreferenceCreateRequest } from '@/shared/lib/source/source-client'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
-import { getMetadata } from '@/shared/queries/metadata'
+import { getPreferences } from '@/shared/queries/preferences'
 import {
   getUserPreferences,
   useCreateUserPreference,
-} from '@/shared/queries/user-preferences'
-import type { PreferenceDto } from '@/shared/type/preference.dto'
+} from '@/shared/queries/users'
 
 export const Route = createFileRoute(
   '/_protected/dashboard/users/$userId/preferences/create/',
@@ -26,24 +26,22 @@ function RouteComponent() {
     from: '/_protected/dashboard/users/$userId/preferences/create/',
   })
 
-  const [{ data: metadata }, { data: userPreferences }] = useQueries({
-    queries: [getMetadata, getUserPreferences(userId)],
+  const [{ data: preferences }, { data: userPreferences }] = useQueries({
+    queries: [getPreferences, getUserPreferences(userId)],
   })
-  assertExists(metadata)
+  assertExists(preferences)
   assertExists(userPreferences)
-
-  const { preferences } = metadata
 
   const availablePrefs = useMemo(() => {
     const currentPrefs = userPreferences.map(
-      (mePreference) => mePreference.preference,
+      (userPreference) => userPreference.id,
     )
     const prefs = preferences.filter(
-      (preference) => !currentPrefs.includes(preference.value),
+      (preference) => !currentPrefs.includes(preference.id),
     )
 
     return prefs
-  }, [userPreferences, preferences])
+  }, [preferences, preferences])
 
   if (availablePrefs.length === 0) {
     return navigate({ to: '/settings/preferences' })
@@ -53,10 +51,9 @@ function RouteComponent() {
 
   const form = useAppForm({
     defaultValues: {
-      preference: availablePrefs[0].value,
-      preferred: [],
-      blocked: [],
-    } as PreferenceDto,
+      preferenceId: availablePrefs[0].id,
+      attributeIds: [],
+    } as PreferenceCreateRequest,
     onSubmit: async ({ value }) => {
       try {
         await createUserPreference(value)

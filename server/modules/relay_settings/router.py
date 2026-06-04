@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from modules.auth.dependencies import SessionGuard
 from modules.relay_settings.dependencies import get_relay_settings_service
 from modules.relay_settings.service import RelaySettingsService
-from modules.roles.enums import UserRole
+from modules.roles.constants import UserRoleKey
 from modules.settings.schemas.api import (
     RelaySettingsResponse,
     RelaySettingsUpdateRequest,
@@ -21,8 +21,8 @@ router = APIRouter(
 )
 def get_settings(
     relay_settings_service: RelaySettingsService = Depends(get_relay_settings_service),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
-) -> RelaySettingsResponse:
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
+):
     return relay_settings_service.get_settings()
 
 
@@ -33,6 +33,6 @@ def get_settings(
 def update_settings(
     payload: RelaySettingsUpdateRequest,
     relay_settings_service: RelaySettingsService = Depends(get_relay_settings_service),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
-) -> RelaySettingsResponse:
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
+):
     return relay_settings_service.update_settings(payload)

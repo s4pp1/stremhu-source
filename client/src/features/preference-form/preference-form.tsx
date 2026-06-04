@@ -9,13 +9,7 @@ import {
   arrayMove,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
-import {
-  BanIcon,
-  GrabIcon,
-  HeartIcon,
-  SearchIcon,
-  TrashIcon,
-} from 'lucide-react'
+import { GrabIcon, HeartIcon, SearchIcon, TrashIcon } from 'lucide-react'
 import type { MouseEventHandler } from 'react'
 
 import { SortableWrapper } from '@/shared/components/sortable-wrapper'
@@ -31,30 +25,24 @@ import {
 } from '@/shared/components/ui/item'
 import { Separator } from '@/shared/components/ui/separator'
 import { withForm } from '@/shared/contexts/form-context'
-import { useMetadata } from '@/shared/hooks/use-metadata'
-import type { PreferenceItemDto } from '@/shared/queries/me-preferences'
+import type { PreferenceResponse } from '@/shared/lib/source/source-client'
 
 import { PreferenceItem } from '../../routes/_protected/settings/preferences/-components/preference-item'
 import { preferenceFormValues } from './preference-form-values'
 
 export const PreferenceForm = withForm({
   defaultValues: preferenceFormValues,
-  render: ({ form }) => {
-    const { getPreference } = useMetadata()
-
+  props: {
+    preference: {} as PreferenceResponse,
+  },
+  render: ({ form, preference }) => {
     return (
       <div className="grid gap-8">
         <form.Subscribe selector={(state) => state.values}>
           {(values) => {
-            const preference = getPreference(values.preference)
-            const preferenceItems = preference.items
-            const preferenceItemsCount = preferenceItems.length
-
-            const availablePreferenceItems = preferenceItems.filter(
+            const availablePreferenceItems = preference.attributes.filter(
               (preferenceItem) =>
-                ![...values.preferred, ...values.blocked].includes(
-                  preferenceItem.value,
-                ),
+                !values.attributeIds.includes(preferenceItem.id),
             )
 
             return (
@@ -72,30 +60,14 @@ export const PreferenceForm = withForm({
                     > = (event) => {
                       event.preventDefault()
 
-                      const items = [
-                        ...values.preferred,
-                        item.value,
-                      ] as PreferenceItemDto
-                      form.setFieldValue('preferred', items)
-                    }
-
-                    const handleAddBlocked: MouseEventHandler<
-                      HTMLButtonElement
-                    > = (event) => {
-                      event.preventDefault()
-
-                      const items = [
-                        ...values.blocked,
-                        item.value,
-                      ] as PreferenceItemDto
-                      form.setFieldValue('blocked', items)
+                      const attributeIds = [...values.attributeIds, item.id]
+                      form.setFieldValue('attributeIds', attributeIds)
                     }
 
                     return (
                       <PreferenceItem
-                        key={item.value}
-                        preference={values.preference}
-                        preferenceItem={item.value}
+                        key={item.id}
+                        attribute={item}
                         actions={[
                           <Button
                             size="icon-sm"
@@ -103,17 +75,6 @@ export const PreferenceForm = withForm({
                             onClick={handleAddPreferred}
                           >
                             <HeartIcon />
-                          </Button>,
-                          <Button
-                            size="icon-sm"
-                            variant="destructive"
-                            className="rounded-full"
-                            disabled={
-                              preferenceItemsCount - 1 <= values.blocked.length
-                            }
-                            onClick={handleAddBlocked}
-                          >
-                            <BanIcon />
                           </Button>,
                         ]}
                       />
@@ -133,18 +94,17 @@ export const PreferenceForm = withForm({
         <Separator />
         <form.Subscribe
           selector={(state) => ({
-            preference: state.values.preference,
-            preferred: state.values.preferred,
+            attributeIds: state.values.attributeIds,
           })}
         >
-          {({ preference, preferred }) => {
+          {({ attributeIds }) => {
             const onReorderItems = (event: DragEndEvent) => {
               const { active, over } = event
               if (!over || active.id === over.id) return
 
               const preferredItems = [
-                ...preferred,
-              ] as (typeof preferred)[number][]
+                ...attributeIds,
+              ] as (typeof attributeIds)[number][]
               const oldIndex = preferredItems.findIndex(
                 (value) => value === active.id,
               )
@@ -158,10 +118,7 @@ export const PreferenceForm = withForm({
                 oldIndex,
                 newIndex,
               )
-              form.setFieldValue(
-                'preferred',
-                reorderedItems as PreferenceItemDto,
-              )
+              form.setFieldValue('attributeIds', reorderedItems)
             }
 
             return (
@@ -186,19 +143,19 @@ export const PreferenceForm = withForm({
                     modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
                   >
                     <SortableContext
-                      items={preferred}
+                      items={attributeIds}
                       strategy={verticalListSortingStrategy}
                     >
-                      {preferred.map((item) => {
+                      {attributeIds.map((item) => {
                         const handleRemove: MouseEventHandler<
                           HTMLButtonElement
                         > = (event) => {
                           event.preventDefault()
 
-                          const filteredItems = preferred.filter(
+                          const filteredItems = attributeIds.filter(
                             (i) => i !== item,
-                          ) as PreferenceItemDto
-                          form.setFieldValue('preferred', filteredItems)
+                          )
+                          form.setFieldValue('attributeIds', filteredItems)
                         }
 
                         return (
@@ -208,8 +165,11 @@ export const PreferenceForm = withForm({
                             resolveId={(i) => i}
                           >
                             <PreferenceItem
-                              preference={preference}
-                              preferenceItem={item}
+                              attribute={
+                                preference.attributes.find(
+                                  (a) => a.id === item,
+                                )!
+                              }
                               actions={[
                                 <Button
                                   key="delete"
@@ -230,69 +190,10 @@ export const PreferenceForm = withForm({
                       })}
                     </SortableContext>
                   </DndContext>
-                  {preferred.length === 0 && (
+                  {attributeIds.length === 0 && (
                     <Alert>
                       <HeartIcon />
                       <AlertTitle>Nincs preferált tulajdonság</AlertTitle>
-                    </Alert>
-                  )}
-                </div>
-              </div>
-            )
-          }}
-        </form.Subscribe>
-        <Separator />
-        <form.Subscribe
-          selector={(state) => ({
-            preference: state.values.preference,
-            blocked: state.values.blocked,
-          })}
-        >
-          {({ preference, blocked }) => {
-            return (
-              <div className="grid gap-4">
-                <div className="grid">
-                  <ItemTitle>Kizárt tulajdonságok</ItemTitle>
-                  <ItemDescription>
-                    Azok a tulajdonságok, amiket ide hozzáadsz nem fognak
-                    megjelennie.
-                  </ItemDescription>
-                </div>
-                <div className="grid gap-3">
-                  {blocked.map((item) => {
-                    const handleRemove: MouseEventHandler<HTMLButtonElement> = (
-                      event,
-                    ) => {
-                      event.preventDefault()
-
-                      const filteredItems = blocked.filter(
-                        (i) => i !== item,
-                      ) as PreferenceItemDto
-                      form.setFieldValue('blocked', filteredItems)
-                    }
-
-                    return (
-                      <PreferenceItem
-                        key={item}
-                        preference={preference}
-                        preferenceItem={item}
-                        actions={[
-                          <Button
-                            size="icon-sm"
-                            variant="destructive"
-                            className="rounded-full"
-                            onClick={handleRemove}
-                          >
-                            <TrashIcon />
-                          </Button>,
-                        ]}
-                      />
-                    )
-                  })}
-                  {blocked.length === 0 && (
-                    <Alert>
-                      <BanIcon />
-                      <AlertTitle>Nincs kizárt tulajdonság</AlertTitle>
                     </Alert>
                   )}
                 </div>

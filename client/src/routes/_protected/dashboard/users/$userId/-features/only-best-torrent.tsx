@@ -13,7 +13,7 @@ import { Label } from '@/shared/components/ui/label'
 import { Switch } from '@/shared/components/ui/switch'
 import type { UserDto } from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
-import { useUpdateUser } from '@/shared/queries/users'
+import { useUserUpdate } from '@/shared/queries/users'
 import { onlyBestTorrentSchema } from '@/shared/schemas'
 
 const validatorSchema = z.object({
@@ -27,7 +27,7 @@ type OnlyBestTorrent = {
 export function OnlyBestTorrent(props: OnlyBestTorrent) {
   const { user } = props
 
-  const { mutateAsync: updateUser } = useUpdateUser()
+  const { mutateAsync: updateUser } = useUserUpdate()
 
   const form = useForm({
     defaultValues: {

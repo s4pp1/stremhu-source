@@ -1,7 +1,6 @@
 from common.database import get_db
 from fastapi import Depends, HTTPException, Path, Request, status
 from modules.auth.service import AuthService
-from modules.roles.enums import UserRole
 from modules.users.dependencies import create_users_service, get_users_service
 from modules.users.models import UserModel
 from modules.users.service import UsersService
@@ -9,7 +8,7 @@ from sqlalchemy.orm import Session
 
 
 class SessionGuard:
-    def __init__(self, allowed_roles: list[UserRole] | None = None):
+    def __init__(self, allowed_roles: list[str] | None = None):
         self.allowed_roles = allowed_roles
 
     def __call__(
@@ -60,7 +59,7 @@ class OptionalSessionGuard:
 
 
 class ApiKeyGuard:
-    def __init__(self, allowed_roles: list[UserRole] | None = None):
+    def __init__(self, allowed_roles: list[str] | None = None):
         self.allowed_roles = allowed_roles
 
     def __call__(

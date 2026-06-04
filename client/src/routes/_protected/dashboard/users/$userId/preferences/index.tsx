@@ -4,14 +4,13 @@ import { createFileRoute, useParams } from '@tanstack/react-router'
 import { Preference } from '@/features/preferences/preference'
 import { PreferencesSection } from '@/features/preferences/preferences-section'
 import { Separator } from '@/shared/components/ui/separator'
-import type { PreferenceEnum } from '@/shared/lib/source/source-client'
 import { assertExists } from '@/shared/lib/utils'
 import {
+  getUser,
   getUserPreferences,
   useDeleteUserPreference,
   useReorderUserPreference,
-} from '@/shared/queries/user-preferences'
-import { getUser } from '@/shared/queries/users'
+} from '@/shared/queries/users'
 import type { PreferenceDto } from '@/shared/type/preference.dto'
 
 import { OnlyBestTorrent } from '../-features/only-best-torrent'
@@ -37,9 +36,9 @@ function RouteComponent() {
     useReorderUserPreference(userId)
   const { mutateAsync: deleteUserPreference } = useDeleteUserPreference(userId)
 
-  const handleReorder = async (preferences: PreferenceEnum[]) => {
+  const handleReorder = async (preferenceIds: string[]) => {
     await reorderUserPreference({
-      preferences,
+      preferenceIds,
     })
   }
 
@@ -56,8 +55,8 @@ function RouteComponent() {
           <Preference
             preference={preference}
             toEditLink={{
-              to: '/dashboard/users/$userId/preferences/$preference',
-              params: { preference: preference.preference },
+              to: '/dashboard/users/$userId/preferences/$preferenceId',
+              params: { preferenceId: preference.id },
             }}
             onDelete={handleDelete}
           />

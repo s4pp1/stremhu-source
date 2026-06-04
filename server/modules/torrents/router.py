@@ -1,7 +1,7 @@
 import libtorrent as libtorrent
 from fastapi import APIRouter, Depends
 from modules.auth.dependencies import SessionGuard
-from modules.roles.enums import UserRole
+from modules.roles.constants import UserRoleKey
 from modules.torrents.dependencies import get_torrents_service
 from modules.torrents.schemas.api import TorrentResponse, TorrentUpdateRequest
 from modules.torrents.service import TorrentsService
@@ -19,7 +19,7 @@ router = APIRouter(
 )
 def get_list(
     torrents_service: TorrentsService = Depends(get_torrents_service),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ):
     torrent_pairs = torrents_service.get_torrents()
     return [
@@ -35,7 +35,7 @@ def get_list(
 def get_one(
     info_hash: str,
     torrents_service: TorrentsService = Depends(get_torrents_service),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ):
     torrent_pair = torrents_service.get_by_info_hash(info_hash)
     return TorrentResponse.from_torrent_with_relay(torrent_pair)
@@ -49,7 +49,7 @@ def update(
     info_hash: str,
     req: TorrentUpdateRequest,
     torrents_service: TorrentsService = Depends(get_torrents_service),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ):
     torrent_pair = torrents_service.update(
         info_hash=info_hash,
@@ -65,7 +65,7 @@ def update(
 def delete(
     info_hash: str,
     torrents_service: TorrentsService = Depends(get_torrents_service),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ):
     torrents_service.delete(
         info_hash=info_hash,

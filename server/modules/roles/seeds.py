@@ -1,7 +1,7 @@
-from modules.roles.enums import UserRole
+from modules.roles.constants import UserRoleKey
 from modules.roles.models import RoleModel
 
 DEFAULT_ROLES = [
-    RoleModel(id=UserRole.ADMIN, name="Adminisztrátor"),
-    RoleModel(id=UserRole.USER, name="Felhasználó"),
+    RoleModel(id=UserRoleKey.ADMIN, name="Adminisztrátor"),
+    RoleModel(id=UserRoleKey.USER, name="Felhasználó"),
 ]

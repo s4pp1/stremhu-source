@@ -6,7 +6,7 @@ from modules.preferences.schemas.api import (
     PreferencesReorderRequest,
     PreferenceUpdateRequest,
 )
-from modules.roles.enums import UserRole
+from modules.roles.constants import UserRoleKey
 from modules.user_preference_definitions.dependencies import (
     get_user_preference_definitions_service,
 )
@@ -30,7 +30,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 )
 def get_list(
     users_service: UsersService = Depends(get_users_service),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ) -> list[UserModel]:
     return users_service.get_list()
 
@@ -43,7 +43,7 @@ def get_list(
 def create(
     payload: UserCreateRequest,
     users_service: UsersService = Depends(get_users_service),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ) -> UserModel:
     return users_service.create(payload)
 
@@ -55,7 +55,7 @@ def create(
 def get(
     user_id: str,
     users_service: UsersService = Depends(get_users_service),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ) -> UserModel:
     return users_service.get_by_id(user_id)
 
@@ -68,7 +68,7 @@ def update(
     user_id: str,
     payload: UserUpdateRequest,
     users_service: UsersService = Depends(get_users_service),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ) -> UserModel:
     return users_service.update(user_id, payload)
 
@@ -80,7 +80,7 @@ def update(
 def delete(
     user_id: str,
     users_service: UsersService = Depends(get_users_service),
-    current_user: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    current_user: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ) -> None:
     users_service.delete(user_id, current_user)
 
@@ -92,7 +92,7 @@ def delete(
 def regenerate_api_key(
     user_id: str,
     users_service: UsersService = Depends(get_users_service),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ) -> UserModel:
     return users_service.regenerate_api_key(user_id)
 
@@ -107,7 +107,7 @@ def get_preferences(
     user_preference_definitions_service: UserPreferenceDefinitionsService = Depends(
         get_user_preference_definitions_service
     ),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ) -> list[UserPreferenceDefinitionModel]:
     """
     Lists all preferences for a specific user.
@@ -127,7 +127,7 @@ def create_preference(
     user_preference_definitions_service: UserPreferenceDefinitionsService = Depends(
         get_user_preference_definitions_service
     ),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ) -> PreferenceResponse:
     """
     Creates/adds a preference setting for a specific user.
@@ -151,7 +151,7 @@ def reorder_preferences(
     user_preference_definitions_service: UserPreferenceDefinitionsService = Depends(
         get_user_preference_definitions_service
     ),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ) -> list[PreferenceResponse]:
     """
     Reorders the priority of preference categories for a specific user.
@@ -177,7 +177,7 @@ def get_preference(
     user_preference_definitions_service: UserPreferenceDefinitionsService = Depends(
         get_user_preference_definitions_service
     ),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ) -> PreferenceResponse:
     """
     Retrieves a specific preference setting for a specific user.
@@ -204,7 +204,7 @@ def update_preference(
     user_preference_definitions_service: UserPreferenceDefinitionsService = Depends(
         get_user_preference_definitions_service
     ),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ) -> PreferenceResponse:
     """
     Updates preferred attributes within an existing preference setting category for a specific user.
@@ -228,7 +228,7 @@ def delete_preference(
     user_preference_definitions_service: UserPreferenceDefinitionsService = Depends(
         get_user_preference_definitions_service
     ),
-    _: UserModel = Depends(SessionGuard([UserRole.ADMIN])),
+    _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ) -> None:
     """
     Deletes a specific preference category setting for a specific user.

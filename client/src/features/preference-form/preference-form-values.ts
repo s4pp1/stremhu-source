@@ -1,8 +1,6 @@
-import { PreferenceEnum } from '@/shared/lib/source/source-client'
-import type { PreferenceDto } from '@/shared/type/preference.dto'
+import type { PreferenceCreateRequest } from '@/shared/lib/source/source-client'
 
-export const preferenceFormValues: PreferenceDto = {
-  preference: PreferenceEnum.language,
-  preferred: [],
-  blocked: [],
+export const preferenceFormValues: PreferenceCreateRequest = {
+  preferenceId: '',
+  attributeIds: [],
 }

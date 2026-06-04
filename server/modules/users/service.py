@@ -2,7 +2,7 @@ import uuid
 
 from argon2 import PasswordHasher
 from fastapi import HTTPException, status
-from modules.roles.enums import UserRole
+from modules.roles.constants import UserRoleKey
 from modules.users.models import UserModel
 from modules.users.repository import UsersRepository
 from modules.users.schemas.internal import UserCreate, UserUpdate
@@ -24,7 +24,7 @@ class UsersService:
         password_hash = None
         if payload.password is not None:
             password_hash = self._hash_password(payload.password)
-        elif payload.role_id != UserRole.USER:
+        elif payload.role_id != UserRoleKey.USER:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Jelszó nélkül csak sima felhasználó hozható létre!",

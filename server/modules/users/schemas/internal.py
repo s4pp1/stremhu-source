@@ -1,4 +1,4 @@
-from modules.roles.enums import UserRole
+from modules.roles.constants import UserRoleKey
 from pydantic import BaseModel
 
 
@@ -10,12 +10,12 @@ class BaseUser(BaseModel):
 
 class UserCreate(BaseUser):
     password: str | None = None
-    role_id: UserRole = UserRole.USER
+    role_id: str = UserRoleKey.USER
 
 
 class UserUpdate(BaseModel):
     username: str | None = None
     password: str | None = None
-    role_id: UserRole | None = None
+    role_id: str | None = None
     torrent_seed: int | None = None
     only_best_torrent: bool | None = None

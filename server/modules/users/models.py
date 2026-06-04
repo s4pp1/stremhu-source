@@ -3,7 +3,7 @@ from datetime import datetime
 
 import sqlalchemy as sa
 from common.database import Base, UTCDateTime
-from modules.roles.enums import UserRole
+from modules.roles.constants import UserRoleKey
 from modules.roles.models import RoleModel
 from modules.user_preference_definitions.models import UserPreferenceDefinitionModel
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -44,9 +44,9 @@ class UserModel(Base):
         index=True,
     )
 
-    role_id: Mapped[UserRole] = mapped_column(
+    role_id: Mapped[str] = mapped_column(
         sa.ForeignKey("roles.id"),
-        default=UserRole.USER,
+        default=UserRoleKey.USER,
     )
 
     role: Mapped["RoleModel"] = relationship("RoleModel", init=False)

@@ -467,19 +467,12 @@ export interface TorrentUpdateRequest {
   downloadFullTorrent?: boolean | null
 }
 
-export type UserRole = (typeof UserRole)[keyof typeof UserRole]
-
-export const UserRole = {
-  admin: 'admin',
-  user: 'user',
-} as const
-
 export interface UserCreateRequest {
   username: string
   torrentSeed?: number | null
   onlyBestTorrent?: boolean
   password?: string | null
-  roleId?: UserRole
+  roleId?: string
 }
 
 export interface UserResponse {
@@ -496,7 +489,7 @@ export interface UserResponse {
 export interface UserUpdateRequest {
   username?: string | null
   password?: string | null
-  roleId?: UserRole | null
+  roleId?: string | null
   torrentSeed?: number | null
   onlyBestTorrent?: boolean | null
 }
@@ -1350,6 +1343,21 @@ export const indexersGetList = (
 }
 
 /**
+ * Elérhető indexerek listájának lekérése.
+ * @summary Get Definition List
+ */
+export const indexersGetDefinitionList = (
+  options?: SecondParameter<
+    typeof sourceClientInstance<IndexerDefinitionResponse[]>
+  >,
+) => {
+  return sourceClientInstance<IndexerDefinitionResponse[]>(
+    { url: `/api/indexers/definitions`, method: 'GET' },
+    options,
+  )
+}
+
+/**
  * Bejelentkezés egy új indexerre.
  * @summary Login
  */
@@ -1565,6 +1573,9 @@ export type KodiGetStreamsResult = NonNullable<
 >
 export type IndexersGetListResult = NonNullable<
   Awaited<ReturnType<typeof indexersGetList>>
+>
+export type IndexersGetDefinitionListResult = NonNullable<
+  Awaited<ReturnType<typeof indexersGetDefinitionList>>
 >
 export type IndexersLoginResult = NonNullable<
   Awaited<ReturnType<typeof indexersLogin>>

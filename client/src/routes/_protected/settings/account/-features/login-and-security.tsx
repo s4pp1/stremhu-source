@@ -18,7 +18,6 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/shared/components/ui/item'
-import { useMetadata } from '@/shared/hooks/use-metadata'
 import { assertExists } from '@/shared/lib/utils'
 import { getMe } from '@/shared/queries/me'
 
@@ -26,7 +25,6 @@ export function LoginAndSecurity() {
   const { data: me } = useQuery(getMe())
   assertExists(me)
 
-  const { getUserRoleLabel } = useMetadata()
   const dialogs = useDialogs()
 
   return (
@@ -44,9 +42,7 @@ export function LoginAndSecurity() {
           </ItemMedia>
           <ItemContent>
             <ItemTitle>{me.username}</ItemTitle>
-            <ItemDescription>
-              {getUserRoleLabel(me.userRole)} jogosultság
-            </ItemDescription>
+            <ItemDescription>{me.role.name} jogosultság</ItemDescription>
           </ItemContent>
         </Item>
         <Item variant="default" className="p-0">

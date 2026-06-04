@@ -6,6 +6,7 @@ import {
 
 import type {
   MeUpdateRequest,
+  PreferenceCreateRequest,
   PreferenceUpdateRequest,
   PreferencesReorderRequest,
 } from '../lib/source/source-client'
@@ -20,7 +21,6 @@ import {
   meUpdate,
   meUpdatePreference,
 } from '../lib/source/source-client'
-import type { PreferenceDto } from '../type/preference.dto'
 import { getUsers } from './users'
 
 export function getMe() {
@@ -75,7 +75,7 @@ export function useCreateMePreference() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (payload: PreferenceDto) => {
+    mutationFn: async (payload: PreferenceCreateRequest) => {
       await meCreatePreference(payload)
     },
     onSuccess: () => {

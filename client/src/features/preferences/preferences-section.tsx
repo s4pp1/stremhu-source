@@ -9,7 +9,7 @@ import {
   arrayMove,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
-import { useQuery } from '@tanstack/react-query'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import type { LinkProps } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
 import { sortBy } from 'lodash'
@@ -38,40 +38,30 @@ import {
   ItemTitle,
 } from '@/shared/components/ui/item'
 import { Separator } from '@/shared/components/ui/separator'
-import type { PreferenceEnum } from '@/shared/lib/source/source-client'
-import { getMetadata } from '@/shared/queries/metadata'
-import type { PreferenceDto } from '@/shared/type/preference.dto'
+import type { PreferenceResponse } from '@/shared/lib/source/source-client'
+import { getPreferences } from '@/shared/queries/preferences'
 
 type PreferencesSectionProps = {
-  preferences: PreferenceDto[]
+  preferences: PreferenceResponse[]
   toCreateLink: LinkProps
-  renderPreference: (preference: PreferenceDto) => ReactNode
-  onReorder: (preferences: PreferenceEnum[]) => Promise<void>
+  renderPreference: (preference: PreferenceResponse) => ReactNode
+  onReorder: (preferenceIds: string[]) => Promise<void>
 }
 
 export function PreferencesSection(props: PreferencesSectionProps) {
-  const { data: metadata } = useQuery(getMetadata)
-  if (!metadata) throw new Error(`Nincs "metadata" a cache-ben`)
+  const { data: allPreferences } = useSuspenseQuery(getPreferences)
 
   const { preferences, toCreateLink, renderPreference, onReorder } = props
 
   const disableCreatePreference = useMemo(() => {
-    return metadata.preferences.length === preferences.length
-  }, [metadata.preferences, preferences])
+    return allPreferences.length === preferences.length
+  }, [allPreferences.length, preferences.length])
 
   const preferredPreferences = useMemo(
     () =>
       sortBy(
-        preferences.filter((preference) => preference.preferred.length > 0),
+        preferences.filter((preference) => preference.attributes.length > 0),
         'order',
-      ),
-    [preferences],
-  )
-  const blockedPreferences = useMemo(
-    () =>
-      preferences.filter(
-        (preference) =>
-          preference.blocked.length !== 0 && preference.preferred.length === 0,
       ),
     [preferences],
   )
@@ -86,14 +76,14 @@ export function PreferencesSection(props: PreferencesSectionProps) {
     const { over, active } = event
     if (!over || active.id === over.id) return
 
-    const oldIndex = items.findIndex((item) => item.preference === active.id)
-    const newIndex = items.findIndex((item) => item.preference === over.id)
+    const oldIndex = items.findIndex((item) => item.id === active.id)
+    const newIndex = items.findIndex((item) => item.id === over.id)
     if (oldIndex === -1 || newIndex === -1) return
 
     const reordered = arrayMove(items, oldIndex, newIndex)
     setItems(reordered)
 
-    await onReorder(reordered.map((item) => item.preference))
+    await onReorder(reordered.map((item) => item.id))
   }
 
   return (
@@ -139,18 +129,16 @@ export function PreferencesSection(props: PreferencesSectionProps) {
         >
           <div className="grid gap-3">
             <SortableContext
-              items={items.map(
-                (preferredPreference) => preferredPreference.preference,
-              )}
+              items={items.map((preferredPreference) => preferredPreference.id)}
               strategy={verticalListSortingStrategy}
             >
               {items.map((preference) => (
                 <SortableWrapper
-                  key={preference.preference}
+                  key={preference.id}
                   item={preference}
-                  resolveId={(i) => i.preference}
+                  resolveId={(i) => i.id}
                 >
-                  <Fragment key={preference.preference}>
+                  <Fragment key={preference.id}>
                     {renderPreference(preference)}
                   </Fragment>
                 </SortableWrapper>
@@ -178,19 +166,6 @@ export function PreferencesSection(props: PreferencesSectionProps) {
               </ItemDescription>
             </ItemContent>
           </Item>
-          <div className="grid gap-3">
-            {blockedPreferences.map((preference) => (
-              <Fragment key={preference.preference}>
-                {renderPreference(preference)}
-              </Fragment>
-            ))}
-            {blockedPreferences.length === 0 && (
-              <Alert>
-                <SearchIcon />
-                <AlertTitle>Nincs kitiltásra használt szabály.</AlertTitle>
-              </Alert>
-            )}
-          </div>
         </div>
       </CardContent>
     </Card>
