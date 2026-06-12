@@ -3,10 +3,6 @@ import { useMemo } from 'react'
 import { toast } from 'sonner'
 
 import { useAppForm } from '@/shared/contexts/form-context'
-import type {
-  NetworkAutoSetupRequest,
-  NetworkManualSetupRequest,
-} from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import { getNetworkSettings, useNetworkConfig } from '@/shared/queries/network'
 
@@ -43,26 +39,7 @@ export function useNetworkAccessForm() {
       try {
         if (value.mode === 'none') return
 
-        let payload: NetworkAutoSetupRequest | NetworkManualSetupRequest
-
-        if (value.mode === 'manual') {
-          payload = {
-            mode: 'manual',
-            host: value.host,
-            reverseProxy: value.reverseProxy,
-          }
-        } else {
-          payload = {
-            mode: 'auto',
-            provider: value.provider,
-            host: value.host,
-            token: value.token,
-            email: value.email,
-            connection: value.connection,
-          }
-        }
-
-        const networkSetup = await configNetwork(payload)
+        const networkSetup = await configNetwork(value)
 
         toast.success(
           <div className="flex flex-col gap-1">

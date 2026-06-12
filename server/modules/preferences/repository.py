@@ -12,28 +12,77 @@ class PreferencesRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def find_list(self) -> list[PreferenceModel]:
+    def find_list(self, user_id: str | None = None) -> list[PreferenceModel]:
+        join_conditions = [
+            PreferenceModel.id == AttributeModel.preference_id,
+            sa.or_(
+                AttributeModel.type != "indexer_definition",
+                self.db.query(IndexerAccountModel.indexer_id)
+                .filter(IndexerAccountModel.indexer_id == AttributeModel.id)
+                .exists(),
+            ),
+        ]
+
+        if user_id:
+            from modules.attribute_exclusions.models import AttributeExclusionModel
+
+            join_conditions.append(
+                ~self.db.query(AttributeExclusionModel.id)
+                .filter(
+                    AttributeExclusionModel.attribute_id == AttributeModel.id,
+                    AttributeExclusionModel.user_id == user_id,
+                )
+                .exists()
+            )
+
         return (
             self.db.query(PreferenceModel)
             .join(
                 AttributeModel,
-                sa.and_(
-                    PreferenceModel.id == AttributeModel.preference_id,
-                    sa.or_(
-                        AttributeModel.type != "indexer_definition",
-                        self.db.query(IndexerAccountModel.indexer_id)
-                        .filter(IndexerAccountModel.indexer_id == AttributeModel.id)
-                        .exists(),
-                    ),
-                ),
+                sa.and_(*join_conditions),
             )
             .options(contains_eager(PreferenceModel.attributes))
             .order_by(PreferenceModel.order.asc())
             .all()
         )
 
-    def find_by_id(self, id: str) -> PreferenceModel | None:
-        return self.db.query(PreferenceModel).filter(PreferenceModel.id == id).first()
+    def find_by_id(
+        self,
+        id: str,
+        user_id: str | None = None,
+    ) -> PreferenceModel | None:
+        join_conditions = [
+            PreferenceModel.id == AttributeModel.preference_id,
+            sa.or_(
+                AttributeModel.type != "indexer_definition",
+                self.db.query(IndexerAccountModel.indexer_id)
+                .filter(IndexerAccountModel.indexer_id == AttributeModel.id)
+                .exists(),
+            ),
+        ]
+
+        if user_id:
+            from modules.attribute_exclusions.models import AttributeExclusionModel
+
+            join_conditions.append(
+                ~self.db.query(AttributeExclusionModel.id)
+                .filter(
+                    AttributeExclusionModel.attribute_id == AttributeModel.id,
+                    AttributeExclusionModel.user_id == user_id,
+                )
+                .exists()
+            )
+
+        return (
+            self.db.query(PreferenceModel)
+            .join(
+                AttributeModel,
+                sa.and_(*join_conditions),
+            )
+            .filter(PreferenceModel.id == id)
+            .options(contains_eager(PreferenceModel.attributes))
+            .first()
+        )
 
     def sync_to_db(self):
         """Szinkronizálja a kódbázisban definiált preferenciákat az adatbázissal.

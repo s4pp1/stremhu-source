@@ -1,7 +1,6 @@
 from urllib.parse import parse_qs, urljoin, urlparse
 
 import httpx
-from modules.media_attributes.constants import MediaAttributeKey
 from modules.indexer_definitions.base_indexer_definition import BaseIndexerDefinition
 from modules.indexer_definitions.enums import AuthenticationErrorEnum
 from modules.indexer_definitions.schemas.internal import (
@@ -9,6 +8,7 @@ from modules.indexer_definitions.schemas.internal import (
     IndexerDefinitionLogin,
     IndexerDefinitionTorrent,
 )
+from modules.media_attributes.constants import MediaAttributeKey
 from selectolax.parser import HTMLParser
 
 _CATEGORY_MAP: dict[str, str] = {
@@ -98,31 +98,51 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
 
         for row in torrent_rows:
             cols = row.css("td")
-            if len(cols) < 8:
+            if len(cols) < 9:
                 continue
 
-            cat_node = cols[0].css_first("a")
-            category_href = cat_node.attributes.get("href") if cat_node else ""
-            category_href.replace("?cat=", "")
+            # Category
+            category_node = cols[0].css_first("a")
+            category_href = (
+                category_node.attributes.get("href") if category_node else None
+            )
 
-            # Direct child a elements of cols[1]
-            a_tags = [n for n in cols[1].iter() if n.tag == "a"]
-            if len(a_tags) < 2:
+            if not category_href:
                 continue
 
-            download_path = a_tags[1].attributes.get("href")
+            category_id = category_href.replace("?cat=", "")
+
+            # Download
+            download_node = cols[1].css_first('a[href*="download.php/"]')
+            download_path = (
+                download_node.attributes.get("href") if download_node else None
+            )
             if not download_path:
                 continue
             download_url = urljoin(self.url, download_path)
 
+            # IMDB
             imdb_node = cols[1].css_first('a[href*="www.imdb.com/title/"]')
-            imdb_url = imdb_node.attributes.get("href") if imdb_node else ""
-            imdb_id_parts = imdb_url.rstrip("/").split("/")
-            imdb_id_val = imdb_id_parts[-2] if len(imdb_id_parts) >= 2 else ""
+            imdb_url = imdb_node.attributes.get("href") if imdb_node else None
 
-            torrent_id_href = a_tags[0].attributes.get("href") or ""
+            if not imdb_url:
+                continue
+
+            imdb_id_parts = imdb_url.rstrip("/").split("/")
+            imdb_id = imdb_id_parts[-2] if len(imdb_id_parts) >= 2 else ""
+
+            # Torrent ID
+
+            torrent_id_node = cols[1].css_first('a[href*="details.php?id="]')
+            torrent_id_href = (
+                torrent_id_node.attributes.get("href") if torrent_id_node else None
+            )
+            if not torrent_id_href:
+                continue
+
             torrent_id = torrent_id_href.replace("details.php?id=", "")
 
+            # Seeders
             seeders = cols[7].text(strip=True)
 
             torrents.append(
@@ -130,7 +150,11 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
                     torrent_id=torrent_id,
                     download_url=download_url,
                     seeders=int(seeders) if seeders.isdigit() else 0,
-                    imdb_id=imdb_id_val or None,
+                    imdb_id=imdb_id,
+                    attribute_ids=[
+                        self._resolve_language(category_id),
+                        self._resolve_resolution(category_id),
+                    ],
                 )
             )
 
@@ -197,8 +221,6 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
                 ids.append(id_val)
 
         return ids
-
-    # --- Segédfüggvények ---
 
     async def _get_user_id(self) -> str:
         if self._cached_user_id:

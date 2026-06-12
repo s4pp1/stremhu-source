@@ -11,15 +11,19 @@ import type {
   PreferencesReorderRequest,
 } from '../lib/source/source-client'
 import {
-  meCreatePreference,
-  meDeletePreference,
+  meCreatePreferenceDefinition,
+  meDeletePreferenceDefinition,
   meGet,
+  meGetAttributeExclusions,
+  meGetAttributes,
   meGetPreference,
+  meGetPreferenceDefinition,
+  meGetPreferenceDefinitions,
   meGetPreferences,
   meRegenerateApiKey,
-  meReorderPreferences,
+  meReorderPreferenceDefinitions,
   meUpdate,
-  meUpdatePreference,
+  meUpdatePreferenceDefinition,
 } from '../lib/source/source-client'
 import { getUsers } from './users'
 
@@ -61,25 +65,38 @@ export function useUpdateMe() {
   })
 }
 
+// Me Attributes
+
+export function getMeAttributes() {
+  return queryOptions({
+    queryKey: ['me', 'attributes'],
+    queryFn: async () => {
+      const response = await meGetAttributes()
+      return response
+    },
+  })
+}
+
+// Me Attribute Exclusions
+
+export function getMeAttributeExclusions() {
+  return queryOptions({
+    queryKey: ['me', 'attributes', 'exclusions'],
+    queryFn: async () => {
+      const response = await meGetAttributeExclusions()
+      return response
+    },
+  })
+}
+
+// Me Preferences
+
 export function getMePreferences() {
   return queryOptions({
     queryKey: ['me', 'preferences'],
     queryFn: async () => {
       const response = await meGetPreferences()
       return response
-    },
-  })
-}
-
-export function useCreateMePreference() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (payload: PreferenceCreateRequest) => {
-      await meCreatePreference(payload)
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })
     },
   })
 }
@@ -94,12 +111,47 @@ export function getMePreference(preferenceId: string) {
   })
 }
 
+// Me Preference Definitions
+
+export function getMePreferenceDefinitions() {
+  return queryOptions({
+    queryKey: ['me', 'preferences', 'definitions'],
+    queryFn: async () => {
+      const response = await meGetPreferenceDefinitions()
+      return response
+    },
+  })
+}
+
+export function useCreateMePreference() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (payload: PreferenceCreateRequest) => {
+      await meCreatePreferenceDefinition(payload)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })
+    },
+  })
+}
+
+export function getMePreferenceDefinition(preferenceId: string) {
+  return queryOptions({
+    queryKey: ['me', 'preferences', 'definitions', preferenceId],
+    queryFn: async () => {
+      const response = await meGetPreferenceDefinition(preferenceId)
+      return response
+    },
+  })
+}
+
 export function useUpdateMePreference(preferenceId: string) {
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: async (payload: PreferenceUpdateRequest) => {
-      await meUpdatePreference(preferenceId, payload)
+      await meUpdatePreferenceDefinition(preferenceId, payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })
@@ -112,7 +164,7 @@ export function useReorderMePreference() {
 
   return useMutation({
     mutationFn: async (payload: PreferencesReorderRequest) => {
-      await meReorderPreferences(payload)
+      await meReorderPreferenceDefinitions(payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })
@@ -125,7 +177,7 @@ export function useDeleteMePreference() {
 
   return useMutation({
     mutationFn: async (preferenceId: string) => {
-      await meDeletePreference(preferenceId)
+      await meDeletePreferenceDefinition(preferenceId)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me', 'preferences'] })

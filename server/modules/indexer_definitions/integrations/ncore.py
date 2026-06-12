@@ -122,6 +122,7 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
     async def _fetch_torrent(self, torrent_id: str) -> IndexerDefinitionTorrent:
         details_url = self.details_path.replace("{torrent_id}", torrent_id)
         response = await self._client.get(details_url)
+
         tree = HTMLParser(response.text)
 
         download_node = tree.css_first(
@@ -129,10 +130,10 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
         )
         download_path = download_node.attributes.get("href") if download_node else None
 
-        imdb_anchor = tree.css_first('a[href*="imdb.com/title/"]')
-        imdb_anchor_text = imdb_anchor.text(strip=True) if imdb_anchor else None
+        imdb_node = tree.css_first('a[href*="imdb.com/title/"]')
+        imdb_anchor_href = imdb_node.attributes.get("href") if imdb_node else None
         imdb_id = (
-            imdb_anchor_text.rstrip("/").split("/")[-1] if imdb_anchor_text else None
+            imdb_anchor_href.rstrip("/").split("/")[-1] if imdb_anchor_href else None
         )
 
         if not download_path:

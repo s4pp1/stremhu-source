@@ -1,12 +1,9 @@
-from typing import TYPE_CHECKING
 from uuid import uuid4
 
 import sqlalchemy as sa
 from common.database import Base
+from modules.media_attributes.models import MediaAttributeModel
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-if TYPE_CHECKING:
-    from modules.attributes.models import AttributeModel
 
 
 class AttributeExclusionModel(Base):
@@ -33,8 +30,8 @@ class AttributeExclusionModel(Base):
         index=True,
     )
 
-    attribute: Mapped["AttributeModel"] = relationship(
-        "AttributeModel",
+    attribute: Mapped["MediaAttributeModel"] = relationship(
+        "MediaAttributeModel",
         uselist=False,
         init=False,
     )

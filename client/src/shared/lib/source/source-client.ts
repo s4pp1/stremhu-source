@@ -6,6 +6,10 @@
  */
 import { sourceClientInstance } from './source-client-instance'
 
+export interface AttributeExclusionCreateRequest {
+  attributeId: string
+}
+
 export interface AttributeResponse {
   id: string
   name: string
@@ -771,22 +775,35 @@ export const usersGetPreferences = (
   options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse[]>>,
 ) => {
   return sourceClientInstance<PreferenceResponse[]>(
-    { url: `/api/users/${userId}/preferences`, method: 'GET' },
+    { url: `/api/users/${userId}/preferences/`, method: 'GET' },
     options,
   )
 }
 
 /**
- * @summary Create Preference
+ * @summary Get Preference Definitions
  */
-export const usersCreatePreference = (
+export const usersGetPreferenceDefinitions = (
+  userId: string,
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse[]>>,
+) => {
+  return sourceClientInstance<PreferenceResponse[]>(
+    { url: `/api/users/${userId}/preferences/definitions/`, method: 'GET' },
+    options,
+  )
+}
+
+/**
+ * @summary Create Preference Definition
+ */
+export const usersCreatePreferenceDefinition = (
   userId: string,
   preferenceCreateRequest: PreferenceCreateRequest,
   options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse>>,
 ) => {
   return sourceClientInstance<PreferenceResponse>(
     {
-      url: `/api/users/${userId}/preferences`,
+      url: `/api/users/${userId}/preferences/definitions/`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       data: preferenceCreateRequest,
@@ -796,17 +813,17 @@ export const usersCreatePreference = (
 }
 
 /**
- * @summary Reorder Preferences
+ * @summary Reorder Preference Definitions
  */
-export const usersReorderPreferences = (
+export const usersReorderPreferenceDefinitions = (
   userId: string,
   preferencesReorderRequest: PreferencesReorderRequest,
   options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse[]>>,
 ) => {
   return sourceClientInstance<PreferenceResponse[]>(
     {
-      url: `/api/users/${userId}/preferences/reorder`,
-      method: 'POST',
+      url: `/api/users/${userId}/preferences/definitions/reorder`,
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       data: preferencesReorderRequest,
     },
@@ -815,23 +832,26 @@ export const usersReorderPreferences = (
 }
 
 /**
- * @summary Get Preference
+ * @summary Get Preference Definition
  */
-export const usersGetPreference = (
+export const usersGetPreferenceDefinition = (
   userId: string,
   preferenceId: string,
   options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse>>,
 ) => {
   return sourceClientInstance<PreferenceResponse>(
-    { url: `/api/users/${userId}/preferences/${preferenceId}`, method: 'GET' },
+    {
+      url: `/api/users/${userId}/preferences/definitions/${preferenceId}`,
+      method: 'GET',
+    },
     options,
   )
 }
 
 /**
- * @summary Update Preference
+ * @summary Update Preference Definition
  */
-export const usersUpdatePreference = (
+export const usersUpdatePreferenceDefinition = (
   userId: string,
   preferenceId: string,
   preferenceUpdateRequest: PreferenceUpdateRequest,
@@ -839,7 +859,7 @@ export const usersUpdatePreference = (
 ) => {
   return sourceClientInstance<PreferenceResponse>(
     {
-      url: `/api/users/${userId}/preferences/${preferenceId}`,
+      url: `/api/users/${userId}/preferences/definitions/${preferenceId}`,
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       data: preferenceUpdateRequest,
@@ -849,16 +869,78 @@ export const usersUpdatePreference = (
 }
 
 /**
- * @summary Delete Preference
+ * @summary Delete Preference Definition
  */
-export const usersDeletePreference = (
+export const usersDeletePreferenceDefinition = (
   userId: string,
   preferenceId: string,
   options?: SecondParameter<typeof sourceClientInstance<void>>,
 ) => {
   return sourceClientInstance<void>(
     {
-      url: `/api/users/${userId}/preferences/${preferenceId}`,
+      url: `/api/users/${userId}/preferences/definitions/${preferenceId}`,
+      method: 'DELETE',
+    },
+    options,
+  )
+}
+
+/**
+ * @summary Get Attributes
+ */
+export const usersGetAttributes = (
+  userId: string,
+  options?: SecondParameter<typeof sourceClientInstance<AttributeResponse[]>>,
+) => {
+  return sourceClientInstance<AttributeResponse[]>(
+    { url: `/api/users/${userId}/attributes/`, method: 'GET' },
+    options,
+  )
+}
+
+/**
+ * @summary Get Attribute Exclusions
+ */
+export const usersGetAttributeExclusions = (
+  userId: string,
+  options?: SecondParameter<typeof sourceClientInstance<AttributeResponse[]>>,
+) => {
+  return sourceClientInstance<AttributeResponse[]>(
+    { url: `/api/users/${userId}/attributes/exclusions/`, method: 'GET' },
+    options,
+  )
+}
+
+/**
+ * @summary Create Attribute Exclusion
+ */
+export const usersCreateAttributeExclusion = (
+  userId: string,
+  attributeExclusionCreateRequest: AttributeExclusionCreateRequest,
+  options?: SecondParameter<typeof sourceClientInstance<AttributeResponse>>,
+) => {
+  return sourceClientInstance<AttributeResponse>(
+    {
+      url: `/api/users/${userId}/attributes/exclusions/`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: attributeExclusionCreateRequest,
+    },
+    options,
+  )
+}
+
+/**
+ * @summary Delete Attribute Exclusion
+ */
+export const usersDeleteAttributeExclusion = (
+  userId: string,
+  attributeId: string,
+  options?: SecondParameter<typeof sourceClientInstance<void>>,
+) => {
+  return sourceClientInstance<void>(
+    {
+      url: `/api/users/${userId}/attributes/exclusions/${attributeId}`,
       method: 'DELETE',
     },
     options,
@@ -914,25 +996,7 @@ export const meGetPreferences = (
   options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse[]>>,
 ) => {
   return sourceClientInstance<PreferenceResponse[]>(
-    { url: `/api/me/preferences`, method: 'GET' },
-    options,
-  )
-}
-
-/**
- * @summary Create Preference
- */
-export const meCreatePreference = (
-  preferenceCreateRequest: PreferenceCreateRequest,
-  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse>>,
-) => {
-  return sourceClientInstance<PreferenceResponse>(
-    {
-      url: `/api/me/preferences`,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      data: preferenceCreateRequest,
-    },
+    { url: `/api/me/preferences/`, method: 'GET' },
     options,
   )
 }
@@ -951,16 +1015,77 @@ export const meGetPreference = (
 }
 
 /**
- * @summary Update Preference
+ * @summary Get Preference Definitions
  */
-export const meUpdatePreference = (
+export const meGetPreferenceDefinitions = (
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse[]>>,
+) => {
+  return sourceClientInstance<PreferenceResponse[]>(
+    { url: `/api/me/preferences/definitions/`, method: 'GET' },
+    options,
+  )
+}
+
+/**
+ * @summary Create Preference Definition
+ */
+export const meCreatePreferenceDefinition = (
+  preferenceCreateRequest: PreferenceCreateRequest,
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse>>,
+) => {
+  return sourceClientInstance<PreferenceResponse>(
+    {
+      url: `/api/me/preferences/definitions/`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: preferenceCreateRequest,
+    },
+    options,
+  )
+}
+
+/**
+ * @summary Reorder Preference Definitions
+ */
+export const meReorderPreferenceDefinitions = (
+  preferencesReorderRequest: PreferencesReorderRequest,
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse[]>>,
+) => {
+  return sourceClientInstance<PreferenceResponse[]>(
+    {
+      url: `/api/me/preferences/definitions/reorder`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: preferencesReorderRequest,
+    },
+    options,
+  )
+}
+
+/**
+ * @summary Get Preference Definition
+ */
+export const meGetPreferenceDefinition = (
+  preferenceId: string,
+  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse>>,
+) => {
+  return sourceClientInstance<PreferenceResponse>(
+    { url: `/api/me/preferences/definitions/${preferenceId}`, method: 'GET' },
+    options,
+  )
+}
+
+/**
+ * @summary Update Preference Definition
+ */
+export const meUpdatePreferenceDefinition = (
   preferenceId: string,
   preferenceUpdateRequest: PreferenceUpdateRequest,
   options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse>>,
 ) => {
   return sourceClientInstance<PreferenceResponse>(
     {
-      url: `/api/me/preferences/${preferenceId}`,
+      url: `/api/me/preferences/definitions/${preferenceId}`,
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       data: preferenceUpdateRequest,
@@ -970,32 +1095,72 @@ export const meUpdatePreference = (
 }
 
 /**
- * @summary Delete Preference
+ * @summary Delete Preference Definition
  */
-export const meDeletePreference = (
+export const meDeletePreferenceDefinition = (
   preferenceId: string,
   options?: SecondParameter<typeof sourceClientInstance<void>>,
 ) => {
   return sourceClientInstance<void>(
-    { url: `/api/me/preferences/${preferenceId}`, method: 'DELETE' },
+    {
+      url: `/api/me/preferences/definitions/${preferenceId}`,
+      method: 'DELETE',
+    },
     options,
   )
 }
 
 /**
- * @summary Reorder Preferences
+ * @summary Get Attributes
  */
-export const meReorderPreferences = (
-  preferencesReorderRequest: PreferencesReorderRequest,
-  options?: SecondParameter<typeof sourceClientInstance<PreferenceResponse[]>>,
+export const meGetAttributes = (
+  options?: SecondParameter<typeof sourceClientInstance<AttributeResponse[]>>,
 ) => {
-  return sourceClientInstance<PreferenceResponse[]>(
+  return sourceClientInstance<AttributeResponse[]>(
+    { url: `/api/me/attributes/`, method: 'GET' },
+    options,
+  )
+}
+
+/**
+ * @summary Get Attribute Exclusions
+ */
+export const meGetAttributeExclusions = (
+  options?: SecondParameter<typeof sourceClientInstance<AttributeResponse[]>>,
+) => {
+  return sourceClientInstance<AttributeResponse[]>(
+    { url: `/api/me/attributes/exclusions/`, method: 'GET' },
+    options,
+  )
+}
+
+/**
+ * @summary Create Attribute Exclusion
+ */
+export const meCreateAttributeExclusion = (
+  attributeExclusionCreateRequest: AttributeExclusionCreateRequest,
+  options?: SecondParameter<typeof sourceClientInstance<AttributeResponse>>,
+) => {
+  return sourceClientInstance<AttributeResponse>(
     {
-      url: `/api/me/preferences/reorder`,
+      url: `/api/me/attributes/exclusions/`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      data: preferencesReorderRequest,
+      data: attributeExclusionCreateRequest,
     },
+    options,
+  )
+}
+
+/**
+ * @summary Delete Attribute Exclusion
+ */
+export const meDeleteAttributeExclusion = (
+  attributeId: string,
+  options?: SecondParameter<typeof sourceClientInstance<void>>,
+) => {
+  return sourceClientInstance<void>(
+    { url: `/api/me/attributes/exclusions/${attributeId}`, method: 'DELETE' },
     options,
   )
 }
@@ -1537,20 +1702,35 @@ export type UsersRegenerateApiKeyResult = NonNullable<
 export type UsersGetPreferencesResult = NonNullable<
   Awaited<ReturnType<typeof usersGetPreferences>>
 >
-export type UsersCreatePreferenceResult = NonNullable<
-  Awaited<ReturnType<typeof usersCreatePreference>>
+export type UsersGetPreferenceDefinitionsResult = NonNullable<
+  Awaited<ReturnType<typeof usersGetPreferenceDefinitions>>
 >
-export type UsersReorderPreferencesResult = NonNullable<
-  Awaited<ReturnType<typeof usersReorderPreferences>>
+export type UsersCreatePreferenceDefinitionResult = NonNullable<
+  Awaited<ReturnType<typeof usersCreatePreferenceDefinition>>
 >
-export type UsersGetPreferenceResult = NonNullable<
-  Awaited<ReturnType<typeof usersGetPreference>>
+export type UsersReorderPreferenceDefinitionsResult = NonNullable<
+  Awaited<ReturnType<typeof usersReorderPreferenceDefinitions>>
 >
-export type UsersUpdatePreferenceResult = NonNullable<
-  Awaited<ReturnType<typeof usersUpdatePreference>>
+export type UsersGetPreferenceDefinitionResult = NonNullable<
+  Awaited<ReturnType<typeof usersGetPreferenceDefinition>>
 >
-export type UsersDeletePreferenceResult = NonNullable<
-  Awaited<ReturnType<typeof usersDeletePreference>>
+export type UsersUpdatePreferenceDefinitionResult = NonNullable<
+  Awaited<ReturnType<typeof usersUpdatePreferenceDefinition>>
+>
+export type UsersDeletePreferenceDefinitionResult = NonNullable<
+  Awaited<ReturnType<typeof usersDeletePreferenceDefinition>>
+>
+export type UsersGetAttributesResult = NonNullable<
+  Awaited<ReturnType<typeof usersGetAttributes>>
+>
+export type UsersGetAttributeExclusionsResult = NonNullable<
+  Awaited<ReturnType<typeof usersGetAttributeExclusions>>
+>
+export type UsersCreateAttributeExclusionResult = NonNullable<
+  Awaited<ReturnType<typeof usersCreateAttributeExclusion>>
+>
+export type UsersDeleteAttributeExclusionResult = NonNullable<
+  Awaited<ReturnType<typeof usersDeleteAttributeExclusion>>
 >
 export type MeGetResult = NonNullable<Awaited<ReturnType<typeof meGet>>>
 export type MeUpdateResult = NonNullable<Awaited<ReturnType<typeof meUpdate>>>
@@ -1560,20 +1740,38 @@ export type MeRegenerateApiKeyResult = NonNullable<
 export type MeGetPreferencesResult = NonNullable<
   Awaited<ReturnType<typeof meGetPreferences>>
 >
-export type MeCreatePreferenceResult = NonNullable<
-  Awaited<ReturnType<typeof meCreatePreference>>
->
 export type MeGetPreferenceResult = NonNullable<
   Awaited<ReturnType<typeof meGetPreference>>
 >
-export type MeUpdatePreferenceResult = NonNullable<
-  Awaited<ReturnType<typeof meUpdatePreference>>
+export type MeGetPreferenceDefinitionsResult = NonNullable<
+  Awaited<ReturnType<typeof meGetPreferenceDefinitions>>
 >
-export type MeDeletePreferenceResult = NonNullable<
-  Awaited<ReturnType<typeof meDeletePreference>>
+export type MeCreatePreferenceDefinitionResult = NonNullable<
+  Awaited<ReturnType<typeof meCreatePreferenceDefinition>>
 >
-export type MeReorderPreferencesResult = NonNullable<
-  Awaited<ReturnType<typeof meReorderPreferences>>
+export type MeReorderPreferenceDefinitionsResult = NonNullable<
+  Awaited<ReturnType<typeof meReorderPreferenceDefinitions>>
+>
+export type MeGetPreferenceDefinitionResult = NonNullable<
+  Awaited<ReturnType<typeof meGetPreferenceDefinition>>
+>
+export type MeUpdatePreferenceDefinitionResult = NonNullable<
+  Awaited<ReturnType<typeof meUpdatePreferenceDefinition>>
+>
+export type MeDeletePreferenceDefinitionResult = NonNullable<
+  Awaited<ReturnType<typeof meDeletePreferenceDefinition>>
+>
+export type MeGetAttributesResult = NonNullable<
+  Awaited<ReturnType<typeof meGetAttributes>>
+>
+export type MeGetAttributeExclusionsResult = NonNullable<
+  Awaited<ReturnType<typeof meGetAttributeExclusions>>
+>
+export type MeCreateAttributeExclusionResult = NonNullable<
+  Awaited<ReturnType<typeof meCreateAttributeExclusion>>
+>
+export type MeDeleteAttributeExclusionResult = NonNullable<
+  Awaited<ReturnType<typeof meDeleteAttributeExclusion>>
 >
 export type SystemGetRolesResult = NonNullable<
   Awaited<ReturnType<typeof systemGetRoles>>

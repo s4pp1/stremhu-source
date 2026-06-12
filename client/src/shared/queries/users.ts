@@ -13,17 +13,17 @@ import type {
 } from '@/shared/lib/source/source-client'
 import {
   usersCreate,
-  usersCreatePreference,
+  usersCreatePreferenceDefinition,
   usersDelete,
-  usersDeletePreference,
+  usersDeletePreferenceDefinition,
   usersGet,
   usersGetList,
-  usersGetPreference,
-  usersGetPreferences,
+  usersGetPreferenceDefinition,
+  usersGetPreferenceDefinitions,
   usersRegenerateApiKey,
-  usersReorderPreferences,
+  usersReorderPreferenceDefinitions,
   usersUpdate,
-  usersUpdatePreference,
+  usersUpdatePreferenceDefinition,
 } from '@/shared/lib/source/source-client'
 
 import { getMe } from './me'
@@ -114,7 +114,7 @@ export const getUserPreferences = (userId: string) =>
   queryOptions({
     queryKey: ['users', userId, 'preferences'],
     queryFn: async () => {
-      const response = await usersGetPreferences(userId)
+      const response = await usersGetPreferenceDefinitions(userId)
       return response
     },
   })
@@ -124,7 +124,7 @@ export function useCreateUserPreference(userId: string) {
 
   return useMutation({
     mutationFn: async (payload: PreferenceCreateRequest) => {
-      await usersCreatePreference(userId, payload)
+      await usersCreatePreferenceDefinition(userId, payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -138,7 +138,7 @@ export const getUserPreference = (userId: string, preference_id: string) =>
   queryOptions({
     queryKey: ['users', userId, 'preferences', preference_id],
     queryFn: async () => {
-      const response = await usersGetPreference(userId, preference_id)
+      const response = await usersGetPreferenceDefinition(userId, preference_id)
       return response
     },
   })
@@ -148,7 +148,7 @@ export function useUpdateUserPreference(userId: string, preference_id: string) {
 
   return useMutation({
     mutationFn: async (payload: PreferenceUpdateRequest) => {
-      await usersUpdatePreference(userId, preference_id, payload)
+      await usersUpdatePreferenceDefinition(userId, preference_id, payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -163,7 +163,7 @@ export function useReorderUserPreference(userId: string) {
 
   return useMutation({
     mutationFn: async (payload: PreferencesReorderRequest) => {
-      await usersReorderPreferences(userId, payload)
+      await usersReorderPreferenceDefinitions(userId, payload)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -178,7 +178,7 @@ export function useDeleteUserPreference(userId: string) {
 
   return useMutation({
     mutationFn: async (preference_id: string) => {
-      await usersDeletePreference(userId, preference_id)
+      await usersDeletePreferenceDefinition(userId, preference_id)
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

@@ -1,16 +1,36 @@
 import uuid
+from typing import TYPE_CHECKING
 
 from argon2 import PasswordHasher
 from fastapi import HTTPException, status
+from modules.attribute_exclusions.models import AttributeExclusionModel
+from modules.attribute_exclusions.schemas.api import AttributeExclusionCreateRequest
+from modules.attribute_exclusions.schemas.internal import (
+    AttributeExclusionCreate,
+    AttributeExclusionFilter,
+)
+from modules.attribute_exclusions.service import AttributeExclusionsService
+from modules.media_attributes.schemas.internal import MediaAttributeFilter
 from modules.roles.constants import UserRoleKey
 from modules.users.models import UserModel
 from modules.users.repository import UsersRepository
 from modules.users.schemas.internal import UserCreate, UserUpdate
 
+if TYPE_CHECKING:
+    from modules.media_attributes.models import MediaAttributeModel
+    from modules.media_attributes.service import MediaAttributesService
+
 
 class UsersService:
-    def __init__(self, users_repository: UsersRepository):
+    def __init__(
+        self,
+        users_repository: UsersRepository,
+        attribute_exclusions_service: AttributeExclusionsService,
+        media_attributes_service: "MediaAttributesService",
+    ):
         self._users_repository = users_repository
+        self._attribute_exclusions_service = attribute_exclusions_service
+        self._media_attributes_service = media_attributes_service
 
     def get_list(self) -> list[UserModel]:
         return self._users_repository.find_list()
@@ -100,6 +120,31 @@ class UsersService:
 
         self.get_by_id(user_id)
         self._users_repository.delete(user_id)
+
+    def get_attributes(self, user_id: str) -> list["MediaAttributeModel"]:
+        return self._media_attributes_service.find_list(
+            MediaAttributeFilter(
+                user_id=user_id,
+                not_added_to_preference=True,
+            ),
+        )
+
+    def create_attribute_exclusion(
+        self, user_id: str, payload: AttributeExclusionCreateRequest
+    ) -> AttributeExclusionModel:
+        return self._attribute_exclusions_service.create(
+            AttributeExclusionCreate(
+                user_id=user_id,
+                attribute_id=payload.attribute_id,
+            ),
+        )
+
+    def get_attribute_exclusions(self, user_id: str) -> list[AttributeExclusionModel]:
+        return self._attribute_exclusions_service.find_list(
+            AttributeExclusionFilter(
+                user_id=user_id,
+            ),
+        )
 
     def _check_exist_username(self, username: str) -> None:
         existing_user = self._users_repository.find_by_username(username)

@@ -9,3 +9,8 @@ class AttributeExclusionCreate(BaseModel):
 class AttributeExclusionUpdate(BaseModel):
     attribute_id: str | None = None
     user_id: str | None = None
+
+
+class AttributeExclusionFilter(BaseModel):
+    attribute_id: str | None = None
+    user_id: str | None = None

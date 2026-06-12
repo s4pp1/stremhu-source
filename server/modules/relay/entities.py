@@ -137,7 +137,7 @@ class File:
         self.torrent = torrent
         self.is_available = file_progress[file_info.index] == file_info.size
         self.file_index = file_info.index
-        self.path = Path(torrent.torrent_handle.save_path()) / file_info.name
+        self.path = Path(torrent.torrent_handle.save_path()) / file_info.path
         self.name = file_info.name
         self.size = file_info.size
         self.offset = file_info.offset

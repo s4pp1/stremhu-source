@@ -9,10 +9,8 @@ import {
   arrayMove,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
-import { useSuspenseQuery } from '@tanstack/react-query'
 import type { LinkProps } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
-import { sortBy } from 'lodash'
 import { GrabIcon, PlusIcon, SearchIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Fragment, useEffect, useMemo, useState } from 'react'
@@ -32,38 +30,33 @@ import {
 import { ItemMedia } from '@/shared/components/ui/item'
 import { Separator } from '@/shared/components/ui/separator'
 import type { PreferenceResponse } from '@/shared/lib/source/source-client'
-import { getPreferences } from '@/shared/queries/preferences'
 
 type PreferencesSectionProps = {
   preferences: PreferenceResponse[]
+  currentPreferences: PreferenceResponse[]
   toCreateLink: LinkProps
   renderPreference: (preference: PreferenceResponse) => ReactNode
   onReorder: (preferenceIds: string[]) => Promise<void>
 }
 
 export function PreferencesSection(props: PreferencesSectionProps) {
-  const { data: allPreferences } = useSuspenseQuery(getPreferences)
-
-  const { preferences, toCreateLink, renderPreference, onReorder } = props
+  const {
+    preferences,
+    currentPreferences,
+    toCreateLink,
+    renderPreference,
+    onReorder,
+  } = props
 
   const disableCreatePreference = useMemo(() => {
-    return allPreferences.length === preferences.length
-  }, [allPreferences.length, preferences.length])
+    return currentPreferences.length === preferences.length
+  }, [currentPreferences.length, preferences.length])
 
-  const preferredPreferences = useMemo(
-    () =>
-      sortBy(
-        preferences.filter((preference) => preference.attributes.length > 0),
-        'order',
-      ),
-    [preferences],
-  )
-
-  const [items, setItems] = useState(preferredPreferences)
+  const [items, setItems] = useState(currentPreferences)
 
   useEffect(() => {
-    setItems(preferredPreferences)
-  }, [preferredPreferences])
+    setItems(currentPreferences)
+  }, [currentPreferences])
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { over, active } = event

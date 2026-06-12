@@ -1,5 +1,8 @@
 from modules.attribute_exclusions.models import AttributeExclusionModel
-from modules.attribute_exclusions.schemas.internal import AttributeExclusionCreate
+from modules.attribute_exclusions.schemas.internal import (
+    AttributeExclusionCreate,
+    AttributeExclusionFilter,
+)
 from sqlalchemy.orm import Session
 
 
@@ -18,8 +21,19 @@ class AttributeExclusionsRepository:
 
         return model
 
-    def find_list(self) -> list[AttributeExclusionModel]:
-        return self.db.query(AttributeExclusionModel).all()
+    def find_list(
+        self,
+        filter: AttributeExclusionFilter | None = None,
+    ) -> list[AttributeExclusionModel]:
+        query = self.db.query(AttributeExclusionModel)
+
+        if filter:
+            if filter.attribute_id:
+                query = query.filter_by(attribute_id=filter.attribute_id)
+            if filter.user_id:
+                query = query.filter_by(user_id=filter.user_id)
+
+        return query.all()
 
     def find_by_id(
         self,

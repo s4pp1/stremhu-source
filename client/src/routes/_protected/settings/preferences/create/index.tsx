@@ -1,5 +1,5 @@
 import { useSuspenseQueries } from '@tanstack/react-query'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { Navigate, createFileRoute, useNavigate } from '@tanstack/react-router'
 import type { SubmitEventHandler } from 'react'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
@@ -8,8 +8,11 @@ import { CreatePreference } from '@/features/create-preference/create-preference
 import { useAppForm } from '@/shared/contexts/form-context'
 import type { PreferenceCreateRequest } from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
-import { getMePreferences, useCreateMePreference } from '@/shared/queries/me'
-import { getPreferences } from '@/shared/queries/preferences'
+import {
+  getMePreferenceDefinitions,
+  getMePreferences,
+  useCreateMePreference,
+} from '@/shared/queries/me'
 
 export const Route = createFileRoute(
   '/_protected/settings/preferences/create/',
@@ -20,28 +23,31 @@ export const Route = createFileRoute(
 function RouteComponent() {
   const navigate = useNavigate()
 
-  const [{ data: preferences }, { data: mePreferences }] = useSuspenseQueries({
-    queries: [getPreferences, getMePreferences()],
-  })
+  const [{ data: mePreferences }, { data: mePreferenceDefinitions }] =
+    useSuspenseQueries({
+      queries: [getMePreferences(), getMePreferenceDefinitions()],
+    })
 
-  const availablePrefs = useMemo(() => {
-    const currentPrefs = mePreferences.map((mePreference) => mePreference.id)
-    const prefs = preferences.filter(
+  const availablePreferences = useMemo(() => {
+    const currentPrefs = mePreferenceDefinitions.map(
+      (mePreference) => mePreference.id,
+    )
+    const preferences = mePreferences.filter(
       (preference) => !currentPrefs.includes(preference.id),
     )
 
-    return prefs
-  }, [mePreferences, preferences])
+    return preferences
+  }, [mePreferences, mePreferenceDefinitions])
 
-  if (availablePrefs.length === 0) {
-    return navigate({ to: '/settings/preferences' })
+  if (availablePreferences.length === 0) {
+    return <Navigate to="/settings/preferences" />
   }
 
   const { mutateAsync: createMePreference } = useCreateMePreference()
 
   const form = useAppForm({
     defaultValues: {
-      preferenceId: availablePrefs[0].id,
+      preferenceId: availablePreferences[0].id,
       attributeIds: [],
     } as PreferenceCreateRequest,
     onSubmit: async ({ value }) => {
@@ -66,7 +72,7 @@ function RouteComponent() {
       <form onSubmit={onSubmit}>
         <CreatePreference
           form={form}
-          preferences={availablePrefs}
+          preferences={availablePreferences}
           toBackLink={{ to: '/settings/preferences' }}
         />
       </form>

@@ -3,6 +3,7 @@ import {
   ChevronRightIcon,
   LayoutDashboardIcon,
   ListVideoIcon,
+  PlayIcon,
   ShieldUserIcon,
   UsersIcon,
 } from 'lucide-react'
@@ -25,6 +26,7 @@ import { Separator } from '@/shared/components/ui/separator'
 import { useIsAdmin } from '@/shared/hooks/use-is-admin'
 
 import { Integration } from './-features/integration'
+import { DASHBOARD_PLAYBACKS_NAME } from './dashboard/playbacks/route'
 import { DASHBOARD_SYSTEM_NAME } from './dashboard/system/route'
 import { DASHBOARD_USERS_NAME } from './dashboard/users/route'
 import { SETTINGS_ACCOUNT_NAME } from './settings/account/route'
@@ -146,6 +148,28 @@ function ProfileRoute() {
                     <ItemDescription>
                       Felhasználói fiókok létrehozása, profiladatok kezelése és
                       frissítése.
+                    </ItemDescription>
+                  </ItemContent>
+                  <ItemActions>
+                    <Button
+                      className="rounded-full"
+                      size="icon-sm"
+                      variant="default"
+                    >
+                      <ChevronRightIcon />
+                    </Button>
+                  </ItemActions>
+                </Link>
+              </Item>
+              <Item asChild variant="muted">
+                <Link to="/dashboard/playbacks">
+                  <ItemMedia variant="icon">
+                    <PlayIcon />
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemTitle>{DASHBOARD_PLAYBACKS_NAME}</ItemTitle>
+                    <ItemDescription>
+                      Aktuális és múltbeli lejátszások megtekintése.
                     </ItemDescription>
                   </ItemContent>
                   <ItemActions>

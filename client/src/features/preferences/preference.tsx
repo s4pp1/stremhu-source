@@ -6,6 +6,7 @@ import type { MouseEventHandler } from 'react'
 import { toast } from 'sonner'
 
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
+import { Badge } from '@/shared/components/ui/badge'
 import { Button } from '@/shared/components/ui/button'
 import {
   Item,
@@ -15,7 +16,6 @@ import {
 } from '@/shared/components/ui/item'
 import type { PreferenceResponse } from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
-import { BadgesSection } from './badges-section'
 
 interface PreferenceProps {
   preference: PreferenceResponse
@@ -80,18 +80,12 @@ export function Preference(props: PreferenceProps) {
           </Button>
         </ItemActions>
       </Item>
-      <div className="grid gap-3">
-        {preference.attributes.length !== 0 && (
-          <BadgesSection
-            title="Preferált tulajdonságok"
-            items={preference.attributes.map((attribute) => {
-              return {
-                label: attribute.name,
-                value: attribute.id,
-              }
-            })}
-          />
-        )}
+      <div className=" flex flex-wrap gap-2">
+        {preference.attributes.map((attribute) => (
+          <Badge key={attribute.id} variant="default">
+            {attribute.name}
+          </Badge>
+        ))}
       </div>
     </div>
   )

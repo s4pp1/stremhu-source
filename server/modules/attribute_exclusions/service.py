@@ -1,7 +1,10 @@
 from fastapi import HTTPException, status
 from modules.attribute_exclusions.models import AttributeExclusionModel
 from modules.attribute_exclusions.repository import AttributeExclusionsRepository
-from modules.attribute_exclusions.schemas.internal import AttributeExclusionCreate
+from modules.attribute_exclusions.schemas.internal import (
+    AttributeExclusionCreate,
+    AttributeExclusionFilter,
+)
 
 
 class AttributeExclusionsService:
@@ -20,8 +23,11 @@ class AttributeExclusionsService:
         model = self.repository.create(payload)
         return model
 
-    def find_list(self) -> list[AttributeExclusionModel]:
-        return self.repository.find_list()
+    def find_list(
+        self,
+        filter: AttributeExclusionFilter | None = None,
+    ) -> list[AttributeExclusionModel]:
+        return self.repository.find_list(filter)
 
     def find_by_id(
         self,

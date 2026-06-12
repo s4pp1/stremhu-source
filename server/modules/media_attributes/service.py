@@ -2,12 +2,22 @@ import pydash
 from common.logger import logger
 from modules.media_attributes.models import MediaAttributeModel
 from modules.media_attributes.repository import MediaAttributesRepository
+from modules.media_attributes.schemas.internal import MediaAttributeFilter
 from modules.media_attributes.seeds import DEFAULT_ATTRIBUTES
 
 
 class MediaAttributesService:
-    def __init__(self, repository: MediaAttributesRepository):
+    def __init__(
+        self,
+        repository: MediaAttributesRepository,
+    ):
         self._repository = repository
+
+    def find_list(
+        self,
+        filter: MediaAttributeFilter | None = None,
+    ) -> list[MediaAttributeModel]:
+        return self._repository.find_list(filter)
 
     def sync_to_db(self) -> None:
         code_ids = {attr.id for attr in DEFAULT_ATTRIBUTES}

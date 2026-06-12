@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 class TorrentFileInfo(BaseModel):
     name: str
+    path: str
     index: int
     size: int
     offset: int
@@ -34,6 +35,8 @@ def parse_torrent_info(torrent: bytes | libtorrent.torrent_info) -> TorrentInfo:
     files = []
     for index in range(files_count):
         file_entry = torrent_info.file_at(index)
+
+        name = file_entry.path.split("/")[-1]
         offset = file_entry.offset
         size = file_entry.size
 
@@ -44,7 +47,8 @@ def parse_torrent_info(torrent: bytes | libtorrent.torrent_info) -> TorrentInfo:
 
         files.append(
             TorrentFileInfo(
-                name=file_entry.path,
+                name=name,
+                path=file_entry.path,
                 index=index,
                 size=size,
                 offset=offset,
