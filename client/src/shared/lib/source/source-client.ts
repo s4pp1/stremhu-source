@@ -315,11 +315,8 @@ export interface NetworkAutoSettingsResponse {
   connection: NetworkConnectionEnum
   provider: string
   ip: string
-  accountKey: string
-  fullchain: string
-  privkey: string
   expiresAt: number
-  lastIpSyncAt?: number
+  lastIpSyncAt: number
 }
 
 export interface NetworkAutoSetupRequest {
@@ -335,10 +332,13 @@ export interface NetworkLocalSettingsResponse {
   mode: 'local'
   host: string
   ip: string
-  fullchain: string
-  privkey: string
   expiresAt: number
 }
+
+export const NetworkLocalSetupRequestValue = {
+  mode: 'local',
+} as const
+export type NetworkLocalSetupRequest = typeof NetworkLocalSetupRequestValue
 
 export interface NetworkManualSettingsResponse {
   mode: 'manual'
@@ -349,7 +349,6 @@ export interface NetworkManualSettingsResponse {
 export interface NetworkManualSetupRequest {
   mode: 'manual'
   host: string
-  reverseProxy: boolean
 }
 
 export interface NetworkSetupResponse {
@@ -1302,7 +1301,8 @@ export const networkGetDdnsProviders = (
  * @summary Setup
  */
 export const networkSetup = (
-  networkAutoSetupRequestNetworkManualSetupRequest:
+  networkLocalSetupRequestNetworkAutoSetupRequestNetworkManualSetupRequest:
+    | NetworkLocalSetupRequest
     | NetworkAutoSetupRequest
     | NetworkManualSetupRequest,
   options?: SecondParameter<typeof sourceClientInstance<NetworkSetupResponse>>,
@@ -1312,20 +1312,8 @@ export const networkSetup = (
       url: `/api/network/setup`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      data: networkAutoSetupRequestNetworkManualSetupRequest,
+      data: networkLocalSetupRequestNetworkAutoSetupRequestNetworkManualSetupRequest,
     },
-    options,
-  )
-}
-
-/**
- * @summary Reset
- */
-export const networkReset = (
-  options?: SecondParameter<typeof sourceClientInstance<NetworkSetupResponse>>,
-) => {
-  return sourceClientInstance<NetworkSetupResponse>(
-    { url: `/api/network/reset`, method: 'DELETE' },
     options,
   )
 }
@@ -1802,9 +1790,6 @@ export type NetworkGetDdnsProvidersResult = NonNullable<
 >
 export type NetworkSetupResult = NonNullable<
   Awaited<ReturnType<typeof networkSetup>>
->
-export type NetworkResetResult = NonNullable<
-  Awaited<ReturnType<typeof networkReset>>
 >
 export type TorrentsGetListResult = NonNullable<
   Awaited<ReturnType<typeof torrentsGetList>>

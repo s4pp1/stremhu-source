@@ -4,6 +4,7 @@ import time
 import httpx
 from common.logger import logger
 from config import config
+from cryptography import x509
 from modules.network.ddns.schemas.internal import DDNSIpUpdate
 from modules.network.ddns.service import DDNSService
 from modules.network.schemas.internal import NetworkSetup
@@ -34,19 +35,31 @@ class NetworkService:
         self._system_service = system_service
         self._in_progress = False
 
-    def setup_local(self) -> tuple[NetworkSettings, SelfSignedCertificate]:
-        certs = self._ssl_service.generate_self_signed_certificate(config.host_ip)
+    async def setup_local(self) -> tuple[NetworkSettings, SelfSignedCertificate]:
+        certs = await self._ssl_service.get_local_ip_certificate(config.host_ip)
+
+        cert = x509.load_pem_x509_certificate(certs.fullchain.encode("utf-8"))
+        if cert.issuer == cert.subject:
+            host = config.host_ip
+            self_signed = True
+        else:
+            host = config.host_ip.replace(".", "-") + ".local-ip.medicmobile.org"
+            self_signed = False
 
         local_settings = NetworkLocalSettings(
             mode=NetworkModeEnum.LOCAL,
-            host=config.host_ip,
+            host=host,
+            self_signed=self_signed,
             ip=config.host_ip,
             fullchain=certs.fullchain,
             privkey=certs.privkey,
             expires_at=certs.expires_at,
         )
 
-        network_settings = self._settings_service.save_network(local_settings)
+        network_settings = await asyncio.to_thread(
+            self._settings_service.save_network,
+            local_settings,
+        )
 
         return network_settings, certs
 
@@ -87,11 +100,17 @@ class NetworkService:
                 self._settings_service.get_network
             )
 
+            if payload.mode == NetworkModeEnum.LOCAL:
+                network_settings, certs = await self.setup_local()
+
+                asyncio.create_task(self._system_service.restart())
+
+                return network_settings
+
             if payload.mode == NetworkModeEnum.MANUAL:
                 manual_network_settings = NetworkManualSettings(
                     mode=NetworkModeEnum.MANUAL,
                     host=payload.host,
-                    reverse_proxy=payload.reverse_proxy,
                 )
 
                 network_settings = await asyncio.to_thread(
@@ -232,41 +251,49 @@ class NetworkService:
     async def check_ssl_certificate(self):
         network_settings = await asyncio.to_thread(self._settings_service.get_network)
 
-        if network_settings.mode != NetworkModeEnum.AUTO:
+        if network_settings.mode == NetworkModeEnum.MANUAL:
             return
 
         ssl_renewed = False
 
-        thirty_days_in_seconds = 30 * 24 * 60 * 60
-        time_left = network_settings.expires_at - int(time.time())
+        if network_settings.mode == NetworkModeEnum.LOCAL:
+            two_days_in_seconds = 2 * 24 * 60 * 60
+            time_left = network_settings.expires_at - int(time.time())
 
-        if time_left < thirty_days_in_seconds:
-            try:
-                certs = await self._ssl_service.generate_acme_certificate(
-                    AcmeCertificateGenerate(
-                        ddns_provider_id=network_settings.provider,
-                        ddns_provider_token=network_settings.token,
-                        host=network_settings.host,
-                        email=network_settings.email,
-                        account_key_pem=network_settings.account_key,
-                    )
-                )
-
-                network_settings.fullchain = certs.fullchain
-                network_settings.privkey = certs.privkey
-                network_settings.expires_at = certs.expires_at
-                network_settings.account_key = certs.account_key
-
-                await asyncio.to_thread(
-                    self._settings_service.save_network,
-                    network_settings,
-                )
-
+            if time_left < two_days_in_seconds:
                 ssl_renewed = True
-            except Exception:
-                logger.exception(
-                    "🚨 Sikertelen Let's Encrypt SSL megújítás a háttérben"
-                )
+
+        if network_settings.mode == NetworkModeEnum.AUTO:
+            thirty_days_in_seconds = 30 * 24 * 60 * 60
+            time_left = network_settings.expires_at - int(time.time())
+
+            if time_left < thirty_days_in_seconds:
+                try:
+                    certs = await self._ssl_service.generate_acme_certificate(
+                        AcmeCertificateGenerate(
+                            ddns_provider_id=network_settings.provider,
+                            ddns_provider_token=network_settings.token,
+                            host=network_settings.host,
+                            email=network_settings.email,
+                            account_key_pem=network_settings.account_key,
+                        )
+                    )
+
+                    network_settings.fullchain = certs.fullchain
+                    network_settings.privkey = certs.privkey
+                    network_settings.expires_at = certs.expires_at
+                    network_settings.account_key = certs.account_key
+
+                    await asyncio.to_thread(
+                        self._settings_service.save_network,
+                        network_settings,
+                    )
+
+                    ssl_renewed = True
+                except Exception:
+                    logger.exception(
+                        "🚨 Sikertelen Let's Encrypt SSL megújítás a háttérben"
+                    )
 
         if ssl_renewed:
             logger.info("🔄 SSL megújítás sikeres, újraindítás...")

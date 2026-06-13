@@ -1,11 +1,8 @@
-from modules.settings.enums import NetworkModeEnum
+from modules.settings.schemas.internal import NetworkSettings
 from pydantic import BaseModel
 
 
 class BootNetworkConfig(BaseModel):
-    """A rendszerindításhoz feloldott hálózati és SSL beállítások sémája."""
-
+    network_settings: NetworkSettings
     cert_path: str | None = None
     key_path: str | None = None
-    mode: NetworkModeEnum
-    host: str

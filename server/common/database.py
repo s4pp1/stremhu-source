@@ -59,11 +59,13 @@ connect_args = {"check_same_thread": False}
 engine = create_engine(config.database_url, connect_args=connect_args)
 
 
-# Biztosítjuk a Foreign Key megszorítások bekapcsolását minden SQLite kapcsolatnál
+# Biztosítjuk a Foreign Key megszorítások, a WAL mód és a szinkronizáció beállítását minden SQLite kapcsolatnál
 @event.listens_for(Engine, "connect")
 def set_sqlite_pragma(dbapi_connection, connection_record):
     cursor = dbapi_connection.cursor()
     cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.execute("PRAGMA journal_mode=WAL")
+    cursor.execute("PRAGMA synchronous=NORMAL")
     cursor.close()
 
 

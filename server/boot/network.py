@@ -1,3 +1,4 @@
+import asyncio
 import os
 import socket
 from pathlib import Path
@@ -30,8 +31,8 @@ def get_network_settings() -> NetworkSettings:
 def write_certs_to_disk(fullchain: str, privkey: str) -> tuple[Path, Path]:
     """Lementi a tanúsítványokat a system/certs könyvtárba, és visszaadja a fájlok elérési útját."""
 
-    cert_path = config.generated_certificates_dir / "fullchain.pem"
-    key_path = config.generated_certificates_dir / "privkey.pem"
+    cert_path = config.certificates_dir / "fullchain.pem"
+    key_path = config.certificates_dir / "privkey.pem"
 
     cert_path.write_text(fullchain, encoding="utf-8")
     key_path.write_text(privkey, encoding="utf-8")
@@ -40,47 +41,18 @@ def write_certs_to_disk(fullchain: str, privkey: str) -> tuple[Path, Path]:
 
 
 def _ensure_db_network_settings(host_ip: str) -> NetworkSettings:
-    """Ellenőrzi az adatbázisban a hálózati beállításokat, és szükség esetén generálja a tanúsítványt."""
-
     with db_session() as db:
         settings_service = create_settings_service(db)
         network_service = create_network_service(db)
         network_settings = settings_service.find_network()
 
-        # ÖNGYÓGYÍTÓ LOGIKA (Self-healing recovery):
-        # Ha MANUAL módban vagyunk, nincs reverse_proxy, de az egyedi tanúsítványfájlok hiányoznak,
-        # akkor a felhasználó kizárásának elkerülése érdekében automatikusan visszaváltunk LOCAL módra a DB-ben!
-        if (
-            network_settings
-            and network_settings.mode == NetworkModeEnum.MANUAL
-            and not network_settings.reverse_proxy
-        ):
-            cert_path = config.generated_certificates_dir / "fullchain.pem"
-            key_path = config.generated_certificates_dir / "privkey.pem"
-
-            if not cert_path.exists() or not key_path.exists():
-                print(
-                    "\n🚨 [HIBA] Kézi (manual) SSL mód van beállítva, de a tanúsítványok nem találhatók a megadott helyen!\n"
-                    f"   Elvárt elérési út: {cert_path} és {key_path}\n"
-                    "🔄 [ÖNGYÓGYÍTÁS] A felhasználói kizárás megelőzése érdekében a rendszer automatikusan\n"
-                    "   visszaállítja a Helyi (Local) ön-aláírt SSL módot az adatbázisban...\n"
-                )
-
-                local_settings, _ = network_service.setup_local()
-                settings_service.save_network(local_settings)
-                network_settings = local_settings
-                return network_settings
-
         if network_settings and network_settings.mode != NetworkModeEnum.LOCAL:
             return network_settings
 
-        if network_settings and network_settings.ip == host_ip:
-            return network_settings
-
-        local_settings, _ = network_service.setup_local()
+        local_settings, _ = asyncio.run(network_service.setup_local())
         settings_service.save_network(local_settings)
 
-    return local_settings
+        return local_settings
 
 
 def _check_host_ip(host_ip: str) -> str:
@@ -110,50 +82,24 @@ def _check_host_ip(host_ip: str) -> str:
 
 
 def ensure_network_settings() -> BootNetworkConfig:
-    """
-    Ellenőrzi, inicializálja és feloldja a hálózati és SSL beállításokat.
-
-    Returns:
-        BootNetworkConfig: A rendszerindításhoz feloldott hálózati és SSL konfigurációs modell.
-    """
-
     host_ip = _check_host_ip(config.host_ip)
 
     network_settings = _ensure_db_network_settings(host_ip)
 
     cert_path_str: str | None = None
     key_path_str: str | None = None
-    mode = network_settings.mode
-    host = network_settings.host
 
-    # Kézi (manual) SSL mód
-    if (
-        network_settings.mode == NetworkModeEnum.MANUAL
-        and not network_settings.reverse_proxy
-    ):
-        cert_path = config.own_certificates_dir / "fullchain.pem"
-        key_path = config.own_certificates_dir / "privkey.pem"
-
-        if cert_path.exists() and key_path.exists():
-            cert_path_str = str(cert_path)
-            key_path_str = str(key_path)
-            host = network_settings.host
-
-    # Generált tanúsítványos mód (LOCAL / AUTO)
-    if (
-        network_settings.mode == NetworkModeEnum.LOCAL
-        or network_settings.mode == NetworkModeEnum.AUTO
-    ):
+    if network_settings.mode != NetworkModeEnum.MANUAL:
         cert_path, key_path = write_certs_to_disk(
-            network_settings.fullchain, network_settings.privkey
+            fullchain=network_settings.fullchain,
+            privkey=network_settings.privkey,
         )
+
         cert_path_str = str(cert_path)
         key_path_str = str(key_path)
-        host = network_settings.host
 
     return BootNetworkConfig(
+        network_settings=network_settings,
         cert_path=cert_path_str,
         key_path=key_path_str,
-        mode=mode,
-        host=host,
     )

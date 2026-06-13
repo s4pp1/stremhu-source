@@ -11,6 +11,8 @@ from boot.network import ensure_network_settings
 from boot.settings import ensure_default_settings
 from boot.setup import run_migrations, setup_directories
 from config import NodeEnv, config
+from rich.console import Console
+from rich.panel import Panel
 
 
 def start_server():
@@ -19,30 +21,38 @@ def start_server():
     ensure_default_settings()
     boot_config = ensure_network_settings()
 
+    console = Console()
     protocol = "https"
 
-    global_url = None
-    if boot_config.mode != NetworkModeEnum.LOCAL:
+    url = None
+
+    if boot_config.network_settings.mode == NetworkModeEnum.LOCAL:
+        host = boot_config.network_settings.host
+
+        if boot_config.network_settings.self_signed:
+            console.print(
+                "\n[bold yellow]⚠️ Hiba történt a helyi elérés beállításánál. A szerver self-signed tanúsítvánnyal érhető el, ami korlátozza a használhatóságát! Ellenőrizd az internetkapcsolatot és indítsd újra a szervert! ⚠️[/]"
+            )
+            host = boot_config.network_settings.ip
+
+        url = f"{protocol}://{host}:{config.port}"
+
+    if boot_config.network_settings.mode == NetworkModeEnum.AUTO:
+        url = f"{protocol}://{boot_config.network_settings.host}:{config.port}"
+
+    if boot_config.network_settings.mode == NetworkModeEnum.MANUAL:
         protocol = "http"
-        global_url = f"https://{boot_config.host}"
+        url = f"{protocol}://{boot_config.network_settings.host}"
 
-        if boot_config.cert_path and boot_config.key_path:
-            protocol = "https"
-            global_url = f"{protocol}://{boot_config.host}:{config.port}"
-
-    local_url = f"{protocol}://{boot_config.host}:{config.port}"
-
-    if global_url:
-        print(
-            f"⚠️  Amennyiben a domain-en nem éred el a szervert, használd a {local_url} címet."
+    console.print()
+    console.print(
+        Panel(
+            f"🚀 A szerver a [bold cyan underline]{url}[/] címen érhető el! 🚀",
+            border_style="bold green",
+            expand=False,
         )
-    else:
-        print(
-            f"⚠️  A szerver a {local_url} címen érhető el, de végezd el a DNS konfigurációt."
-        )
-
-    if global_url:
-        print(f"🚀  A szerver a {global_url} címen érhető el.")
+    )
+    console.print()
 
     uvicorn.run(
         "main:app",

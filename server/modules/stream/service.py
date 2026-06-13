@@ -1,4 +1,5 @@
 import libtorrent as libtorrent
+from common.keyed_lock import KeyedLock
 from fastapi import HTTPException
 from modules.indexers.service import IndexersService
 from modules.relay.entities import File
@@ -10,6 +11,8 @@ from modules.torrent_files.models import TorrentFileModel
 from modules.torrent_files.service import TorrentFilesService
 from modules.torrents.schemas.internal import TorrentWithRelay
 from modules.torrents.service import TorrentsService
+
+torrent_locks = KeyedLock()
 
 
 class StreamService:
@@ -32,38 +35,46 @@ class StreamService:
         torrent_id: str,
         file_index: int,
     ) -> tuple[ParsedRangeHeader, File]:
-        torrent_with_relay: TorrentWithRelay | None = self._torrents_service.find_by_id(
-            indexer_id=indexer_id,
-            torrent_id=torrent_id,
-        )
-
-        if torrent_with_relay is None:
-            torrent_file = self._torrent_files_service.find_by_id(
-                indexer_id=indexer_id,
-                torrent_id=torrent_id,
+        async with torrent_locks(f"{indexer_id}:{torrent_id}"):
+            torrent_with_relay: TorrentWithRelay | None = (
+                self._torrents_service.find_by_id(
+                    indexer_id=indexer_id,
+                    torrent_id=torrent_id,
+                )
             )
 
-            if torrent_file is None:
-                indexer_torrent = (
-                    await self._indexers_service.get_torrent_by_torrent_id(
-                        indexer_id=indexer_id, torrent_id=torrent_id
+            if torrent_with_relay is None:
+                torrent_file = self._torrent_files_service.find_by_id(
+                    indexer_id=indexer_id,
+                    torrent_id=torrent_id,
+                )
+
+                if torrent_file is None:
+                    indexer_torrent = (
+                        await self._indexers_service.get_torrent_by_torrent_id(
+                            indexer_id=indexer_id, torrent_id=torrent_id
+                        )
                     )
-                )
-                downloaded_torrent_file = await self._indexers_service.download_torrent(
-                    indexer_id=indexer_id,
-                    torrent_id=torrent_id,
-                    download_url=indexer_torrent.download_url,
-                )
-                torrent_file = self._torrent_files_service.create(
-                    indexer_id=indexer_id,
-                    torrent_id=torrent_id,
-                    torrent_bytes=downloaded_torrent_file.torrent_bytes,
+                    downloaded_torrent_file = (
+                        await self._indexers_service.download_torrent(
+                            indexer_id=indexer_id,
+                            torrent_id=torrent_id,
+                            download_url=indexer_torrent.download_url,
+                        )
+                    )
+                    torrent_file = self._torrent_files_service.create(
+                        indexer_id=indexer_id,
+                        torrent_id=torrent_id,
+                        torrent_bytes=downloaded_torrent_file.torrent_bytes,
+                    )
+
+                self._validate_file(torrent_file, file_index)
+                torrent_with_relay = self._torrents_service.create_from_torrent_file(
+                    torrent_file
                 )
 
-            self._validate_file(torrent_file, file_index)
-            torrent_with_relay = self._torrents_service.create_from_torrent_file(
-                torrent_file
-            )
+                # Azonnali commit, hogy a többi várakozó szál azonnal lássa az adatbázisban a létrehozott rekordokat
+                self._torrents_service._torrent_repository.db.commit()
 
         file = self._relay_service.get_torrent_file(
             info_hash=torrent_with_relay.info_hash,

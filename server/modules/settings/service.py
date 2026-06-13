@@ -90,10 +90,7 @@ class SettingsService:
 
     def get_app_url(self) -> str:
         network_settings = self.get_network()
-        if (
-            network_settings.mode == NetworkModeEnum.MANUAL
-            and network_settings.reverse_proxy
-        ):
+        if network_settings.mode == NetworkModeEnum.MANUAL:
             return f"https://{network_settings.host}"
 
         return f"https://{network_settings.host}:{config.port}"

@@ -1,8 +1,8 @@
-from typing import Annotated
+from datetime import datetime
+from typing import Annotated, Literal
 
+from modules.settings.enums import NetworkConnectionEnum, NetworkModeEnum
 from modules.settings.schemas.internal import (
-    NetworkAutoSettings,
-    NetworkLocalSettings,
     NetworkManualSettings,
     RelaySettingsUpdate,
     SystemSettingsUpdate,
@@ -50,18 +50,33 @@ class RelaySettingsUpdateRequest(RelaySettingsUpdate):
     )
 
 
-class NetworkLocalSettingsResponse(NetworkLocalSettings):
+class NetworkLocalSettingsResponse(BaseModel):
     model_config = ConfigDict(
         validate_by_name=True,
         alias_generator=to_camel,
     )
 
+    mode: Literal[NetworkModeEnum.LOCAL]
+    host: str
+    ip: str
+    expires_at: datetime
 
-class NetworkAutoSettingsResponse(NetworkAutoSettings):
+
+class NetworkAutoSettingsResponse(BaseModel):
     model_config = ConfigDict(
         validate_by_name=True,
         alias_generator=to_camel,
     )
+
+    mode: Literal[NetworkModeEnum.AUTO]
+    host: str
+    token: str
+    email: str
+    connection: NetworkConnectionEnum
+    provider: str
+    ip: str
+    expires_at: datetime
+    last_ip_sync_at: datetime
 
 
 class NetworkManualSettingsResponse(NetworkManualSettings):

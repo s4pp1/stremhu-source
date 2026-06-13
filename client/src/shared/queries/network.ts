@@ -2,12 +2,12 @@ import { queryOptions, useMutation } from '@tanstack/react-query'
 
 import type {
   NetworkAutoSetupRequest,
+  NetworkLocalSetupRequest,
   NetworkManualSetupRequest,
 } from '../lib/source/source-client'
 import {
   networkGetDdnsProviders,
   networkGetSettings,
-  networkReset,
   networkSetup,
 } from '../lib/source/source-client'
 
@@ -30,18 +30,12 @@ export const getNetworkProviders = queryOptions({
 export function useNetworkConfig() {
   return useMutation({
     mutationFn: async (
-      payload: NetworkAutoSetupRequest | NetworkManualSetupRequest,
+      payload:
+        | NetworkLocalSetupRequest
+        | NetworkAutoSetupRequest
+        | NetworkManualSetupRequest,
     ) => {
       const response = await networkSetup(payload)
-      return response
-    },
-  })
-}
-
-export function useNetworkReset() {
-  return useMutation({
-    mutationFn: async () => {
-      const response = await networkReset()
       return response
     },
   })

@@ -6,7 +6,6 @@ import { useAppForm } from '@/shared/contexts/form-context'
 import { parseApiError } from '@/shared/lib/utils'
 import { getNetworkSettings, useNetworkConfig } from '@/shared/queries/network'
 
-import { networkAccessDefaultValues } from './network-access.defaults'
 import type { NetworkAccessFormValues } from './network-access.schema'
 import { networkAccessSchema } from './network-access.schema'
 
@@ -21,9 +20,11 @@ export function useNetworkAccessForm() {
   const { data: networkSettings } = useSuspenseQuery(getNetworkSettings)
   const { mutateAsync: configNetwork } = useNetworkConfig()
 
-  const defaultValues: NetworkAccessFormValues = useMemo(() => {
+  const defaultValues = useMemo((): NetworkAccessFormValues => {
     if (networkSettings.mode === 'local') {
-      return networkAccessDefaultValues
+      return {
+        mode: 'local',
+      }
     }
 
     return networkSettings
@@ -37,7 +38,9 @@ export function useNetworkAccessForm() {
 
     onSubmit: async ({ value }) => {
       try {
-        if (value.mode === 'none') return
+        if (value.mode === 'none') {
+          return
+        }
 
         const networkSetup = await configNetwork(value)
 

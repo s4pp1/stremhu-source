@@ -1,4 +1,4 @@
-import type { SubmitEventHandler } from 'react'
+import type { MouseEventHandler, SubmitEventHandler } from 'react'
 
 import type { OpenedDialog } from '@/routes/-features/dialogs/dialogs-store'
 import { useDialogsStore } from '@/routes/-features/dialogs/dialogs-store'
@@ -34,10 +34,16 @@ export function NetworkAccessDialog(
     await form.handleSubmit()
   }
 
+  const handleClose: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    dialogsStore.closeDialog(dialog.id)
+  }
+
   return (
     <Dialog open={dialog.open}>
       <DialogScrollContent
-        className="md:max-w-md"
+        className="md:max-w-lg"
         onEscapeKeyDown={() => dialogsStore.closeDialog(dialog.id)}
       >
         <form.AppForm>
@@ -55,14 +61,20 @@ export function NetworkAccessDialog(
             <NetworkSelector form={form} />
             <UrlConfiguration form={form} />
             <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => dialogsStore.closeDialog(dialog.id)}
-              >
+              <form.SubscribeButton variant="outline" onClick={handleClose}>
                 Mégsem
-              </Button>
-              <Button type="submit">Konfigurálás</Button>
+              </form.SubscribeButton>
+              <form.Subscribe selector={(state) => [state.values.mode]}>
+                {([mode]) => {
+                  if (mode === 'none' || mode === 'local') return null
+
+                  return (
+                    <Button type="submit">
+                      {mode === 'auto' ? 'Konfigurálás' : 'Mentés'}{' '}
+                    </Button>
+                  )
+                }}
+              </form.Subscribe>
             </DialogFooter>
           </form>
         </form.AppForm>

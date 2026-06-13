@@ -7,6 +7,9 @@ export const networkAccessSchema = z.discriminatedUnion('mode', [
     mode: z.literal('none'),
   }),
   z.object({
+    mode: z.literal('local'),
+  }),
+  z.object({
     mode: z.literal('auto'),
     provider: z.string().min(1, 'A szolgáltató kiválasztása kötelező'),
     host: z.string().min(1, 'A domain megadása kötelező'),
@@ -17,7 +20,6 @@ export const networkAccessSchema = z.discriminatedUnion('mode', [
   z.object({
     mode: z.literal('manual'),
     host: z.string().min(1, 'A domain megadása kötelező'),
-    reverseProxy: z.boolean(),
   }),
 ])
 

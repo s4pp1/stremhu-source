@@ -1,8 +1,19 @@
 from typing import Annotated
 
-from modules.network.schemas.internal import NetworkAutoSetup, NetworkManualSetup
+from modules.network.schemas.internal import (
+    NetworkAutoSetup,
+    NetworkLocalSetup,
+    NetworkManualSetup,
+)
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
+
+
+class NetworkLocalSetupRequest(NetworkLocalSetup):
+    model_config = ConfigDict(
+        validate_by_name=True,
+        alias_generator=to_camel,
+    )
 
 
 class NetworkAutoSetupRequest(NetworkAutoSetup):
@@ -20,7 +31,7 @@ class NetworkManualSetupRequest(NetworkManualSetup):
 
 
 NetworkSetupRequest = Annotated[
-    NetworkAutoSetupRequest | NetworkManualSetupRequest,
+    NetworkLocalSetupRequest | NetworkAutoSetupRequest | NetworkManualSetupRequest,
     Field(discriminator="mode"),
 ]
 

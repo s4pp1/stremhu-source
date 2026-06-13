@@ -5,6 +5,7 @@ from typing import cast
 
 import dns.exception
 import dns.resolver
+import httpx
 from acme import challenges, client, errors as acme_errors, messages
 from common.logger import logger
 from config import config
@@ -67,7 +68,43 @@ class SslService:
         self._ddns_service = ddns_service
         self._in_progress = False
 
-    def generate_self_signed_certificate(self, host_ip: str) -> SelfSignedCertificate:
+    async def get_local_ip_certificate(self, host_ip: str) -> SelfSignedCertificate:
+        url = "https://local-ip.medicmobile.org/keys"
+        try:
+            logger.info(
+                "🔒 Lekérjük a nyilvános local-ip.medicmobile.org SSL tanúsítványt..."
+            )
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                response = await client.get(url)
+                response.raise_for_status()
+                data = response.json()
+
+            fullchain = data["fullchain"]
+            privkey = data["privkey"]
+
+            cert = x509.load_pem_x509_certificate(fullchain.encode("utf-8"))
+            expires_at = int(cert.not_valid_after_utc.timestamp())
+
+            logger.info(
+                "✅ Sikeresen letöltve a nyilvános local-ip.medicmobile.org SSL tanúsítvány!"
+            )
+
+            return SelfSignedCertificate(
+                fullchain=fullchain,
+                privkey=privkey,
+                expires_at=expires_at,
+            )
+        except Exception as e:
+            logger.error(
+                "🚨 Nem sikerült letölteni a nyilvános local-ip.medicmobile.org tanúsítványt: %s. "
+                "Visszaesés a helyi self-signed (ön-aláírt) tanúsítvány generálására...",
+                e,
+            )
+            return self._generate_self_signed_certificate_fallback(host_ip)
+
+    def _generate_self_signed_certificate_fallback(
+        self, host_ip: str
+    ) -> SelfSignedCertificate:
         try:
             private_key = rsa.generate_private_key(
                 public_exponent=65537,
@@ -114,8 +151,10 @@ class SslService:
                 privkey=privkey,
                 expires_at=expires_at,
             )
-        except Exception as e:
-            logger.error("Hiba történt a self-signed tanúsítvány generálásakor: %s", e)
+        except Exception as err:
+            logger.error(
+                "Hiba történt a self-signed tanúsítvány generálásakor: %s", err
+            )
             raise
 
     async def generate_acme_certificate(

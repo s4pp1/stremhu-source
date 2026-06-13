@@ -53,12 +53,8 @@ class Config(BaseSettings):
         return self.base_data_dir / "system"
 
     @property
-    def generated_certificates_dir(self) -> Path:
-        return self.system_dir / "generated-certificates"
-
-    @property
-    def own_certificates_dir(self) -> Path:
-        return self.system_dir / "own-certificates"
+    def certificates_dir(self) -> Path:
+        return self.system_dir / "certificates"
 
     @property
     def acme_directory_url(self) -> str:

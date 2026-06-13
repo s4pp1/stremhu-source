@@ -15,6 +15,8 @@ export const UrlConfiguration = withForm({
         {([mode]) => {
           if (mode === 'none') return null
 
+          if (mode === 'local') return null
+
           return (
             <div className="grid gap-4">
               <Separator />
@@ -104,30 +106,10 @@ export const UrlConfiguration = withForm({
               )}
 
               {mode === 'manual' && (
-                <form.Field name="reverseProxy">
-                  {(field) => (
-                    <div className="grid gap-1">
-                      <Label
-                        htmlFor={field.name}
-                        className="flex items-start gap-3"
-                      >
-                        <p className="flex-1 text-sm leading-none font-medium">
-                          Reverse Proxy használata
-                        </p>
-                        <Switch
-                          id={field.name}
-                          checked={field.state.value}
-                          onCheckedChange={field.handleChange}
-                        />
-                      </Label>
-                      <p className="text-muted-foreground text-sm">
-                        Reverse Proxy használata esetén http protokkolon lehet
-                        elérni a szervert. Ellenkező esetben biztosítanod kell a
-                        certeket.
-                      </p>
-                    </div>
-                  )}
-                </form.Field>
+                <p className="text-muted-foreground text-sm">
+                  Reverse Proxy használata esetén http protokkolon lehet elérni
+                  a szervert. Ellenkező esetben biztosítanod kell a certeket.
+                </p>
               )}
             </div>
           )

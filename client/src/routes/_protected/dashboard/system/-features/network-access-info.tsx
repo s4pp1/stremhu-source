@@ -38,16 +38,14 @@ export function NetworkAccessInfo() {
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-6">
-        {networkSettings.mode !== 'local' && (
-          <Item variant="default" className="p-0">
-            <ItemContent>
-              <ItemTitle>Konfigurált domain</ItemTitle>
-              <ItemDescription className="font-bold font-mono break-all">
-                {systemStatus.appUrl}
-              </ItemDescription>
-            </ItemContent>
-          </Item>
-        )}
+        <Item variant="default" className="p-0">
+          <ItemContent>
+            <ItemTitle>Konfigurált domain</ItemTitle>
+            <ItemDescription className="font-bold font-mono break-all">
+              {systemStatus.appUrl}
+            </ItemDescription>
+          </ItemContent>
+        </Item>
         <Item variant="default" className="p-0">
           <ItemContent>
             <ItemTitle>Konfiguráció</ItemTitle>

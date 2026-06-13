@@ -9,6 +9,7 @@ class NetworkLocalSettings(BaseModel):
     mode: Literal[NetworkModeEnum.LOCAL]
     host: str
     ip: str
+    self_signed: bool
     fullchain: str
     privkey: str
     expires_at: int
@@ -32,7 +33,6 @@ class NetworkAutoSettings(BaseModel):
 class NetworkManualSettings(BaseModel):
     mode: Literal[NetworkModeEnum.MANUAL]
     host: str
-    reverse_proxy: bool
 
 
 NetworkSettings = Annotated[

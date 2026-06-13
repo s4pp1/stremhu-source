@@ -4,6 +4,10 @@ from modules.settings.enums import NetworkConnectionEnum, NetworkModeEnum
 from pydantic import BaseModel, Field
 
 
+class NetworkLocalSetup(BaseModel):
+    mode: Literal[NetworkModeEnum.LOCAL]
+
+
 class NetworkAutoSetup(BaseModel):
     mode: Literal[NetworkModeEnum.AUTO]
     host: str
@@ -16,10 +20,9 @@ class NetworkAutoSetup(BaseModel):
 class NetworkManualSetup(BaseModel):
     mode: Literal[NetworkModeEnum.MANUAL]
     host: str
-    reverse_proxy: bool
 
 
 NetworkSetup = Annotated[
-    NetworkAutoSetup | NetworkManualSetup,
+    NetworkLocalSetup | NetworkAutoSetup | NetworkManualSetup,
     Field(discriminator="mode"),
 ]

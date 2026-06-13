@@ -1,18 +1,21 @@
 import { useStore } from '@tanstack/react-form'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
 
 import { Button } from '@/shared/components/ui/button'
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemTitle,
-} from '@/shared/components/ui/item'
 import { withForm } from '@/shared/contexts/form-context'
-import { cn } from '@/shared/lib/utils'
 import { getNetworkProviders } from '@/shared/queries/network'
 
+import { NetworkCard } from './components/network-card'
 import { networkAccessDefaultValues } from './network-access.defaults'
+import type { NetworkAccessFormValues } from './network-access.schema'
+
+type Option = {
+  mode: NetworkAccessFormValues['mode']
+  name: string
+  description: string
+  providerId?: string
+}
 
 export const NetworkSelector = withForm({
   defaultValues: networkAccessDefaultValues,
@@ -21,33 +24,45 @@ export const NetworkSelector = withForm({
 
     const formValues = useStore(form.store, (state) => state.values)
 
-    const isNone = formValues.mode === 'none'
-    const isAuto = formValues.mode === 'auto'
-    const isManual = formValues.mode === 'manual'
+    const handleSelect = (option: Option) => {
+      const { mode, providerId } = option
 
-    const handleProviderSelect = (providerId: string) => {
-      form.baseStore.setState((state) => ({
-        ...state,
-        values: {
-          mode: 'auto',
-          provider: providerId,
-          email: '',
-          host: '',
-          token: '',
-          connection: 'local',
-        },
-      }))
-    }
+      form.baseStore.setState((state) => {
+        if (providerId) {
+          return {
+            ...state,
+            values: {
+              mode: 'auto',
+              provider: providerId,
+              email: '',
+              host: '',
+              token: '',
+              connection: 'public',
+            },
+          }
+        }
 
-    const handleManualSelect = () => {
-      form.baseStore.setState((state) => ({
-        ...state,
-        values: {
-          mode: 'manual',
-          host: '',
-          reverseProxy: true,
-        },
-      }))
+        if (mode === 'local') {
+          return {
+            ...state,
+            values: {
+              mode: 'local',
+            },
+          }
+        }
+
+        if (mode === 'manual') {
+          return {
+            ...state,
+            values: {
+              mode: 'manual',
+              host: '',
+            },
+          }
+        }
+
+        return state
+      })
     }
 
     const handleReset = () => {
@@ -59,56 +74,68 @@ export const NetworkSelector = withForm({
       }))
     }
 
+    const options: Option[] = useMemo(() => {
+      const selectableProviders: Option[] = providers.map((provider) => {
+        return {
+          mode: 'auto',
+          providerId: provider.id,
+          name: provider.name,
+          description: provider.name,
+        }
+      })
+
+      return [
+        {
+          mode: 'local',
+          name: 'Otthoni konfiguráció',
+          description: 'A szerver csak a helyi hálózatban érhető el.',
+        },
+        ...selectableProviders,
+        {
+          mode: 'manual',
+          name: 'Reverse Proxy',
+          description: 'Saját domain használata, reverse proxy segítségével.',
+        },
+      ]
+    }, [providers])
+
+    const selectedOption = useMemo(() => {
+      if (formValues.mode === 'none') {
+        return null
+      }
+
+      if (formValues.mode === 'auto') {
+        return options.find(
+          (option) => option.providerId === formValues.provider,
+        )
+      }
+
+      return options.find((option) => option.mode === formValues.mode)
+    }, [options, formValues.mode])
+
     return (
       <div className="grid gap-4">
-        {providers.map((provider) => {
-          const isSelected =
-            formValues.mode === 'auto' && formValues.provider === provider.id
-
-          if (!isNone && !isSelected) return null
-
-          return (
-            <Item
-              variant="outline"
-              key={provider.id}
-              className={cn(
-                'transition-all duration-200 cursor-pointer hover:bg-primary/5',
-                isSelected && 'bg-primary/10',
-              )}
-              onClick={() => handleProviderSelect(provider.id)}
-            >
-              <ItemContent>
-                <ItemTitle
-                  className={cn(isSelected && 'text-primary font-semibold')}
-                >
-                  {provider.name}
-                </ItemTitle>
-                <ItemDescription className="line-clamp-none text-wrap">
-                  {provider.name}
-                </ItemDescription>
-              </ItemContent>
-            </Item>
-          )
-        })}
-        {isNone && (
-          <Item
-            variant="outline"
-            className={cn(
-              'transition-all duration-200',
-              isManual && 'border-primary bg-primary/5 dark:bg-primary/10',
-            )}
-            onClick={handleManualSelect}
-          >
-            <ItemContent>
-              <ItemTitle>Kézi beállítás / Reverse proxy</ItemTitle>
-              <ItemDescription className="line-clamp-none text-wrap">
-                Saját domain használata, reverse proxy segítségével vagy SSL
-                tanúsítvány használatával. <b>Haladóknak ajánlott!</b>
-              </ItemDescription>
-            </ItemContent>
-          </Item>
+        {selectedOption ? (
+          <NetworkCard
+            name={selectedOption.name}
+            description={selectedOption.description}
+            isSelected
+            onSelect={() => {}}
+          />
+        ) : (
+          options.map((option) => {
+            return (
+              <NetworkCard
+                key={`${option.mode}-${option.providerId}`}
+                name={option.name}
+                description={option.description}
+                onSelect={() => handleSelect(option)}
+              />
+            )
+          })
         )}
-        {!isNone && (
+
+        {formValues.mode !== 'none' && (
           <div className="flex justify-end">
             <Button
               type="button"
@@ -117,7 +144,7 @@ export const NetworkSelector = withForm({
               className="p-0 text-xs underline-offset-4 h-auto hover:underline"
               onClick={handleReset}
             >
-              Konfiguráció újrakezdése
+              Konfiguráció módosítása
             </Button>
           </div>
         )}
