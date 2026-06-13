@@ -1,5 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
 
+import type { PlaybacksGetHistoryListParams } from '../lib/source/source-client'
 import {
   playbacksGetHistoryList,
   playbacksGetList,
@@ -14,11 +15,14 @@ export const getPlaybacks = queryOptions({
   },
 })
 
-export const getPlaybackHistories = queryOptions({
-  queryKey: ['playbacks', 'histories'],
-  refetchInterval: 5000,
-  queryFn: async () => {
-    const response = await playbacksGetHistoryList()
-    return response
-  },
-})
+export const getPlaybackHistories = (
+  query: PlaybacksGetHistoryListParams = {},
+) =>
+  queryOptions({
+    queryKey: ['playbacks', 'histories', query],
+    refetchInterval: 5000,
+    queryFn: async () => {
+      const response = await playbacksGetHistoryList(query)
+      return response
+    },
+  })

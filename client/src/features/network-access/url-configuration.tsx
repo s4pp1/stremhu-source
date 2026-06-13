@@ -13,9 +13,7 @@ export const UrlConfiguration = withForm({
     return (
       <form.Subscribe selector={(state) => [state.values.mode]}>
         {([mode]) => {
-          if (mode === 'none') return null
-
-          if (mode === 'local') return null
+          if (['none', 'local'].includes(mode)) return null
 
           return (
             <div className="grid gap-4">
@@ -49,7 +47,6 @@ export const UrlConfiguration = withForm({
                           value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
-                          placeholder="Szolgáltatótól kapott token / api kulcs"
                         />
                         {field.state.meta.isTouched && (
                           <FieldError errors={field.state.meta.errors} />
@@ -67,7 +64,7 @@ export const UrlConfiguration = withForm({
                           value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
-                          placeholder="SSL tanúsítvány generálásához"
+                          placeholder="Let's Encrypt tanúsítvány generálásához szükséges"
                           type="email"
                         />
                         {field.state.meta.isTouched && (
@@ -107,8 +104,8 @@ export const UrlConfiguration = withForm({
 
               {mode === 'manual' && (
                 <p className="text-muted-foreground text-sm">
-                  Reverse Proxy használata esetén http protokkolon lehet elérni
-                  a szervert. Ellenkező esetben biztosítanod kell a certeket.
+                  Az úraindítást követően a szerver http protokollon lesz
+                  elérhető a megadott IP cím és port segítségével.
                 </p>
               )}
             </div>

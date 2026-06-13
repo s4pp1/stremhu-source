@@ -56,11 +56,7 @@ class Config(BaseSettings):
     def certificates_dir(self) -> Path:
         return self.system_dir / "certificates"
 
-    @property
-    def acme_directory_url(self) -> str:
-        if self.node_env == NodeEnv.DEV:
-            return "https://acme-staging-v02.api.letsencrypt.org/directory"
-        return "https://acme-v02.api.letsencrypt.org/directory"
+    acme_directory_url: str = "https://acme-v02.api.letsencrypt.org/directory"
 
     @property
     def openapi_dir(self) -> Path:

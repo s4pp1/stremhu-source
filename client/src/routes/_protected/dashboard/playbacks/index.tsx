@@ -1,12 +1,14 @@
 import { useSuspenseQueries } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useSearch } from '@tanstack/react-router'
 import { HistoryIcon, PlayIcon } from 'lucide-react'
 
 import { Alert, AlertTitle } from '@/shared/components/ui/alert'
+import { AppPagination } from '@/shared/components/ui/app-pagination'
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
@@ -21,9 +23,11 @@ export const Route = createFileRoute('/_protected/dashboard/playbacks/')({
 })
 
 function RouteComponent() {
+  const searchParams = useSearch({ from: '/_protected/dashboard/playbacks/' })
+
   const [{ data: playbacks }, { data: playbackHistories }] = useSuspenseQueries(
     {
-      queries: [getPlaybacks, getPlaybackHistories],
+      queries: [getPlaybacks, getPlaybackHistories(searchParams)],
     },
   )
 
@@ -60,20 +64,31 @@ function RouteComponent() {
         </CardHeader>
         <Separator />
         <CardContent className="grid gap-3">
-          {playbackHistories.length === 0 ? (
+          {playbackHistories.items.length === 0 ? (
             <Alert>
               <HistoryIcon />
               <AlertTitle>Nincs lejátszási előzmény</AlertTitle>
             </Alert>
           ) : (
-            playbackHistories.map((playback_history) => (
+            playbackHistories.items.map((playbackHistory) => (
               <PlaybackItem
-                key={playback_history.playbackId}
-                playback={playback_history}
+                key={playbackHistory.playbackId}
+                playback={playbackHistory}
               />
             ))
           )}
         </CardContent>
+        <CardFooter>
+          <AppPagination
+            limit={playbackHistories.size}
+            page={playbackHistories.page}
+            total={playbackHistories.total}
+            makeLink={(nextPage) => ({
+              to: '/dashboard/playbacks',
+              search: (prev) => ({ ...prev, page: nextPage }),
+            })}
+          />
+        </CardFooter>
       </Card>
     </div>
   )

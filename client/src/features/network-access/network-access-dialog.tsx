@@ -66,13 +66,9 @@ export function NetworkAccessDialog(
               </form.SubscribeButton>
               <form.Subscribe selector={(state) => [state.values.mode]}>
                 {([mode]) => {
-                  if (mode === 'none' || mode === 'local') return null
+                  if (mode === 'none') return null
 
-                  return (
-                    <Button type="submit">
-                      {mode === 'auto' ? 'Konfigurálás' : 'Mentés'}{' '}
-                    </Button>
-                  )
+                  return <Button type="submit">Alkalmazás</Button>
                 }}
               </form.Subscribe>
             </DialogFooter>

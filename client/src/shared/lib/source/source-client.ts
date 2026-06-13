@@ -315,8 +315,8 @@ export interface NetworkAutoSettingsResponse {
   connection: NetworkConnectionEnum
   provider: string
   ip: string
-  expiresAt: number
-  lastIpSyncAt: number
+  expiresAt: string
+  lastIpSyncAt: string
 }
 
 export interface NetworkAutoSetupRequest {
@@ -332,7 +332,7 @@ export interface NetworkLocalSettingsResponse {
   mode: 'local'
   host: string
   ip: string
-  expiresAt: number
+  expiresAt: string
 }
 
 export const NetworkLocalSetupRequestValue = {
@@ -343,7 +343,6 @@ export type NetworkLocalSetupRequest = typeof NetworkLocalSetupRequestValue
 export interface NetworkManualSettingsResponse {
   mode: 'manual'
   host: string
-  reverseProxy: boolean
 }
 
 export interface NetworkManualSetupRequest {
@@ -354,21 +353,6 @@ export interface NetworkManualSetupRequest {
 export interface NetworkSetupResponse {
   appUrl: string
   message: string
-}
-
-export interface PairInitResponse {
-  userCode: string
-  deviceCode: string
-  expiresAt: string
-}
-
-export interface PairStatusResponse {
-  status: string
-  token?: string | null
-}
-
-export interface PairVerifyRequest {
-  userCode: string
 }
 
 export interface RoleResponse {
@@ -395,6 +379,29 @@ export interface PlaybackHistoryResponse {
   torrentName: string | null
   fileName: string | null
   createdAt: string
+}
+
+export interface PagePlaybackHistoryResponse {
+  items: PlaybackHistoryResponse[]
+  total: number
+  page: number
+  size: number
+  pages: number
+}
+
+export interface PairInitResponse {
+  userCode: string
+  deviceCode: string
+  expiresAt: string
+}
+
+export interface PairStatusResponse {
+  status: string
+  token?: string | null
+}
+
+export interface PairVerifyRequest {
+  userCode: string
 }
 
 export interface PlaybackResponse {
@@ -531,6 +538,18 @@ export interface UserUpdateRequest {
 export type KodiGetStreamsParams = {
   season?: number | null
   episode?: number | null
+}
+
+export type PlaybacksGetHistoryListParams = {
+  /**
+   * @minimum 1
+   */
+  page?: number
+  /**
+   * @minimum 1
+   * @maximum 100
+   */
+  size?: number
 }
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1]
@@ -1633,12 +1652,13 @@ export const playbacksGetList = (
  * @summary Get History List
  */
 export const playbacksGetHistoryList = (
+  params?: PlaybacksGetHistoryListParams,
   options?: SecondParameter<
-    typeof sourceClientInstance<PlaybackHistoryResponse[]>
+    typeof sourceClientInstance<PagePlaybackHistoryResponse>
   >,
 ) => {
-  return sourceClientInstance<PlaybackHistoryResponse[]>(
-    { url: `/api/playbacks/history`, method: 'GET' },
+  return sourceClientInstance<PagePlaybackHistoryResponse>(
+    { url: `/api/playbacks/history`, method: 'GET', params },
     options,
   )
 }

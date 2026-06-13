@@ -10,7 +10,7 @@ type NetworkCardProps = {
   name: string
   description: string
   isSelected?: boolean
-  onSelect: () => void
+  onSelect?: () => void
 }
 
 export function NetworkCard(props: NetworkCardProps) {
@@ -20,10 +20,11 @@ export function NetworkCard(props: NetworkCardProps) {
       variant="outline"
       key={name}
       className={cn(
-        'transition-all duration-200 cursor-pointer hover:bg-primary/5',
-        isSelected && 'bg-primary/10',
+        isSelected
+          ? 'bg-primary/10'
+          : 'transition-all duration-200 cursor-pointer hover:bg-primary/5',
       )}
-      onClick={() => onSelect()}
+      onClick={isSelected ? undefined : onSelect}
     >
       <ItemContent>
         <ItemTitle className={cn(isSelected && 'text-primary font-semibold')}>

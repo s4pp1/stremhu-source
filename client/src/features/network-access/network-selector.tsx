@@ -144,7 +144,7 @@ export const NetworkSelector = withForm({
               className="p-0 text-xs underline-offset-4 h-auto hover:underline"
               onClick={handleReset}
             >
-              Konfiguráció módosítása
+              Elérés módosítása
             </Button>
           </div>
         )}

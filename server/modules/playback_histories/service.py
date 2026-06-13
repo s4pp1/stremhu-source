@@ -1,3 +1,4 @@
+from common.schemas.pagination import PaginationParams
 from fastapi import HTTPException, status
 from modules.playback_histories.models import PlaybackHistoryModel
 from modules.playback_histories.repository import PlaybackHistoryRepository
@@ -21,8 +22,11 @@ class PlaybackHistoriesService:
     ) -> PlaybackHistoryModel:
         return self._repository.get_or_create(payload)
 
-    def find_list(self) -> list[PlaybackHistoryModel]:
-        return self._repository.find_list()
+    def find_list(
+        self,
+        params: PaginationParams | None = None,
+    ) -> tuple[list[PlaybackHistoryModel], int]:
+        return self._repository.find_list(params)
 
     def find_by_id(self, playback_id: str) -> PlaybackHistoryModel | None:
         return self._repository.find_by_id(playback_id)

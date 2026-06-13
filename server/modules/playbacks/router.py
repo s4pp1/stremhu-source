@@ -1,3 +1,4 @@
+from common.schemas.pagination import Page, PaginationParams
 from fastapi import APIRouter, Depends
 from modules.auth.dependencies import SessionGuard
 from modules.playback_histories.dependencies import get_playback_histories_service
@@ -29,13 +30,18 @@ def get_list(
 
 @router.get(
     "/history",
-    response_model=list[PlaybackHistoryResponse],
+    response_model=Page[PlaybackHistoryResponse],
 )
 def get_history_list(
     playback_histories_service: PlaybackHistoriesService = Depends(
         get_playback_histories_service
     ),
+    pagination_params: PaginationParams = Depends(),
     _: UserModel = Depends(SessionGuard([UserRoleKey.ADMIN])),
 ):
-    playback_histories = playback_histories_service.find_list()
-    return playback_histories
+    items, total = playback_histories_service.find_list(pagination_params)
+    return Page.create(
+        items=items,
+        total=total,
+        params=pagination_params,
+    )

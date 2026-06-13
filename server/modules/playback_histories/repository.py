@@ -1,3 +1,4 @@
+from common.schemas.pagination import PaginationParams
 from modules.playback_histories.models import PlaybackHistoryModel
 from modules.playback_histories.schemas.internal import PlaybackHistoryCreate
 from sqlalchemy.exc import IntegrityError
@@ -31,16 +32,24 @@ class PlaybackHistoryRepository:
 
         return playback_history
 
-    def find_list(self) -> list[PlaybackHistoryModel]:
-        return (
-            self.db.query(PlaybackHistoryModel)
-            .options(
-                joinedload(PlaybackHistoryModel.user),
-                joinedload(PlaybackHistoryModel.indexer_definition),
-            )
-            .order_by(PlaybackHistoryModel.created_at.desc())
-            .all()
+    def find_list(
+        self,
+        params: PaginationParams | None = None,
+    ) -> tuple[list[PlaybackHistoryModel], int]:
+        query = self.db.query(PlaybackHistoryModel).options(
+            joinedload(PlaybackHistoryModel.user),
+            joinedload(PlaybackHistoryModel.indexer_definition),
         )
+
+        total = query.count()
+        query = query.order_by(PlaybackHistoryModel.created_at.desc())
+
+        if params is not None:
+            query = query.offset(params.offset).limit(params.limit)
+
+        items = query.all()
+
+        return items, total
 
     def find_by_id(self, playback_id: str) -> PlaybackHistoryModel | None:
         return (
