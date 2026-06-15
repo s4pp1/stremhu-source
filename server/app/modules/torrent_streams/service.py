@@ -1,6 +1,8 @@
 import asyncio
 
 import humanize
+from sqlalchemy.orm import Session
+
 from app.common.schemas.internal import SeriesInfo
 from app.modules.settings.service import SettingsService
 from app.modules.torrent_source_provider.service import (
@@ -12,7 +14,6 @@ from app.modules.torrent_streams.schemas import (
 from app.modules.torrents.schemas.internal import TorrentWithRelay
 from app.modules.torrents.service import TorrentsService
 from app.modules.users.models import UserModel
-from sqlalchemy.orm import Session
 
 
 class TorrentStreamsService:

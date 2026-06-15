@@ -1,6 +1,7 @@
-from app.common.schemas.internal import Success
 from pydantic import ConfigDict
 from pydantic.alias_generators import to_camel
+
+from app.common.schemas.internal import Success
 
 
 class SuccessResponse(Success):

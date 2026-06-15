@@ -1,9 +1,10 @@
 from datetime import datetime
 
-from app.modules.indexer_definitions.schemas.api import IndexerDefinitionResponse
-from app.modules.torrents.schemas.internal import TorrentWithRelay
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
+
+from app.modules.indexer_definitions.schemas.api import IndexerDefinitionResponse
+from app.modules.torrents.schemas.internal import TorrentWithRelay
 
 
 class TorrentResponse(BaseModel):

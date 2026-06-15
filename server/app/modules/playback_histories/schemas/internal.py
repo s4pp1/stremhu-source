@@ -1,5 +1,6 @@
-from app.common.schemas.internal import ImdbInfo
 from pydantic import BaseModel
+
+from app.common.schemas.internal import ImdbInfo
 
 
 class PlaybackHistoryClientInfo(BaseModel):

@@ -3,13 +3,16 @@ import json
 from contextlib import asynccontextmanager
 
 import pydash
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.routing import APIRoute
+from setproctitle import setproctitle
+from starlette.middleware.sessions import SessionMiddleware
+
 from app.api import api_router
 from app.common.logger import logger
 from app.common.spa_static_files import SPAStaticFiles
 from app.config import NodeEnv, config
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.routing import APIRoute
 from app.modules.indexer_definitions.dependencies import get_indexer_definitions_service
 from app.modules.relay.background_tasks import alert_loop, resume_save_loop
 from app.modules.relay.dependencies import get_relay_service
@@ -18,8 +21,6 @@ from app.modules.torrents.background_tasks import (
     restore_torrents,
 )
 from app.scheduler import setup_scheduler
-from setproctitle import setproctitle
-from starlette.middleware.sessions import SessionMiddleware
 from app.sync import sync_database_and_settings
 
 setproctitle("stremhu-source")

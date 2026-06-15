@@ -1,4 +1,5 @@
 import pydash
+
 from app.common.logger import logger
 from app.modules.media_attributes.models import MediaAttributeModel
 from app.modules.media_attributes.repository import MediaAttributesRepository

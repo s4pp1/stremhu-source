@@ -1,6 +1,7 @@
-from app.modules.system.schemas.internal import SystemStatus
 from pydantic import ConfigDict
 from pydantic.alias_generators import to_camel
+
+from app.modules.system.schemas.internal import SystemStatus
 
 
 class SystemStatusResponse(SystemStatus):

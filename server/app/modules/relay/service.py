@@ -3,10 +3,11 @@ from collections.abc import Callable
 from typing import Any
 
 import libtorrent as libtorrent
+from fastapi import HTTPException
+
 from app.common.logger import logger
 from app.common.torrent_info import parse_torrent_info
 from app.config import config
-from fastapi import HTTPException
 from app.modules.relay.entities import File, Stream, Torrent
 from app.modules.relay.schemas import (
     RelaySettingsUpdate,

@@ -1,5 +1,7 @@
 from typing import Annotated
+
 from fastapi import APIRouter, Depends, Path
+
 from app.modules.auth.dependencies import ApiKeyGuard
 from app.modules.kodi.dependencies import get_kodi_service
 from app.modules.kodi.schemas import (

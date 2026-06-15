@@ -1,4 +1,5 @@
 from fastapi import HTTPException, status
+
 from app.modules.preferences.models import PreferenceModel
 from app.modules.preferences.repository import PreferencesRepository
 

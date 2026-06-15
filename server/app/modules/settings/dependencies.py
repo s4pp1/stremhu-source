@@ -1,9 +1,11 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.settings.repository import SettingsRepository
 from app.modules.settings.service import SettingsService
-from sqlalchemy.orm import Session
 
 
 def create_settings_service(db: Session) -> SettingsService:

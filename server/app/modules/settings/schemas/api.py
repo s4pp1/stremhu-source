@@ -1,14 +1,15 @@
 from datetime import datetime
 from typing import Annotated, Literal
 
+from pydantic import BaseModel, ConfigDict, Field
+from pydantic.alias_generators import to_camel
+
 from app.modules.settings.enums import NetworkConnectionEnum, NetworkModeEnum
 from app.modules.settings.schemas.internal import (
     NetworkManualSettings,
     RelaySettingsUpdate,
     SystemSettingsUpdate,
 )
-from pydantic import BaseModel, ConfigDict, Field
-from pydantic.alias_generators import to_camel
 
 
 class SystemSettingsResponse(BaseModel):

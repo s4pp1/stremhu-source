@@ -1,5 +1,7 @@
 from typing import Annotated
+
 from fastapi import APIRouter, Depends, status
+
 from app.modules.auth.dependencies import SessionGuard
 from app.modules.indexer_accounts.dependencies import get_indexer_accounts_service
 from app.modules.indexer_accounts.service import IndexerAccountsService

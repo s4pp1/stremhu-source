@@ -1,7 +1,8 @@
 import datetime
 
-from app.modules.pairings.models import PairingModel
 from sqlalchemy.orm import Session
+
+from app.modules.pairings.models import PairingModel
 
 
 class PairingsRepository:

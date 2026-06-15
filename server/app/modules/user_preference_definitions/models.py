@@ -2,9 +2,10 @@ import uuid
 from typing import TYPE_CHECKING
 
 import sqlalchemy as sa
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.common.database import Base
 from app.modules.preference_definitions.models import PreferenceDefinitionModel
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
     from app.modules.users.models import UserModel

@@ -1,3 +1,5 @@
+from sqlalchemy.orm import Session
+
 from app.modules.media_attributes.models import MediaAttributeModel
 from app.modules.media_attributes.schemas.internal import MediaAttributeFilter
 from app.modules.preference_definitions.models import (
@@ -6,7 +8,6 @@ from app.modules.preference_definitions.models import (
 from app.modules.user_preference_definitions.models import (
     UserPreferenceDefinitionModel,
 )
-from sqlalchemy.orm import Session
 
 
 class MediaAttributesRepository:

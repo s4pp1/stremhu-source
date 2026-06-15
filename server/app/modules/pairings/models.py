@@ -2,9 +2,10 @@ import datetime
 import uuid
 
 import sqlalchemy as sa
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.common.database import Base
 from app.modules.users.models import UserModel
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 class PairingModel(Base):

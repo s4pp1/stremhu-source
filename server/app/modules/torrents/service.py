@@ -1,7 +1,8 @@
 import libtorrent as libtorrent
+from fastapi import HTTPException, status
+
 from app.common.constants import PRIO_0, PRIO_1
 from app.common.logger import logger
-from fastapi import HTTPException, status
 from app.modules.indexer_accounts.service import IndexerAccountsService
 from app.modules.relay.service import RelayService
 from app.modules.torrent_files.models import TorrentFileModel

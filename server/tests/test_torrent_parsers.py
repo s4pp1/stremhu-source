@@ -1,4 +1,5 @@
 import pytest
+
 from app.modules.media_attributes.parser import (
     clean_torrent_name,
     parse_torrent_name,

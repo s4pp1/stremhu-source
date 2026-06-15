@@ -1,5 +1,6 @@
-from app.common.schemas.internal import SeriesInfo
 from pydantic import BaseModel
+
+from app.common.schemas.internal import SeriesInfo
 
 
 class StreamToken(BaseModel):

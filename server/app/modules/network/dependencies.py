@@ -1,12 +1,14 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.network.ddns.dependencies import create_ddns_service
 from app.modules.network.service import NetworkService
 from app.modules.network.ssl.dependencies import create_ssl_service
 from app.modules.settings.dependencies import create_settings_service
 from app.modules.system.dependencies import create_system_service
-from sqlalchemy.orm import Session
 
 
 def create_network_service(db: Session) -> NetworkService:

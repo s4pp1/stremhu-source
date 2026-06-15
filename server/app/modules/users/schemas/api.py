@@ -1,13 +1,14 @@
 from datetime import datetime
 
+from pydantic import ConfigDict
+from pydantic.alias_generators import to_camel
+
 from app.modules.roles.schemas.api import RoleResponse
 from app.modules.users.schemas.internal import (
     BaseUser,
     UserCreate,
     UserUpdate,
 )
-from pydantic import ConfigDict
-from pydantic.alias_generators import to_camel
 
 
 class UserCreateRequest(UserCreate):

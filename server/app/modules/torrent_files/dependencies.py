@@ -1,9 +1,11 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.torrent_files.repository import TorrentFilesRepository
 from app.modules.torrent_files.service import TorrentFilesService
-from sqlalchemy.orm import Session
 
 
 def create_torrent_files_service(db: Session) -> TorrentFilesService:

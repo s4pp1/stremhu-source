@@ -1,6 +1,7 @@
 import sqlalchemy as sa
-from app.common.database import Base
 from sqlalchemy.orm import Mapped, mapped_column
+
+from app.common.database import Base
 
 
 class RoleModel(Base):

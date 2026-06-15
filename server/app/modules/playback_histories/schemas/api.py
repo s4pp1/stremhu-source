@@ -1,9 +1,10 @@
 from datetime import datetime
 
-from app.modules.indexer_definitions.schemas.api import IndexerDefinitionResponse
-from app.modules.users.schemas.api import UserResponse
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
+
+from app.modules.indexer_definitions.schemas.api import IndexerDefinitionResponse
+from app.modules.users.schemas.api import UserResponse
 
 
 class PlaybackHistoryResponse(BaseModel):

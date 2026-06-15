@@ -1,7 +1,8 @@
 from typing import Annotated, Literal
 
-from app.modules.settings.enums import NetworkConnectionEnum, NetworkModeEnum
 from pydantic import BaseModel, Field
+
+from app.modules.settings.enums import NetworkConnectionEnum, NetworkModeEnum
 
 
 class NetworkLocalSetup(BaseModel):

@@ -1,5 +1,7 @@
 from typing import Annotated
+
 from fastapi import APIRouter, Depends
+
 from app.modules.auth.dependencies import SessionGuard
 from app.modules.network.ddns.dependencies import get_ddns_service
 from app.modules.network.ddns.schemas.api import DDNSProviderResponse

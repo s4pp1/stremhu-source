@@ -1,7 +1,8 @@
 import datetime
 
-from app.common.logger import logger
 from fastapi import HTTPException
+
+from app.common.logger import logger
 from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrent_files.repository import TorrentFilesRepository
 from app.modules.torrent_files.schemas import TorrentFileIdentifier, TorrentFilesFilter

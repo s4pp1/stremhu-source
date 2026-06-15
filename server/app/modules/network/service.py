@@ -3,9 +3,10 @@ import time
 
 import httpx
 import pydash
+from cryptography import x509
+
 from app.common.logger import logger
 from app.config import config
-from cryptography import x509
 from app.modules.network.ddns.schemas.internal import DDNSIpUpdate
 from app.modules.network.ddns.service import DDNSService
 from app.modules.network.schemas.internal import NetworkAutoSetup, NetworkSetup

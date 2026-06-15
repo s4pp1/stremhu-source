@@ -1,6 +1,7 @@
+from fastapi import FastAPI
+
 from app.common.database import db_session
 from app.common.logger import logger
-from fastapi import FastAPI
 from app.modules.indexer_definitions.dependencies import (
     get_indexer_definitions_service,
 )

@@ -1,6 +1,7 @@
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 from fastapi import HTTPException, status
+
 from app.modules.users.models import UserModel
 from app.modules.users.service import UsersService
 

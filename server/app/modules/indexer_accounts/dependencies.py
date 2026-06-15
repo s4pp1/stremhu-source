@@ -1,9 +1,11 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.indexer_accounts.repository import IndexerAccountsRepository
 from app.modules.indexer_accounts.service import IndexerAccountsService
-from sqlalchemy.orm import Session
 
 
 def create_indexer_accounts_service(db: Session) -> IndexerAccountsService:

@@ -1,4 +1,5 @@
 import httpx
+
 from app.common.logger import logger
 from app.modules.network.ddns.base import BaseDDNSProvider
 from app.modules.network.ddns.schemas.internal import DDNSIpUpdate, DDNSTxtUpdate

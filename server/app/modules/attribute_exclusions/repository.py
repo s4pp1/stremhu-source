@@ -1,10 +1,11 @@
+from sqlalchemy.orm import Session
+
 from app.modules.attribute_exclusions.models import AttributeExclusionModel
 from app.modules.attribute_exclusions.schemas.internal import (
     AttributeExclusionCreate,
     AttributeExclusionFilter,
 )
 from app.modules.media_attributes.models import MediaAttributeModel
-from sqlalchemy.orm import Session
 
 
 class AttributeExclusionsRepository:

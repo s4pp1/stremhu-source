@@ -1,9 +1,10 @@
 import humanize
+from pydantic import BaseModel, ConfigDict, Field
+from pydantic.alias_generators import to_camel
+
 from app.modules.attributes.schemas.api import AttributeResponse
 from app.modules.indexer_definitions.schemas.internal import IndexerDefinition
 from app.modules.torrent_streams.schemas import TorrentStream
-from pydantic import BaseModel, ConfigDict, Field
-from pydantic.alias_generators import to_camel
 
 
 class KodiImdbStreamsParams(BaseModel):

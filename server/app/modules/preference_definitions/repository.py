@@ -1,9 +1,10 @@
+from sqlalchemy.orm import Session
+
 from app.modules.preference_definitions.models import (
     PreferenceDefinitionAttributeModel,
     PreferenceDefinitionModel,
 )
 from app.modules.preferences.schemas.internal import PreferenceCreate
-from sqlalchemy.orm import Session
 
 
 class PreferenceDefinitionRepository:

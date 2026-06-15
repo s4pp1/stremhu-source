@@ -1,6 +1,7 @@
 import libtorrent as libtorrent
-from app.common.keyed_lock import KeyedLock
 from fastapi import HTTPException
+
+from app.common.keyed_lock import KeyedLock
 from app.modules.indexers.service import IndexersService
 from app.modules.relay.entities import File
 from app.modules.relay.service import RelayService

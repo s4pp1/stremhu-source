@@ -1,12 +1,13 @@
 from typing import Annotated
 
+from pydantic import BaseModel, ConfigDict, Field
+from pydantic.alias_generators import to_camel
+
 from app.modules.network.schemas.internal import (
     NetworkAutoSetup,
     NetworkLocalSetup,
     NetworkManualSetup,
 )
-from pydantic import BaseModel, ConfigDict, Field
-from pydantic.alias_generators import to_camel
 
 
 class NetworkLocalSetupRequest(NetworkLocalSetup):

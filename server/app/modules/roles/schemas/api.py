@@ -1,6 +1,7 @@
-from app.modules.roles.schemas.internal import Role
 from pydantic import ConfigDict
 from pydantic.alias_generators import to_camel
+
+from app.modules.roles.schemas.internal import Role
 
 
 class RoleResponse(Role):

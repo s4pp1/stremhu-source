@@ -1,5 +1,7 @@
 from typing import Annotated
+
 from fastapi import Depends
+
 from app.modules.playback_histories.dependencies import get_playback_histories_service
 from app.modules.playback_histories.service import PlaybackHistoriesService
 from app.modules.playbacks.service import PlaybacksService

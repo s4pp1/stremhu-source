@@ -1,6 +1,8 @@
 from typing import Annotated
+
 from fastapi import APIRouter, Depends, Path, status
 from fastapi.responses import RedirectResponse
+
 from app.modules.auth.dependencies import ApiKeyGuard
 from app.modules.stremio.catalogs_service import StremioCatalogsService
 from app.modules.stremio.dependencies import (

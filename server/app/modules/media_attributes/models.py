@@ -1,6 +1,7 @@
 import sqlalchemy as sa
-from app.modules.attributes.models import AttributeModel
 from sqlalchemy.orm import Mapped, mapped_column
+
+from app.modules.attributes.models import AttributeModel
 
 
 class MediaAttributeModel(AttributeModel, kw_only=True):

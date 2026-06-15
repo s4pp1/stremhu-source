@@ -1,6 +1,8 @@
 from typing import Annotated
-from app.common.schemas.api import SuccessResponse
+
 from fastapi import APIRouter, Depends
+
+from app.common.schemas.api import SuccessResponse
 from app.modules.auth.dependencies import SessionGuard
 from app.modules.pairings.dependencies import get_pairings_service
 from app.modules.pairings.schemas.api import (

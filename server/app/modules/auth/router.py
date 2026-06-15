@@ -1,4 +1,5 @@
 from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 
 from app.modules.auth.dependencies import SessionGuard, get_auth_service

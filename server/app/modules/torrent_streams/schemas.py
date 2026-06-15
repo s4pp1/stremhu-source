@@ -1,5 +1,8 @@
 import uuid
 
+from pydantic import BaseModel, ConfigDict
+from pydantic.alias_generators import to_camel
+
 from app.common.schemas.internal import SeriesInfo
 from app.modules.indexer_accounts.models import IndexerAccountModel
 from app.modules.indexers.schemas.internal import IndexerTorrent
@@ -11,8 +14,6 @@ from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrent_streams.utils.resolver_helpers import is_sample_or_trash
 from app.modules.torrent_streams.utils.stream_file_resolver import StreamFileResolver
 from app.modules.users.models import UserModel
-from pydantic import BaseModel, ConfigDict
-from pydantic.alias_generators import to_camel
 
 
 class TorrentStream(BaseModel):

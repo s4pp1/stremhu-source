@@ -1,5 +1,6 @@
 import pydash
 from fastapi import HTTPException
+
 from app.modules.attributes.service import AttributesService
 from app.modules.preference_definitions.models import PreferenceDefinitionModel
 from app.modules.preference_definitions.repository import PreferenceDefinitionRepository

@@ -1,5 +1,6 @@
-from app.common.schemas.pagination import PaginationParams
 from fastapi import HTTPException, status
+
+from app.common.schemas.pagination import PaginationParams
 from app.modules.playback_histories.models import PlaybackHistoryModel
 from app.modules.playback_histories.repository import PlaybackHistoryRepository
 from app.modules.playback_histories.schemas.internal import PlaybackHistoryCreate

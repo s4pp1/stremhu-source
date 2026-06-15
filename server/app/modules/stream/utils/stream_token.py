@@ -1,7 +1,8 @@
+from itsdangerous import URLSafeSerializer
+
 from app.config import (
     config,
 )
-from itsdangerous import URLSafeSerializer
 from app.modules.stream.schemas import StreamToken
 
 serializer = URLSafeSerializer(

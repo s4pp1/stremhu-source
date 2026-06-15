@@ -2,13 +2,14 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 import sqlalchemy as sa
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.common.database import Base
 from app.common.schemas.internal import ImdbInfo
 from app.modules.indexer_definitions.models import IndexerDefinitionModel
 from app.modules.playback_histories.schemas.internal import (
     PlaybackHistoryClientInfo,
 )
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
     from app.modules.users.models import UserModel

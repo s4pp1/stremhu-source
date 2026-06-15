@@ -1,10 +1,11 @@
+from sqlalchemy import and_
+from sqlalchemy.orm import Session, joinedload
+
 from app.modules.preference_definitions.models import (
     PreferenceDefinitionAttributeModel,
     PreferenceDefinitionModel,
 )
 from app.modules.user_preference_definitions.models import UserPreferenceDefinitionModel
-from sqlalchemy import and_
-from sqlalchemy.orm import Session, joinedload
 
 
 class UserPreferenceDefinitionsRepository:

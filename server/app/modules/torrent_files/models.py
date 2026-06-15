@@ -3,12 +3,13 @@ from dataclasses import field
 
 import libtorrent as libtorrent
 import sqlalchemy as sa
+from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
+
 from app.common.database import Base
 from app.common.torrent_info import TorrentInfo, parse_torrent_info
 from app.modules.indexer_accounts.models import IndexerAccountModel
 from app.modules.torrent_files.exceptions import InvalidTorrentFileException
 from app.modules.torrents.models import TorrentModel
-from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 
 
 class TorrentFileModel(Base):

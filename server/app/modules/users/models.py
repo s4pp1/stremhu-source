@@ -2,12 +2,13 @@ import uuid
 from datetime import datetime
 
 import sqlalchemy as sa
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.common.database import Base, UTCDateTime
 from app.modules.attribute_exclusions.models import AttributeExclusionModel
 from app.modules.roles.constants import UserRoleKey
 from app.modules.roles.models import RoleModel
 from app.modules.user_preference_definitions.models import UserPreferenceDefinitionModel
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 class UserModel(Base):

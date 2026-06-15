@@ -1,7 +1,8 @@
+from sqlalchemy.orm import Session
+
 from app.modules.indexers.dependencies import create_indexers_service
 from app.modules.torrent_files.dependencies import create_torrent_files_service
 from app.modules.torrent_source_provider.service import TorrentSourceProviderService
-from sqlalchemy.orm import Session
 
 
 def create_torrent_source_provider_service(db: Session) -> TorrentSourceProviderService:

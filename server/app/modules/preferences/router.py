@@ -1,5 +1,7 @@
 from typing import Annotated
+
 from fastapi import APIRouter, Depends
+
 from app.modules.preferences.dependencies import get_preferences_service
 from app.modules.preferences.models import PreferenceModel
 from app.modules.preferences.schemas.api import PreferenceResponse

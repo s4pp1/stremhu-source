@@ -1,6 +1,7 @@
-from app.modules.attribute_exclusions.models import AttributeExclusionModel
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
+
+from app.modules.attribute_exclusions.models import AttributeExclusionModel
 
 
 class AttributeResponse(BaseModel):

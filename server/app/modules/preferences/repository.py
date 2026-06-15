@@ -2,6 +2,8 @@ from typing import cast
 
 import pydash
 import sqlalchemy as sa
+from sqlalchemy.orm import Session, contains_eager, with_polymorphic
+
 from app.common.logger import logger
 from app.modules.attribute_exclusions.models import AttributeExclusionModel
 from app.modules.attributes.models import AttributeModel
@@ -9,7 +11,6 @@ from app.modules.indexer_accounts.models import IndexerAccountModel
 from app.modules.media_attributes.models import MediaAttributeModel
 from app.modules.preferences.models import PreferenceModel
 from app.modules.preferences.seeds import DEFAULT_PREFERENCES
-from sqlalchemy.orm import Session, contains_eager, with_polymorphic
 
 
 class PreferencesRepository:

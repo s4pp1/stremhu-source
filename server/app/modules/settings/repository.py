@@ -1,6 +1,7 @@
+from sqlalchemy.orm import Session
+
 from app.modules.settings.enums import SettingsKeyEnum
 from app.modules.settings.models import SettingModel
-from sqlalchemy.orm import Session
 
 
 class SettingsRepository:

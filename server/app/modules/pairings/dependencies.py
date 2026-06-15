@@ -1,9 +1,11 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.pairings.repository import PairingsRepository
 from app.modules.pairings.service import PairingsService
-from sqlalchemy.orm import Session
 
 
 def create_pairings_service(db: Session) -> PairingsService:

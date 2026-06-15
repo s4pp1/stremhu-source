@@ -1,10 +1,12 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.relay.dependencies import get_relay_service
 from app.modules.relay_settings.service import RelaySettingsService
 from app.modules.settings.dependencies import create_settings_service
-from sqlalchemy.orm import Session
 
 
 def create_relay_settings_service(

@@ -1,11 +1,13 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.kodi.service import KodiService
 from app.modules.torrent_streams.dependencies import (
     create_torrent_streams_service,
 )
-from sqlalchemy.orm import Session
 
 
 def create_kodi_service(

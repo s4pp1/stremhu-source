@@ -1,10 +1,11 @@
 import datetime
 
+from sqlalchemy import func
+from sqlalchemy.orm import Session
+
 from app.modules.playback_histories.models import PlaybackHistoryModel
 from app.modules.torrents.models import TorrentModel
 from app.modules.torrents.schemas.internal import TorrentUpdate
-from sqlalchemy import func
-from sqlalchemy.orm import Session
 
 
 class TorrentRepository:

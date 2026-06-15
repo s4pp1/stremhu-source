@@ -1,5 +1,7 @@
 from typing import Annotated
+
 from fastapi import APIRouter, Depends, status
+
 from app.modules.attribute_exclusions.dependencies import (
     get_attribute_exclusions_service,
 )

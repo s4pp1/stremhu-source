@@ -1,13 +1,15 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.settings.dependencies import create_settings_service
 from app.modules.torrent_source_provider.dependencies import (
     create_torrent_source_provider_service,
 )
 from app.modules.torrent_streams.service import TorrentStreamsService
 from app.modules.torrents.dependencies import create_torrents_service
-from sqlalchemy.orm import Session
 
 
 def create_torrent_streams_service(

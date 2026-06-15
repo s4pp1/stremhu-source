@@ -1,8 +1,9 @@
 from typing import NamedTuple
 
+from pydantic import BaseModel
+
 from app.modules.relay.schemas import RelayTorrent
 from app.modules.torrents.models import TorrentModel
-from pydantic import BaseModel
 
 
 class TorrentWithRelay(NamedTuple):

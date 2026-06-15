@@ -1,3 +1,6 @@
+from pydantic import BaseModel, ConfigDict
+from pydantic.alias_generators import to_camel
+
 from app.modules.attributes.schemas.api import AttributeResponse
 from app.modules.preferences.schemas.internal import (
     PreferenceCreate,
@@ -8,8 +11,6 @@ from app.modules.system_preference_definitions.models import (
     SystemPreferenceDefinitionModel,
 )
 from app.modules.user_preference_definitions.models import UserPreferenceDefinitionModel
-from pydantic import BaseModel, ConfigDict
-from pydantic.alias_generators import to_camel
 
 
 class PreferenceResponse(BaseModel):

@@ -1,7 +1,8 @@
+from sqlalchemy.orm import Session
+
 from app.common.logger import logger
 from app.modules.roles.models import RoleModel
 from app.modules.roles.seeds import DEFAULT_ROLES
-from sqlalchemy.orm import Session
 
 
 class RolesService:

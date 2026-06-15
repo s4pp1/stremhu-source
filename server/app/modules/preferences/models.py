@@ -1,8 +1,9 @@
 from typing import TYPE_CHECKING
 
 import sqlalchemy as sa
-from app.common.database import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.common.database import Base
 
 if TYPE_CHECKING:
     from app.modules.attributes.models import AttributeModel

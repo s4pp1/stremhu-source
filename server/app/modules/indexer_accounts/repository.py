@@ -1,9 +1,10 @@
+from sqlalchemy.orm import Session, joinedload
+
 from app.modules.indexer_accounts.models import IndexerAccountModel
 from app.modules.indexer_accounts.schemas import (
     IndexerAccountCreate,
     IndexerAccountUpdate,
 )
-from sqlalchemy.orm import Session, joinedload
 
 
 class IndexerAccountsRepository:

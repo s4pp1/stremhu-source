@@ -1,6 +1,9 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.attributes.dependencies import create_attributes_service
 from app.modules.preference_definitions.dependencies import (
     create_preference_definitions_service,
@@ -11,7 +14,6 @@ from app.modules.user_preference_definitions.repository import (
 from app.modules.user_preference_definitions.service import (
     UserPreferenceDefinitionsService,
 )
-from sqlalchemy.orm import Session
 
 
 def create_user_preference_definitions_service(

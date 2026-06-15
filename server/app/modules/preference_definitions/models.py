@@ -1,10 +1,11 @@
 import uuid
 
 import sqlalchemy as sa
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.common.database import Base
 from app.modules.attributes.models import AttributeModel
 from app.modules.preferences.models import PreferenceModel
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 class PreferenceDefinitionModel(Base):

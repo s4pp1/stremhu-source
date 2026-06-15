@@ -2,8 +2,9 @@ import datetime
 import random
 import uuid
 
-from app.common.schemas.internal import Success
 from fastapi import HTTPException, status
+
+from app.common.schemas.internal import Success
 from app.modules.pairings.enums import PairingStatusEnum
 from app.modules.pairings.models import PairingModel
 from app.modules.pairings.repository import PairingsRepository

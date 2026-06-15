@@ -1,6 +1,9 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.attribute_exclusions.dependencies import (
     create_attribute_exclusions_service,
 )
@@ -9,7 +12,6 @@ from app.modules.media_attributes.dependencies import (
 )
 from app.modules.users.repository import UsersRepository
 from app.modules.users.service import UsersService
-from sqlalchemy.orm import Session
 
 
 def create_users_service(db: Session) -> UsersService:

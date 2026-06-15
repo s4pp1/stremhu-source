@@ -1,8 +1,9 @@
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session, joinedload
+
 from app.common.schemas.pagination import PaginationParams
 from app.modules.playback_histories.models import PlaybackHistoryModel
 from app.modules.playback_histories.schemas.internal import PlaybackHistoryCreate
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session, joinedload
 
 
 class PlaybackHistoryRepository:

@@ -3,6 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import humanize
+from pydantic import BaseModel, ConfigDict
+from pydantic.alias_generators import to_camel
+from pydash import compact
+
 from app.common.schemas.internal import ImdbInfo
 from app.modules.media_attributes.models import MediaAttributeModel
 from app.modules.preferences.constants import PreferenceKey
@@ -17,9 +21,6 @@ from app.modules.stremio.enums import (
     StreamIdType,
 )
 from app.modules.torrent_files.models import TorrentFileModel
-from pydantic import BaseModel, ConfigDict
-from pydantic.alias_generators import to_camel
-from pydash import compact
 
 if TYPE_CHECKING:
     from app.modules.torrent_streams.schemas import TorrentStream

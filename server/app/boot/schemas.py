@@ -1,5 +1,6 @@
-from app.modules.settings.schemas.internal import NetworkSettings
 from pydantic import BaseModel
+
+from app.modules.settings.schemas.internal import NetworkSettings
 
 
 class BootNetworkConfig(BaseModel):

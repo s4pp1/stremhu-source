@@ -2,9 +2,10 @@ from typing import TYPE_CHECKING
 from uuid import uuid4
 
 import sqlalchemy as sa
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.common.database import Base
 from app.modules.media_attributes.models import MediaAttributeModel
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
     from app.modules.users.models import UserModel

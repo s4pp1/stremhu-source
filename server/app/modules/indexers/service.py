@@ -1,7 +1,8 @@
 import asyncio
 
-from app.common.logger import logger
 from fastapi import HTTPException, status
+
+from app.common.logger import logger
 from app.modules.indexer_accounts.models import IndexerAccountModel
 from app.modules.indexer_accounts.schemas import (
     IndexerAccountCreate,

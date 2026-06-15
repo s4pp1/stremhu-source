@@ -1,4 +1,5 @@
 import httpx
+
 from app.common.logger import logger
 from app.config import config
 from app.modules.network.ddns import discover_dns_providers

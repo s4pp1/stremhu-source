@@ -1,7 +1,8 @@
 import datetime
 
-from app.modules.indexer_definitions.schemas.internal import IndexerDefinition
 from pydantic import BaseModel
+
+from app.modules.indexer_definitions.schemas.internal import IndexerDefinition
 
 
 class IndexerAccountBase(BaseModel):

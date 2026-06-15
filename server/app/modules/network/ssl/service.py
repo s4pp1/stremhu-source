@@ -7,13 +7,14 @@ import dns.exception
 import dns.resolver
 import httpx
 from acme import challenges, client, errors as acme_errors, messages
-from app.common.logger import logger
-from app.config import config
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.x509.oid import NameOID
 from josepy import jwk
+
+from app.common.logger import logger
+from app.config import config
 from app.modules.network.ddns.schemas.internal import DDNSTxtUpdate
 from app.modules.network.ddns.service import DDNSService
 from app.modules.network.ssl.schemas import (

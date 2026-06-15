@@ -1,3 +1,5 @@
+from sqlalchemy.orm import Session
+
 from app.modules.attributes.dependencies import create_attributes_service
 from app.modules.preference_definitions.dependencies import (
     create_preference_definitions_service,
@@ -8,7 +10,6 @@ from app.modules.system_preference_definitions.repository import (
 from app.modules.system_preference_definitions.service import (
     SystemPreferenceDefinitionsService,
 )
-from sqlalchemy.orm import Session
 
 
 def create_system_preference_definitions_service(

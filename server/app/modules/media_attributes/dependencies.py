@@ -1,9 +1,11 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.media_attributes.repository import MediaAttributesRepository
 from app.modules.media_attributes.service import MediaAttributesService
-from sqlalchemy.orm import Session
 
 
 def create_media_attributes_service(db: Session) -> MediaAttributesService:

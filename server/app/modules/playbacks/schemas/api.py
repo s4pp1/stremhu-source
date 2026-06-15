@@ -1,9 +1,10 @@
+from pydantic import ConfigDict
+from pydantic.alias_generators import to_camel
+
 from app.modules.indexer_definitions.schemas.api import IndexerDefinitionResponse
 from app.modules.playback_histories.schemas.api import PlaybackHistoryResponse
 from app.modules.playbacks.schemas.internal import Playback
 from app.modules.users.schemas.api import UserResponse
-from pydantic import ConfigDict
-from pydantic.alias_generators import to_camel
 
 
 class PlaybackResponse(PlaybackHistoryResponse):

@@ -1,7 +1,8 @@
+from sqlalchemy.orm import Session
+
 from app.modules.attributes.dependencies import create_attributes_service
 from app.modules.preference_definitions.repository import PreferenceDefinitionRepository
 from app.modules.preference_definitions.service import PreferenceDefinitionsService
-from sqlalchemy.orm import Session
 
 
 def create_preference_definitions_service(db: Session) -> PreferenceDefinitionsService:

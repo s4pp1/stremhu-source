@@ -1,5 +1,6 @@
-from app.modules.roles.constants import UserRoleKey
 from pydantic import BaseModel, Field
+
+from app.modules.roles.constants import UserRoleKey
 
 
 class BaseUser(BaseModel):

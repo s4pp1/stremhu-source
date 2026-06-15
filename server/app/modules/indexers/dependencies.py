@@ -1,12 +1,14 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.indexer_accounts.dependencies import create_indexer_accounts_service
 from app.modules.indexer_definitions.dependencies import get_indexer_definitions_service
 from app.modules.indexers.service import IndexersService
 from app.modules.settings.dependencies import create_settings_service
 from app.modules.torrents.dependencies import create_torrents_service
-from sqlalchemy.orm import Session
 
 
 def create_indexers_service(db: Session) -> IndexersService:

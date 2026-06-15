@@ -1,5 +1,6 @@
-from app.common.schemas.internal import SeriesInfo
 from fastapi import HTTPException, status
+
+from app.common.schemas.internal import SeriesInfo
 from app.modules.stremio.constants import ADDON_APP_PREFIX_ID
 from app.modules.stremio.enums import StreamIdType
 from app.modules.stremio.schemas import (

@@ -1,5 +1,7 @@
 from typing import Annotated
+
 from fastapi import APIRouter, Depends
+
 from app.modules.auth.dependencies import SessionGuard
 from app.modules.roles.constants import UserRoleKey
 from app.modules.roles.schemas.api import RoleResponse

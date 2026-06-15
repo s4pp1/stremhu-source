@@ -15,7 +15,7 @@ A Python környezet kezeléséhez:
 
 ### Kódminőség és típusellenőrzés (Linting & Typing)
 
-- `basedpyright server` – Típusellenőrzés futtatása.
-- `ruff check server` – Statikus kódellenőrzés (linter).
-- `ruff check server --fix` – Kódhibák automatikus javítása.
-- `ruff format server` – Kód formázása.
+- `basedpyright .` – Típusellenőrzés futtatása.
+- `ruff check .` – Statikus kódellenőrzés (linter).
+- `ruff check . --fix` – Kódhibák automatikus javítása.
+- `ruff format .` – Kód formázása.

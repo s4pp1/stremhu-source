@@ -1,6 +1,8 @@
 from urllib.parse import urljoin
 
 import httpx
+from selectolax.parser import HTMLParser
+
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
@@ -11,7 +13,6 @@ from app.modules.indexer_definitions.schemas.internal import (
     IndexerDefinitionTorrent,
 )
 from app.modules.media_attributes.constants import MediaAttributeKey
-from selectolax.parser import HTMLParser
 
 _CATEGORY_MAP: dict[str, str] = {
     "6": "movie_cam_hun",

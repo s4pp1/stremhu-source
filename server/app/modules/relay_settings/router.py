@@ -1,5 +1,7 @@
 from typing import Annotated
+
 from fastapi import APIRouter, Depends
+
 from app.modules.auth.dependencies import SessionGuard
 from app.modules.relay_settings.dependencies import get_relay_settings_service
 from app.modules.relay_settings.service import RelaySettingsService

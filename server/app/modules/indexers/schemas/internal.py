@@ -1,9 +1,10 @@
+from pydantic import BaseModel
+
 from app.modules.attributes.models import AttributeModel
 from app.modules.indexer_accounts.models import IndexerAccountModel
 from app.modules.indexer_definitions.schemas.internal import (
     IndexerDefinitionLogin,
 )
-from pydantic import BaseModel
 
 
 class IndexerLogin(IndexerDefinitionLogin):

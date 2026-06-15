@@ -1,6 +1,8 @@
 from typing import Annotated
+
 import libtorrent as libtorrent
 from fastapi import APIRouter, Depends
+
 from app.modules.auth.dependencies import SessionGuard
 from app.modules.roles.constants import UserRoleKey
 from app.modules.torrents.dependencies import get_torrents_service

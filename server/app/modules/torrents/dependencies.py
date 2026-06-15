@@ -1,12 +1,14 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.indexer_accounts.dependencies import create_indexer_accounts_service
 from app.modules.relay.dependencies import get_relay_service
 from app.modules.torrent_files.dependencies import create_torrent_files_service
 from app.modules.torrents.repository import TorrentRepository
 from app.modules.torrents.service import TorrentsService
-from sqlalchemy.orm import Session
 
 
 def create_torrents_service(

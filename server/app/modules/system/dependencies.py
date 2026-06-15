@@ -1,11 +1,13 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.roles.dependencies import create_roles_service
 from app.modules.settings.dependencies import create_settings_service
 from app.modules.system.service import SystemService
 from app.modules.users.dependencies import create_users_service
-from sqlalchemy.orm import Session
 
 
 def create_system_service(db: Session) -> SystemService:

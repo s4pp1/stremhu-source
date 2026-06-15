@@ -1,3 +1,5 @@
+from pydantic import TypeAdapter
+
 from app.config import config
 from app.modules.settings.enums import NetworkModeEnum, SettingsKeyEnum
 from app.modules.settings.repository import SettingsRepository
@@ -8,7 +10,6 @@ from app.modules.settings.schemas.internal import (
     SystemSettings,
     SystemSettingsUpdate,
 )
-from pydantic import TypeAdapter
 
 
 class SettingsService:

@@ -1,6 +1,8 @@
 import pydash
-from app.common.logger import logger
 from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
+
+from app.common.logger import logger
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
@@ -8,7 +10,6 @@ from app.modules.indexer_definitions.integrations import discover_indexer_defini
 from app.modules.indexer_definitions.models import IndexerDefinitionModel
 from app.modules.indexer_definitions.protocols import IndexerAccountStorage
 from app.modules.preferences.constants import PreferenceKey
-from sqlalchemy.orm import Session
 
 
 class IndexerDefinitionsService:

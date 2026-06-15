@@ -1,6 +1,8 @@
 from typing import Annotated
-from app.common.schemas.pagination import Page, PaginationParams
+
 from fastapi import APIRouter, Depends
+
+from app.common.schemas.pagination import Page, PaginationParams
 from app.modules.auth.dependencies import SessionGuard
 from app.modules.playback_histories.dependencies import get_playback_histories_service
 from app.modules.playback_histories.schemas.api import PlaybackHistoryResponse

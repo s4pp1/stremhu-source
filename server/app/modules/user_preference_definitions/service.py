@@ -1,4 +1,5 @@
 from fastapi import HTTPException
+
 from app.modules.attributes.service import AttributesService
 from app.modules.preference_definitions.service import PreferenceDefinitionsService
 from app.modules.preferences.schemas.internal import PreferenceCreate, PreferenceUpdate

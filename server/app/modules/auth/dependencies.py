@@ -1,11 +1,13 @@
 from typing import Annotated
-from app.common.database import get_db
+
 from fastapi import Depends, HTTPException, Path, Request, status
+from sqlalchemy.orm import Session
+
+from app.common.database import get_db
 from app.modules.auth.service import AuthService
 from app.modules.users.dependencies import create_users_service, get_users_service
 from app.modules.users.models import UserModel
 from app.modules.users.service import UsersService
-from sqlalchemy.orm import Session
 
 
 class SessionGuard:

@@ -3,6 +3,7 @@ import logging
 from abc import ABC, abstractmethod
 
 import httpx
+
 from app.modules.indexer_definitions.enums import AuthenticationErrorEnum
 from app.modules.indexer_definitions.exceptions import (
     AuthenticationException,
