@@ -14,6 +14,7 @@ err_console = Console(stderr=True)
 def setup_directories():
     console.print("🔄 Szükséges könyvtárstruktúra ellenőrzése", style="bold cyan")
 
+    config.database_dir.mkdir(parents=True, exist_ok=True)
     config.openapi_dir.mkdir(parents=True, exist_ok=True)
     config.client_path.mkdir(parents=True, exist_ok=True)
 

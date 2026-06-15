@@ -58,8 +58,12 @@ class Config(BaseSettings):
         return self.base_data_dir / "system"
 
     @property
+    def database_dir(self) -> Path:
+        return self.system_dir / "database"
+
+    @property
     def database_url(self) -> str:
-        return f"sqlite:///{self.system_dir}/database/app.db"
+        return f"sqlite:///{self.database_dir}/app.db"
 
     @property
     def certificates_dir(self) -> Path:
