@@ -56,7 +56,7 @@ class TorrentRepository:
     ) -> list[TorrentModel]:
         query = self.db.query(TorrentModel).filter(
             TorrentModel.indexer_id == indexer_id,
-            TorrentModel.is_persisted._is(False),
+            TorrentModel.is_persisted.is_(False),
         )
 
         if not_completed_torrent_ids:

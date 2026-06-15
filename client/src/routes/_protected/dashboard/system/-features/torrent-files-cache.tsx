@@ -1,5 +1,5 @@
 import { useForm } from '@tanstack/react-form'
-import { useQuery } from '@tanstack/react-query'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { isEmpty } from 'lodash'
 import { BrushCleaningIcon } from 'lucide-react'
 import type { MouseEventHandler } from 'react'
@@ -31,11 +31,11 @@ import {
   ItemTitle,
 } from '@/shared/components/ui/item'
 import { Separator } from '@/shared/components/ui/separator'
-import { assertExists, parseApiError } from '@/shared/lib/utils'
+import { parseApiError } from '@/shared/lib/utils'
 import {
   getSystemSettings,
-  useSystemCleanup,
   useSystemSettingsUpdate,
+  useSystemTorrentFilesCleanup,
 } from '@/shared/queries/system'
 
 const schema = z.object({
@@ -46,13 +46,13 @@ const schema = z.object({
 })
 
 export function TorrentFilesCache() {
-  const { data: systemSettings } = useQuery(getSystemSettings)
-  assertExists(systemSettings)
+  const { data: systemSettings } = useSuspenseQuery(getSystemSettings)
 
   const confirmDialog = useConfirmDialog()
 
   const { mutateAsync: updateSetting } = useSystemSettingsUpdate()
-  const { mutateAsync: cleanupTorrentsCache } = useSystemCleanup()
+  const { mutateAsync: cleanupSystemTorrentFiles } =
+    useSystemTorrentFilesCleanup()
 
   const cacheRetentionDays = useMemo(() => {
     if (systemSettings.cacheRetentionSeconds > 0) {
@@ -109,7 +109,7 @@ export function TorrentFilesCache() {
       description: 'Az aktív torrentekhez tartozó fájlok nem lesznek törölve.',
       onConfirm: async () => {
         try {
-          await cleanupTorrentsCache()
+          await cleanupSystemTorrentFiles()
           toast.success('A cache törlés sikeresen lefutott.')
         } catch (error) {
           const message = parseApiError(error)

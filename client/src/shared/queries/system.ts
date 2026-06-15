@@ -6,10 +6,11 @@ import {
 
 import type { SystemSettingsUpdateRequest } from '../lib/source/source-client'
 import {
-  systemCleanup,
   systemGetRoles,
   systemGetSettings,
   systemGetStatus,
+  systemIndexersCleanup,
+  systemTorrentFilesCleanup,
   systemUpdateSettings,
 } from '../lib/source/source-client'
 
@@ -56,10 +57,18 @@ export function useSystemSettingsUpdate() {
   })
 }
 
-export function useSystemCleanup() {
+export function useSystemTorrentFilesCleanup() {
   return useMutation({
     mutationFn: async () => {
-      await systemCleanup()
+      await systemTorrentFilesCleanup()
+    },
+  })
+}
+
+export function useSystemIndexersCleanup() {
+  return useMutation({
+    mutationFn: async () => {
+      await systemIndexersCleanup()
     },
   })
 }

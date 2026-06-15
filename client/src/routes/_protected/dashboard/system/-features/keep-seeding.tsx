@@ -1,10 +1,12 @@
 import { useForm } from '@tanstack/react-form'
-import { useQuery } from '@tanstack/react-query'
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { BrushCleaningIcon } from 'lucide-react'
+import type { MouseEventHandler } from 'react'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
+import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { Button } from '@/shared/components/ui/button'
 import {
   Card,
@@ -30,9 +32,10 @@ import {
 import { Label } from '@/shared/components/ui/label'
 import { Separator } from '@/shared/components/ui/separator'
 import { Switch } from '@/shared/components/ui/switch'
-import { assertExists, parseApiError } from '@/shared/lib/utils'
+import { parseApiError } from '@/shared/lib/utils'
 import {
   getSystemSettings,
+  useSystemIndexersCleanup,
   useSystemSettingsUpdate,
 } from '@/shared/queries/system'
 
@@ -45,10 +48,12 @@ const schema = z.object({
 })
 
 export function KeepSeeding() {
-  const { data: systemSetting } = useQuery(getSystemSettings)
-  assertExists(systemSetting)
+  const { data: systemSetting } = useSuspenseQuery(getSystemSettings)
+
+  const confirmDialog = useConfirmDialog()
 
   const { mutateAsync: updateSetting } = useSystemSettingsUpdate()
+  const { mutateAsync: cleanupIndexers } = useSystemIndexersCleanup()
 
   const keepSeedDays = useMemo(() => {
     if (systemSetting.keepSeedSeconds > 0) {
@@ -95,6 +100,27 @@ export function KeepSeeding() {
       }
     },
   })
+
+  const handleCleanup: MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    await confirmDialog.confirm({
+      title: 'Biztos letuttatod a manuális ellenőrzést?',
+      description:
+        'A futtatás ellenére a hajnalban időzített futtatás is le fog futni.',
+      onConfirm: async () => {
+        try {
+          await cleanupIndexers()
+          toast.success('A manuális ellenőrzés sikeresen lefutott.')
+        } catch (error) {
+          const message = parseApiError(error)
+          toast.error(message)
+          throw error
+        }
+      },
+    })
+  }
 
   return (
     <Card>
@@ -191,7 +217,7 @@ export function KeepSeeding() {
               size="icon-sm"
               variant="destructive"
               className="rounded-full"
-              onClick={() => {}}
+              onClick={handleCleanup}
             >
               <BrushCleaningIcon />
             </Button>

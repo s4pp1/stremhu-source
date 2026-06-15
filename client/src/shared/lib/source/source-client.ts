@@ -1257,13 +1257,25 @@ export const systemUpdateSettings = (
 }
 
 /**
- * @summary Cleanup
+ * @summary Torrent Files Cleanup
  */
-export const systemCleanup = (
+export const systemTorrentFilesCleanup = (
   options?: SecondParameter<typeof sourceClientInstance<unknown>>,
 ) => {
   return sourceClientInstance<unknown>(
-    { url: `/api/system/cleanup`, method: 'POST' },
+    { url: `/api/system/torrent-files/cleanup`, method: 'POST' },
+    options,
+  )
+}
+
+/**
+ * @summary Indexers Cleanup
+ */
+export const systemIndexersCleanup = (
+  options?: SecondParameter<typeof sourceClientInstance<unknown>>,
+) => {
+  return sourceClientInstance<unknown>(
+    { url: `/api/system/indexers/cleanup`, method: 'POST' },
     options,
   )
 }
@@ -1811,8 +1823,11 @@ export type SystemGetSettingsResult = NonNullable<
 export type SystemUpdateSettingsResult = NonNullable<
   Awaited<ReturnType<typeof systemUpdateSettings>>
 >
-export type SystemCleanupResult = NonNullable<
-  Awaited<ReturnType<typeof systemCleanup>>
+export type SystemTorrentFilesCleanupResult = NonNullable<
+  Awaited<ReturnType<typeof systemTorrentFilesCleanup>>
+>
+export type SystemIndexersCleanupResult = NonNullable<
+  Awaited<ReturnType<typeof systemIndexersCleanup>>
 >
 export type RelayGetSettingsResult = NonNullable<
   Awaited<ReturnType<typeof relayGetSettings>>

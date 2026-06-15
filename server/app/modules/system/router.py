@@ -3,6 +3,8 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from app.modules.auth.dependencies import SessionGuard
+from app.modules.indexers.dependencies import get_indexers_service
+from app.modules.indexers.service import IndexersService
 from app.modules.roles.constants import UserRoleKey
 from app.modules.roles.schemas.api import RoleResponse
 from app.modules.settings.dependencies import get_settings_service
@@ -68,12 +70,22 @@ def update_settings(
 
 
 @router.post(
-    "/cleanup",
+    "/torrent-files/cleanup",
 )
-def cleanup(
+def torrent_files_cleanup(
     torrent_files_service: Annotated[
         TorrentFilesService, Depends(get_torrent_files_service)
     ],
     _: Annotated[UserModel, Depends(SessionGuard([UserRoleKey.ADMIN]))],
 ):
     torrent_files_service.run_retention_cleanup(retention_seconds=0)
+
+
+@router.post(
+    "/indexers/cleanup",
+)
+async def indexers_cleanup(
+    indexers_service: Annotated[IndexersService, Depends(get_indexers_service)],
+    _: Annotated[UserModel, Depends(SessionGuard([UserRoleKey.ADMIN]))],
+):
+    await indexers_service.cleanup_torrents_by_rules()

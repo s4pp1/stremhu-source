@@ -62,6 +62,9 @@ class TorrentStreamsService:
             filtered_torrent_streams, user
         )
 
+        if user.only_best_torrent:
+            sorted_torrent_streams = sorted_torrent_streams[:1]
+
         return sorted_torrent_streams, indexer_errors
 
     async def find_by_torrent_id(
