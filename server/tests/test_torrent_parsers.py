@@ -1,9 +1,9 @@
 import pytest
-from modules.media_attributes.parser import (
+from app.modules.media_attributes.parser import (
     clean_torrent_name,
     parse_torrent_name,
 )
-from modules.torrent_streams.utils.series_parser import parse_season_episode
+from app.modules.torrent_streams.utils.series_parser import parse_season_episode
 
 # A tesztelendő torrent struktúrák.
 # Kulcs: A torrent (mappa vagy egyedi fájl) neve

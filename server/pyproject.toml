@@ -1,0 +1,46 @@
+[tool.ruff]
+# Target Python version
+target-version = "py310"
+
+# Maximum line length (standard PEP 8 is 79, but 88 is the modern default used by Black/Ruff)
+line-length = 88
+
+[tool.ruff.lint]
+# Enable standard PEP 8 / code quality rules:
+# - E, W: pycodestyle (PEP 8 formatting, spacing, etc.)
+# - F: Pyflakes (syntax errors, unused imports, undefined variables)
+# - I: isort (automatic import sorting)
+# - UP: pyupgrade (modernize Python syntax automatically)
+# - B: flake8-bugbear (common design issues/bugs)
+select = ["E", "F", "I", "UP", "B", "W"]
+
+# Rules to ignore (FastAPI Depends calls, line length handled by formatter, exception chaining)
+ignore = ["B008", "E501", "B904"]
+
+# Allow ruff to fix violations automatically when saving or running with `--fix`
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+# Combine multiline "from" imports into a single line where possible
+combine-as-imports = true
+# Group imports nicely (standard library, third-party, local modules)
+order-by-type = true
+
+[tool.basedpyright]
+typeCheckingMode = "standard"
+venvPath = "."
+venv = ".conda"
+exclude = [
+    "**/.conda",
+    "**/__pycache__",
+]
+extraPaths = ["."]
+reportImplicitRelativeImport = "none"
+reportUnannotatedClassAttribute = "none"
+reportUnusedCallResult = "none"
+reportImplicitOverride = "none"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

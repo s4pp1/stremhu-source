@@ -8,8 +8,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from typing import Any, Literal
 
-from common.database import Base, UTCDateTime, engine
-from config import config
+from app.common.database import Base, UTCDateTime, engine
+from app.config import config
 
 
 def render_item(type_: str, obj: Any, autogen_context: Any) -> str | Literal[False]:

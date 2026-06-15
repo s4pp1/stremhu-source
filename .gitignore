@@ -5,13 +5,12 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 
-/data
 stremhu.tar.gz
 
 AGENTS.md
 .cursorrules
-/node_modules
-/.conda/
+node_modules
+.conda/
 __pycache__/
 *.py[cod]
 *$py.class

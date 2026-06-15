@@ -5,7 +5,7 @@
       "type": "debugpy",
       "request": "launch",
       "name": "Server (FastApi)",
-      "program": "${workspaceFolder}/server/run.py",
+      "program": "${workspaceFolder}/server/app/run.py",
       "cwd": "${workspaceFolder}/server",
       "subProcess": true,
       "jinja": true,

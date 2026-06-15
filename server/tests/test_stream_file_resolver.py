@@ -1,6 +1,6 @@
-from common.schemas.internal import SeriesInfo
-from common.torrent_info import TorrentFileInfo, TorrentInfo
-from modules.torrent_streams.utils.stream_file_resolver import StreamFileResolver
+from app.common.schemas.internal import SeriesInfo
+from app.common.torrent_info import TorrentFileInfo, TorrentInfo
+from app.modules.torrent_streams.utils.stream_file_resolver import StreamFileResolver
 
 
 def create_file(path: str, size: int, is_video: bool = True) -> TorrentFileInfo:

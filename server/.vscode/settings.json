@@ -1,0 +1,26 @@
+{
+  "search.exclude": {
+    "**/.conda": true,
+    "**/__pycache__": true
+  },
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll.ruff": "explicit"
+  },
+  "basedpyright.analysis.autoImportCompletions": true,
+  "python.languageServer": "None",
+  "python.terminal.activateEnvInCurrentTerminal": true,
+  "terminal.integrated.env.osx": {
+    "PATH": "${workspaceFolder}/.conda/bin:${env:PATH}"
+  },
+  "terminal.integrated.env.linux": {
+    "PATH": "${workspaceFolder}/.conda/bin:${env:PATH}"
+  },
+  "terminal.integrated.env.windows": {
+    "PATH": "${workspaceFolder}/.conda/Scripts;${workspaceFolder}/.conda;${env:PATH}"
+  },
+  "python.defaultInterpreterPath": "${workspaceFolder}/.conda/bin/python",
+  "python.testing.pytestEnabled": true,
+  "python.testing.cwd": "${workspaceFolder}"
+}

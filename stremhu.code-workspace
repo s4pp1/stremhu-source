@@ -1,0 +1,22 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "Root",
+    },
+    {
+      "path": "server",
+      "name": "Server",
+    },
+    {
+      "path": "client",
+      "name": "Client",
+    },
+  ],
+  "settings": {
+    "files.exclude": {
+      "server": true,
+      "client": true,
+    },
+  },
+}

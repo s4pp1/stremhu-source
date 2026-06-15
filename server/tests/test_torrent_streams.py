@@ -2,8 +2,9 @@ import uuid
 from unittest.mock import MagicMock
 
 import pytest
-from common.torrent_info import TorrentFileInfo, TorrentInfo
-from modules.torrent_streams.schemas import TorrentStream
+
+from app.common.torrent_info import TorrentFileInfo, TorrentInfo
+from app.modules.torrent_streams.schemas import TorrentStream
 
 # Torrent struktúrák teljes filmnézéssel, file listákkal
 TEST_STREAMS = {
@@ -99,11 +100,11 @@ TEST_STREAMS = {
 
 @pytest.mark.parametrize("torrent_name, details", TEST_STREAMS.items())
 def test_from_imdb_id_snapshots(torrent_name, details, snapshot, monkeypatch):
-    from modules.indexer_accounts.models import IndexerAccountModel
+    from app.modules.indexer_accounts.models import IndexerAccountModel
 
     # Fixáljuk a random UUID-t és token generálást, hogy determinisztikus legyen a teszt
     monkeypatch.setattr(
-        "modules.torrent_streams.schemas.generate_stream_token",
+        "app.modules.torrent_streams.schemas.generate_stream_token",
         lambda *args, **kwargs: "mocked-token",
     )
     monkeypatch.setattr(uuid, "uuid4", lambda: "mocked-uuid")
@@ -143,7 +144,7 @@ def test_from_imdb_id_snapshots(torrent_name, details, snapshot, monkeypatch):
     mock_user.api_key = "test-api-key"
 
     # Parse SeriesInfo if present
-    from common.schemas.internal import SeriesInfo
+    from app.common.schemas.internal import SeriesInfo
 
     series_info = SeriesInfo(**details["series"]) if details["series"] else None
 
