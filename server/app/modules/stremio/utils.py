@@ -59,7 +59,10 @@ def parse_stream_id(value: str) -> StreamId:
 
     series_info: SeriesInfo | None = None
     if season is not None and episode is not None:
-        series_info = SeriesInfo(season=season, episode=episode)
+        series_info = SeriesInfo(
+            season=season,
+            episode=episode,
+        )
 
     return ImdbStreamId(
         type=StreamIdType.IMDB,
@@ -105,7 +108,11 @@ def parse_extra(value: str | None) -> ParsedExtra:
     skip: int | None = None
 
     if not value:
-        return ParsedExtra(search=search, genre=genre, skip=skip)
+        return ParsedExtra(
+            search=search,
+            genre=genre,
+            skip=skip,
+        )
 
     parts = value.split("&")
 
@@ -123,4 +130,8 @@ def parse_extra(value: str | None) -> ParsedExtra:
         elif key == "genre":
             genre = value
 
-    return ParsedExtra(search=search, genre=genre, skip=skip)
+    return ParsedExtra(
+        search=search,
+        genre=genre,
+        skip=skip,
+    )

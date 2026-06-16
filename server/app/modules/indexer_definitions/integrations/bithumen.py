@@ -32,10 +32,6 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
         self._cached_user_id: str | None = None
 
     @property
-    def disabled(self) -> bool:
-        return True
-
-    @property
     def id(self) -> str:
         return "bithumen"
 
@@ -71,7 +67,10 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
 
         return None
 
-    async def _login(self, credential: IndexerDefinitionLogin) -> httpx.Response:
+    async def _login(
+        self,
+        credential: IndexerDefinitionLogin,
+    ) -> httpx.Response:
         return await self._client.post(
             self.login_path,
             data={
@@ -83,11 +82,13 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
         )
 
     async def _fetch_torrents(
-        self, imdb_id: str, page: int | None = None
+        self,
+        imdb_id: str,
+        page: int | None = None,
     ) -> IndexerDefinitionFindTorrentsResult:
         current_page = page or 0
         response = await self._client.get(
-            "/torrents.php",
+            "/browse.php",
             params={
                 "genre": "0",
                 "search": imdb_id,
@@ -136,10 +137,9 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
                 continue
 
             imdb_id_parts = imdb_url.rstrip("/").split("/")
-            imdb_id = imdb_id_parts[-2] if len(imdb_id_parts) >= 2 else ""
+            imdb_id = imdb_id_parts[-1] if len(imdb_id_parts) >= 4 else ""
 
             # Torrent ID
-
             torrent_id_node = cols[1].css_first('a[href*="details.php?id="]')
             torrent_id_href = (
                 torrent_id_node.attributes.get("href") if torrent_id_node else None
@@ -165,17 +165,14 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
                 )
             )
 
-        # Következő oldal ellenőrzése
-        # PyQuery: next_link = d("#pagertop b").filter(lambda _i, el: "Tovbb >>" in pq(el).text())
         next_link = None
         for b_node in tree.css("#pagertop b"):
-            if "Tovbb >>" in b_node.text(strip=True):
+            if "Tovább" in b_node.text(strip=True):
                 next_link = b_node
                 break
 
         has_next_page = False
         if next_link is not None:
-            # check if parent is an 'a' element
             parent = next_link.parent
             if parent is not None and parent.tag == "a":
                 has_next_page = True
@@ -185,7 +182,10 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
             next_page=current_page + 1 if has_next_page else None,
         )
 
-    async def _fetch_torrent(self, torrent_id: str) -> IndexerDefinitionTorrent:
+    async def _fetch_torrent(
+        self,
+        torrent_id: str,
+    ) -> IndexerDefinitionTorrent:
         response = await self._client.get(f"/details.php?id={torrent_id}")
         tree = HTMLParser(response.text)
 
@@ -195,10 +195,10 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
         imdb_node = tree.css_first('a[href*="www.imdb.com/title/"]')
         imdb_url = imdb_node.attributes.get("href") if imdb_node else ""
         imdb_id_parts = (imdb_url or "").rstrip("/").split("/")
-        imdb_id = imdb_id_parts[-2] if len(imdb_id_parts) >= 2 else None
+        imdb_id = imdb_id_parts[-1] if len(imdb_id_parts) >= 4 else None
 
         if not download_path:
-            raise Exception('A "downloadPath" nem található!')
+            raise Exception("A letöltési link nem található!")
 
         return IndexerDefinitionTorrent(
             torrent_id=torrent_id,
@@ -222,10 +222,11 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
         for href in hrefs:
             if not href:
                 continue
+
             full_url = urljoin(self.url, href)
-            id_val = parse_qs(urlparse(full_url).query).get("id", [None])[0]
-            if id_val:
-                ids.append(id_val)
+            torrent_id = parse_qs(urlparse(full_url).query).get("id", [None])[0]
+            if torrent_id:
+                ids.append(torrent_id)
 
         return ids
 
@@ -239,13 +240,13 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
         user_node = tree.css_first('#status a[href*="/userdetails.php?"]')
         user_detail_path = user_node.attributes.get("href") if user_node else None
         if not user_detail_path:
-            raise Exception(f'"userDetailPath": {user_detail_path} nem található')
+            raise Exception("A felhasználói adatlap elérési útja nem található!")
 
         user_detail_url = urljoin(self.url, user_detail_path)
         user_id = parse_qs(urlparse(user_detail_url).query).get("id", [None])[0]
 
         if not user_id:
-            raise Exception(f'"userId": {user_id} nem található')
+            raise Exception("A felhasználói azonosító nem található!")
 
         self._cached_user_id = user_id
         return user_id
