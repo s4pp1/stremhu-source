@@ -3,7 +3,7 @@
 @website https://stremhu.hu
 """
 
-from urllib.parse import parse_qs, urljoin, urlparse
+from urllib.parse import parse_qs, urlparse
 
 import httpx
 from selectolax.parser import HTMLParser
@@ -37,10 +37,6 @@ _CATEGORY_MAP: dict[str, str] = {
 
 class InsaneIndexerDefinition(BaseIndexerDefinition):
     @property
-    def disabled(self) -> bool:
-        return True
-
-    @property
     def id(self) -> str:
         return "insane"
 
@@ -65,10 +61,14 @@ class InsaneIndexerDefinition(BaseIndexerDefinition):
         return "/details.php?id={torrent_id}"
 
     def _detect_authentication_error(
-        self, response: httpx.Response
+        self,
+        response: httpx.Response,
     ) -> AuthenticationErrorEnum | None:
         final_path = str(response.url.path)
         original_url = str(response.request.url)
+        if response.history:
+            original_url = str(response.history[0].url)
+
         ended_up_at_login = self.login_path in final_path
 
         if ended_up_at_login:
@@ -78,7 +78,10 @@ class InsaneIndexerDefinition(BaseIndexerDefinition):
 
         return None
 
-    async def _login(self, credential: IndexerDefinitionLogin) -> httpx.Response:
+    async def _login(
+        self,
+        credential: IndexerDefinitionLogin,
+    ) -> httpx.Response:
         return await self._client.post(
             self.login_path,
             data={
@@ -89,7 +92,9 @@ class InsaneIndexerDefinition(BaseIndexerDefinition):
         )
 
     async def _fetch_torrents(
-        self, imdb_id: str, page: int | None = None
+        self,
+        imdb_id: str,
+        page: int | None = None,
     ) -> IndexerDefinitionFindTorrentsResult:
         current_page = page or 0
         response = await self._client.get(
@@ -113,40 +118,69 @@ class InsaneIndexerDefinition(BaseIndexerDefinition):
         torrents: list[IndexerDefinitionTorrent] = []
 
         for row in torrent_rows:
-            cat_node = row.css_first('a[href*="browse.php?cat="]')
-            category_href = cat_node.attributes.get("href") if cat_node else ""
-            category_id = (category_href or "").replace("browse.php?cat=", "")
-
-            id_node = row.css_first('.torrentmain a[href*="details.php?id="]')
-            torrent_id_href = id_node.attributes.get("href") if id_node else ""
-            torrent_id = (torrent_id_href or "").replace("details.php?id=", "")
-
-            dl_node = row.css_first(
-                f'.downloadlink a[href*="https://newinsane.info/download.php/{torrent_id}/"]'
+            # Category
+            category_node = row.css_first('a[href*="browse.php?cat="]')
+            category_href = (
+                category_node.attributes.get("href") if category_node else None
             )
-            download_url = dl_node.attributes.get("href") if dl_node else ""
+            category_id = (
+                category_href.replace("browse.php?cat=", "") if category_href else None
+            )
 
+            if not category_id:
+                continue
+
+            # Torrent ID
+            torrent_id_node = row.css_first(".torrentmain a[href*='details.php?id=']")
+            torrent_id_href = (
+                torrent_id_node.attributes.get("href") if torrent_id_node else None
+            )
+            torrent_id = (
+                torrent_id_href.replace("details.php?id=", "")
+                if torrent_id_href
+                else None
+            )
+
+            if not torrent_id:
+                continue
+
+            # Download
+            download_node = row.css_first(
+                f'.downloadlink a[href*="{self.url}/download.php/{torrent_id}/"]'
+            )
+            download_url = (
+                download_node.attributes.get("href") if download_node else None
+            )
+
+            if not download_url:
+                continue
+
+            # IMDB
             imdb_node = row.css_first('a[href*="www.imdb.com/title/"]')
-            imdb_url = imdb_node.attributes.get("href") if imdb_node else ""
-            imdb_parts = (imdb_url or "").rstrip("/").split("/")
-            imdb_id_val = imdb_parts[-2] if len(imdb_parts) >= 2 else imdb_id
+            imdb_url = imdb_node.attributes.get("href") if imdb_node else None
 
+            if not imdb_url:
+                continue
+
+            imdb_parts = imdb_url.rstrip("/").split("/")
+            imdb_id = imdb_parts[-1] if len(imdb_parts) >= 4 else ""
+
+            # Seeders
             seed_node = row.css_first(".data .leftborder")
             seeders_text = seed_node.text(strip=True) if seed_node else ""
 
-            if torrent_id and download_url:
-                torrents.append(
-                    IndexerDefinitionTorrent(
-                        torrent_id=torrent_id,
-                        download_url=download_url,
-                        seeders=int(seeders_text) if seeders_text.isdigit() else 0,
-                        imdb_id=imdb_id_val or None,
-                        attribute_ids=[
-                            self._resolve_language(category_id),
-                            self._resolve_resolution(category_id),
-                        ],
-                    )
+            torrents.append(
+                IndexerDefinitionTorrent(
+                    torrent_id=torrent_id,
+                    download_url=download_url,
+                    seeders=int(seeders_text) if seeders_text.isdigit() else 0,
+                    imdb_id=imdb_id,
+                    attribute_ids=[
+                        self._resolve_language(category_id),
+                        self._resolve_resolution(category_id),
+                    ],
                 )
+            )
 
         has_next_page = len(tree.css(".top.pager.center a.pagernextlink")) > 0
 
@@ -159,21 +193,23 @@ class InsaneIndexerDefinition(BaseIndexerDefinition):
         response = await self._client.get(f"/details.php?id={torrent_id}")
         tree = HTMLParser(response.text)
 
-        dl_node = tree.css_first(f'a[href*="download.php/{torrent_id}"]')
-        download_path = dl_node.attributes.get("href") if dl_node else None
+        download_node = tree.css_first(
+            f'a[href*="{self.url}/download.php/{torrent_id}/"]'
+        )
+        download_url = download_node.attributes.get("href") if download_node else None
 
         imdb_node = tree.css_first('a[href*="www.imdb.com/title/"]')
-        imdb_url = imdb_node.attributes.get("href") if imdb_node else ""
-        imdb_parts = (imdb_url or "").rstrip("/").split("/")
-        imdb_id = imdb_parts[-2] if len(imdb_parts) >= 2 else None
+        imdb_url = imdb_node.attributes.get("href") if imdb_node else None
+        imdb_parts = imdb_url.rstrip("/").split("/") if imdb_url else []
+        imdb_id = imdb_parts[-1] if len(imdb_parts) >= 4 else None
 
-        if not download_path:
-            raise Exception('A "downloadPath" nem található!')
+        if not download_url:
+            raise Exception("A letöltési link nem található!")
 
         return IndexerDefinitionTorrent(
             torrent_id=torrent_id,
             imdb_id=imdb_id,
-            download_url=urljoin(self.url, download_path),
+            download_url=download_url,
         )
 
     async def _fetch_hit_and_run_ids(self) -> list[str]:
@@ -190,27 +226,25 @@ class InsaneIndexerDefinition(BaseIndexerDefinition):
             if not href:
                 continue
             try:
-                parsed = urlparse(urljoin("http://localhost", href))
-                id_val = parse_qs(parsed.query).get("id", [None])[0]
-                if id_val:
-                    ids.append(id_val)
+                parsed = urlparse(href)
+                torrent_id = parse_qs(parsed.query).get("id", [None])[0]
+                if torrent_id:
+                    ids.append(torrent_id)
             except Exception:
                 continue
 
         return ids
 
-    # --- Segédfüggvények ---
-
     def _resolve_resolution(self, category: str) -> str:
-        cat_type = _CATEGORY_MAP.get(category, "none")
-        if "uhd" in cat_type:
+        category_type = _CATEGORY_MAP.get(category, "")
+        if "uhd" in category_type:
             return MediaAttributeKey.R2160P
-        if "hd" in cat_type:
+        if "hd" in category_type:
             return MediaAttributeKey.R720P
         return MediaAttributeKey.R480P
 
     def _resolve_language(self, category: str) -> str:
-        cat_type = _CATEGORY_MAP.get(category, "none")
-        if "hun" in cat_type:
+        category_type = _CATEGORY_MAP.get(category, "")
+        if "hun" in category_type:
             return MediaAttributeKey.HUN
         return MediaAttributeKey.ENG

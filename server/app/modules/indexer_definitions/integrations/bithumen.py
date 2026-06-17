@@ -189,12 +189,12 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
         response = await self._client.get(f"/details.php?id={torrent_id}")
         tree = HTMLParser(response.text)
 
-        dl_node = tree.css_first(f'a[href*="download.php/{torrent_id}"]')
-        download_path = dl_node.attributes.get("href") if dl_node else None
+        download_node = tree.css_first(f'a[href*="download.php/{torrent_id}"]')
+        download_path = download_node.attributes.get("href") if download_node else None
 
         imdb_node = tree.css_first('a[href*="www.imdb.com/title/"]')
-        imdb_url = imdb_node.attributes.get("href") if imdb_node else ""
-        imdb_id_parts = (imdb_url or "").rstrip("/").split("/")
+        imdb_url = imdb_node.attributes.get("href") if imdb_node else None
+        imdb_id_parts = imdb_url.rstrip("/").split("/") if imdb_url else []
         imdb_id = imdb_id_parts[-1] if len(imdb_id_parts) >= 4 else None
 
         if not download_path:
@@ -252,13 +252,13 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
         return user_id
 
     def _resolve_resolution(self, category: str) -> str:
-        cat_type = _CATEGORY_MAP.get(category, "none")
+        cat_type = _CATEGORY_MAP.get(category, "")
         if "hd" in cat_type:
             return MediaAttributeKey.R720P
         return MediaAttributeKey.R480P
 
     def _resolve_language(self, category: str) -> str:
-        cat_type = _CATEGORY_MAP.get(category, "none")
+        cat_type = _CATEGORY_MAP.get(category, "")
         if "hun" in cat_type:
             return MediaAttributeKey.HUN
         return MediaAttributeKey.ENG

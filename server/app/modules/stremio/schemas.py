@@ -228,12 +228,16 @@ class StremioStream(BaseModel):
         )
         binge_group = f"{torrent_stream.indexer_account.indexer_definition.id}-{torrent_stream.torrent_id}"
 
+        attributes_ids = " | ".join(
+            compact([f"{attribute.id}" for attribute in torrent_stream.attributes])
+        )
+
         return cls(
             name=name,
             description=description,
             url=torrent_stream.play_url,
             behavior_hints=BehaviorHints(
-                filename=torrent_stream.file_name,
+                filename=attributes_ids,
                 binge_group=binge_group,
             ),
         )
