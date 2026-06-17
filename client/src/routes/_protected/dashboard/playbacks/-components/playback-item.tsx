@@ -29,7 +29,9 @@ export function PlaybackItem(props: PlaybackItemProps) {
           <ItemTitle className="line-clamp-2 break-all">
             {playback.torrentName}
           </ItemTitle>
-          <ItemDescription>{playback.fileName}</ItemDescription>
+          <ItemDescription className="break-all">
+            {playback.fileName}
+          </ItemDescription>
         </ItemContent>
       </Item>
       <div className="grid gap-2 text-muted-foreground text-sm font-normal">

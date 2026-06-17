@@ -37,12 +37,8 @@ export function NuvioIntegration() {
       <CardHeader>
         <CardTitle>Nuvio</CardTitle>
         <CardDescription>
-          <a
-            className="link-primary"
-            href="https://nuvioapp.space/"
-            target="_blank"
-          >
-            https://nuvioapp.space
+          <a className="link-primary" href="https://nuvio.tv/" target="_blank">
+            https://nuvio.tv
           </a>
         </CardDescription>
       </CardHeader>

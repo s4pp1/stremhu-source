@@ -56,7 +56,7 @@ class Base(
     }
 
 
-connect_args = {"check_same_thread": False}
+connect_args = {"check_same_thread": False, "timeout": 10.0}
 engine = create_engine(config.database_url, connect_args=connect_args)
 
 
