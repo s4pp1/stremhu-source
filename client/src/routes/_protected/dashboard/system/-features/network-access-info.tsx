@@ -1,7 +1,7 @@
 import { useQuery, useSuspenseQueries } from '@tanstack/react-query'
+import { Link } from '@tanstack/react-router'
 import { SettingsIcon } from 'lucide-react'
 
-import { useDialogs } from '@/routes/-features/dialogs/dialogs-store'
 import { Button } from '@/shared/components/ui/button'
 import {
   Card,
@@ -39,8 +39,6 @@ const networkCheckMap = {
 }
 
 export function NetworkAccessInfo() {
-  const dialogs = useDialogs()
-
   const [{ data: systemStatus }, { data: networkSettings }] =
     useSuspenseQueries({
       queries: [getSystemStatus, getNetworkSettings],
@@ -51,10 +49,9 @@ export function NetworkAccessInfo() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Elérési beállítások</CardTitle>
+        <CardTitle>Hálózati elérés</CardTitle>
         <CardDescription>
-          A kliensek elvárják a biztonságos domain alapú SSL tanúsítvánnyal
-          rendelkező elérést.
+          Hálózati eléréssel kapcsolatos információk
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
@@ -91,18 +88,15 @@ export function NetworkAccessInfo() {
         <Separator />
         <Item variant="default" className="p-0">
           <ItemContent>
-            <ItemTitle>Konfiguráció</ItemTitle>
-            <ItemDescription>
-              Elérési beállítások módosítása, konfigurálása.
-            </ItemDescription>
+            <ItemTitle>
+              Hálózati elérés frissítése vagy új konfiguráció alkalmazása.
+            </ItemTitle>
           </ItemContent>
           <ItemActions>
-            <Button
-              size="icon-sm"
-              className="rounded-full"
-              onClick={() => dialogs.openDialog({ type: 'NETWORK_ACCESS' })}
-            >
-              <SettingsIcon />
+            <Button size="icon-sm" className="rounded-full" asChild>
+              <Link to="/dashboard/system/network">
+                <SettingsIcon />
+              </Link>
             </Button>
           </ItemActions>
         </Item>

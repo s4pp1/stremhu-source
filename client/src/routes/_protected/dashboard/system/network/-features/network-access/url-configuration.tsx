@@ -1,23 +1,67 @@
+import { useSuspenseQueries } from '@tanstack/react-query'
+import { GlobeIcon, HouseIcon, ToolboxIcon } from 'lucide-react'
+
+import { Alert, AlertDescription } from '@/shared/components/ui/alert'
 import { Field, FieldError, FieldLabel } from '@/shared/components/ui/field'
 import { Input } from '@/shared/components/ui/input'
 import { Label } from '@/shared/components/ui/label'
 import { Separator } from '@/shared/components/ui/separator'
 import { Switch } from '@/shared/components/ui/switch'
 import { withForm } from '@/shared/contexts/form-context'
+import { getNetworkProviders } from '@/shared/queries/network'
+import { getSystemStatus } from '@/shared/queries/system'
 
 import { networkAccessDefaultValues } from './network-access.defaults'
 
 export const UrlConfiguration = withForm({
   defaultValues: networkAccessDefaultValues,
   render: ({ form }) => {
+    const [{ data: providers }, { data: systemStatus }] = useSuspenseQueries({
+      queries: [getNetworkProviders, getSystemStatus],
+    })
+
     return (
-      <form.Subscribe selector={(state) => [state.values.mode]}>
-        {([mode]) => {
-          if (['none', 'local'].includes(mode)) return null
+      <form.Subscribe
+        selector={(state) => {
+          const mode = state.values.mode
+          const providerId = mode === 'auto' ? state.values.provider : undefined
+          return { mode, providerId }
+        }}
+      >
+        {({ mode, providerId }) => {
+          const selectedProvider = providers.find(
+            (provider) => provider.id === providerId,
+          )
+
+          if (mode === 'none') return null
+
+          if (mode === 'local') {
+            return (
+              <div className="grid gap-4">
+                <Separator />
+                <Alert>
+                  <HouseIcon />
+                  <AlertDescription className="inline">
+                    A{' '}
+                    <a
+                      href="https://local-ip.medicmobile.org"
+                      target="_blank"
+                      className="link-primary"
+                    >
+                      https://local-ip.medicmobile.org
+                    </a>{' '}
+                    segítségével lesz elérhető a szerver a helyi hálózatodon,
+                    így nincs szükség további beállítások megadására.
+                  </AlertDescription>
+                </Alert>
+              </div>
+            )
+          }
 
           return (
             <div className="grid gap-4">
               <Separator />
+
               <form.Field name="host">
                 {(field) => (
                   <Field>
@@ -27,7 +71,6 @@ export const UrlConfiguration = withForm({
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="Pl.: stremhu.duckdns.org"
                     />
                     {field.state.meta.isTouched && (
                       <FieldError errors={field.state.meta.errors} />
@@ -64,7 +107,6 @@ export const UrlConfiguration = withForm({
                           value={field.state.value}
                           onBlur={field.handleBlur}
                           onChange={(e) => field.handleChange(e.target.value)}
-                          placeholder="Let's Encrypt tanúsítvány generálásához szükséges"
                           type="email"
                         />
                         {field.state.meta.isTouched && (
@@ -93,20 +135,44 @@ export const UrlConfiguration = withForm({
                           />
                         </Label>
                         <p className="text-muted-foreground text-sm">
-                          Csak akkor lehetséges, ha nem vagy CGNAT mögött és a
-                          routeren kinyitod a megfelelő portot!
+                          Publikus IPv4 cimmel kell rendelkezned és a routeren
+                          nyitva kell legyen a{' '}
+                          <span className="font-bold">{systemStatus.port}</span>
+                          -es port!
                         </p>
                       </div>
                     )}
                   </form.Field>
+                  <Alert>
+                    <ToolboxIcon />
+                    <AlertDescription className="inline">
+                      A {selectedProvider?.name} használatához látogass el a{' '}
+                      <a
+                        href={selectedProvider?.websiteUrl}
+                        target="_blank"
+                        className="link-primary"
+                      >
+                        {selectedProvider?.websiteUrl}
+                      </a>{' '}
+                      oldalra, és regisztrálj egy ingyenes fiókot.
+                    </AlertDescription>
+                  </Alert>
                 </>
               )}
 
               {mode === 'manual' && (
-                <p className="text-muted-foreground text-sm">
-                  Az úraindítást követően a szerver http protokollon lesz
-                  elérhető a megadott IP cím és port segítségével.
-                </p>
+                <Alert>
+                  <GlobeIcon />
+                  <AlertDescription className="inline">
+                    A beállítást követően a szerver a{' '}
+                    <span className="font-bold">
+                      http://
+                      {systemStatus.hostIp}:{systemStatus.port}
+                    </span>{' '}
+                    címen lesz elérhető, ha a Reverse Proxy konfiguráció nem
+                    működik.
+                  </AlertDescription>
+                </Alert>
               )}
             </div>
           )

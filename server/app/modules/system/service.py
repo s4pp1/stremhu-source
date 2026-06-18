@@ -33,6 +33,8 @@ class SystemService:
             configured=has_user,
             app_url=app_url,
             version=config.version,
+            host_ip=config.host_ip,
+            port=config.port,
         )
 
     async def restart(self):
