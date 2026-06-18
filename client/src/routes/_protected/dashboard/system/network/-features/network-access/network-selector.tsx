@@ -80,7 +80,7 @@ export const NetworkSelector = withForm({
           mode: 'auto',
           providerId: provider.id,
           name: provider.name,
-          description: `Látogass el a ${provider.websiteUrl} oldalra és használd a ${provider.name}-t regisztrációt követően.`,
+          description: `Otthoni vagy Külső internetes elérés konfigurálása a ${provider.name} szolgáltatással.`,
         }
       })
 
@@ -88,13 +88,14 @@ export const NetworkSelector = withForm({
         {
           mode: 'local',
           name: 'Otthoni konfiguráció',
-          description: 'A szerver csak a helyi hálózatban érhető el.',
+          description: 'A szerver csak a helyi hálózatodban lesz elérhető',
         },
         ...selectableProviders,
         {
           mode: 'manual',
-          name: 'Reverse Proxy',
-          description: 'Saját domain használata, reverse proxy segítségével.',
+          name: 'Reverse Proxy konfiguráció',
+          description:
+            'Saját domain és reverse proxy (pl. Caddy, Nginx) használata esetén javasolt megoldás.',
         },
       ]
     }, [providers])
@@ -144,7 +145,7 @@ export const NetworkSelector = withForm({
               className="p-0 text-xs underline-offset-4 h-auto hover:underline"
               onClick={handleReset}
             >
-              Elérés módosítása
+              Elérési mód megváltoztatása
             </Button>
           </div>
         )}

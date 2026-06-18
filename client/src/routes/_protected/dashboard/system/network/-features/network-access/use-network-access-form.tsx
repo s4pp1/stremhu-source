@@ -55,7 +55,7 @@ export function useNetworkAccessForm(props: UseNetworkAccessFormProps = {}) {
 
         toast.success(
           <div className="flex flex-col gap-1">
-            <p>Hálózati beállítások sikeresen elmentve! A szerver újraindul.</p>
+            <p>A szerver az új beállítások érvénybe léptetéséhez újraindul.</p>
             <p>
               Az új elérhetőség:{' '}
               <a
