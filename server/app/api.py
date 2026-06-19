@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from app.modules.attributes.router import router as attributes_router
 from app.modules.auth.router import router as auth_router
+from app.modules.hls_stream.router import router as hls_stream_router
 from app.modules.indexers.router import router as indexers_router
 from app.modules.kodi.router import router as kodi_router
 from app.modules.me.router import router as me_router
@@ -32,6 +33,7 @@ api_router.include_router(relay_settings_router)
 api_router.include_router(network_router)
 api_router.include_router(torrents_router)
 api_router.include_router(stream_router)
+api_router.include_router(hls_stream_router)
 api_router.include_router(stremio_router)
 api_router.include_router(kodi_router)
 api_router.include_router(indexers_router)
