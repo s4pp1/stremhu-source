@@ -172,10 +172,17 @@ class StremioStream(BaseModel):
         description_first_line = " | ".join(compact([indexer, seeders, file_size]))
 
         def format_group(pref_key: str) -> str | None:
+            media_attributes = [
+                attribute
+                for attribute in torrent_stream.attributes
+                if isinstance(attribute, MediaAttributeModel)
+            ]
+
             attrs = cls._attributes_parser(
                 preference_id=pref_key,
-                attributes=torrent_stream.attributes,
+                attributes=media_attributes,
             )
+
             if not attrs:
                 return None
             joined = ", ".join([attr.short_name or attr.name for attr in attrs])
