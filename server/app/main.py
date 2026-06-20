@@ -31,16 +31,10 @@ setproctitle("stremhu-source")
 async def lifespan(app: FastAPI):
     is_dev = config.node_env == NodeEnv.DEV
 
-    if is_dev:
+    if not is_dev:
         config.openapi_dir.mkdir(parents=True, exist_ok=True)
         with (config.openapi_dir / "openapi.json").open("w", encoding="utf-8") as f:
             json.dump(app.openapi(), f, indent=2, ensure_ascii=False)
-    else:
-        for route in app.routes:
-            if isinstance(route, APIRoute):
-                is_external = pydash.get(route, "openapi_extra.x-external") is True
-                if not is_external:
-                    route.include_in_schema = False
 
     sync_database_and_settings(app)
 

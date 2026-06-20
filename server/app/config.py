@@ -90,3 +90,7 @@ class Config(BaseSettings):
 
 
 config = Config()
+
+
+def show_internal_routes() -> bool:
+    return config.node_env == NodeEnv.DEV

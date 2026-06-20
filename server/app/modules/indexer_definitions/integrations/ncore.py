@@ -122,11 +122,18 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
             next_page=current_page + 1 if last_page > on_page else None,
         )
 
-    async def _fetch_torrent(self, torrent_id: str) -> IndexerDefinitionTorrent:
+    async def _fetch_torrent(
+        self,
+        torrent_id: str,
+    ) -> IndexerDefinitionTorrent | None:
         details_url = self.details_path.replace("{torrent_id}", torrent_id)
         response = await self._client.get(details_url)
 
         tree = HTMLParser(response.text)
+
+        html_node = tree.css_first("html")
+        if html_node and "Nem található az adatbázisunkban" in html_node.text():
+            return None
 
         download_node = tree.css_first(
             f'.download a[href*="torrents.php?action=download&id={torrent_id}"]'
@@ -140,7 +147,7 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
         )
 
         if not download_path:
-            raise Exception('A "downloadPath" nem található!')
+            raise Exception("A letöltési link nem található!")
 
         return IndexerDefinitionTorrent(
             torrent_id=torrent_id,

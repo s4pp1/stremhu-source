@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from app.common.schemas.api import SuccessResponse
+from app.config import show_internal_routes
 from app.modules.auth.dependencies import SessionGuard
 from app.modules.pairings.dependencies import get_pairings_service
 from app.modules.pairings.schemas.api import (
@@ -19,7 +20,6 @@ router = APIRouter(prefix="/auth/pair", tags=["Pairing"])
 @router.post(
     "/init",
     response_model=PairInitResponse,
-    openapi_extra={"x-external": True},
 )
 def init(
     pairings_service: Annotated[PairingsService, Depends(get_pairings_service)],
@@ -32,7 +32,6 @@ def init(
 @router.get(
     "/status/{device_code}",
     response_model=PairStatusResponse,
-    openapi_extra={"x-external": True},
 )
 def status(
     device_code: str,
@@ -46,6 +45,7 @@ def status(
 @router.post(
     "/verify",
     response_model=SuccessResponse,
+    include_in_schema=show_internal_routes(),
 )
 def verify(
     payload: PairVerifyRequest,

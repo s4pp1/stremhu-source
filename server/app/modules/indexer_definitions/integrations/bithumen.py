@@ -185,9 +185,13 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
     async def _fetch_torrent(
         self,
         torrent_id: str,
-    ) -> IndexerDefinitionTorrent:
+    ) -> IndexerDefinitionTorrent | None:
         response = await self._client.get(f"/details.php?id={torrent_id}")
         tree = HTMLParser(response.text)
+
+        html_node = tree.css_first("html")
+        if html_node and "Nincs ilyen torrent." in html_node.text():
+            return None
 
         download_node = tree.css_first(f'a[href*="download.php/{torrent_id}"]')
         download_path = download_node.attributes.get("href") if download_node else None

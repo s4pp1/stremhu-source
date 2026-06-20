@@ -33,8 +33,7 @@ function RouteComponent() {
           </span>
         </CardTitle>
         <CardDescription>
-          Kövesd nyomon a torrentek statisztikáit és tűzd ki, ha nem szeretnéd,
-          hogy automatikusan törlődjenek.
+          Torrentek aktuális statisztikái és a hozzájuk kapcsolódó műveletek.
         </CardDescription>
       </CardHeader>
       <Separator />

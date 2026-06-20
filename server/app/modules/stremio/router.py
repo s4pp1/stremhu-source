@@ -35,7 +35,6 @@ router = APIRouter(
     "/manifest.json",
     response_model=Manifest,
     response_model_exclude_none=True,
-    openapi_extra={"x-external": True},
 )
 def manifest(
     stremio_service: Annotated[StremioService, Depends(get_stremio_service)],
@@ -47,7 +46,6 @@ def manifest(
 @router.get(
     "/configure",
     status_code=status.HTTP_308_PERMANENT_REDIRECT,
-    openapi_extra={"x-external": True},
 )
 def configure(
     _: Annotated[UserModel, Depends(ApiKeyGuard())],
@@ -61,7 +59,6 @@ def configure(
 @router.get(
     "/stream/{media_type}/{stream_id}.json",
     response_model=StremioStreams,
-    openapi_extra={"x-external": True},
 )
 async def streams(
     media_type: Annotated[MediaType, Path(..., description="A média típusa")],
@@ -76,7 +73,6 @@ async def streams(
 @router.get(
     "/catalog/{media_type}/{catalog_id}.json",
     response_model=StremioCatalogResponse,
-    openapi_extra={"x-external": True},
 )
 async def catalog(
     media_type: MediaType,
@@ -95,7 +91,6 @@ async def catalog(
 @router.get(
     "/catalog/{media_type}/{catalog_id}/{extra}.json",
     response_model=StremioCatalogResponse,
-    openapi_extra={"x-external": True},
 )
 async def catalog_with_extra(
     media_type: Annotated[MediaType, Path(..., description="A média típusa")],
@@ -116,7 +111,6 @@ async def catalog_with_extra(
 @router.get(
     "/meta/{media_type}/{meta_id}.json",
     response_model=MetaResponse,
-    openapi_extra={"x-external": True},
 )
 async def meta(
     media_type: Annotated[MediaType, Path(..., description="A média típusa")],

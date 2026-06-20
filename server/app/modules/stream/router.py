@@ -37,11 +37,9 @@ router = APIRouter(
 
 @router.get(
     "/{stream_token}",
-    openapi_extra={"x-external": True},
 )
 @router.head(
     "/{stream_token}",
-    openapi_extra={"x-external": True},
 )
 async def stream(
     request: Request,

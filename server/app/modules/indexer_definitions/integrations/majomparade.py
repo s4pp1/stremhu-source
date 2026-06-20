@@ -202,9 +202,16 @@ class MajomparadeIndexerDefinition(BaseIndexerDefinition):
             next_page=current_page + 1 if has_next_page else None,
         )
 
-    async def _fetch_torrent(self, torrent_id: str) -> IndexerDefinitionTorrent:
+    async def _fetch_torrent(
+        self,
+        torrent_id: str,
+    ) -> IndexerDefinitionTorrent | None:
         response = await self._client.get(f"/torrent/{torrent_id}")
         tree = HTMLParser(response.text)
+
+        html_node = tree.css_first("html")
+        if html_node and "Ez a torrent nem létezik!" in html_node.text():
+            return None
 
         # Download
         download_node = tree.css_first(f'form[action*="/download/{torrent_id}"]')

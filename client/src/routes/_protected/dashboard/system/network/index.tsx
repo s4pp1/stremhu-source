@@ -15,6 +15,7 @@ import {
 import { Separator } from '@/shared/components/ui/separator'
 
 import { useNetworkAccessForm } from './-features/network-access/use-network-access-form'
+import { DASHBOARD_SYSTEM_NETWORK_NAME } from './route'
 
 export const Route = createFileRoute('/_protected/dashboard/system/network/')({
   component: RouteComponent,
@@ -34,9 +35,10 @@ function RouteComponent() {
       <form.AppForm>
         <form className="grid gap-6" onSubmit={handleSubmit}>
           <CardHeader>
-            <CardTitle>Hálózati elérés</CardTitle>
+            <CardTitle>{DASHBOARD_SYSTEM_NETWORK_NAME}</CardTitle>
             <CardDescription>
-              Hálózati elérés frissítése vagy új konfiguráció alkalmazása.
+              {DASHBOARD_SYSTEM_NETWORK_NAME} frissítése vagy új konfiguráció
+              alkalmazása.
             </CardDescription>
           </CardHeader>
 

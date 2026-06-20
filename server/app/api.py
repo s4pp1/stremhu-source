@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 
+from app.config import show_internal_routes
 from app.modules.attributes.router import router as attributes_router
 from app.modules.auth.router import router as auth_router
 from app.modules.indexers.router import router as indexers_router
@@ -20,19 +21,58 @@ from app.modules.users.router import router as users_router
 api_router = APIRouter(prefix="/api")
 
 # Modul routerek hozzáadása az API útválasztóhoz
-api_router.include_router(attributes_router)
-api_router.include_router(preferences_router)
-api_router.include_router(monitoring_router)
-api_router.include_router(auth_router)
+api_router.include_router(
+    attributes_router,
+    include_in_schema=show_internal_routes(),
+)
+api_router.include_router(
+    preferences_router,
+    include_in_schema=show_internal_routes(),
+)
+api_router.include_router(
+    monitoring_router,
+    include_in_schema=show_internal_routes(),
+)
+api_router.include_router(
+    auth_router,
+    include_in_schema=show_internal_routes(),
+)
 api_router.include_router(pairings_router)
-api_router.include_router(users_router)
-api_router.include_router(me_router)
-api_router.include_router(system_router)
-api_router.include_router(relay_settings_router)
-api_router.include_router(network_router)
-api_router.include_router(torrents_router)
+api_router.include_router(
+    users_router,
+    include_in_schema=show_internal_routes(),
+)
+api_router.include_router(
+    me_router,
+    include_in_schema=show_internal_routes(),
+)
+api_router.include_router(
+    system_router,
+    include_in_schema=show_internal_routes(),
+)
+api_router.include_router(
+    relay_settings_router,
+    include_in_schema=show_internal_routes(),
+)
+api_router.include_router(
+    network_router,
+    include_in_schema=show_internal_routes(),
+)
+api_router.include_router(
+    torrents_router,
+    include_in_schema=show_internal_routes(),
+)
 api_router.include_router(stream_router)
 api_router.include_router(stremio_router)
-api_router.include_router(kodi_router)
-api_router.include_router(indexers_router)
-api_router.include_router(playbacks_router)
+api_router.include_router(
+    kodi_router,
+    include_in_schema=show_internal_routes(),
+)
+api_router.include_router(
+    indexers_router,
+    include_in_schema=show_internal_routes(),
+)
+api_router.include_router(
+    playbacks_router,
+    include_in_schema=show_internal_routes(),
+)

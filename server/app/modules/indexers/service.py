@@ -145,13 +145,18 @@ class IndexersService:
             self._indexer_accounts_service.find_list
         )
 
-        async def fetch_and_map(indexer_account: IndexerAccountModel) -> IndexerTorrent:
+        async def fetch_and_map(
+            indexer_account: IndexerAccountModel,
+        ) -> IndexerTorrent | None:
             indexer_definition = self._indexer_definitions_service.get_by_id(
                 indexer_account.indexer_id
             )
             indexer_definition_torrent = await indexer_definition.find_torrent_by_id(
                 torrent_id
             )
+
+            if not indexer_definition_torrent:
+                return None
 
             return IndexerTorrent(
                 indexer_account=indexer_account,
@@ -173,7 +178,7 @@ class IndexersService:
         for result in results:
             if isinstance(result, BaseException):
                 errors.append(str(result))
-            else:
+            elif result is not None:
                 indexer_torrents.append(result)
 
         return indexer_torrents, errors
@@ -193,6 +198,13 @@ class IndexersService:
         indexer_definition_torrent = await indexer_definition.find_torrent_by_id(
             torrent_id
         )
+
+        if not indexer_definition_torrent:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="A torrent nem található.",
+            )
+
         return IndexerTorrent(
             indexer_account=indexer_account,
             torrent_id=indexer_definition_torrent.torrent_id,

@@ -167,7 +167,7 @@ class BaseIndexerDefinition(ABC):
         """
 
     @abstractmethod
-    async def _fetch_torrent(self, torrent_id: str) -> IndexerDefinitionTorrent:
+    async def _fetch_torrent(self, torrent_id: str) -> IndexerDefinitionTorrent | None:
         """Lekéri egy konkrét torrent részletes adatait az azonosítója alapján."""
 
     @abstractmethod
@@ -221,7 +221,9 @@ class BaseIndexerDefinition(ABC):
     ) -> list[IndexerDefinitionTorrent]:
         return await self._find_all(imdb_id, None, [])
 
-    async def find_torrent_by_id(self, torrent_id: str) -> IndexerDefinitionTorrent:
+    async def find_torrent_by_id(
+        self, torrent_id: str
+    ) -> IndexerDefinitionTorrent | None:
         try:
             return await self._fetch_torrent(torrent_id)
         except Exception as e:
@@ -248,8 +250,6 @@ class BaseIndexerDefinition(ABC):
             error_msg = f"{self.name} nem érhető el vagy megváltozott a struktúrája."
             self.logger.error(error_msg, exc_info=e)
             raise TrackerException(error_msg) from e
-
-    # --- Belső folyamatkezelők ---
 
     async def _find_all(
         self,

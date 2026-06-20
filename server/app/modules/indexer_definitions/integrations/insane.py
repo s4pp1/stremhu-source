@@ -189,9 +189,16 @@ class InsaneIndexerDefinition(BaseIndexerDefinition):
             next_page=current_page + 1 if has_next_page else None,
         )
 
-    async def _fetch_torrent(self, torrent_id: str) -> IndexerDefinitionTorrent:
+    async def _fetch_torrent(
+        self,
+        torrent_id: str,
+    ) -> IndexerDefinitionTorrent | None:
         response = await self._client.get(f"/details.php?id={torrent_id}")
         tree = HTMLParser(response.text)
+
+        html_node = tree.css_first("html")
+        if html_node and "Torrent nem létezik" in html_node.text():
+            return None
 
         download_node = tree.css_first(
             f'a[href*="{self.url}/download.php/{torrent_id}/"]'
