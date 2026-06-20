@@ -159,10 +159,9 @@ class IndexersService:
                 download_url=indexer_definition_torrent.download_url,
                 imdb_id=indexer_definition_torrent.imdb_id,
                 seeders=indexer_definition_torrent.seeders,
-                attributes=[
-                    *resolve_attribute_ids(indexer_definition_torrent.attribute_ids),
-                    indexer_account.indexer_definition,
-                ],
+                media_attributes=resolve_attribute_ids(
+                    indexer_definition_torrent.attribute_ids
+                ),
             )
 
         tasks = [fetch_and_map(indexer_account) for indexer_account in indexer_accounts]
@@ -200,10 +199,9 @@ class IndexersService:
             download_url=indexer_definition_torrent.download_url,
             imdb_id=indexer_definition_torrent.imdb_id,
             seeders=indexer_definition_torrent.seeders,
-            attributes=[
-                *resolve_attribute_ids(indexer_definition_torrent.attribute_ids),
-                indexer_account.indexer_definition,
-            ],
+            media_attributes=resolve_attribute_ids(
+                indexer_definition_torrent.attribute_ids
+            ),
         )
 
     async def get_torrents_by_imdb_id(
@@ -231,12 +229,9 @@ class IndexersService:
                     download_url=indexer_definition_torrent.download_url,
                     imdb_id=indexer_definition_torrent.imdb_id,
                     seeders=indexer_definition_torrent.seeders,
-                    attributes=[
-                        *resolve_attribute_ids(
-                            indexer_definition_torrent.attribute_ids
-                        ),
-                        indexer_account.indexer_definition,
-                    ],
+                    media_attributes=resolve_attribute_ids(
+                        indexer_definition_torrent.attribute_ids
+                    ),
                 )
                 for indexer_definition_torrent in indexer_definition_torrents
             ]

@@ -4,9 +4,9 @@ from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
 from app.common.schemas.internal import SeriesInfo
+from app.modules.attributes.models import AttributeModel
 from app.modules.indexer_accounts.models import IndexerAccountModel
 from app.modules.indexers.schemas.internal import IndexerTorrent
-from app.modules.media_attributes.models import MediaAttributeModel
 from app.modules.media_attributes.parser import parse_torrent_name
 from app.modules.stream.schemas import StreamToken
 from app.modules.stream.utils.stream_token import generate_stream_token
@@ -31,7 +31,7 @@ class TorrentStream(BaseModel):
     file_index: int
     play_url: str
     seeders: int | None = None
-    attributes: list[MediaAttributeModel] = []
+    attributes: list[AttributeModel] = []
     is_persisted_torrent: bool
 
     @classmethod
@@ -97,15 +97,9 @@ class TorrentStream(BaseModel):
         if torrent_file_info is None:
             return None
 
-        indexer_media_attributes = [
-            indexer_attribute
-            for indexer_attribute in indexer_torrent.attributes
-            if isinstance(indexer_attribute, MediaAttributeModel)
-        ]
-
         torrent_attributes = parse_torrent_name(
             torrent_file.info.name,
-            external_fallbacks=indexer_media_attributes,
+            external_fallbacks=indexer_torrent.media_attributes,
         )
 
         file_attributes = parse_torrent_name(torrent_file_info.name)
@@ -121,7 +115,9 @@ class TorrentStream(BaseModel):
             # Intelligens összefésülés: a fájl attribútumai felülírják a torrent azonos kategóriájú (preference_id) attribútumait
             parsed_attributes = []
             file_pref_ids = {
-                a.preference_id for a in file_attributes if a.preference_id is not None
+                file_attribute.preference_id
+                for file_attribute in file_attributes
+                if file_attribute.preference_id is not None
             }
 
             for attr in torrent_attributes:
@@ -161,7 +157,10 @@ class TorrentStream(BaseModel):
             info_hash=torrent_file.info_hash,
             seeders=indexer_torrent.seeders,
             torrent_name=torrent_file.info.name,
-            attributes=parsed_attributes,
+            attributes=[
+                *parsed_attributes,
+                indexer_torrent.indexer_account.indexer_definition,
+            ],
             file_name=torrent_file_info.name,
             file_size=torrent_file_info.size,
             file_index=file_index,

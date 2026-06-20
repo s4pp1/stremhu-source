@@ -1,10 +1,10 @@
 from pydantic import BaseModel
 
-from app.modules.attributes.models import AttributeModel
 from app.modules.indexer_accounts.models import IndexerAccountModel
 from app.modules.indexer_definitions.schemas.internal import (
     IndexerDefinitionLogin,
 )
+from app.modules.media_attributes.models import MediaAttributeModel
 
 
 class IndexerLogin(IndexerDefinitionLogin):
@@ -17,7 +17,7 @@ class IndexerTorrent(BaseModel):
     download_url: str
     imdb_id: str | None = None
     seeders: int = 0
-    attributes: list[AttributeModel] = []
+    media_attributes: list[MediaAttributeModel] = []
 
 
 class DownloadedTorrentFile(BaseModel):
