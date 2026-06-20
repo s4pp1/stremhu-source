@@ -113,9 +113,18 @@ def test_from_imdb_id_snapshots(torrent_name, details, snapshot, monkeypatch):
     import datetime
 
     fixed_date = datetime.datetime(2026, 6, 9, 17, 39, 59, 552543)
+    from app.modules.indexer_definitions.models import IndexerDefinitionModel
+
+    indexer_definition = IndexerDefinitionModel(
+        id="test_indexer",
+        name="Test Indexer",
+        url="http://test_indexer",
+        details_path="/details",
+    )
     indexer_account = IndexerAccountModel(
         indexer_id="test_indexer", username="test_user", password="test_password"
     )
+    indexer_account.indexer_definition = indexer_definition
     indexer_account.created_at = fixed_date
     indexer_account.updated_at = fixed_date
 

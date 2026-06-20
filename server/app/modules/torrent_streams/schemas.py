@@ -4,9 +4,10 @@ from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
 from app.common.schemas.internal import SeriesInfo
-from app.modules.attributes.models import AttributeModel
 from app.modules.indexer_accounts.models import IndexerAccountModel
+from app.modules.indexer_definitions.models import IndexerDefinitionModel
 from app.modules.indexers.schemas.internal import IndexerTorrent
+from app.modules.media_attributes.models import MediaAttributeModel
 from app.modules.media_attributes.parser import parse_torrent_name
 from app.modules.stream.schemas import StreamToken
 from app.modules.stream.utils.stream_token import generate_stream_token
@@ -31,7 +32,7 @@ class TorrentStream(BaseModel):
     file_index: int
     play_url: str
     seeders: int | None = None
-    attributes: list[AttributeModel] = []
+    attributes: list[MediaAttributeModel | IndexerDefinitionModel] = []
     is_persisted_torrent: bool
 
     @classmethod
