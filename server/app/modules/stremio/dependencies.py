@@ -68,7 +68,7 @@ def get_parsed_stream_id(
 
 def get_parsed_catalog_id(
     meta_id: Annotated[
-        str, Path(..., description="Katalógus / Meta azonosító (trackerId:torrentId)")
+        str, Path(..., description="Katalógus / Meta azonosító (indexerId:torrentId)")
     ],
 ) -> ParsedCatalogId | None:
     return parse_catalog_id(meta_id)

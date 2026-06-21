@@ -75,15 +75,15 @@ class Config(BaseSettings):
     @classmethod
     def validate_host_ip(cls, value: str) -> str:
         try:
-            ip_obj = ipaddress.ip_address(value)
+            ipaddress.ip_address(value)
         except ValueError:
             raise ValueError(
                 f"🚨 Hiba: A megadott HOST_IP ({value}) formátuma érvénytelen! Kérlek érvényes IPv4 címet adj meg!"
             )
 
-        if not ip_obj.is_private and value != "127.0.0.1":
+        if value == "127.0.0.1":
             raise ValueError(
-                f"🚨 Hiba: A megadott HOST_IP ({value}) nem egy helyi/privát IP-cím! A helyi eléréshez magánhálózati IP szükséges!"
+                f"🚨 Hiba: A megadott HOST_IP ({value}) nem lehet a localhost!"
             )
 
         return value

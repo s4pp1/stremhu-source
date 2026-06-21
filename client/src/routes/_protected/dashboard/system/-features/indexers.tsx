@@ -33,9 +33,9 @@ export function Indexers() {
 
   const dialogs = useDialogs()
 
-  const renderTrackerLogin = indexers.length < indexerDefinitions.length
+  const renderLogin = indexers.length < indexerDefinitions.length
 
-  const handleTrackerLogin: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleLogin: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault()
     e.stopPropagation()
     dialogs.openDialog({
@@ -49,16 +49,16 @@ export function Indexers() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Trackerek</CardTitle>
+        <CardTitle>Torrent oldalak</CardTitle>
         <CardDescription>
-          Kezeld a tracker-eket és módosítsd a konfigurációit.
+          Kezeld a torrent oldal bejelentkezéseidet és konfiguráld őket.
         </CardDescription>
-        {renderTrackerLogin && (
+        {renderLogin && (
           <CardAction>
             <Button
               size="icon-sm"
               className="rounded-full"
-              onClick={handleTrackerLogin}
+              onClick={handleLogin}
             >
               <LogInIcon />
             </Button>
@@ -75,13 +75,13 @@ export function Indexers() {
             <EmptyHeader>
               <EmptyTitle>Jelentkezz be!</EmptyTitle>
               <EmptyDescription>
-                Az addon használatához, be kell jelentkezned legalább egy
-                tracker-be!
+                A StremHU Source használatához, be kell jelentkezned legalább
+                egy torrent oldalra!
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <div className="flex gap-2">
-                <Button size="sm" onClick={handleTrackerLogin}>
+                <Button size="sm" onClick={handleLogin}>
                   <LogInIcon />
                   Bejelentkezés
                 </Button>

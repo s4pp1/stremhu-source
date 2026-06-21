@@ -8,7 +8,7 @@ from app.modules.indexer_definitions.enums import AuthenticationErrorEnum
 from app.modules.indexer_definitions.exceptions import (
     AuthenticationException,
     CredentialsRequiredException,
-    TrackerException,
+    IndexerDefinitionException,
 )
 from app.modules.indexer_definitions.protocols import IndexerAccountStorage
 from app.modules.indexer_definitions.schemas.internal import (
@@ -108,12 +108,12 @@ class BaseIndexerDefinition(ABC):
     @property
     @abstractmethod
     def name(self) -> str:
-        """A tracker megjelenített neve (pl. 'nCore')."""
+        """A indexer megjelenített neve (pl. 'nCore')."""
 
     @property
     @abstractmethod
     def url(self) -> str:
-        """A tracker alap URL-je (pl. 'https://ncore.pro')."""
+        """A indexer alap URL-je (pl. 'https://ncore.pro')."""
 
     @property
     @abstractmethod
@@ -152,14 +152,14 @@ class BaseIndexerDefinition(ABC):
 
     @abstractmethod
     async def _login(self, credential: IndexerDefinitionLogin) -> httpx.Response:
-        """Végrehajtja a tényleges POST bejelentkezési kérést a tracker felé."""
+        """Végrehajtja a tényleges POST bejelentkezési kérést a indexer felé."""
 
     @abstractmethod
     async def _fetch_torrents(
         self, imdb_id: str, page: int | None = None
     ) -> IndexerDefinitionFindTorrentsResult:
         """
-        Keresést hajt végre a trackeren és visszaadja a találatokat.
+        Keresést hajt végre a indexer-en és visszaadja a találatokat.
 
         Visszatér:
         - torrents: a talált torrentek listája IndexerDefinitionTorrent-ként
@@ -229,7 +229,7 @@ class BaseIndexerDefinition(ABC):
         except Exception as e:
             error_msg = f"{self.name} nem érhető el vagy megváltozott a struktúrája."
             self.logger.error(error_msg, exc_info=e)
-            raise TrackerException(error_msg) from e
+            raise IndexerDefinitionException(error_msg) from e
 
     async def download_torrent(self, download_url: str) -> bytes:
         try:
@@ -249,7 +249,7 @@ class BaseIndexerDefinition(ABC):
         except Exception as e:
             error_msg = f"{self.name} nem érhető el vagy megváltozott a struktúrája."
             self.logger.error(error_msg, exc_info=e)
-            raise TrackerException(error_msg) from e
+            raise IndexerDefinitionException(error_msg) from e
 
     async def _find_all(
         self,
@@ -271,7 +271,7 @@ class BaseIndexerDefinition(ABC):
         except Exception as e:
             error_msg = f"{self.name} nem érhető el vagy megváltozott a struktúrája."
             self.logger.exception(error_msg)
-            raise TrackerException(error_msg) from e
+            raise IndexerDefinitionException(error_msg) from e
 
     async def relogin(self) -> None:
         """

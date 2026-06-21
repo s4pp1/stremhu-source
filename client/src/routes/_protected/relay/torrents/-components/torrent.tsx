@@ -194,7 +194,7 @@ export function Torrent(props: TorrentProps) {
                     {torrent.fullDownload !== null && (
                       <DropdownMenuItem onClick={handleFullDownload(null)}>
                         <RotateCcwIcon />
-                        Letöltés visszaállítása a tracker beállításra
+                        Letöltés visszaállítása a torrent oldal beállításra
                       </DropdownMenuItem>
                     )}
                   </DropdownMenuGroup>

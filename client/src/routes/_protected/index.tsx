@@ -123,8 +123,7 @@ function ProfileRoute() {
                   <ItemContent>
                     <ItemTitle>{DASHBOARD_SYSTEM_NAME}</ItemTitle>
                     <ItemDescription>
-                      Tracker bejelentkezések kezelése, StremHU Source
-                      konfigurálása.
+                      Torrent oldalak kezelése, StremHU Source konfigurálása.
                     </ItemDescription>
                   </ItemContent>
                   <ItemActions>

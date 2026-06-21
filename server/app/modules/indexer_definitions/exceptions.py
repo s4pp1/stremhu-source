@@ -1,16 +1,16 @@
-class TrackerException(Exception):
-    """Általános tracker hiba."""
+class IndexerDefinitionException(Exception):
+    """Általános indexer hiba."""
 
     pass
 
 
-class CredentialsRequiredException(TrackerException):
+class CredentialsRequiredException(IndexerDefinitionException):
     """Hiányzó hitelesítési adatok."""
 
     pass
 
 
-class AuthenticationException(TrackerException):
+class AuthenticationException(IndexerDefinitionException):
     """Hibás felhasználónév vagy jelszó."""
 
     pass

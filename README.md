@@ -3,7 +3,7 @@
   </a>
 </p>
 
-<p align="center">Self-hosted streaming szerver, amellyel <b>közvetlenül magyar trackerekről</b> nézheted a tartalmat várakozás nélkül!</p>
+<p align="center">Self-hosted streaming szerver, amellyel <b>közvetlenül a torrent oldalakról</b> nézheted a tartalmat várakozás nélkül!</p>
 <p align="center">További információkért és útmutatókért látogass el a <a href="https://stremhu.app" target="_blank">https://stremhu.app</a> oldalra!</p>
 
 <p align="center">
