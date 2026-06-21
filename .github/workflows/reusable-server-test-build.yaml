@@ -15,7 +15,7 @@ jobs:
       run:
         working-directory: ${{ inputs.working-directory }}
     env:
-      HOST_IP: 127.0.0.1
+      HOST_IP: 192.168.1.100
 
     steps:
       - name: Git Checkout

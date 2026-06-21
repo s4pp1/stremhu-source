@@ -40,9 +40,9 @@ export function IndexerItem(props: IndexerItemProps) {
   const dialogs = useDialogs()
   const confirmDialog = useConfirmDialog()
 
-  const { mutateAsync: deleteTracker } = useIndexerDelete()
+  const { mutateAsync: deleteIndexer } = useIndexerDelete()
 
-  const handleEditTracker: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleEditIndexer: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault()
     e.stopPropagation()
 
@@ -54,7 +54,7 @@ export function IndexerItem(props: IndexerItemProps) {
     })
   }
 
-  const handleDeleteTracker: MouseEventHandler<HTMLButtonElement> = async (
+  const handleDeleteIndexer: MouseEventHandler<HTMLButtonElement> = async (
     e,
   ) => {
     e.preventDefault()
@@ -62,10 +62,10 @@ export function IndexerItem(props: IndexerItemProps) {
 
     await confirmDialog.confirm({
       title: `Biztosan törlöd a(z) ${indexer.indexerDefinition.name}-t?`,
-      description: `A(z) ${indexer.indexerDefinition.name} törlésével minden aktív torrent törlésre kerül, ami ezen a trackeren fut.`,
+      description: `A(z) ${indexer.indexerDefinition.name} törlésével minden aktív torrent törlésre kerül, ami ezen a torrent oldalon fut.`,
       onConfirm: async () => {
         try {
-          await deleteTracker(indexer.indexerId)
+          await deleteIndexer(indexer.indexerId)
         } catch (error) {
           const message = parseApiError(error)
           toast.error(message)
@@ -132,7 +132,7 @@ export function IndexerItem(props: IndexerItemProps) {
         <Button
           size="icon-sm"
           className="rounded-full"
-          onClick={handleEditTracker}
+          onClick={handleEditIndexer}
         >
           <PenIcon />
         </Button>
@@ -140,7 +140,7 @@ export function IndexerItem(props: IndexerItemProps) {
           size="icon-sm"
           variant="destructive"
           className="rounded-full"
-          onClick={handleDeleteTracker}
+          onClick={handleDeleteIndexer}
         >
           <TrashIcon />
         </Button>

@@ -1,7 +1,11 @@
 import { useSuspenseQueries } from '@tanstack/react-query'
-import { GlobeIcon, HouseIcon, ToolboxIcon } from 'lucide-react'
+import { BanIcon, GlobeIcon, HouseIcon, ToolboxIcon } from 'lucide-react'
 
-import { Alert, AlertDescription } from '@/shared/components/ui/alert'
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/shared/components/ui/alert'
 import { Field, FieldError, FieldLabel } from '@/shared/components/ui/field'
 import { Input } from '@/shared/components/ui/input'
 import { Label } from '@/shared/components/ui/label'
@@ -50,8 +54,16 @@ export const UrlConfiguration = withForm({
                     >
                       https://local-ip.medicmobile.org
                     </a>{' '}
-                    segítségével lesz elérhető a szerver a helyi hálózatodon,
-                    így nincs szükség további beállítások megadására.
+                    segítségével lesz elérhető a szerver.
+                  </AlertDescription>
+                </Alert>
+                <Alert variant="destructive">
+                  <BanIcon />
+                  <AlertTitle>Ne használd publikus IP címmel!</AlertTitle>
+                  <AlertDescription className="inline">
+                    Ha a <code className="font-mono">HOST_IP</code> publikus IP
+                    címet tartalmaz csak saját felelősségedre használd ezt a
+                    beállítást!
                   </AlertDescription>
                 </Alert>
               </div>

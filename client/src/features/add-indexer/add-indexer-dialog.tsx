@@ -47,13 +47,13 @@ export function AddIndexerDialog(dialog: OpenedDialog & AddIndexerDialog) {
 
   const { mutateAsync: loginIndexer } = useIndexerLogin()
 
-  const inactiveTrackers = indexerDefinitions.filter(
+  const inactiveIndexers = indexerDefinitions.filter(
     (indexer) => !activeIndexerIds.includes(indexer.id),
   )
 
   const form = useAppForm({
     defaultValues: {
-      indexerId: inactiveTrackers[0].id,
+      indexerId: inactiveIndexers[0].id,
       username: '',
       password: '',
     },
@@ -90,22 +90,18 @@ export function AddIndexerDialog(dialog: OpenedDialog & AddIndexerDialog) {
         onEscapeKeyDown={() => dialogsStore.closeDialog(dialog.id)}
       >
         <form.AppForm>
-          <form
-            name="connect-to-tracker"
-            className="grid gap-4"
-            onSubmit={handleSubmit}
-          >
+          <form className="grid gap-4" onSubmit={handleSubmit}>
             <DialogHeader>
-              <DialogTitle>Csatlakozás a tracker-hez</DialogTitle>
+              <DialogTitle>Bejelentkezés a torrent oldalra</DialogTitle>
               <DialogDescription>
-                Válaszd ki a csatlakoztatni kívánt tracker-t és add meg a
-                bejelentkezési adataidat.
+                Válaszd ki a bejelentkezni kívánt torrent oldalt és add meg az
+                adataidat.
               </DialogDescription>
             </DialogHeader>
             <form.Field name="indexerId">
               {(field) => (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>Tracker</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Torrent oldal</FieldLabel>
                   <Select
                     value={field.state.value}
                     name={field.name}
@@ -115,7 +111,7 @@ export function AddIndexerDialog(dialog: OpenedDialog & AddIndexerDialog) {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {inactiveTrackers.map((indexer) => (
+                      {inactiveIndexers.map((indexer) => (
                         <SelectItem key={indexer.id} value={indexer.id}>
                           {indexer.name}
                         </SelectItem>

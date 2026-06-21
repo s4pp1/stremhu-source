@@ -87,13 +87,14 @@ export const NetworkSelector = withForm({
       return [
         {
           mode: 'local',
-          name: 'Otthoni konfiguráció',
-          description: 'A szerver csak a helyi hálózatodban lesz elérhető',
+          name: 'local-ip.medicmobile.org',
+          description:
+            'A szerver zárt helyi hálózaton lesz elérhető (csak azok az eszközök érhetik el, amik a router mögött vannak).',
         },
         ...selectableProviders,
         {
           mode: 'manual',
-          name: 'Reverse Proxy konfiguráció',
+          name: 'Reverse Proxy',
           description:
             'Saját domain és reverse proxy (pl. Caddy, Nginx) használata esetén javasolt megoldás.',
         },

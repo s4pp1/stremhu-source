@@ -146,7 +146,7 @@ export function KeepSeeding() {
                 />
               </Label>
               <p className="text-muted-foreground text-sm">
-                Ellenőrzi a tracker oldal alapján a teljesítést és csak ezt
+                Ellenőrzi a torrent oldal alapján a teljesítést és csak azt
                 követően törlődhet.
               </p>
             </div>
