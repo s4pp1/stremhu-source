@@ -29,10 +29,7 @@ api_router.include_router(
     preferences_router,
     include_in_schema=show_internal_routes(),
 )
-api_router.include_router(
-    monitoring_router,
-    include_in_schema=show_internal_routes(),
-)
+api_router.include_router(monitoring_router)
 api_router.include_router(
     auth_router,
     include_in_schema=show_internal_routes(),

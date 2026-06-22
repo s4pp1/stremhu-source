@@ -17,6 +17,8 @@ class AttributeResponse(BaseModel):
 
     short_name: str | None = None
 
+    preference_id: str | None = None
+
     @classmethod
     def from_attribute_exclusion_model(
         cls,
@@ -26,4 +28,5 @@ class AttributeResponse(BaseModel):
             id=model.attribute.id,
             name=model.attribute.name,
             short_name=model.attribute.short_name,
+            preference_id=model.attribute.preference_id,
         )

@@ -3,6 +3,7 @@ import logging
 from abc import ABC, abstractmethod
 
 import httpx
+import pydash
 
 from app.modules.indexer_definitions.enums import AuthenticationErrorEnum
 from app.modules.indexer_definitions.exceptions import (
@@ -267,7 +268,10 @@ class BaseIndexerDefinition(ABC):
             if result.next_page is not None:
                 return await self._find_all(imdb_id, result.next_page, accumulator)
 
-            return [t for t in accumulator if t.imdb_id == imdb_id]
+            return pydash.uniq_by(
+                (torrent for torrent in accumulator if torrent.imdb_id == imdb_id),
+                lambda torrent: torrent.torrent_id,
+            )
         except Exception as e:
             error_msg = f"{self.name} nem érhető el vagy megváltozott a struktúrája."
             self.logger.exception(error_msg)

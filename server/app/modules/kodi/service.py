@@ -1,6 +1,6 @@
 from app.common.schemas.internal import SeriesInfo
 from app.modules.kodi.schemas.api import (
-    KodiImdbStreamsParams,
+    KodiImdbStreamsRequest,
 )
 from app.modules.torrent_streams.schemas import TorrentStream
 from app.modules.torrent_streams.service import TorrentStreamsService
@@ -15,7 +15,7 @@ class KodiService:
         self,
         user: UserModel,
         imdb_id: str,
-        payload: KodiImdbStreamsParams | None = None,
+        payload: KodiImdbStreamsRequest | None = None,
     ) -> tuple[list[TorrentStream], list[str]]:
         series: SeriesInfo | None = None
         if payload and payload.season is not None and payload.episode is not None:
