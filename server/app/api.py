@@ -61,10 +61,7 @@ api_router.include_router(
 )
 api_router.include_router(stream_router)
 api_router.include_router(stremio_router)
-api_router.include_router(
-    kodi_router,
-    include_in_schema=show_internal_routes(),
-)
+api_router.include_router(kodi_router)
 api_router.include_router(
     indexers_router,
     include_in_schema=show_internal_routes(),
