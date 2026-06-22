@@ -4,6 +4,7 @@ from pydantic.alias_generators import to_camel
 
 from app.modules.attributes.schemas.api import AttributeResponse
 from app.modules.indexer_definitions.schemas.internal import IndexerDefinition
+from app.modules.media_attributes.models import MediaAttributeModel
 from app.modules.torrent_streams.schemas import TorrentStream
 
 
@@ -51,7 +52,7 @@ class KodiImdbStream(BaseModel):
     seeders: int | None = Field(default=0)
     size: str
     indexer: IndexerDefinition
-    attributes: list[AttributeResponse] = []
+    media_attributes: list[AttributeResponse] = []
     url: str
 
 
@@ -79,9 +80,10 @@ class KodiImdbStreams(BaseModel):
                 indexer=IndexerDefinition.model_validate(
                     torrent_stream.indexer_account.indexer_definition
                 ),
-                attributes=[
+                media_attributes=[
                     AttributeResponse.model_validate(attribute)
                     for attribute in torrent_stream.attributes
+                    if isinstance(attribute, MediaAttributeModel)
                 ],
                 url=torrent_stream.play_url,
             )

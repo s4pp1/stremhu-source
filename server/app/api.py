@@ -50,10 +50,7 @@ api_router.include_router(
     system_router,
     include_in_schema=show_internal_routes(),
 )
-api_router.include_router(
-    relay_settings_router,
-    include_in_schema=show_internal_routes(),
-)
+api_router.include_router(relay_settings_router)
 api_router.include_router(
     network_router,
     include_in_schema=show_internal_routes(),

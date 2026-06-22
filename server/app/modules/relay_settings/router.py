@@ -2,6 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
+from app.config import show_internal_routes
 from app.modules.auth.dependencies import ApiKeyGuard, SessionGuard
 from app.modules.relay_settings.dependencies import get_relay_settings_service
 from app.modules.relay_settings.service import RelaySettingsService
@@ -20,6 +21,7 @@ router = APIRouter(
 @router.get(
     "/relay/settings",
     response_model=RelaySettingsResponse,
+    include_in_schema=show_internal_routes(),
 )
 def get_settings(
     relay_settings_service: Annotated[
@@ -33,6 +35,7 @@ def get_settings(
 @router.put(
     "/relay/settings",
     response_model=RelaySettingsResponse,
+    include_in_schema=show_internal_routes(),
 )
 def update_settings(
     payload: RelaySettingsUpdateRequest,

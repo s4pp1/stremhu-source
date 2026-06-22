@@ -1,5 +1,5 @@
 from app.common.schemas.internal import SeriesInfo
-from app.modules.kodi.schemas import (
+from app.modules.kodi.schemas.api import (
     KodiImdbStreamsParams,
 )
 from app.modules.torrent_streams.schemas import TorrentStream
