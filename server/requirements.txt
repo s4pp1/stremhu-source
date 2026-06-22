@@ -4,7 +4,7 @@ aiolimiter==1.2.1
 libtorrent==2.0.13
 types-libtorrent==2.0.11.20250816
 pydantic==2.13.4
-pydantic-settings==2.14.1
+pydantic-settings==2.14.2
 debugpy==1.8.21
 content-types==0.4.1
 setproctitle==1.3.7
