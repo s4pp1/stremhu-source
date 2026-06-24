@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import humanize
@@ -9,6 +10,7 @@ from pydash import compact
 
 from app.common.schemas.internal import ImdbInfo
 from app.modules.media_attributes.models import MediaAttributeModel
+from app.modules.media_attributes.parser import clean_torrent_name
 from app.modules.preferences.constants import PreferenceKey
 from app.modules.preferences.seeds import DEFAULT_PREFERENCES
 from app.modules.stremio.constants import ADDON_APP_PREFIX_ID
@@ -171,12 +173,13 @@ class StremioStream(BaseModel):
 
         description_first_line = " | ".join(compact([indexer, seeders, file_size]))
 
+        media_attributes = [
+            attribute
+            for attribute in torrent_stream.attributes
+            if isinstance(attribute, MediaAttributeModel)
+        ]
+
         def format_group(pref_key: str) -> str | None:
-            media_attributes = [
-                attribute
-                for attribute in torrent_stream.attributes
-                if isinstance(attribute, MediaAttributeModel)
-            ]
 
             attrs = cls._attributes_parser(
                 preference_id=pref_key,
@@ -235,16 +238,33 @@ class StremioStream(BaseModel):
         )
         binge_group = f"{torrent_stream.indexer_account.indexer_definition.id}-{torrent_stream.torrent_id}"
 
-        attributes_ids = " | ".join(
-            compact([f"{attribute.id}" for attribute in torrent_stream.attributes])
+        attributes_ids = ".".join(
+            compact([f"{media_attribute.id}" for media_attribute in media_attributes])
         )
+
+        import re
+
+        file_path = Path(torrent_stream.file_name)
+        extension = file_path.suffix
+        stem = file_path.stem
+
+        cleaned_stem = clean_torrent_name(stem)
+        cleaned_stem = cleaned_stem.replace(" ", ".")
+        cleaned_stem = re.sub(r"\.+", ".", cleaned_stem)
+        cleaned_stem = cleaned_stem.replace(".-", "-").replace("-.", "-")
+        cleaned_stem = cleaned_stem.strip(".")
+
+        if attributes_ids:
+            behavior_filename = f"{cleaned_stem}.{attributes_ids}{extension}"
+        else:
+            behavior_filename = f"{cleaned_stem}{extension}"
 
         return cls(
             name=name,
             description=description,
             url=torrent_stream.play_url,
             behavior_hints=BehaviorHints(
-                filename=attributes_ids,
+                filename=behavior_filename,
                 binge_group=binge_group,
             ),
         )

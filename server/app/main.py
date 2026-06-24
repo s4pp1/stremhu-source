@@ -15,6 +15,7 @@ from app.common.spa_static_files import SPAStaticFiles
 from app.config import NodeEnv, config
 from app.exceptions import setup_exception_handlers
 from app.modules.indexer_definitions.dependencies import get_indexer_definitions_service
+from app.modules.network.background_tasks import verify_self_connection
 from app.modules.relay.background_tasks import alert_loop, resume_save_loop
 from app.modules.relay.dependencies import get_relay_service
 from app.modules.torrents.background_tasks import (
@@ -50,6 +51,9 @@ async def lifespan(app: FastAPI):
     restore_torrents()
 
     priority_manager_task = asyncio.create_task(relay_service.priority_manager_loop())
+
+    # Ön-ellenőrzés indítása a háttérben
+    asyncio.create_task(verify_self_connection())
 
     yield
 
