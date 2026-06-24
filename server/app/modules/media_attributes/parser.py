@@ -86,7 +86,6 @@ def clean_torrent_name(name: str) -> str:
         for pattern, _ in _GROUPED_ATTRIBUTES.get(pref_id, []):
             name_cleaned = pattern.sub(" ", name_cleaned)
 
-    # Eltávolítjuk a feleslegesen dupla szóközöket, amiket a törlések hagytak
     name_cleaned = re.sub(r"\s+", " ", name_cleaned).strip()
 
     return name_cleaned

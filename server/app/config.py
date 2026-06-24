@@ -94,3 +94,11 @@ config = Config()
 
 def show_internal_routes() -> bool:
     return config.node_env == NodeEnv.DEV
+
+
+def is_public_ip(ip_str: str) -> bool:
+    try:
+        ip = ipaddress.ip_address(ip_str)
+        return not (ip.is_private or ip.is_loopback or ip.is_link_local)
+    except ValueError:
+        return False
