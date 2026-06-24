@@ -23,6 +23,7 @@ class TorrentSourceProviderService:
     ):
         self._indexers_service = indexers_service
         self._torrent_files_service = torrent_files_service
+        self._db_lock = asyncio.Lock()
 
     async def find_by_imdb_id(
         self,
@@ -167,11 +168,12 @@ class TorrentSourceProviderService:
         async with torrent_provider_locks(
             f"{indexer_torrent.indexer_account.indexer_id}:{indexer_torrent.torrent_id}"
         ):
-            existing_torrent = await asyncio.to_thread(
-                self._torrent_files_service.find_by_id,
-                indexer_id=indexer_torrent.indexer_account.indexer_id,
-                torrent_id=indexer_torrent.torrent_id,
-            )
+            async with self._db_lock:
+                existing_torrent = await asyncio.to_thread(
+                    self._torrent_files_service.find_by_id,
+                    indexer_id=indexer_torrent.indexer_account.indexer_id,
+                    torrent_id=indexer_torrent.torrent_id,
+                )
             if existing_torrent:
                 return existing_torrent
 
@@ -182,12 +184,13 @@ class TorrentSourceProviderService:
                     indexer_torrent.download_url,
                 )
 
-                return await asyncio.to_thread(
-                    self._torrent_files_service.create,
-                    indexer_id=downloaded_torrent_file.indexer_id,
-                    torrent_id=downloaded_torrent_file.torrent_id,
-                    torrent_bytes=downloaded_torrent_file.torrent_bytes,
-                )
+                async with self._db_lock:
+                    return await asyncio.to_thread(
+                        self._torrent_files_service.create,
+                        indexer_id=downloaded_torrent_file.indexer_id,
+                        torrent_id=downloaded_torrent_file.torrent_id,
+                        torrent_bytes=downloaded_torrent_file.torrent_bytes,
+                    )
             except InvalidTorrentFileException:
                 logger.warning(
                     f"⚠️ Érvénytelen torrent fájl átugorva: indexer: {indexer_torrent.indexer_account.indexer_id}, torrent_id: {indexer_torrent.torrent_id}"
