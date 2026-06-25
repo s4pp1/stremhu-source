@@ -66,6 +66,23 @@ class PreferenceDefinitionsService:
         preference_definition = self.get_by_id(preference_definition_id)
         self._repository.delete(preference_definition.id)
 
+    def remove_attribute_from_all(self, attribute_id: str) -> None:
+        preference_definitions = self._repository.find_by_attribute_id(attribute_id)
+
+        for definition in preference_definitions:
+            attribute_ids = [
+                attr.attribute_id
+                for attr in definition.definition_attributes
+                if attr.attribute_id != attribute_id
+            ]
+
+            if not attribute_ids:
+                self.delete(definition.id)
+            else:
+                self.update(
+                    definition.id, PreferenceUpdate(attribute_ids=attribute_ids)
+                )
+
     def _validate_attribute_ids(
         self, preference_id: str, attribute_ids: list[str]
     ) -> None:

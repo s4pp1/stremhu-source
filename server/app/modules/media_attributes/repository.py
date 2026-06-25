@@ -50,12 +50,15 @@ class MediaAttributesRepository:
 
         return query.order_by(MediaAttributeModel.order.asc()).all()
 
-    def delete_excluding_ids(self, ids: set[str]) -> int:
-        to_delete = (
+    def find_excluding_ids(self, ids: set[str]) -> list[MediaAttributeModel]:
+        return (
             self.db.query(MediaAttributeModel)
             .filter(~MediaAttributeModel.id.in_(ids))
             .all()
         )
+
+    def delete_excluding_ids(self, ids: set[str]) -> int:
+        to_delete = self.find_excluding_ids(ids)
         count = len(to_delete)
         for attr in to_delete:
             self.db.delete(attr)

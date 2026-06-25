@@ -5,14 +5,17 @@ from app.modules.media_attributes.models import MediaAttributeModel
 from app.modules.media_attributes.repository import MediaAttributesRepository
 from app.modules.media_attributes.schemas.internal import MediaAttributeFilter
 from app.modules.media_attributes.seeds import DEFAULT_ATTRIBUTES
+from app.modules.preference_definitions.service import PreferenceDefinitionsService
 
 
 class MediaAttributesService:
     def __init__(
         self,
         repository: MediaAttributesRepository,
+        preference_definitions_service: PreferenceDefinitionsService,
     ):
         self._repository = repository
+        self._preference_definitions_service = preference_definitions_service
 
     def find_list(
         self,
@@ -22,6 +25,10 @@ class MediaAttributesService:
 
     def sync_to_db(self) -> None:
         code_ids = {attr.id for attr in DEFAULT_ATTRIBUTES}
+
+        to_delete_attributes = self._repository.find_excluding_ids(code_ids)
+        for attr in to_delete_attributes:
+            self._preference_definitions_service.remove_attribute_from_all(attr.id)
 
         deleted_count = self._repository.delete_excluding_ids(code_ids)
         if deleted_count > 0:

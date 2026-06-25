@@ -9,6 +9,9 @@ from app.modules.indexer_definitions.base_indexer_definition import (
 from app.modules.indexer_definitions.integrations import discover_indexer_definitions
 from app.modules.indexer_definitions.models import IndexerDefinitionModel
 from app.modules.indexer_definitions.protocols import IndexerAccountStorage
+from app.modules.preference_definitions.dependencies import (
+    create_preference_definitions_service,
+)
 from app.modules.preferences.constants import PreferenceKey
 
 
@@ -71,10 +74,14 @@ class IndexerDefinitionsService:
             .all()
         )
         deleted_count = len(to_delete)
-        for definition in to_delete:
-            db.delete(definition)
 
         if deleted_count > 0:
+            preference_definitions_service = create_preference_definitions_service(db)
+
+            for definition in to_delete:
+                preference_definitions_service.remove_attribute_from_all(definition.id)
+                db.delete(definition)
+
             logger.info(
                 f"🗑️ Törölve {deleted_count} elavult indexer definíció a DB-ből."
             )

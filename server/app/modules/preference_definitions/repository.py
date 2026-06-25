@@ -37,6 +37,17 @@ class PreferenceDefinitionRepository:
             .first()
         )
 
+    def find_by_attribute_id(
+        self,
+        attribute_id: str,
+    ) -> list[PreferenceDefinitionModel]:
+        return (
+            self.db.query(PreferenceDefinitionModel)
+            .join(PreferenceDefinitionModel.definition_attributes)
+            .filter(PreferenceDefinitionAttributeModel.attribute_id == attribute_id)
+            .all()
+        )
+
     def update(
         self,
         preference_definition_id: str,
