@@ -61,6 +61,7 @@ class KodiImdbStreamsResponse(BaseModel):
                     AttributeResponse.model_validate(attribute)
                     for attribute in torrent_stream.attributes
                     if isinstance(attribute, MediaAttributeModel)
+                    and attribute.show_in_details is not False
                 ],
                 url=torrent_stream.play_url,
             )
