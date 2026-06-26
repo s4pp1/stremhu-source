@@ -162,7 +162,8 @@ class MajomparadeIndexerDefinition(BaseIndexerDefinition):
             imdb_id = imdb_parts[-1] if len(imdb_parts) >= 4 else ""
 
             # Seeders
-            seeders_node = row.css_first(".torrent-card__side .t-stats a")
+            seeders_nodes = row.css(".torrent-card__side .t-stats a")
+            seeders_node = seeders_nodes[1] if len(seeders_nodes) > 1 else None
             seeders = seeders_node.text(strip=True) if seeders_node else ""
 
             torrents.append(
