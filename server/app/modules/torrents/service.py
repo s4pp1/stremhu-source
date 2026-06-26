@@ -4,6 +4,7 @@ from fastapi import HTTPException, status
 from app.common.constants import PRIO_0, PRIO_1
 from app.common.logger import logger
 from app.modules.indexer_accounts.service import IndexerAccountsService
+from app.modules.indexer_definitions.service import IndexerDefinitionsService
 from app.modules.relay.service import RelayService
 from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrent_files.service import TorrentFilesService
@@ -18,11 +19,13 @@ class TorrentsService:
         torrent_repository: TorrentRepository,
         torrent_files_service: TorrentFilesService,
         indexer_accounts_service: IndexerAccountsService,
+        indexer_definitions_service: IndexerDefinitionsService,
         relay_service: RelayService,
     ):
         self._torrent_repository = torrent_repository
         self._torrent_files_service = torrent_files_service
         self._indexer_accounts_service = indexer_accounts_service
+        self._indexer_definitions_service = indexer_definitions_service
         self._relay_service = relay_service
 
     def create_from_torrent_file(
@@ -37,7 +40,7 @@ class TorrentsService:
 
         torrent = self._torrent_repository.create(torrent_model)
 
-        priority = PRIO_1 if torrent.full_download else PRIO_0
+        priority = self._get_priority(torrent)
 
         relay_torrent = self._relay_service.add_torrent(
             torrent_bytes=torrent.torrent_file.torrent_bytes,
@@ -104,13 +107,17 @@ class TorrentsService:
         torrent_model = self._ensure_exists(torrent_model)
 
         if "full_download" in payload.model_fields_set:
-            priority = PRIO_1 if payload.full_download else PRIO_0
-
-            if payload.full_download is None:
-                indexer_account = self._indexer_accounts_service.get_by_id(
+            if payload.full_download is False:
+                indexer_definition = self._indexer_definitions_service.get_by_id(
                     torrent_model.indexer_id
                 )
-                priority = PRIO_1 if indexer_account.download_full_torrent else PRIO_0
+                if indexer_definition.requires_full_download:
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        detail=f"Nem lehetséges a '{indexer_definition.name}' esetében kikapcsolni a teljes letöltést!",
+                    )
+
+            priority = self._get_priority(torrent_model)
 
             sha1_hash = self.parse_info_hash(info_hash)
             torrent = self._relay_service._torrents.get(sha1_hash)
@@ -177,7 +184,7 @@ class TorrentsService:
 
         for torrent in torrents:
             try:
-                priority = PRIO_1 if torrent.full_download else PRIO_0
+                priority = self._get_priority(torrent)
                 self._relay_service.add_torrent(
                     torrent_bytes=torrent.torrent_file.torrent_bytes,
                     priority=priority,
@@ -197,3 +204,10 @@ class TorrentsService:
                 detail="A torrent nem található!",
             )
         return model
+
+    def _get_priority(self, torrent: TorrentModel) -> int:
+        if torrent.full_download is not None:
+            return PRIO_1 if torrent.full_download else PRIO_0
+
+        indexer_account = self._indexer_accounts_service.get_by_id(torrent.indexer_id)
+        return PRIO_1 if indexer_account.download_full_torrent else PRIO_0

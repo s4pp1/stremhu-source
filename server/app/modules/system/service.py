@@ -1,6 +1,5 @@
 import asyncio
 import os
-import sys
 
 from app.common.logger import logger
 from app.config import config
@@ -38,10 +37,9 @@ class SystemService:
         )
 
     async def restart(self):
+        logger.info("Az alkalmazás leáll, hogy a Docker újraindíthassa a konténert...")
         await asyncio.sleep(2)
         try:
-            os.execv(sys.executable, [sys.executable] + sys.argv)
+            os._exit(1)
         except Exception as e:
-            logger.critical(
-                "Súlyos hiba történt az automatikus újraindítás során: %s", e
-            )
+            logger.critical("Súlyos hiba történt az automatikus leállítás során: %s", e)

@@ -5,6 +5,9 @@ from sqlalchemy.orm import Session
 
 from app.common.database import get_db
 from app.modules.indexer_accounts.dependencies import create_indexer_accounts_service
+from app.modules.indexer_definitions.dependencies import (
+    get_indexer_definitions_service,
+)
 from app.modules.relay.dependencies import get_relay_service
 from app.modules.torrent_files.dependencies import create_torrent_files_service
 from app.modules.torrents.repository import TorrentRepository
@@ -18,12 +21,14 @@ def create_torrents_service(
     relay_service = get_relay_service()
     torrent_files_service = create_torrent_files_service(db)
     indexer_accounts_service = create_indexer_accounts_service(db)
+    indexer_definitions_service = get_indexer_definitions_service()
 
     return TorrentsService(
         torrent_repository=torrent_repository,
         relay_service=relay_service,
         torrent_files_service=torrent_files_service,
         indexer_accounts_service=indexer_accounts_service,
+        indexer_definitions_service=indexer_definitions_service,
     )
 
 

@@ -38,7 +38,7 @@ class StremioService:
 
         addon_id = "hu.stremhu-source.addon"
         name = "StremHU Source"
-        version = config.version
+        version = config.version.removeprefix("v")
 
         if not re.match(r"^\d+\.\d+\.\d+(?:-[a-zA-Z0-9.]+)?$", version):
             version = "0.0.0"

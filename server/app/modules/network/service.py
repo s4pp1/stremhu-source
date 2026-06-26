@@ -25,6 +25,8 @@ from app.modules.settings.schemas.internal import (
 from app.modules.settings.service import SettingsService
 from app.modules.system.service import SystemService
 
+_active_setup_task: asyncio.Task | None = None
+
 
 class NetworkService:
     def __init__(
@@ -38,7 +40,6 @@ class NetworkService:
         self._ssl_service = ssl_service
         self._ddns_service = ddns_service
         self._system_service = system_service
-        self._in_progress = False
 
     async def setup_local(self) -> tuple[NetworkSettings, SelfSignedCertificate]:
         certs = await self._ssl_service.get_local_ip_certificate(config.host_ip)
@@ -95,37 +96,41 @@ class NetworkService:
         return False
 
     async def setup(self, payload: NetworkSetup) -> NetworkSettings:
-        if self._in_progress:
-            raise ValueError("Hálózati elérés beállítása már folyamatban van!")
+        global _active_setup_task
+
+        if _active_setup_task is not None and not _active_setup_task.done():
+            return await _active_setup_task
+
+        _active_setup_task = asyncio.create_task(self._do_setup(payload))
 
         try:
-            self._in_progress = True
-
-            current_network_settings = await asyncio.to_thread(
-                self._settings_service.get_network
-            )
-
-            if payload.mode == NetworkModeEnum.LOCAL:
-                network_settings, certs = await self.setup_local()
-                asyncio.create_task(self._system_service.restart())
-                return network_settings
-
-            if payload.mode == NetworkModeEnum.MANUAL:
-                manual_network_settings = NetworkManualSettings(
-                    mode=NetworkModeEnum.MANUAL,
-                    host=payload.host,
-                )
-                network_settings = await asyncio.to_thread(
-                    self._settings_service.save_network,
-                    manual_network_settings,
-                )
-                asyncio.create_task(self._system_service.restart())
-                return network_settings
-
-            return await self._setup_auto(payload, current_network_settings)
-
+            return await _active_setup_task
         finally:
-            self._in_progress = False
+            _active_setup_task = None
+
+    async def _do_setup(self, payload: NetworkSetup) -> NetworkSettings:
+        current_network_settings = await asyncio.to_thread(
+            self._settings_service.get_network
+        )
+
+        if payload.mode == NetworkModeEnum.LOCAL:
+            network_settings, _ = await self.setup_local()
+            asyncio.create_task(self._system_service.restart())
+            return network_settings
+
+        if payload.mode == NetworkModeEnum.MANUAL:
+            manual_network_settings = NetworkManualSettings(
+                mode=NetworkModeEnum.MANUAL,
+                host=payload.host,
+            )
+            network_settings = await asyncio.to_thread(
+                self._settings_service.save_network,
+                manual_network_settings,
+            )
+            asyncio.create_task(self._system_service.restart())
+            return network_settings
+
+        return await self._setup_auto(payload, current_network_settings)
 
     async def _setup_auto(
         self, payload: NetworkAutoSetup, current_network_settings: NetworkSettings

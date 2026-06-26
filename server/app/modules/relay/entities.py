@@ -147,7 +147,7 @@ class File:
         self.end_piece_index = (file_info.offset + self.end_byte) // torrent.piece_size
 
         content_type = content_types.get_content_type(self.name)
-        self.is_video = content_type.startswith("video/")
+        self.is_video = content_type.startswith("video/") if content_type else False
 
         self.streams: dict[str, Stream] = {}
 
