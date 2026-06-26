@@ -54,7 +54,7 @@ def parse_torrent_info(torrent: bytes | libtorrent.torrent_info) -> TorrentInfo:
                 offset=offset,
                 start_piece_index=start_piece_index,
                 end_piece_index=end_piece_index,
-                is_video=content_type.startswith("video/"),
+                is_video=content_type is not None and content_type.startswith("video/"),
             )
         )
 
