@@ -66,8 +66,8 @@ function RouteComponent() {
           <div className="grid">
             <ItemTitle>Kizárt tulajdonságok</ItemTitle>
             <ItemDescription>
-              Az ezekben a tulajdonságokban rejlő értékeket nem fogod látni az
-              oldalon. Ez akkor hasznos, ha például nem érdekel a ruha márkája.
+              A kliensekben megjelenő listában nem fognak szerepelni azok a
+              torrent-ek, amik tartalmaznák a kizárt tulajdonságot.
             </ItemDescription>
           </div>
           {exclusions.map((exclusion) => (
@@ -99,8 +99,9 @@ function RouteComponent() {
           <div className="grid">
             <ItemTitle>Kizárható tulajdonságok</ItemTitle>
             <ItemDescription>
-              Az ezekben a tulajdonságokban rejlő értékeket nem fogod látni az
-              oldalon. Ez akkor hasznos, ha például nem érdekel a ruha márkája.
+              Ezek a tulajdonságok kizárhatók, amiknek az a hatása, hogy a
+              kliensek listázójában nem fognak megjelenni a kizárt
+              tulajdonsággal rendelkező torrentek.
             </ItemDescription>
           </div>
           {attributes.map((attribute) => (
