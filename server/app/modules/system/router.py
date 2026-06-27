@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, BackgroundTasks, Depends
 
 from app.modules.auth.dependencies import SessionGuard
 from app.modules.indexers.dependencies import get_indexers_service
@@ -89,3 +89,14 @@ async def indexers_cleanup(
     _: Annotated[UserModel, Depends(SessionGuard([UserRoleKey.ADMIN]))],
 ):
     await indexers_service.cleanup_torrents_by_rules()
+
+
+@router.post(
+    "/restart",
+)
+def restart(
+    background_tasks: BackgroundTasks,
+    system_service: Annotated[SystemService, Depends(get_system_service)],
+    _: Annotated[UserModel, Depends(SessionGuard([UserRoleKey.ADMIN]))],
+):
+    background_tasks.add_task(system_service.restart)

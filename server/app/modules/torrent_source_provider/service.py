@@ -1,6 +1,6 @@
 import asyncio
 from collections.abc import Awaitable
-from typing import overload
+from typing import cast, overload
 
 from app.common.keyed_lock import KeyedLock
 from app.common.logger import logger
@@ -12,7 +12,12 @@ from app.modules.torrent_files.schemas import TorrentFileIdentifier, TorrentFile
 from app.modules.torrent_files.service import TorrentFilesService
 from app.modules.torrent_source_provider.schemas import TorrentSource
 
-torrent_provider_locks = KeyedLock()
+_torrent_provider_locks = KeyedLock()
+_ongoing_tasks: dict[
+    str,
+    asyncio.Task[tuple[list[TorrentSource], list[str]]]
+    | asyncio.Task[TorrentSource | None],
+] = {}
 
 
 class TorrentSourceProviderService:
@@ -29,6 +34,22 @@ class TorrentSourceProviderService:
         self,
         imdb_id: str,
     ) -> tuple[list[TorrentSource], list[str]]:
+        task_key = f"imdb:{imdb_id}"
+        if task_key in _ongoing_tasks:
+            result = await _ongoing_tasks[task_key]
+            return cast(tuple[list[TorrentSource], list[str]], result)
+
+        task = asyncio.create_task(self._find_by_imdb_id(imdb_id))
+        _ongoing_tasks[task_key] = task
+        try:
+            return await task
+        finally:
+            _ongoing_tasks.pop(task_key, None)
+
+    async def _find_by_imdb_id(
+        self,
+        imdb_id: str,
+    ) -> tuple[list[TorrentSource], list[str]]:
         (
             indexer_torrents,
             indexer_errors,
@@ -42,6 +63,22 @@ class TorrentSourceProviderService:
         self,
         torrent_id: str,
     ) -> tuple[list[TorrentSource], list[str]]:
+        task_key = f"torrent:{torrent_id}"
+        if task_key in _ongoing_tasks:
+            result = await _ongoing_tasks[task_key]
+            return cast(tuple[list[TorrentSource], list[str]], result)
+
+        task = asyncio.create_task(self._find_by_torrent_id(torrent_id))
+        _ongoing_tasks[task_key] = task
+        try:
+            return await task
+        finally:
+            _ongoing_tasks.pop(task_key, None)
+
+    async def _find_by_torrent_id(
+        self,
+        torrent_id: str,
+    ) -> tuple[list[TorrentSource], list[str]]:
         (
             indexer_torrents,
             indexer_errors,
@@ -52,6 +89,23 @@ class TorrentSourceProviderService:
         return torrent_files, indexer_errors
 
     async def find_one_by_indexer(
+        self,
+        indexer_id: str,
+        torrent_id: str,
+    ) -> TorrentSource | None:
+        task_key = f"indexer:{indexer_id}:{torrent_id}"
+        if task_key in _ongoing_tasks:
+            result = await _ongoing_tasks[task_key]
+            return cast(TorrentSource | None, result)
+
+        task = asyncio.create_task(self._find_one_by_indexer(indexer_id, torrent_id))
+        _ongoing_tasks[task_key] = task
+        try:
+            return await task
+        finally:
+            _ongoing_tasks.pop(task_key, None)
+
+    async def _find_one_by_indexer(
         self,
         indexer_id: str,
         torrent_id: str,
@@ -165,7 +219,7 @@ class TorrentSourceProviderService:
     async def _download_and_save_torrent(
         self, indexer_torrent: IndexerTorrent
     ) -> TorrentFileModel | None:
-        async with torrent_provider_locks(
+        async with _torrent_provider_locks(
             f"{indexer_torrent.indexer_account.indexer_id}:{indexer_torrent.torrent_id}"
         ):
             async with self._db_lock:
