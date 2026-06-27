@@ -19,7 +19,7 @@ export function Torrents() {
         <CircleCheckBigIcon />
         <AlertTitle>Nincs aktív torrent</AlertTitle>
         <AlertDescription>
-          Az elindított médiákhoz tartozó torrentek itt fognak megjelennie.
+          Az elindított médiákhoz tartozó torrentek itt fognak megjelenni.
         </AlertDescription>
       </Alert>
     )

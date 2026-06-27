@@ -32,7 +32,7 @@ setproctitle("stremhu-source")
 async def lifespan(app: FastAPI):
     is_dev = config.node_env == NodeEnv.DEV
 
-    if not is_dev:
+    if is_dev:
         config.openapi_dir.mkdir(parents=True, exist_ok=True)
         with (config.openapi_dir / "openapi.json").open("w", encoding="utf-8") as f:
             json.dump(app.openapi(), f, indent=2, ensure_ascii=False)

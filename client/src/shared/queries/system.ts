@@ -10,6 +10,7 @@ import {
   systemGetSettings,
   systemGetStatus,
   systemIndexersCleanup,
+  systemRestart,
   systemTorrentFilesCleanup,
   systemUpdateSettings,
 } from '../lib/source/source-client'
@@ -69,6 +70,14 @@ export function useSystemIndexersCleanup() {
   return useMutation({
     mutationFn: async () => {
       await systemIndexersCleanup()
+    },
+  })
+}
+
+export function useSystemRestart() {
+  return useMutation({
+    mutationFn: async () => {
+      await systemRestart()
     },
   })
 }
