@@ -114,12 +114,11 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
 
         total = int(data.get("total_results", 0))
         limit = int(data.get("perpage", 1)) or 1
-        on_page = int(data.get("onpage", current_page))
         last_page = -(-total // limit)  # math.ceil
 
         return IndexerDefinitionFindTorrentsResult(
             torrents=torrents,
-            next_page=current_page + 1 if last_page > on_page else None,
+            next_page=current_page + 1 if current_page < last_page else None,
         )
 
     async def _fetch_torrent(

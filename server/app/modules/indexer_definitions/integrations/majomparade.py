@@ -236,7 +236,7 @@ class MajomparadeIndexerDefinition(BaseIndexerDefinition):
         )
 
     async def _fetch_hit_and_run_ids(self) -> list[str]:
-        response = await self._client.get("/hitnrun/")
+        response = await self._client.get("/hnr")
         tree = HTMLParser(response.text)
 
         content = tree.css_first("#main-section")
