@@ -3,6 +3,7 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, EmailStr, Field, model_validator
 
+from app.common.validators import validate_domain
 from app.modules.network.ddns import discover_dns_providers
 from app.modules.settings.enums import NetworkConnectionEnum, NetworkModeEnum
 
@@ -40,17 +41,7 @@ class NetworkManualSetup(BaseModel):
 
     @model_validator(mode="after")
     def validate_host(self) -> "NetworkManualSetup":
-        if self.host.startswith("http://") or self.host.startswith("https://"):
-            raise ValueError("A protokoll (http/https) nem szerepelhet a domainben")
-
-        if re.match(r"^\d{1,3}(\.\d{1,3}){3}", self.host):
-            raise ValueError("IP cím nem engedélyezett, csak domain")
-
-        if ":" in self.host:
-            raise ValueError("A port megadása nem engedélyezett")
-
-        if not re.match(r"^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(/.*)?$", self.host):
-            raise ValueError("Érvénytelen domain formátum")
+        validate_domain(self.host)
 
         return self
 

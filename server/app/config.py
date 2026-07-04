@@ -5,6 +5,8 @@ from pathlib import Path
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from app.common.validators import validate_domain
+
 
 class NodeEnv(str, Enum):
     DEV = "dev"
@@ -25,7 +27,12 @@ class Config(BaseSettings):
     version: str = "0.0.0"
     description: str = "Torrentalapú streaming magyar torrentoldalakra építve."
     session_secret: str = "stremhu-source"
-    host_ip: str = Field(default="", min_length=1)
+    host_ip: str = Field(
+        default="",
+        min_length=1,
+    )
+
+    reverse_proxy_domain: str | None = None
 
     port: int = 7070
 
@@ -87,6 +94,14 @@ class Config(BaseSettings):
             )
 
         return value
+
+    @field_validator("reverse_proxy_domain")
+    @classmethod
+    def validate_reverse_proxy_domain(cls, value: str | None) -> str | None:
+        if value is None:
+            return value
+
+        return validate_domain(value)
 
 
 config = Config()

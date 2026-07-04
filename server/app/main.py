@@ -45,19 +45,16 @@ async def lifespan(app: FastAPI):
     scheduler = setup_scheduler()
     scheduler.start()
 
-    # 4. Libtorrent és perzisztált torrentek indítása, visszatöltése
     relay_service = get_relay_service()
     register_persisted_torrents_callbacks()
     restore_torrents()
 
     priority_manager_task = asyncio.create_task(relay_service.priority_manager_loop())
 
-    # Ön-ellenőrzés indítása a háttérben
-    asyncio.create_task(verify_self_connection())
+    if not config.reverse_proxy_domain:
+        asyncio.create_task(verify_self_connection())
 
     yield
-
-    # Leállítási szekvencia
     logger.info("🛑 Szerver leállítása, erőforrások felszabadítása...")
 
     indexer_definitions_service = get_indexer_definitions_service()
@@ -115,11 +112,8 @@ app.add_middleware(
     max_age=1000 * 60 * 60 * 24 * 30,
 )
 
-# API router beemelése
 app.include_router(api_router)
 
-
-# Kliens statikus fájljainak kiszolgálása (SPA útválasztás támogatással)
 app.mount(
     "/",
     SPAStaticFiles(

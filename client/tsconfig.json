@@ -19,6 +19,7 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
+    "sourceMap": true,
 
     /* Linting */
     "skipLibCheck": true,
@@ -29,7 +30,6 @@
     "noUncheckedSideEffectImports": true,
     "paths": {
       "@/*": ["./src/*"]
-    },
-    "sourceMap": true
+    }
   }
 }

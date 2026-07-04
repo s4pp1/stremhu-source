@@ -11,3 +11,5 @@ class SystemStatus(BaseModel):
     host_ip: str
 
     port: int
+
+    is_reverse_proxy: bool

@@ -96,6 +96,11 @@ class NetworkService:
         return False
 
     async def setup(self, payload: NetworkSetup) -> NetworkSettings:
+        if config.reverse_proxy_domain:
+            raise ValueError(
+                "A hálózati beállításokat környezeti változó vezérli, így nem módosíthatóak."
+            )
+
         global _active_setup_task
 
         if _active_setup_task is not None and not _active_setup_task.done():

@@ -491,6 +491,7 @@ export interface SystemStatusResponse {
   appUrl: string
   hostIp: string
   port: number
+  isReverseProxy: boolean
 }
 
 export interface TorrentResponse {

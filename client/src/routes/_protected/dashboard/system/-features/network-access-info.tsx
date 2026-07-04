@@ -66,7 +66,7 @@ export function NetworkAccessInfo() {
           </Item>
           {networkSettings.mode === 'auto' && (
             <>
-              <Item variant="default" className="p-0">
+              <Item className="p-0">
                 <ItemContent>
                   <ItemTitle>Tanúsítvány lejárata / frissítése</ItemTitle>
                   <ItemDescription className="font-bold font-mono break-all">
@@ -74,7 +74,7 @@ export function NetworkAccessInfo() {
                   </ItemDescription>
                 </ItemContent>
               </Item>
-              <Item variant="default" className="p-0">
+              <Item className="p-0">
                 <ItemContent>
                   <ItemTitle>Utolsó IP szinkronizáció</ItemTitle>
                   <ItemDescription className="font-bold font-mono break-all">
@@ -86,20 +86,30 @@ export function NetworkAccessInfo() {
           )}
         </div>
         <Separator />
-        <Item variant="default" className="p-0">
-          <ItemContent>
-            <ItemTitle>
-              Hálózati elérés frissítése vagy új konfiguráció alkalmazása.
-            </ItemTitle>
-          </ItemContent>
-          <ItemActions>
-            <Button size="icon-sm" className="rounded-full" asChild>
-              <Link to="/dashboard/system/network">
-                <SettingsIcon />
-              </Link>
-            </Button>
-          </ItemActions>
-        </Item>
+        {systemStatus.isReverseProxy ? (
+          <Item className="p-0">
+            <ItemContent>
+              <ItemTitle className="text-muted-foreground">
+                A hálózati elérés környezeti változóban van beállítva.
+              </ItemTitle>
+            </ItemContent>
+          </Item>
+        ) : (
+          <Item className="p-0">
+            <ItemContent>
+              <ItemTitle>
+                Hálózati elérés frissítése vagy új konfiguráció alkalmazása.
+              </ItemTitle>
+            </ItemContent>
+            <ItemActions>
+              <Button size="icon-sm" className="rounded-full" asChild>
+                <Link to="/dashboard/system/network">
+                  <SettingsIcon />
+                </Link>
+              </Button>
+            </ItemActions>
+          </Item>
+        )}
       </CardContent>
     </Card>
   )

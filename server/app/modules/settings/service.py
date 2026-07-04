@@ -4,6 +4,7 @@ from app.config import config
 from app.modules.settings.enums import NetworkModeEnum, SettingsKeyEnum
 from app.modules.settings.repository import SettingsRepository
 from app.modules.settings.schemas.internal import (
+    NetworkManualSettings,
     NetworkSettings,
     RelaySettings,
     RelaySettingsUpdate,
@@ -74,10 +75,22 @@ class SettingsService:
     # Network Settings
 
     def save_network(self, payload: NetworkSettings) -> NetworkSettings:
+        if config.reverse_proxy_domain:
+            from fastapi import HTTPException
+
+            raise HTTPException(
+                status_code=403,
+                detail="A hálózati beállításokat környezeti változó vezérli, így nem módosíthatóak.",
+            )
         self._settings_repository.save(SettingsKeyEnum.NETWORK, payload.model_dump())
         return payload
 
     def find_network(self) -> NetworkSettings | None:
+        if config.reverse_proxy_domain:
+            return NetworkManualSettings(
+                mode=NetworkModeEnum.MANUAL, host=config.reverse_proxy_domain
+            )
+
         record = self._settings_repository.find_one(SettingsKeyEnum.NETWORK.value)
         if not record or not record.value:
             return None

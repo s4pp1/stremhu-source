@@ -34,6 +34,7 @@ class SystemService:
             version=config.version,
             host_ip=config.host_ip,
             port=config.port,
+            is_reverse_proxy=config.reverse_proxy_domain is not None,
         )
 
     async def restart(self):
