@@ -99,11 +99,14 @@ class TorrentStream(BaseModel):
             return None
 
         torrent_attributes = parse_torrent_name(
-            torrent_file.info.name,
+            name=torrent_file.info.name,
             external_fallbacks=indexer_torrent.media_attributes,
         )
 
-        file_attributes = parse_torrent_name(torrent_file_info.name)
+        file_attributes = parse_torrent_name(
+            name=torrent_file_info.name,
+            use_fallbacks=False,
+        )
 
         torrent_attr_ids = {attribute.id for attribute in torrent_attributes}
         file_attr_ids = {attribute.id for attribute in file_attributes}

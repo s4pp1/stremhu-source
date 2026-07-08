@@ -12,12 +12,10 @@ GroupedAttributes: TypeAlias = dict[str | None, list[PatternAttributeTuple]]
 FallbackAttributes: TypeAlias = dict[str | None, MediaAttributeModel]
 
 
-# 1. Preferenciák viselkedésének (multiple) kigyűjtése
 _PREFERENCE_MULTIPLE_MAP: dict[str, bool] = {
     pref.id: pref.multiple for pref in DEFAULT_PREFERENCES
 }
 
-# 2. Attribútumok csoportosítása és regexek előfordítása
 _GROUPED_ATTRIBUTES: GroupedAttributes = defaultdict(list)
 _FALLBACKS: FallbackAttributes = {}
 
@@ -32,16 +30,11 @@ for attribute in DEFAULT_ATTRIBUTES:
 def parse_torrent_name(
     name: str,
     external_fallbacks: list[MediaAttributeModel] | None = None,
+    use_fallbacks: bool = True,
 ) -> list[MediaAttributeModel]:
-    """Parses the torrent name and returns the matched MediaAttributeModel objects.
-
-    If a category does not have a match from the name, it falls back to the
-    provided external_fallbacks first, and then to the database default fallback.
-    """
     name_lower = name.lower()
     matched_attributes: list[MediaAttributeModel] = []
 
-    # Külső fallback attribútumok indexelése kategória szerint a gyors kereséshez
     external_fallback_map: dict[str | None, MediaAttributeModel] = {}
     if external_fallbacks:
         for attr in external_fallbacks:
@@ -64,8 +57,7 @@ def parse_torrent_name(
                 if not is_multiple:
                     break
 
-        # Fallback logika, ha az adott kategóriában nem találtunk egyezést a névben
-        if not category_matched:
+        if not category_matched and use_fallbacks:
             if pref_id in external_fallback_map:
                 matched_attributes.append(external_fallback_map[pref_id])
             elif pref_id in _FALLBACKS:
@@ -75,7 +67,6 @@ def parse_torrent_name(
 
 
 def clean_torrent_name(name: str) -> str:
-    """Removes all known attributes (codecs, resolutions, etc.) from the name to prevent false positives."""
     name_cleaned = name
     all_pref_ids = list(_GROUPED_ATTRIBUTES.keys())
     for pref_id in _FALLBACKS.keys():
