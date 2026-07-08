@@ -3,18 +3,6 @@ import asyncio
 from app.modules.relay.dependencies import get_relay_service
 
 
-async def alert_loop():
-    relay_service = get_relay_service()
-    while True:
-        try:
-            relay_service.process_alerts()
-            await asyncio.sleep(1)
-        except asyncio.CancelledError:
-            break
-        except Exception:
-            await asyncio.sleep(1)
-
-
 async def resume_save_loop():
     relay_service = get_relay_service()
     while True:

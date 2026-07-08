@@ -21,45 +21,76 @@ class RelayService:
     ):
         self._libtorrent_session = libtorrent.session()
 
-        alert_mask = (  # pyright: ignore[reportUnknownVariableType]
-            libtorrent.alert.category_t.error_notification  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
-            | libtorrent.alert.category_t.storage_notification  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
-            | libtorrent.alert.category_t.status_notification  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
+        alert_mask = (
+            libtorrent.alert_category.error
+            | libtorrent.alert_category.storage
+            | libtorrent.alert_category.status
+            | libtorrent.alert_category.piece_progress
         )
 
         self._libtorrent_session.apply_settings(
             {
                 "alert_mask": alert_mask,
                 "listen_interfaces": f"0.0.0.0:{config.libtorrent_port},[::]:{config.libtorrent_port}",
-                "connections_limit": 200,
+                "connections_limit": 300,
                 "enable_dht": False,
                 "enable_lsd": False,
                 "auto_sequential": False,
                 "peer_timeout": 10,
                 "piece_extent_affinity": True,
-                "piece_timeout": 5,
+                "piece_timeout": 10,
                 "request_timeout": 5,
                 "unchoke_interval": 1,
-                "disk_io_write_mode": 1,
-                "disk_io_read_mode": 1,
                 "active_downloads": -1,
                 "active_seeds": -1,
                 "active_limit": -1,
+                "connection_speed": 100,
+                "mixed_mode_algorithm": libtorrent.bandwidth_mixed_algo_t.prefer_tcp,
+                "recv_socket_buffer_size": 2 * 1024 * 1024,
+                "unchoke_slots_limit": 16,
             }
         )
 
         self._torrent_connections_limit = 20
         self._torrents: dict[libtorrent.sha1_hash, Torrent] = {}
+        self.loop = asyncio.get_event_loop()
+        self.priority_update_queue: asyncio.Queue[str] = asyncio.Queue()
+
+        def on_alert():
+            self.loop.call_soon_threadsafe(self.process_alerts)
+
+        self._libtorrent_session.set_alert_notify(on_alert)
+
+        self.pending_piece_requests: dict[
+            tuple[str, int], list[asyncio.Future[bytes]]
+        ] = {}
 
         # Event hooks for resume data management (Observer Pattern)
         self.on_save_resume: list[Callable[[str, bytes], None]] = []
 
+    def trigger_priority_update(
+        self,
+        info_hash: str,
+    ) -> None:
+        self.loop.call_soon_threadsafe(self.priority_update_queue.put_nowait, info_hash)
+
     async def priority_manager_loop(self):
         while True:
-            torrents = list(self._torrents.values())
-            for torrent in torrents:
-                await asyncio.to_thread(torrent.priority_manager)
-            await asyncio.sleep(0.1)
+            # Várjuk meg az első beérkező kérést
+            info_hash = await self.priority_update_queue.get()
+            info_hashes = {info_hash}
+
+            # Szedjük ki az összes többit is, ami esetleg várakozik (a set deduplikál)
+            while not self.priority_update_queue.empty():
+                try:
+                    info_hashes.add(self.priority_update_queue.get_nowait())
+                except asyncio.QueueEmpty:
+                    break
+
+            for info_hash in info_hashes:
+                sha1_hash = self._parse_info_hash(info_hash)
+                if torrent := self._torrents.get(sha1_hash):
+                    await asyncio.to_thread(torrent.priority_manager)
 
     def update_settings(
         self,
@@ -127,6 +158,32 @@ class RelayService:
 
         return file
 
+    async def get_piece_data(
+        self,
+        torrent_handle: libtorrent.torrent_handle,
+        piece_index: int,
+    ) -> bytes:
+        info_hash = str(torrent_handle.info_hash())
+        request_key = (info_hash, piece_index)
+        future: asyncio.Future[bytes] = self.loop.create_future()
+
+        requests = self.pending_piece_requests.setdefault(request_key, [])
+        requests.append(future)
+
+        if torrent_handle.have_piece(piece_index):
+            torrent_handle.read_piece(piece_index)
+
+        try:
+            return await future
+        finally:
+            if future in requests:
+                requests.remove(future)
+                if not requests:
+                    self.pending_piece_requests.pop(request_key, None)
+
+            if not future.done():
+                future.cancel()
+
     def add_torrent(
         self,
         torrent_bytes: bytes,
@@ -163,6 +220,8 @@ class RelayService:
         torrent = Torrent(
             torrent_handle=torrent_handle,
             torrent_info=parsed_torrent_info,
+            service=self,
+            default_priority=priority,
         )
 
         self._torrents[torrent_info.info_hash()] = torrent
@@ -239,30 +298,69 @@ class RelayService:
         alerts = self._libtorrent_session.pop_alerts()
 
         for alert in alerts:
-            if isinstance(alert, libtorrent.save_resume_data_alert):
-                try:
-                    resume_data = libtorrent.bencode(
-                        libtorrent.write_resume_data(alert.params)
-                    )
-                    torrent_handle = alert.handle
-                    if torrent_handle.is_valid():
-                        info_hash_str = str(torrent_handle.info_hash())
+            try:
+                match alert:
+                    case libtorrent.save_resume_data_alert():
+                        try:
+                            resume_data = libtorrent.bencode(
+                                libtorrent.write_resume_data(alert.params)
+                            )
+                            torrent_handle = alert.handle
+                            if torrent_handle.is_valid():
+                                info_hash_str = str(torrent_handle.info_hash())
 
-                        for callback in self.on_save_resume:
-                            try:
-                                callback(info_hash_str, resume_data)
-                            except Exception as e:
+                                for callback in self.on_save_resume:
+                                    try:
+                                        callback(info_hash_str, resume_data)
+                                    except Exception as e:
+                                        logger.error(
+                                            f"Hiba történt az on_save_resume eseménykezelő futtatása közben: {e}"
+                                        )
+                        except Exception as e:
+                            logger.error(
+                                f"Hiba történt a torrent visszaállítási adatok mentése közben: {e}"
+                            )
+
+                    case libtorrent.save_resume_data_failed_alert():
+                        logger.error(
+                            f"Hiba történt a torrent visszaállítási adatok mentése közben: {alert.message()}"
+                        )
+
+                    case libtorrent.piece_finished_alert():
+                        info_hash = str(alert.handle.info_hash())
+                        request_key = (info_hash, alert.piece_index)
+                        if request_key in self.pending_piece_requests:
+                            alert.handle.read_piece(alert.piece_index)
+
+                        self.trigger_priority_update(info_hash)
+
+                    case libtorrent.read_piece_alert():
+                        info_hash = str(alert.handle.info_hash())
+                        request_key = (info_hash, alert.piece)
+
+                        if futures := self.pending_piece_requests.pop(request_key):
+                            has_error = alert.error and alert.error.value() != 0
+
+                            if has_error:
                                 logger.error(
-                                    f"Hiba történt az on_save_resume eseménykezelő futtatása közben: {e}"
+                                    f"Hiba a libtorrent.read_piece_alert során: {alert.error.message()}"
                                 )
-                except Exception as e:
-                    logger.error(
-                        f"Hiba történt a torrent visszaállítási adatok mentése közben: {e}"
-                    )
-            elif isinstance(alert, libtorrent.save_resume_data_failed_alert):
-                logger.error(
-                    f"Hiba történt a torrent visszaállítási adatok mentése közben: {alert.message()}"
-                )
+                                err = Exception(alert.error.message())
+                                for future in futures:
+                                    if not future.done():
+                                        self.loop.call_soon_threadsafe(
+                                            future.set_exception, err
+                                        )
+                            else:
+                                piece_data = bytes(alert.buffer)
+                                for future in futures:
+                                    if not future.done():
+                                        self.loop.call_soon_threadsafe(
+                                            future.set_result, piece_data
+                                        )
+
+            except Exception as e:
+                logger.error(f"Hiba a {type(alert).__name__} feldolgozása közben: {e}")
 
     def _parse_info_hash(
         self,

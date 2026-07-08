@@ -16,7 +16,7 @@ from app.config import NodeEnv, config
 from app.exceptions import setup_exception_handlers
 from app.modules.indexer_definitions.dependencies import get_indexer_definitions_service
 from app.modules.network.background_tasks import verify_self_connection
-from app.modules.relay.background_tasks import alert_loop, resume_save_loop
+from app.modules.relay.background_tasks import resume_save_loop
 from app.modules.relay.dependencies import get_relay_service
 from app.modules.torrents.background_tasks import (
     register_persisted_torrents_callbacks,
@@ -39,7 +39,6 @@ async def lifespan(app: FastAPI):
 
     sync_database_and_settings(app)
 
-    alert_task = asyncio.create_task(alert_loop())
     save_task = asyncio.create_task(resume_save_loop())
 
     scheduler = setup_scheduler()
@@ -64,7 +63,6 @@ async def lifespan(app: FastAPI):
     priority_manager_task.cancel()
     scheduler.shutdown()
     save_task.cancel()
-    alert_task.cancel()
 
     relay_service.trigger_save_resume_data()
 

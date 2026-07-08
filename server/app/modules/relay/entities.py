@@ -3,8 +3,11 @@ from __future__ import annotations
 import asyncio
 import math
 from collections.abc import AsyncIterator
-from pathlib import Path
+from typing import TYPE_CHECKING
 from uuid import uuid4
+
+if TYPE_CHECKING:
+    from app.modules.relay.service import RelayService
 
 import content_types
 import libtorrent as libtorrent
@@ -12,13 +15,12 @@ from fastapi import Request
 
 from app.common.constants import (
     CHUNK_SIZE,
-    PRIO_2,
+    PRIO_1,
     PRIO_5,
     PRIO_7,
 )
 from app.common.logger import logger
 from app.common.torrent_info import TorrentFileInfo, TorrentInfo
-from app.modules.relay.schemas import PieceOrFileAvailable
 
 
 class Torrent:
@@ -26,22 +28,40 @@ class Torrent:
         self,
         torrent_handle: libtorrent.torrent_handle,
         torrent_info: TorrentInfo,
+        service: RelayService,
+        default_priority: int,
     ):
         self.torrent_handle = torrent_handle
+        self.service = service
 
         self.info_hash = torrent_info.info_hash
         self.name = torrent_info.name
         self.total_size = torrent_info.size
 
         self.piece_size = torrent_info.piece_size
-        self.chunk_piece_count = math.ceil(CHUNK_SIZE / self.piece_size)
 
-        piece_priorities = torrent_handle.piece_priorities()
-        self._default_piece_priorities = piece_priorities
-        self._active_piece_priorities = piece_priorities
+        self.prefetch_piece_count = max(
+            1,
+            math.ceil(
+                (64 * 1024 * 1024) / self.piece_size,
+            ),
+        )
+
+        self.critical_piece_count = max(
+            1,
+            min(
+                math.ceil((1024 * 1024) / self.piece_size),
+                2,
+            ),
+        )
+
+        self._default_piece_priority = default_priority
+
+        self._active_deadlines: dict[int, int] = {}
+
+        self._max_connections = self.service._torrent_connections_limit
 
         self.files: dict[int, File] = {}
-        self._active_deadlines: list[int] = []
 
         for file_info in torrent_info.files:
             self.files[file_info.index] = File(
@@ -49,82 +69,96 @@ class Torrent:
                 torrent=self,
             )
 
+    @property
+    def has_active_streams(self) -> bool:
+        return any(file.has_active_streams for file in self.files.values())
+
     def priority_manager(self):
         try:
-            priorities, piece_deadlines = self.get_priorities_and_deadlines()
-            if priorities != self._active_piece_priorities:
-                self.torrent_handle.prioritize_pieces(priorities)
-                self._active_piece_priorities = priorities
+            target_max_connections = (
+                100
+                if self.has_active_streams
+                else self.service._torrent_connections_limit
+            )
 
-            for piece_index in self._active_deadlines:
-                if piece_index not in piece_deadlines:
+            if target_max_connections != self._max_connections:
+                self.torrent_handle.set_max_connections(target_max_connections)
+                self._max_connections = target_max_connections
+
+            target_priorities, target_deadlines = self.get_priorities_and_deadlines()
+
+            active_priorities = self.torrent_handle.piece_priorities()
+
+            for piece_index, current_priority in enumerate(active_priorities):
+                priority = target_priorities.get(
+                    piece_index, self._default_piece_priority
+                )
+                if current_priority != priority:
+                    self.torrent_handle.piece_priority(piece_index, priority)
+
+            for piece_index in list(self._active_deadlines.keys()):
+                if piece_index not in target_deadlines:
                     self.torrent_handle.reset_piece_deadline(piece_index)
+                    self._active_deadlines.pop(piece_index)
 
-            for piece_index, deadline in piece_deadlines.items():
-                self.torrent_handle.set_piece_deadline(piece_index, deadline)
-
-            self._active_deadlines = list(piece_deadlines.keys())
+            for piece_index, deadline in target_deadlines.items():
+                if not self._active_deadlines.get(piece_index):
+                    self.torrent_handle.set_piece_deadline(piece_index, deadline)
+                    self._active_deadlines[piece_index] = deadline
 
         except Exception:
             logger.exception("Hiba történt a prioritáskezelőben.")
 
-    def get_file(
+    def update_default_priority(
         self,
-        file_index: int,
-    ) -> File | None:
-        if file_index not in self.files:
-            return None
-        return self.files[file_index]
+        priority: int,
+    ) -> None:
+        self._default_piece_priority = priority
+        self.service.trigger_priority_update(self.info_hash)
 
-    def update_default_priorities(self, priority: int) -> None:
-        self._default_piece_priorities = [priority] * len(
-            self._default_piece_priorities
-        )
-
-    def get_priorities_and_deadlines(self) -> tuple[list[int], dict[int, int]]:
-        priorities = self._default_piece_priorities.copy()
-        piece_deadlines: dict[int, int] = {}
+    def get_priorities_and_deadlines(self) -> tuple[dict[int, int], dict[int, int]]:
+        target_priorities: dict[int, int] = {}
+        target_deadlines: dict[int, int] = {}
 
         for file in self.files.values():
-            if not file.streams:
+            if not file.has_active_streams:
                 continue
 
             for piece_index in range(file.start_piece_index, file.end_piece_index + 1):
-                priorities[piece_index] = PRIO_2
+                target_priorities[piece_index] = PRIO_1
 
-            meta_deadlines = file.calculate_meta_deadlines()
-
-            priority = PRIO_7
-
-            if meta_deadlines:
-                for piece_index, piece_deadline in meta_deadlines.items():
-                    priorities[piece_index] = priority
-                    piece_deadlines[piece_index] = piece_deadline
-                priority = PRIO_5
+            self._set_file_boundary_priorities(
+                file, target_priorities, target_deadlines
+            )
 
             for stream in list(file.streams.values()):
-                priority_pieces, priority_count = stream.calculate_deadlines()
+                if stream.is_destroying:
+                    continue
 
-                for index, (piece_index, piece_deadline) in enumerate(
-                    priority_pieces.items()
-                ):
-                    priorities[piece_index] = max(priorities[piece_index], priority)
+                prefetch_end = min(
+                    file.end_piece_index,
+                    stream.current_stream_piece + self.prefetch_piece_count,
+                )
 
-                    if index > priority_count:
-                        continue
+                for piece_index in range(stream.current_stream_piece, prefetch_end + 1):
+                    target_priorities[piece_index] = PRIO_5
 
-                    deadline = piece_deadline
-                    if meta_deadlines:
-                        deadline = deadline + 2500
+                critical_pieces = stream.get_critical_pieces()
+                for piece_index in critical_pieces:
+                    target_priorities[piece_index] = PRIO_7
+                    target_deadlines[piece_index] = 0
 
-                    if piece_index not in piece_deadlines:
-                        piece_deadlines[piece_index] = deadline
-                    else:
-                        piece_deadlines[piece_index] = min(
-                            piece_deadlines[piece_index], piece_deadline
-                        )
+        return target_priorities, target_deadlines
 
-        return priorities, piece_deadlines
+    def _set_file_boundary_priorities(
+        self,
+        file: File,
+        target_priorities: dict[int, int],
+        target_deadlines: dict[int, int],
+    ) -> None:
+        for piece_index in {file.start_piece_index, file.end_piece_index}:
+            target_priorities[piece_index] = PRIO_7
+            target_deadlines[piece_index] = 0
 
 
 class File:
@@ -133,53 +167,22 @@ class File:
         file_info: TorrentFileInfo,
         torrent: Torrent,
     ):
-        file_progress = torrent.torrent_handle.file_progress()
-
         self.torrent = torrent
-        self.is_available = file_progress[file_info.index] == file_info.size
-        self.file_index = file_info.index
-        self.path = Path(torrent.torrent_handle.save_path()) / file_info.path
         self.name = file_info.name
         self.size = file_info.size
         self.offset = file_info.offset
-        self.end_byte = self.size - 1
+
         self.start_piece_index = file_info.offset // torrent.piece_size
-        self.end_piece_index = (file_info.offset + self.end_byte) // torrent.piece_size
+        self.end_piece_index = (file_info.offset + self.size - 1) // torrent.piece_size
 
         content_type = content_types.get_content_type(self.name)
         self.is_video = content_type.startswith("video/") if content_type else False
 
         self.streams: dict[str, Stream] = {}
 
-    def calculate_meta_deadlines(self) -> dict[int, int] | None:
-        meta_piece_count = math.ceil(2 * 1024 * 1024 / self.torrent.piece_size)
-
-        start_meta_indices = range(
-            self.start_piece_index,
-            min(
-                self.end_piece_index + 1,
-                self.start_piece_index + meta_piece_count,
-            ),
-        )
-
-        end_meta_indices = range(
-            max(
-                self.start_piece_index,
-                self.end_piece_index - meta_piece_count + 1,
-            ),
-            self.end_piece_index + 1,
-        )
-
-        deadlines: dict[int, int] = {}
-
-        for piece_index in list(start_meta_indices) + list(end_meta_indices):
-            if not self.torrent.torrent_handle.have_piece(piece_index):
-                deadlines[piece_index] = 0
-
-        if not deadlines:
-            return None
-
-        return deadlines
+    @property
+    def has_active_streams(self) -> bool:
+        return len(self.streams) > 0
 
     async def stream(
         self,
@@ -189,7 +192,6 @@ class File:
         stream_end_byte: int,
         request: Request,
     ) -> AsyncIterator[bytes]:
-        """A külső rétegek által hívott kényelmes belépési pont."""
         stream = Stream(
             stream_id=str(uuid4()),
             playback_id=playback_id,
@@ -222,7 +224,6 @@ class Stream:
         self.file = file
         self.start_byte = stream_start_byte
         self.end_byte = stream_end_byte
-        self.current_stream_byte = stream_start_byte
 
         stream_start_piece_index, stream_end_piece_index = self._get_byte_to_piece(
             stream_start_byte=stream_start_byte,
@@ -231,23 +232,26 @@ class Stream:
 
         self.stream_start_piece_index = stream_start_piece_index
         self.stream_end_piece_index = stream_end_piece_index
+        self.current_stream_piece = stream_start_piece_index
+
+        self.is_destroying = False
 
         self.file.streams[self.id] = self
 
-    def set_pieces(
-        self,
-        stream_start_byte: int,
-        stream_end_byte: int,
-    ):
-        stream_start_piece_index, stream_end_piece_index = self._get_byte_to_piece(
-            stream_start_byte=stream_start_byte,
-            stream_end_byte=stream_end_byte,
-        )
+    @property
+    def stream_pieces_range(self) -> range:
+        return range(self.current_stream_piece, self.stream_end_piece_index + 1)
 
-        self.stream_start_piece_index = stream_start_piece_index
-        self.stream_end_piece_index = stream_end_piece_index
+    async def destroy(self):
+        self.is_destroying = True
+        self.torrent.service.trigger_priority_update(self.torrent.info_hash)
 
-        return stream_start_piece_index, stream_end_piece_index
+        await asyncio.sleep(2)
+
+        if self.id in self.file.streams:
+            del self.file.streams[self.id]
+
+        self.torrent.service.trigger_priority_update(self.torrent.info_hash)
 
     def _get_byte_to_piece(
         self,
@@ -264,219 +268,80 @@ class Stream:
 
         return stream_start_piece_index, stream_end_piece_index
 
-    def calculate_deadlines(self) -> tuple[dict[int, int], int]:
-        stream_count = len(self.file.streams)
-
-        status = self.torrent.torrent_handle.status()
-        download_speed = status.download_payload_rate
-
-        stream_pieces_range = range(
-            self.stream_start_piece_index, self.stream_end_piece_index + 1
+    def get_critical_pieces(self) -> list[int]:
+        prefetch_end = min(
+            self.stream_end_piece_index,
+            self.current_stream_piece + self.torrent.prefetch_piece_count,
         )
 
-        one_mb_piece_count = math.ceil(1 * 1024 * 1024 / self.torrent.piece_size)
+        critical_pieces: list[int] = []
+        for piece_index in range(self.current_stream_piece, prefetch_end + 1):
+            if not self.torrent.torrent_handle.have_piece(piece_index):
+                critical_pieces.append(piece_index)
+                if len(critical_pieces) >= self.torrent.critical_piece_count:
+                    break
 
-        critical_priority_count = one_mb_piece_count * 2
-
-        high_priority_count = one_mb_piece_count * 10
-        increment_ms = 250
-
-        if download_speed > 0:
-            high_priority_count = math.ceil(
-                download_speed / self.torrent.piece_size / stream_count
-            )
-            ms_per_piece = (
-                self.torrent.piece_size / (download_speed / stream_count)
-            ) * 1000
-            increment_ms = int(max(100, min(2000, ms_per_piece)))
-
-        priority_count = high_priority_count * 3
-
-        deadlines: dict[int, int] = {}
-
-        active_piece_count = 0
-        downloaded_piece_count = 0
-
-        for piece_index in stream_pieces_range:
-            if active_piece_count >= priority_count:
-                break
-
-            if self.torrent.torrent_handle.have_piece(piece_index):
-                downloaded_piece_count += 1
-                continue
-
-            current_index = active_piece_count + downloaded_piece_count
-
-            deadline_count = max(0, current_index - critical_priority_count)
-            if piece_index not in deadlines:
-                deadlines[piece_index] = increment_ms * deadline_count
-            active_piece_count += 1
-
-        return deadlines, high_priority_count
+        return critical_pieces
 
     async def start(
         self,
         request: Request,
     ) -> AsyncIterator[bytes]:
-        if self.file.is_available:
-            return self._stream_with_cleanup(
-                inner=self._file_iterator(
-                    file_path=self.file.path,
-                    start_byte=self.start_byte,
-                    end_byte=self.end_byte,
-                    request=request,
-                ),
-            )
+        return self._stream_inner(request)
 
-        return self._stream_with_cleanup(
-            inner=self._file_iterator_with_priorities(
-                request=request,
-            ),
-        )
-
-    async def _file_iterator_with_priorities(
+    async def _stream_inner(
         self,
         request: Request,
     ) -> AsyncIterator[bytes]:
-        current_stream_byte = self.start_byte
+        prefetch_tasks: dict[int, asyncio.Task[bytes]] = {}
 
-        while current_stream_byte <= self.end_byte:
-            if await request.is_disconnected():
-                return
-
-            self.set_pieces(
-                stream_start_byte=current_stream_byte,
-                stream_end_byte=self.end_byte,
-            )
-
-            current_end_byte = None
-            while current_end_byte is None:
-                if await request.is_disconnected():
-                    return
-
-                available_end_byte = await asyncio.to_thread(self._check_piece)
-
-                if available_end_byte is not None:
-                    current_end_byte = available_end_byte
-                    break
-
-                await asyncio.sleep(0.1)
-
-            async for chunk in self._file_iterator(
-                file_path=self.file.path,
-                start_byte=current_stream_byte,
-                end_byte=min(
-                    current_end_byte,
-                    self.end_byte,
-                ),
-                request=request,
-            ):
-                yield chunk
-
-            current_stream_byte = current_end_byte + 1
-
-    async def _stream_with_cleanup(
-        self,
-        inner: AsyncIterator[bytes],
-    ) -> AsyncIterator[bytes]:
         try:
-            async for chunk in inner:
-                yield chunk
-        finally:
-            del self.file.streams[self.id]
+            for piece_index in range(
+                self.stream_start_piece_index, self.stream_end_piece_index + 1
+            ):
+                self.current_stream_piece = piece_index
 
-    async def _file_iterator(
-        self,
-        file_path: Path,
-        start_byte: int,
-        end_byte: int,
-        request: Request,
-    ) -> AsyncIterator[bytes]:
-        self.current_stream_byte = start_byte
+                self.torrent.service.trigger_priority_update(self.torrent.info_hash)
 
-        with file_path.open("rb") as file_handle:
-            await asyncio.to_thread(file_handle.seek, start_byte)
-
-            remaining = end_byte - start_byte + 1
-
-            while remaining > 0:
                 if await request.is_disconnected():
                     return
 
-                chunk = await asyncio.to_thread(
-                    file_handle.read, min(CHUNK_SIZE, remaining)
-                )
+                for i in range(self.torrent.prefetch_piece_count + 1):
+                    p_idx = piece_index + i
+                    if (
+                        p_idx <= self.stream_end_piece_index
+                        and p_idx not in prefetch_tasks
+                    ):
+                        prefetch_tasks[p_idx] = asyncio.create_task(
+                            self.torrent.service.get_piece_data(
+                                self.torrent.torrent_handle, p_idx
+                            )
+                        )
 
-                if not chunk:
-                    return
+                piece_buffer = await prefetch_tasks.pop(piece_index)
 
-                remaining -= len(chunk)
-                self.current_stream_byte += len(chunk)
+                start_offset = 0
+                end_offset = len(piece_buffer)
 
-                yield chunk
+                if piece_index == self.stream_start_piece_index:
+                    start_offset = (
+                        self.start_byte + self.file.offset
+                    ) % self.torrent.piece_size
 
-    def _check_piece(
-        self,
-    ) -> int | None:
-        piece_or_file_available = self._check_piece_or_file_available()
+                if piece_index == self.stream_end_piece_index:
+                    end_offset = (
+                        self.end_byte + self.file.offset
+                    ) % self.torrent.piece_size + 1
 
-        available_end_byte = None
+                view = memoryview(piece_buffer)[start_offset:end_offset]
 
-        # A teljes file elérhetó, visszaadjuk az utolsó byte-ot.
-        if piece_or_file_available.file_available:
-            return self.file.end_byte
+                for chunk_start in range(0, len(view), CHUNK_SIZE):
+                    if await request.is_disconnected():
+                        return
+                    yield view[chunk_start : chunk_start + CHUNK_SIZE].tobytes()
+        finally:
+            asyncio.create_task(self.destroy())
 
-        if piece_or_file_available.piece_available:
-            next_stream_piece_index = (
-                self.stream_start_piece_index + self.torrent.chunk_piece_count
-            )
-            available_end_byte = (
-                (next_stream_piece_index * self.torrent.piece_size)
-                - self.file.offset
-                - 1
-            )
-
-        return available_end_byte
-
-    def _check_piece_or_file_available(
-        self,
-    ) -> PieceOrFileAvailable:
-        piece_or_file_available = PieceOrFileAvailable(
-            piece_available=False,
-            file_available=False,
-        )
-
-        files_progress = self.torrent.torrent_handle.file_progress()
-        file_progress = files_progress[self.file.file_index]
-
-        file_available = file_progress == self.file.size
-
-        if file_available:
-            self.file.is_available = True
-            piece_or_file_available.piece_available = True
-            piece_or_file_available.file_available = True
-            return piece_or_file_available
-
-        stream_end_piece_index = min(
-            self.stream_end_piece_index,
-            self.stream_start_piece_index + self.torrent.chunk_piece_count,
-        )
-        prefech_pieces = range(
-            self.stream_start_piece_index,
-            stream_end_piece_index + 1,
-        )
-
-        pieces_available = True
-
-        for prefech_piece in prefech_pieces:
-            piece_available = self.torrent.torrent_handle.have_piece(
-                prefech_piece,
-            )
-
-            if not piece_available:
-                pieces_available = False
-                break
-
-        piece_or_file_available.piece_available = pieces_available
-
-        return piece_or_file_available
+            for task in prefetch_tasks.values():
+                if not task.done():
+                    task.cancel()

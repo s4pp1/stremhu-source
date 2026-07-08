@@ -14,6 +14,7 @@ from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
 from app.common.database import get_db
+from app.common.logger import logger
 from app.common.schemas.internal import ImdbInfo
 from app.modules.auth.dependencies import ApiKeyGuard
 from app.modules.playback_histories.dependencies import get_playback_histories_service
@@ -80,21 +81,23 @@ async def stream(
             series_info=stream_token.series_info,
         )
 
-    playback_histories_service.get_or_create(
-        PlaybackHistoryCreate(
-            client=client_info,
-            indexer_id=stream_token.indexer_id,
-            playback_id=stream_token.playback_id,
-            user_id=user.id,
-            torrent_id=stream_token.torrent_id,
-            file_index=stream_token.file_index,
-            imdb_info=imdb_info,
-            torrent_name=file.torrent.name,
-            file_name=file.name,
+    try:
+        playback_histories_service.get_or_create(
+            PlaybackHistoryCreate(
+                client=client_info,
+                indexer_id=stream_token.indexer_id,
+                playback_id=stream_token.playback_id,
+                user_id=user.id,
+                torrent_id=stream_token.torrent_id,
+                file_index=stream_token.file_index,
+                imdb_info=imdb_info,
+                torrent_name=file.torrent.name,
+                file_name=file.name,
+            )
         )
-    )
-
-    db.commit()
+        db.commit()
+    except Exception as e:
+        logger.warning(f"Nem sikerült menteni a lejátszási előzményt: {e}")
 
     content_type = content_types.get_content_type(file.name)
     media_type = content_type or "application/octet-stream"

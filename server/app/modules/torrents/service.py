@@ -122,7 +122,7 @@ class TorrentsService:
             sha1_hash = self.parse_info_hash(info_hash)
             torrent = self._relay_service._torrents.get(sha1_hash)
             if torrent:
-                torrent.update_default_priorities(priority)
+                torrent.update_default_priority(priority)
 
         relay_torrent = self._relay_service.get_torrent_or_raise(info_hash)
         return TorrentWithRelay(
