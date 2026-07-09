@@ -338,7 +338,9 @@ class RelayService:
                         info_hash = str(alert.handle.info_hash())
                         request_key = (info_hash, alert.piece)
 
-                        if futures := self.pending_piece_requests.pop(request_key):
+                        if futures := self.pending_piece_requests.pop(
+                            request_key, None
+                        ):
                             has_error = alert.error and alert.error.value() != 0
 
                             if has_error:
