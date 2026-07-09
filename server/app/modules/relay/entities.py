@@ -242,11 +242,18 @@ class Stream:
     def stream_pieces_range(self) -> range:
         return range(self.current_stream_piece, self.stream_end_piece_index + 1)
 
+    @property
+    def current_stream_byte(self) -> int:
+        byte_offset = (
+            self.current_stream_piece * self.torrent.piece_size
+        ) - self.file.offset
+        return max(0, min(byte_offset, self.file.size))
+
     async def destroy(self):
         self.is_destroying = True
         self.torrent.service.trigger_priority_update(self.torrent.info_hash)
 
-        await asyncio.sleep(2)
+        await asyncio.sleep(0.25)
 
         if self.id in self.file.streams:
             del self.file.streams[self.id]

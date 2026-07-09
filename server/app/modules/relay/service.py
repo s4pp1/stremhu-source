@@ -38,7 +38,7 @@ class RelayService:
                 "auto_sequential": False,
                 "peer_timeout": 10,
                 "piece_extent_affinity": True,
-                "piece_timeout": 10,
+                "piece_timeout": 5,
                 "request_timeout": 5,
                 "unchoke_interval": 1,
                 "active_downloads": -1,
@@ -46,7 +46,6 @@ class RelayService:
                 "active_limit": -1,
                 "connection_speed": 100,
                 "mixed_mode_algorithm": libtorrent.bandwidth_mixed_algo_t.prefer_tcp,
-                "recv_socket_buffer_size": 2 * 1024 * 1024,
                 "unchoke_slots_limit": 16,
             }
         )
