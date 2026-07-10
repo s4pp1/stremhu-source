@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
 
 
@@ -9,6 +9,16 @@ class MeUpdateRequest(BaseModel):
     )
 
     username: str | None = None
+
     password: str | None = None
+
     torrent_seed: int | None = None
-    only_best_torrent: bool | None = None
+
+    enable_smart_filter: bool | None = None
+
+    smart_filter_grouping_preference_id: str | None = None
+
+    smart_filter_limit: int | None = Field(
+        default=None,
+        ge=1,
+    )

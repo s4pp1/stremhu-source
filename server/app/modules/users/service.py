@@ -20,6 +20,7 @@ from app.modules.users.schemas.internal import UserCreate, UserUpdate
 if TYPE_CHECKING:
     from app.modules.media_attributes.models import MediaAttributeModel
     from app.modules.media_attributes.service import MediaAttributesService
+    from app.modules.preferences.service import PreferencesService
 
 
 class UsersService:
@@ -28,10 +29,12 @@ class UsersService:
         users_repository: UsersRepository,
         attribute_exclusions_service: AttributeExclusionsService,
         media_attributes_service: "MediaAttributesService",
+        preferences_service: "PreferencesService",
     ):
         self._users_repository = users_repository
         self._attribute_exclusions_service = attribute_exclusions_service
         self._media_attributes_service = media_attributes_service
+        self._preferences_service = preferences_service
 
     def get_list(self) -> list[UserModel]:
         return self._users_repository.find_list()
@@ -57,7 +60,7 @@ class UsersService:
             role_id=payload.role_id,
             api_key=str(uuid.uuid4()),
             torrent_seed=payload.torrent_seed,
-            only_best_torrent=payload.only_best_torrent,
+            enable_smart_filter=payload.enable_smart_filter,
         )
 
         return self._users_repository.create(user)
@@ -101,6 +104,27 @@ class UsersService:
                 user.password_hash = self._hash_password(password)
             else:
                 user.password_hash = None
+
+        if "smart_filter_grouping_preference_id" in update_data:
+            preference_id = update_data.pop("smart_filter_grouping_preference_id")
+
+            if preference_id:
+                preference = self._preferences_service.find_by_id(preference_id)
+                if not preference:
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        detail=f"Érvénytelen kategória: {preference_id}",
+                    )
+
+                if not preference.allow_best_torrent_grouping:
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        detail="Ez a kategória nem használható az okos szűrőhöz.",
+                    )
+
+                user.smart_filter_grouping_preference_id = preference_id
+            else:
+                user.smart_filter_grouping_preference_id = None
 
         for key, value in update_data.items():
             setattr(user, key, value)

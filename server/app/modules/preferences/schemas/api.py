@@ -24,6 +24,7 @@ class PreferenceResponse(BaseModel):
     name: str
     description: str
     emoji: str | None
+    allow_best_torrent_grouping: bool
     attributes: list[AttributeResponse]
 
     @classmethod
@@ -36,6 +37,7 @@ class PreferenceResponse(BaseModel):
             name=user_preference_definition_model.definition.preference.name,
             description=user_preference_definition_model.definition.preference.description,
             emoji=user_preference_definition_model.definition.preference.emoji,
+            allow_best_torrent_grouping=user_preference_definition_model.definition.preference.allow_best_torrent_grouping,
             attributes=[
                 AttributeResponse.model_validate(definition_attribute.attribute)
                 for definition_attribute in user_preference_definition_model.definition.definition_attributes
@@ -52,6 +54,7 @@ class PreferenceResponse(BaseModel):
             name=system_preference_definition_model.definition.preference.name,
             description=system_preference_definition_model.definition.preference.description,
             emoji=system_preference_definition_model.definition.preference.emoji,
+            allow_best_torrent_grouping=system_preference_definition_model.definition.preference.allow_best_torrent_grouping,
             attributes=[
                 AttributeResponse.model_validate(definition_attribute.attribute)
                 for definition_attribute in system_preference_definition_model.definition.definition_attributes

@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 import sqlalchemy as sa
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -9,6 +10,9 @@ from app.modules.attribute_exclusions.models import AttributeExclusionModel
 from app.modules.roles.constants import UserRoleKey
 from app.modules.roles.models import RoleModel
 from app.modules.user_preference_definitions.models import UserPreferenceDefinitionModel
+
+if TYPE_CHECKING:
+    from app.modules.preferences.models import PreferenceModel
 
 
 class UserModel(Base):
@@ -64,8 +68,23 @@ class UserModel(Base):
         default=None,
     )
 
-    only_best_torrent: Mapped[bool] = mapped_column(
+    enable_smart_filter: Mapped[bool] = mapped_column(
         default=False,
+    )
+
+    smart_filter_grouping_preference_id: Mapped[str | None] = mapped_column(
+        sa.ForeignKey("preferences.id", ondelete="SET NULL"),
+        default=None,
+    )
+
+    smart_filter_grouping_preference: Mapped["PreferenceModel | None"] = relationship(
+        "PreferenceModel",
+        init=False,
+    )
+
+    smart_filter_limit: Mapped[int] = mapped_column(
+        sa.Integer,
+        default=1,
     )
 
     max_concurrent_streams: Mapped[int | None] = mapped_column(
