@@ -288,5 +288,39 @@
       }
     ],
     "external_fallbacks": ["hun", "480p"]
+  },
+  "series_with_space_separator": {
+    "torrent": {
+      "name": "Two and a Half Men S01-S12 AMZN.WEB-DL1080p",
+      "files": [
+        {
+          "path": "Two and a Half Men S03 1080p AMZN.WEB-DL DD+ 2.0 h.264/Two and a Half Men S03E12 That Special Tug 1080p AMZN WEB-DL DD+ 2.0 h.264.mkv",
+          "size": 1600,
+          "is_video": true
+        },
+        {
+          "path": "Two and a Half Men S09 1080p AMZN.WEB-DL DD+ 2.0 h.264/Two.and.a.Half.Men.S09E06.The.Squat.and.the.Hover.1080p.AMZN.WEB-DL.DDP5.1.x264.mkv",
+          "size": 1600,
+          "is_video": true
+        }
+      ]
+    },
+    "queries": [
+      {
+        "series": {
+          "season": 3,
+          "episode": 12
+        },
+        "expected_file": "Two and a Half Men S03 1080p AMZN.WEB-DL DD+ 2.0 h.264/Two and a Half Men S03E12 That Special Tug 1080p AMZN WEB-DL DD+ 2.0 h.264.mkv"
+      },
+      {
+        "series": {
+          "season": 9,
+          "episode": 6
+        },
+        "expected_file": "Two and a Half Men S09 1080p AMZN.WEB-DL DD+ 2.0 h.264/Two.and.a.Half.Men.S09E06.The.Squat.and.the.Hover.1080p.AMZN.WEB-DL.DDP5.1.x264.mkv"
+      }
+    ],
+    "external_fallbacks": ["hun", "720p"]
   }
 }

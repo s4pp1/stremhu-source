@@ -228,3 +228,27 @@
     'x264',
   ])
 # ---
+# name: test_stream_attributes_resolution[series_with_space_separator_Two and a Half Men S03E12 That Special Tug 1080p AMZN WEB-DL DD+ 2.0 h.264.mkv]
+  list([
+    '1080p',
+    '2.0',
+    'eac3',
+    'hun',
+    'sdr',
+    'theatrical',
+    'web-dl',
+    'x264',
+  ])
+# ---
+# name: test_stream_attributes_resolution[series_with_space_separator_Two.and.a.Half.Men.S09E06.The.Squat.and.the.Hover.1080p.AMZN.WEB-DL.DDP5.1.x264.mkv]
+  list([
+    '1080p',
+    '5.1',
+    'eac3',
+    'hun',
+    'sdr',
+    'theatrical',
+    'web-dl',
+    'x264',
+  ])
+# ---

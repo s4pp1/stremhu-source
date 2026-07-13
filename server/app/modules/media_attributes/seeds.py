@@ -315,7 +315,7 @@ DEFAULT_ATTRIBUTES = [
         id=MediaAttributeKey.DD_PLUS,
         name="Dolby Digital Plus",
         preference_id=PreferenceKey.AUDIO_QUALITY,
-        pattern=r"\b(ddp(?:2\.0|5\.1|7\.1)?|dd\+(?:2\.0|5\.1|7\.1)?|e[-_. ]?ac[-_. ]?3)\b",
+        pattern=r"\b(ddp[-_. ]?(?:2\.0|5\.1|7\.1)?|dd\+[-_. ]?(?:2\.0|5\.1|7\.1)?|e[-_. ]?ac[-_. ]?3)(?!\w)",
         short_name=None,
     ),
     MediaAttributeModel(
@@ -329,14 +329,14 @@ DEFAULT_ATTRIBUTES = [
         id=MediaAttributeKey.DD,
         name="Dolby Digital",
         preference_id=PreferenceKey.AUDIO_QUALITY,
-        pattern=r"\b(dd(?!p|\+)(?:2\.0|5\.1|7\.1)?|ac[-_. ]?3)\b",
+        pattern=r"\b(dd(?!p|\+)[-_. ]?(?:2\.0|5\.1|7\.1)?|ac[-_. ]?3)\b",
         short_name=None,
     ),
     MediaAttributeModel(
         id=MediaAttributeKey.AAC,
         name="AAC / MP3",
         preference_id=PreferenceKey.AUDIO_QUALITY,
-        pattern=r"\b(aac(?:2\.0|5\.1)?|mp3)\b",
+        pattern=r"\b(aac[-_. ]?(?:2\.0|5\.1)?|mp3)\b",
         short_name="AAC",
     ),
     # Audio Spatials
