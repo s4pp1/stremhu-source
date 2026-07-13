@@ -1,0 +1,67 @@
+# serializer version: 1
+# name: test_clean_torrent_name[complete_series_sub_folder_season]
+  dict({
+    'cleaned_name': 'Duck Dodgers Complete Series TvRip DivX XviD KF',
+    'original_name': 'Duck.Dodgers.Complete.Series.TvRip.DivX.XviD.Hun.Eng-KF',
+  })
+# ---
+# name: test_clean_torrent_name[complete_series_without_season]
+  dict({
+    'cleaned_name': 'Muneca Brava Complete TVrip DTVRip',
+    'original_name': 'Muneca.Brava.Complete.TVrip_DTVRip.Hun',
+  })
+# ---
+# name: test_clean_torrent_name[movie_superman]
+  dict({
+    'cleaned_name': 'Superman 2025 TRiNiTY',
+    'original_name': 'Superman.2025.1080p.BluRay.REMUX.TrueHD.Atmos.7.1.AVC.HuN-TRiNiTY',
+  })
+# ---
+# name: test_clean_torrent_name[series_big_bang_theory]
+  dict({
+    'cleaned_name': 'The Big Bang Theory S01-S12 COMPLETE pcroland',
+    'original_name': 'The.Big.Bang.Theory.S01-S12.COMPLETE.1080p.BluRay.DD5.1.x264.HUN.ENG-pcroland',
+  })
+# ---
+# name: test_clean_torrent_name[series_different_file_attributes]
+  dict({
+    'cleaned_name': 'Malcolm in the Middle S01-S07 READ NFO NF pcroland',
+    'original_name': 'Malcolm.in.the.Middle.S01-S07.READ.NFO.576p.NF.WEBRip.DD5.1.x264.HUN.ENG-pcroland',
+  })
+# ---
+# name: test_clean_torrent_name[series_house_of_dragon]
+  dict({
+    'cleaned_name': 'House of the Dragon S03E03 AMZN PTHD',
+    'original_name': 'House.of.the.Dragon.S03E03.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264.HUN.ENG-PTHD',
+  })
+# ---
+# name: test_clean_torrent_name[series_lost_concatenated]
+  dict({
+    'cleaned_name': 'Lost S01-S06 Kataklysm',
+    'original_name': 'Lost.S01-S06.1080p.BluRay.REMUX.AVC.DTS-HD.MA.5.1.HUN.ENG-Kataklysm',
+  })
+# ---
+# name: test_clean_torrent_name[series_miraculous]
+  dict({
+    'cleaned_name': 'Miraculous S01-S04',
+    'original_name': 'Miraculous S01-S04 (WEB-DL_1280x720)',
+  })
+# ---
+# name: test_clean_torrent_name[series_the_boys]
+  dict({
+    'cleaned_name': 'The Boys S05 AMZN PTHD',
+    'original_name': 'The.Boys.S05.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264.HUN.ENG-PTHD',
+  })
+# ---
+# name: test_clean_torrent_name[series_with_space_separator]
+  dict({
+    'cleaned_name': 'Two and a Half Men S01-S12 AMZN',
+    'original_name': 'Two and a Half Men S01-S12 AMZN.WEB-DL1080p',
+  })
+# ---
+# name: test_clean_torrent_name[series_with_x_base]
+  dict({
+    'cleaned_name': 'The Boondocks S01-S03 [ GaRuRuMoN]',
+    'original_name': 'The_Boondocks_-_S01-S03_[DVDRip-Hun-Eng-GaRuRuMoN]',
+  })
+# ---

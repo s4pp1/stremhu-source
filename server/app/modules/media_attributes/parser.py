@@ -27,12 +27,16 @@ for attribute in DEFAULT_ATTRIBUTES:
         _FALLBACKS[attribute.preference_id] = attribute
 
 
+def normalize_torrent_name(name: str) -> str:
+    return name.replace("_", " ")
+
+
 def parse_torrent_name(
     name: str,
     external_fallbacks: list[MediaAttributeModel] | None = None,
     use_fallbacks: bool = True,
 ) -> list[MediaAttributeModel]:
-    name_lower = name.lower()
+    name_lower = normalize_torrent_name(name).lower()
     matched_attributes: list[MediaAttributeModel] = []
 
     external_fallback_map: dict[str | None, MediaAttributeModel] = {}
@@ -67,7 +71,7 @@ def parse_torrent_name(
 
 
 def clean_torrent_name(name: str) -> str:
-    name_cleaned = name
+    name_cleaned = normalize_torrent_name(name)
     all_pref_ids = list(_GROUPED_ATTRIBUTES.keys())
     for pref_id in _FALLBACKS.keys():
         if pref_id not in all_pref_ids:
@@ -77,6 +81,8 @@ def clean_torrent_name(name: str) -> str:
         for pattern, _ in _GROUPED_ATTRIBUTES.get(pref_id, []):
             name_cleaned = pattern.sub(" ", name_cleaned)
 
-    name_cleaned = re.sub(r"\s+", " ", name_cleaned).strip()
+    name_cleaned = name_cleaned.replace(".", " ")
+    name_cleaned = re.sub(r"[\(\[\{]\s*[\)\]\}]", " ", name_cleaned)
+    name_cleaned = re.sub(r"([-]*\s+[-]*)+", " ", name_cleaned).strip(" -")
 
     return name_cleaned

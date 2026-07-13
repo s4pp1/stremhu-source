@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -158,7 +159,14 @@ class StremioStream(BaseModel):
             description=f"📁 {torrent_stream.file_name}",
             url=torrent_stream.play_url,
             behavior_hints=BehaviorHints(
-                filename=torrent_stream.file_name,
+                filename=cls._build_behavior_filename(
+                    file_name=torrent_stream.file_name,
+                    media_attributes=[
+                        attr
+                        for attr in torrent_stream.attributes
+                        if isinstance(attr, MediaAttributeModel)
+                    ],
+                ),
             ),
         )
 
@@ -238,26 +246,10 @@ class StremioStream(BaseModel):
         )
         binge_group = f"{torrent_stream.indexer_account.indexer_definition.id}-{torrent_stream.torrent_id}"
 
-        attributes_ids = ".".join(
-            compact([f"{media_attribute.id}" for media_attribute in media_attributes])
+        behavior_filename = cls._build_behavior_filename(
+            file_name=torrent_stream.file_name,
+            media_attributes=media_attributes,
         )
-
-        import re
-
-        file_path = Path(torrent_stream.file_name)
-        extension = file_path.suffix
-        stem = file_path.stem
-
-        cleaned_stem = clean_torrent_name(stem)
-        cleaned_stem = cleaned_stem.replace(" ", ".")
-        cleaned_stem = re.sub(r"\.+", ".", cleaned_stem)
-        cleaned_stem = cleaned_stem.replace(".-", "-").replace("-.", "-")
-        cleaned_stem = cleaned_stem.strip(".")
-
-        if attributes_ids:
-            behavior_filename = f"{cleaned_stem}.{attributes_ids}{extension}"
-        else:
-            behavior_filename = f"{cleaned_stem}{extension}"
 
         return cls(
             name=name,
@@ -268,6 +260,33 @@ class StremioStream(BaseModel):
                 binge_group=binge_group,
             ),
         )
+
+    @classmethod
+    def _build_behavior_filename(
+        cls,
+        file_name: str,
+        media_attributes: list[MediaAttributeModel] | None = None,
+    ) -> str:
+
+        file_path = Path(file_name)
+        extension = file_path.suffix
+        stem = file_path.stem
+
+        cleaned_stem = clean_torrent_name(stem)
+        cleaned_stem = cleaned_stem.replace(" ", ".")
+        cleaned_stem = re.sub(r"\.+", ".", cleaned_stem)
+        cleaned_stem = cleaned_stem.replace(".-", "-").replace("-.", "-")
+        cleaned_stem = cleaned_stem.strip(".")
+
+        attributes_ids = ""
+        if media_attributes:
+            attributes_ids = ".".join(
+                compact([f"{attr.id}" for attr in media_attributes])
+            )
+
+        if attributes_ids:
+            return f"{cleaned_stem}.{attributes_ids}{extension}"
+        return f"{cleaned_stem}{extension}"
 
     @classmethod
     def _attributes_parser(

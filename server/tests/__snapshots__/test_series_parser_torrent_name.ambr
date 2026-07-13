@@ -124,3 +124,15 @@
     'torrent_name': 'Two and a Half Men S01-S12 AMZN.WEB-DL1080p',
   })
 # ---
+# name: test_series_parser_torrent_name[series_with_x_base]
+  dict({
+    'episodes': list([
+    ]),
+    'seasons': list([
+      1,
+      2,
+      3,
+    ]),
+    'torrent_name': 'The_Boondocks_-_S01-S03_[DVDRip-Hun-Eng-GaRuRuMoN]',
+  })
+# ---

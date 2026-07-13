@@ -322,5 +322,51 @@
       }
     ],
     "external_fallbacks": ["hun", "720p"]
+  },
+  "series_with_x_base": {
+    "torrent": {
+      "name": "The_Boondocks_-_S01-S03_[DVDRip-Hun-Eng-GaRuRuMoN]",
+      "files": [
+        {
+          "path": "The_Boondocks_-_S01_[DVDRip-Hun-Eng-GaRuRuMoN]/The_Boondocks_-_04_-_A_Nagypapa_Bunyoja_[DVDRip-Hun-Eng-GaRuRuMoN].avi",
+          "size": 1600,
+          "is_video": true
+        },
+        {
+          "path": "The_Boondocks_-_S01_[DVDRip-Hun-Eng-GaRuRuMoN]/The_Boondocks_-_13_-_Bajtars_[DVDRip-Hun-Eng-GaRuRuMoN].avi",
+          "size": 1600,
+          "is_video": true
+        },
+        {
+          "path": "The_Boondocks_-_S02_[DVDRip-Hun-Eng-GaRuRuMoN]/The_Boondocks_-_2x15_-_A_Rumli-batya_Valosagshow_[DVDRip-Hun-Eng-GaRuRuMoN].avi",
+          "size": 1600,
+          "is_video": true
+        }
+      ]
+    },
+    "queries": [
+      {
+        "series": {
+          "season": 1,
+          "episode": 4
+        },
+        "expected_file": "The_Boondocks_-_S01_[DVDRip-Hun-Eng-GaRuRuMoN]/The_Boondocks_-_04_-_A_Nagypapa_Bunyoja_[DVDRip-Hun-Eng-GaRuRuMoN].avi"
+      },
+      {
+        "series": {
+          "season": 1,
+          "episode": 13
+        },
+        "expected_file": "The_Boondocks_-_S01_[DVDRip-Hun-Eng-GaRuRuMoN]/The_Boondocks_-_13_-_Bajtars_[DVDRip-Hun-Eng-GaRuRuMoN].avi"
+      },
+      {
+        "series": {
+          "season": 2,
+          "episode": 15
+        },
+        "expected_file": "The_Boondocks_-_S02_[DVDRip-Hun-Eng-GaRuRuMoN]/The_Boondocks_-_2x15_-_A_Rumli-batya_Valosagshow_[DVDRip-Hun-Eng-GaRuRuMoN].avi"
+      }
+    ],
+    "external_fallbacks": ["hun", "480p"]
   }
 }

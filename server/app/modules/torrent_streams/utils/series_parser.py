@@ -44,7 +44,7 @@ class SeriesParser:
     )
 
     def __init__(self, name: str):
-        self.name_lower = clean_torrent_name(name).lower().replace("_", " ")
+        self.name_lower = clean_torrent_name(name).lower()
 
     @staticmethod
     def _expand_range(start: str, end: str | None) -> list[int]:

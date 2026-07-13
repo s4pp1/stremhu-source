@@ -252,3 +252,33 @@
     'x264',
   ])
 # ---
+# name: test_stream_attributes_resolution[series_with_x_base_The_Boondocks_-_04_-_A_Nagypapa_Bunyoja_[DVDRip-Hun-Eng-GaRuRuMoN].avi]
+  list([
+    '480p',
+    'dvd-rip',
+    'eng',
+    'hun',
+    'sdr',
+    'theatrical',
+  ])
+# ---
+# name: test_stream_attributes_resolution[series_with_x_base_The_Boondocks_-_13_-_Bajtars_[DVDRip-Hun-Eng-GaRuRuMoN].avi]
+  list([
+    '480p',
+    'dvd-rip',
+    'eng',
+    'hun',
+    'sdr',
+    'theatrical',
+  ])
+# ---
+# name: test_stream_attributes_resolution[series_with_x_base_The_Boondocks_-_2x15_-_A_Rumli-batya_Valosagshow_[DVDRip-Hun-Eng-GaRuRuMoN].avi]
+  list([
+    '480p',
+    'dvd-rip',
+    'eng',
+    'hun',
+    'sdr',
+    'theatrical',
+  ])
+# ---
