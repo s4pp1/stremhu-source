@@ -1,0 +1,292 @@
+{
+  "movie_superman": {
+    "torrent": {
+      "name": "Superman.2025.1080p.BluRay.REMUX.TrueHD.Atmos.7.1.AVC.HuN-TRiNiTY",
+      "files": [
+        {
+          "path": "sample/sample.mkv",
+          "size": 300,
+          "is_video": true
+        },
+        {
+          "path": "superman.2025.1080p.bluray.remux.truehd.atmos.7.1.avc.hun-trinity.mkv",
+          "size": 24000,
+          "is_video": true
+        },
+        {
+          "path": "superman.2025.1080p.bluray.remux.truehd.atmos.7.1.avc.hun-trinity.nfo",
+          "size": 10,
+          "is_video": false
+        }
+      ]
+    },
+    "queries": [
+      {
+        "series": null,
+        "expected_file": "superman.2025.1080p.bluray.remux.truehd.atmos.7.1.avc.hun-trinity.mkv"
+      }
+    ],
+    "external_fallbacks": ["hun", "720p"]
+  },
+  "series_house_of_dragon": {
+    "torrent": {
+      "name": "House.of.the.Dragon.S03E03.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264.HUN.ENG-PTHD",
+      "files": [
+        {
+          "path": "House.of.the.Dragon.S03E03.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264.HUN.ENG-PTHD.mkv",
+          "size": 1000,
+          "is_video": true
+        },
+        {
+          "path": "House.of.the.Dragon.S03E03.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264.HUN.ENG-PTHD.nfo",
+          "size": 10,
+          "is_video": false
+        }
+      ]
+    },
+    "queries": [
+      {
+        "series": {
+          "season": 3,
+          "episode": 3
+        },
+        "expected_file": "House.of.the.Dragon.S03E03.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264.HUN.ENG-PTHD.mkv"
+      }
+    ],
+    "external_fallbacks": ["hun", "720p"]
+  },
+  "series_the_boys": {
+    "torrent": {
+      "name": "The.Boys.S05.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264.HUN.ENG-PTHD",
+      "files": [
+        {
+          "path": "The.Boys.S05E01.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264.HUN.ENG-PTHD.mkv",
+          "size": 800,
+          "is_video": true
+        },
+        {
+          "path": "The.Boys.S05E02.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264.HUN.ENG-PTHD.mkv",
+          "size": 850,
+          "is_video": true
+        },
+        {
+          "path": "The.Boys.S05E03.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264.HUN.ENG-PTHD.mkv",
+          "size": 800,
+          "is_video": true
+        }
+      ]
+    },
+    "queries": [
+      {
+        "series": {
+          "season": 5,
+          "episode": 2
+        },
+        "expected_file": "The.Boys.S05E02.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264.HUN.ENG-PTHD.mkv"
+      }
+    ],
+    "external_fallbacks": ["hun", "720p"]
+  },
+  "series_big_bang_theory": {
+    "torrent": {
+      "name": "The.Big.Bang.Theory.S01-S12.COMPLETE.1080p.BluRay.DD5.1.x264.HUN.ENG-pcroland",
+      "files": [
+        {
+          "path": "The.Big.Bang.Theory.S01.1080p.BluRay.DD5.1.x264.HUN.ENG-pcroland/The.Big.Bang.Theory.S01E01.1080p.BluRay.DD5.1.x264.HUN.ENG-pcroland.mkv",
+          "size": 800,
+          "is_video": true
+        },
+        {
+          "path": "The.Big.Bang.Theory.S02.1080p.BluRay.DD5.1.x264.HUN.ENG-pcroland/The.Big.Bang.Theory.S02E01.1080p.BluRay.DD5.1.x264.HUN.ENG-pcroland.mkv",
+          "size": 850,
+          "is_video": true
+        },
+        {
+          "path": "The.Big.Bang.Theory.S03.1080p.BluRay.DD5.1.x264.HUN.ENG-pcroland/The.Big.Bang.Theory.S03E01.1080p.BluRay.DD5.1.x264.HUN.ENG-pcroland.mkv",
+          "size": 850,
+          "is_video": true
+        }
+      ]
+    },
+    "queries": [
+      {
+        "series": {
+          "season": 2,
+          "episode": 1
+        },
+        "expected_file": "The.Big.Bang.Theory.S02.1080p.BluRay.DD5.1.x264.HUN.ENG-pcroland/The.Big.Bang.Theory.S02E01.1080p.BluRay.DD5.1.x264.HUN.ENG-pcroland.mkv"
+      }
+    ],
+    "external_fallbacks": ["hun", "720p"]
+  },
+  "series_lost_concatenated": {
+    "torrent": {
+      "name": "Lost.S01-S06.1080p.BluRay.REMUX.AVC.DTS-HD.MA.5.1.HUN.ENG-Kataklysm",
+      "files": [
+        {
+          "path": "Lost.S06E16.What.They.Died.For.1080p.BluRay.REMUX-Kataklysm.mkv",
+          "size": 800,
+          "is_video": true
+        },
+        {
+          "path": "Lost.S06E17E18.The.End.1080p.BluRay.REMUX-Kataklysm.mkv",
+          "size": 1600,
+          "is_video": true
+        }
+      ]
+    },
+    "queries": [
+      {
+        "series": {
+          "season": 6,
+          "episode": 17
+        },
+        "expected_file": "Lost.S06E17E18.The.End.1080p.BluRay.REMUX-Kataklysm.mkv"
+      },
+      {
+        "series": {
+          "season": 6,
+          "episode": 18
+        },
+        "expected_file": "Lost.S06E17E18.The.End.1080p.BluRay.REMUX-Kataklysm.mkv"
+      }
+    ],
+    "external_fallbacks": ["hun", "720p"]
+  },
+  "series_miraculous": {
+    "torrent": {
+      "name": "Miraculous S01-S04 (WEB-DL_1280x720)",
+      "files": [
+        {
+          "path": "S01/[AA] Miraculous Tales of Ladybug and Cat Noir 01 [D08B55E6].mkv",
+          "size": 1600,
+          "is_video": true
+        },
+        {
+          "path": "S02/[AA] Miraculous Tales of Ladybug and Cat Noir 2 - 01 [F84B8E8A].mkv",
+          "size": 1600,
+          "is_video": true
+        }
+      ]
+    },
+    "queries": [
+      {
+        "series": {
+          "season": 1,
+          "episode": 1
+        },
+        "expected_file": "S01/[AA] Miraculous Tales of Ladybug and Cat Noir 01 [D08B55E6].mkv"
+      },
+      {
+        "series": {
+          "season": 2,
+          "episode": 1
+        },
+        "expected_file": "S02/[AA] Miraculous Tales of Ladybug and Cat Noir 2 - 01 [F84B8E8A].mkv"
+      }
+    ],
+    "external_fallbacks": ["hun", "720p"]
+  },
+  "series_different_file_attributes": {
+    "torrent": {
+      "name": "Malcolm.in.the.Middle.S01-S07.READ.NFO.576p.NF.WEBRip.DD5.1.x264.HUN.ENG-pcroland",
+      "files": [
+        {
+          "path": "Malcolm.in.the.Middle.S03.576p.NF.WEBRip.DD5.1.x264.HUN.ENG-pcroland/Malcolm.in.the.Middle.S03E08.576p.NF.WEBRip.DD5.1.x264.HUN.ENG-pcroland.mkv",
+          "size": 1600,
+          "is_video": true
+        },
+        {
+          "path": "Malcolm.in.the.Middle.S06.1080p.HULU.WEB-DL.AAC2.0.H.264.HUN.ENG-pcroland/Malcolm.in.the.Middle.S06E16.1080p.HULU.WEB-DL.AAC2.0.H.264.HUN.ENG-pcroland.mkv",
+          "size": 1600,
+          "is_video": true
+        }
+      ]
+    },
+    "queries": [
+      {
+        "series": {
+          "season": 3,
+          "episode": 8
+        },
+        "expected_file": "Malcolm.in.the.Middle.S03.576p.NF.WEBRip.DD5.1.x264.HUN.ENG-pcroland/Malcolm.in.the.Middle.S03E08.576p.NF.WEBRip.DD5.1.x264.HUN.ENG-pcroland.mkv"
+      },
+      {
+        "series": {
+          "season": 6,
+          "episode": 16
+        },
+        "expected_file": "Malcolm.in.the.Middle.S06.1080p.HULU.WEB-DL.AAC2.0.H.264.HUN.ENG-pcroland/Malcolm.in.the.Middle.S06E16.1080p.HULU.WEB-DL.AAC2.0.H.264.HUN.ENG-pcroland.mkv"
+      }
+    ],
+    "external_fallbacks": ["hun", "720p"]
+  },
+  "complete_series_without_season": {
+    "torrent": {
+      "name": "Muneca.Brava.Complete.TVrip_DTVRip.Hun",
+      "files": [
+        {
+          "path": "Muneca.Brava.E058.DTVrip.DivX.Hun-ufo.avi",
+          "size": 1600,
+          "is_video": true
+        },
+        {
+          "path": "Muneca.Brava.E203.TVrip.XviD.Hun-ufo.avi",
+          "size": 1600,
+          "is_video": true
+        }
+      ]
+    },
+    "queries": [
+      {
+        "series": {
+          "season": 1,
+          "episode": 58
+        },
+        "expected_file": "Muneca.Brava.E058.DTVrip.DivX.Hun-ufo.avi"
+      },
+      {
+        "series": {
+          "season": 1,
+          "episode": 203
+        },
+        "expected_file": "Muneca.Brava.E203.TVrip.XviD.Hun-ufo.avi"
+      }
+    ],
+    "external_fallbacks": ["hun", "480p"]
+  },
+  "complete_series_sub_folder_season": {
+    "torrent": {
+      "name": "Duck.Dodgers.Complete.Series.TvRip.DivX.XviD.Hun.Eng-KF",
+      "files": [
+        {
+          "path": "S01.TvRip.XviD.DivX.Hun.Eng-KF/Duck.Dodgers.S01E05.Part.A.I'm.Going.To.Get.You.Fat.Sucka.TvRip.XviD.HUN.ENG-KF.avi",
+          "size": 1600,
+          "is_video": true
+        },
+        {
+          "path": "S03.TvRip.XviD.Hun.Eng-KF/Duck.Dodgers.S03E06.Part.B.Corporate.Pigfall.TvRip.XviD.HUN.ENG-KF.avi",
+          "size": 1600,
+          "is_video": true
+        }
+      ]
+    },
+    "queries": [
+      {
+        "series": {
+          "season": 1,
+          "episode": 5
+        },
+        "expected_file": "S01.TvRip.XviD.DivX.Hun.Eng-KF/Duck.Dodgers.S01E05.Part.A.I'm.Going.To.Get.You.Fat.Sucka.TvRip.XviD.HUN.ENG-KF.avi"
+      },
+      {
+        "series": {
+          "season": 3,
+          "episode": 6
+        },
+        "expected_file": "S03.TvRip.XviD.Hun.Eng-KF/Duck.Dodgers.S03E06.Part.B.Corporate.Pigfall.TvRip.XviD.HUN.ENG-KF.avi"
+      }
+    ],
+    "external_fallbacks": ["hun", "480p"]
+  }
+}

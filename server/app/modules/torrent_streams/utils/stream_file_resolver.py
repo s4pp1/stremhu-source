@@ -1,64 +1,181 @@
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+
 from app.common.schemas.internal import SeriesInfo
 from app.common.torrent_info import TorrentFileInfo, TorrentInfo
-from app.modules.media_attributes.parser import clean_torrent_name
 from app.modules.torrent_streams.utils.resolver_helpers import is_sample_or_trash
-from app.modules.torrent_streams.utils.series_parser import parse_season_episode
+from app.modules.torrent_streams.utils.series_parser import SeriesParser
+
+
+@dataclass
+class FileNode:
+    name: str
+    file_info: TorrentFileInfo
+
+
+@dataclass
+class FolderNode:
+    name: str
+    children: dict[str, FileNode | FolderNode] = field(default_factory=dict)
 
 
 class StreamFileResolver:
+    def __init__(
+        self,
+        torrent_info: TorrentInfo,
+        series: SeriesInfo | None = None,
+    ):
+        self.torrent_info = torrent_info
+        self.series = series
+
+        self.valid_files = [
+            file for file in torrent_info.files if not is_sample_or_trash(file.name)
+        ]
+
     @staticmethod
-    def get_largest_video_file(
+    def _get_largest_video_file(
         valid_files: list[TorrentFileInfo],
     ) -> TorrentFileInfo:
         return max(valid_files, key=lambda f: f.size)
 
-    @staticmethod
-    def resolve_file(
-        torrent_info: TorrentInfo,
-        series: SeriesInfo | None,
-    ) -> TorrentFileInfo | None:
-        valid_files = [
-            file for file in torrent_info.files if not is_sample_or_trash(file.name)
-        ]
+    def _build_tree(self) -> FolderNode:
+        root = FolderNode(
+            name=self.torrent_info.name,
+        )
 
-        if not valid_files:
+        for file in self.valid_files:
+            parts = file.path.split("/")
+            current_node = root
+
+            for index, part in enumerate(parts):
+                if index == len(parts) - 1:
+                    current_node.children[part] = FileNode(
+                        name=part,
+                        file_info=file,
+                    )
+                else:
+                    if part not in current_node.children:
+                        current_node.children[part] = FolderNode(name=part)
+
+                    next_node = current_node.children[part]
+
+                    if isinstance(next_node, FolderNode):
+                        current_node = next_node
+        return root
+
+    def _get_all_files_in_folder(self, folder: FolderNode) -> list[TorrentFileInfo]:
+        files: list[TorrentFileInfo] = []
+        for child in folder.children.values():
+            if isinstance(child, FileNode):
+                files.append(child.file_info)
+            elif isinstance(child, FolderNode):
+                files.extend(self._get_all_files_in_folder(child))
+        return files
+
+    def _traverse_tree(
+        self,
+        node: FolderNode | FileNode,
+        inherited_season: int | None,
+    ) -> list[TorrentFileInfo]:
+        if self.series is None:
+            return []
+
+        if isinstance(node, FileNode):
+            parser = SeriesParser(node.name)
+            seasons, episodes = parser.parse(
+                context_seasons=[inherited_season] if inherited_season else None
+            )
+
+            file_season = inherited_season
+
+            if seasons and len(seasons) == 1:
+                file_season = seasons[0]
+
+            effective_file_season = file_season if file_season is not None else 1
+
+            if (
+                effective_file_season == self.series.season
+                and episodes
+                and self.series.episode in episodes
+            ):
+                return [node.file_info]
+            return []
+
+        elif isinstance(node, FolderNode):
+            parser = SeriesParser(node.name)
+            seasons, episodes = parser.parse()
+
+            folder_season = inherited_season
+
+            if seasons and len(seasons) == 1:
+                folder_season = seasons[0]
+
+            if folder_season is not None and folder_season != self.series.season:
+                return []
+
+            effective_folder_season = folder_season if folder_season is not None else 1
+
+            if (
+                effective_folder_season == self.series.season
+                and episodes
+                and len(episodes) == 1
+                and self.series.episode in episodes
+            ):
+                return self._get_all_files_in_folder(node)
+
+            matches: list[TorrentFileInfo] = []
+
+            for child in node.children.values():
+                matches.extend(
+                    self._traverse_tree(
+                        child,
+                        folder_season,
+                    )
+                )
+
+            return matches
+
+    def resolve(self) -> TorrentFileInfo | None:
+        if not self.valid_files:
             return None
 
-        if not series:
-            return StreamFileResolver.get_largest_video_file(valid_files)
+        # Filmek esetén: csak visszaadjuk a legnagyobbat
+        if not self.series:
+            return self._get_largest_video_file(self.valid_files)
 
-        torrent_name_cleaned = clean_torrent_name(torrent_info.name)
-        torrent_seasons, torrent_episodes = parse_season_episode(torrent_name_cleaned)
+        # Torrent root feldolgozása (gyökér kontextus) egyszer
+        torrent_seasons, torrent_episodes = SeriesParser(self.torrent_info.name).parse()
 
-        # Case 2: Torrent root explicitly names exactly this season and exactly this single episode
-        if (
-            torrent_seasons
-            and series.season in torrent_seasons
-            and torrent_episodes
-            and len(torrent_episodes) == 1
-            and series.episode in torrent_episodes
-        ):
-            return StreamFileResolver.get_largest_video_file(valid_files)
+        if torrent_seasons and self.series.season not in torrent_seasons:
+            return None
 
-        # Case 3: Search inside the files (Season pack & Multi-season pack)
-        best_match: TorrentFileInfo | None = None
-        for file in valid_files:
-            file_name_cleaned = clean_torrent_name(file.name)
-            file_seasons, file_episodes = parse_season_episode(file_name_cleaned)
+        # Early optimization 1: Exact episode match in torrent name
+        if torrent_episodes:
+            exact_episode = len(torrent_episodes) == 1
+            if exact_episode:
+                if self.series.episode in torrent_episodes:
+                    return self._get_largest_video_file(self.valid_files)
+                else:
+                    return None
 
-            if not file_episodes or series.episode not in file_episodes:
-                continue
+        # Fa felépítése
+        root_node = self._build_tree()
 
-            if file_seasons:
-                if series.season in file_seasons:
-                    return file
-            else:
-                if (
-                    torrent_seasons
-                    and len(torrent_seasons) == 1
-                    and series.season in torrent_seasons
-                ):
-                    if best_match is None or file.size > best_match.size:
-                        best_match = file
+        # A root node nevének (torrent_info.name) feldolgozása már megtörtént feljebb.
+        inherited_season = torrent_seasons[0] if len(torrent_seasons) == 1 else None
 
-        return best_match
+        exact_matches: list[TorrentFileInfo] = []
+
+        for child in root_node.children.values():
+            exact_matches.extend(
+                self._traverse_tree(
+                    child,
+                    inherited_season,
+                )
+            )
+
+        if exact_matches:
+            return self._get_largest_video_file(exact_matches)
+
+        return None

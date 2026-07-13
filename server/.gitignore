@@ -27,4 +27,4 @@ Thumbs.db
 
 # Generated OpenAPI output
 openapi/
-data
+/data
