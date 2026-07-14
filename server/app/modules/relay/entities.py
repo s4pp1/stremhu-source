@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import math
 from collections.abc import AsyncIterator
 from typing import TYPE_CHECKING
 from uuid import uuid4
@@ -15,8 +14,7 @@ from fastapi import Request
 
 from app.common.constants import (
     CHUNK_SIZE,
-    PRIO_1,
-    PRIO_5,
+    PRIO_2,
     PRIO_7,
 )
 from app.common.logger import logger
@@ -40,20 +38,9 @@ class Torrent:
 
         self.piece_size = torrent_info.piece_size
 
-        self.prefetch_piece_count = max(
-            1,
-            math.ceil(
-                (64 * 1024 * 1024) / self.piece_size,
-            ),
-        )
+        self.prefetch_piece_count = 20
 
-        self.critical_piece_count = max(
-            1,
-            min(
-                math.ceil((1024 * 1024) / self.piece_size),
-                2,
-            ),
-        )
+        self.critical_piece_count = 2
 
         self._default_piece_priority = default_priority
 
@@ -76,7 +63,7 @@ class Torrent:
     def priority_manager(self):
         try:
             target_max_connections = (
-                100
+                50
                 if self.has_active_streams
                 else self.service._torrent_connections_limit
             )
@@ -87,14 +74,14 @@ class Torrent:
 
             target_priorities, target_deadlines = self.get_priorities_and_deadlines()
 
-            active_priorities = self.torrent_handle.piece_priorities()
+            # active_priorities = self.torrent_handle.piece_priorities()
 
-            for piece_index, current_priority in enumerate(active_priorities):
-                priority = target_priorities.get(
-                    piece_index, self._default_piece_priority
-                )
-                if current_priority != priority:
-                    self.torrent_handle.piece_priority(piece_index, priority)
+            # for piece_index, current_priority in enumerate(active_priorities):
+            #     priority = target_priorities.get(
+            #         piece_index, self._default_piece_priority
+            #     )
+            #     if current_priority != priority:
+            #         self.torrent_handle.piece_priority(piece_index, priority)
 
             for piece_index in list(self._active_deadlines.keys()):
                 if piece_index not in target_deadlines:
@@ -102,9 +89,12 @@ class Torrent:
                     self._active_deadlines.pop(piece_index)
 
             for piece_index, deadline in target_deadlines.items():
-                if not self._active_deadlines.get(piece_index):
-                    self.torrent_handle.set_piece_deadline(piece_index, deadline)
-                    self._active_deadlines[piece_index] = deadline
+                self.torrent_handle.set_piece_deadline(
+                    piece_index,
+                    deadline,
+                    libtorrent.torrent_handle.alert_when_available,
+                )
+                self._active_deadlines[piece_index] = deadline
 
         except Exception:
             logger.exception("Hiba történt a prioritáskezelőben.")
@@ -125,7 +115,7 @@ class Torrent:
                 continue
 
             for piece_index in range(file.start_piece_index, file.end_piece_index + 1):
-                target_priorities[piece_index] = PRIO_1
+                target_priorities[piece_index] = PRIO_2
 
             self._set_file_boundary_priorities(
                 file, target_priorities, target_deadlines
@@ -140,13 +130,17 @@ class Torrent:
                     stream.current_stream_piece + self.prefetch_piece_count,
                 )
 
-                for piece_index in range(stream.current_stream_piece, prefetch_end + 1):
-                    target_priorities[piece_index] = PRIO_5
+                for index, piece_index in enumerate(
+                    range(stream.current_stream_piece, prefetch_end + 1)
+                ):
+                    if self.critical_piece_count > index:
+                        target_deadlines[piece_index] = 0
+                    else:
+                        target_deadlines[piece_index] = 2000 + (index * 1000)
 
-                critical_pieces = stream.get_critical_pieces()
-                for piece_index in critical_pieces:
-                    target_priorities[piece_index] = PRIO_7
-                    target_deadlines[piece_index] = 0
+                # critical_pieces = stream.get_critical_pieces()
+                # for piece_index in critical_pieces:
+                #     target_deadlines[piece_index] = 0
 
         return target_priorities, target_deadlines
 
@@ -300,8 +294,6 @@ class Stream:
         self,
         request: Request,
     ) -> AsyncIterator[bytes]:
-        prefetch_tasks: dict[int, asyncio.Task[bytes]] = {}
-
         try:
             for piece_index in range(
                 self.stream_start_piece_index, self.stream_end_piece_index + 1
@@ -313,19 +305,9 @@ class Stream:
                 if await request.is_disconnected():
                     return
 
-                for i in range(self.torrent.prefetch_piece_count + 1):
-                    p_idx = piece_index + i
-                    if (
-                        p_idx <= self.stream_end_piece_index
-                        and p_idx not in prefetch_tasks
-                    ):
-                        prefetch_tasks[p_idx] = asyncio.create_task(
-                            self.torrent.service.get_piece_data(
-                                self.torrent.torrent_handle, p_idx
-                            )
-                        )
-
-                piece_buffer = await prefetch_tasks.pop(piece_index)
+                piece_buffer = await self.torrent.service.get_piece_data(
+                    self.torrent.torrent_handle, piece_index
+                )
 
                 start_offset = 0
                 end_offset = len(piece_buffer)
@@ -348,7 +330,3 @@ class Stream:
                     yield view[chunk_start : chunk_start + CHUNK_SIZE].tobytes()
         finally:
             asyncio.create_task(self.destroy())
-
-            for task in prefetch_tasks.values():
-                if not task.done():
-                    task.cancel()
