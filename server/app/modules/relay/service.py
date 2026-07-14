@@ -328,6 +328,10 @@ class RelayService:
                             f"Hiba történt a torrent visszaállítási adatok mentése közben: {alert.message()}"
                         )
 
+                    case libtorrent.piece_finished_alert():
+                        info_hash = str(alert.handle.info_hash())
+                        self.trigger_priority_update(info_hash)
+
                     case libtorrent.read_piece_alert():
                         info_hash = str(alert.handle.info_hash())
                         request_key = (info_hash, alert.piece)
