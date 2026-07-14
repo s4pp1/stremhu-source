@@ -1,0 +1,138 @@
+# serializer version: 1
+# name: test_series_parser_torrent_name[complete_series_sub_folder_season]
+  dict({
+    'episodes': list([
+    ]),
+    'seasons': list([
+    ]),
+    'torrent_name': 'Duck.Dodgers.Complete.Series.TvRip.DivX.XviD.Hun.Eng-KF',
+  })
+# ---
+# name: test_series_parser_torrent_name[complete_series_without_season]
+  dict({
+    'episodes': list([
+    ]),
+    'seasons': list([
+    ]),
+    'torrent_name': 'Muneca.Brava.Complete.TVrip_DTVRip.Hun',
+  })
+# ---
+# name: test_series_parser_torrent_name[series_big_bang_theory]
+  dict({
+    'episodes': list([
+    ]),
+    'seasons': list([
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+    ]),
+    'torrent_name': 'The.Big.Bang.Theory.S01-S12.COMPLETE.1080p.BluRay.DD5.1.x264.HUN.ENG-pcroland',
+  })
+# ---
+# name: test_series_parser_torrent_name[series_different_file_attributes]
+  dict({
+    'episodes': list([
+    ]),
+    'seasons': list([
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+    ]),
+    'torrent_name': 'Malcolm.in.the.Middle.S01-S07.READ.NFO.576p.NF.WEBRip.DD5.1.x264.HUN.ENG-pcroland',
+  })
+# ---
+# name: test_series_parser_torrent_name[series_house_of_dragon]
+  dict({
+    'episodes': list([
+      3,
+    ]),
+    'seasons': list([
+      3,
+    ]),
+    'torrent_name': 'House.of.the.Dragon.S03E03.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264.HUN.ENG-PTHD',
+  })
+# ---
+# name: test_series_parser_torrent_name[series_lost_concatenated]
+  dict({
+    'episodes': list([
+    ]),
+    'seasons': list([
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+    ]),
+    'torrent_name': 'Lost.S01-S06.1080p.BluRay.REMUX.AVC.DTS-HD.MA.5.1.HUN.ENG-Kataklysm',
+  })
+# ---
+# name: test_series_parser_torrent_name[series_miraculous]
+  dict({
+    'episodes': list([
+    ]),
+    'seasons': list([
+      1,
+      2,
+      3,
+      4,
+    ]),
+    'torrent_name': 'Miraculous S01-S04 (WEB-DL_1280x720)',
+  })
+# ---
+# name: test_series_parser_torrent_name[series_the_boys]
+  dict({
+    'episodes': list([
+    ]),
+    'seasons': list([
+      5,
+    ]),
+    'torrent_name': 'The.Boys.S05.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264.HUN.ENG-PTHD',
+  })
+# ---
+# name: test_series_parser_torrent_name[series_with_space_separator]
+  dict({
+    'episodes': list([
+    ]),
+    'seasons': list([
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+    ]),
+    'torrent_name': 'Two and a Half Men S01-S12 AMZN.WEB-DL1080p',
+  })
+# ---
+# name: test_series_parser_torrent_name[series_with_x_base]
+  dict({
+    'episodes': list([
+    ]),
+    'seasons': list([
+      1,
+      2,
+      3,
+    ]),
+    'torrent_name': 'The_Boondocks_-_S01-S03_[DVDRip-Hun-Eng-GaRuRuMoN]',
+  })
+# ---

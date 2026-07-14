@@ -81,6 +81,53 @@ class TorrentStream(BaseModel):
 
         return torrent_streams
 
+    @staticmethod
+    def resolve_attributes(
+        torrent_name: str,
+        file_name: str,
+        external_fallbacks: list[MediaAttributeModel] | None = None,
+    ) -> list[MediaAttributeModel]:
+        torrent_attributes = parse_torrent_name(
+            name=torrent_name,
+            external_fallbacks=external_fallbacks or [],
+        )
+
+        file_attributes = parse_torrent_name(
+            name=file_name,
+            use_fallbacks=False,
+        )
+
+        torrent_attr_ids = {attribute.id for attribute in torrent_attributes}
+        file_attr_ids = {attribute.id for attribute in file_attributes}
+
+        if not file_attributes:
+            return torrent_attributes
+
+        if file_attr_ids == torrent_attr_ids:
+            return torrent_attributes
+
+        # Intelligens összefésülés: a fájl attribútumai felülírják a torrent azonos kategóriájú (preference_id) attribútumait
+        parsed_attributes = []
+        file_pref_ids = {
+            file_attribute.preference_id
+            for file_attribute in file_attributes
+            if file_attribute.preference_id is not None
+        }
+
+        for attr in torrent_attributes:
+            # Ha a fájl tartalmaz attribútumot ebből a kategóriából, akkor a torrent-szintűt eldobjuk (felülíródik)
+            if attr.preference_id is not None and attr.preference_id in file_pref_ids:
+                continue
+            # Ha nincs kategória, de a fájl már pont tartalmazza ezt az attribútumot, akkor elkerüljük a duplikációt
+            if attr.id in file_attr_ids:
+                continue
+            parsed_attributes.append(attr)
+
+        # Hozzáadjuk a fájl saját attribútumait
+        parsed_attributes.extend(file_attributes)
+
+        return parsed_attributes
+
     @classmethod
     def from_imdb_id(
         cls,
@@ -90,54 +137,17 @@ class TorrentStream(BaseModel):
         user: UserModel,
         series: SeriesInfo | None = None,
     ) -> "TorrentStream | None":
-        torrent_file_info = StreamFileResolver.resolve_file(
-            torrent_file.info,
-            series,
-        )
+        resolver = StreamFileResolver(torrent_file.info, series)
+        torrent_file_info = resolver.resolve()
 
         if torrent_file_info is None:
             return None
 
-        torrent_attributes = parse_torrent_name(
-            name=torrent_file.info.name,
+        parsed_attributes = cls.resolve_attributes(
+            torrent_name=torrent_file.info.name,
+            file_name=torrent_file_info.name,
             external_fallbacks=indexer_torrent.media_attributes,
         )
-
-        file_attributes = parse_torrent_name(
-            name=torrent_file_info.name,
-            use_fallbacks=False,
-        )
-
-        torrent_attr_ids = {attribute.id for attribute in torrent_attributes}
-        file_attr_ids = {attribute.id for attribute in file_attributes}
-
-        if not file_attributes:
-            parsed_attributes = torrent_attributes
-        elif file_attr_ids == torrent_attr_ids:
-            parsed_attributes = torrent_attributes
-        else:
-            # Intelligens összefésülés: a fájl attribútumai felülírják a torrent azonos kategóriájú (preference_id) attribútumait
-            parsed_attributes = []
-            file_pref_ids = {
-                file_attribute.preference_id
-                for file_attribute in file_attributes
-                if file_attribute.preference_id is not None
-            }
-
-            for attr in torrent_attributes:
-                # Ha a fájl tartalmaz attribútumot ebből a kategóriából, akkor a torrent-szintűt eldobjuk (felülíródik)
-                if (
-                    attr.preference_id is not None
-                    and attr.preference_id in file_pref_ids
-                ):
-                    continue
-                # Ha nincs kategória, de a fájl már pont tartalmazza ezt az attribútumot, akkor elkerüljük a duplikációt
-                if attr.id in file_attr_ids:
-                    continue
-                parsed_attributes.append(attr)
-
-            # Hozzáadjuk a fájl saját attribútumait
-            parsed_attributes.extend(file_attributes)
 
         indexer_id = indexer_torrent.indexer_account.indexer_id
         torrent_id = torrent_file.torrent_id

@@ -26,7 +26,7 @@ rich==15.0.0
 email-validator==2.3.0
 
 # Development tools
-ruff==0.15.20
+ruff==0.15.21
 basedpyright==1.39.9
 pytest==9.1.1
-syrupy==5.4.0
+syrupy==5.5.3
