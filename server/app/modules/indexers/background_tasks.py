@@ -11,8 +11,7 @@ async def run_indexers_cleanup() -> None:
             indexers_service = create_indexers_service(db)
             await indexers_service.cleanup_torrents_by_rules()
         logger.info("✅ Az indexerek karbantartási takarítása befejeződött.")
-    except Exception as e:
-        logger.error(
-            f"🚨 Hiba történt az indexerek karbantartási takarítása során: {e}",
-            exc_info=e,
+    except Exception:
+        logger.exception(
+            "‼️ Hiba történt az indexerek karbantartási takarítása során.",
         )

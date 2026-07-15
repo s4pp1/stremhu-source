@@ -95,11 +95,9 @@ class SslService:
                 privkey=privkey,
                 expires_at=expires_at,
             )
-        except Exception as e:
-            logger.error(
-                "🚨 Nem sikerült letölteni a nyilvános local-ip.medicmobile.org tanúsítványt: %s. "
-                "Visszaesés a helyi self-signed (ön-aláírt) tanúsítvány generálására...",
-                e,
+        except Exception:
+            logger.exception(
+                "‼️ Nem sikerült letölteni a nyilvános local-ip.medicmobile.org tanúsítványt. Visszaesés a helyi self-signed (ön-aláírt) tanúsítvány generálására...",
             )
             return self._generate_self_signed_certificate_fallback(host_ip)
 

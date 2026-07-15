@@ -239,7 +239,7 @@ class BaseIndexerDefinition(ABC):
             return response.content
         except Exception as e:
             self.logger.error(
-                f'🚨 Hiba történt a(z) "[{self.name}] - {download_url}" torrent letöltése közben.',
+                f'‼️ Hiba történt a(z) "[{self.name}] - {download_url}" torrent letöltése közben.',
                 exc_info=e,
             )
             raise

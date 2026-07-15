@@ -338,8 +338,7 @@ class IndexersService:
             logger.info(
                 f"✅ Sikeres takarítás lefutott az indexerhez: {indexer_account.indexer_id}"
             )
-        except Exception as ex:
-            logger.error(
-                f"🚨 Hiba történt a(z) '{indexer_account.indexer_id}' indexer takarítása során: {ex}",
-                exc_info=ex,
+        except Exception:
+            logger.exception(
+                f"‼️ Hiba történt a(z) '{indexer_account.indexer_id}' indexer takarítása során.",
             )
