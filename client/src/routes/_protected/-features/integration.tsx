@@ -3,6 +3,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
+import { Trans } from '@lingui/react/macro'
 
 import { KodiIntegration } from './kodi-integration'
 import { NuvioIntegration } from './nuvio-integration'
@@ -12,9 +13,9 @@ export function Integration() {
   return (
     <div className="grid gap-4">
       <CardHeader className="px-0">
-        <CardTitle>Támogatott kliensek</CardTitle>
+        <CardTitle><Trans>Supported clients</Trans></CardTitle>
         <CardDescription>
-          Csatlakoztasd a StremHU Source-ot az általad használt kliensekhez.
+          <Trans>Connect StremHU Source to the clients you use.</Trans>
         </CardDescription>
       </CardHeader>
       <div className="columns-1 md:columns-2 gap-4">

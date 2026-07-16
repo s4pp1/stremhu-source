@@ -10,6 +10,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { GrabIcon, HeartIcon, SearchIcon, TrashIcon } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 import type { MouseEventHandler } from 'react'
 
 import { SortableWrapper } from '@/shared/components/sortable-wrapper'
@@ -47,9 +48,9 @@ export const PreferenceForm = withForm({
             return (
               <div className="grid gap-4">
                 <div className="grid">
-                  <ItemTitle>Elérhető tulajdonságok</ItemTitle>
+                  <ItemTitle><Trans>Available attributes</Trans></ItemTitle>
                   <ItemDescription>
-                    Ezeket a tulajdonságokat tudod preferálni vagy kizárni.
+                    <Trans>You can prefer or exclude these attributes.</Trans>
                   </ItemDescription>
                 </div>
                 <div className="grid gap-3">
@@ -85,7 +86,7 @@ export const PreferenceForm = withForm({
                   {availableAttributes.length === 0 && (
                     <Alert>
                       <SearchIcon />
-                      <AlertTitle>Nincs több elérhető tulajdonság.</AlertTitle>
+                      <AlertTitle><Trans>No more available attributes.</Trans></AlertTitle>
                     </Alert>
                   )}
                 </div>
@@ -127,10 +128,9 @@ export const PreferenceForm = withForm({
               <div className="grid gap-4">
                 <Item className="p-0">
                   <ItemContent className="gap-0">
-                    <ItemTitle>Preferált tulajdonságok</ItemTitle>
+                    <ItemTitle><Trans>Preferred attributes</Trans></ItemTitle>
                     <ItemDescription>
-                      Azok a tulajdonságok, amiket ide hozzáadsz előrébb
-                      kerülnek a listában.
+                      <Trans>The attributes you add here will appear higher in the list.</Trans>
                     </ItemDescription>
                   </ItemContent>
                   <ItemActions>
@@ -195,7 +195,7 @@ export const PreferenceForm = withForm({
                   {attributeIds.length === 0 && (
                     <Alert>
                       <HeartIcon />
-                      <AlertTitle>Nincs preferált tulajdonság</AlertTitle>
+                      <AlertTitle><Trans>No preferred attributes</Trans></AlertTitle>
                     </Alert>
                   )}
                 </div>

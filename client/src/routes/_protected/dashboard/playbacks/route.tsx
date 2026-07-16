@@ -3,7 +3,7 @@ import * as z from 'zod'
 
 import { getPlaybackHistories, getPlaybacks } from '@/shared/queries/playbacks'
 
-export const DASHBOARD_PLAYBACKS_NAME = 'Lejátszások'
+export const DASHBOARD_PLAYBACKS_NAME = 'Playbacks'
 
 const RouteComponent = () => <Outlet />
 

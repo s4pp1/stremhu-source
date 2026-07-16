@@ -6,7 +6,7 @@ import { RouteBreadcrumb } from '../dashboard/-components/route-breadcrumb'
 import { SETTINGS_ACCOUNT_NAME } from './account/route'
 import { SETTINGS_PREFERENCES_NAME } from './preferences/route'
 
-export const SETTINGS_NAME = 'Beállítások'
+export const SETTINGS_NAME = 'Settings'
 
 export const Route = createFileRoute('/_protected/settings')({
   component: SettingsLayout,

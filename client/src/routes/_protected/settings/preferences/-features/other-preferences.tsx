@@ -2,6 +2,7 @@ import { useForm } from '@tanstack/react-form'
 import { useQueries } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { Trans } from '@lingui/react/macro'
 
 import {
   Card,
@@ -61,20 +62,17 @@ export function OtherPreferences() {
   return (
     <div className="grid gap-4">
       <CardHeader className="px-0">
-        <CardTitle>További preferenciák</CardTitle>
+        <CardTitle><Trans>Other preferences</Trans></CardTitle>
         <CardDescription>
-          Itt finomhangolhatod a torrent-találatok megjelenését (pl. elrejtés
-          kevés seeder esetén), és bekapcsolhatod a Családbarát módot a
-          tisztább, egyszerűbb listához.
+          <Trans>Here you can fine-tune the appearance of torrent results (e.g. hide when there are few seeders), and turn on Family-friendly mode for a cleaner, simpler list.</Trans>
         </CardDescription>
       </CardHeader>
       <div className="columns-1 md:columns-2 gap-4">
         <Card className="break-inside-avoid mb-4">
           <CardHeader>
-            <CardTitle>Torrent elérhetősége</CardTitle>
+            <CardTitle><Trans>Torrent availability</Trans></CardTitle>
             <CardDescription>
-              Kevés seeder esetén, akadozhat a lejátszás, mennyi seeder alatt
-              legyen rejtve a torrent?
+              <Trans>With few seeders, playback might stutter. Below how many seeders should the torrent be hidden?</Trans>
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -113,10 +111,9 @@ export function OtherPreferences() {
         </Card>
         <Card className="break-inside-avoid mb-4">
           <CardHeader>
-            <CardTitle>Családbarát mód</CardTitle>
+            <CardTitle><Trans>Family-friendly mode</Trans></CardTitle>
             <CardDescription>
-              Csak a legjobb torrent jelenik meg a beállított preferenciáid
-              alapján - így nem kell listából válogatni.
+              <Trans>Only the best torrent appears based on your set preferences - so you don't have to choose from a list.</Trans>
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -128,7 +125,7 @@ export function OtherPreferences() {
                     checked={field.state.value}
                     onCheckedChange={field.handleChange}
                   />
-                  Családbarát mód
+                  <Trans>Family-friendly mode</Trans>
                 </Label>
               )}
             </form.Field>

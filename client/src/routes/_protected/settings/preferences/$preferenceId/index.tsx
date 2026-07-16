@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-router'
 import type { SubmitEventHandler } from 'react'
 import { toast } from 'sonner'
+import { Trans } from '@lingui/react/macro'
 
 import {
   Card,
@@ -17,7 +18,6 @@ import {
 } from '@/shared/components/ui/card'
 import { Separator } from '@/shared/components/ui/separator'
 import { useAppForm } from '@/shared/contexts/form-context'
-import type { PreferenceCreateRequest } from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import {
   getMePreference,
@@ -54,7 +54,7 @@ function RouteComponent() {
     defaultValues: {
       preferenceId: mePreference.id,
       attributeIds: mePreference.attributes.map((attribute) => attribute.id),
-    } as PreferenceCreateRequest,
+    },
     onSubmit: async ({ value }) => {
       try {
         await updateMePreference(value)
@@ -78,8 +78,9 @@ function RouteComponent() {
         <Card>
           <CardHeader>
             <CardTitle>
-              <span className="capitalize">{mePreference.name}</span>{' '}
-              konfigurációja
+              <Trans>
+                <span className="capitalize">{mePreference.name}</span> configuration
+              </Trans>
             </CardTitle>
           </CardHeader>
           <Separator />
@@ -88,7 +89,7 @@ function RouteComponent() {
           </CardContent>
           <CardFooter className="gap-4 justify-end">
             <form.SubscribeButton asChild variant="outline">
-              <Link to="/settings/preferences">Mégsem</Link>
+              <Link to="/settings/preferences"><Trans>Cancel</Trans></Link>
             </form.SubscribeButton>
             <form.Subscribe
               selector={(state) => {
@@ -98,7 +99,7 @@ function RouteComponent() {
             >
               {(disabled) => (
                 <form.SubscribeButton type="submit" disabled={disabled}>
-                  Módosítás
+                  <Trans>Update</Trans>
                 </form.SubscribeButton>
               )}
             </form.Subscribe>

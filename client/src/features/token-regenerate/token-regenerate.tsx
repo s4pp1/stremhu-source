@@ -1,5 +1,7 @@
 import { KeyRoundIcon, RotateCcwKeyIcon } from 'lucide-react'
 import { toast } from 'sonner'
+import { Trans } from '@lingui/react/macro'
+import { t } from '@lingui/core/macro'
 
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { Button } from '@/shared/components/ui/button'
@@ -30,13 +32,13 @@ export function TokenRegenerate(props: TokenRegenerateProps) {
 
   const handleChangeToken = async () => {
     await confirmDialog.confirm({
-      title: 'Biztosan kérsz új kulcsot?',
+      title: t`Are you sure you want to request a new key?`,
       description:
-        'Új kulcs létrehozása után az telepített alkalmazásokban az addon nem fog működni amíg újra nem telepíted!',
+        t`After generating a new key, the addon will not work in the installed applications until you reinstall it!`,
       onConfirm: async () => {
         try {
           await onSubmit()
-          toast.success('Új kulcs generálása elkészült.')
+          toast.success(t`New key generation is complete.`)
         } catch (error) {
           const message = parseApiError(error)
           toast.error(message)
@@ -49,10 +51,9 @@ export function TokenRegenerate(props: TokenRegenerateProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Kulcs kezelése</CardTitle>
+        <CardTitle><Trans>Manage key</Trans></CardTitle>
         <CardDescription>
-          A StremHU Source ennek a kulcsnak a segítségével azonosítja a
-          felhasználót az alkalmazásokban.
+          <Trans>StremHU Source uses this key to identify the user in the applications.</Trans>
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
@@ -61,7 +62,7 @@ export function TokenRegenerate(props: TokenRegenerateProps) {
             <KeyRoundIcon />
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>Új kulcs kérése</ItemTitle>
+            <ItemTitle><Trans>Request a new key</Trans></ItemTitle>
           </ItemContent>
           <ItemActions onClick={handleChangeToken}>
             <Button

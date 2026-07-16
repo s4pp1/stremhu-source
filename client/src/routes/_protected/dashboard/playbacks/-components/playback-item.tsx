@@ -1,4 +1,5 @@
 import { LinkIcon, PlayIcon, UserIcon } from 'lucide-react'
+import { t } from '@lingui/core/macro'
 
 import { Badge } from '@/shared/components/ui/badge'
 import {
@@ -38,7 +39,7 @@ export function PlaybackItem(props: PlaybackItemProps) {
         <div className="flex flex-wrap gap-2">
           <Badge
             variant="secondary"
-            title={`Forrás: ${playback.indexerDefinition.name}`}
+            title={t`Source: ${playback.indexerDefinition.name}`}
           >
             <LinkIcon />
             {playback.indexerDefinition.name}
@@ -46,7 +47,7 @@ export function PlaybackItem(props: PlaybackItemProps) {
 
           <Badge
             variant="secondary"
-            title={`Felhasználó: ${playback.user.username}`}
+            title={t`User: ${playback.user.username}`}
           >
             <UserIcon />
             {playback.user.username}
@@ -54,7 +55,7 @@ export function PlaybackItem(props: PlaybackItemProps) {
 
           <Badge
             variant="secondary"
-            title={`Lejátszás időpontja: ${formatDateTime(playback.createdAt)}`}
+            title={t`Playback time: ${formatDateTime(playback.createdAt)}`}
           >
             <PlayIcon />
             {formatDateTime(playback.createdAt)}

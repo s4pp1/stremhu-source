@@ -1,5 +1,7 @@
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import type { SubmitEventHandler } from 'react'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
@@ -29,8 +31,8 @@ export const Route = createFileRoute('/setup/user/')({
 })
 
 const schema = z.object({
-  username: z.string().trim().nonempty('A felhasználónév kitöltése kötelező'),
-  password: z.string().trim().nonempty('A jelszó kitöltése kötelező'),
+  username: z.string().trim().nonempty(t`Username is required`),
+  password: z.string().trim().nonempty(t`Password is required`),
 })
 
 function SetupUserRoute() {
@@ -72,30 +74,28 @@ function SetupUserRoute() {
       >
         <Card className="w-sm">
           <CardHeader>
-            <CardTitle>Adminisztrátor fiók létrehozása</CardTitle>
+            <CardTitle><Trans>Create administrator account</Trans></CardTitle>
             <CardDescription>
-              Kezdjük a beállítást! Hozd létre az első fiókot, ami{' '}
-              <span className="font-bold">Adminisztrátor</span> jogosultsággal
-              fog rendelkezni.
+              <Trans>Let's get started! Create the first account, which will have <span className="font-bold">Administrator</span> privileges.</Trans>
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">
             <form.AppField
               name="username"
               children={(field) => (
-                <field.AppTextField label="Felhasználónév" />
+                <field.AppTextField label={t`Username`} />
               )}
             />
             <form.AppField
               name="password"
               children={(field) => (
-                <field.AppTextField label="Jelszó" type="password" />
+                <field.AppTextField label={t`Password`} type="password" />
               )}
             />
           </CardContent>
           <CardFooter className="grid gap-4">
             <form.SubscribeButton type="submit">
-              Létrehozás
+              <Trans>Create</Trans>
             </form.SubscribeButton>
           </CardFooter>
         </Card>

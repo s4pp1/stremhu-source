@@ -1,6 +1,8 @@
 import { useQuery, useSuspenseQueries } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { SettingsIcon } from 'lucide-react'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 
 import { Button } from '@/shared/components/ui/button'
 import {
@@ -23,20 +25,7 @@ import { getHealth } from '@/shared/queries/app'
 import { getNetworkSettings } from '@/shared/queries/network'
 import { getSystemStatus } from '@/shared/queries/system'
 
-const networkCheckMap = {
-  idle: {
-    title: '🔎 Elérés ellenőrzése...',
-  },
-  pending: {
-    title: '🔎 Elérés ellenőrzése...',
-  },
-  success: {
-    title: '🟢 Elérés rendben',
-  },
-  error: {
-    title: '🔴 Nem érhető el a megadott címen',
-  },
-}
+
 
 export function NetworkAccessInfo() {
   const [{ data: systemStatus }, { data: networkSettings }] =
@@ -46,12 +35,27 @@ export function NetworkAccessInfo() {
 
   const { status: healthStatus } = useQuery(getHealth(systemStatus.appUrl))
 
+  const networkCheckMap = {
+    idle: {
+      title: t`🔎 Checking access...`,
+    },
+    pending: {
+      title: t`🔎 Checking access...`,
+    },
+    success: {
+      title: t`🟢 Access OK`,
+    },
+    error: {
+      title: t`🔴 Not accessible at the provided address`,
+    },
+  }
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Hálózati elérés</CardTitle>
+        <CardTitle><Trans>Network access</Trans></CardTitle>
         <CardDescription>
-          Hálózati eléréssel kapcsolatos információk
+          <Trans>Network access information</Trans>
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
@@ -68,7 +72,7 @@ export function NetworkAccessInfo() {
             <>
               <Item className="p-0">
                 <ItemContent>
-                  <ItemTitle>Tanúsítvány lejárata / frissítése</ItemTitle>
+                  <ItemTitle><Trans>Certificate expiration / renewal</Trans></ItemTitle>
                   <ItemDescription className="font-bold font-mono break-all">
                     {formatDateTime(networkSettings.expiresAt)}
                   </ItemDescription>
@@ -76,7 +80,7 @@ export function NetworkAccessInfo() {
               </Item>
               <Item className="p-0">
                 <ItemContent>
-                  <ItemTitle>Utolsó IP szinkronizáció</ItemTitle>
+                  <ItemTitle><Trans>Last IP sync</Trans></ItemTitle>
                   <ItemDescription className="font-bold font-mono break-all">
                     {formatDateTime(networkSettings.lastIpSyncAt)}
                   </ItemDescription>
@@ -90,7 +94,7 @@ export function NetworkAccessInfo() {
           <Item className="p-0">
             <ItemContent>
               <ItemTitle className="text-muted-foreground">
-                A hálózati elérés környezeti változóban van beállítva.
+                <Trans>Network access is configured in environment variables.</Trans>
               </ItemTitle>
             </ItemContent>
           </Item>
@@ -98,7 +102,7 @@ export function NetworkAccessInfo() {
           <Item className="p-0">
             <ItemContent>
               <ItemTitle>
-                Hálózati elérés frissítése vagy új konfiguráció alkalmazása.
+                <Trans>Update network access or apply new configuration.</Trans>
               </ItemTitle>
             </ItemContent>
             <ItemActions>

@@ -2,7 +2,7 @@ import { Outlet, createFileRoute } from '@tanstack/react-router'
 
 import { getUsers } from '@/shared/queries/users'
 
-export const DASHBOARD_USERS_NAME = 'Felhasználók'
+export const DASHBOARD_USERS_NAME = 'Users'
 
 const RouteComponent = () => <Outlet />
 

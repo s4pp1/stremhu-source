@@ -1,5 +1,6 @@
 import { useSuspenseQueries } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
+import { Trans } from '@lingui/react/macro'
 
 import {
   Card,
@@ -33,7 +34,7 @@ function RouteComponent() {
           </span>
         </CardTitle>
         <CardDescription>
-          Torrentek aktuális statisztikái és a hozzájuk kapcsolódó műveletek.
+          <Trans>Current statistics of torrents and related operations.</Trans>
         </CardDescription>
       </CardHeader>
       <Separator />

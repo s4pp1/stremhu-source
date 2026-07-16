@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { CopyIcon, LinkIcon } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 
 import { Button } from '@/shared/components/ui/button'
 import {
@@ -48,9 +49,9 @@ export function NuvioIntegration() {
             <LinkIcon />
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>URL másolása</ItemTitle>
+            <ItemTitle><Trans>Copy URL</Trans></ItemTitle>
             <ItemDescription>
-              A kimásolt URL-t illeszd be az addonok közé.
+              <Trans>Paste the copied URL into your addons.</Trans>
             </ItemDescription>
           </ItemContent>
           <ItemActions>

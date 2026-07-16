@@ -1,5 +1,6 @@
 import { useSuspenseQueries } from '@tanstack/react-query'
 import { CopyIcon, LinkIcon } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 
 import {
   Card,
@@ -37,8 +38,7 @@ export function KodiIntegration() {
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
         <p className="text-sm text-muted-foreground">
-          StremHU addon bejelentkezés folyamatánál a következő URL-t kell
-          megadni.
+          <Trans>During the StremHU addon login process, the following URL must be entered.</Trans>
         </p>
         <Field className="max-w-sm">
           <InputGroup>

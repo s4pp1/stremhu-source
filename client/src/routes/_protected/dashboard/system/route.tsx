@@ -4,7 +4,7 @@ import { getIndexers } from '@/shared/queries/indexers'
 import { getSystemSettings } from '@/shared/queries/system'
 import { getUsers } from '@/shared/queries/users'
 
-export const DASHBOARD_SYSTEM_NAME = 'Rendszer'
+export const DASHBOARD_SYSTEM_NAME = 'System'
 
 const RouteComponent = () => <Outlet />
 

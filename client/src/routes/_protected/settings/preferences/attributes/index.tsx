@@ -2,6 +2,7 @@ import { useSuspenseQueries } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { BanIcon, CircleIcon } from 'lucide-react'
 import type { MouseEventHandler } from 'react'
+import { Trans } from '@lingui/react/macro'
 
 import { Alert, AlertTitle } from '@/shared/components/ui/alert'
 import { Button } from '@/shared/components/ui/button'
@@ -58,16 +59,15 @@ function RouteComponent() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Kizárt tulajdonságok konfigurációja</CardTitle>
+        <CardTitle><Trans>Configure excluded attributes</Trans></CardTitle>
       </CardHeader>
       <Separator />
       <CardContent className="grid gap-8">
         <div className="grid gap-4">
           <div className="grid">
-            <ItemTitle>Kizárt tulajdonságok</ItemTitle>
+            <ItemTitle><Trans>Excluded attributes</Trans></ItemTitle>
             <ItemDescription>
-              A kliensekben megjelenő listában nem fognak szerepelni azok a
-              torrent-ek, amik tartalmaznák a kizárt tulajdonságot.
+              <Trans>Torrents containing an excluded attribute will not appear in the list in clients.</Trans>
             </ItemDescription>
           </div>
           {exclusions.map((exclusion) => (
@@ -90,18 +90,16 @@ function RouteComponent() {
           {exclusions.length === 0 && (
             <Alert>
               <BanIcon />
-              <AlertTitle>Nincs kizárt tulajdonság.</AlertTitle>
+              <AlertTitle><Trans>No excluded attributes.</Trans></AlertTitle>
             </Alert>
           )}
         </div>
         <Separator />
         <div className="grid gap-4">
           <div className="grid">
-            <ItemTitle>Kizárható tulajdonságok</ItemTitle>
+            <ItemTitle><Trans>Excludable attributes</Trans></ItemTitle>
             <ItemDescription>
-              Ezek a tulajdonságok kizárhatók, amiknek az a hatása, hogy a
-              kliensek listázójában nem fognak megjelenni a kizárt
-              tulajdonsággal rendelkező torrentek.
+              <Trans>These attributes can be excluded, meaning torrents with these attributes won't appear in the clients' list.</Trans>
             </ItemDescription>
           </div>
           {attributes.map((attribute) => (

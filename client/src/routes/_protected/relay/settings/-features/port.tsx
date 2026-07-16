@@ -3,6 +3,8 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { isEmpty } from 'lodash'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 
 import {
   Card,
@@ -60,16 +62,16 @@ export function Port() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Használt port</CardTitle>
+        <CardTitle><Trans>Used port</Trans></CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-6">
         <form.Field name="port">
           {(field) => (
             <Field>
-              <FieldLabel>Port a bejövő kapcsolatokhoz</FieldLabel>
+              <FieldLabel><Trans>Port for incoming connections</Trans></FieldLabel>
               <InputGroup>
                 <InputGroupInput
-                  placeholder="Nincs limitálva"
+                  placeholder={t`No limit`}
                   inputMode="numeric"
                   id={field.name}
                   name={field.name}
@@ -101,7 +103,7 @@ export function Port() {
                 onCheckedChange={field.handleChange}
               />
               <Label htmlFor="airplane-mode">
-                UPnP / NAT-PMP használata a routeren a porttovábbításhoz
+                <Trans>Use UPnP / NAT-PMP on the router for port forwarding</Trans>
               </Label>
             </div>
           )}

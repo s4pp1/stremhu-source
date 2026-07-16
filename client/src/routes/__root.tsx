@@ -28,7 +28,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     }
   },
   loader: () => {
-    return { breadcrumb: 'Kezdőoldal' }
+    return { breadcrumb: 'Home' }
   },
   component: () => (
     <AppLayout>

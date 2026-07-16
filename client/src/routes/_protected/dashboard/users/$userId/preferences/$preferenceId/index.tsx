@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-router'
 import type { SubmitEventHandler } from 'react'
 import { toast } from 'sonner'
+import { Trans } from '@lingui/react/macro'
 
 import { PreferenceForm } from '@/features/preference-form/preference-form'
 import {
@@ -18,7 +19,6 @@ import {
 } from '@/shared/components/ui/card'
 import { Separator } from '@/shared/components/ui/separator'
 import { useAppForm } from '@/shared/contexts/form-context'
-import type { PreferenceCreateRequest } from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import {
   getUserPreference,
@@ -57,7 +57,7 @@ function RouteComponent() {
       attributeIds: preferenceDefinition.attributes.map(
         (attribute) => attribute.id,
       ),
-    } as PreferenceCreateRequest,
+    },
     onSubmit: async ({ value }) => {
       try {
         await updateUserPreference(value)
@@ -84,8 +84,9 @@ function RouteComponent() {
         <Card>
           <CardHeader>
             <CardTitle>
-              <span className="capitalize">{userPreference.name}</span>{' '}
-              konfigurációja
+              <Trans>
+                <span className="capitalize">{userPreference.name}</span> configuration
+              </Trans>
             </CardTitle>
           </CardHeader>
           <Separator />
@@ -98,7 +99,7 @@ function RouteComponent() {
                 to="/dashboard/users/$userId/preferences"
                 params={{ userId }}
               >
-                Mégsem
+                <Trans>Cancel</Trans>
               </Link>
             </form.SubscribeButton>
             <form.Subscribe
@@ -109,7 +110,7 @@ function RouteComponent() {
             >
               {(disabled) => (
                 <form.SubscribeButton type="submit" disabled={disabled}>
-                  Módosítás
+                  <Trans>Update</Trans>
                 </form.SubscribeButton>
               )}
             </form.Subscribe>

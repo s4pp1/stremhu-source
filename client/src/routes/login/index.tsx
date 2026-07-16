@@ -1,3 +1,5 @@
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import type { SubmitEventHandler } from 'react'
 import { toast } from 'sonner'
@@ -30,8 +32,14 @@ export const Route = createFileRoute('/login/')({
 })
 
 const schema = z.object({
-  username: z.string().trim().nonempty('A felhasználónév kitöltése kötelező'),
-  password: z.string().trim().nonempty('A jelszó kitöltése kötelező'),
+  username: z
+    .string()
+    .trim()
+    .nonempty(t`Username is required`),
+  password: z
+    .string()
+    .trim()
+    .nonempty(t`Password is required`),
 })
 
 function LoginRoute() {
@@ -75,28 +83,28 @@ function LoginRoute() {
       >
         <Card className="w-sm">
           <CardHeader>
-            <CardTitle>Bejelentkezés a fiókodba</CardTitle>
+            <CardTitle>
+              <Trans>Log into your account</Trans>
+            </CardTitle>
             <CardDescription>
-              Add meg felhasználóneved és jelszavad a bejelentkezéshez
+              <Trans>Enter your username and password to log in</Trans>
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">
             <form.AppField
               name="username"
-              children={(field) => (
-                <field.AppTextField label="Felhasználónév" />
-              )}
+              children={(field) => <field.AppTextField label={t`Username`} />}
             />
             <form.AppField
               name="password"
               children={(field) => (
-                <field.AppTextField label="Jelszó" type="password" />
+                <field.AppTextField label={t`Password`} type="password" />
               )}
             />
           </CardContent>
           <CardFooter className="grid gap-4">
             <form.SubscribeButton type="submit">
-              Bejelentkezés
+              <Trans>Log in</Trans>
             </form.SubscribeButton>
           </CardFooter>
         </Card>

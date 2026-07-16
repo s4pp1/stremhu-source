@@ -1,6 +1,7 @@
 import type { LinkProps } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
 import { upperFirst } from 'lodash'
+import { Trans } from '@lingui/react/macro'
 
 import {
   Card,
@@ -42,10 +43,9 @@ export const CreatePreference = withForm({
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Preferencia konfiguráció létrehozása</CardTitle>
+          <CardTitle><Trans>Create preference configuration</Trans></CardTitle>
           <CardDescription>
-            Válaszd ki milyen preferencia konfigurációt szeretnél létrehozni és
-            végezd el a konfigurációt.
+            <Trans>Choose which preference configuration you want to create and configure it.</Trans>
           </CardDescription>
         </CardHeader>
         <Separator />
@@ -92,7 +92,7 @@ export const CreatePreference = withForm({
         </CardContent>
         <CardFooter className="gap-4 justify-end">
           <form.SubscribeButton asChild variant="outline">
-            <Link {...toBackLink}>Mégsem</Link>
+            <Link {...toBackLink}><Trans>Cancel</Trans></Link>
           </form.SubscribeButton>
           <form.Subscribe
             selector={(state) => {
@@ -102,7 +102,7 @@ export const CreatePreference = withForm({
           >
             {(disabled) => (
               <form.SubscribeButton type="submit" disabled={disabled}>
-                Létrehozás
+                <Trans>Create</Trans>
               </form.SubscribeButton>
             )}
           </form.Subscribe>

@@ -12,6 +12,7 @@ import {
 import type { LinkProps } from '@tanstack/react-router'
 import { Link } from '@tanstack/react-router'
 import { GrabIcon, PlusIcon, SearchIcon } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 import type { ReactNode } from 'react'
 import { Fragment, useEffect, useMemo, useState } from 'react'
 
@@ -77,8 +78,7 @@ export function PreferencesSection(props: PreferencesSectionProps) {
       <CardHeader>
         <CardTitle>{SETTINGS_PREFERENCES_NAME}</CardTitle>
         <CardDescription>
-          Testreszabhatod, milyen torrentek kerüljenek előre a listában. A
-          preferált tulajdonságok befolyásolják a sorrendet.
+          <Trans>You can customize which torrents appear first in the list. The preferred attributes affect the order.</Trans>
         </CardDescription>
         <CardAction className="flex items-center gap-2">
           <ItemMedia variant="icon" className="rounded-full">
@@ -120,7 +120,7 @@ export function PreferencesSection(props: PreferencesSectionProps) {
               <Alert>
                 <SearchIcon />
                 <AlertTitle>
-                  Nincs preferált tulajdonsággal rendelkező szabály.
+                  <Trans>No rules with preferred attributes.</Trans>
                 </AlertTitle>
               </Alert>
             )}

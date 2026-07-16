@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { TrashIcon } from 'lucide-react'
 import type { MouseEvent } from 'react'
+import { t } from '@lingui/core/macro'
 
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { Button } from '@/shared/components/ui/button'
@@ -30,8 +31,8 @@ export function UserItem(props: UserItemProps) {
     event.stopPropagation()
 
     await confirmDialog.confirm({
-      title: `Biztos törölni szeretnéd?`,
-      description: `"${user.username}" törlése végleges és nem lehetséges visszaállítani!`,
+      title: t`Are you sure you want to delete?`,
+      description: t`Deleting "${user.username}" is permanent and cannot be undone!`,
       onConfirm: async () => {
         await deleteUser(user.id)
       },

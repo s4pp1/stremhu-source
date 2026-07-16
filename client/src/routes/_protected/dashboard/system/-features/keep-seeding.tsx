@@ -5,6 +5,8 @@ import type { MouseEventHandler } from 'react'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { Button } from '@/shared/components/ui/button'
@@ -42,8 +44,8 @@ import {
 const schema = z.object({
   hitAndRun: z.boolean(),
   keepSeed: z.coerce
-    .number<string>('Csak szám adható meg')
-    .positive('Csak pozitív szám adható meg.')
+    .number<string>(t`Must be a number`)
+    .positive(t`Must be a positive number.`)
     .nullable(),
 })
 
@@ -106,13 +108,12 @@ export function KeepSeeding() {
     e.stopPropagation()
 
     await confirmDialog.confirm({
-      title: 'Biztos letuttatod a manuális ellenőrzést?',
-      description:
-        'A futtatás ellenére a hajnalban időzített futtatás is le fog futni.',
+      title: t`Are you sure you want to run a manual check?`,
+      description: t`Even if you run this, the scheduled check at dawn will still run.`,
       onConfirm: async () => {
         try {
           await cleanupIndexers()
-          toast.success('A manuális ellenőrzés sikeresen lefutott.')
+          toast.success(t`Manual check ran successfully.`)
         } catch (error) {
           const message = parseApiError(error)
           toast.error(message)
@@ -125,10 +126,9 @@ export function KeepSeeding() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Automatikus torrent törlés</CardTitle>
+        <CardTitle><Trans>Automatic torrent deletion</Trans></CardTitle>
         <CardDescription>
-          Minden nap hajnalban lefut az ellenőrzés, de torrent csak akkor kerül
-          törlésre, ha a beállított feltételek mindegyike teljesül.
+          <Trans>The check runs every day at dawn, but a torrent is only deleted if all the set conditions are met.</Trans>
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-6">
@@ -137,7 +137,7 @@ export function KeepSeeding() {
             <div className="grid gap-1">
               <Label htmlFor={field.name} className="flex items-start gap-3">
                 <p className="flex-1 text-sm leading-none font-medium">
-                  Hit'n'Run alapú törlés
+                  <Trans>Hit'n'Run based deletion</Trans>
                 </p>
                 <Switch
                   id={field.name}
@@ -146,8 +146,7 @@ export function KeepSeeding() {
                 />
               </Label>
               <p className="text-muted-foreground text-sm">
-                Ellenőrzi a torrent oldal alapján a teljesítést és csak azt
-                követően törlődhet.
+                <Trans>Checks completion based on the tracker, and can only be deleted after that.</Trans>
               </p>
             </div>
           )}
@@ -162,7 +161,7 @@ export function KeepSeeding() {
                     className="flex items-start gap-3"
                   >
                     <p className="flex-1 text-sm leading-none font-medium">
-                      Lejátszás alapú törlés
+                      <Trans>Playback based deletion</Trans>
                     </p>
                     <Switch
                       id={field.name}
@@ -173,15 +172,14 @@ export function KeepSeeding() {
                     />
                   </Label>
                   <p className="text-muted-foreground text-sm">
-                    A torrent csak akkor törlődhet, ha a legutóbbi lejátszás óta
-                    eltelt a beállított idő.
+                    <Trans>The torrent can only be deleted if the set time has passed since the last playback.</Trans>
                   </p>
                 </div>
                 {field.state.value !== null && (
                   <Field>
                     <InputGroup>
                       <InputGroupInput
-                        placeholder="Hány nap után engedje?"
+                        placeholder={t`After how many days?`}
                         inputMode="numeric"
                         id={field.name}
                         name={field.name}
@@ -192,7 +190,7 @@ export function KeepSeeding() {
                         }}
                       />
                       <InputGroupAddon align="inline-end">
-                        <InputGroupText>nap után</InputGroupText>
+                        <InputGroupText><Trans>days</Trans></InputGroupText>
                       </InputGroupAddon>
                     </InputGroup>
                     {field.state.meta.isTouched && (
@@ -207,9 +205,9 @@ export function KeepSeeding() {
         <Separator />
         <Item variant="default" className="p-0">
           <ItemContent>
-            <ItemTitle>Torrentek ellenőrzése</ItemTitle>
+            <ItemTitle><Trans>Check torrents</Trans></ItemTitle>
             <ItemDescription>
-              Torrentek ellenőrzésének indítása!
+              <Trans>Start checking torrents!</Trans>
             </ItemDescription>
           </ItemContent>
           <ItemActions>

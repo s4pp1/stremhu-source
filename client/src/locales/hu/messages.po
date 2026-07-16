@@ -1,0 +1,793 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-07-16 08:54+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: hu\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#. placeholder {0}: me.role.name
+#: src/routes/_protected/settings/account/-features/login-and-security.tsx:45
+msgid "{0} role"
+msgstr "{0} jogosultság"
+
+#. placeholder {0}: user.username
+#: src/routes/_protected/dashboard/users/$userId/-features/user-profile.tsx:120
+msgid "{0} user profile"
+msgstr "{0} adatlapja"
+
+#: src/routes/_protected/index.tsx:62
+msgid "{SETTINGS_ACCOUNT_NAME} - Login and security"
+msgstr ""
+
+#: src/routes/_protected/index.tsx:86
+msgid "{SETTINGS_PREFERENCES_NAME} - Torrent list customization"
+msgstr ""
+
+#. placeholder {0}: mePreference.name
+#. placeholder {0}: userPreference.name
+#: src/routes/_protected/dashboard/users/$userId/preferences/$preferenceId/index.tsx:87
+#: src/routes/_protected/settings/preferences/$preferenceId/index.tsx:81
+msgid "<0>{0}</0> configuration"
+msgstr "<0>{0}</0> konfigurációja"
+
+#. placeholder {0}: user.username
+#: src/routes/_protected/dashboard/users/$userId/-features/user-profile.tsx:106
+msgid "<0>{0}</0>'s deletion is permanent and cannot be undone!"
+msgstr "<0>{0}</0> törlése végleges és nem vonható vissza!"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:40
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:43
+msgid "🔎 Checking access..."
+msgstr "🔎 Hozzáférés ellenőrzése..."
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:49
+msgid "🔴 Not accessible at the provided address"
+msgstr "🔴 A megadott címen nem elérhető"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:46
+msgid "🟢 Access OK"
+msgstr "🟢 Hozzáférés rendben"
+
+#: src/routes/_protected/dashboard/users/$userId/route.tsx:51
+msgid "Account"
+msgstr "Fiókom"
+
+#. placeholder {0}: DASHBOARD_PLAYBACKS_NAME.toLowerCase()
+#: src/routes/_protected/dashboard/playbacks/index.tsx:39
+msgid "Active {0}"
+msgstr "Aktív {0}"
+
+#: src/routes/_protected/dashboard/playbacks/index.tsx:41
+msgid "Active playbacks and key details."
+msgstr "Aktív lejátszások és főbb adatok."
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:248
+msgid "Actively seeding, the torrent will not be automatically deleted."
+msgstr "Aktív seedben tartás, a torrent nem törlődik automatikusan."
+
+#: src/routes/_protected/dashboard/system/-components/indexer-item.tsx:101
+msgid "after {days} days"
+msgstr "{days} nap után"
+
+#: src/features/token-regenerate/token-regenerate.tsx:37
+msgid "After generating a new key, the addon will not work in the installed applications until you reinstall it!"
+msgstr "Új kulcs létrehozása után az telepített alkalmazásokban az addon nem fog működni amíg újra nem telepíted!"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:182
+msgid "After how many days?"
+msgstr "Hány nap után?"
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:170
+msgid "All unused cache will be deleted!"
+msgstr "Minden nem használt cache törlésre kerül!"
+
+#: src/shared/components/default-error.tsx:19
+msgid "An error occurred while loading StremHU Source!"
+msgstr "Hiba történt a StremHU Source betöltése közben!"
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:110
+msgid "Are you sure you want to clear the cache?"
+msgstr "Biztosan törlöd a cache-t?"
+
+#. placeholder {0}: indexer.indexerDefinition.name
+#: src/routes/_protected/dashboard/system/-components/indexer-item.tsx:66
+msgid "Are you sure you want to delete {0}?"
+msgstr "Biztosan törlöd a(z) {0} trackert?"
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:85
+msgid "Are you sure you want to delete it?"
+msgstr "Biztosan törlöd?"
+
+#: src/routes/_protected/dashboard/users/-components/user-item.tsx:34
+#: src/routes/_protected/dashboard/users/$userId/-features/user-profile.tsx:104
+msgid "Are you sure you want to delete?"
+msgstr "Biztosan törlöd?"
+
+#: src/features/token-regenerate/token-regenerate.tsx:35
+msgid "Are you sure you want to request a new key?"
+msgstr "Biztosan kérsz új kulcsot?"
+
+#: src/routes/_protected/dashboard/system/-features/restart.tsx:31
+msgid "Are you sure you want to restart the application?"
+msgstr "Biztosan újraindítod az alkalmazást?"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:111
+msgid "Are you sure you want to run a manual check?"
+msgstr "Biztosan futtatod a kézi ellenőrzést?"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:129
+msgid "Automatic torrent deletion"
+msgstr "Automatikus torrent törlés"
+
+#: src/features/preference-form/preference-form.tsx:51
+msgid "Available attributes"
+msgstr "Elérhető tulajdonságok"
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:115
+msgid "Cache cleanup ran successfully."
+msgstr "Cache törlés sikeresen lefutott."
+
+#: src/features/create-preference/create-preference.tsx:95
+#: src/routes/_protected/dashboard/users/$userId/preferences/$preferenceId/index.tsx:102
+#: src/routes/_protected/settings/preferences/$preferenceId/index.tsx:92
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:75
+msgid "Certificate expiration / renewal"
+msgstr "Tanúsítvány lejárat / megújítás"
+
+#: src/routes/_protected/dashboard/users/$userId/-features/user-profile.tsx:164
+#: src/routes/_protected/settings/account/-features/login-and-security.tsx:79
+msgid "Change password"
+msgstr "Jelszó módosítása"
+
+#: src/routes/_protected/dashboard/users/$userId/-features/user-profile.tsx:141
+#: src/routes/_protected/settings/account/-features/login-and-security.tsx:53
+msgid "Change username"
+msgstr "Felhasználónév módosítása"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:208
+msgid "Check torrents"
+msgstr "Torrentek ellenőrzése"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:149
+msgid "Checks completion based on the tracker, and can only be deleted after that."
+msgstr "A tracker alapján ellenőrzi a teljesítést, és csak utána törölhető."
+
+#: src/features/create-preference/create-preference.tsx:48
+msgid "Choose which preference configuration you want to create and configure it."
+msgstr "Válaszd ki milyen preferencia konfigurációt szeretnél létrehozni és végezd el a konfigurációt."
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:168
+msgid "Clear cache"
+msgstr "Cache törlés"
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/attributes/index.tsx:64
+#: src/routes/_protected/settings/preferences/attributes/index.tsx:62
+msgid "Configure excluded attributes"
+msgstr "Kizárt tulajdonságok konfigurációja"
+
+#: src/routes/_protected/index.tsx:89
+msgid "Configure what appears first in the results and what to exclude."
+msgstr "Állítsd be, mi kerüljön előre a találatok között, és mit zárjunk ki."
+
+#: src/routes/_protected/-features/integration.tsx:18
+msgid "Connect StremHU Source to the clients you use."
+msgstr "Csatlakoztasd a StremHU Source-ot az általad használt kliensekhez."
+
+#: src/routes/_protected/relay/settings/-features/connection.tsx:71
+msgid "Connection"
+msgstr "Kapcsolat"
+
+#: src/routes/_protected/-features/nuvio-integration.tsx:52
+#: src/routes/_protected/-features/stremio-integration.tsx:108
+msgid "Copy URL"
+msgstr "URL másolása"
+
+#: src/features/create-preference/create-preference.tsx:105
+#: src/routes/setup/user/index.tsx:98
+msgid "Create"
+msgstr "Hozzáadás"
+
+#: src/routes/setup/user/index.tsx:77
+msgid "Create administrator account"
+msgstr "Adminisztrátori fiók létrehozása"
+
+#: src/features/create-preference/create-preference.tsx:46
+msgid "Create preference configuration"
+msgstr "Preferencia konfiguráció létrehozása"
+
+#: src/routes/_protected/index.tsx:146
+msgid "Create user accounts, manage and update profile data."
+msgstr "Felhasználói fiókok létrehozása, profiladatok kezelése és frissítése."
+
+#: src/routes/_protected/relay/torrents/index.tsx:37
+msgid "Current statistics of torrents and related operations."
+msgstr "Torrentek aktuális statisztikái és a hozzájuk kapcsolódó műveletek."
+
+#: src/routes/_protected/index.tsx:110
+#: src/routes/-features/layout/app-header/user-navigation.tsx:67
+msgid "Dashboard"
+msgstr "Irányítópult"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:193
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:156
+msgid "days"
+msgstr "nap"
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:91
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:208
+msgid "Delete"
+msgstr "Törlés"
+
+#. placeholder {0}: user.username
+#: src/routes/_protected/dashboard/users/-components/user-item.tsx:35
+msgid "Deleting \"{0}\" is permanent and cannot be undone!"
+msgstr "A \"{0}\" törlése végleges és nem vonható vissza!"{0}\" törlése végleges és nem vonható vissza!\"{0}\" törlése végleges és nem vonható vissza!\"{0}\" törlése végleges és nem vonható vissza!\"{0}\" törlése végleges és nem vonható vissza!\"{0}\" törlése végleges és nem vonható vissza!"
+
+#. placeholder {0}: indexer.indexerDefinition.name
+#: src/routes/_protected/dashboard/system/-components/indexer-item.tsx:67
+msgid "Deleting {0} will also delete all active torrents running on this tracker."
+msgstr "A(z) {0} törlésével az összes aktív torrent is törlődik erről a trackerről."
+
+#. placeholder {0}: torrent.name
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:87
+msgid "Deleting <0>{0}</0> will also delete its data."
+msgstr "A(z) <0>{0}</0> törlésével az adatok is törlésre kerülnek."
+
+#: src/shared/constants.ts:7
+msgid "disable hiding"
+msgstr "elrejtés kikapcsolás"
+
+#: src/routes/_protected/relay/settings/-features/speed.tsx:110
+msgid "Download"
+msgstr "Letöltés"
+
+#: src/routes/_protected/relay/torrents/-features/torrents.tsx:38
+msgid "downloaded data | download speed | uploaded data | upload speed | total torrent size"
+msgstr "letöltött adat | letöltési sebesség | feltöltött adat | feltöltési sebesség | torrent teljes mérete"
+
+#: src/routes/_protected/-features/kodi-integration.tsx:41
+msgid "During the StremHU addon login process, the following URL must be entered."
+msgstr "StremHU addon bejelentkezés folyamatánál a következő URL-t kell megadni."
+
+#: src/routes/_protected/dashboard/users/$userId/-features/user-profile.tsx:121
+msgid "Edit user profile"
+msgstr "Felhasználó adatlapjának szerkesztése"
+
+#: src/routes/login/index.tsx:90
+msgid "Enter your username and password to log in"
+msgstr "Add meg a felhasználóneved és jelszavad a belépéshez"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:112
+msgid "Even if you run this, the scheduled check at dawn will still run."
+msgstr "Ettől függetlenül a hajnali időzített ellenőrzés továbbra is lefut."
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/attributes/index.tsx:102
+#: src/routes/_protected/settings/preferences/attributes/index.tsx:100
+msgid "Excludable attributes"
+msgstr "Kizárható tulajdonságok"
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/attributes/index.tsx:70
+#: src/routes/_protected/dashboard/users/$userId/preferences/index.tsx:77
+#: src/routes/_protected/settings/preferences/attributes/index.tsx:68
+#: src/routes/_protected/settings/preferences/index.tsx:65
+msgid "Excluded attributes"
+msgstr "Kizárt tulajdonságok"
+
+#: src/routes/_protected/dashboard/users/$userId/-features/only-best-torrent.tsx:62
+#: src/routes/_protected/dashboard/users/$userId/-features/only-best-torrent.tsx:76
+msgid "Family friendly mode"
+msgstr "Családbarát mód"
+
+#: src/routes/_protected/settings/preferences/-features/other-preferences.tsx:114
+#: src/routes/_protected/settings/preferences/-features/other-preferences.tsx:128
+msgid "Family-friendly mode"
+msgstr "Családbarát mód"
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:111
+msgid "Files belonging to active torrents will not be deleted."
+msgstr "Az aktív torrentekhez tartozó fájlok nem lesznek törölve."
+
+#: src/routes/-features/layout/app-footer.tsx:32
+msgid "Found a bug?"
+msgstr "Hibát találtál?"
+
+#: src/routes/_protected/dashboard/system/-components/indexer-item.tsx:105
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:192
+msgid "Full download"
+msgstr "Teljes letöltés"
+
+#: src/routes/_protected/settings/preferences/-features/other-preferences.tsx:67
+msgid "Here you can fine-tune the appearance of torrent results (e.g. hide when there are few seeders), and turn on Family-friendly mode for a cleaner, simpler list."
+msgstr "Itt finomhangolhatod a torrent-találatok megjelenését (pl. elrejtés kevés seeder esetén), és bekapcsolhatod a Családbarát módot a tisztább, egyszerűbb listához."
+
+#: src/routes/_protected/dashboard/playbacks/index.tsx:63
+msgid "History and details of started playbacks."
+msgstr "Az elindított lejátszások előzményei és adatai."
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:140
+msgid "Hit'n'Run based deletion"
+msgstr "Hit'n'Run alapú törlés"
+
+#: src/routes/-features/layout/app-header/user-navigation.tsx:39
+msgid "Home"
+msgstr "Kezdőlap"
+
+#: src/shared/constants.ts:6
+msgid "if no seeders"
+msgstr "ha nincs seeder"
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/index.tsx:79
+#: src/routes/_protected/settings/preferences/index.tsx:67
+msgid "If the torrent contains an excluded attribute, it will not appear in the list."
+msgstr "Amennyiben a torrent tartalmazza a kizárt tulajdonságot, az nem fog megjelenni a listában."
+
+#: src/routes/_protected/dashboard/system/-features/restart.tsx:52
+msgid "If you experience any issues, you can restart the application."
+msgstr "Ha bármilyen problémát tapasztalnál újraindíthatod az alkalmazást."
+
+#: src/routes/-features/layout/app-footer.tsx:18
+msgid "If you like this project,"
+msgstr "Ha tetszik ez a projekt,"
+
+#: src/routes/_protected/dashboard/users/$userId/-features/torrent-seeders.tsx:65
+msgid "In case of low seeders, playback might stutter. Under how many seeders should the torrent be hidden?"
+msgstr "Kevés seeder esetén, akadozhat a lejátszás, mennyi seeder alatt legyen rejtve a torrent?"
+
+#: src/routes/_protected/-features/stremio-integration.tsx:62
+msgid "Install in app"
+msgstr "Telepítés appban"
+
+#: src/routes/_protected/-features/stremio-integration.tsx:85
+msgid "Install on web"
+msgstr "Telepítés weben"
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:174
+msgid "Keep seeding"
+msgstr "Seedben tartás"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:83
+msgid "Last IP sync"
+msgstr "Utolsó IP szinkronizáció"
+
+#: src/routes/setup/user/index.tsx:79
+msgid "Let's get started! Create the first account, which will have <0>Administrator</0> privileges."
+msgstr "Kezdjünk is bele! Hozd létre az első fiókot, ami <0>Adminisztrátori</0> jogosultsággal fog rendelkezni."
+
+#: src/routes/_protected/dashboard/users/$userId/-features/max-concurrent-streams.tsx:69
+msgid "Limit concurrent streams"
+msgstr "Egyidejű lejátszások limitálása"
+
+#: src/routes/_protected/dashboard/users/$userId/-features/max-concurrent-streams.tsx:71
+msgid "Limit the maximum number of concurrent streams. Leave empty for unlimited."
+msgstr "Egyidejű lejátszások maximális száma. Ha üresen hagyod korlátlan lesz."
+
+#: src/routes/_protected/relay/settings/-features/connection.tsx:72
+msgid "Limit the number of connections."
+msgstr "Kapcsolatok számának limitálása."
+
+#: src/shared/components/default-loading.tsx:20
+msgid "Loading components"
+msgstr "Komponensek betöltése"
+
+#: src/routes/login/index.tsx:107
+msgid "Log in"
+msgstr "Bejelentkezés"
+
+#: src/routes/_protected/dashboard/system/-features/indexers.tsx:77
+msgid "Log in!"
+msgstr "Jelentkezz be!"
+
+#: src/routes/login/index.tsx:87
+msgid "Log into your account"
+msgstr "Jelentkezz be a fiókodba"
+
+#. placeholder {0}: indexer.username
+#: src/routes/_protected/dashboard/system/-components/indexer-item.tsx:119
+msgid "Logged in as <0>{0}</0> user."
+msgstr "Bejelentkezve mint <0>{0}</0> felhasználó."
+
+#: src/routes/logout.tsx:50
+msgid "Logging out..."
+msgstr "Kijelentkezés folyamatban..."
+
+#: src/routes/_protected/dashboard/system/-features/indexers.tsx:86
+msgid "Login"
+msgstr "Bejelentkezés"
+
+#: src/routes/_protected/settings/account/-features/login-and-security.tsx:33
+msgid "Login and security"
+msgstr "Bejelentkezés és biztonság"
+
+#: src/routes/-features/layout/app-header/user-navigation.tsx:77
+msgid "Logout"
+msgstr "Kijelentkezés"
+
+#: src/routes/_protected/dashboard/system/-features/indexers.tsx:55
+msgid "Manage and configure your tracker logins."
+msgstr "Tracker bejelentkezések kezelése és beállítása."
+
+#: src/features/token-regenerate/token-regenerate.tsx:54
+msgid "Manage key"
+msgstr "Kulcs kezelése"
+
+#: src/routes/_protected/index.tsx:65
+msgid "Manage login details, password and security settings."
+msgstr "Bejelentkezési adatok, jelszó és biztonsági beállítások kezelése."
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:128
+msgid "Manage torrent files cache"
+msgstr "Torrent fájlok cache kezelése"
+
+#: src/routes/_protected/index.tsx:124
+msgid "Manage torrent sites, configure StremHU Source."
+msgstr "Torrent oldalak kezelése, StremHU Source konfigurálása."
+
+#: src/routes/_protected/dashboard/users/index.tsx:42
+msgid "Manage users, roles, and access."
+msgstr "Felhasználók, jogosultságok és hozzáférések kezelése."
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:116
+msgid "Manual check ran successfully."
+msgstr "Kézi ellenőrzés sikeresen lefutott."
+
+#: src/routes/_protected/relay/settings/-features/connection.tsx:101
+msgid "Maximum connections per torrent"
+msgstr "Torrentenkénti kapcsolatok maximális száma"
+
+#: src/routes/_protected/relay/settings/-features/speed.tsx:103
+msgid "Maximum download and upload speed. Leave empty for unlimited."
+msgstr "Maximális letöltési és feltöltési sebesség. Ha üresen hagyod korlátlan lesz."
+
+#: src/routes/_protected/relay/settings/-features/connection.tsx:78
+msgid "Maximum global connections"
+msgstr "Globális kapcsolatok maximális száma"
+
+#: src/routes/_protected/relay/torrents/-features/torrents.tsx:36
+msgid "Meaning of values shown under torrents"
+msgstr "Torrentek alatt látható értékek jelentése"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:47
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:45
+msgid "Must be a number"
+msgstr "Számnak kell lennie"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:48
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:46
+msgid "Must be a positive number."
+msgstr "Pozitív számnak kell lennie."
+
+#: src/routes/-features/layout/app-footer.tsx:42
+msgid "Need help?"
+msgstr "Segítségre van szükséged?"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:56
+msgid "Network access"
+msgstr "Hálózati hozzáférés"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:58
+msgid "Network access information"
+msgstr "Hálózati hozzáférés információk"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:97
+msgid "Network access is configured in environment variables."
+msgstr "Hálózati hozzáférés környezeti változókból van konfigurálva."
+
+#: src/features/token-regenerate/token-regenerate.tsx:41
+msgid "New key generation is complete."
+msgstr "Új kulcs generálása elkészült."
+
+#: src/routes/_protected/dashboard/playbacks/index.tsx:49
+msgid "No active playbacks"
+msgstr "Nincs aktív lejátszás"
+
+#: src/routes/_protected/relay/torrents/-features/torrents.tsx:21
+msgid "No active torrents"
+msgstr "Nincs aktív torrent"
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:139
+msgid "No cache cleanup"
+msgstr "Nincs cache törlés"
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/attributes/index.tsx:95
+#: src/routes/_protected/dashboard/users/$userId/preferences/index.tsx:102
+#: src/routes/_protected/settings/preferences/attributes/index.tsx:93
+#: src/routes/_protected/settings/preferences/index.tsx:87
+msgid "No excluded attributes."
+msgstr "Nincs kizárt tulajdonság."
+
+#: src/routes/_protected/dashboard/users/$userId/-features/max-concurrent-streams.tsx:80
+#: src/routes/_protected/relay/settings/-features/port.tsx:74
+#: src/routes/_protected/relay/settings/-features/speed.tsx:113
+#: src/routes/_protected/relay/settings/-features/speed.tsx:145
+msgid "No limit"
+msgstr "Nincs limitálva"
+
+#: src/features/preference-form/preference-form.tsx:89
+msgid "No more available attributes."
+msgstr "Nincs több elérhető tulajdonság."
+
+#: src/routes/_protected/dashboard/playbacks/index.tsx:71
+msgid "No playback history"
+msgstr "Nincs lejátszási előzmény"
+
+#: src/features/preference-form/preference-form.tsx:198
+msgid "No preferred attributes"
+msgstr "Nincs preferált tulajdonság"
+
+#: src/features/preferences/preferences-section.tsx:123
+msgid "No rules with preferred attributes."
+msgstr "Nincs preferált tulajdonsággal rendelkező szabály."
+
+#: src/routes/_protected/settings/preferences/-features/other-preferences.tsx:116
+msgid "Only the best torrent appears based on your set preferences - so you don't have to choose from a list."
+msgstr "Csak a legjobb torrent jelenik meg a beállított preferenciáid alapján - így nem kell listából válogatni."
+
+#: src/routes/_protected/dashboard/users/$userId/-features/only-best-torrent.tsx:64
+msgid "Only the best torrent is displayed based on your preferences - so you don't have to pick from a list."
+msgstr "Csak a legjobb torrent jelenik meg a beállított preferenciáid alapján - így nem kell listából válogatni."
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:160
+msgid "Open details"
+msgstr "Adatlap megnyitása"
+
+#: src/routes/_protected/-features/stremio-integration.tsx:64
+msgid "Opens the application and adds the addon."
+msgstr "Megnyitja az alkalmazást és hozzáadja az addont."
+
+#: src/routes/_protected/settings/preferences/-features/other-preferences.tsx:65
+msgid "Other preferences"
+msgstr "További preferenciák"
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:187
+msgid "Partial download"
+msgstr "Részleges letöltés"
+
+#: src/routes/login/index.tsx:101
+#: src/routes/setup/user/index.tsx:92
+msgid "Password"
+msgstr "Jelszó"
+
+#: src/routes/login/index.tsx:42
+#: src/routes/setup/user/index.tsx:35
+msgid "Password is required"
+msgstr "Jelszó kötelező"
+
+#: src/routes/_protected/-features/nuvio-integration.tsx:54
+#: src/routes/_protected/-features/stremio-integration.tsx:110
+msgid "Paste the copied URL into your addons."
+msgstr "A kimásolt URL-t illeszd be az addonok közé."
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:164
+msgid "Playback based deletion"
+msgstr "Lejátszás alapú törlés"
+
+#: src/routes/_protected/dashboard/playbacks/index.tsx:61
+msgid "Playback history"
+msgstr "Lejátszási előzmények"
+
+#. placeholder {0}: formatDateTime(playback.createdAt)
+#: src/routes/_protected/dashboard/playbacks/-components/playback-item.tsx:58
+msgid "Playback time: {0}"
+msgstr "Lejátszás ideje: {0}"
+
+#: src/routes/_protected/relay/settings/-features/port.tsx:71
+msgid "Port for incoming connections"
+msgstr "Port a bejövő kapcsolatokhoz"
+
+#: src/routes/_protected/dashboard/users/$userId/route.tsx:62
+msgid "Preferences"
+msgstr "Preferenciák"
+
+#: src/features/preference-form/preference-form.tsx:131
+msgid "Preferred attributes"
+msgstr "Preferált tulajdonságok"
+
+#: src/routes/-features/layout/app-footer.tsx:48
+msgid "Read the documentation"
+msgstr "Olvasd el a dokumentációt"
+
+#: src/shared/components/default-error.tsx:29
+msgid "Reload"
+msgstr "Újratöltés"
+
+#: src/routes/-features/layout/app-footer.tsx:38
+msgid "Report on Discord"
+msgstr "Jelentsd be Discordon"
+
+#: src/features/token-regenerate/token-regenerate.tsx:65
+msgid "Request a new key"
+msgstr "Új kulcs kérése"
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:198
+msgid "Reset download to tracker setting"
+msgstr "Letöltés visszaállítása a torrent oldal beállításra"
+
+#: src/routes/_protected/dashboard/system/-features/restart.tsx:50
+msgid "Restart"
+msgstr "Újraindítás"
+
+#: src/routes/_protected/dashboard/system/-features/restart.tsx:36
+msgid "Restart initiated! Reload the page in a few seconds!"
+msgstr "Újraindítás elindítva! Pár másodperc múlva frissítsd az oldalt!"
+
+#: src/routes/_protected/dashboard/users/$userId/-features/user-profile.tsx:185
+msgid "Role"
+msgstr "Jogosultság"
+
+#: src/routes/_protected/index.tsx:49
+#: src/routes/_protected/relay/route.tsx:37
+#: src/routes/-features/layout/app-header/user-navigation.tsx:60
+msgid "Settings"
+msgstr "Beállítások"
+
+#. placeholder {0}: playback.indexerDefinition.name
+#: src/routes/_protected/dashboard/playbacks/-components/playback-item.tsx:42
+msgid "Source: {0}"
+msgstr "Forrás: {0}"
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:130
+msgid "Specify how long after unused torrent files should be deleted"
+msgstr "Add meg, mennyi idő után kerüljenek törlésre a nem használt torrent fájlok"
+
+#: src/routes/_protected/relay/settings/-features/speed.tsx:101
+msgid "Speed"
+msgstr "Sebesség"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:210
+msgid "Start checking torrents!"
+msgstr "Torrentek ellenőrzésének elindítása!"
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:169
+msgid "Stop seeding"
+msgstr "Seedben tartás megszüntetése"
+
+#: src/features/token-regenerate/token-regenerate.tsx:56
+msgid "StremHU Source uses this key to identify the user in the applications."
+msgstr "A StremHU Source ennek a kulcsnak a segítségével azonosítja a felhasználót az alkalmazásokban."
+
+#: src/routes/-features/layout/app-footer.tsx:24
+msgid "support it on Ko-Fi"
+msgstr "támogasd Ko-Fi-n"
+
+#: src/routes/_protected/-features/integration.tsx:16
+msgid "Supported clients"
+msgstr "Támogatott kliensek"
+
+#: src/routes/_protected/index.tsx:112
+msgid "System configuration and user management."
+msgstr "Rendszer konfigurálása és felhasználók kezelése."
+
+#: src/features/preference-form/preference-form.tsx:133
+msgid "The attributes you add here will appear higher in the list."
+msgstr "Azok a tulajdonságok, amiket ide hozzáadsz előrébb kerülnek a listában."
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:131
+msgid "The check runs every day at dawn, but a torrent is only deleted if all the set conditions are met."
+msgstr "Az ellenőrzés minden nap hajnalban lefut, viszont a torrent csak akkor kerül törlésre, ha minden beállított feltétel teljesül."
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:175
+msgid "The torrent can only be deleted if the set time has passed since the last playback."
+msgstr "A torrent csak abban az esetben törölhető, ha eltelt a megadott idő az utolsó lejátszás óta."
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/attributes/index.tsx:104
+#: src/routes/_protected/settings/preferences/attributes/index.tsx:102
+msgid "These attributes can be excluded, meaning torrents with these attributes won't appear in the clients' list."
+msgstr "Ezek a tulajdonságok kizárhatók, amiknek az a hatása, hogy a kliensek listázójában nem fognak megjelenni a kizárt tulajdonsággal rendelkező torrentek."
+
+#: src/routes/_protected/dashboard/system/-features/indexers.tsx:79
+msgid "To use StremHU Source, you must log in to at least one tracker!"
+msgstr "A StremHU Source használatához kötelező legalább 1 trackerhez bejelentkezned!"
+
+#. placeholder {0}: formatDateTime(torrent.createdAt)
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:240
+msgid "Torrent added at: {0}"
+msgstr "Torrent hozzáadás időpontja: {0}"
+
+#: src/routes/_protected/dashboard/users/$userId/-features/torrent-seeders.tsx:63
+#: src/routes/_protected/settings/preferences/-features/other-preferences.tsx:73
+msgid "Torrent availability"
+msgstr "Torrent elérhetősége"
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/attributes/index.tsx:72
+#: src/routes/_protected/settings/preferences/attributes/index.tsx:70
+msgid "Torrents containing an excluded attribute will not appear in the list in clients."
+msgstr "A kliensekben megjelenő listában nem fognak szerepelni azok a torrent-ek, amik tartalmaznák a kizárt tulajdonságot."
+
+#: src/routes/_protected/relay/torrents/-features/torrents.tsx:23
+msgid "Torrents for the started media will appear here."
+msgstr "Az elindított médiákhoz tartozó torrentek itt fognak megjelenni."
+
+#: src/routes/_protected/dashboard/system/-features/indexers.tsx:53
+msgid "Trackers"
+msgstr "Trackerek"
+
+#: src/shared/constants.ts:4
+msgid "under 10 seeders"
+msgstr "10 seeder alatt"
+
+#: src/shared/constants.ts:5
+msgid "under 5 seeders"
+msgstr "5 seeder alatt"
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/$preferenceId/index.tsx:113
+#: src/routes/_protected/settings/preferences/$preferenceId/index.tsx:102
+msgid "Update"
+msgstr "Módosítás"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:105
+msgid "Update network access or apply new configuration."
+msgstr "Hálózati hozzáférés frissítése, új konfiguráció alkalmazása."
+
+#: src/routes/_protected/relay/settings/-features/speed.tsx:142
+msgid "Upload"
+msgstr "Feltöltés"
+
+#: src/routes/_protected/relay/settings/-features/port.tsx:106
+msgid "Use UPnP / NAT-PMP on the router for port forwarding"
+msgstr "UPnP / NAT-PMP használata a routeren a porttovábbításhoz"
+
+#: src/routes/_protected/relay/settings/-features/port.tsx:65
+msgid "Used port"
+msgstr "Használt port"
+
+#. placeholder {0}: playback.user.username
+#: src/routes/_protected/dashboard/playbacks/-components/playback-item.tsx:50
+msgid "User: {0}"
+msgstr "Felhasználó: {0}"
+
+#: src/routes/login/index.tsx:96
+#: src/routes/setup/user/index.tsx:86
+msgid "Username"
+msgstr "Felhasználónév"
+
+#: src/routes/login/index.tsx:38
+#: src/routes/setup/user/index.tsx:34
+msgid "Username is required"
+msgstr "Felhasználónév kötelező"
+
+#: src/routes/_protected/index.tsx:168
+msgid "View current and past playbacks."
+msgstr "Aktuális és múltbeli lejátszások megtekintése."
+
+#: src/routes/_protected/settings/preferences/-features/other-preferences.tsx:75
+msgid "With few seeders, playback might stutter. Below how many seeders should the torrent be hidden?"
+msgstr "Kevés seeder esetén, akadozhat a lejátszás, mennyi seeder alatt legyen rejtve a torrent?"
+
+#: src/routes/_protected/index.tsx:51
+msgid "You can change your account data, security settings, and torrent list preferences."
+msgstr "Módosíthatod a fiókadataidat, biztonsági beállításaidat és a torrentlista preferenciáit."
+
+#: src/routes/_protected/settings/account/-features/login-and-security.tsx:35
+msgid "You can change your username or password"
+msgstr "Módosíthatod felhasználóneved vagy jelszavadat"
+
+#: src/features/preferences/preferences-section.tsx:81
+msgid "You can customize which torrents appear first in the list. The preferred attributes affect the order."
+msgstr "Testreszabhatod, milyen torrentek kerüljenek előre a listában. A preferált tulajdonságok befolyásolják a sorrendet."
+
+#: src/routes/_protected/-features/stremio-integration.tsx:87
+msgid "You can install the addon with confirmation on the website."
+msgstr "A weboldalon jóváhagyással telepítheted az addont."
+
+#: src/features/preference-form/preference-form.tsx:53
+msgid "You can prefer or exclude these attributes."
+msgstr "Ezeket a tulajdonságokat tudod preferálni vagy kizárni."
+
+#: src/routes/_protected/settings/account/-features/login-and-security.tsx:81
+msgid "You will need to log in again after changing your password"
+msgstr "A jelszó módósítása után újra be kell jelentkezned"
+
+#: src/routes/_protected/settings/account/-features/login-and-security.tsx:55
+msgid "You will need to log in again after changing your username"
+msgstr "A felhasználónév módósítása után újra be kell jelentkezned"

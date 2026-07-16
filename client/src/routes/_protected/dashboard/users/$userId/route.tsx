@@ -1,10 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import {
-  Link,
-  Outlet,
-  createFileRoute,
-  useParams,
-} from '@tanstack/react-router'
+import { Link, Outlet, createFileRoute, useParams } from '@tanstack/react-router'
+import { Trans } from '@lingui/react/macro'
 
 import { Button } from '@/shared/components/ui/button'
 import { CardTitle } from '@/shared/components/ui/card'
@@ -52,7 +48,7 @@ function UserSettingsLayout() {
               }}
               activeProps={{ className: 'bg-background' }}
             >
-              Fiók
+              <Trans>Account</Trans>
             </Link>
           </Button>
           <Button asChild variant="ghost" size="sm">
@@ -63,7 +59,7 @@ function UserSettingsLayout() {
               }}
               activeProps={{ className: 'bg-background' }}
             >
-              Preferenciák
+              <Trans>Preferences</Trans>
             </Link>
           </Button>
         </div>

@@ -9,6 +9,8 @@ import {
 import type { JSX, MouseEventHandler } from 'react'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { useDialogs } from '@/routes/-features/dialogs/dialogs-store'
@@ -61,8 +63,8 @@ export function IndexerItem(props: IndexerItemProps) {
     e.stopPropagation()
 
     await confirmDialog.confirm({
-      title: `Biztosan törlöd a(z) ${indexer.indexerDefinition.name}-t?`,
-      description: `A(z) ${indexer.indexerDefinition.name} törlésével minden aktív torrent törlésre kerül, ami ezen a torrent oldalon fut.`,
+      title: t`Are you sure you want to delete ${indexer.indexerDefinition.name}?`,
+      description: t`Deleting ${indexer.indexerDefinition.name} will also delete all active torrents running on this tracker.`,
       onConfirm: async () => {
         try {
           await deleteIndexer(indexer.indexerId)
@@ -96,11 +98,11 @@ export function IndexerItem(props: IndexerItemProps) {
 
     if (keepSeedSeconds) {
       const days = keepSeedSeconds / (24 * 60 * 60)
-      items.push({ label: `${days} nap után`, icon: <TimerIcon /> })
+      items.push({ label: t`after ${days} days`, icon: <TimerIcon /> })
     }
 
     if (indexer.downloadFullTorrent) {
-      items.push({ label: `Teljes letöltés`, icon: <DownloadIcon /> })
+      items.push({ label: t`Full download`, icon: <DownloadIcon /> })
     }
 
     return items
@@ -114,8 +116,9 @@ export function IndexerItem(props: IndexerItemProps) {
       <ItemContent>
         <ItemTitle>{indexer.indexerDefinition.name}</ItemTitle>
         <ItemDescription>
-          Bejelentkezve <span className="font-bold">{indexer.username}</span>{' '}
-          felhasználóval.
+          <Trans>
+            Logged in as <span className="font-bold">{indexer.username}</span> user.
+          </Trans>
         </ItemDescription>
         {tags.length !== 0 && (
           <div className="flex flex-wrap gap-2">

@@ -1,6 +1,7 @@
 import { useForm } from '@tanstack/react-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { Trans } from '@lingui/react/macro'
 
 import {
   Card,
@@ -59,10 +60,9 @@ export function TorrentSeeders(props: TorrentSeedersProps) {
   return (
     <Card className="break-inside-avoid mb-4">
       <CardHeader>
-        <CardTitle>Torrent elérhetősége</CardTitle>
+        <CardTitle><Trans>Torrent availability</Trans></CardTitle>
         <CardDescription>
-          Kevés seeder esetén, akadozhat a lejátszás, mennyi seeder alatt legyen
-          rejtve a torrent?
+          <Trans>In case of low seeders, playback might stutter. Under how many seeders should the torrent be hidden?</Trans>
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-5">

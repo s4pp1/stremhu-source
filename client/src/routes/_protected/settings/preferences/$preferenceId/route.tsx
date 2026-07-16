@@ -32,7 +32,7 @@ export const Route = createFileRoute(
     const { mePreference } = context
 
     return {
-      breadcrumb: `${upperFirst(mePreference.name)} konfigurációja`,
+      breadcrumb: `${upperFirst(mePreference.name)} configuration`,
     }
   },
 })

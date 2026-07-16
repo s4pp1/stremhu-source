@@ -1,6 +1,8 @@
 import { RefreshCwIcon } from 'lucide-react'
 import type { MouseEventHandler } from 'react'
 import { toast } from 'sonner'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { Button } from '@/shared/components/ui/button'
@@ -26,12 +28,12 @@ export function Restart() {
     e.stopPropagation()
 
     await confirmDialog.confirm({
-      title: 'Biztos újra szeretnéd indítani az alkalmazást?',
+      title: t`Are you sure you want to restart the application?`,
       onConfirm: async () => {
         try {
           await restartSystem()
           toast.success(
-            'Az újraindítás elindult! Töltsd újra az oldalt pár másodperc múlva!',
+            t`Restart initiated! Reload the page in a few seconds!`,
           )
         } catch (error) {
           const message = parseApiError(error)
@@ -45,10 +47,9 @@ export function Restart() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Újraindítás</CardTitle>
+        <CardTitle><Trans>Restart</Trans></CardTitle>
         <CardDescription>
-          Amennyiben problémát érzékelsz, lehetőséged van az alkalmazás
-          újraindítására.
+          <Trans>If you experience any issues, you can restart the application.</Trans>
         </CardDescription>
         <CardAction>
           <Button

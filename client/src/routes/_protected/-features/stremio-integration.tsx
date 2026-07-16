@@ -6,6 +6,7 @@ import {
   ExternalLinkIcon,
   LinkIcon,
 } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 
 import { Button } from '@/shared/components/ui/button'
 import {
@@ -58,9 +59,9 @@ export function StremioIntegration() {
             <AppWindowIcon />
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>Telepítés appban</ItemTitle>
+            <ItemTitle><Trans>Install in app</Trans></ItemTitle>
             <ItemDescription>
-              Megnyitja az alkalmazást és hozzáadja az addont.
+              <Trans>Opens the application and adds the addon.</Trans>
             </ItemDescription>
           </ItemContent>
           <ItemActions>
@@ -81,9 +82,9 @@ export function StremioIntegration() {
             <CodeIcon />
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>Telepítés weben</ItemTitle>
+            <ItemTitle><Trans>Install on web</Trans></ItemTitle>
             <ItemDescription>
-              A weboldalon jóváhagyással telepítheted az addont.
+              <Trans>You can install the addon with confirmation on the website.</Trans>
             </ItemDescription>
           </ItemContent>
           <ItemActions>
@@ -104,9 +105,9 @@ export function StremioIntegration() {
             <LinkIcon />
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>URL másolása</ItemTitle>
+            <ItemTitle><Trans>Copy URL</Trans></ItemTitle>
             <ItemDescription>
-              A kimásolt URL-t illeszd be az addonok közé.
+              <Trans>Paste the copied URL into your addons.</Trans>
             </ItemDescription>
           </ItemContent>
           <ItemActions>

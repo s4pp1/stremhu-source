@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { PencilIcon, ShieldUserIcon, UserIcon, UserPenIcon } from 'lucide-react'
-
 import { useDialogs } from '@/routes/-features/dialogs/dialogs-store'
+import { Trans } from '@lingui/react/macro'
 import { Button } from '@/shared/components/ui/button'
 import {
   Card,
@@ -30,9 +30,9 @@ export function LoginAndSecurity() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Bejelentkezés és biztonság</CardTitle>
+        <CardTitle><Trans>Login and security</Trans></CardTitle>
         <CardDescription>
-          Módosíthatod felhasználóneved vagy jelszavadat
+          <Trans>You can change your username or password</Trans>
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
@@ -42,7 +42,7 @@ export function LoginAndSecurity() {
           </ItemMedia>
           <ItemContent>
             <ItemTitle>{me.username}</ItemTitle>
-            <ItemDescription>{me.role.name} jogosultság</ItemDescription>
+            <ItemDescription><Trans>{me.role.name} role</Trans></ItemDescription>
           </ItemContent>
         </Item>
         <Item variant="default" className="p-0">
@@ -50,9 +50,9 @@ export function LoginAndSecurity() {
             <UserPenIcon />
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>Felhasználónév módosítása</ItemTitle>
+            <ItemTitle><Trans>Change username</Trans></ItemTitle>
             <ItemDescription>
-              A felhasználónév módósítása után újra be kell jelentkezned
+              <Trans>You will need to log in again after changing your username</Trans>
             </ItemDescription>
           </ItemContent>
           <ItemActions>
@@ -76,9 +76,9 @@ export function LoginAndSecurity() {
             <ShieldUserIcon />
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>Jelszó módosítása</ItemTitle>
+            <ItemTitle><Trans>Change password</Trans></ItemTitle>
             <ItemDescription>
-              A jelszó módósítása után újra be kell jelentkezned
+              <Trans>You will need to log in again after changing your password</Trans>
             </ItemDescription>
           </ItemContent>
           <ItemActions>

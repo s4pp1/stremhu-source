@@ -1,4 +1,5 @@
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
+import { Trans } from '@lingui/react/macro'
 import { useEffect } from 'react'
 
 import {
@@ -46,7 +47,7 @@ function LogoutRoute() {
           <Spinner />
         </ItemMedia>
         <ItemContent>
-          <ItemTitle className="line-clamp-1 pr-2">Kijelentkezés...</ItemTitle>
+          <ItemTitle className="line-clamp-1 pr-2"><Trans>Logging out...</Trans></ItemTitle>
         </ItemContent>
       </Item>
     </div>

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
+import { Trans } from '@lingui/react/macro'
 import {
   LayoutDashboardIcon,
   LogOutIcon,
@@ -35,7 +36,7 @@ export function UserNavigation() {
           activeOptions={{ exact: true }}
           activeProps={{ className: 'bg-background' }}
         >
-          Kezdőoldal
+          <Trans>Home</Trans>
         </Link>
       </Button>
       {isAdmin && (
@@ -56,14 +57,14 @@ export function UserNavigation() {
             <DropdownMenuItem asChild>
               <Link to="/settings">
                 <SettingsIcon />
-                Beállítások
+                <Trans>Settings</Trans>
               </Link>
             </DropdownMenuItem>
             {isAdmin && (
               <DropdownMenuItem asChild>
                 <Link to="/dashboard">
                   <LayoutDashboardIcon />
-                  Irányítópult
+                  <Trans>Dashboard</Trans>
                 </Link>
               </DropdownMenuItem>
             )}
@@ -73,7 +74,7 @@ export function UserNavigation() {
             <DropdownMenuItem asChild variant="destructive">
               <Link to="/logout">
                 <LogOutIcon />
-                Kijelentkezés
+                <Trans>Logout</Trans>
               </Link>
             </DropdownMenuItem>
           </DropdownMenuGroup>

@@ -1,6 +1,7 @@
 import { Link, Outlet, createFileRoute } from '@tanstack/react-router'
 
 import { Button } from '@/shared/components/ui/button'
+import { Trans } from '@lingui/react/macro'
 
 import { RouteBreadcrumb } from '../dashboard/-components/route-breadcrumb'
 import { RELAY_TORRENTS_NAME } from './torrents/route'
@@ -33,7 +34,7 @@ function SettingsLayout() {
               to="/relay/settings"
               activeProps={{ className: 'bg-background' }}
             >
-              Beállítások
+              <Trans>Settings</Trans>
             </Link>
           </Button>
         </div>

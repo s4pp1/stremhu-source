@@ -7,6 +7,6 @@ export const Route = createFileRoute(
 )({
   component: RouteComponent,
   loader: () => {
-    return { breadcrumb: 'Tulajdonságok' }
+    return { breadcrumb: 'Attributes' }
   },
 })

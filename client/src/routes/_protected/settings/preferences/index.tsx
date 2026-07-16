@@ -1,6 +1,7 @@
 import { useSuspenseQueries } from '@tanstack/react-query'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { BanIcon, EditIcon } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 
 import { Preference } from '@/features/preferences/preference'
 import { PreferencesSection } from '@/features/preferences/preferences-section'
@@ -61,10 +62,9 @@ function RouteComponent() {
     <div className="grid gap-8">
       <Card className="break-inside-avoid mb-4">
         <CardHeader>
-          <CardTitle>Kizárt tulajdonságok</CardTitle>
+          <CardTitle><Trans>Excluded attributes</Trans></CardTitle>
           <CardDescription>
-            Amennyiben a torrent tartalmazza a kizárt tulajdonságot, az nem fog
-            megjelenni a listában.
+            <Trans>If the torrent contains an excluded attribute, it will not appear in the list.</Trans>
           </CardDescription>
           <CardAction>
             <Button asChild size="icon-sm" className="rounded-full">
@@ -84,7 +84,7 @@ function RouteComponent() {
           {meAttributeExclusions.length === 0 && (
             <Alert>
               <BanIcon />
-              <AlertTitle>Nincs kizárt tulajdonság.</AlertTitle>
+              <AlertTitle><Trans>No excluded attributes.</Trans></AlertTitle>
             </Alert>
           )}
         </CardContent>

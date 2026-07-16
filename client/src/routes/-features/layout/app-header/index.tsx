@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
 
+import { LanguageSwitcher } from './language-switcher'
 import { UserNavigation } from './user-navigation'
 
 export function AppHeader() {
@@ -10,7 +11,10 @@ export function AppHeader() {
           <img src="/logo.png" alt="StremHU" className="h-8 w-auto" />
           Source
         </Link>
-        <UserNavigation />
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher />
+          <UserNavigation />
+        </div>
       </div>
     </div>
   )

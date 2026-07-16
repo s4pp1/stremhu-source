@@ -1,6 +1,6 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router'
 
-export const SETTINGS_ACCOUNT_NAME = 'Fiókom'
+export const SETTINGS_ACCOUNT_NAME = 'Account'
 
 const RouteComponent = () => <Outlet />
 

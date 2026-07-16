@@ -1,4 +1,5 @@
 import { AlertCircleIcon } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 
 import { Alert, AlertDescription, AlertTitle } from './ui/alert'
 import { Button } from './ui/button'
@@ -15,7 +16,7 @@ export function DefaultError(props: DefaultError) {
       <Alert variant="default" className="max-w-md">
         <AlertCircleIcon className="stroke-destructive" />
         <AlertTitle className="text-destructive">
-          Hiba történt az StremHU Source betöltése közben!
+          <Trans>An error occurred while loading StremHU Source!</Trans>
         </AlertTitle>
         <AlertDescription>
           <p className="font-mono">{error.message}</p>
@@ -25,7 +26,7 @@ export function DefaultError(props: DefaultError) {
               size="sm"
               onClick={() => window.location.reload()}
             >
-              Újratöltés
+              <Trans>Reload</Trans>
             </Button>
           </div>
         </AlertDescription>

@@ -4,6 +4,8 @@ import { isEmpty } from 'lodash'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 
 import {
   Card,
@@ -67,14 +69,14 @@ export function Speed() {
     },
     onSubmit: async ({ value, formApi }) => {
       try {
-        // Letöltési sebesség
+        // Download limit
         let downloadLimit = 0
 
         if (value.downloadLimit !== null) {
           downloadLimit = Number(value.downloadLimit) * 125_000
         }
 
-        // Feltöltési sebesség
+        // Upload limit
         let uploadLimit = 0
 
         if (value.uploadLimit !== null) {
@@ -96,20 +98,19 @@ export function Speed() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sebesség</CardTitle>
+        <CardTitle><Trans>Speed</Trans></CardTitle>
         <CardDescription>
-          Maximális letöltési és feltöltési sebesség. Ha üresen hagyod korlátlan
-          lesz.
+          <Trans>Maximum download and upload speed. Leave empty for unlimited.</Trans>
         </CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-6">
         <form.Field name="downloadLimit">
           {(field) => (
             <Field>
-              <FieldLabel>Letöltés</FieldLabel>
+              <FieldLabel><Trans>Download</Trans></FieldLabel>
               <InputGroup>
                 <InputGroupInput
-                  placeholder="Nincs limitálva"
+                  placeholder={t`No limit`}
                   inputMode="numeric"
                   id={field.name}
                   name={field.name}
@@ -138,10 +139,10 @@ export function Speed() {
         <form.Field name="uploadLimit">
           {(field) => (
             <Field>
-              <FieldLabel>Feltöltés</FieldLabel>
+              <FieldLabel><Trans>Upload</Trans></FieldLabel>
               <InputGroup>
                 <InputGroupInput
-                  placeholder="Nincs limitálva"
+                  placeholder={t`No limit`}
                   inputMode="numeric"
                   id={field.name}
                   name={field.name}

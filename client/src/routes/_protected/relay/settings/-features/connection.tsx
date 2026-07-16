@@ -3,6 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { Trans } from '@lingui/react/macro'
 
 import {
   Card,
@@ -67,14 +68,14 @@ export function Connection() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Kapcsolat</CardTitle>
-        <CardDescription>Kapcsolatok számának limitálása.</CardDescription>
+        <CardTitle><Trans>Connection</Trans></CardTitle>
+        <CardDescription><Trans>Limit the number of connections.</Trans></CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-6">
         <form.Field name="connectionsLimit">
           {(field) => (
             <Field>
-              <FieldLabel>Globális kapcsolatok maximális száma</FieldLabel>
+              <FieldLabel><Trans>Maximum global connections</Trans></FieldLabel>
               <InputGroup>
                 <InputGroupInput
                   inputMode="numeric"
@@ -97,7 +98,7 @@ export function Connection() {
           {(field) => (
             <Field>
               <FieldLabel>
-                Torrentenkénti kapcsolatok maximális száma
+                <Trans>Maximum connections per torrent</Trans>
               </FieldLabel>
               <InputGroup>
                 <InputGroupInput

@@ -1,6 +1,7 @@
 import { useQueries } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { PlusIcon } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 
 import { useDialogs } from '@/routes/-features/dialogs/dialogs-store'
 import { Button } from '@/shared/components/ui/button'
@@ -38,7 +39,7 @@ function RouteComponent() {
       <CardHeader>
         <CardTitle>{DASHBOARD_USERS_NAME}</CardTitle>
         <CardDescription>
-          Kezeld a felhasználókat, szerepköröket és hozzáféréseket.
+          <Trans>Manage users, roles, and access.</Trans>
         </CardDescription>
         <CardAction>
           <Button

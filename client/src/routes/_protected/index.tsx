@@ -24,6 +24,7 @@ import {
 } from '@/shared/components/ui/item'
 import { Separator } from '@/shared/components/ui/separator'
 import { useIsAdmin } from '@/shared/hooks/use-is-admin'
+import { Trans } from '@lingui/react/macro'
 
 import { Integration } from './-features/integration'
 import { DASHBOARD_PLAYBACKS_NAME } from './dashboard/playbacks/route'
@@ -45,10 +46,9 @@ function ProfileRoute() {
       <Separator />
       <div className="grid gap-4">
         <CardHeader className="px-0">
-          <CardTitle>Beállítások</CardTitle>
+          <CardTitle><Trans>Settings</Trans></CardTitle>
           <CardDescription>
-            Módosíthatod a fiókadataidat, biztonsági beállításaidat és a
-            torrentlista preferenciáit.
+            <Trans>You can change your account data, security settings, and torrent list preferences.</Trans>
           </CardDescription>
         </CardHeader>
         <div className="grid gap-4">
@@ -59,11 +59,10 @@ function ProfileRoute() {
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>
-                  {SETTINGS_ACCOUNT_NAME} - Bejelentkezés és biztonság
+                  <Trans>{SETTINGS_ACCOUNT_NAME} - Login and security</Trans>
                 </ItemTitle>
                 <ItemDescription>
-                  Bejelentkezési adatok, jelszó és biztonsági beállítások
-                  kezelése.
+                  <Trans>Manage login details, password and security settings.</Trans>
                 </ItemDescription>
               </ItemContent>
               <ItemActions>
@@ -84,11 +83,10 @@ function ProfileRoute() {
               </ItemMedia>
               <ItemContent>
                 <ItemTitle>
-                  {SETTINGS_PREFERENCES_NAME} - Torrent lista személyreszabása
+                  <Trans>{SETTINGS_PREFERENCES_NAME} - Torrent list customization</Trans>
                 </ItemTitle>
                 <ItemDescription>
-                  Állítsd be, mi kerüljön előre a találatok között, és mit
-                  zárjunk ki.
+                  <Trans>Configure what appears first in the results and what to exclude.</Trans>
                 </ItemDescription>
               </ItemContent>
               <ItemActions>
@@ -109,9 +107,9 @@ function ProfileRoute() {
           <Separator />
           <div className="grid gap-4">
             <CardHeader className="px-0">
-              <CardTitle>Irányítópult</CardTitle>
+              <CardTitle><Trans>Dashboard</Trans></CardTitle>
               <CardDescription>
-                Rendszer konfigurálása és felhasználók kezelése.
+                <Trans>System configuration and user management.</Trans>
               </CardDescription>
             </CardHeader>
             <div className="grid gap-4">
@@ -123,7 +121,7 @@ function ProfileRoute() {
                   <ItemContent>
                     <ItemTitle>{DASHBOARD_SYSTEM_NAME}</ItemTitle>
                     <ItemDescription>
-                      Torrent oldalak kezelése, StremHU Source konfigurálása.
+                      <Trans>Manage torrent sites, configure StremHU Source.</Trans>
                     </ItemDescription>
                   </ItemContent>
                   <ItemActions>
@@ -145,8 +143,7 @@ function ProfileRoute() {
                   <ItemContent>
                     <ItemTitle>{DASHBOARD_USERS_NAME}</ItemTitle>
                     <ItemDescription>
-                      Felhasználói fiókok létrehozása, profiladatok kezelése és
-                      frissítése.
+                      <Trans>Create user accounts, manage and update profile data.</Trans>
                     </ItemDescription>
                   </ItemContent>
                   <ItemActions>
@@ -168,7 +165,7 @@ function ProfileRoute() {
                   <ItemContent>
                     <ItemTitle>{DASHBOARD_PLAYBACKS_NAME}</ItemTitle>
                     <ItemDescription>
-                      Aktuális és múltbeli lejátszások megtekintése.
+                      <Trans>View current and past playbacks.</Trans>
                     </ItemDescription>
                   </ItemContent>
                   <ItemActions>

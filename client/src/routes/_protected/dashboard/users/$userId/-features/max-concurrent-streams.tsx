@@ -2,6 +2,8 @@ import { useForm } from '@tanstack/react-form'
 import { isEmpty } from 'lodash'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 
 import {
   Card,
@@ -64,10 +66,9 @@ export function MaxConcurrentStreams(props: MaxConcurrentStreamsProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Egyidejű stream-ek korlátozása</CardTitle>
+        <CardTitle><Trans>Limit concurrent streams</Trans></CardTitle>
         <CardDescription>
-          Egyidejű stream-ek maximális számának limitálása. Ha üresen hagyod
-          korlátlan lesz.
+          <Trans>Limit the maximum number of concurrent streams. Leave empty for unlimited.</Trans>
         </CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-1 gap-6">
@@ -76,7 +77,7 @@ export function MaxConcurrentStreams(props: MaxConcurrentStreamsProps) {
             <Field>
               <InputGroup>
                 <InputGroupInput
-                  placeholder="Nincs limitálva"
+                  placeholder={t`No limit`}
                   inputMode="numeric"
                   id={field.name}
                   name={field.name}

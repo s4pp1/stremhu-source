@@ -1,6 +1,7 @@
 import { useForm } from '@tanstack/react-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { Trans } from '@lingui/react/macro'
 
 import {
   Card,
@@ -58,10 +59,9 @@ export function OnlyBestTorrent(props: OnlyBestTorrent) {
   return (
     <Card className="break-inside-avoid mb-4">
       <CardHeader>
-        <CardTitle>Családbarát mód</CardTitle>
+        <CardTitle><Trans>Family friendly mode</Trans></CardTitle>
         <CardDescription>
-          Csak a legjobb torrent jelenik meg a beállított preferenciáid alapján
-          - így nem kell listából válogatni.
+          <Trans>Only the best torrent is displayed based on your preferences - so you don't have to pick from a list.</Trans>
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -73,7 +73,7 @@ export function OnlyBestTorrent(props: OnlyBestTorrent) {
                 checked={field.state.value}
                 onCheckedChange={field.handleChange}
               />
-              Családbarát mód
+              <Trans>Family friendly mode</Trans>
             </Label>
           )}
         </form.Field>

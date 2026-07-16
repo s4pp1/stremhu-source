@@ -2,7 +2,7 @@ import { Outlet, createFileRoute } from '@tanstack/react-router'
 
 import { getRelaySettings } from '@/shared/queries/relay'
 
-export const RELAY_SETTINGS_NAME = 'Beállítások'
+export const RELAY_SETTINGS_NAME = 'Settings'
 
 const RouteComponent = () => <Outlet />
 

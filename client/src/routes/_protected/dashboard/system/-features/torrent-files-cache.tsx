@@ -6,6 +6,8 @@ import type { MouseEventHandler } from 'react'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { Button } from '@/shared/components/ui/button'
@@ -40,8 +42,8 @@ import {
 
 const schema = z.object({
   cacheRetention: z.coerce
-    .number<string>('Csak szám adható meg')
-    .positive('Csak pozitív szám adható meg.')
+    .number<string>(t`Must be a number`)
+    .positive(t`Must be a positive number.`)
     .nullable(),
 })
 
@@ -105,12 +107,12 @@ export function TorrentFilesCache() {
     e.stopPropagation()
 
     await confirmDialog.confirm({
-      title: 'Biztos ki szeretnéd üríteni a cache-t?',
-      description: 'Az aktív torrentekhez tartozó fájlok nem lesznek törölve.',
+      title: t`Are you sure you want to clear the cache?`,
+      description: t`Files belonging to active torrents will not be deleted.`,
       onConfirm: async () => {
         try {
           await cleanupSystemTorrentFiles()
-          toast.success('A cache törlés sikeresen lefutott.')
+          toast.success(t`Cache cleanup ran successfully.`)
         } catch (error) {
           const message = parseApiError(error)
           toast.error(message)
@@ -123,9 +125,9 @@ export function TorrentFilesCache() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Torrent fájlok cache kezelése</CardTitle>
+        <CardTitle><Trans>Manage torrent files cache</Trans></CardTitle>
         <CardDescription>
-          Add meg, mennyi idő után törlődjenek a nem használt torrent fájlok
+          <Trans>Specify how long after unused torrent files should be deleted</Trans>
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-6">
@@ -134,7 +136,7 @@ export function TorrentFilesCache() {
             <Field>
               <InputGroup>
                 <InputGroupInput
-                  placeholder="Nincs cache törlés"
+                  placeholder={t`No cache cleanup`}
                   inputMode="numeric"
                   id={field.name}
                   name={field.name}
@@ -151,7 +153,7 @@ export function TorrentFilesCache() {
                   }}
                 />
                 <InputGroupAddon align="inline-end">
-                  <InputGroupText>nap</InputGroupText>
+                  <InputGroupText><Trans>days</Trans></InputGroupText>
                 </InputGroupAddon>
               </InputGroup>
               {field.state.meta.isTouched && (
@@ -163,9 +165,9 @@ export function TorrentFilesCache() {
         <Separator />
         <Item variant="default" className="p-0">
           <ItemContent>
-            <ItemTitle>Cache ürítése</ItemTitle>
+            <ItemTitle><Trans>Clear cache</Trans></ItemTitle>
             <ItemDescription>
-              Minden használaton kívüli cache törlésre kerül!
+              <Trans>All unused cache will be deleted!</Trans>
             </ItemDescription>
           </ItemContent>
           <ItemActions>

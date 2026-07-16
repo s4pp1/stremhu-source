@@ -1,6 +1,7 @@
 import { useSuspenseQueries } from '@tanstack/react-query'
 import { LogInIcon } from 'lucide-react'
 import type { MouseEventHandler } from 'react'
+import { Trans } from '@lingui/react/macro'
 
 import { useDialogs } from '@/routes/-features/dialogs/dialogs-store'
 import { Button } from '@/shared/components/ui/button'
@@ -49,9 +50,9 @@ export function Indexers() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Torrent oldalak</CardTitle>
+        <CardTitle><Trans>Trackers</Trans></CardTitle>
         <CardDescription>
-          Kezeld a torrent oldal bejelentkezéseidet és konfiguráld őket.
+          <Trans>Manage and configure your tracker logins.</Trans>
         </CardDescription>
         {renderLogin && (
           <CardAction>
@@ -73,17 +74,16 @@ export function Indexers() {
         {indexers.length === 0 && (
           <Empty className="p-2 md:p-2">
             <EmptyHeader>
-              <EmptyTitle>Jelentkezz be!</EmptyTitle>
+              <EmptyTitle><Trans>Log in!</Trans></EmptyTitle>
               <EmptyDescription>
-                A StremHU Source használatához, be kell jelentkezned legalább
-                egy torrent oldalra!
+                <Trans>To use StremHU Source, you must log in to at least one tracker!</Trans>
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <div className="flex gap-2">
                 <Button size="sm" onClick={handleLogin}>
                   <LogInIcon />
-                  Bejelentkezés
+                  <Trans>Login</Trans>
                 </Button>
               </div>
             </EmptyContent>

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { Trans } from '@lingui/react/macro'
 
 import { assertExists } from '@/shared/lib/utils'
 import { getSystemStatus } from '@/shared/queries/system'
@@ -14,13 +15,13 @@ export function AppFooter() {
           <div className="flex flex-col sm:items-start gap-1">
             <p>StremHU Source · {systemStatus.version}</p>
             <p>
-              Ha tetszik a fejlesztés,{' '}
+              <Trans>If you like this project,</Trans>{' '}
               <a
                 href="https://ko-fi.com/s4pp1"
                 target="_blank"
                 className="link-primary underline"
               >
-                támogasd a Ko-Fi-n
+                <Trans>support it on Ko-Fi</Trans>
               </a>
               !
             </p>
@@ -28,23 +29,23 @@ export function AppFooter() {
 
           <div className="flex flex-col sm:items-end gap-1">
             <p>
-              Hibát találtál?{' '}
+              <Trans>Found a bug?</Trans>{' '}
               <a
                 href="https://discord.gg/jRSPPY5XaN"
                 target="_blank"
                 className="link-primary underline"
               >
-                Jelentsd Discordon
+                <Trans>Report on Discord</Trans>
               </a>
             </p>
             <p>
-              Elakadtál?{' '}
+              <Trans>Need help?</Trans>{' '}
               <a
                 href="https://stremhu.app"
                 target="_blank"
                 className="link-primary underline"
               >
-                Nézd át a dokumentációt
+                <Trans>Read the documentation</Trans>
               </a>
             </p>
           </div>

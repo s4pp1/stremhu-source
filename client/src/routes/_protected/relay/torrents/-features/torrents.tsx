@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { CircleCheckBigIcon, InfoIcon } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 
 import {
   Alert,
@@ -17,9 +18,9 @@ export function Torrents() {
     return (
       <Alert>
         <CircleCheckBigIcon />
-        <AlertTitle>Nincs aktív torrent</AlertTitle>
+        <AlertTitle><Trans>No active torrents</Trans></AlertTitle>
         <AlertDescription>
-          Az elindított médiákhoz tartozó torrentek itt fognak megjelenni.
+          <Trans>Torrents for the started media will appear here.</Trans>
         </AlertDescription>
       </Alert>
     )
@@ -32,10 +33,9 @@ export function Torrents() {
       ))}
       <Alert>
         <InfoIcon />
-        <AlertTitle>Torrentek alatt látható értékek jelentése</AlertTitle>
+        <AlertTitle><Trans>Meaning of values shown under torrents</Trans></AlertTitle>
         <AlertDescription>
-          letöltött adat | letöltési sebesség | feltöltött adat | feltöltési
-          sebesség | torrent teljes mérete
+          <Trans>downloaded data | download speed | uploaded data | upload speed | total torrent size</Trans>
         </AlertDescription>
       </Alert>
     </div>

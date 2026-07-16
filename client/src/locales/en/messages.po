@@ -1,0 +1,793 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-07-16 08:54+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#. placeholder {0}: me.role.name
+#: src/routes/_protected/settings/account/-features/login-and-security.tsx:45
+msgid "{0} role"
+msgstr "{0} role"
+
+#. placeholder {0}: user.username
+#: src/routes/_protected/dashboard/users/$userId/-features/user-profile.tsx:120
+msgid "{0} user profile"
+msgstr "{0} user profile"
+
+#: src/routes/_protected/index.tsx:62
+msgid "{SETTINGS_ACCOUNT_NAME} - Login and security"
+msgstr "{SETTINGS_ACCOUNT_NAME} - Login and security"
+
+#: src/routes/_protected/index.tsx:86
+msgid "{SETTINGS_PREFERENCES_NAME} - Torrent list customization"
+msgstr "{SETTINGS_PREFERENCES_NAME} - Torrent list customization"
+
+#. placeholder {0}: mePreference.name
+#. placeholder {0}: userPreference.name
+#: src/routes/_protected/dashboard/users/$userId/preferences/$preferenceId/index.tsx:87
+#: src/routes/_protected/settings/preferences/$preferenceId/index.tsx:81
+msgid "<0>{0}</0> configuration"
+msgstr "<0>{0}</0> configuration"
+
+#. placeholder {0}: user.username
+#: src/routes/_protected/dashboard/users/$userId/-features/user-profile.tsx:106
+msgid "<0>{0}</0>'s deletion is permanent and cannot be undone!"
+msgstr "<0>{0}</0>'s deletion is permanent and cannot be undone!"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:40
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:43
+msgid "🔎 Checking access..."
+msgstr "🔎 Checking access..."
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:49
+msgid "🔴 Not accessible at the provided address"
+msgstr "🔴 Not accessible at the provided address"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:46
+msgid "🟢 Access OK"
+msgstr "🟢 Access OK"
+
+#: src/routes/_protected/dashboard/users/$userId/route.tsx:51
+msgid "Account"
+msgstr "Account"
+
+#. placeholder {0}: DASHBOARD_PLAYBACKS_NAME.toLowerCase()
+#: src/routes/_protected/dashboard/playbacks/index.tsx:39
+msgid "Active {0}"
+msgstr "Active {0}"
+
+#: src/routes/_protected/dashboard/playbacks/index.tsx:41
+msgid "Active playbacks and key details."
+msgstr "Active playbacks and key details."
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:248
+msgid "Actively seeding, the torrent will not be automatically deleted."
+msgstr "Actively seeding, the torrent will not be automatically deleted."
+
+#: src/routes/_protected/dashboard/system/-components/indexer-item.tsx:101
+msgid "after {days} days"
+msgstr "after {days} days"
+
+#: src/features/token-regenerate/token-regenerate.tsx:37
+msgid "After generating a new key, the addon will not work in the installed applications until you reinstall it!"
+msgstr "After generating a new key, the addon will not work in the installed applications until you reinstall it!"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:182
+msgid "After how many days?"
+msgstr "After how many days?"
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:170
+msgid "All unused cache will be deleted!"
+msgstr "All unused cache will be deleted!"
+
+#: src/shared/components/default-error.tsx:19
+msgid "An error occurred while loading StremHU Source!"
+msgstr "An error occurred while loading StremHU Source!"
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:110
+msgid "Are you sure you want to clear the cache?"
+msgstr "Are you sure you want to clear the cache?"
+
+#. placeholder {0}: indexer.indexerDefinition.name
+#: src/routes/_protected/dashboard/system/-components/indexer-item.tsx:66
+msgid "Are you sure you want to delete {0}?"
+msgstr "Are you sure you want to delete {0}?"
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:85
+msgid "Are you sure you want to delete it?"
+msgstr "Are you sure you want to delete it?"
+
+#: src/routes/_protected/dashboard/users/-components/user-item.tsx:34
+#: src/routes/_protected/dashboard/users/$userId/-features/user-profile.tsx:104
+msgid "Are you sure you want to delete?"
+msgstr "Are you sure you want to delete?"
+
+#: src/features/token-regenerate/token-regenerate.tsx:35
+msgid "Are you sure you want to request a new key?"
+msgstr "Are you sure you want to request a new key?"
+
+#: src/routes/_protected/dashboard/system/-features/restart.tsx:31
+msgid "Are you sure you want to restart the application?"
+msgstr "Are you sure you want to restart the application?"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:111
+msgid "Are you sure you want to run a manual check?"
+msgstr "Are you sure you want to run a manual check?"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:129
+msgid "Automatic torrent deletion"
+msgstr "Automatic torrent deletion"
+
+#: src/features/preference-form/preference-form.tsx:51
+msgid "Available attributes"
+msgstr "Available attributes"
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:115
+msgid "Cache cleanup ran successfully."
+msgstr "Cache cleanup ran successfully."
+
+#: src/features/create-preference/create-preference.tsx:95
+#: src/routes/_protected/dashboard/users/$userId/preferences/$preferenceId/index.tsx:102
+#: src/routes/_protected/settings/preferences/$preferenceId/index.tsx:92
+msgid "Cancel"
+msgstr "Cancel"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:75
+msgid "Certificate expiration / renewal"
+msgstr "Certificate expiration / renewal"
+
+#: src/routes/_protected/dashboard/users/$userId/-features/user-profile.tsx:164
+#: src/routes/_protected/settings/account/-features/login-and-security.tsx:79
+msgid "Change password"
+msgstr "Change password"
+
+#: src/routes/_protected/dashboard/users/$userId/-features/user-profile.tsx:141
+#: src/routes/_protected/settings/account/-features/login-and-security.tsx:53
+msgid "Change username"
+msgstr "Change username"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:208
+msgid "Check torrents"
+msgstr "Check torrents"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:149
+msgid "Checks completion based on the tracker, and can only be deleted after that."
+msgstr "Checks completion based on the tracker, and can only be deleted after that."
+
+#: src/features/create-preference/create-preference.tsx:48
+msgid "Choose which preference configuration you want to create and configure it."
+msgstr "Choose which preference configuration you want to create and configure it."
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:168
+msgid "Clear cache"
+msgstr "Clear cache"
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/attributes/index.tsx:64
+#: src/routes/_protected/settings/preferences/attributes/index.tsx:62
+msgid "Configure excluded attributes"
+msgstr "Configure excluded attributes"
+
+#: src/routes/_protected/index.tsx:89
+msgid "Configure what appears first in the results and what to exclude."
+msgstr "Configure what appears first in the results and what to exclude."
+
+#: src/routes/_protected/-features/integration.tsx:18
+msgid "Connect StremHU Source to the clients you use."
+msgstr "Connect StremHU Source to the clients you use."
+
+#: src/routes/_protected/relay/settings/-features/connection.tsx:71
+msgid "Connection"
+msgstr "Connection"
+
+#: src/routes/_protected/-features/nuvio-integration.tsx:52
+#: src/routes/_protected/-features/stremio-integration.tsx:108
+msgid "Copy URL"
+msgstr "Copy URL"
+
+#: src/features/create-preference/create-preference.tsx:105
+#: src/routes/setup/user/index.tsx:98
+msgid "Create"
+msgstr "Create"
+
+#: src/routes/setup/user/index.tsx:77
+msgid "Create administrator account"
+msgstr "Create administrator account"
+
+#: src/features/create-preference/create-preference.tsx:46
+msgid "Create preference configuration"
+msgstr "Create preference configuration"
+
+#: src/routes/_protected/index.tsx:146
+msgid "Create user accounts, manage and update profile data."
+msgstr "Create user accounts, manage and update profile data."
+
+#: src/routes/_protected/relay/torrents/index.tsx:37
+msgid "Current statistics of torrents and related operations."
+msgstr "Current statistics of torrents and related operations."
+
+#: src/routes/_protected/index.tsx:110
+#: src/routes/-features/layout/app-header/user-navigation.tsx:67
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:193
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:156
+msgid "days"
+msgstr "days"
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:91
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:208
+msgid "Delete"
+msgstr "Delete"
+
+#. placeholder {0}: user.username
+#: src/routes/_protected/dashboard/users/-components/user-item.tsx:35
+msgid "Deleting \"{0}\" is permanent and cannot be undone!"
+msgstr "Deleting \"{0}\" is permanent and cannot be undone!"
+
+#. placeholder {0}: indexer.indexerDefinition.name
+#: src/routes/_protected/dashboard/system/-components/indexer-item.tsx:67
+msgid "Deleting {0} will also delete all active torrents running on this tracker."
+msgstr "Deleting {0} will also delete all active torrents running on this tracker."
+
+#. placeholder {0}: torrent.name
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:87
+msgid "Deleting <0>{0}</0> will also delete its data."
+msgstr "Deleting <0>{0}</0> will also delete its data."
+
+#: src/shared/constants.ts:7
+msgid "disable hiding"
+msgstr "disable hiding"
+
+#: src/routes/_protected/relay/settings/-features/speed.tsx:110
+msgid "Download"
+msgstr "Download"
+
+#: src/routes/_protected/relay/torrents/-features/torrents.tsx:38
+msgid "downloaded data | download speed | uploaded data | upload speed | total torrent size"
+msgstr "downloaded data | download speed | uploaded data | upload speed | total torrent size"
+
+#: src/routes/_protected/-features/kodi-integration.tsx:41
+msgid "During the StremHU addon login process, the following URL must be entered."
+msgstr "During the StremHU addon login process, the following URL must be entered."
+
+#: src/routes/_protected/dashboard/users/$userId/-features/user-profile.tsx:121
+msgid "Edit user profile"
+msgstr "Edit user profile"
+
+#: src/routes/login/index.tsx:90
+msgid "Enter your username and password to log in"
+msgstr "Enter your username and password to log in"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:112
+msgid "Even if you run this, the scheduled check at dawn will still run."
+msgstr "Even if you run this, the scheduled check at dawn will still run."
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/attributes/index.tsx:102
+#: src/routes/_protected/settings/preferences/attributes/index.tsx:100
+msgid "Excludable attributes"
+msgstr "Excludable attributes"
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/attributes/index.tsx:70
+#: src/routes/_protected/dashboard/users/$userId/preferences/index.tsx:77
+#: src/routes/_protected/settings/preferences/attributes/index.tsx:68
+#: src/routes/_protected/settings/preferences/index.tsx:65
+msgid "Excluded attributes"
+msgstr "Excluded attributes"
+
+#: src/routes/_protected/dashboard/users/$userId/-features/only-best-torrent.tsx:62
+#: src/routes/_protected/dashboard/users/$userId/-features/only-best-torrent.tsx:76
+msgid "Family friendly mode"
+msgstr "Family friendly mode"
+
+#: src/routes/_protected/settings/preferences/-features/other-preferences.tsx:114
+#: src/routes/_protected/settings/preferences/-features/other-preferences.tsx:128
+msgid "Family-friendly mode"
+msgstr "Family-friendly mode"
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:111
+msgid "Files belonging to active torrents will not be deleted."
+msgstr "Files belonging to active torrents will not be deleted."
+
+#: src/routes/-features/layout/app-footer.tsx:32
+msgid "Found a bug?"
+msgstr "Found a bug?"
+
+#: src/routes/_protected/dashboard/system/-components/indexer-item.tsx:105
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:192
+msgid "Full download"
+msgstr "Full download"
+
+#: src/routes/_protected/settings/preferences/-features/other-preferences.tsx:67
+msgid "Here you can fine-tune the appearance of torrent results (e.g. hide when there are few seeders), and turn on Family-friendly mode for a cleaner, simpler list."
+msgstr "Here you can fine-tune the appearance of torrent results (e.g. hide when there are few seeders), and turn on Family-friendly mode for a cleaner, simpler list."
+
+#: src/routes/_protected/dashboard/playbacks/index.tsx:63
+msgid "History and details of started playbacks."
+msgstr "History and details of started playbacks."
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:140
+msgid "Hit'n'Run based deletion"
+msgstr "Hit'n'Run based deletion"
+
+#: src/routes/-features/layout/app-header/user-navigation.tsx:39
+msgid "Home"
+msgstr "Home"
+
+#: src/shared/constants.ts:6
+msgid "if no seeders"
+msgstr "if no seeders"
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/index.tsx:79
+#: src/routes/_protected/settings/preferences/index.tsx:67
+msgid "If the torrent contains an excluded attribute, it will not appear in the list."
+msgstr "If the torrent contains an excluded attribute, it will not appear in the list."
+
+#: src/routes/_protected/dashboard/system/-features/restart.tsx:52
+msgid "If you experience any issues, you can restart the application."
+msgstr "If you experience any issues, you can restart the application."
+
+#: src/routes/-features/layout/app-footer.tsx:18
+msgid "If you like this project,"
+msgstr "If you like this project,"
+
+#: src/routes/_protected/dashboard/users/$userId/-features/torrent-seeders.tsx:65
+msgid "In case of low seeders, playback might stutter. Under how many seeders should the torrent be hidden?"
+msgstr "In case of low seeders, playback might stutter. Under how many seeders should the torrent be hidden?"
+
+#: src/routes/_protected/-features/stremio-integration.tsx:62
+msgid "Install in app"
+msgstr "Install in app"
+
+#: src/routes/_protected/-features/stremio-integration.tsx:85
+msgid "Install on web"
+msgstr "Install on web"
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:174
+msgid "Keep seeding"
+msgstr "Keep seeding"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:83
+msgid "Last IP sync"
+msgstr "Last IP sync"
+
+#: src/routes/setup/user/index.tsx:79
+msgid "Let's get started! Create the first account, which will have <0>Administrator</0> privileges."
+msgstr "Let's get started! Create the first account, which will have <0>Administrator</0> privileges."
+
+#: src/routes/_protected/dashboard/users/$userId/-features/max-concurrent-streams.tsx:69
+msgid "Limit concurrent streams"
+msgstr "Limit concurrent streams"
+
+#: src/routes/_protected/dashboard/users/$userId/-features/max-concurrent-streams.tsx:71
+msgid "Limit the maximum number of concurrent streams. Leave empty for unlimited."
+msgstr "Limit the maximum number of concurrent streams. Leave empty for unlimited."
+
+#: src/routes/_protected/relay/settings/-features/connection.tsx:72
+msgid "Limit the number of connections."
+msgstr "Limit the number of connections."
+
+#: src/shared/components/default-loading.tsx:20
+msgid "Loading components"
+msgstr "Loading components"
+
+#: src/routes/login/index.tsx:107
+msgid "Log in"
+msgstr "Log in"
+
+#: src/routes/_protected/dashboard/system/-features/indexers.tsx:77
+msgid "Log in!"
+msgstr "Log in!"
+
+#: src/routes/login/index.tsx:87
+msgid "Log into your account"
+msgstr "Log into your account"
+
+#. placeholder {0}: indexer.username
+#: src/routes/_protected/dashboard/system/-components/indexer-item.tsx:119
+msgid "Logged in as <0>{0}</0> user."
+msgstr "Logged in as <0>{0}</0> user."
+
+#: src/routes/logout.tsx:50
+msgid "Logging out..."
+msgstr "Logging out..."
+
+#: src/routes/_protected/dashboard/system/-features/indexers.tsx:86
+msgid "Login"
+msgstr "Login"
+
+#: src/routes/_protected/settings/account/-features/login-and-security.tsx:33
+msgid "Login and security"
+msgstr "Login and security"
+
+#: src/routes/-features/layout/app-header/user-navigation.tsx:77
+msgid "Logout"
+msgstr "Logout"
+
+#: src/routes/_protected/dashboard/system/-features/indexers.tsx:55
+msgid "Manage and configure your tracker logins."
+msgstr "Manage and configure your tracker logins."
+
+#: src/features/token-regenerate/token-regenerate.tsx:54
+msgid "Manage key"
+msgstr "Manage key"
+
+#: src/routes/_protected/index.tsx:65
+msgid "Manage login details, password and security settings."
+msgstr "Manage login details, password and security settings."
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:128
+msgid "Manage torrent files cache"
+msgstr "Manage torrent files cache"
+
+#: src/routes/_protected/index.tsx:124
+msgid "Manage torrent sites, configure StremHU Source."
+msgstr "Manage torrent sites, configure StremHU Source."
+
+#: src/routes/_protected/dashboard/users/index.tsx:42
+msgid "Manage users, roles, and access."
+msgstr "Manage users, roles, and access."
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:116
+msgid "Manual check ran successfully."
+msgstr "Manual check ran successfully."
+
+#: src/routes/_protected/relay/settings/-features/connection.tsx:101
+msgid "Maximum connections per torrent"
+msgstr "Maximum connections per torrent"
+
+#: src/routes/_protected/relay/settings/-features/speed.tsx:103
+msgid "Maximum download and upload speed. Leave empty for unlimited."
+msgstr "Maximum download and upload speed. Leave empty for unlimited."
+
+#: src/routes/_protected/relay/settings/-features/connection.tsx:78
+msgid "Maximum global connections"
+msgstr "Maximum global connections"
+
+#: src/routes/_protected/relay/torrents/-features/torrents.tsx:36
+msgid "Meaning of values shown under torrents"
+msgstr "Meaning of values shown under torrents"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:47
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:45
+msgid "Must be a number"
+msgstr "Must be a number"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:48
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:46
+msgid "Must be a positive number."
+msgstr "Must be a positive number."
+
+#: src/routes/-features/layout/app-footer.tsx:42
+msgid "Need help?"
+msgstr "Need help?"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:56
+msgid "Network access"
+msgstr "Network access"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:58
+msgid "Network access information"
+msgstr "Network access information"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:97
+msgid "Network access is configured in environment variables."
+msgstr "Network access is configured in environment variables."
+
+#: src/features/token-regenerate/token-regenerate.tsx:41
+msgid "New key generation is complete."
+msgstr "New key generation is complete."
+
+#: src/routes/_protected/dashboard/playbacks/index.tsx:49
+msgid "No active playbacks"
+msgstr "No active playbacks"
+
+#: src/routes/_protected/relay/torrents/-features/torrents.tsx:21
+msgid "No active torrents"
+msgstr "No active torrents"
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:139
+msgid "No cache cleanup"
+msgstr "No cache cleanup"
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/attributes/index.tsx:95
+#: src/routes/_protected/dashboard/users/$userId/preferences/index.tsx:102
+#: src/routes/_protected/settings/preferences/attributes/index.tsx:93
+#: src/routes/_protected/settings/preferences/index.tsx:87
+msgid "No excluded attributes."
+msgstr "No excluded attributes."
+
+#: src/routes/_protected/dashboard/users/$userId/-features/max-concurrent-streams.tsx:80
+#: src/routes/_protected/relay/settings/-features/port.tsx:74
+#: src/routes/_protected/relay/settings/-features/speed.tsx:113
+#: src/routes/_protected/relay/settings/-features/speed.tsx:145
+msgid "No limit"
+msgstr "No limit"
+
+#: src/features/preference-form/preference-form.tsx:89
+msgid "No more available attributes."
+msgstr "No more available attributes."
+
+#: src/routes/_protected/dashboard/playbacks/index.tsx:71
+msgid "No playback history"
+msgstr "No playback history"
+
+#: src/features/preference-form/preference-form.tsx:198
+msgid "No preferred attributes"
+msgstr "No preferred attributes"
+
+#: src/features/preferences/preferences-section.tsx:123
+msgid "No rules with preferred attributes."
+msgstr "No rules with preferred attributes."
+
+#: src/routes/_protected/settings/preferences/-features/other-preferences.tsx:116
+msgid "Only the best torrent appears based on your set preferences - so you don't have to choose from a list."
+msgstr "Only the best torrent appears based on your set preferences - so you don't have to choose from a list."
+
+#: src/routes/_protected/dashboard/users/$userId/-features/only-best-torrent.tsx:64
+msgid "Only the best torrent is displayed based on your preferences - so you don't have to pick from a list."
+msgstr "Only the best torrent is displayed based on your preferences - so you don't have to pick from a list."
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:160
+msgid "Open details"
+msgstr "Open details"
+
+#: src/routes/_protected/-features/stremio-integration.tsx:64
+msgid "Opens the application and adds the addon."
+msgstr "Opens the application and adds the addon."
+
+#: src/routes/_protected/settings/preferences/-features/other-preferences.tsx:65
+msgid "Other preferences"
+msgstr "Other preferences"
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:187
+msgid "Partial download"
+msgstr "Partial download"
+
+#: src/routes/login/index.tsx:101
+#: src/routes/setup/user/index.tsx:92
+msgid "Password"
+msgstr "Password"
+
+#: src/routes/login/index.tsx:42
+#: src/routes/setup/user/index.tsx:35
+msgid "Password is required"
+msgstr "Password is required"
+
+#: src/routes/_protected/-features/nuvio-integration.tsx:54
+#: src/routes/_protected/-features/stremio-integration.tsx:110
+msgid "Paste the copied URL into your addons."
+msgstr "Paste the copied URL into your addons."
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:164
+msgid "Playback based deletion"
+msgstr "Playback based deletion"
+
+#: src/routes/_protected/dashboard/playbacks/index.tsx:61
+msgid "Playback history"
+msgstr "Playback history"
+
+#. placeholder {0}: formatDateTime(playback.createdAt)
+#: src/routes/_protected/dashboard/playbacks/-components/playback-item.tsx:58
+msgid "Playback time: {0}"
+msgstr "Playback time: {0}"
+
+#: src/routes/_protected/relay/settings/-features/port.tsx:71
+msgid "Port for incoming connections"
+msgstr "Port for incoming connections"
+
+#: src/routes/_protected/dashboard/users/$userId/route.tsx:62
+msgid "Preferences"
+msgstr "Preferences"
+
+#: src/features/preference-form/preference-form.tsx:131
+msgid "Preferred attributes"
+msgstr "Preferred attributes"
+
+#: src/routes/-features/layout/app-footer.tsx:48
+msgid "Read the documentation"
+msgstr "Read the documentation"
+
+#: src/shared/components/default-error.tsx:29
+msgid "Reload"
+msgstr "Reload"
+
+#: src/routes/-features/layout/app-footer.tsx:38
+msgid "Report on Discord"
+msgstr "Report on Discord"
+
+#: src/features/token-regenerate/token-regenerate.tsx:65
+msgid "Request a new key"
+msgstr "Request a new key"
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:198
+msgid "Reset download to tracker setting"
+msgstr "Reset download to tracker setting"
+
+#: src/routes/_protected/dashboard/system/-features/restart.tsx:50
+msgid "Restart"
+msgstr "Restart"
+
+#: src/routes/_protected/dashboard/system/-features/restart.tsx:36
+msgid "Restart initiated! Reload the page in a few seconds!"
+msgstr "Restart initiated! Reload the page in a few seconds!"
+
+#: src/routes/_protected/dashboard/users/$userId/-features/user-profile.tsx:185
+msgid "Role"
+msgstr "Role"
+
+#: src/routes/_protected/index.tsx:49
+#: src/routes/_protected/relay/route.tsx:37
+#: src/routes/-features/layout/app-header/user-navigation.tsx:60
+msgid "Settings"
+msgstr "Settings"
+
+#. placeholder {0}: playback.indexerDefinition.name
+#: src/routes/_protected/dashboard/playbacks/-components/playback-item.tsx:42
+msgid "Source: {0}"
+msgstr "Source: {0}"
+
+#: src/routes/_protected/dashboard/system/-features/torrent-files-cache.tsx:130
+msgid "Specify how long after unused torrent files should be deleted"
+msgstr "Specify how long after unused torrent files should be deleted"
+
+#: src/routes/_protected/relay/settings/-features/speed.tsx:101
+msgid "Speed"
+msgstr "Speed"
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:210
+msgid "Start checking torrents!"
+msgstr "Start checking torrents!"
+
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:169
+msgid "Stop seeding"
+msgstr "Stop seeding"
+
+#: src/features/token-regenerate/token-regenerate.tsx:56
+msgid "StremHU Source uses this key to identify the user in the applications."
+msgstr "StremHU Source uses this key to identify the user in the applications."
+
+#: src/routes/-features/layout/app-footer.tsx:24
+msgid "support it on Ko-Fi"
+msgstr "support it on Ko-Fi"
+
+#: src/routes/_protected/-features/integration.tsx:16
+msgid "Supported clients"
+msgstr "Supported clients"
+
+#: src/routes/_protected/index.tsx:112
+msgid "System configuration and user management."
+msgstr "System configuration and user management."
+
+#: src/features/preference-form/preference-form.tsx:133
+msgid "The attributes you add here will appear higher in the list."
+msgstr "The attributes you add here will appear higher in the list."
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:131
+msgid "The check runs every day at dawn, but a torrent is only deleted if all the set conditions are met."
+msgstr "The check runs every day at dawn, but a torrent is only deleted if all the set conditions are met."
+
+#: src/routes/_protected/dashboard/system/-features/keep-seeding.tsx:175
+msgid "The torrent can only be deleted if the set time has passed since the last playback."
+msgstr "The torrent can only be deleted if the set time has passed since the last playback."
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/attributes/index.tsx:104
+#: src/routes/_protected/settings/preferences/attributes/index.tsx:102
+msgid "These attributes can be excluded, meaning torrents with these attributes won't appear in the clients' list."
+msgstr "These attributes can be excluded, meaning torrents with these attributes won't appear in the clients' list."
+
+#: src/routes/_protected/dashboard/system/-features/indexers.tsx:79
+msgid "To use StremHU Source, you must log in to at least one tracker!"
+msgstr "To use StremHU Source, you must log in to at least one tracker!"
+
+#. placeholder {0}: formatDateTime(torrent.createdAt)
+#: src/routes/_protected/relay/torrents/-components/torrent.tsx:240
+msgid "Torrent added at: {0}"
+msgstr "Torrent added at: {0}"
+
+#: src/routes/_protected/dashboard/users/$userId/-features/torrent-seeders.tsx:63
+#: src/routes/_protected/settings/preferences/-features/other-preferences.tsx:73
+msgid "Torrent availability"
+msgstr "Torrent availability"
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/attributes/index.tsx:72
+#: src/routes/_protected/settings/preferences/attributes/index.tsx:70
+msgid "Torrents containing an excluded attribute will not appear in the list in clients."
+msgstr "Torrents containing an excluded attribute will not appear in the list in clients."
+
+#: src/routes/_protected/relay/torrents/-features/torrents.tsx:23
+msgid "Torrents for the started media will appear here."
+msgstr "Torrents for the started media will appear here."
+
+#: src/routes/_protected/dashboard/system/-features/indexers.tsx:53
+msgid "Trackers"
+msgstr "Trackers"
+
+#: src/shared/constants.ts:4
+msgid "under 10 seeders"
+msgstr "under 10 seeders"
+
+#: src/shared/constants.ts:5
+msgid "under 5 seeders"
+msgstr "under 5 seeders"
+
+#: src/routes/_protected/dashboard/users/$userId/preferences/$preferenceId/index.tsx:113
+#: src/routes/_protected/settings/preferences/$preferenceId/index.tsx:102
+msgid "Update"
+msgstr "Update"
+
+#: src/routes/_protected/dashboard/system/-features/network-access-info.tsx:105
+msgid "Update network access or apply new configuration."
+msgstr "Update network access or apply new configuration."
+
+#: src/routes/_protected/relay/settings/-features/speed.tsx:142
+msgid "Upload"
+msgstr "Upload"
+
+#: src/routes/_protected/relay/settings/-features/port.tsx:106
+msgid "Use UPnP / NAT-PMP on the router for port forwarding"
+msgstr "Use UPnP / NAT-PMP on the router for port forwarding"
+
+#: src/routes/_protected/relay/settings/-features/port.tsx:65
+msgid "Used port"
+msgstr "Used port"
+
+#. placeholder {0}: playback.user.username
+#: src/routes/_protected/dashboard/playbacks/-components/playback-item.tsx:50
+msgid "User: {0}"
+msgstr "User: {0}"
+
+#: src/routes/login/index.tsx:96
+#: src/routes/setup/user/index.tsx:86
+msgid "Username"
+msgstr "Username"
+
+#: src/routes/login/index.tsx:38
+#: src/routes/setup/user/index.tsx:34
+msgid "Username is required"
+msgstr "Username is required"
+
+#: src/routes/_protected/index.tsx:168
+msgid "View current and past playbacks."
+msgstr "View current and past playbacks."
+
+#: src/routes/_protected/settings/preferences/-features/other-preferences.tsx:75
+msgid "With few seeders, playback might stutter. Below how many seeders should the torrent be hidden?"
+msgstr "With few seeders, playback might stutter. Below how many seeders should the torrent be hidden?"
+
+#: src/routes/_protected/index.tsx:51
+msgid "You can change your account data, security settings, and torrent list preferences."
+msgstr "You can change your account data, security settings, and torrent list preferences."
+
+#: src/routes/_protected/settings/account/-features/login-and-security.tsx:35
+msgid "You can change your username or password"
+msgstr "You can change your username or password"
+
+#: src/features/preferences/preferences-section.tsx:81
+msgid "You can customize which torrents appear first in the list. The preferred attributes affect the order."
+msgstr "You can customize which torrents appear first in the list. The preferred attributes affect the order."
+
+#: src/routes/_protected/-features/stremio-integration.tsx:87
+msgid "You can install the addon with confirmation on the website."
+msgstr "You can install the addon with confirmation on the website."
+
+#: src/features/preference-form/preference-form.tsx:53
+msgid "You can prefer or exclude these attributes."
+msgstr "You can prefer or exclude these attributes."
+
+#: src/routes/_protected/settings/account/-features/login-and-security.tsx:81
+msgid "You will need to log in again after changing your password"
+msgstr "You will need to log in again after changing your password"
+
+#: src/routes/_protected/settings/account/-features/login-and-security.tsx:55
+msgid "You will need to log in again after changing your username"
+msgstr "You will need to log in again after changing your username"

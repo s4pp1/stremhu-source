@@ -6,7 +6,6 @@ import { toast } from 'sonner'
 
 import { CreatePreference } from '@/features/create-preference/create-preference'
 import { useAppForm } from '@/shared/contexts/form-context'
-import type { PreferenceCreateRequest } from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import {
   getMePreferenceDefinitions,
@@ -48,8 +47,8 @@ function RouteComponent() {
   const form = useAppForm({
     defaultValues: {
       preferenceId: availablePreferences[0].id,
-      attributeIds: [],
-    } as PreferenceCreateRequest,
+      attributeIds: [] as string[],
+    },
     onSubmit: async ({ value }) => {
       try {
         await createMePreference(value)

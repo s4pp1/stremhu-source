@@ -1,6 +1,7 @@
 import { useSuspenseQueries } from '@tanstack/react-query'
 import { createFileRoute, useSearch } from '@tanstack/react-router'
 import { HistoryIcon, PlayIcon } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 
 import { Alert, AlertTitle } from '@/shared/components/ui/alert'
 import { AppPagination } from '@/shared/components/ui/app-pagination'
@@ -35,9 +36,9 @@ function RouteComponent() {
     <div className="grid gap-8">
       <Card>
         <CardHeader>
-          <CardTitle>Aktív {DASHBOARD_PLAYBACKS_NAME.toLowerCase()}</CardTitle>
+          <CardTitle><Trans>Active {DASHBOARD_PLAYBACKS_NAME.toLowerCase()}</Trans></CardTitle>
           <CardDescription>
-            Aktív lejátszások és a legfontosabb adatok.
+            <Trans>Active playbacks and key details.</Trans>
           </CardDescription>
         </CardHeader>
         <Separator />
@@ -45,7 +46,7 @@ function RouteComponent() {
           {playbacks.length === 0 ? (
             <Alert>
               <PlayIcon />
-              <AlertTitle>Nincs aktív lejátszás</AlertTitle>
+              <AlertTitle><Trans>No active playbacks</Trans></AlertTitle>
             </Alert>
           ) : (
             playbacks.map((playback) => (
@@ -57,9 +58,9 @@ function RouteComponent() {
       <Separator />
       <Card>
         <CardHeader>
-          <CardTitle>Lejátszási előzmények</CardTitle>
+          <CardTitle><Trans>Playback history</Trans></CardTitle>
           <CardDescription>
-            Elindított lejátszások története és részletes adatai.
+            <Trans>History and details of started playbacks.</Trans>
           </CardDescription>
         </CardHeader>
         <Separator />
@@ -67,7 +68,7 @@ function RouteComponent() {
           {playbackHistories.items.length === 0 ? (
             <Alert>
               <HistoryIcon />
-              <AlertTitle>Nincs lejátszási előzmény</AlertTitle>
+              <AlertTitle><Trans>No playback history</Trans></AlertTitle>
             </Alert>
           ) : (
             playbackHistories.items.map((playbackHistory) => (

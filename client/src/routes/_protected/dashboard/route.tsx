@@ -13,7 +13,7 @@ import { DASHBOARD_USERS_NAME } from './users/route'
 export const Route = createFileRoute('/_protected/dashboard')({
   component: SettingsLayout,
   loader: () => ({
-    breadcrumb: 'Irányítópult',
+    breadcrumb: 'Dashboard',
   }),
 })
 

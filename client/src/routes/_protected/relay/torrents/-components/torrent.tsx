@@ -17,6 +17,8 @@ import {
 import type { JSX, MouseEventHandler } from 'react'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
 import { Badge } from '@/shared/components/ui/badge'
@@ -80,14 +82,13 @@ export function Torrent(props: TorrentProps) {
     e.stopPropagation()
 
     await confirmDialog.confirm({
-      title: `Biztosan törlöd?`,
+      title: t`Are you sure you want to delete it?`,
       description: (
-        <>
-          A(z) <span className="font-bold break-all">{torrent.name}</span>{' '}
-          törlésével az adatok is törlésre kerülnek.
-        </>
+        <Trans>
+          Deleting <span className="font-bold break-all">{torrent.name}</span> will also delete its data.
+        </Trans>
       ),
-      confirmText: 'Törlés',
+      confirmText: t`Delete`,
       onConfirm: async () => {
         try {
           await deleteTorrent(torrent.infoHash)
@@ -156,7 +157,7 @@ export function Torrent(props: TorrentProps) {
               <DropdownMenuGroup>
                 <DropdownMenuItem onClick={handleOpenDetails}>
                   <ExternalLinkIcon />
-                  Adatlap megnyitása
+                  <Trans>Open details</Trans>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
@@ -165,12 +166,12 @@ export function Torrent(props: TorrentProps) {
                   {torrent.isPersisted ? (
                     <>
                       <PinOffIcon />
-                      Seedben tartás megszüntetése
+                      <Trans>Stop seeding</Trans>
                     </>
                   ) : (
                     <>
                       <PinIcon />
-                      Seedben tartás
+                      <Trans>Keep seeding</Trans>
                     </>
                   )}
                 </DropdownMenuItem>
@@ -183,18 +184,18 @@ export function Torrent(props: TorrentProps) {
                     {fullDownload ? (
                       <DropdownMenuItem onClick={handleFullDownload(false)}>
                         <FileDownIcon />
-                        Részleges letöltés
+                        <Trans>Partial download</Trans>
                       </DropdownMenuItem>
                     ) : (
                       <DropdownMenuItem onClick={handleFullDownload(true)}>
                         <FolderDownIcon />
-                        Teljes letöltés
+                        <Trans>Full download</Trans>
                       </DropdownMenuItem>
                     )}
                     {torrent.fullDownload !== null && (
                       <DropdownMenuItem onClick={handleFullDownload(null)}>
                         <RotateCcwIcon />
-                        Letöltés visszaállítása a torrent oldal beállításra
+                        <Trans>Reset download to tracker setting</Trans>
                       </DropdownMenuItem>
                     )}
                   </DropdownMenuGroup>
@@ -204,7 +205,7 @@ export function Torrent(props: TorrentProps) {
               <DropdownMenuGroup>
                 <DropdownMenuItem variant="destructive" onClick={handleDelete}>
                   <TrashIcon />
-                  Törlés
+                  <Trans>Delete</Trans>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
@@ -236,7 +237,7 @@ export function Torrent(props: TorrentProps) {
       <div className="mt-1 flex flex-wrap gap-2">
         <Badge
           variant="secondary"
-          title={`Torrent hozzáadás időpontja: ${formatDateTime(torrent.createdAt)}`}
+          title={t`Torrent added at: ${formatDateTime(torrent.createdAt)}`}
         >
           <LayersPlusIcon />
           {formatDateTime(torrent.createdAt)}
@@ -244,7 +245,7 @@ export function Torrent(props: TorrentProps) {
         {torrent.isPersisted && (
           <Badge
             variant="secondary"
-            title="Aktív seedben tartás, a torrent nem törlődik automatikusan."
+            title={t`Actively seeding, the torrent will not be automatically deleted.`}
           >
             <PinIcon />
           </Badge>

@@ -2,6 +2,8 @@ import { useForm } from '@tanstack/react-form'
 import { useSuspenseQueries } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { capitalize } from 'lodash'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import {
   PencilIcon,
   ShieldUserIcon,
@@ -99,12 +101,11 @@ export function UserProfile(props: UserProfileProps) {
 
   const handleDeleteUser = async () => {
     await confirmDialog.confirm({
-      title: `Biztos törölni szeretnéd?`,
+      title: t`Are you sure you want to delete?`,
       description: (
-        <>
-          <span className="font-bold">{user.username}</span> törlése végleges és
-          nem lehetséges visszaállítani!
-        </>
+        <Trans>
+          <span className="font-bold">{user.username}</span>'s deletion is permanent and cannot be undone!
+        </Trans>
       ),
       onConfirm: async () => {
         await deleteUser(user.id)
@@ -116,8 +117,8 @@ export function UserProfile(props: UserProfileProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{user.username} felhasználó</CardTitle>
-        <CardDescription>Felhasználó profiljának módosítása</CardDescription>
+        <CardTitle><Trans>{user.username} user profile</Trans></CardTitle>
+        <CardDescription><Trans>Edit user profile</Trans></CardDescription>
         {user.id !== me.id && (
           <CardAction>
             <Button
@@ -137,7 +138,7 @@ export function UserProfile(props: UserProfileProps) {
             <UserPenIcon />
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>Felhasználónév módosítása</ItemTitle>
+            <ItemTitle><Trans>Change username</Trans></ItemTitle>
           </ItemContent>
           <ItemActions>
             <Button
@@ -160,7 +161,7 @@ export function UserProfile(props: UserProfileProps) {
             <ShieldUserIcon />
           </ItemMedia>
           <ItemContent>
-            <ItemTitle>Jelszó módosítása</ItemTitle>
+            <ItemTitle><Trans>Change password</Trans></ItemTitle>
           </ItemContent>
           <ItemActions>
             <Button
@@ -181,7 +182,7 @@ export function UserProfile(props: UserProfileProps) {
         <form.Field name="userRole">
           {(field) => (
             <Field>
-              <FieldLabel htmlFor={field.name}>Jogosultság</FieldLabel>
+              <FieldLabel htmlFor={field.name}><Trans>Role</Trans></FieldLabel>
               <Select
                 value={field.state.value}
                 name={field.name}
