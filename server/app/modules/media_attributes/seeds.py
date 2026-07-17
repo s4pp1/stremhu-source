@@ -229,6 +229,13 @@ DEFAULT_ATTRIBUTES = [
         short_name="Special Edition",
     ),
     MediaAttributeModel(
+        id=MediaAttributeKey.OPEN_MATTE,
+        name="Open Matte (teljes képkivágás)",
+        preference_id=PreferenceKey.EDITION,
+        pattern=r"\b(open[-_. ]?matte)\b",
+        short_name="Open Matte",
+    ),
+    MediaAttributeModel(
         id=MediaAttributeKey.COLLECTORS_EDITION,
         name="Gyűjtői kiadás (Collector's Edition)",
         preference_id=PreferenceKey.EDITION,

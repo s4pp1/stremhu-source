@@ -36,7 +36,7 @@ def start_server():
         url = f"{protocol}://{boot_config.network_settings.host}:{config.port}"
 
     if boot_config.network_settings.mode == NetworkModeEnum.MANUAL:
-        protocol = "http"
+        protocol = "https"
         url = f"{protocol}://{boot_config.network_settings.host}"
 
     console.print()

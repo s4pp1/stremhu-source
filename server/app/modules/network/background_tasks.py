@@ -31,7 +31,7 @@ async def verify_self_connection() -> None:
     port_ready = await wait_for_port()
     if not port_ready:
         logger.error(
-            f"🚨 Kritikus hiba: A szerver portja ({config.port}) nem nyílt meg a megadott időn belül!"
+            f"‼️ Kritikus hiba: A szerver portja ({config.port}) nem nyílt meg a megadott időn belül!"
         )
         os.kill(os.getpid(), signal.SIGTERM)
         return
@@ -57,7 +57,7 @@ async def verify_self_connection() -> None:
 
     except Exception:
         logger.error(
-            f"🚨 Kritikus hiba: Nem sikerült csatlakozni a szerverhez a megadott címen ({host}). Kérlek ellenőrizd a HOST_IP beállítást, hogy biztosan a szerver IP-je legyen megadva!"
+            f"‼️ Kritikus hiba: Nem sikerült csatlakozni a szerverhez a megadott címen ({host}). Kérlek ellenőrizd a HOST_IP beállítást, hogy biztosan a szerver IP-je legyen megadva!"
         )
 
     logger.error("🛑 Az ön-ellenőrzés sikertelen. Az alkalmazás leállítása...")
@@ -72,7 +72,7 @@ async def run_network_ip_sync() -> None:
             await network_service.sync_ip()
         logger.info("✅ A DDNS IP szinkronizáció befejeződött.")
     except Exception:
-        logger.exception("🚨 Hiba történt a DDNS IP szinkronizáció során.")
+        logger.exception("‼️ Hiba történt a DDNS IP szinkronizáció során.")
 
 
 async def run_check_ssl_certificate() -> None:
@@ -84,6 +84,6 @@ async def run_check_ssl_certificate() -> None:
         logger.info("✅ Az SSL tanúsítvány ellenőrzése befejeződött.")
     except Exception as e:
         logger.error(
-            f"🚨 Hiba történt az SSL tanúsítvány ellenőrzése során: {e}",
+            f"‼️ Hiba történt az SSL tanúsítvány ellenőrzése során: {e}",
             exc_info=e,
         )

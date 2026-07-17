@@ -1,9 +1,11 @@
 import ipaddress
+import sys
 from enum import Enum
 from pathlib import Path
 
-from pydantic import Field, field_validator
+from pydantic import Field, ValidationError, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from rich.console import Console
 
 from app.common.validators import validate_domain
 
@@ -29,7 +31,6 @@ class Config(BaseSettings):
     session_secret: str = "stremhu-source"
     host_ip: str = Field(
         default="",
-        min_length=1,
     )
 
     reverse_proxy_domain: str | None = None
@@ -78,22 +79,27 @@ class Config(BaseSettings):
 
     acme_directory_url: str = "https://acme-v02.api.letsencrypt.org/directory"
 
-    @field_validator("host_ip")
-    @classmethod
-    def validate_host_ip(cls, value: str) -> str:
-        try:
-            ipaddress.ip_address(value)
-        except ValueError:
+    @model_validator(mode="after")
+    def validate_host_ip_and_domain(self) -> "Config":
+        if not self.reverse_proxy_domain and not self.host_ip:
             raise ValueError(
-                f"🚨 Hiba: A megadott HOST_IP ({value}) formátuma érvénytelen! Kérlek érvényes IPv4 címet adj meg!"
+                "A `HOST_IP` megadása kötelező, ha a `REVERSE_PROXY_DOMAIN` nincs beállítva!"
             )
 
-        if value == "127.0.0.1":
-            raise ValueError(
-                f"🚨 Hiba: A megadott HOST_IP ({value}) nem lehet a localhost!"
-            )
+        if self.host_ip:
+            try:
+                ip = ipaddress.ip_address(self.host_ip)
+            except ValueError:
+                raise ValueError(
+                    f"A megadott `HOST_IP` ({self.host_ip}) formátuma érvénytelen! Kérlek érvényes IPv4 címet adj meg!"
+                )
 
-        return value
+            if ip.is_loopback:
+                raise ValueError(
+                    f"A megadott `HOST_IP` ({self.host_ip}) nem lehet a localhost!"
+                )
+
+        return self
 
     @field_validator("reverse_proxy_domain")
     @classmethod
@@ -104,7 +110,29 @@ class Config(BaseSettings):
         return validate_domain(value)
 
 
-config = Config()
+try:
+    config = Config()
+except ValidationError as e:
+    console = Console()
+    console.print(
+        "\n[bold red]‼️  Konfigurációs hiba történt az indítás során:[/bold red]\n"
+    )
+    for error in e.errors():
+        field_path = " -> ".join(str(loc) for loc in error["loc"])
+        msg = error["msg"]
+
+        if msg.startswith("Value error, "):
+            msg = msg[len("Value error, ") :]
+
+        if field_path:
+            console.print(f"  [bold yellow]- {field_path}:[/bold yellow] {msg}")
+        else:
+            console.print(f"  [bold yellow]-[/bold yellow] {msg}")
+    console.print(
+        "\n[bold]Kérlek javítsd a fenti hibákat, majd indítsd újra az alkalmazást![/bold]\n"
+        "További információ: [blue]https://stremhu.app[/blue]\n"
+    )
+    sys.exit(1)
 
 
 def show_internal_routes() -> bool:

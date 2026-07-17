@@ -36,17 +36,20 @@ class RelayService:
                 "enable_dht": False,
                 "enable_lsd": False,
                 "auto_sequential": False,
-                "peer_timeout": 10,
                 "piece_extent_affinity": True,
-                "piece_timeout": 5,
-                "request_timeout": 5,
-                "unchoke_interval": 1,
+                "peer_timeout": 60,
+                "piece_timeout": 10,
+                "request_timeout": 30,
+                "unchoke_interval": 10,
                 "active_downloads": -1,
                 "active_seeds": -1,
                 "active_limit": -1,
                 "connection_speed": 100,
                 "mixed_mode_algorithm": libtorrent.bandwidth_mixed_algo_t.prefer_tcp,
                 "unchoke_slots_limit": 16,
+                "min_reconnect_time": 5,
+                "strict_end_game_mode": False,
+                "optimistic_unchoke_interval": 20,
             }
         )
 
@@ -327,10 +330,6 @@ class RelayService:
 
                     case libtorrent.piece_finished_alert():
                         info_hash = str(alert.handle.info_hash())
-                        request_key = (info_hash, alert.piece_index)
-                        if request_key in self.pending_piece_requests:
-                            alert.handle.read_piece(alert.piece_index)
-
                         self.trigger_priority_update(info_hash)
 
                     case libtorrent.read_piece_alert():

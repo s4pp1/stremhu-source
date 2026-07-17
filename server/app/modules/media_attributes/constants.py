@@ -62,6 +62,7 @@ class MediaAttributeKey:
     EXTENDED = "extended"
     DIRECTORS_CUT = "directors-cut"
     SPECIAL_EDITION = "special-edition"
+    OPEN_MATTE = "open-matte"
     COLLECTORS_EDITION = "collectors-edition"
     LIMITED_EDITION = "limited-edition"
     ULTIMATE_EDITION = "ultimate-edition"

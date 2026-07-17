@@ -223,7 +223,6 @@ class NetworkService:
     async def _setup_auto_dns(
         self, payload: NetworkAutoSetup, current_network_settings: NetworkSettings
     ) -> str:
-        # 1. DNS IP szinkronizáció
         ip = await self._ddns_service.get_current_ip(payload.connection)
         await self._ddns_service.update(
             provider_id=payload.provider,
@@ -234,11 +233,10 @@ class NetworkService:
             ),
         )
 
-        # 2. Kapcsolat ellenőrzése fallback védelemmel
         is_connected = await self.check_connectivity(host=payload.host)
         if not is_connected:
-            # Rollback: ha nem érhető el, állítsuk vissza a DNS-t a korábbi beállításra
-            logger.warning("🚨 Kapcsolat ellenőrzés sikertelen! Visszagörgetés...")
+            logger.warning("⚠️ Kapcsolat ellenőrzés sikertelen! Visszagörgetés...")
+
             if current_network_settings.mode == NetworkModeEnum.AUTO:
                 await self._ddns_service.update(
                     provider_id=current_network_settings.provider,
@@ -312,8 +310,8 @@ class NetworkService:
                     network_settings,
                 )
 
-        except Exception as e:
-            logger.error("🚨 Sikertelen IP / SSL szinkronizáció háttérfeladat: %s", e)
+        except Exception:
+            logger.exception("‼️ Sikertelen IP / SSL szinkronizáció háttérfeladat.")
 
     async def check_ssl_certificate(self):
         network_settings = await asyncio.to_thread(self._settings_service.get_network)
@@ -359,7 +357,7 @@ class NetworkService:
                     ssl_renewed = True
                 except Exception:
                     logger.exception(
-                        "🚨 Sikertelen Let's Encrypt SSL megújítás a háttérben"
+                        "‼️ Sikertelen Let's Encrypt SSL megújítás a háttérben"
                     )
 
         if ssl_renewed:
