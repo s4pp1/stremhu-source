@@ -11,7 +11,6 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from app.api import api_router
 from app.common.logger import logger
-from app.common.middleware import CapitalizeHeaderMiddleware
 from app.common.spa_static_files import SPAStaticFiles
 from app.config import NodeEnv, config
 from app.exceptions import setup_exception_handlers
@@ -95,8 +94,6 @@ app = FastAPI(
 )
 
 setup_exception_handlers(app)
-
-app.add_middleware(CapitalizeHeaderMiddleware)
 
 app.add_middleware(
     CORSMiddleware,

@@ -1,6 +1,4 @@
 import asyncio
-import os
-import signal
 
 import httpx
 
@@ -30,10 +28,9 @@ async def wait_for_port() -> bool:
 async def verify_self_connection() -> None:
     port_ready = await wait_for_port()
     if not port_ready:
-        logger.error(
-            f"‼️ Kritikus hiba: A szerver portja ({config.port}) nem nyílt meg a megadott időn belül!"
+        logger.warning(
+            f"⚠️ Figyelmeztetés: A szerver portja ({config.port}) nem nyílt meg a megadott időn belül!"
         )
-        os.kill(os.getpid(), signal.SIGTERM)
         return
 
     try:
@@ -52,16 +49,12 @@ async def verify_self_connection() -> None:
     try:
         async with httpx.AsyncClient(verify=False, timeout=5.0) as client:
             await client.get(url)
-            logger.info("✅ Sikeres ön-ellenőrzés! A szerver elérhető.")
-            return
+            logger.info("✅  Sikeres ön-ellenőrzés! A szerver elérhető.")
 
     except Exception:
-        logger.error(
-            f"‼️ Kritikus hiba: Nem sikerült csatlakozni a szerverhez a megadott címen ({host}). Kérlek ellenőrizd a HOST_IP beállítást, hogy biztosan a szerver IP-je legyen megadva!"
+        logger.warning(
+            f"⚠️  Az ön-ellenőrzés sikertelen ({host}). Nem biztos, hogy jó a HOST_IP beállítás."
         )
-
-    logger.error("🛑 Az ön-ellenőrzés sikertelen. Az alkalmazás leállítása...")
-    os.kill(os.getpid(), signal.SIGTERM)
 
 
 async def run_network_ip_sync() -> None:
