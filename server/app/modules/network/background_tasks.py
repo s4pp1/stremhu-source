@@ -49,7 +49,7 @@ async def verify_self_connection() -> None:
     try:
         async with httpx.AsyncClient(verify=False, timeout=5.0) as client:
             await client.get(url)
-            logger.info("✅  Sikeres ön-ellenőrzés! A szerver elérhető.")
+            logger.info("✅ Sikeres ön-ellenőrzés! A szerver elérhető.")
 
     except Exception:
         logger.warning(
