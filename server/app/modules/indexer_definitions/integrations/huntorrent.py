@@ -1,3 +1,8 @@
+"""
+@author ntamas94 <https://github.com/ntamas94>
+@website https://huntorrent.org
+"""
+
 from urllib.parse import parse_qs, urljoin, urlparse
 
 import httpx
@@ -17,21 +22,22 @@ from app.modules.media_attributes.constants import MediaAttributeKey
 _LOGIN_API_PATH = "/login/api/login"
 _BROWSE_PATH = "/browse/"
 
-# A kategória-ikon alt szövegéből (pl. "HD/Magyar") a nyelvet vesszük át, mert az
-# a release névből gyakran nem derül ki. A felbontást, forrást, kodeket és a
-# hangsávot a parse_torrent_name() már kinyeri a névből, ezért itt csak azt adjuk
-# meg, amit a név nem tartalmaz: a "HD" ráadásul 720p-t és 1080p-t is jelenthet.
+# A kategória-ikon alt szövegéből (pl. "HD/Magyar") a nyelvet és a felbontást
+# vesszük át. Ezek fallbackként működnek: ha a parse_torrent_name() kiszedi őket
+# a release névből, akkor a rendszer az itteni értéket eldobja. Ezért adunk a HD
+# kategóriákra 720p-t is, hiába jelenthet 1080p-t: van olyan torrent, aminek a
+# nevében sehol nem szerepel a felbontás.
 _CATEGORY_ATTRIBUTES: dict[str, list[str]] = {
-    "hd/magyar": [MediaAttributeKey.HUN],
-    "hd/külföldi": [MediaAttributeKey.ENG],
+    "hd/magyar": [MediaAttributeKey.HUN, MediaAttributeKey.R720P],
+    "hd/külföldi": [MediaAttributeKey.ENG, MediaAttributeKey.R720P],
     "xvid/magyar": [MediaAttributeKey.HUN, MediaAttributeKey.R480P],
     "xvid/külföldi": [MediaAttributeKey.ENG, MediaAttributeKey.R480P],
     "dvdr/magyar": [MediaAttributeKey.HUN, MediaAttributeKey.R480P],
     "dvdr/külföldi": [MediaAttributeKey.ENG, MediaAttributeKey.R480P],
     "cam/magyar": [MediaAttributeKey.HUN, MediaAttributeKey.CAM],
     "cam/külföldi": [MediaAttributeKey.ENG, MediaAttributeKey.CAM],
-    "sorozat/hd/magyar": [MediaAttributeKey.HUN],
-    "sorozat/hd/külföldi": [MediaAttributeKey.ENG],
+    "sorozat/hd/magyar": [MediaAttributeKey.HUN, MediaAttributeKey.R720P],
+    "sorozat/hd/külföldi": [MediaAttributeKey.ENG, MediaAttributeKey.R720P],
     "sorozat/magyar": [MediaAttributeKey.HUN, MediaAttributeKey.R480P],
     "sorozat/külföldi": [MediaAttributeKey.ENG, MediaAttributeKey.R480P],
 }
@@ -126,6 +132,16 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
 
         # Bármely más kérés a /login/-ra fut ki: lejárt a munkamenet.
         if urlparse(str(response.url)).path.startswith("/login"):
+            return AuthenticationErrorEnum.SESSION_ERROR
+
+        # Az oldal nem mindig irányít át: előfordulhat, hogy a kért útvonalon
+        # szolgálja ki a bejelentkező űrlapot. Ilyenkor az URL alapján semmi nem
+        # látszik, a keresés viszont némán nulla találatot adna vissza, és el
+        # sem indulna az újra-bejelentkezés. Ezért a törzsben is megnézzük az
+        # űrlapot. A loginForm azonosító csak a bejelentkező oldalon fordul elő,
+        # belépett állapotú oldalakon nem, így nem ad hamis riasztást.
+        content_type = response.headers.get("content-type", "")
+        if content_type.startswith("text/html") and "loginForm" in response.text:
             return AuthenticationErrorEnum.SESSION_ERROR
 
         return None
