@@ -213,7 +213,11 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
                 IndexerDefinitionTorrent(
                     torrent_id=torrent_id,
                     download_url=urljoin(self.url, download_path),
-                    imdb_id=row_imdb_id or imdb_id,
+                    # Csak a ténylegesen kiolvasott azonosító megy vissza: a
+                    # _find_all() erre szűri a találatokat, és ha ide a keresett
+                    # azonosítót írnánk, akkor az IMDB link nélküli sorok is
+                    # átcsúsznának a szűrőn.
+                    imdb_id=row_imdb_id,
                     seeders=int(seeders) if seeders.isdigit() else 0,
                     attribute_ids=_CATEGORY_ATTRIBUTES.get(category, []),
                 )
