@@ -78,6 +78,34 @@ def _parse_torrent_id(href: str | None) -> str | None:
     return None
 
 
+def _parse_poster_id(poster_id: str | None) -> str | None:
+    # A sor azonosítója az id attribútumban van, "poster-" előtaggal:
+    # id="poster-53357".
+    if not poster_id:
+        return None
+
+    prefix, _, torrent_id = poster_id.partition("poster-")
+    if prefix or not torrent_id.isdigit():
+        return None
+
+    return torrent_id
+
+
+def _parse_seeders(item: Node) -> int:
+    # A seed érték a "Seed" feliratú .poster-stat blokkban van; az értéket egy
+    # <a> csomagolja, ezért csak a számjegyeket olvassuk ki.
+    for stat in item.css(".poster-stat"):
+        label = stat.css_first(".poster-stat-label")
+        if label is None or "seed" not in label.text().lower():
+            continue
+
+        value = stat.css_first(".poster-stat-value")
+        digits = "".join(ch for ch in value.text() if ch.isdigit()) if value else ""
+        return int(digits) if digits else 0
+
+    return 0
+
+
 class HunTorrentIndexerDefinition(BaseIndexerDefinition):
     @property
     def id(self) -> str:
@@ -191,23 +219,24 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
         tree = HTMLParser(response.text)
         torrents: list[IndexerDefinitionTorrent] = []
 
-        for row in tree.css("tr.torrent-row"):
-            torrent_id = row.attributes.get("data-torrent-id")
+        # A böngésző-oldal poszter-rácsot használ: minden torrent egy
+        # div.poster-item, az azonosítója az id="poster-<id>" attribútumban.
+        for item in tree.css("div.poster-item"):
+            torrent_id = _parse_poster_id(item.attributes.get("id"))
             if not torrent_id:
                 continue
 
             # A letöltési link már tartalmazza a felhasználó torrent_pass-át.
-            download_node = row.css_first('.torrent-meta a[href*="/download/"]')
+            download_node = item.css_first('.poster-actions a[href*="/download/"]')
             download_path = _get_attribute(download_node, "href")
             if not download_path:
                 continue
 
-            category_node = row.css_first(".torrent-category img")
-            category = (_get_attribute(category_node, "alt") or "").strip().lower()
+            category_node = item.css_first(".poster-category span")
+            category = (category_node.text() if category_node else "").strip().lower()
 
-            imdb_node = row.css_first('a[href*="imdb.com/title/"]')
+            imdb_node = item.css_first('a[href*="imdb.com/title/"]')
             row_imdb_id = _parse_imdb_id(_get_attribute(imdb_node, "href"))
-            seeders = row.attributes.get("data-seeders") or ""
 
             torrents.append(
                 IndexerDefinitionTorrent(
@@ -218,7 +247,7 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
                     # azonosítót írnánk, akkor az IMDB link nélküli sorok is
                     # átcsúsznának a szűrőn.
                     imdb_id=row_imdb_id,
-                    seeders=int(seeders) if seeders.isdigit() else 0,
+                    seeders=_parse_seeders(item),
                     attribute_ids=_CATEGORY_ATTRIBUTES.get(category, []),
                 )
             )
