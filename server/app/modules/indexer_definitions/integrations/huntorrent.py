@@ -182,9 +182,22 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
         # számláló nagyobb nullánál, azaz volt már sikertelen próbálkozás.
         # Olyankor egyszer kézzel, böngészőből kell belépni.
         form = await self._client.get(self.login_path)
-        csrf_node = HTMLParser(form.text).css_first('input[name="csrf_token"]')
+        form_tree = HTMLParser(form.text)
+        csrf_node = form_tree.css_first('input[name="csrf_token"]')
 
-        return await self._client.post(
+        # A reCAPTCHA-t az automata bejelentkezés nem tudja megoldani (nem megy
+        # g-recaptcha-response a kérésben), ezért a belépés biztosan elbukik.
+        # Ezt külön jelezzük: a sima "sikertelen bejelentkezés" alapján nagyon
+        # nehéz kideríteni, hogy valójában captcha-zár van.
+        if form_tree.css_first(".g-recaptcha, [data-sitekey]") is not None:
+            self.logger.warning(
+                "%s: a bejelentkező oldal reCAPTCHA-t kér, az automata "
+                "bejelentkezés így nem fog sikerülni. Lépj be egyszer kézzel, "
+                "böngészőből, ugyanazzal a fiókkal és ugyanarról az IP-ről.",
+                self.name,
+            )
+
+        response = await self._client.post(
             _LOGIN_API_PATH,
             data={
                 "action": "login",
@@ -195,6 +208,29 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
             },
             headers={"Content-Type": "application/x-www-form-urlencoded"},
         )
+
+        # A bejelentkezés eredményének naplózása. A hibát warning szinten írjuk,
+        # mert prod módban csak az látszik; a jelszó soha nem kerül logba.
+        try:
+            wrong = response.json().get("wrong") is True
+        except ValueError:
+            wrong = True
+
+        if wrong:
+            self.logger.warning(
+                "%s: sikertelen bejelentkezés (felhasználó: %s) – az oldal "
+                "elutasította a hitelesítő adatokat.",
+                self.name,
+                credential.username,
+            )
+        else:
+            self.logger.info(
+                "%s: sikeres bejelentkezés (felhasználó: %s).",
+                self.name,
+                credential.username,
+            )
+
+        return response
 
     async def _fetch_torrents(
         self,
@@ -222,6 +258,17 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
         # és poszter-rács (div.poster-item) elrendezés is. Mindkettőt kezeljük,
         # így a keresés akkor is működik, ha a fiók bármelyik nézeten van.
         torrents = self._parse_table_rows(tree) or self._parse_poster_items(tree)
+
+        # Ha a lapon vannak torrentek, de egyik parser sem illeszkedett, akkor
+        # az oldal markupja megváltozott. Enélkül a keresés némán nulla
+        # találatot adna: se hiba, se log, csak "nincs találat" — ezt nagyon
+        # nehéz kideríteni.
+        if not torrents and "/download/" in response.text:
+            self.logger.warning(
+                "%s: a böngésző oldal torrenteket tartalmaz, de egyik parser "
+                "sem illeszkedett – valószínűleg megváltozott a markup.",
+                self.name,
+            )
 
         return IndexerDefinitionFindTorrentsResult(
             torrents=torrents,
