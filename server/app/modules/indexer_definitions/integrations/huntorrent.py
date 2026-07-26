@@ -11,8 +11,10 @@ from selectolax.parser import HTMLParser, Node
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
-from app.modules.indexer_definitions.enums import AuthenticationErrorEnum
 from app.modules.indexer_definitions.schemas.internal import (
+    AuthCredentialError,
+    AuthError,
+    AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
     IndexerDefinitionLogin,
     IndexerDefinitionTorrent,
@@ -137,8 +139,9 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
         return 3
 
     def _detect_authentication_error(
-        self, response: httpx.Response
-    ) -> AuthenticationErrorEnum | None:
+        self,
+        response: httpx.Response,
+    ) -> AuthError:
         request_path = urlparse(str(response.request.url)).path
 
         # A bejelentkezés JSON-nal válaszol: hibás adatoknál {"wrong": true, ...}
@@ -146,9 +149,9 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
         if request_path.startswith(_LOGIN_API_PATH):
             try:
                 if response.json().get("wrong") is True:
-                    return AuthenticationErrorEnum.CREDENTIAL_ERROR
+                    return AuthCredentialError()
             except ValueError:
-                return AuthenticationErrorEnum.CREDENTIAL_ERROR
+                return AuthCredentialError()
 
             return None
 
@@ -160,7 +163,7 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
 
         # Bármely más kérés a /login/-ra fut ki: lejárt a munkamenet.
         if urlparse(str(response.url)).path.startswith("/login"):
-            return AuthenticationErrorEnum.SESSION_ERROR
+            return AuthSessionError()
 
         # Az oldal nem mindig irányít át: előfordulhat, hogy a kért útvonalon
         # szolgálja ki a bejelentkező űrlapot. Ilyenkor az URL alapján semmi nem
@@ -170,7 +173,7 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
         # belépett állapotú oldalakon nem, így nem ad hamis riasztást.
         content_type = response.headers.get("content-type", "")
         if content_type.startswith("text/html") and "loginForm" in response.text:
-            return AuthenticationErrorEnum.SESSION_ERROR
+            return AuthSessionError()
 
         return None
 

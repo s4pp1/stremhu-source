@@ -11,8 +11,10 @@ from selectolax.parser import HTMLParser
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
-from app.modules.indexer_definitions.enums import AuthenticationErrorEnum
 from app.modules.indexer_definitions.schemas.internal import (
+    AuthCredentialError,
+    AuthError,
+    AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
     IndexerDefinitionLogin,
     IndexerDefinitionTorrent,
@@ -46,8 +48,9 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
         return "/torrents.php?action=details&id={torrent_id}"
 
     def _detect_authentication_error(
-        self, response: httpx.Response
-    ) -> AuthenticationErrorEnum | None:
+        self,
+        response: httpx.Response,
+    ) -> AuthError:
         final_path = str(response.url.path)
         original_url = str(response.request.url)
         if response.history:
@@ -57,12 +60,15 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
 
         if ended_up_at_login:
             if self.login_path in original_url:
-                return AuthenticationErrorEnum.CREDENTIAL_ERROR
-            return AuthenticationErrorEnum.SESSION_ERROR
+                return AuthCredentialError()
+            return AuthSessionError()
 
         return None
 
-    async def _login(self, credential: IndexerDefinitionLogin) -> httpx.Response:
+    async def _login(
+        self,
+        credential: IndexerDefinitionLogin,
+    ) -> httpx.Response:
         return await self._client.post(
             self.login_path,
             data={"nev": credential.username, "pass": credential.password},
