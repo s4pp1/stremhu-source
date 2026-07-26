@@ -19,6 +19,9 @@ RUN apt-get update && apt-get upgrade -y && \
   apt-get install -y --no-install-recommends ca-certificates libstdc++6 \
   && rm -rf /var/lib/apt/lists/*
 
+# Force glibc to prefer IPv4 over IPv6 (RFC 3484 precedence) to avoid reCAPTCHA issues
+RUN echo "precedence ::ffff:0:0/96  100" >> /etc/gai.conf
+
 WORKDIR /app
 
 COPY server/requirements.txt ./

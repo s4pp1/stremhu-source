@@ -11,24 +11,23 @@ from fastapi import (
     Response,
 )
 from fastapi.responses import StreamingResponse
-from sqlalchemy.orm import Session
 
-from app.common.database import get_db
-from app.common.logger import logger
+from app.common.database import db_session
 from app.common.schemas.internal import ImdbInfo
-from app.modules.auth.dependencies import ApiKeyGuard
-from app.modules.playback_histories.dependencies import get_playback_histories_service
+from app.modules.auth.dependencies import create_auth_service
+from app.modules.playback_histories.dependencies import (
+    create_playback_histories_service,
+)
 from app.modules.playback_histories.schemas.internal import (
     PlaybackHistoryClientInfo,
-    PlaybackHistoryCreate,
 )
-from app.modules.playback_histories.service import PlaybackHistoriesService
-from app.modules.playbacks.dependencies import get_playbacks_service
-from app.modules.playbacks.service import PlaybacksService
-from app.modules.stream.dependencies import get_parsed_stream_token, get_stream_service
+from app.modules.playbacks.dependencies import create_playbacks_service
+from app.modules.relay.dependencies import get_relay_service
+from app.modules.stream.dependencies import (
+    create_stream_service,
+    get_parsed_stream_token,
+)
 from app.modules.stream.schemas import StreamToken
-from app.modules.stream.service import StreamService
-from app.modules.users.models import UserModel
 
 router = APIRouter(
     prefix="/{api_key}/stream",
@@ -44,17 +43,8 @@ router = APIRouter(
 )
 async def stream(
     request: Request,
+    api_key: str,
     stream_token: Annotated[StreamToken, Depends(get_parsed_stream_token)],
-    stream_service: Annotated[StreamService, Depends(get_stream_service)],
-    playback_histories_service: Annotated[
-        PlaybackHistoriesService,
-        Depends(
-            get_playback_histories_service,
-        ),
-    ],
-    playbacks_service: Annotated[PlaybacksService, Depends(get_playbacks_service)],
-    user: Annotated[UserModel, Depends(ApiKeyGuard())],
-    db: Annotated[Session, Depends(get_db)],
     range_header: Annotated[str | None, Header(alias="Range")] = None,
 ) -> Response:
     client_info = PlaybackHistoryClientInfo(
@@ -62,42 +52,42 @@ async def stream(
         ip=request.client.host if request.client else None,
     )
 
-    playbacks_service.check_playback_limit(
-        user=user,
-        current_playback_id=stream_token.playback_id,
-    )
+    with db_session() as local_db:
+        auth_service = create_auth_service(local_db)
+        user = auth_service.verify_api_key(api_key=api_key)
+        user_id = user.id
 
-    parsed_range_header, file = await stream_service.prepare_for_stream(
-        range_header=range_header,
-        indexer_id=stream_token.indexer_id,
-        torrent_id=stream_token.torrent_id,
-        file_index=stream_token.file_index,
-    )
+        playbacks_service = create_playbacks_service(
+            relay_service=get_relay_service(),
+            playback_histories_service=create_playback_histories_service(local_db),
+        )
+        playbacks_service.check_playback_limit(
+            user=user,
+            current_playback_id=stream_token.playback_id,
+        )
+        stream_service = create_stream_service(local_db)
 
-    imdb_info: ImdbInfo | None = None
-    if stream_token.imdb_id is not None:
-        imdb_info = ImdbInfo(
-            imdb_id=stream_token.imdb_id,
-            series_info=stream_token.series_info,
+        parsed_range_header, file = await stream_service.prepare_for_stream(
+            range_header=range_header,
+            indexer_id=stream_token.indexer_id,
+            torrent_id=stream_token.torrent_id,
+            file_index=stream_token.file_index,
         )
 
-    try:
-        playback_histories_service.get_or_create(
-            PlaybackHistoryCreate(
-                client=client_info,
-                indexer_id=stream_token.indexer_id,
-                playback_id=stream_token.playback_id,
-                user_id=user.id,
-                torrent_id=stream_token.torrent_id,
-                file_index=stream_token.file_index,
-                imdb_info=imdb_info,
-                torrent_name=file.torrent.name,
-                file_name=file.name,
+        imdb_info: ImdbInfo | None = None
+        if stream_token.imdb_id is not None:
+            imdb_info = ImdbInfo(
+                imdb_id=stream_token.imdb_id,
+                series_info=stream_token.series_info,
             )
+
+        await stream_service.save_playback_history(
+            stream_token=stream_token,
+            client_info=client_info,
+            user_id=user_id,
+            file=file,
+            imdb_info=imdb_info,
         )
-        db.commit()
-    except Exception as e:
-        logger.warning(f"Nem sikerült menteni a lejátszási előzményt: {e}")
 
     content_type = content_types.get_content_type(file.name)
     media_type = content_type or "application/octet-stream"
@@ -126,7 +116,7 @@ async def stream(
 
     iterator = await file.stream(
         playback_id=stream_token.playback_id,
-        user_id=user.id,
+        user_id=user_id,
         request=request,
         stream_start_byte=parsed_range_header.start_byte,
         stream_end_byte=parsed_range_header.end_byte,

@@ -48,11 +48,12 @@ export function UserNavigation() {
       )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon-sm" className="rounded-full">
+          <Button variant="outline" size="sm" className="rounded-full">
             <UserIcon />
+            {me.username}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40">
+        <DropdownMenuContent className="w-40" align="end">
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
               <Link to="/settings">

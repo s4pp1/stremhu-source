@@ -2,11 +2,19 @@ import libtorrent as libtorrent
 from fastapi import HTTPException
 
 from app.common.keyed_lock import KeyedLock
+from app.common.logger import logger
+from app.common.schemas.internal import ImdbInfo
 from app.modules.indexers.service import IndexersService
+from app.modules.playback_histories.schemas.internal import (
+    PlaybackHistoryClientInfo,
+    PlaybackHistoryCreate,
+)
+from app.modules.playback_histories.service import PlaybackHistoriesService
 from app.modules.relay.entities import File
 from app.modules.relay.service import RelayService
 from app.modules.stream.schemas import (
     ParsedRangeHeader,
+    StreamToken,
 )
 from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrent_files.schemas import TorrentFileIdentifier
@@ -15,6 +23,7 @@ from app.modules.torrents.schemas.internal import TorrentWithRelay
 from app.modules.torrents.service import TorrentsService
 
 torrent_locks = KeyedLock()
+playback_history_lock = KeyedLock()
 
 
 class StreamService:
@@ -24,11 +33,13 @@ class StreamService:
         torrent_files_service: TorrentFilesService,
         indexers_service: IndexersService,
         relay_service: RelayService,
+        playback_histories_service: PlaybackHistoriesService,
     ):
         self._torrents_service = torrents_service
         self._torrent_files_service = torrent_files_service
         self._indexers_service = indexers_service
         self._relay_service = relay_service
+        self._playback_histories_service = playback_histories_service
 
     async def prepare_for_stream(
         self,
@@ -93,6 +104,32 @@ class StreamService:
         )
 
         return parsed_range_header, file
+
+    async def save_playback_history(
+        self,
+        stream_token: StreamToken,
+        client_info: PlaybackHistoryClientInfo,
+        user_id: str,
+        file: File,
+        imdb_info: ImdbInfo | None = None,
+    ) -> None:
+        try:
+            async with playback_history_lock(stream_token.playback_id):
+                self._playback_histories_service.get_or_create(
+                    PlaybackHistoryCreate(
+                        client=client_info,
+                        indexer_id=stream_token.indexer_id,
+                        playback_id=stream_token.playback_id,
+                        user_id=user_id,
+                        torrent_id=stream_token.torrent_id,
+                        file_index=stream_token.file_index,
+                        imdb_info=imdb_info,
+                        torrent_name=file.torrent.name,
+                        file_name=file.name,
+                    )
+                )
+        except Exception as e:
+            logger.warning(f"Nem sikerült menteni a lejátszási előzményt: {e}")
 
     def _validate_file(
         self,

@@ -69,14 +69,14 @@ class Torrent:
         return any(file.has_active_streams for file in self.files.values())
 
     def _update_prioritize_pieces(self, priority: int) -> None:
-        num_pieces = self.torrent_handle.status().num_pieces
-        self.torrent_handle.prioritize_pieces([priority] * num_pieces)
+        priorities = self.torrent_handle.piece_priorities()
+        self.torrent_handle.prioritize_pieces([priority] * len(priorities))
+        self._current_piece_priority = priority
 
     def priority_manager(self):
         try:
             if self.has_active_streams and self._current_piece_priority != PRIO_0:
                 self._update_prioritize_pieces(PRIO_0)
-                self._current_piece_priority = PRIO_0
 
             target_max_connections = (
                 50
@@ -108,7 +108,6 @@ class Torrent:
                 and self._current_piece_priority != self._default_piece_priority
             ):
                 self._update_prioritize_pieces(self._default_piece_priority)
-                self._current_piece_priority = self._default_piece_priority
 
         except Exception:
             logger.exception("Hiba történt a prioritáskezelőben.")
