@@ -12,7 +12,7 @@ from fastapi import (
 )
 from fastapi.responses import StreamingResponse
 
-from app.common.database import db_session
+from app.common.database import isolated_db_session
 from app.common.schemas.internal import ImdbInfo
 from app.modules.auth.dependencies import create_auth_service
 from app.modules.playback_histories.dependencies import (
@@ -52,10 +52,9 @@ async def stream(
         ip=request.client.host if request.client else None,
     )
 
-    with db_session() as local_db:
+    with isolated_db_session() as local_db:
         auth_service = create_auth_service(local_db)
         user = auth_service.verify_api_key(api_key=api_key)
-        user_id = user.id
 
         playbacks_service = create_playbacks_service(
             relay_service=get_relay_service(),
@@ -84,7 +83,7 @@ async def stream(
         await stream_service.save_playback_history(
             stream_token=stream_token,
             client_info=client_info,
-            user_id=user_id,
+            user_id=user.id,
             file=file,
             imdb_info=imdb_info,
         )
@@ -116,7 +115,7 @@ async def stream(
 
     iterator = await file.stream(
         playback_id=stream_token.playback_id,
-        user_id=user_id,
+        user_id=user.id,
         request=request,
         stream_start_byte=parsed_range_header.start_byte,
         stream_end_byte=parsed_range_header.end_byte,

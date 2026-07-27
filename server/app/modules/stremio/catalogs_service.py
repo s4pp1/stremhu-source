@@ -1,5 +1,6 @@
 from venv import logger
 
+from app.common.database import db_session
 from app.modules.stremio.constants import (
     SEARCH_ID,
 )
@@ -12,6 +13,7 @@ from app.modules.stremio.schemas import (
     ParsedExtra,
     StremioCatalogResponse,
 )
+from app.modules.torrent_files.dependencies import create_torrent_files_service
 from app.modules.torrent_files.schemas import TorrentFileIdentifier
 from app.modules.torrent_files.service import TorrentFilesService
 from app.modules.torrent_source_provider.service import TorrentSourceProviderService
@@ -60,10 +62,21 @@ class StremioCatalogsService:
             for torrent_source in torrent_sources
         ]
 
-    async def get_meta(self, indexer_id: str, torrent_id: str) -> MetaDetail | None:
-        self._torrent_files_service.touch(
-            TorrentFileIdentifier(indexer_id=indexer_id, torrent_id=torrent_id)
-        )
+    async def get_meta(
+        self,
+        indexer_id: str,
+        torrent_id: str,
+    ) -> MetaDetail | None:
+
+        with db_session() as local_db:
+            local_torrent_files_service = create_torrent_files_service(local_db)
+            local_torrent_files_service.touch(
+                TorrentFileIdentifier(
+                    indexer_id=indexer_id,
+                    torrent_id=torrent_id,
+                )
+            )
+
         torrent_file = self._torrent_files_service.find_by_id(
             indexer_id=indexer_id,
             torrent_id=torrent_id,
