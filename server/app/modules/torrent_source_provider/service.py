@@ -2,10 +2,12 @@ import asyncio
 from collections.abc import Awaitable
 from typing import cast, overload
 
+from app.common.database import isolated_db_session
 from app.common.keyed_lock import KeyedLock
 from app.common.logger import logger
 from app.modules.indexers.schemas.internal import IndexerTorrent
 from app.modules.indexers.service import IndexersService
+from app.modules.torrent_files.dependencies import create_torrent_files_service
 from app.modules.torrent_files.exceptions import InvalidTorrentFileException
 from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrent_files.schemas import TorrentFileIdentifier, TorrentFilesFilter
@@ -118,6 +120,29 @@ class TorrentSourceProviderService:
 
         return torrent_file
 
+    def _touch_isolated(
+        self,
+        identifiers: TorrentFileIdentifier | list[TorrentFileIdentifier],
+    ) -> None:
+        with isolated_db_session() as local_db:
+            local_torrent_files_service = create_torrent_files_service(local_db)
+            local_torrent_files_service.touch(identifiers)
+
+    def _create_isolated(
+        self,
+        indexer_id: str,
+        torrent_id: str,
+        torrent_bytes: bytes,
+    ) -> TorrentFileModel:
+        with isolated_db_session() as local_db:
+            local_torrent_files_service = create_torrent_files_service(local_db)
+            torrent_file = local_torrent_files_service.create(
+                indexer_id=indexer_id,
+                torrent_id=torrent_id,
+                torrent_bytes=torrent_bytes,
+            )
+            return torrent_file
+
     @overload
     async def _sync_torrent_files(
         self,
@@ -151,7 +176,7 @@ class TorrentSourceProviderService:
         )
 
         await asyncio.to_thread(
-            self._torrent_files_service.touch,
+            self._touch_isolated,
             torrent_file_ids,
         )
 
@@ -240,7 +265,7 @@ class TorrentSourceProviderService:
 
                 async with self._db_lock:
                     return await asyncio.to_thread(
-                        self._torrent_files_service.create,
+                        self._create_isolated,
                         indexer_id=downloaded_torrent_file.indexer_id,
                         torrent_id=downloaded_torrent_file.torrent_id,
                         torrent_bytes=downloaded_torrent_file.torrent_bytes,

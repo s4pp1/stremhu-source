@@ -1,6 +1,7 @@
 import libtorrent as libtorrent
 from fastapi import HTTPException
 
+from app.common.database import isolated_db_session
 from app.common.keyed_lock import KeyedLock
 from app.common.logger import logger
 from app.common.schemas.internal import ImdbInfo
@@ -16,9 +17,13 @@ from app.modules.stream.schemas import (
     ParsedRangeHeader,
     StreamToken,
 )
+from app.modules.torrent_files.dependencies import create_torrent_files_service
 from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrent_files.schemas import TorrentFileIdentifier
 from app.modules.torrent_files.service import TorrentFilesService
+from app.modules.torrents.dependencies import (
+    create_torrents_service,
+)
 from app.modules.torrents.schemas.internal import TorrentWithRelay
 from app.modules.torrents.service import TorrentsService
 
@@ -56,9 +61,11 @@ class StreamService:
                 )
             )
 
-            self._torrent_files_service.touch(
-                TorrentFileIdentifier(indexer_id=indexer_id, torrent_id=torrent_id)
-            )
+            with isolated_db_session() as local_db:
+                local_torrent_files_service = create_torrent_files_service(local_db)
+                local_torrent_files_service.touch(
+                    TorrentFileIdentifier(indexer_id=indexer_id, torrent_id=torrent_id)
+                )
 
             if torrent_with_relay is None:
                 torrent_file = self._torrent_files_service.find_by_id(
@@ -79,19 +86,23 @@ class StreamService:
                             download_url=indexer_torrent.download_url,
                         )
                     )
-                    torrent_file = self._torrent_files_service.create(
-                        indexer_id=indexer_id,
-                        torrent_id=torrent_id,
-                        torrent_bytes=downloaded_torrent_file.torrent_bytes,
+
+                    with isolated_db_session() as local_db:
+                        local_torrent_files_service = create_torrent_files_service(
+                            local_db
+                        )
+                        torrent_file = local_torrent_files_service.create(
+                            indexer_id=indexer_id,
+                            torrent_id=torrent_id,
+                            torrent_bytes=downloaded_torrent_file.torrent_bytes,
+                        )
+
+                with isolated_db_session() as local_db:
+                    self._validate_file(torrent_file, file_index)
+                    local_torrents_service = create_torrents_service(local_db)
+                    torrent_with_relay = (
+                        local_torrents_service.create_from_torrent_file(torrent_file)
                     )
-
-                self._validate_file(torrent_file, file_index)
-                torrent_with_relay = self._torrents_service.create_from_torrent_file(
-                    torrent_file
-                )
-
-                # Azonnali commit, hogy a többi várakozó szál azonnal lássa az adatbázisban a létrehozott rekordokat
-                self._torrents_service._torrent_repository.db.commit()
 
         file = self._relay_service.get_torrent_file(
             info_hash=torrent_with_relay.info_hash,

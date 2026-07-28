@@ -8,8 +8,9 @@ from selectolax.parser import HTMLParser
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
-from app.modules.indexer_definitions.enums import AuthenticationErrorEnum
 from app.modules.indexer_definitions.schemas.internal import (
+    AuthError,
+    AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
     IndexerDefinitionLogin,
     IndexerDefinitionTorrent,
@@ -59,9 +60,7 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
     def details_path(self) -> str:
         return "/details.php?id={torrent_id}"
 
-    def _detect_authentication_error(
-        self, response: httpx.Response
-    ) -> AuthenticationErrorEnum | None:
+    def _detect_authentication_error(self, response: httpx.Response) -> AuthError:
         request_path = str(response.url.path)
         is_login_path = "/login.php" in request_path or "/takelogin.php" in request_path
 
@@ -77,7 +76,7 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
             or "login on any ip" in normalized
             or "numarul maxim permis de actiuni" in normalized
         ):
-            return AuthenticationErrorEnum.SESSION_ERROR
+            return AuthSessionError()
 
         return None
 

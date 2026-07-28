@@ -5,14 +5,18 @@ from abc import ABC, abstractmethod
 import httpx
 import pydash
 
-from app.modules.indexer_definitions.enums import AuthenticationErrorEnum
 from app.modules.indexer_definitions.exceptions import (
     AuthenticationException,
+    AuthenticationOtherException,
     CredentialsRequiredException,
     IndexerDefinitionException,
 )
 from app.modules.indexer_definitions.protocols import IndexerAccountStorage
 from app.modules.indexer_definitions.schemas.internal import (
+    AuthCredentialError,
+    AuthError,
+    AuthOtherError,
+    AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
     IndexerDefinitionLogin,
     IndexerDefinitionTorrent,
@@ -46,17 +50,25 @@ class IndexerClient(httpx.AsyncClient):
             response = await super().request(method, url, **kwargs)
         # Hitelesítési hibák detektálása a kliens szintű válaszon
         auth_error = self._definition._detect_authentication_error(response)
-        if auth_error == AuthenticationErrorEnum.CREDENTIAL_ERROR:
-            raise AuthenticationException(
-                f"Sikertelen bejelentkezés a(z) {self._definition.name} fiókba."
-            )
-        if auth_error == AuthenticationErrorEnum.SESSION_ERROR:
-            # Újra-bejelentkezés (a cookie-k frissülnek a kliensben)
-            await self._definition.relogin()
 
-            # Kérés újraindítása (az új cookie-k automatikusan bekerülnek!)
-            async with self._definition._semaphore:
-                response = await super().request(method, url, **kwargs)
+        match auth_error:
+            case AuthSessionError():
+                # Újra-bejelentkezés (a cookie-k frissülnek a kliensben)
+                await self._definition.relogin()
+
+                # Kérés újraindítása (az új cookie-k automatikusan bekerülnek!)
+                async with self._definition._semaphore:
+                    response = await super().request(method, url, **kwargs)
+            case AuthCredentialError(message=message):
+                raise AuthenticationException(
+                    message
+                    or f"Sikertelen bejelentkezés a(z) {self._definition.name} fiókba."
+                )
+            case AuthOtherError(message=message):
+                raise AuthenticationOtherException(message)
+            case None:
+                pass
+
         return response
 
 
@@ -139,9 +151,7 @@ class BaseIndexerDefinition(ABC):
     # --- Absztrakt üzleti metódusok ---
 
     @abstractmethod
-    def _detect_authentication_error(
-        self, response: httpx.Response
-    ) -> AuthenticationErrorEnum | None:
+    def _detect_authentication_error(self, response: httpx.Response) -> AuthError:
         """
         Kiszűri és detektálja a hitelesítési vagy munkamenet hibákat az httpx válasz alapján.
 
