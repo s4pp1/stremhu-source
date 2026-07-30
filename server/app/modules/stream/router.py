@@ -107,10 +107,12 @@ async def stream(
         )
 
     if request.method == "HEAD":
-        return Response(
-            status_code=status_code,
-            headers=headers,
-            media_type=media_type,
+        return _apply_capitalized_headers(
+            Response(
+                status_code=status_code,
+                headers=headers,
+                media_type=media_type,
+            )
         )
 
     iterator = await file.stream(
@@ -121,9 +123,26 @@ async def stream(
         stream_end_byte=parsed_range_header.end_byte,
     )
 
-    return StreamingResponse(
-        content=iterator,
-        media_type=media_type,
-        status_code=status_code,
-        headers=headers,
+    return _apply_capitalized_headers(
+        StreamingResponse(
+            content=iterator,
+            media_type=media_type,
+            status_code=status_code,
+            headers=headers,
+        )
     )
+
+
+def _apply_capitalized_headers(response: Response) -> Response:
+    overrides = {
+        b"content-length": b"Content-Length",
+        b"content-range": b"Content-Range",
+        b"accept-ranges": b"Accept-Ranges",
+        b"cache-control": b"Cache-Control",
+        b"content-type": b"Content-Type",
+    }
+    headers = []
+    for key, value in response.raw_headers:
+        headers.append((overrides.get(key, key), value))
+    response.raw_headers = headers
+    return response
