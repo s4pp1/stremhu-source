@@ -1,5 +1,5 @@
 fastapi[standard]==0.139.2
-uvicorn==0.51.0
+hypercorn==0.18.0
 aiolimiter==1.2.1
 libtorrent==2.0.13
 types-libtorrent==2.0.11.20250816
