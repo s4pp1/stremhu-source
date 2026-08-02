@@ -8,7 +8,16 @@ class BaseUser(BaseModel):
 
     torrent_seed: int | None = None
 
-    only_best_torrent: bool = False
+    enable_smart_filter: bool = Field(
+        default=False,
+    )
+
+    smart_filter_grouping_preference_id: str | None = None
+
+    smart_filter_limit: int = Field(
+        default=1,
+        ge=1,
+    )
 
     max_concurrent_streams: int | None = Field(
         default=None,
@@ -31,7 +40,14 @@ class UserUpdate(BaseModel):
 
     torrent_seed: int | None = None
 
-    only_best_torrent: bool | None = None
+    enable_smart_filter: bool | None = None
+
+    smart_filter_grouping_preference_id: str | None = None
+
+    smart_filter_limit: int | None = Field(
+        default=None,
+        ge=1,
+    )
 
     max_concurrent_streams: int | None = Field(
         default=None,

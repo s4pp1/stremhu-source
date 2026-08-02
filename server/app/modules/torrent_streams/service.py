@@ -65,8 +65,31 @@ class TorrentStreamsService:
             filtered_torrent_streams, user
         )
 
-        if user.only_best_torrent:
-            sorted_torrent_streams = sorted_torrent_streams[:1]
+        if user.enable_smart_filter:
+            limit = user.smart_filter_limit
+
+            if not user.smart_filter_grouping_preference_id:
+                sorted_torrent_streams = sorted_torrent_streams[:limit]
+            else:
+                grouped_torrent_streams: list[TorrentStream] = []
+                seen_attribute_ids: set[frozenset[str]] = set()
+
+                for torrent_stream in sorted_torrent_streams:
+                    target_attributes = frozenset(
+                        attribute.id
+                        for attribute in torrent_stream.attributes
+                        if attribute.preference_id
+                        == user.smart_filter_grouping_preference_id
+                    )
+
+                    if target_attributes not in seen_attribute_ids:
+                        seen_attribute_ids.add(target_attributes)
+                        grouped_torrent_streams.append(torrent_stream)
+
+                if not grouped_torrent_streams and sorted_torrent_streams:
+                    grouped_torrent_streams = sorted_torrent_streams[:1]
+
+                sorted_torrent_streams = grouped_torrent_streams[:limit]
 
         return sorted_torrent_streams, indexer_errors
 

@@ -105,7 +105,14 @@ class PreferencesRepository:
             db_pref.id: db_pref for db_pref in self.db.query(PreferenceModel).all()
         }
 
-        fields = ["name", "description", "multiple", "emoji", "order"]
+        fields = [
+            "name",
+            "description",
+            "multiple",
+            "emoji",
+            "order",
+            "allow_best_torrent_grouping",
+        ]
         for index, pref in enumerate(DEFAULT_PREFERENCES):
             pref.order = index
 

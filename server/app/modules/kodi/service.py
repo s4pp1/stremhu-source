@@ -30,7 +30,4 @@ class KodiService:
             series=series,
         )
 
-        if user.only_best_torrent:
-            torrent_streams = [torrent_streams[0]] if torrent_streams else []
-
         return torrent_streams, errors
