@@ -10,6 +10,17 @@ from app.modules.users.models import UserModel
 from app.modules.users.service import UsersService
 
 
+def create_auth_service(db: Session) -> AuthService:
+    users_service = create_users_service(db)
+    return AuthService(users_service)
+
+
+def get_auth_service(
+    db: Annotated[Session, Depends(get_db)],
+) -> AuthService:
+    return create_auth_service(db)
+
+
 class SessionGuard:
     def __init__(self, allowed_roles: list[str] | None = None):
         self.allowed_roles = allowed_roles
@@ -69,38 +80,6 @@ class ApiKeyGuard:
         self,
         request: Request,
         api_key: Annotated[str, Path(..., description="A felhasználó API kulcsa")],
-        users_service: Annotated[UsersService, Depends(get_users_service)],
+        auth_service: Annotated[AuthService, Depends(get_auth_service)],
     ) -> UserModel:
-        if not api_key:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Az API kulcs nincs megadva.",
-            )
-
-        user = users_service.find_by_api_key(api_key)
-        if not user:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="A megadott API kulcs érvénytelen.",
-            )
-
-        if self.allowed_roles and user.role_id not in self.allowed_roles:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Nincs jogosultságod a művelet végrehajtásához.",
-            )
-
-        return user
-
-
-def create_auth_service(db: Session) -> AuthService:
-    """Hozzárendeli a szervizt egy háttérfeladat vagy HTTP kérés adatbázis munkamenetéhez."""
-    users_service = create_users_service(db)
-    return AuthService(users_service)
-
-
-def get_auth_service(
-    db: Annotated[Session, Depends(get_db)],
-) -> AuthService:
-    """FastAPI függőség-injektáló provider a AuthService példányosításához."""
-    return create_auth_service(db)
+        return auth_service.verify_api_key(api_key, self.allowed_roles)

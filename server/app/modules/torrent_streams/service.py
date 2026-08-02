@@ -4,6 +4,8 @@ import humanize
 from sqlalchemy.orm import Session
 
 from app.common.schemas.internal import SeriesInfo
+from app.modules.attributes.models import AttributeModel
+from app.modules.preferences.service import PreferencesService
 from app.modules.settings.service import SettingsService
 from app.modules.torrent_source_provider.service import (
     TorrentSourceProviderService,
@@ -23,12 +25,13 @@ class TorrentStreamsService:
         torrent_source_provider_service: TorrentSourceProviderService,
         torrents_service: TorrentsService,
         settings_service: SettingsService,
+        preferences_service: PreferencesService,
     ):
         self.db = db
         self._torrent_source_provider_service = torrent_source_provider_service
         self._torrents_service = torrents_service
-
         self._settings_service = settings_service
+        self._preferences_service = preferences_service
 
     async def find_by_imdb(
         self,
@@ -115,6 +118,45 @@ class TorrentStreamsService:
             user=user,
         )
 
+    def _is_torrent_stream_excluded(
+        self,
+        torrent_stream: TorrentStream,
+        excluded_attribute_ids: set[str],
+        preference_multiple_map: dict[str, bool],
+    ) -> bool:
+        attributes_by_preference: dict[str, list[AttributeModel]] = {}
+        unassociated_attributes: list[AttributeModel] = []
+
+        for attribute in torrent_stream.attributes:
+            if attribute.preference_id is not None:
+                if attribute.preference_id not in attributes_by_preference:
+                    attributes_by_preference[attribute.preference_id] = []
+                attributes_by_preference[attribute.preference_id].append(attribute)
+            else:
+                unassociated_attributes.append(attribute)
+
+        if any(
+            unassociated_attribute.id in excluded_attribute_ids
+            for unassociated_attribute in unassociated_attributes
+        ):
+            return True
+
+        for preference_id, attributes in attributes_by_preference.items():
+            is_multiple = preference_multiple_map.get(preference_id, False)
+
+            if is_multiple:
+                if all(
+                    attribute.id in excluded_attribute_ids for attribute in attributes
+                ):
+                    return True
+            else:
+                if any(
+                    attribute.id in excluded_attribute_ids for attribute in attributes
+                ):
+                    return True
+
+        return False
+
     def _filter_torrent_streams(
         self,
         torrent_streams: list[TorrentStream],
@@ -122,6 +164,11 @@ class TorrentStreamsService:
     ) -> list[TorrentStream]:
         excluded_attribute_ids = {
             exclusion.attribute_id for exclusion in user.attribute_exclusions
+        }
+
+        preferences = self._preferences_service.get_list()
+        preference_multiple_map = {
+            preference.id: preference.multiple for preference in preferences
         }
 
         filtered_torrent_streams: list[TorrentStream] = []
@@ -132,9 +179,10 @@ class TorrentStreamsService:
             ):
                 continue
 
-            if any(
-                attribute.id in excluded_attribute_ids
-                for attribute in torrent_stream.attributes
+            if self._is_torrent_stream_excluded(
+                torrent_stream=torrent_stream,
+                excluded_attribute_ids=excluded_attribute_ids,
+                preference_multiple_map=preference_multiple_map,
             ):
                 continue
 

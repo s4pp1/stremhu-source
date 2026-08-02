@@ -181,7 +181,7 @@ DEFAULT_ATTRIBUTES = [
         id=MediaAttributeKey.CAM,
         name="Cam",
         preference_id=PreferenceKey.SOURCE,
-        pattern=r"\b(cam|ts|telesync|scr|dvdscr)\b",
+        pattern=r"\b(cam|hdcam|ts|telesync|scr|dvdscr|md|mdhun|mdub)\b",
         short_name=None,
     ),
     # Edition

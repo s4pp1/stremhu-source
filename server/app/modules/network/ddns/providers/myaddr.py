@@ -38,8 +38,10 @@ class MyAddrProvider(BaseDDNSProvider):
             async with httpx.AsyncClient(timeout=10.0) as client:
                 response = await client.get(f"{self.website_url}/update", params=params)
                 response.raise_for_status()
-            if "OK" not in response.text:
-                raise ValueError(f"MyAddr DDNS frissítése sikertelen: {response.text}")
-        except Exception as e:
-            logger.error("MyAddr frissítési hiba: %s", e)
-            raise ValueError(f"MyAddr frissítési hiba: {e}") from e
+        except httpx.HTTPError as e:
+            logger.error("MyAddr hálózati hiba: %s", e)
+            raise RuntimeError(f"MyAddr hálózati hiba: {e}") from e
+
+        if "OK" not in response.text:
+            logger.error("MyAddr API hiba: %s", response.text)
+            raise RuntimeError(f"MyAddr DDNS frissítése sikertelen: {response.text}")

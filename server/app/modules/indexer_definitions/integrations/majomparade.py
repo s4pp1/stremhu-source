@@ -7,8 +7,10 @@ from selectolax.parser import HTMLParser
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
-from app.modules.indexer_definitions.enums import AuthenticationErrorEnum
 from app.modules.indexer_definitions.schemas.internal import (
+    AuthCredentialError,
+    AuthError,
+    AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
     IndexerDefinitionLogin,
     IndexerDefinitionTorrent,
@@ -60,7 +62,7 @@ class MajomparadeIndexerDefinition(BaseIndexerDefinition):
     def _detect_authentication_error(
         self,
         response: httpx.Response,
-    ) -> AuthenticationErrorEnum | None:
+    ) -> AuthError:
         original_url = str(response.request.url)
 
         if self.login_path in original_url and response.request.method == "POST":
@@ -72,13 +74,13 @@ class MajomparadeIndexerDefinition(BaseIndexerDefinition):
                 success = False
 
             if success is False:
-                return AuthenticationErrorEnum.CREDENTIAL_ERROR
+                return AuthCredentialError()
 
             return None
 
         final_path = str(response.url.path)
         if self.login_path in final_path:
-            return AuthenticationErrorEnum.SESSION_ERROR
+            return AuthSessionError()
 
         return None
 
