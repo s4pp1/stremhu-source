@@ -132,7 +132,7 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
 
     @property
     def requires_full_download(self) -> bool:
-        return True
+        return False
 
     @property
     def max_concurrent(self) -> int:
