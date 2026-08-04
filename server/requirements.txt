@@ -20,13 +20,13 @@ apscheduler==3.11.3
 openapi-python-client==0.29.0
 humanize==4.16.0
 tzlocal==5.4.4
-cryptography==49.0.0
+cryptography==50.0.0
 acme==5.7.0
 rich==15.0.0
 email-validator==2.3.0
 
 # Development tools
-ruff==0.16.0
+ruff==0.16.1
 basedpyright==1.39.9
 pytest==9.1.1
 syrupy==5.5.3
