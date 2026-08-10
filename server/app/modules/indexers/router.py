@@ -67,6 +67,7 @@ async def login(
             indexer_id=payload.indexer_id,
             username=payload.username,
             password=payload.password,
+            totp=payload.totp,
         )
     )
     return indexer_account

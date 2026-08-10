@@ -64,6 +64,7 @@ class IndexersService:
                 IndexerDefinitionLogin(
                     username=payload.username,
                     password=payload.password,
+                    totp=payload.totp,
                 )
             )
 
@@ -73,6 +74,7 @@ class IndexersService:
                     indexer_id=indexer_definition.id,
                     username=payload.username,
                     password=payload.password,
+                    totp=payload.totp,
                     download_full_torrent=indexer_definition.requires_full_download,
                     cookies=indexer_definition.cookies,
                 ),

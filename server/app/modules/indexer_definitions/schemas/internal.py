@@ -31,6 +31,7 @@ AuthError = AuthSessionError | AuthCredentialError | AuthOtherError | None
 class IndexerDefinitionLogin(BaseModel):
     username: str
     password: str
+    totp: str | None = None
     cookies: dict[str, str] | None = None
 
 

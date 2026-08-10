@@ -16,6 +16,7 @@ class IndexerAccountStorage:
             return IndexerDefinitionLogin(
                 username=user.username,
                 password=user.password,
+                totp=user.totp,
                 cookies=user.cookies,
             )
 

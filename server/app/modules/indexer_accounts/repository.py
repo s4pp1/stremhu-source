@@ -16,6 +16,7 @@ class IndexerAccountsRepository:
             indexer_id=payload.indexer_id,
             username=payload.username,
             password=payload.password,
+            totp=payload.totp,
             download_full_torrent=payload.download_full_torrent,
             hit_and_run=payload.hit_and_run,
             keep_seed_seconds=payload.keep_seed_seconds,

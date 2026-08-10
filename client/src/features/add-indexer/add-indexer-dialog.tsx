@@ -13,7 +13,12 @@ import {
   DialogScrollContent,
   DialogTitle,
 } from '@/shared/components/ui/dialog'
-import { Field, FieldLabel } from '@/shared/components/ui/field'
+import {
+  Field,
+  FieldDescription,
+  FieldLabel,
+} from '@/shared/components/ui/field'
+import { Input } from '@/shared/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -34,6 +39,7 @@ const schema = z.object({
   indexerId: z.string(),
   username: z.string().trim().nonempty('A felhasználónév kitöltése kötelező'),
   password: z.string().trim().nonempty('A jelszó kitöltése kötelező'),
+  totp: z.string(),
 })
 
 export function AddIndexerDialog(dialog: OpenedDialog & AddIndexerDialog) {
@@ -53,9 +59,10 @@ export function AddIndexerDialog(dialog: OpenedDialog & AddIndexerDialog) {
 
   const form = useAppForm({
     defaultValues: {
-      indexerId: inactiveIndexers[0].id,
+      indexerId: inactiveIndexers[0]?.id ?? '',
       username: '',
       password: '',
+      totp: '',
     },
     validators: {
       onChange: schema,
@@ -133,6 +140,39 @@ export function AddIndexerDialog(dialog: OpenedDialog & AddIndexerDialog) {
                 <field.AppTextField label="Jelszó" type="password" />
               )}
             />
+            <form.Subscribe selector={(state) => state.values.indexerId}>
+              {(indexerId) =>
+                indexerId === 'ncore' ? (
+                  <form.Field name="totp">
+                    {(field) => (
+                      <Field>
+                        <FieldLabel htmlFor={field.name}>
+                          2FA titkos kulcs (TOTP)
+                        </FieldLabel>
+                        <Input
+                          id={field.name}
+                          name={field.name}
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChange={(e) => field.handleChange(e.target.value)}
+                        />
+                        <FieldDescription>
+                          Opcionális. Ha az nCore fiókodon be van kapcsolva a
+                          kétlépcsős azonosítás (2FA), add meg a 2FA titkos
+                          kulcsot. A kulcsot az nCore oldalon a{' '}
+                          <span className="font-semibold">
+                            Beállítások -&gt; Biztonság
+                          </span>{' '}
+                          menüpontban találod a QR kód alatt (a kód csak a 2FA
+                          bekapcsolásakor látható, ha nincs meg, akkor ki, majd
+                          újra be kell kapcsolni a 2FA-t).
+                        </FieldDescription>
+                      </Field>
+                    )}
+                  </form.Field>
+                ) : null
+              }
+            </form.Subscribe>
             <DialogFooter>
               <form.SubscribeButton
                 variant="outline"

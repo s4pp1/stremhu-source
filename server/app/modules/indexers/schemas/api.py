@@ -33,6 +33,7 @@ class IndexerLoginRequest(BaseModel):
     indexer_id: str
     username: str
     password: str
+    totp: str | None = None
 
 
 class IndexerUpdateRequest(IndexerAccountUpdate):

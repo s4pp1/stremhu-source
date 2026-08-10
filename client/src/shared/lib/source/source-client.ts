@@ -91,6 +91,7 @@ export interface IndexerLoginRequest {
   indexerId: string
   username: string
   password: string
+  totp?: string | null
 }
 
 export interface IndexerResponse {

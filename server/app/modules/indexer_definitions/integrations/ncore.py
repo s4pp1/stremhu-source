@@ -6,6 +6,7 @@
 from urllib.parse import parse_qs, urljoin, urlparse
 
 import httpx
+import pyotp
 from selectolax.parser import HTMLParser
 
 from app.modules.indexer_definitions.base_indexer_definition import (
@@ -69,9 +70,13 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
         self,
         credential: IndexerDefinitionLogin,
     ) -> httpx.Response:
+        data = {"nev": credential.username, "pass": credential.password}
+        if credential.totp:
+            data["2factor"] = pyotp.TOTP(credential.totp).now()
+
         return await self._client.post(
             self.login_path,
-            data={"nev": credential.username, "pass": credential.password},
+            data=data,
             headers={"Content-Type": "application/x-www-form-urlencoded"},
         )
 
