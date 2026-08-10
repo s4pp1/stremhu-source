@@ -246,12 +246,6 @@ class IptorrentsIndexerDefinition(BaseIndexerDefinition):
         return False
 
     @property
-    def max_concurrent(self) -> int:
-        # Az IPT szigorú rate-limitje miatt egyszerre csak 1 HTTP kérés mehet.
-        # Ez megakadályozza a 429 Too Many Requests hibákat.
-        return 1
-
-    @property
     def url(self) -> str:
         return "https://iptorrents.com"
 
@@ -337,15 +331,13 @@ class IptorrentsIndexerDefinition(BaseIndexerDefinition):
             for node in active_tree.css("a[href]")
         )
 
-        # Rendezés seederek szerint és csak a legjobb 20 találat megtartása.
-        # next_page szándékosan None: az IPT rate-limitje miatt csak az első
-        # oldalt dolgozzuk fel, a pagination le van tiltva.
+        # Rendezés seederek szerint és csak a legjobb 20 találat megtartása
         torrents.sort(key=lambda t: t.seeders, reverse=True)
         torrents = torrents[:20]
 
         return IndexerDefinitionFindTorrentsResult(
             torrents=torrents,
-            next_page=None,
+            next_page=current_page + 1 if has_next else None,
         )
 
     async def _fetch_torrent(
@@ -383,7 +375,34 @@ class IptorrentsIndexerDefinition(BaseIndexerDefinition):
         )
 
     async def _fetch_hit_and_run_ids(self) -> list[str]:
-        return []
+        """
+        Lekéri a H&R kötelezettség alatt álló torrentek azonosítóit.
+
+        Az IPT /seeding_required.php oldala pontosan azokat a torrenteket
+        listázza, amelyek még nem teljesítették az 1:1 arányt VAGY a 336 óra
+        seedelési időt. A lista sorai <tr id="lineXXXXX"> formátumban tartalmazzák
+        a torrent ID-t, így egyszerűen kinyerhető.
+
+        Ha az oldal nem érhető el vagy nem tartalmaz listát, kivételt dobunk
+        (nem üres listát), hogy a takarítás biztonságból kimaradjon — jobb
+        nem törölni, mint véletlenül H&R warningot kockáztatni.
+        """
+        response = await self._client.get("/seeding_required.php")
+        tree = HTMLParser(response.text)
+
+        # Az oldal csak akkor tartalmaz táblát, ha van H&R kötelezettség.
+        # Ha nincs egyetlen <tr id="lineXXX"> sem, az oldal üres → nincs H&R.
+        rows = tree.css("tr[id^='line']")
+
+        hit_and_run_ids: list[str] = []
+        for row in rows:
+            row_id = row.attributes.get("id", "")
+            # "line5005189" → "5005189"
+            torrent_id = row_id.removeprefix("line")
+            if torrent_id.isdigit():
+                hit_and_run_ids.append(torrent_id)
+
+        return hit_and_run_ids
 
     def _resolve_imdb_id(self, imdb_url: str | None) -> str | None:
         if not imdb_url:
