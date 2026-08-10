@@ -367,8 +367,7 @@ class Stream:
 
         except anyio.get_cancelled_exc_class():
             pass
-        except Exception as e:
-            logger.exception("Váratlan hiba történt a fájl streamelése közben.")
-            raise e
+        except Exception:
+            logger.exception("Hiba történt a fájl streamelése közben.")
         finally:
             asyncio.create_task(self.destroy())
