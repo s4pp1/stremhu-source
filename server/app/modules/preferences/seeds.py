@@ -19,6 +19,7 @@ DEFAULT_PREFERENCES = [
         name="Felbontás",
         description="A videó képmérete, felbontása.",
         emoji="📺",
+        allow_best_torrent_grouping=True,
     ),
     PreferenceModel(
         id=PreferenceKey.VIDEO_QUALITY,
@@ -33,6 +34,7 @@ DEFAULT_PREFERENCES = [
         description="A film speciális kiadása / változata.",
         multiple=True,
         emoji="🏷️",
+        allow_best_torrent_grouping=True,
     ),
     PreferenceModel(
         id=PreferenceKey.SOURCE,

@@ -28,3 +28,27 @@ class AuthService:
             )
 
         return user
+
+    def verify_api_key(
+        self, api_key: str | None, allowed_roles: list[str] | None = None
+    ) -> UserModel:
+        if not api_key:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Az API kulcs nincs megadva.",
+            )
+
+        user = self.users_service.find_by_api_key(api_key)
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="A megadott API kulcs érvénytelen.",
+            )
+
+        if allowed_roles and user.role_id not in allowed_roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Nincs jogosultságod a művelet végrehajtásához.",
+            )
+
+        return user

@@ -8,8 +8,9 @@ from selectolax.parser import HTMLParser
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
-from app.modules.indexer_definitions.enums import AuthenticationErrorEnum
 from app.modules.indexer_definitions.schemas.internal import (
+    AuthError,
+    AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
     IndexerDefinitionLogin,
     IndexerDefinitionTorrent,
@@ -108,10 +109,9 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
     def details_path(self) -> str:
         return "/details.php?id={torrent_id}"
 
-    def _detect_authentication_error(
-        self, response: httpx.Response
-    ) -> AuthenticationErrorEnum | None:
-        final_path = str(response.url.path)
+    def _detect_authentication_error(self, response: httpx.Response) -> AuthError:
+        request_path = str(response.url.path)
+        is_login_path = "/login.php" in request_path or "/takelogin.php" in request_path
 
         # Ha a végső válasz nem a login oldalon van, nincs hiba
         if "/login.php" not in final_path:
@@ -122,10 +122,13 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
         if response.history:
             original_url = str(response.history[0].url)
 
-        # A GET /login.php szándékos kérés a CSRF form lekéréséhez —
-        # ezt sosem jelezzük hibának
-        if response.request.method == "GET" and "/login.php" in original_url:
-            return None
+        if (
+            'name="username"' in html
+            or "name='username'" in html
+            or "login on any ip" in normalized
+            or "numarul maxim permis de actiuni" in normalized
+        ):
+            return AuthSessionError()
 
         # POST /takelogin.php → visszairányított /login.php-ra → rossz jelszó
         if "/takelogin.php" in original_url or "/check_2fa.php" in original_url:

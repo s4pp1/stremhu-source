@@ -11,6 +11,7 @@ from app.modules.indexer_accounts.schemas import (
 from app.modules.indexer_accounts.service import IndexerAccountsService
 from app.modules.indexer_definitions.exceptions import (
     AuthenticationException,
+    AuthenticationOtherException,
     CredentialsRequiredException,
 )
 from app.modules.indexer_definitions.schemas.internal import IndexerDefinitionLogin
@@ -86,6 +87,11 @@ class IndexersService:
         except AuthenticationException as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e),
+            )
+        except AuthenticationOtherException as e:
+            raise HTTPException(
+                status_code=status.HTTP_502_BAD_GATEWAY,
                 detail=str(e),
             )
         except Exception as e:

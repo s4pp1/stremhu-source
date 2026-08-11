@@ -9,68 +9,58 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as ProtectedRouteImport } from './routes/_protected'
-import { Route as SetupIndexRouteImport } from './routes/setup/index'
-import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as ProtectedIndexRouteImport } from './routes/_protected/index'
-import { Route as ProtectedSettingsRouteRouteImport } from './routes/_protected/settings/route'
-import { Route as ProtectedRelayRouteRouteImport } from './routes/_protected/relay/route'
 import { Route as ProtectedDashboardRouteRouteImport } from './routes/_protected/dashboard/route'
-import { Route as SetupUserIndexRouteImport } from './routes/setup/user/index'
-import { Route as ProtectedSettingsIndexRouteImport } from './routes/_protected/settings/index'
-import { Route as ProtectedRelayIndexRouteImport } from './routes/_protected/relay/index'
-import { Route as ProtectedDashboardIndexRouteImport } from './routes/_protected/dashboard/index'
+import { Route as ProtectedRelayRouteRouteImport } from './routes/_protected/relay/route'
+import { Route as ProtectedSettingsRouteRouteImport } from './routes/_protected/settings/route'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as SetupIndexRouteImport } from './routes/setup/index'
 import { Route as ProtectedActivateIndexRouteImport } from './routes/_protected/activate/index'
-import { Route as ProtectedSettingsPreferencesRouteRouteImport } from './routes/_protected/settings/preferences/route'
-import { Route as ProtectedSettingsAccountRouteRouteImport } from './routes/_protected/settings/account/route'
-import { Route as ProtectedRelayTorrentsRouteRouteImport } from './routes/_protected/relay/torrents/route'
-import { Route as ProtectedRelaySettingsRouteRouteImport } from './routes/_protected/relay/settings/route'
-import { Route as ProtectedDashboardUsersRouteRouteImport } from './routes/_protected/dashboard/users/route'
-import { Route as ProtectedDashboardSystemRouteRouteImport } from './routes/_protected/dashboard/system/route'
+import { Route as ProtectedDashboardIndexRouteImport } from './routes/_protected/dashboard/index'
 import { Route as ProtectedDashboardPlaybacksRouteRouteImport } from './routes/_protected/dashboard/playbacks/route'
-import { Route as ProtectedSettingsPreferencesIndexRouteImport } from './routes/_protected/settings/preferences/index'
-import { Route as ProtectedSettingsAccountIndexRouteImport } from './routes/_protected/settings/account/index'
-import { Route as ProtectedRelayTorrentsIndexRouteImport } from './routes/_protected/relay/torrents/index'
-import { Route as ProtectedRelaySettingsIndexRouteImport } from './routes/_protected/relay/settings/index'
-import { Route as ProtectedDashboardUsersIndexRouteImport } from './routes/_protected/dashboard/users/index'
-import { Route as ProtectedDashboardSystemIndexRouteImport } from './routes/_protected/dashboard/system/index'
+import { Route as ProtectedDashboardSystemRouteRouteImport } from './routes/_protected/dashboard/system/route'
+import { Route as ProtectedDashboardUsersRouteRouteImport } from './routes/_protected/dashboard/users/route'
+import { Route as ProtectedRelayIndexRouteImport } from './routes/_protected/relay/index'
+import { Route as ProtectedRelaySettingsRouteRouteImport } from './routes/_protected/relay/settings/route'
+import { Route as ProtectedRelayTorrentsRouteRouteImport } from './routes/_protected/relay/torrents/route'
+import { Route as ProtectedSettingsIndexRouteImport } from './routes/_protected/settings/index'
+import { Route as ProtectedSettingsAccountRouteRouteImport } from './routes/_protected/settings/account/route'
+import { Route as ProtectedSettingsPreferencesRouteRouteImport } from './routes/_protected/settings/preferences/route'
+import { Route as SetupUserIndexRouteImport } from './routes/setup/user/index'
 import { Route as ProtectedDashboardPlaybacksIndexRouteImport } from './routes/_protected/dashboard/playbacks/index'
-import { Route as ProtectedSettingsPreferencesCreateRouteRouteImport } from './routes/_protected/settings/preferences/create/route'
-import { Route as ProtectedSettingsPreferencesAttributesRouteRouteImport } from './routes/_protected/settings/preferences/attributes/route'
-import { Route as ProtectedSettingsPreferencesPreferenceIdRouteRouteImport } from './routes/_protected/settings/preferences/$preferenceId/route'
-import { Route as ProtectedDashboardUsersUserIdRouteRouteImport } from './routes/_protected/dashboard/users/$userId/route'
+import { Route as ProtectedDashboardSystemIndexRouteImport } from './routes/_protected/dashboard/system/index'
 import { Route as ProtectedDashboardSystemNetworkRouteRouteImport } from './routes/_protected/dashboard/system/network/route'
-import { Route as ProtectedSettingsPreferencesCreateIndexRouteImport } from './routes/_protected/settings/preferences/create/index'
-import { Route as ProtectedSettingsPreferencesAttributesIndexRouteImport } from './routes/_protected/settings/preferences/attributes/index'
-import { Route as ProtectedSettingsPreferencesPreferenceIdIndexRouteImport } from './routes/_protected/settings/preferences/$preferenceId/index'
-import { Route as ProtectedDashboardUsersUserIdIndexRouteImport } from './routes/_protected/dashboard/users/$userId/index'
+import { Route as ProtectedDashboardUsersIndexRouteImport } from './routes/_protected/dashboard/users/index'
+import { Route as ProtectedDashboardUsersUserIdRouteRouteImport } from './routes/_protected/dashboard/users/$userId/route'
+import { Route as ProtectedRelaySettingsIndexRouteImport } from './routes/_protected/relay/settings/index'
+import { Route as ProtectedRelayTorrentsIndexRouteImport } from './routes/_protected/relay/torrents/index'
+import { Route as ProtectedSettingsAccountIndexRouteImport } from './routes/_protected/settings/account/index'
+import { Route as ProtectedSettingsPreferencesIndexRouteImport } from './routes/_protected/settings/preferences/index'
+import { Route as ProtectedSettingsPreferencesPreferenceIdRouteRouteImport } from './routes/_protected/settings/preferences/$preferenceId/route'
+import { Route as ProtectedSettingsPreferencesAttributesRouteRouteImport } from './routes/_protected/settings/preferences/attributes/route'
+import { Route as ProtectedSettingsPreferencesCreateRouteRouteImport } from './routes/_protected/settings/preferences/create/route'
 import { Route as ProtectedDashboardSystemNetworkIndexRouteImport } from './routes/_protected/dashboard/system/network/index'
+import { Route as ProtectedDashboardUsersUserIdIndexRouteImport } from './routes/_protected/dashboard/users/$userId/index'
 import { Route as ProtectedDashboardUsersUserIdPreferencesRouteRouteImport } from './routes/_protected/dashboard/users/$userId/preferences/route'
+import { Route as ProtectedSettingsPreferencesPreferenceIdIndexRouteImport } from './routes/_protected/settings/preferences/$preferenceId/index'
+import { Route as ProtectedSettingsPreferencesAttributesIndexRouteImport } from './routes/_protected/settings/preferences/attributes/index'
+import { Route as ProtectedSettingsPreferencesCreateIndexRouteImport } from './routes/_protected/settings/preferences/create/index'
 import { Route as ProtectedDashboardUsersUserIdPreferencesIndexRouteImport } from './routes/_protected/dashboard/users/$userId/preferences/index'
-import { Route as ProtectedDashboardUsersUserIdPreferencesAttributesRouteRouteImport } from './routes/_protected/dashboard/users/$userId/preferences/attributes/route'
 import { Route as ProtectedDashboardUsersUserIdPreferencesPreferenceIdRouteRouteImport } from './routes/_protected/dashboard/users/$userId/preferences/$preferenceId/route'
-import { Route as ProtectedDashboardUsersUserIdPreferencesCreateIndexRouteImport } from './routes/_protected/dashboard/users/$userId/preferences/create/index'
-import { Route as ProtectedDashboardUsersUserIdPreferencesAttributesIndexRouteImport } from './routes/_protected/dashboard/users/$userId/preferences/attributes/index'
+import { Route as ProtectedDashboardUsersUserIdPreferencesAttributesRouteRouteImport } from './routes/_protected/dashboard/users/$userId/preferences/attributes/route'
 import { Route as ProtectedDashboardUsersUserIdPreferencesPreferenceIdIndexRouteImport } from './routes/_protected/dashboard/users/$userId/preferences/$preferenceId/index'
+import { Route as ProtectedDashboardUsersUserIdPreferencesAttributesIndexRouteImport } from './routes/_protected/dashboard/users/$userId/preferences/attributes/index'
+import { Route as ProtectedDashboardUsersUserIdPreferencesCreateIndexRouteImport } from './routes/_protected/dashboard/users/$userId/preferences/create/index'
 
-const LogoutRoute = LogoutRouteImport.update({
-  id: '/logout',
-  path: '/logout',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ProtectedRoute = ProtectedRouteImport.update({
   id: '/_protected',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SetupIndexRoute = SetupIndexRouteImport.update({
-  id: '/setup/',
-  path: '/setup/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginIndexRoute = LoginIndexRouteImport.update({
-  id: '/login/',
-  path: '/login/',
+const LogoutRoute = LogoutRouteImport.update({
+  id: '/logout',
+  path: '/logout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProtectedIndexRoute = ProtectedIndexRouteImport.update({
@@ -78,9 +68,9 @@ const ProtectedIndexRoute = ProtectedIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProtectedRoute,
 } as any)
-const ProtectedSettingsRouteRoute = ProtectedSettingsRouteRouteImport.update({
-  id: '/settings',
-  path: '/settings',
+const ProtectedDashboardRouteRoute = ProtectedDashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => ProtectedRoute,
 } as any)
 const ProtectedRelayRouteRoute = ProtectedRelayRouteRouteImport.update({
@@ -88,64 +78,35 @@ const ProtectedRelayRouteRoute = ProtectedRelayRouteRouteImport.update({
   path: '/relay',
   getParentRoute: () => ProtectedRoute,
 } as any)
-const ProtectedDashboardRouteRoute = ProtectedDashboardRouteRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const ProtectedSettingsRouteRoute = ProtectedSettingsRouteRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => ProtectedRoute,
 } as any)
-const SetupUserIndexRoute = SetupUserIndexRouteImport.update({
-  id: '/setup/user/',
-  path: '/setup/user/',
+const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProtectedSettingsIndexRoute = ProtectedSettingsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ProtectedSettingsRouteRoute,
-} as any)
-const ProtectedRelayIndexRoute = ProtectedRelayIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ProtectedRelayRouteRoute,
-} as any)
-const ProtectedDashboardIndexRoute = ProtectedDashboardIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ProtectedDashboardRouteRoute,
+const SetupIndexRoute = SetupIndexRouteImport.update({
+  id: '/setup/',
+  path: '/setup/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProtectedActivateIndexRoute = ProtectedActivateIndexRouteImport.update({
   id: '/activate/',
   path: '/activate/',
   getParentRoute: () => ProtectedRoute,
 } as any)
-const ProtectedSettingsPreferencesRouteRoute =
-  ProtectedSettingsPreferencesRouteRouteImport.update({
-    id: '/preferences',
-    path: '/preferences',
-    getParentRoute: () => ProtectedSettingsRouteRoute,
-  } as any)
-const ProtectedSettingsAccountRouteRoute =
-  ProtectedSettingsAccountRouteRouteImport.update({
-    id: '/account',
-    path: '/account',
-    getParentRoute: () => ProtectedSettingsRouteRoute,
-  } as any)
-const ProtectedRelayTorrentsRouteRoute =
-  ProtectedRelayTorrentsRouteRouteImport.update({
-    id: '/torrents',
-    path: '/torrents',
-    getParentRoute: () => ProtectedRelayRouteRoute,
-  } as any)
-const ProtectedRelaySettingsRouteRoute =
-  ProtectedRelaySettingsRouteRouteImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => ProtectedRelayRouteRoute,
-  } as any)
-const ProtectedDashboardUsersRouteRoute =
-  ProtectedDashboardUsersRouteRouteImport.update({
-    id: '/users',
-    path: '/users',
+const ProtectedDashboardIndexRoute = ProtectedDashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProtectedDashboardRouteRoute,
+} as any)
+const ProtectedDashboardPlaybacksRouteRoute =
+  ProtectedDashboardPlaybacksRouteRouteImport.update({
+    id: '/playbacks',
+    path: '/playbacks',
     getParentRoute: () => ProtectedDashboardRouteRoute,
   } as any)
 const ProtectedDashboardSystemRouteRoute =
@@ -154,41 +115,56 @@ const ProtectedDashboardSystemRouteRoute =
     path: '/system',
     getParentRoute: () => ProtectedDashboardRouteRoute,
   } as any)
-const ProtectedDashboardPlaybacksRouteRoute =
-  ProtectedDashboardPlaybacksRouteRouteImport.update({
-    id: '/playbacks',
-    path: '/playbacks',
+const ProtectedDashboardUsersRouteRoute =
+  ProtectedDashboardUsersRouteRouteImport.update({
+    id: '/users',
+    path: '/users',
     getParentRoute: () => ProtectedDashboardRouteRoute,
   } as any)
-const ProtectedSettingsPreferencesIndexRoute =
-  ProtectedSettingsPreferencesIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => ProtectedSettingsPreferencesRouteRoute,
+const ProtectedRelayIndexRoute = ProtectedRelayIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProtectedRelayRouteRoute,
+} as any)
+const ProtectedRelaySettingsRouteRoute =
+  ProtectedRelaySettingsRouteRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => ProtectedRelayRouteRoute,
   } as any)
-const ProtectedSettingsAccountIndexRoute =
-  ProtectedSettingsAccountIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => ProtectedSettingsAccountRouteRoute,
+const ProtectedRelayTorrentsRouteRoute =
+  ProtectedRelayTorrentsRouteRouteImport.update({
+    id: '/torrents',
+    path: '/torrents',
+    getParentRoute: () => ProtectedRelayRouteRoute,
   } as any)
-const ProtectedRelayTorrentsIndexRoute =
-  ProtectedRelayTorrentsIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => ProtectedRelayTorrentsRouteRoute,
+const ProtectedSettingsIndexRoute = ProtectedSettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProtectedSettingsRouteRoute,
+} as any)
+const ProtectedSettingsAccountRouteRoute =
+  ProtectedSettingsAccountRouteRouteImport.update({
+    id: '/account',
+    path: '/account',
+    getParentRoute: () => ProtectedSettingsRouteRoute,
   } as any)
-const ProtectedRelaySettingsIndexRoute =
-  ProtectedRelaySettingsIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => ProtectedRelaySettingsRouteRoute,
+const ProtectedSettingsPreferencesRouteRoute =
+  ProtectedSettingsPreferencesRouteRouteImport.update({
+    id: '/preferences',
+    path: '/preferences',
+    getParentRoute: () => ProtectedSettingsRouteRoute,
   } as any)
-const ProtectedDashboardUsersIndexRoute =
-  ProtectedDashboardUsersIndexRouteImport.update({
+const SetupUserIndexRoute = SetupUserIndexRouteImport.update({
+  id: '/setup/user/',
+  path: '/setup/user/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProtectedDashboardPlaybacksIndexRoute =
+  ProtectedDashboardPlaybacksIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => ProtectedDashboardUsersRouteRoute,
+    getParentRoute: () => ProtectedDashboardPlaybacksRouteRoute,
   } as any)
 const ProtectedDashboardSystemIndexRoute =
   ProtectedDashboardSystemIndexRouteImport.update({
@@ -196,22 +172,46 @@ const ProtectedDashboardSystemIndexRoute =
     path: '/',
     getParentRoute: () => ProtectedDashboardSystemRouteRoute,
   } as any)
-const ProtectedDashboardPlaybacksIndexRoute =
-  ProtectedDashboardPlaybacksIndexRouteImport.update({
+const ProtectedDashboardSystemNetworkRouteRoute =
+  ProtectedDashboardSystemNetworkRouteRouteImport.update({
+    id: '/network',
+    path: '/network',
+    getParentRoute: () => ProtectedDashboardSystemRouteRoute,
+  } as any)
+const ProtectedDashboardUsersIndexRoute =
+  ProtectedDashboardUsersIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => ProtectedDashboardPlaybacksRouteRoute,
+    getParentRoute: () => ProtectedDashboardUsersRouteRoute,
   } as any)
-const ProtectedSettingsPreferencesCreateRouteRoute =
-  ProtectedSettingsPreferencesCreateRouteRouteImport.update({
-    id: '/create',
-    path: '/create',
-    getParentRoute: () => ProtectedSettingsPreferencesRouteRoute,
+const ProtectedDashboardUsersUserIdRouteRoute =
+  ProtectedDashboardUsersUserIdRouteRouteImport.update({
+    id: '/$userId',
+    path: '/$userId',
+    getParentRoute: () => ProtectedDashboardUsersRouteRoute,
   } as any)
-const ProtectedSettingsPreferencesAttributesRouteRoute =
-  ProtectedSettingsPreferencesAttributesRouteRouteImport.update({
-    id: '/attributes',
-    path: '/attributes',
+const ProtectedRelaySettingsIndexRoute =
+  ProtectedRelaySettingsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProtectedRelaySettingsRouteRoute,
+  } as any)
+const ProtectedRelayTorrentsIndexRoute =
+  ProtectedRelayTorrentsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProtectedRelayTorrentsRouteRoute,
+  } as any)
+const ProtectedSettingsAccountIndexRoute =
+  ProtectedSettingsAccountIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProtectedSettingsAccountRouteRoute,
+  } as any)
+const ProtectedSettingsPreferencesIndexRoute =
+  ProtectedSettingsPreferencesIndexRouteImport.update({
+    id: '/',
+    path: '/',
     getParentRoute: () => ProtectedSettingsPreferencesRouteRoute,
   } as any)
 const ProtectedSettingsPreferencesPreferenceIdRouteRoute =
@@ -220,41 +220,17 @@ const ProtectedSettingsPreferencesPreferenceIdRouteRoute =
     path: '/$preferenceId',
     getParentRoute: () => ProtectedSettingsPreferencesRouteRoute,
   } as any)
-const ProtectedDashboardUsersUserIdRouteRoute =
-  ProtectedDashboardUsersUserIdRouteRouteImport.update({
-    id: '/$userId',
-    path: '/$userId',
-    getParentRoute: () => ProtectedDashboardUsersRouteRoute,
+const ProtectedSettingsPreferencesAttributesRouteRoute =
+  ProtectedSettingsPreferencesAttributesRouteRouteImport.update({
+    id: '/attributes',
+    path: '/attributes',
+    getParentRoute: () => ProtectedSettingsPreferencesRouteRoute,
   } as any)
-const ProtectedDashboardSystemNetworkRouteRoute =
-  ProtectedDashboardSystemNetworkRouteRouteImport.update({
-    id: '/network',
-    path: '/network',
-    getParentRoute: () => ProtectedDashboardSystemRouteRoute,
-  } as any)
-const ProtectedSettingsPreferencesCreateIndexRoute =
-  ProtectedSettingsPreferencesCreateIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => ProtectedSettingsPreferencesCreateRouteRoute,
-  } as any)
-const ProtectedSettingsPreferencesAttributesIndexRoute =
-  ProtectedSettingsPreferencesAttributesIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => ProtectedSettingsPreferencesAttributesRouteRoute,
-  } as any)
-const ProtectedSettingsPreferencesPreferenceIdIndexRoute =
-  ProtectedSettingsPreferencesPreferenceIdIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => ProtectedSettingsPreferencesPreferenceIdRouteRoute,
-  } as any)
-const ProtectedDashboardUsersUserIdIndexRoute =
-  ProtectedDashboardUsersUserIdIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => ProtectedDashboardUsersUserIdRouteRoute,
+const ProtectedSettingsPreferencesCreateRouteRoute =
+  ProtectedSettingsPreferencesCreateRouteRouteImport.update({
+    id: '/create',
+    path: '/create',
+    getParentRoute: () => ProtectedSettingsPreferencesRouteRoute,
   } as any)
 const ProtectedDashboardSystemNetworkIndexRoute =
   ProtectedDashboardSystemNetworkIndexRouteImport.update({
@@ -262,22 +238,40 @@ const ProtectedDashboardSystemNetworkIndexRoute =
     path: '/',
     getParentRoute: () => ProtectedDashboardSystemNetworkRouteRoute,
   } as any)
+const ProtectedDashboardUsersUserIdIndexRoute =
+  ProtectedDashboardUsersUserIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProtectedDashboardUsersUserIdRouteRoute,
+  } as any)
 const ProtectedDashboardUsersUserIdPreferencesRouteRoute =
   ProtectedDashboardUsersUserIdPreferencesRouteRouteImport.update({
     id: '/preferences',
     path: '/preferences',
     getParentRoute: () => ProtectedDashboardUsersUserIdRouteRoute,
   } as any)
+const ProtectedSettingsPreferencesPreferenceIdIndexRoute =
+  ProtectedSettingsPreferencesPreferenceIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProtectedSettingsPreferencesPreferenceIdRouteRoute,
+  } as any)
+const ProtectedSettingsPreferencesAttributesIndexRoute =
+  ProtectedSettingsPreferencesAttributesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProtectedSettingsPreferencesAttributesRouteRoute,
+  } as any)
+const ProtectedSettingsPreferencesCreateIndexRoute =
+  ProtectedSettingsPreferencesCreateIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ProtectedSettingsPreferencesCreateRouteRoute,
+  } as any)
 const ProtectedDashboardUsersUserIdPreferencesIndexRoute =
   ProtectedDashboardUsersUserIdPreferencesIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => ProtectedDashboardUsersUserIdPreferencesRouteRoute,
-  } as any)
-const ProtectedDashboardUsersUserIdPreferencesAttributesRouteRoute =
-  ProtectedDashboardUsersUserIdPreferencesAttributesRouteRouteImport.update({
-    id: '/attributes',
-    path: '/attributes',
     getParentRoute: () => ProtectedDashboardUsersUserIdPreferencesRouteRoute,
   } as any)
 const ProtectedDashboardUsersUserIdPreferencesPreferenceIdRouteRoute =
@@ -286,11 +280,18 @@ const ProtectedDashboardUsersUserIdPreferencesPreferenceIdRouteRoute =
     path: '/$preferenceId',
     getParentRoute: () => ProtectedDashboardUsersUserIdPreferencesRouteRoute,
   } as any)
-const ProtectedDashboardUsersUserIdPreferencesCreateIndexRoute =
-  ProtectedDashboardUsersUserIdPreferencesCreateIndexRouteImport.update({
-    id: '/create/',
-    path: '/create/',
+const ProtectedDashboardUsersUserIdPreferencesAttributesRouteRoute =
+  ProtectedDashboardUsersUserIdPreferencesAttributesRouteRouteImport.update({
+    id: '/attributes',
+    path: '/attributes',
     getParentRoute: () => ProtectedDashboardUsersUserIdPreferencesRouteRoute,
+  } as any)
+const ProtectedDashboardUsersUserIdPreferencesPreferenceIdIndexRoute =
+  ProtectedDashboardUsersUserIdPreferencesPreferenceIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () =>
+      ProtectedDashboardUsersUserIdPreferencesPreferenceIdRouteRoute,
   } as any)
 const ProtectedDashboardUsersUserIdPreferencesAttributesIndexRoute =
   ProtectedDashboardUsersUserIdPreferencesAttributesIndexRouteImport.update({
@@ -299,12 +300,11 @@ const ProtectedDashboardUsersUserIdPreferencesAttributesIndexRoute =
     getParentRoute: () =>
       ProtectedDashboardUsersUserIdPreferencesAttributesRouteRoute,
   } as any)
-const ProtectedDashboardUsersUserIdPreferencesPreferenceIdIndexRoute =
-  ProtectedDashboardUsersUserIdPreferencesPreferenceIdIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () =>
-      ProtectedDashboardUsersUserIdPreferencesPreferenceIdRouteRoute,
+const ProtectedDashboardUsersUserIdPreferencesCreateIndexRoute =
+  ProtectedDashboardUsersUserIdPreferencesCreateIndexRouteImport.update({
+    id: '/create/',
+    path: '/create/',
+    getParentRoute: () => ProtectedDashboardUsersUserIdPreferencesRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -557,13 +557,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/logout': {
-      id: '/logout'
-      path: '/logout'
-      fullPath: '/logout'
-      preLoaderRoute: typeof LogoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_protected': {
       id: '/_protected'
       path: ''
@@ -571,18 +564,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/setup/': {
-      id: '/setup/'
-      path: '/setup'
-      fullPath: '/setup/'
-      preLoaderRoute: typeof SetupIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login/': {
-      id: '/login/'
-      path: '/login'
-      fullPath: '/login/'
-      preLoaderRoute: typeof LoginIndexRouteImport
+    '/logout': {
+      id: '/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof LogoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_protected/': {
@@ -592,11 +578,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
-    '/_protected/settings': {
-      id: '/_protected/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof ProtectedSettingsRouteRouteImport
+    '/_protected/dashboard': {
+      id: '/_protected/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof ProtectedDashboardRouteRouteImport
       parentRoute: typeof ProtectedRoute
     }
     '/_protected/relay': {
@@ -606,40 +592,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedRelayRouteRouteImport
       parentRoute: typeof ProtectedRoute
     }
-    '/_protected/dashboard': {
-      id: '/_protected/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof ProtectedDashboardRouteRouteImport
+    '/_protected/settings': {
+      id: '/_protected/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof ProtectedSettingsRouteRouteImport
       parentRoute: typeof ProtectedRoute
     }
-    '/setup/user/': {
-      id: '/setup/user/'
-      path: '/setup/user'
-      fullPath: '/setup/user/'
-      preLoaderRoute: typeof SetupUserIndexRouteImport
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login/'
+      preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_protected/settings/': {
-      id: '/_protected/settings/'
-      path: '/'
-      fullPath: '/settings/'
-      preLoaderRoute: typeof ProtectedSettingsIndexRouteImport
-      parentRoute: typeof ProtectedSettingsRouteRoute
-    }
-    '/_protected/relay/': {
-      id: '/_protected/relay/'
-      path: '/'
-      fullPath: '/relay/'
-      preLoaderRoute: typeof ProtectedRelayIndexRouteImport
-      parentRoute: typeof ProtectedRelayRouteRoute
-    }
-    '/_protected/dashboard/': {
-      id: '/_protected/dashboard/'
-      path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof ProtectedDashboardIndexRouteImport
-      parentRoute: typeof ProtectedDashboardRouteRoute
+    '/setup/': {
+      id: '/setup/'
+      path: '/setup'
+      fullPath: '/setup/'
+      preLoaderRoute: typeof SetupIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_protected/activate/': {
       id: '/_protected/activate/'
@@ -648,46 +620,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedActivateIndexRouteImport
       parentRoute: typeof ProtectedRoute
     }
-    '/_protected/settings/preferences': {
-      id: '/_protected/settings/preferences'
-      path: '/preferences'
-      fullPath: '/settings/preferences'
-      preLoaderRoute: typeof ProtectedSettingsPreferencesRouteRouteImport
-      parentRoute: typeof ProtectedSettingsRouteRoute
-    }
-    '/_protected/settings/account': {
-      id: '/_protected/settings/account'
-      path: '/account'
-      fullPath: '/settings/account'
-      preLoaderRoute: typeof ProtectedSettingsAccountRouteRouteImport
-      parentRoute: typeof ProtectedSettingsRouteRoute
-    }
-    '/_protected/relay/torrents': {
-      id: '/_protected/relay/torrents'
-      path: '/torrents'
-      fullPath: '/relay/torrents'
-      preLoaderRoute: typeof ProtectedRelayTorrentsRouteRouteImport
-      parentRoute: typeof ProtectedRelayRouteRoute
-    }
-    '/_protected/relay/settings': {
-      id: '/_protected/relay/settings'
-      path: '/settings'
-      fullPath: '/relay/settings'
-      preLoaderRoute: typeof ProtectedRelaySettingsRouteRouteImport
-      parentRoute: typeof ProtectedRelayRouteRoute
-    }
-    '/_protected/dashboard/users': {
-      id: '/_protected/dashboard/users'
-      path: '/users'
-      fullPath: '/dashboard/users'
-      preLoaderRoute: typeof ProtectedDashboardUsersRouteRouteImport
-      parentRoute: typeof ProtectedDashboardRouteRoute
-    }
-    '/_protected/dashboard/system': {
-      id: '/_protected/dashboard/system'
-      path: '/system'
-      fullPath: '/dashboard/system'
-      preLoaderRoute: typeof ProtectedDashboardSystemRouteRouteImport
+    '/_protected/dashboard/': {
+      id: '/_protected/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof ProtectedDashboardIndexRouteImport
       parentRoute: typeof ProtectedDashboardRouteRoute
     }
     '/_protected/dashboard/playbacks': {
@@ -697,47 +634,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardPlaybacksRouteRouteImport
       parentRoute: typeof ProtectedDashboardRouteRoute
     }
-    '/_protected/settings/preferences/': {
-      id: '/_protected/settings/preferences/'
-      path: '/'
-      fullPath: '/settings/preferences/'
-      preLoaderRoute: typeof ProtectedSettingsPreferencesIndexRouteImport
-      parentRoute: typeof ProtectedSettingsPreferencesRouteRoute
+    '/_protected/dashboard/system': {
+      id: '/_protected/dashboard/system'
+      path: '/system'
+      fullPath: '/dashboard/system'
+      preLoaderRoute: typeof ProtectedDashboardSystemRouteRouteImport
+      parentRoute: typeof ProtectedDashboardRouteRoute
     }
-    '/_protected/settings/account/': {
-      id: '/_protected/settings/account/'
-      path: '/'
-      fullPath: '/settings/account/'
-      preLoaderRoute: typeof ProtectedSettingsAccountIndexRouteImport
-      parentRoute: typeof ProtectedSettingsAccountRouteRoute
+    '/_protected/dashboard/users': {
+      id: '/_protected/dashboard/users'
+      path: '/users'
+      fullPath: '/dashboard/users'
+      preLoaderRoute: typeof ProtectedDashboardUsersRouteRouteImport
+      parentRoute: typeof ProtectedDashboardRouteRoute
     }
-    '/_protected/relay/torrents/': {
-      id: '/_protected/relay/torrents/'
+    '/_protected/relay/': {
+      id: '/_protected/relay/'
       path: '/'
-      fullPath: '/relay/torrents/'
-      preLoaderRoute: typeof ProtectedRelayTorrentsIndexRouteImport
-      parentRoute: typeof ProtectedRelayTorrentsRouteRoute
+      fullPath: '/relay/'
+      preLoaderRoute: typeof ProtectedRelayIndexRouteImport
+      parentRoute: typeof ProtectedRelayRouteRoute
     }
-    '/_protected/relay/settings/': {
-      id: '/_protected/relay/settings/'
-      path: '/'
-      fullPath: '/relay/settings/'
-      preLoaderRoute: typeof ProtectedRelaySettingsIndexRouteImport
-      parentRoute: typeof ProtectedRelaySettingsRouteRoute
+    '/_protected/relay/settings': {
+      id: '/_protected/relay/settings'
+      path: '/settings'
+      fullPath: '/relay/settings'
+      preLoaderRoute: typeof ProtectedRelaySettingsRouteRouteImport
+      parentRoute: typeof ProtectedRelayRouteRoute
     }
-    '/_protected/dashboard/users/': {
-      id: '/_protected/dashboard/users/'
-      path: '/'
-      fullPath: '/dashboard/users/'
-      preLoaderRoute: typeof ProtectedDashboardUsersIndexRouteImport
-      parentRoute: typeof ProtectedDashboardUsersRouteRoute
+    '/_protected/relay/torrents': {
+      id: '/_protected/relay/torrents'
+      path: '/torrents'
+      fullPath: '/relay/torrents'
+      preLoaderRoute: typeof ProtectedRelayTorrentsRouteRouteImport
+      parentRoute: typeof ProtectedRelayRouteRoute
     }
-    '/_protected/dashboard/system/': {
-      id: '/_protected/dashboard/system/'
+    '/_protected/settings/': {
+      id: '/_protected/settings/'
       path: '/'
-      fullPath: '/dashboard/system/'
-      preLoaderRoute: typeof ProtectedDashboardSystemIndexRouteImport
-      parentRoute: typeof ProtectedDashboardSystemRouteRoute
+      fullPath: '/settings/'
+      preLoaderRoute: typeof ProtectedSettingsIndexRouteImport
+      parentRoute: typeof ProtectedSettingsRouteRoute
+    }
+    '/_protected/settings/account': {
+      id: '/_protected/settings/account'
+      path: '/account'
+      fullPath: '/settings/account'
+      preLoaderRoute: typeof ProtectedSettingsAccountRouteRouteImport
+      parentRoute: typeof ProtectedSettingsRouteRoute
+    }
+    '/_protected/settings/preferences': {
+      id: '/_protected/settings/preferences'
+      path: '/preferences'
+      fullPath: '/settings/preferences'
+      preLoaderRoute: typeof ProtectedSettingsPreferencesRouteRouteImport
+      parentRoute: typeof ProtectedSettingsRouteRoute
+    }
+    '/setup/user/': {
+      id: '/setup/user/'
+      path: '/setup/user'
+      fullPath: '/setup/user/'
+      preLoaderRoute: typeof SetupUserIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_protected/dashboard/playbacks/': {
       id: '/_protected/dashboard/playbacks/'
@@ -746,18 +704,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardPlaybacksIndexRouteImport
       parentRoute: typeof ProtectedDashboardPlaybacksRouteRoute
     }
-    '/_protected/settings/preferences/create': {
-      id: '/_protected/settings/preferences/create'
-      path: '/create'
-      fullPath: '/settings/preferences/create'
-      preLoaderRoute: typeof ProtectedSettingsPreferencesCreateRouteRouteImport
-      parentRoute: typeof ProtectedSettingsPreferencesRouteRoute
+    '/_protected/dashboard/system/': {
+      id: '/_protected/dashboard/system/'
+      path: '/'
+      fullPath: '/dashboard/system/'
+      preLoaderRoute: typeof ProtectedDashboardSystemIndexRouteImport
+      parentRoute: typeof ProtectedDashboardSystemRouteRoute
     }
-    '/_protected/settings/preferences/attributes': {
-      id: '/_protected/settings/preferences/attributes'
-      path: '/attributes'
-      fullPath: '/settings/preferences/attributes'
-      preLoaderRoute: typeof ProtectedSettingsPreferencesAttributesRouteRouteImport
+    '/_protected/dashboard/system/network': {
+      id: '/_protected/dashboard/system/network'
+      path: '/network'
+      fullPath: '/dashboard/system/network'
+      preLoaderRoute: typeof ProtectedDashboardSystemNetworkRouteRouteImport
+      parentRoute: typeof ProtectedDashboardSystemRouteRoute
+    }
+    '/_protected/dashboard/users/': {
+      id: '/_protected/dashboard/users/'
+      path: '/'
+      fullPath: '/dashboard/users/'
+      preLoaderRoute: typeof ProtectedDashboardUsersIndexRouteImport
+      parentRoute: typeof ProtectedDashboardUsersRouteRoute
+    }
+    '/_protected/dashboard/users/$userId': {
+      id: '/_protected/dashboard/users/$userId'
+      path: '/$userId'
+      fullPath: '/dashboard/users/$userId'
+      preLoaderRoute: typeof ProtectedDashboardUsersUserIdRouteRouteImport
+      parentRoute: typeof ProtectedDashboardUsersRouteRoute
+    }
+    '/_protected/relay/settings/': {
+      id: '/_protected/relay/settings/'
+      path: '/'
+      fullPath: '/relay/settings/'
+      preLoaderRoute: typeof ProtectedRelaySettingsIndexRouteImport
+      parentRoute: typeof ProtectedRelaySettingsRouteRoute
+    }
+    '/_protected/relay/torrents/': {
+      id: '/_protected/relay/torrents/'
+      path: '/'
+      fullPath: '/relay/torrents/'
+      preLoaderRoute: typeof ProtectedRelayTorrentsIndexRouteImport
+      parentRoute: typeof ProtectedRelayTorrentsRouteRoute
+    }
+    '/_protected/settings/account/': {
+      id: '/_protected/settings/account/'
+      path: '/'
+      fullPath: '/settings/account/'
+      preLoaderRoute: typeof ProtectedSettingsAccountIndexRouteImport
+      parentRoute: typeof ProtectedSettingsAccountRouteRoute
+    }
+    '/_protected/settings/preferences/': {
+      id: '/_protected/settings/preferences/'
+      path: '/'
+      fullPath: '/settings/preferences/'
+      preLoaderRoute: typeof ProtectedSettingsPreferencesIndexRouteImport
       parentRoute: typeof ProtectedSettingsPreferencesRouteRoute
     }
     '/_protected/settings/preferences/$preferenceId': {
@@ -767,47 +767,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedSettingsPreferencesPreferenceIdRouteRouteImport
       parentRoute: typeof ProtectedSettingsPreferencesRouteRoute
     }
-    '/_protected/dashboard/users/$userId': {
-      id: '/_protected/dashboard/users/$userId'
-      path: '/$userId'
-      fullPath: '/dashboard/users/$userId'
-      preLoaderRoute: typeof ProtectedDashboardUsersUserIdRouteRouteImport
-      parentRoute: typeof ProtectedDashboardUsersRouteRoute
+    '/_protected/settings/preferences/attributes': {
+      id: '/_protected/settings/preferences/attributes'
+      path: '/attributes'
+      fullPath: '/settings/preferences/attributes'
+      preLoaderRoute: typeof ProtectedSettingsPreferencesAttributesRouteRouteImport
+      parentRoute: typeof ProtectedSettingsPreferencesRouteRoute
     }
-    '/_protected/dashboard/system/network': {
-      id: '/_protected/dashboard/system/network'
-      path: '/network'
-      fullPath: '/dashboard/system/network'
-      preLoaderRoute: typeof ProtectedDashboardSystemNetworkRouteRouteImport
-      parentRoute: typeof ProtectedDashboardSystemRouteRoute
-    }
-    '/_protected/settings/preferences/create/': {
-      id: '/_protected/settings/preferences/create/'
-      path: '/'
-      fullPath: '/settings/preferences/create/'
-      preLoaderRoute: typeof ProtectedSettingsPreferencesCreateIndexRouteImport
-      parentRoute: typeof ProtectedSettingsPreferencesCreateRouteRoute
-    }
-    '/_protected/settings/preferences/attributes/': {
-      id: '/_protected/settings/preferences/attributes/'
-      path: '/'
-      fullPath: '/settings/preferences/attributes/'
-      preLoaderRoute: typeof ProtectedSettingsPreferencesAttributesIndexRouteImport
-      parentRoute: typeof ProtectedSettingsPreferencesAttributesRouteRoute
-    }
-    '/_protected/settings/preferences/$preferenceId/': {
-      id: '/_protected/settings/preferences/$preferenceId/'
-      path: '/'
-      fullPath: '/settings/preferences/$preferenceId/'
-      preLoaderRoute: typeof ProtectedSettingsPreferencesPreferenceIdIndexRouteImport
-      parentRoute: typeof ProtectedSettingsPreferencesPreferenceIdRouteRoute
-    }
-    '/_protected/dashboard/users/$userId/': {
-      id: '/_protected/dashboard/users/$userId/'
-      path: '/'
-      fullPath: '/dashboard/users/$userId/'
-      preLoaderRoute: typeof ProtectedDashboardUsersUserIdIndexRouteImport
-      parentRoute: typeof ProtectedDashboardUsersUserIdRouteRoute
+    '/_protected/settings/preferences/create': {
+      id: '/_protected/settings/preferences/create'
+      path: '/create'
+      fullPath: '/settings/preferences/create'
+      preLoaderRoute: typeof ProtectedSettingsPreferencesCreateRouteRouteImport
+      parentRoute: typeof ProtectedSettingsPreferencesRouteRoute
     }
     '/_protected/dashboard/system/network/': {
       id: '/_protected/dashboard/system/network/'
@@ -816,6 +788,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardSystemNetworkIndexRouteImport
       parentRoute: typeof ProtectedDashboardSystemNetworkRouteRoute
     }
+    '/_protected/dashboard/users/$userId/': {
+      id: '/_protected/dashboard/users/$userId/'
+      path: '/'
+      fullPath: '/dashboard/users/$userId/'
+      preLoaderRoute: typeof ProtectedDashboardUsersUserIdIndexRouteImport
+      parentRoute: typeof ProtectedDashboardUsersUserIdRouteRoute
+    }
     '/_protected/dashboard/users/$userId/preferences': {
       id: '/_protected/dashboard/users/$userId/preferences'
       path: '/preferences'
@@ -823,18 +802,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardUsersUserIdPreferencesRouteRouteImport
       parentRoute: typeof ProtectedDashboardUsersUserIdRouteRoute
     }
+    '/_protected/settings/preferences/$preferenceId/': {
+      id: '/_protected/settings/preferences/$preferenceId/'
+      path: '/'
+      fullPath: '/settings/preferences/$preferenceId/'
+      preLoaderRoute: typeof ProtectedSettingsPreferencesPreferenceIdIndexRouteImport
+      parentRoute: typeof ProtectedSettingsPreferencesPreferenceIdRouteRoute
+    }
+    '/_protected/settings/preferences/attributes/': {
+      id: '/_protected/settings/preferences/attributes/'
+      path: '/'
+      fullPath: '/settings/preferences/attributes/'
+      preLoaderRoute: typeof ProtectedSettingsPreferencesAttributesIndexRouteImport
+      parentRoute: typeof ProtectedSettingsPreferencesAttributesRouteRoute
+    }
+    '/_protected/settings/preferences/create/': {
+      id: '/_protected/settings/preferences/create/'
+      path: '/'
+      fullPath: '/settings/preferences/create/'
+      preLoaderRoute: typeof ProtectedSettingsPreferencesCreateIndexRouteImport
+      parentRoute: typeof ProtectedSettingsPreferencesCreateRouteRoute
+    }
     '/_protected/dashboard/users/$userId/preferences/': {
       id: '/_protected/dashboard/users/$userId/preferences/'
       path: '/'
       fullPath: '/dashboard/users/$userId/preferences/'
       preLoaderRoute: typeof ProtectedDashboardUsersUserIdPreferencesIndexRouteImport
-      parentRoute: typeof ProtectedDashboardUsersUserIdPreferencesRouteRoute
-    }
-    '/_protected/dashboard/users/$userId/preferences/attributes': {
-      id: '/_protected/dashboard/users/$userId/preferences/attributes'
-      path: '/attributes'
-      fullPath: '/dashboard/users/$userId/preferences/attributes'
-      preLoaderRoute: typeof ProtectedDashboardUsersUserIdPreferencesAttributesRouteRouteImport
       parentRoute: typeof ProtectedDashboardUsersUserIdPreferencesRouteRoute
     }
     '/_protected/dashboard/users/$userId/preferences/$preferenceId': {
@@ -844,12 +837,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardUsersUserIdPreferencesPreferenceIdRouteRouteImport
       parentRoute: typeof ProtectedDashboardUsersUserIdPreferencesRouteRoute
     }
-    '/_protected/dashboard/users/$userId/preferences/create/': {
-      id: '/_protected/dashboard/users/$userId/preferences/create/'
-      path: '/create'
-      fullPath: '/dashboard/users/$userId/preferences/create/'
-      preLoaderRoute: typeof ProtectedDashboardUsersUserIdPreferencesCreateIndexRouteImport
+    '/_protected/dashboard/users/$userId/preferences/attributes': {
+      id: '/_protected/dashboard/users/$userId/preferences/attributes'
+      path: '/attributes'
+      fullPath: '/dashboard/users/$userId/preferences/attributes'
+      preLoaderRoute: typeof ProtectedDashboardUsersUserIdPreferencesAttributesRouteRouteImport
       parentRoute: typeof ProtectedDashboardUsersUserIdPreferencesRouteRoute
+    }
+    '/_protected/dashboard/users/$userId/preferences/$preferenceId/': {
+      id: '/_protected/dashboard/users/$userId/preferences/$preferenceId/'
+      path: '/'
+      fullPath: '/dashboard/users/$userId/preferences/$preferenceId/'
+      preLoaderRoute: typeof ProtectedDashboardUsersUserIdPreferencesPreferenceIdIndexRouteImport
+      parentRoute: typeof ProtectedDashboardUsersUserIdPreferencesPreferenceIdRouteRoute
     }
     '/_protected/dashboard/users/$userId/preferences/attributes/': {
       id: '/_protected/dashboard/users/$userId/preferences/attributes/'
@@ -858,12 +858,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardUsersUserIdPreferencesAttributesIndexRouteImport
       parentRoute: typeof ProtectedDashboardUsersUserIdPreferencesAttributesRouteRoute
     }
-    '/_protected/dashboard/users/$userId/preferences/$preferenceId/': {
-      id: '/_protected/dashboard/users/$userId/preferences/$preferenceId/'
-      path: '/'
-      fullPath: '/dashboard/users/$userId/preferences/$preferenceId/'
-      preLoaderRoute: typeof ProtectedDashboardUsersUserIdPreferencesPreferenceIdIndexRouteImport
-      parentRoute: typeof ProtectedDashboardUsersUserIdPreferencesPreferenceIdRouteRoute
+    '/_protected/dashboard/users/$userId/preferences/create/': {
+      id: '/_protected/dashboard/users/$userId/preferences/create/'
+      path: '/create'
+      fullPath: '/dashboard/users/$userId/preferences/create/'
+      preLoaderRoute: typeof ProtectedDashboardUsersUserIdPreferencesCreateIndexRouteImport
+      parentRoute: typeof ProtectedDashboardUsersUserIdPreferencesRouteRoute
     }
   }
 }

@@ -11,8 +11,10 @@ from selectolax.parser import HTMLParser, Node
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
-from app.modules.indexer_definitions.enums import AuthenticationErrorEnum
 from app.modules.indexer_definitions.schemas.internal import (
+    AuthCredentialError,
+    AuthError,
+    AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
     IndexerDefinitionLogin,
     IndexerDefinitionTorrent,
@@ -78,6 +80,34 @@ def _parse_torrent_id(href: str | None) -> str | None:
     return None
 
 
+def _parse_poster_id(poster_id: str | None) -> str | None:
+    # A sor azonosítója az id attribútumban van, "poster-" előtaggal:
+    # id="poster-53357".
+    if not poster_id:
+        return None
+
+    prefix, _, torrent_id = poster_id.partition("poster-")
+    if prefix or not torrent_id.isdigit():
+        return None
+
+    return torrent_id
+
+
+def _parse_seeders(item: Node) -> int:
+    # A seed érték a "Seed" feliratú .poster-stat blokkban van; az értéket egy
+    # <a> csomagolja, ezért csak a számjegyeket olvassuk ki.
+    for stat in item.css(".poster-stat"):
+        label = stat.css_first(".poster-stat-label")
+        if label is None or "seed" not in label.text().lower():
+            continue
+
+        value = stat.css_first(".poster-stat-value")
+        digits = "".join(ch for ch in value.text() if ch.isdigit()) if value else ""
+        return int(digits) if digits else 0
+
+    return 0
+
+
 class HunTorrentIndexerDefinition(BaseIndexerDefinition):
     @property
     def id(self) -> str:
@@ -102,15 +132,16 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
 
     @property
     def requires_full_download(self) -> bool:
-        return True
+        return False
 
     @property
     def max_concurrent(self) -> int:
         return 3
 
     def _detect_authentication_error(
-        self, response: httpx.Response
-    ) -> AuthenticationErrorEnum | None:
+        self,
+        response: httpx.Response,
+    ) -> AuthError:
         request_path = urlparse(str(response.request.url)).path
 
         # A bejelentkezés JSON-nal válaszol: hibás adatoknál {"wrong": true, ...}
@@ -118,9 +149,9 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
         if request_path.startswith(_LOGIN_API_PATH):
             try:
                 if response.json().get("wrong") is True:
-                    return AuthenticationErrorEnum.CREDENTIAL_ERROR
+                    return AuthCredentialError()
             except ValueError:
-                return AuthenticationErrorEnum.CREDENTIAL_ERROR
+                return AuthCredentialError()
 
             return None
 
@@ -132,7 +163,7 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
 
         # Bármely más kérés a /login/-ra fut ki: lejárt a munkamenet.
         if urlparse(str(response.url)).path.startswith("/login"):
-            return AuthenticationErrorEnum.SESSION_ERROR
+            return AuthSessionError()
 
         # Az oldal nem mindig irányít át: előfordulhat, hogy a kért útvonalon
         # szolgálja ki a bejelentkező űrlapot. Ilyenkor az URL alapján semmi nem
@@ -142,7 +173,7 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
         # belépett állapotú oldalakon nem, így nem ad hamis riasztást.
         content_type = response.headers.get("content-type", "")
         if content_type.startswith("text/html") and "loginForm" in response.text:
-            return AuthenticationErrorEnum.SESSION_ERROR
+            return AuthSessionError()
 
         return None
 
@@ -189,6 +220,21 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
         )
 
         tree = HTMLParser(response.text)
+
+        # A böngésző oldal fiókfüggő nézetet ad: van táblázatos (tr.torrent-row)
+        # és poszter-rács (div.poster-item) elrendezés is. Mindkettőt kezeljük,
+        # így a keresés akkor is működik, ha a fiók bármelyik nézeten van.
+        torrents = self._parse_table_rows(tree) or self._parse_poster_items(tree)
+
+        return IndexerDefinitionFindTorrentsResult(
+            torrents=torrents,
+            next_page=self._resolve_next_page(tree, current_page),
+        )
+
+    def _parse_table_rows(self, tree: HTMLParser) -> list[IndexerDefinitionTorrent]:
+        # Táblázatos nézet: soronként egy tr.torrent-row, az adatok data-*
+        # attribútumokban (data-torrent-id, data-seeders), a kategória a
+        # .torrent-category img alt szövegében.
         torrents: list[IndexerDefinitionTorrent] = []
 
         for row in tree.css("tr.torrent-row"):
@@ -213,20 +259,48 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
                 IndexerDefinitionTorrent(
                     torrent_id=torrent_id,
                     download_url=urljoin(self.url, download_path),
-                    # Csak a ténylegesen kiolvasott azonosító megy vissza: a
-                    # _find_all() erre szűri a találatokat, és ha ide a keresett
-                    # azonosítót írnánk, akkor az IMDB link nélküli sorok is
-                    # átcsúsznának a szűrőn.
                     imdb_id=row_imdb_id,
                     seeders=int(seeders) if seeders.isdigit() else 0,
                     attribute_ids=_CATEGORY_ATTRIBUTES.get(category, []),
                 )
             )
 
-        return IndexerDefinitionFindTorrentsResult(
-            torrents=torrents,
-            next_page=self._resolve_next_page(tree, current_page),
-        )
+        return torrents
+
+    def _parse_poster_items(self, tree: HTMLParser) -> list[IndexerDefinitionTorrent]:
+        # Poszter-rács nézet: minden torrent egy div.poster-item, az azonosító
+        # az id="poster-<id>" attribútumban, a kategória a .poster-category span
+        # szövegében, a seed a "Seed" feliratú .poster-stat blokkban.
+        torrents: list[IndexerDefinitionTorrent] = []
+
+        for item in tree.css("div.poster-item"):
+            torrent_id = _parse_poster_id(item.attributes.get("id"))
+            if not torrent_id:
+                continue
+
+            # A letöltési link már tartalmazza a felhasználó torrent_pass-át.
+            download_node = item.css_first('.poster-actions a[href*="/download/"]')
+            download_path = _get_attribute(download_node, "href")
+            if not download_path:
+                continue
+
+            category_node = item.css_first(".poster-category span")
+            category = (category_node.text() if category_node else "").strip().lower()
+
+            imdb_node = item.css_first('a[href*="imdb.com/title/"]')
+            row_imdb_id = _parse_imdb_id(_get_attribute(imdb_node, "href"))
+
+            torrents.append(
+                IndexerDefinitionTorrent(
+                    torrent_id=torrent_id,
+                    download_url=urljoin(self.url, download_path),
+                    imdb_id=row_imdb_id,
+                    seeders=_parse_seeders(item),
+                    attribute_ids=_CATEGORY_ATTRIBUTES.get(category, []),
+                )
+            )
+
+        return torrents
 
     async def _fetch_torrent(
         self,

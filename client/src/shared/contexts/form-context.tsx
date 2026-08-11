@@ -6,7 +6,7 @@ import { SubscribeButton } from '@/shared/components/form/subscribe-button'
 export const { fieldContext, formContext, useFieldContext, useFormContext } =
   createFormHookContexts()
 
-export const { useAppForm, withForm } = createFormHook({
+export const { useAppForm, withForm, withFieldGroup } = createFormHook({
   fieldContext,
   formContext,
   fieldComponents: { AppTextField },

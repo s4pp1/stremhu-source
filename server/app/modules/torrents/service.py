@@ -151,7 +151,6 @@ class TorrentsService:
         torrents = self._torrent_repository.find_by_indexer_id(indexer_id)
         for torrent in torrents:
             self.delete(torrent.info_hash)
-        self._torrent_files_service.delete_by_indexer_id(indexer_id)
 
     def cleanup_tracker_torrents(
         self,
