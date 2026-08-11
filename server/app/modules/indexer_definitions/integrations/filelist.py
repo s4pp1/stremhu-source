@@ -9,6 +9,7 @@ from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
 from app.modules.indexer_definitions.schemas.internal import (
+    AuthCredentialError,
     AuthError,
     AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
@@ -21,25 +22,24 @@ from app.modules.media_attributes.constants import MediaAttributeKey
 # Filelist kategória ID-k forrása: browse.php checkbox értékek
 _CATEGORY_MAP: dict[str, list[str]] = {
     # Filmek
-    "1":  [MediaAttributeKey.R480P],                              # Filme SD
-    "2":  [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],  # Filme DVD
-    "3":  [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],  # Filme DVD-RO
-    "4":  [MediaAttributeKey.R720P],                             # Filme HD
-    "6":  [MediaAttributeKey.R2160P],                            # Filme 4K (UHD)
-    "19": [MediaAttributeKey.R720P],                             # Filme HD-RO
+    "1": [MediaAttributeKey.R480P],  # Filme SD
+    "2": [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],  # Filme DVD
+    "3": [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],  # Filme DVD-RO
+    "4": [MediaAttributeKey.R720P],  # Filme HD
+    "6": [MediaAttributeKey.R2160P],  # Filme 4K (UHD)
+    "19": [MediaAttributeKey.R720P],  # Filme HD-RO
     "20": [MediaAttributeKey.R1080P, MediaAttributeKey.BLURAY],  # Filme Blu-Ray
-    "25": [MediaAttributeKey.R1080P],                            # Filme 3D
+    "25": [MediaAttributeKey.R1080P],  # Filme 3D
     "26": [MediaAttributeKey.R2160P, MediaAttributeKey.BLURAY],  # Filme 4K Blu-Ray
-
     # Sorozatok
-    "14": [MediaAttributeKey.R480P],   # Seriale TV
-    "15": [MediaAttributeKey.R480P],   # Desene animate
-    "21": [MediaAttributeKey.R720P],   # Seriale HD
-    "23": [MediaAttributeKey.R480P],   # Seriale SD
-    "24": [MediaAttributeKey.R720P],   # Anime
+    "14": [MediaAttributeKey.R480P],  # Seriale TV
+    "15": [MediaAttributeKey.R480P],  # Desene animate
+    "21": [MediaAttributeKey.R720P],  # Seriale HD
+    "23": [MediaAttributeKey.R480P],  # Seriale SD
+    "24": [MediaAttributeKey.R720P],  # Anime
     "27": [MediaAttributeKey.R2160P],  # Seriale 4K
-    "28": [],                          # RO Dubbed (vegyes minőség, névből parseolja)
-    "31": [MediaAttributeKey.R720P],   # K-Drama
+    "28": [],  # RO Dubbed (vegyes minőség, névből parseolja)
+    "31": [MediaAttributeKey.R720P],  # K-Drama
 }
 
 # Román nyelvű kategóriák
@@ -49,9 +49,7 @@ _RO_CATEGORIES = {"3", "19", "28"}
 _ALL_CATEGORY_IDS = list(_CATEGORY_MAP.keys())
 
 
-def _attribute_ids_from_category_and_name(
-    category: str, name: str
-) -> list[str]:
+def _attribute_ids_from_category_and_name(category: str, name: str) -> list[str]:
     """
     Kategória és torrent név alapján összeállítja az attribute_id listát.
     A vegyes minőségű kategóriáknál (pl. RO Dubbed) a névből parseolja a felbontást.
@@ -65,11 +63,16 @@ def _attribute_ids_from_category_and_name(
         pass  # a media_attributes parser kezeli a névből
 
     # Vegyes minőségű kategóriáknál névből parseolja a felbontást
-    if not any(a in base_attrs for a in [
-        MediaAttributeKey.R2160P, MediaAttributeKey.R1080P,
-        MediaAttributeKey.R720P, MediaAttributeKey.R576P,
-        MediaAttributeKey.R480P,
-    ]):
+    if not any(
+        a in base_attrs
+        for a in [
+            MediaAttributeKey.R2160P,
+            MediaAttributeKey.R1080P,
+            MediaAttributeKey.R720P,
+            MediaAttributeKey.R576P,
+            MediaAttributeKey.R480P,
+        ]
+    ):
         name_lower = name.lower()
         if "2160" in name_lower or "4k" in name_lower or "uhd" in name_lower:
             base_attrs.append(MediaAttributeKey.R2160P)
@@ -84,7 +87,6 @@ def _attribute_ids_from_category_and_name(
 
 
 class FilelistIndexerDefinition(BaseIndexerDefinition):
-
     @property
     def id(self) -> str:
         return "filelist"
@@ -111,16 +113,18 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
 
     def _detect_authentication_error(self, response: httpx.Response) -> AuthError:
         request_path = str(response.url.path)
-        is_login_path = "/login.php" in request_path or "/takelogin.php" in request_path
 
         # Ha a végső válasz nem a login oldalon van, nincs hiba
-        if "/login.php" not in final_path:
+        if "/login.php" not in request_path:
             return None
 
         # Az eredeti kérés URL-je (redirect előtt)
         original_url = str(response.request.url)
         if response.history:
             original_url = str(response.history[0].url)
+
+        html = response.text
+        normalized = html.lower()
 
         if (
             'name="username"' in html
@@ -132,10 +136,10 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
 
         # POST /takelogin.php → visszairányított /login.php-ra → rossz jelszó
         if "/takelogin.php" in original_url or "/check_2fa.php" in original_url:
-            return AuthenticationErrorEnum.CREDENTIAL_ERROR
+            return AuthCredentialError()
 
         # Egyéb kérés irányult login-ra → lejárt session
-        return AuthenticationErrorEnum.SESSION_ERROR
+        return AuthSessionError()
 
     async def _login(self, credential: IndexerDefinitionLogin) -> httpx.Response:
         # 1. lépés: GET /login.php → PHPSESSID cookie + validator token
@@ -159,17 +163,17 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
         current_page = page or 0
 
         # cats[] paraméterek összeállítása — csak a támogatott kategóriák
-        params: list[tuple[str, str]] = [
+        params = [
             ("search", imdb_id.replace("tt", "")),
-            ("searchin", "3"),   # IMDB keresés
-            ("sort", "5"),       # PEERS szerint csökkenő
-            ("incldead", "0"),   # csak élő torrentek
+            ("searchin", "3"),  # IMDB keresés
+            ("sort", "5"),  # PEERS szerint csökkenő
+            ("incldead", "0"),  # csak élő torrentek
             ("page", str(current_page)),
         ]
         for i, cat_id in enumerate(_ALL_CATEGORY_IDS):
             params.append((f"cats[{i}]", cat_id))
 
-        response = await self._client.get("/browse.php", params=params)
+        response = await self._client.get("/browse.php", params=tuple(params))
 
         html = response.text
         if not isinstance(html, str):
@@ -210,9 +214,7 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
             torrent_name = ""
             if det_node:
                 torrent_name = (
-                    det_node.attributes.get("title")
-                    or det_node.text(strip=True)
-                    or ""
+                    det_node.attributes.get("title") or det_node.text(strip=True) or ""
                 )
 
             dl_node = row.css_first(
