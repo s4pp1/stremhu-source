@@ -2,8 +2,6 @@ import re
 from urllib.parse import urljoin
 
 import httpx
-from selectolax.parser import HTMLParser
-
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
@@ -14,7 +12,7 @@ from app.modules.indexer_definitions.schemas.internal import (
     IndexerDefinitionTorrent,
 )
 from app.modules.media_attributes.constants import MediaAttributeKey
-
+from selectolax.parser import HTMLParser
 
 # ─── Kategória → attribute_id mapping ────────────────────────────────────────
 # Kulcs: img src fájlnév stem (/img/cats/TV-Pack.png → "TV-Pack")
@@ -71,7 +69,6 @@ _CATEGORY_MAP: dict[str, list[str]] = {
     "Movie/Kids":              [MediaAttributeKey.R480P],
     "Movie/Non-English":       [],
     "Movie/Packs":             [],
-    "Movies":                  [],
     "TV/Web-DL":               [MediaAttributeKey.R1080P, MediaAttributeKey.WEB_DL],
     "TV/x265":                 [MediaAttributeKey.R1080P, MediaAttributeKey.X265],
     "TV/x264":                 [MediaAttributeKey.R720P, MediaAttributeKey.X264],
@@ -85,9 +82,6 @@ _CATEGORY_MAP: dict[str, list[str]] = {
     "TV/Non-English":          [],
     "TV/Packs":                [],
     "TV/Packs/Non-English":    [],
-    "TV":                      [],
-    "Documentaries":           [],
-    "Sports":                  [],
 }
 
 
@@ -375,34 +369,7 @@ class IptorrentsIndexerDefinition(BaseIndexerDefinition):
         )
 
     async def _fetch_hit_and_run_ids(self) -> list[str]:
-        """
-        Lekéri a H&R kötelezettség alatt álló torrentek azonosítóit.
-
-        Az IPT /seeding_required.php oldala pontosan azokat a torrenteket
-        listázza, amelyek még nem teljesítették az 1:1 arányt VAGY a 336 óra
-        seedelési időt. A lista sorai <tr id="lineXXXXX"> formátumban tartalmazzák
-        a torrent ID-t, így egyszerűen kinyerhető.
-
-        Ha az oldal nem érhető el vagy nem tartalmaz listát, kivételt dobunk
-        (nem üres listát), hogy a takarítás biztonságból kimaradjon — jobb
-        nem törölni, mint véletlenül H&R warningot kockáztatni.
-        """
-        response = await self._client.get("/seeding_required.php")
-        tree = HTMLParser(response.text)
-
-        # Az oldal csak akkor tartalmaz táblát, ha van H&R kötelezettség.
-        # Ha nincs egyetlen <tr id="lineXXX"> sem, az oldal üres → nincs H&R.
-        rows = tree.css("tr[id^='line']")
-
-        hit_and_run_ids: list[str] = []
-        for row in rows:
-            row_id = row.attributes.get("id", "")
-            # "line5005189" → "5005189"
-            torrent_id = row_id.removeprefix("line")
-            if torrent_id.isdigit():
-                hit_and_run_ids.append(torrent_id)
-
-        return hit_and_run_ids
+        return []
 
     def _resolve_imdb_id(self, imdb_url: str | None) -> str | None:
         if not imdb_url:
