@@ -2,6 +2,8 @@ import re
 from urllib.parse import urljoin
 
 import httpx
+from selectolax.parser import HTMLParser
+
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
@@ -12,90 +14,131 @@ from app.modules.indexer_definitions.schemas.internal import (
     IndexerDefinitionTorrent,
 )
 from app.modules.media_attributes.constants import MediaAttributeKey
-from selectolax.parser import HTMLParser
 
 # ─── Kategória → attribute_id mapping ────────────────────────────────────────
 # Kulcs: img src fájlnév stem (/img/cats/TV-Pack.png → "TV-Pack")
 # vagy img alt szöveg ("TV/Packs") — mindkettőt kezeljük.
 _CATEGORY_MAP: dict[str, list[str]] = {
     # ── src stem alapú kulcsok ──────────────────────────────────────────────
-    "4K":                      [MediaAttributeKey.R2160P],
-    "Movies-BluRayBDRip":      [MediaAttributeKey.R1080P, MediaAttributeKey.BLURAY],
-    "Movie-BD-R":              [MediaAttributeKey.R1080P, MediaAttributeKey.BLURAY],
-    "Movie-BD-Rip":            [MediaAttributeKey.R1080P, MediaAttributeKey.BDRIP],
-    "Movie-Web-DL":            [MediaAttributeKey.R1080P, MediaAttributeKey.WEB_DL],
-    "Movie-x265":              [MediaAttributeKey.R1080P, MediaAttributeKey.X265],
-    "Movie-480p":              [MediaAttributeKey.R480P],
-    "Movie-DVD-R":             [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],
-    "Movie-Xvid":              [MediaAttributeKey.R480P],
-    "Movie-MP4":               [MediaAttributeKey.R480P],
-    "Movie-Cam":               [MediaAttributeKey.CAM],
-    "Movie-3D":                [MediaAttributeKey.R1080P],
-    "Movie-Kids":              [MediaAttributeKey.R480P],
-    "Movie-Non-English":       [],
-    "Movie-Packs":             [],
-    "Movie":                   [],
-    "Movies":                  [],
-    "TV-Web-DL":               [MediaAttributeKey.R1080P, MediaAttributeKey.WEB_DL],
-    "TV-x265":                 [MediaAttributeKey.R1080P, MediaAttributeKey.X265],
-    "TV-x264":                 [MediaAttributeKey.R720P, MediaAttributeKey.X264],
-    "TV-BD":                   [MediaAttributeKey.R1080P, MediaAttributeKey.BLURAY],
-    "TV-480p":                 [MediaAttributeKey.R480P],
-    "TV-SD-x264":              [MediaAttributeKey.R480P],
-    "TV-DVD-R":                [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],
-    "TV-DVD-Rip":              [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],
-    "TV-Xvid":                 [MediaAttributeKey.R480P],
-    "TV-Mobile":               [MediaAttributeKey.R480P],
-    "TV-Non-English":          [],
-    "TV-Pack":                 [],   # TV/Packs — src: TV-Pack.png
-    "TV-Packs":                [],
-    "TV-Packs-Non-English":    [],
-    "TV":                      [],
-    "Documentaries":           [],
-    "Sports":                  [],
+    "4K": [MediaAttributeKey.R2160P],
+    "Movies-BluRayBDRip": [MediaAttributeKey.R1080P, MediaAttributeKey.BLURAY],
+    "Movie-BD-R": [MediaAttributeKey.R1080P, MediaAttributeKey.BLURAY],
+    "Movie-BD-Rip": [MediaAttributeKey.R1080P, MediaAttributeKey.BDRIP],
+    "Movie-Web-DL": [MediaAttributeKey.R1080P, MediaAttributeKey.WEB_DL],
+    "Movie-x265": [MediaAttributeKey.R1080P, MediaAttributeKey.X265],
+    "Movie-480p": [MediaAttributeKey.R480P],
+    "Movie-DVD-R": [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],
+    "Movie-Xvid": [MediaAttributeKey.R480P],
+    "Movie-MP4": [MediaAttributeKey.R480P],
+    "Movie-Cam": [MediaAttributeKey.CAM],
+    "Movie-3D": [MediaAttributeKey.R1080P],
+    "Movie-Kids": [MediaAttributeKey.R480P],
+    "Movie-Non-English": [],
+    "Movie-Packs": [],
+    "Movie": [],
+    "Movies": [],
+    "TV-Web-DL": [MediaAttributeKey.R1080P, MediaAttributeKey.WEB_DL],
+    "TV-x265": [MediaAttributeKey.R1080P, MediaAttributeKey.X265],
+    "TV-x264": [MediaAttributeKey.R720P, MediaAttributeKey.X264],
+    "TV-BD": [MediaAttributeKey.R1080P, MediaAttributeKey.BLURAY],
+    "TV-480p": [MediaAttributeKey.R480P],
+    "TV-SD-x264": [MediaAttributeKey.R480P],
+    "TV-DVD-R": [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],
+    "TV-DVD-Rip": [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],
+    "TV-Xvid": [MediaAttributeKey.R480P],
+    "TV-Mobile": [MediaAttributeKey.R480P],
+    "TV-Non-English": [],
+    "TV-Pack": [],  # TV/Packs — src: TV-Pack.png
+    "TV-Packs": [],
+    "TV-Packs-Non-English": [],
+    "TV": [],
+    "Documentaries": [],
+    "Sports": [],
     # ── alt szöveg alapú kulcsok (cím-keresés esetén az alt ki van töltve) ──
-    "Movie/4K":                [MediaAttributeKey.R2160P],
-    "Movie/HD/Bluray":         [MediaAttributeKey.R1080P, MediaAttributeKey.BLURAY],
-    "Movie/BD-R":              [MediaAttributeKey.R1080P, MediaAttributeKey.BLURAY],
-    "Movie/BD-Rip":            [MediaAttributeKey.R1080P, MediaAttributeKey.BDRIP],
-    "Movie/Web-DL":            [MediaAttributeKey.R1080P, MediaAttributeKey.WEB_DL],
-    "Movie/x265":              [MediaAttributeKey.R1080P, MediaAttributeKey.X265],
-    "Movie/480p":              [MediaAttributeKey.R480P],
-    "Movie/DVD-R":             [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],
-    "Movie/Xvid":              [MediaAttributeKey.R480P],
-    "Movie/MP4":               [MediaAttributeKey.R480P],
-    "Movie/Cam":               [MediaAttributeKey.CAM],
-    "Movie/3D":                [MediaAttributeKey.R1080P],
-    "Movie/Kids":              [MediaAttributeKey.R480P],
-    "Movie/Non-English":       [],
-    "Movie/Packs":             [],
-    "TV/Web-DL":               [MediaAttributeKey.R1080P, MediaAttributeKey.WEB_DL],
-    "TV/x265":                 [MediaAttributeKey.R1080P, MediaAttributeKey.X265],
-    "TV/x264":                 [MediaAttributeKey.R720P, MediaAttributeKey.X264],
-    "TV/BD":                   [MediaAttributeKey.R1080P, MediaAttributeKey.BLURAY],
-    "TV/480p":                 [MediaAttributeKey.R480P],
-    "TV/SD/x264":              [MediaAttributeKey.R480P],
-    "TV/DVD-R":                [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],
-    "TV/DVD-Rip":              [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],
-    "TV/Xvid":                 [MediaAttributeKey.R480P],
-    "TV/Mobile":               [MediaAttributeKey.R480P],
-    "TV/Non-English":          [],
-    "TV/Packs":                [],
-    "TV/Packs/Non-English":    [],
+    "Movie/4K": [MediaAttributeKey.R2160P],
+    "Movie/HD/Bluray": [MediaAttributeKey.R1080P, MediaAttributeKey.BLURAY],
+    "Movie/BD-R": [MediaAttributeKey.R1080P, MediaAttributeKey.BLURAY],
+    "Movie/BD-Rip": [MediaAttributeKey.R1080P, MediaAttributeKey.BDRIP],
+    "Movie/Web-DL": [MediaAttributeKey.R1080P, MediaAttributeKey.WEB_DL],
+    "Movie/x265": [MediaAttributeKey.R1080P, MediaAttributeKey.X265],
+    "Movie/480p": [MediaAttributeKey.R480P],
+    "Movie/DVD-R": [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],
+    "Movie/Xvid": [MediaAttributeKey.R480P],
+    "Movie/MP4": [MediaAttributeKey.R480P],
+    "Movie/Cam": [MediaAttributeKey.CAM],
+    "Movie/3D": [MediaAttributeKey.R1080P],
+    "Movie/Kids": [MediaAttributeKey.R480P],
+    "Movie/Non-English": [],
+    "Movie/Packs": [],
+    "TV/Web-DL": [MediaAttributeKey.R1080P, MediaAttributeKey.WEB_DL],
+    "TV/x265": [MediaAttributeKey.R1080P, MediaAttributeKey.X265],
+    "TV/x264": [MediaAttributeKey.R720P, MediaAttributeKey.X264],
+    "TV/BD": [MediaAttributeKey.R1080P, MediaAttributeKey.BLURAY],
+    "TV/480p": [MediaAttributeKey.R480P],
+    "TV/SD/x264": [MediaAttributeKey.R480P],
+    "TV/DVD-R": [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],
+    "TV/DVD-Rip": [MediaAttributeKey.R480P, MediaAttributeKey.DVD_RIP],
+    "TV/Xvid": [MediaAttributeKey.R480P],
+    "TV/Mobile": [MediaAttributeKey.R480P],
+    "TV/Non-English": [],
+    "TV/Packs": [],
+    "TV/Packs/Non-English": [],
 }
 
 
 # TV kategória checkbox ID-k (a movie listával együtt mind be van jelölve)
 _TV_CATEGORY_IDS = [
-    "73", "26", "55", "78", "23", "24", "25", "66", "82",
-    "65", "83", "79", "22", "5", "99", "4",
+    "73",
+    "26",
+    "55",
+    "78",
+    "23",
+    "24",
+    "25",
+    "66",
+    "82",
+    "65",
+    "83",
+    "79",
+    "22",
+    "5",
+    "99",
+    "4",
 ]
 
 _ALL_CATEGORY_IDS = [
-    "72", "87", "77", "101", "89", "90", "96", "6",
-    "48", "54", "62", "38", "68", "20", "100", "7",
-    "73", "26", "55", "78", "23", "24", "25", "66", "82",
-    "65", "83", "79", "22", "5", "99", "4",
+    "72",
+    "87",
+    "77",
+    "101",
+    "89",
+    "90",
+    "96",
+    "6",
+    "48",
+    "54",
+    "62",
+    "38",
+    "68",
+    "20",
+    "100",
+    "7",
+    "73",
+    "26",
+    "55",
+    "78",
+    "23",
+    "24",
+    "25",
+    "66",
+    "82",
+    "65",
+    "83",
+    "79",
+    "22",
+    "5",
+    "99",
+    "4",
 ]
 
 
@@ -113,17 +156,17 @@ def _category_key(img_node) -> str:
     return basename.rsplit(".", 1)[0]
 
 
-def _attribute_ids_from_category_and_name(
-    category: str, name: str
-) -> list[str]:
+def _attribute_ids_from_category_and_name(category: str, name: str) -> list[str]:
     base_attrs = list(_CATEGORY_MAP.get(category, []))
     name_lower = name.lower()
 
     if not any(
         a in base_attrs
         for a in [
-            MediaAttributeKey.R2160P, MediaAttributeKey.R1080P,
-            MediaAttributeKey.R720P, MediaAttributeKey.R576P,
+            MediaAttributeKey.R2160P,
+            MediaAttributeKey.R1080P,
+            MediaAttributeKey.R720P,
+            MediaAttributeKey.R576P,
             MediaAttributeKey.R480P,
         ]
     ):
@@ -137,11 +180,21 @@ def _attribute_ids_from_category_and_name(
             base_attrs.append(MediaAttributeKey.R480P)
 
     if MediaAttributeKey.X265 not in base_attrs:
-        if "x265" in name_lower or "hevc" in name_lower or "h265" in name_lower or "h 265" in name_lower:
+        if (
+            "x265" in name_lower
+            or "hevc" in name_lower
+            or "h265" in name_lower
+            or "h 265" in name_lower
+        ):
             base_attrs.append(MediaAttributeKey.X265)
 
     if MediaAttributeKey.X264 not in base_attrs:
-        if "x264" in name_lower or "h264" in name_lower or "h 264" in name_lower or "avc" in name_lower:
+        if (
+            "x264" in name_lower
+            or "h264" in name_lower
+            or "h 264" in name_lower
+            or "avc" in name_lower
+        ):
             base_attrs.append(MediaAttributeKey.X264)
 
     if MediaAttributeKey.WEB_DL not in base_attrs:
@@ -155,9 +208,7 @@ def _attribute_ids_from_category_and_name(
     return base_attrs
 
 
-def _parse_torrent_rows(
-    tree, imdb_id: str
-) -> list:
+def _parse_torrent_rows(tree, imdb_id: str) -> list:
     """HTML tree-ből kinyeri a torrent listát."""
     torrent_table = tree.css_first("table#torrents")
     if not torrent_table:
@@ -201,7 +252,9 @@ def _parse_torrent_rows(
         if download_path.startswith("http"):
             download_url = download_path
         else:
-            download_url = urljoin("https://iptorrents.com", "/" + download_path.lstrip("/"))
+            download_url = urljoin(
+                "https://iptorrents.com", "/" + download_path.lstrip("/")
+            )
 
         # ── Seeders: utolsó előtti <td> ──
         tds = row.css("td")
@@ -226,7 +279,6 @@ def _parse_torrent_rows(
 
 
 class IptorrentsIndexerDefinition(BaseIndexerDefinition):
-
     @property
     def id(self) -> str:
         return "iptorrents"
@@ -259,10 +311,7 @@ class IptorrentsIndexerDefinition(BaseIndexerDefinition):
         if response.history:
             original_url = str(response.history[0].url)
 
-        ended_up_at_login = (
-            "/do-login.php" in final_path
-            or "/login.php" in final_path
-        )
+        ended_up_at_login = "/do-login.php" in final_path or "/login.php" in final_path
         if ended_up_at_login:
             if self.login_path in original_url or "/login.php" in original_url:
                 return AuthenticationErrorEnum.CREDENTIAL_ERROR
@@ -334,9 +383,7 @@ class IptorrentsIndexerDefinition(BaseIndexerDefinition):
             next_page=current_page + 1 if has_next else None,
         )
 
-    async def _fetch_torrent(
-        self, torrent_id: str
-    ) -> IndexerDefinitionTorrent | None:
+    async def _fetch_torrent(self, torrent_id: str) -> IndexerDefinitionTorrent | None:
         detail_url = self.details_path.replace("{torrent_id}", torrent_id)
         response = await self._client.get(detail_url)
         tree = HTMLParser(response.text)
