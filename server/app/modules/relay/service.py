@@ -167,24 +167,31 @@ class RelayService:
     ) -> bytes:
         info_hash = str(torrent_handle.info_hash())
         request_key = (info_hash, piece_index)
-        future: asyncio.Future[bytes] = self.loop.create_future()
+        for attempt in range(4):
+            future: asyncio.Future[bytes] = self.loop.create_future()
+            requests = self.pending_piece_requests.setdefault(request_key, [])
+            requests.append(future)
 
-        requests = self.pending_piece_requests.setdefault(request_key, [])
-        requests.append(future)
+            if torrent_handle.have_piece(piece_index):
+                torrent_handle.read_piece(piece_index)
 
-        if torrent_handle.have_piece(piece_index):
-            torrent_handle.read_piece(piece_index)
+            try:
+                return await future
+            except FileNotFoundError:
+                if attempt < 3:
+                    await asyncio.sleep(0.5)
+                    continue
+                raise
+            finally:
+                if future in requests:
+                    requests.remove(future)
+                    if not requests:
+                        self.pending_piece_requests.pop(request_key, None)
 
-        try:
-            return await future
-        finally:
-            if future in requests:
-                requests.remove(future)
-                if not requests:
-                    self.pending_piece_requests.pop(request_key, None)
+                if not future.done():
+                    future.cancel()
 
-            if not future.done():
-                future.cancel()
+        raise RuntimeError("Unreachable")
 
     def add_torrent(
         self,
@@ -342,10 +349,18 @@ class RelayService:
                             has_error = alert.error and alert.error.value() != 0
 
                             if has_error:
+                                error_msg = alert.error.message()
+                                error_code = alert.error.value()
+
                                 logger.error(
-                                    f"Hiba a libtorrent.read_piece_alert során: {alert.error.message()}"
+                                    f"Hiba a libtorrent.read_piece_alert során: {error_msg} (Kód: {error_code})"
                                 )
-                                err = Exception(alert.error.message())
+
+                                if error_code in (2, 3):
+                                    err = FileNotFoundError(error_msg)
+                                else:
+                                    err = Exception(error_msg)
+
                                 for future in futures:
                                     if not future.done():
                                         self.loop.call_soon_threadsafe(

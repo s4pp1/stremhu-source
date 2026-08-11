@@ -4,6 +4,7 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from app.common.database import get_db
+from app.modules.preferences.dependencies import create_preferences_service
 from app.modules.settings.dependencies import create_settings_service
 from app.modules.torrent_source_provider.dependencies import (
     create_torrent_source_provider_service,
@@ -18,12 +19,14 @@ def create_torrent_streams_service(
     torrent_source_provider_service = create_torrent_source_provider_service(db)
     torrents_service = create_torrents_service(db)
     settings_service = create_settings_service(db)
+    preferences_service = create_preferences_service(db)
 
     return TorrentStreamsService(
         db=db,
         torrent_source_provider_service=torrent_source_provider_service,
         torrents_service=torrents_service,
         settings_service=settings_service,
+        preferences_service=preferences_service,
     )
 
 

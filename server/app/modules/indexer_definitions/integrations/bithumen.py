@@ -6,8 +6,10 @@ from selectolax.parser import HTMLParser
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
-from app.modules.indexer_definitions.enums import AuthenticationErrorEnum
 from app.modules.indexer_definitions.schemas.internal import (
+    AuthCredentialError,
+    AuthError,
+    AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
     IndexerDefinitionLogin,
     IndexerDefinitionTorrent,
@@ -55,15 +57,13 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
     def details_path(self) -> str:
         return "/details.php?id={torrent_id}"
 
-    def _detect_authentication_error(
-        self, response: httpx.Response
-    ) -> AuthenticationErrorEnum | None:
+    def _detect_authentication_error(self, response: httpx.Response) -> AuthError:
         if response.status_code == 401:
-            return AuthenticationErrorEnum.CREDENTIAL_ERROR
+            return AuthCredentialError()
 
         final_path = str(response.url.path)
         if "/login.php" in final_path:
-            return AuthenticationErrorEnum.SESSION_ERROR
+            return AuthSessionError()
 
         return None
 

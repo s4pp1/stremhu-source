@@ -1,8 +1,8 @@
-import { useForm } from '@tanstack/react-form'
 import { useQueries } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
+import { SmartFilterSettings } from '@/features/smart-filter/smart-filter-settings'
 import {
   Card,
   CardContent,
@@ -12,15 +12,22 @@ import {
 } from '@/shared/components/ui/card'
 import { Label } from '@/shared/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group'
-import { Switch } from '@/shared/components/ui/switch'
 import { SEED_OPTIONS } from '@/shared/constants'
+import { useAppForm } from '@/shared/contexts/form-context'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
 import { getMe, useUpdateMe } from '@/shared/queries/me'
-import { onlyBestTorrentSchema, torrentSeedSchema } from '@/shared/schemas'
+import {
+  enableSmartFilterSchema,
+  smartFilterGroupingPreferenceIdSchema,
+  smartFilterLimitSchema,
+  torrentSeedSchema,
+} from '@/shared/schemas'
 
 export const validatorSchema = z.object({
   torrentSeed: torrentSeedSchema,
-  onlyBestTorrent: onlyBestTorrentSchema,
+  enableSmartFilter: enableSmartFilterSchema,
+  smartFilterGroupingPreferenceId: smartFilterGroupingPreferenceIdSchema,
+  smartFilterLimit: smartFilterLimitSchema,
 })
 
 export function OtherPreferences() {
@@ -31,10 +38,12 @@ export function OtherPreferences() {
 
   const { mutateAsync: updateMe } = useUpdateMe()
 
-  const form = useForm({
+  const form = useAppForm({
     defaultValues: {
       torrentSeed: me.torrentSeed,
-      onlyBestTorrent: me.onlyBestTorrent,
+      enableSmartFilter: me.enableSmartFilter,
+      smartFilterGroupingPreferenceId: me.smartFilterGroupingPreferenceId,
+      smartFilterLimit: me.smartFilterLimit,
     },
     validators: {
       onChange: validatorSchema,
@@ -111,29 +120,15 @@ export function OtherPreferences() {
             </form.Field>
           </CardContent>
         </Card>
-        <Card className="break-inside-avoid mb-4">
-          <CardHeader>
-            <CardTitle>Családbarát mód</CardTitle>
-            <CardDescription>
-              Csak a legjobb torrent jelenik meg a beállított preferenciáid
-              alapján - így nem kell listából válogatni.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form.Field name="onlyBestTorrent">
-              {(field) => (
-                <Label htmlFor={field.name} className="flex items-start gap-3">
-                  <Switch
-                    id={field.name}
-                    checked={field.state.value}
-                    onCheckedChange={field.handleChange}
-                  />
-                  Családbarát mód
-                </Label>
-              )}
-            </form.Field>
-          </CardContent>
-        </Card>
+
+        <SmartFilterSettings
+          form={form}
+          fields={{
+            enableSmartFilter: 'enableSmartFilter',
+            smartFilterLimit: 'smartFilterLimit',
+            smartFilterGroupingPreferenceId: 'smartFilterGroupingPreferenceId',
+          }}
+        />
       </div>
     </div>
   )

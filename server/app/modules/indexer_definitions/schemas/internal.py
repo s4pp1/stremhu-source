@@ -13,6 +13,21 @@ class IndexerDefinition(BaseModel):
     requires_full_download: bool
 
 
+class AuthSessionError(BaseModel):
+    pass
+
+
+class AuthCredentialError(BaseModel):
+    message: str | None = None
+
+
+class AuthOtherError(BaseModel):
+    message: str
+
+
+AuthError = AuthSessionError | AuthCredentialError | AuthOtherError | None
+
+
 class IndexerDefinitionLogin(BaseModel):
     username: str
     password: str

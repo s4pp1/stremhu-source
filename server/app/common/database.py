@@ -75,10 +75,6 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 @contextmanager
 def db_session() -> Generator[Session, None, None]:
-    """
-    Standard Python környezetkezelő (Context Manager) adatbázis tranzakciókhoz.
-    Automatikusan kezeli a commit, rollback és close életciklusokat.
-    """
     db = SessionLocal()
     try:
         yield db
@@ -90,11 +86,20 @@ def db_session() -> Generator[Session, None, None]:
         db.close()
 
 
+@contextmanager
+def isolated_db_session() -> Generator[Session, None, None]:
+    db = SessionLocal(expire_on_commit=False)
+    try:
+        yield db
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    finally:
+        db.close()
+
+
 def get_db() -> Generator[Session, None, None]:
-    """
-    FastAPI specifikus függőség-injektor generátor.
-    A háttérben biztonságosan delegál a db_session környezetkezelőnek.
-    """
     with db_session() as db:
         yield db
 

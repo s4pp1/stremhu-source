@@ -60,11 +60,22 @@ class TorrentFilesRepository:
         self.db.delete(model)
         self.db.flush()
 
+    def delete_expired(self, expiration_date: datetime.datetime) -> int:
+        result = (
+            self.db.query(TorrentFileModel)
+            .filter(
+                TorrentFileModel.last_used_at < expiration_date,
+                ~TorrentFileModel.torrent.has(),
+            )
+            .delete(synchronize_session=False)
+        )
+        self.db.flush()
+        return result
+
     def touch(
         self,
         identifiers: TorrentFileIdentifier | list[TorrentFileIdentifier],
     ) -> None:
-        """Frissíti a megadott .torrent fájl(ok) legutóbbi használati idejét (last_used_at) az adatbázisban."""
         if not identifiers:
             return
 

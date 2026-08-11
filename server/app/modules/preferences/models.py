@@ -12,17 +12,34 @@ if TYPE_CHECKING:
 class PreferenceModel(Base):
     __tablename__ = "preferences"
 
-    id: Mapped[str] = mapped_column(sa.String, primary_key=True)
+    id: Mapped[str] = mapped_column(
+        sa.String,
+        primary_key=True,
+    )
 
     name: Mapped[str] = mapped_column(sa.String)
 
     description: Mapped[str] = mapped_column(sa.String)
 
-    multiple: Mapped[bool] = mapped_column(sa.Boolean, default=False)
+    multiple: Mapped[bool] = mapped_column(
+        sa.Boolean,
+        default=False,
+    )
 
-    order: Mapped[int] = mapped_column(sa.Integer, default=0)
+    order: Mapped[int] = mapped_column(
+        sa.Integer,
+        default=0,
+    )
 
-    emoji: Mapped[str | None] = mapped_column(sa.String, default=None)
+    emoji: Mapped[str | None] = mapped_column(
+        sa.String,
+        default=None,
+    )
+
+    allow_best_torrent_grouping: Mapped[bool] = mapped_column(
+        sa.Boolean,
+        default=False,
+    )
 
     attributes: Mapped[list["AttributeModel"]] = relationship(
         "AttributeModel",

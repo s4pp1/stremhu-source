@@ -88,28 +88,6 @@ class TorrentFilesService:
                     f"Hiba történt a(z) {indexer_id} - {torrent_id} rekord törlése során: {e}"
                 )
 
-    def delete_by_indexer_id(
-        self,
-        indexer_id: str,
-    ) -> None:
-        """Törli az indexer összes inaktív .torrent rekordját az adatbázisból."""
-        torrent_files = self._torrent_files_repository.find_list(
-            TorrentFilesFilter(
-                indexer_id=indexer_id,
-                exclude_persisted=True,
-            )
-        )
-        if not torrent_files:
-            return
-
-        for torrent_file in torrent_files:
-            try:
-                self._torrent_files_repository.delete(torrent_file)
-            except Exception as e:
-                logger.error(
-                    f"Nem sikerült törölni a(z) {torrent_file.indexer_id} - {torrent_file.torrent_id} rekordot: {e}"
-                )
-
     def run_retention_cleanup(self, retention_seconds: int | None = None) -> None:
         """Törli a gyorsítótárból (adatbázisból) a lejárt és inaktív torrent rekordokat (LRU).
 
@@ -119,21 +97,17 @@ class TorrentFilesService:
             retention_seconds = 7 * 24 * 3600
 
         now = datetime.datetime.now()
+        expiration_date = now - datetime.timedelta(seconds=retention_seconds)
 
-        torrent_files = self._torrent_files_repository.find_list(
-            filter=TorrentFilesFilter(
-                exclude_persisted=True,
+        try:
+            deleted_count = self._torrent_files_repository.delete_expired(
+                expiration_date
             )
-        )
-
-        for torrent_file in torrent_files:
-            elapsed_seconds = (now - torrent_file.last_used_at).total_seconds()
-            is_expired = elapsed_seconds > retention_seconds
-
-            if is_expired:
-                try:
-                    self._torrent_files_repository.delete(torrent_file)
-                except Exception:
-                    logger.exception(
-                        f"Nem sikerült törölni a(z) {torrent_file.indexer_id} - {torrent_file.torrent_id} elavult torrentet az adatbázisból."
-                    )
+            if deleted_count > 0:
+                logger.info(
+                    f"🧹 Törölve {deleted_count} elavult torrent a gyorsítótárból."
+                )
+        except Exception:
+            logger.exception(
+                "Nem sikerült törölni az elavult torrenteket az adatbázisból."
+            )

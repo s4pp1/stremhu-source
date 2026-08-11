@@ -6,6 +6,8 @@ from collections.abc import AsyncIterator
 from typing import TYPE_CHECKING
 from uuid import uuid4
 
+import anyio
+
 if TYPE_CHECKING:
     from app.modules.relay.service import RelayService
 
@@ -332,7 +334,7 @@ class Stream:
                 self.torrent.service.trigger_priority_update(self.torrent.info_hash)
 
                 if await request.is_disconnected():
-                    return
+                    break
 
                 piece_buffer = await self.torrent.service.get_piece_data(
                     self.torrent.torrent_handle, piece_index
@@ -353,9 +355,19 @@ class Stream:
 
                 view = memoryview(piece_buffer)[start_offset:end_offset]
 
+                disconnected = False
                 for chunk_start in range(0, len(view), CHUNK_SIZE):
                     if await request.is_disconnected():
-                        return
+                        disconnected = True
+                        break
                     yield view[chunk_start : chunk_start + CHUNK_SIZE].tobytes()
+
+                if disconnected:
+                    break
+
+        except anyio.get_cancelled_exc_class():
+            pass
+        except Exception:
+            logger.exception("Hiba történt a fájl streamelése közben.")
         finally:
             asyncio.create_task(self.destroy())
