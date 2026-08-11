@@ -359,15 +359,13 @@ class IptorrentsIndexerDefinition(BaseIndexerDefinition):
         # 2. kísérlet: ha nincs találat, próbálj cím+tag alapú keresést
         # az IMDb ID rövid szám részével (pl. "tt0944947" → "0944947").
         # Az IPT tag mezőjébe néha bekerül az IMDb ID, de a tt-prefix nélkül.
+        active_tree = tree
         if not torrents:
             numeric_id = imdb_id.lstrip("t")  # "tt0944947" → "0944947"
             params_ti = self._build_params(numeric_id, "all", current_page)
             response2 = await self._client.get("/t", params=params_ti)
-            tree2 = HTMLParser(response2.text)
-            torrents = _parse_torrent_rows(tree2, imdb_id)
-
-        # Pagination ellenőrzés az utolsó lekért tree-ből
-        active_tree = tree2 if not _parse_torrent_rows(tree, imdb_id) else tree
+            active_tree = HTMLParser(response2.text)
+            torrents = _parse_torrent_rows(active_tree, imdb_id)
         has_next = any(
             f";p={current_page + 1}" in (node.attributes.get("href") or "")
             or f"p={current_page + 1}" in (node.attributes.get("href") or "")
