@@ -26,6 +26,8 @@ unfixable = []
 combine-as-imports = true
 # Group imports nicely (standard library, third-party, local modules)
 order-by-type = true
+# Explicitly mark app as first-party to avoid CI mismatch
+known-first-party = ["app"]
 
 [tool.basedpyright]
 typeCheckingMode = "standard"
