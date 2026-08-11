@@ -7,8 +7,10 @@ from selectolax.parser import HTMLParser
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
-from app.modules.indexer_definitions.enums import AuthenticationErrorEnum
 from app.modules.indexer_definitions.schemas.internal import (
+    AuthCredentialError,
+    AuthError,
+    AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
     IndexerDefinitionLogin,
     IndexerDefinitionTorrent,
@@ -303,10 +305,10 @@ class IptorrentsIndexerDefinition(BaseIndexerDefinition):
     def details_path(self) -> str:
         return "/t/{torrent_id}"
 
-    def _detect_authentication_error(
-        self, response: httpx.Response
-    ) -> AuthenticationErrorEnum | None:
-        final_path = str(response.url.path)
+    def _detect_authentication_error(self, response: httpx.Response) -> AuthError:
+        request_path = str(response.url.path)
+        final_path = request_path
+
         original_url = str(response.request.url)
         if response.history:
             original_url = str(response.history[0].url)
@@ -314,8 +316,8 @@ class IptorrentsIndexerDefinition(BaseIndexerDefinition):
         ended_up_at_login = "/do-login.php" in final_path or "/login.php" in final_path
         if ended_up_at_login:
             if self.login_path in original_url or "/login.php" in original_url:
-                return AuthenticationErrorEnum.CREDENTIAL_ERROR
-            return AuthenticationErrorEnum.SESSION_ERROR
+                return AuthCredentialError()
+            return AuthSessionError()
 
         return None
 
