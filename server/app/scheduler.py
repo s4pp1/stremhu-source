@@ -9,6 +9,7 @@ from app.modules.pairings.background_tasks import run_expired_pairings_cleanup
 from app.modules.torrent_files.background_tasks import (
     run_torrent_files_retention_cleanup,
 )
+from app.modules.torrents.background_tasks import run_storage_quota_cleanup
 
 
 def setup_scheduler() -> AsyncIOScheduler:
@@ -52,6 +53,15 @@ def setup_scheduler() -> AsyncIOScheduler:
         trigger="interval",
         minutes=5,
         id="ddns_ip_sync",
+        replace_existing=True,
+    )
+
+    # Tárhely kvóta ellenőrzése (15 percenként)
+    scheduler.add_job(
+        run_storage_quota_cleanup,
+        trigger="interval",
+        minutes=15,
+        id="storage_quota_cleanup",
         replace_existing=True,
     )
 

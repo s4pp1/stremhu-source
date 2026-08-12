@@ -1,11 +1,11 @@
 import datetime
 
-from sqlalchemy import func
+from sqlalchemy import func, tuple_
 from sqlalchemy.orm import Session
 
 from app.modules.playback_histories.models import PlaybackHistoryModel
 from app.modules.torrents.models import TorrentModel
-from app.modules.torrents.schemas.internal import TorrentUpdate
+from app.modules.torrents.schemas.internal import TorrentKey, TorrentUpdate
 
 
 class TorrentRepository:
@@ -68,18 +68,40 @@ class TorrentRepository:
             cutoff = datetime.datetime.now() - datetime.timedelta(
                 seconds=keep_seed_seconds
             )
-
-            last_played_subquery = (
-                self.db.query(func.max(PlaybackHistoryModel.created_at))
-                .filter(
-                    PlaybackHistoryModel.indexer_id == TorrentModel.indexer_id,
-                    PlaybackHistoryModel.torrent_id == TorrentModel.torrent_id,
-                )
-                .correlate(TorrentModel)
-                .scalar_subquery()
-            )
-
-            last_played = func.coalesce(last_played_subquery, TorrentModel.created_at)
-            query = query.filter(last_played < cutoff)
+            query = query.filter(self._last_played_expression() < cutoff)
 
         return query.all()
+
+    def find_for_storage_cleanup(
+        self,
+        excluded_info_hashes: list[str] | None = None,
+        excluded_torrent_keys: list[TorrentKey] | None = None,
+    ) -> list[TorrentModel]:
+        query = self.db.query(TorrentModel).filter(
+            TorrentModel.is_persisted.is_(False),
+        )
+
+        if excluded_info_hashes:
+            query = query.filter(TorrentModel.info_hash.not_in(excluded_info_hashes))
+
+        if excluded_torrent_keys:
+            query = query.filter(
+                tuple_(TorrentModel.indexer_id, TorrentModel.torrent_id).not_in(
+                    excluded_torrent_keys
+                )
+            )
+
+        return query.order_by(self._last_played_expression().asc()).all()
+
+    def _last_played_expression(self):
+        last_played_subquery = (
+            self.db.query(func.max(PlaybackHistoryModel.created_at))
+            .filter(
+                PlaybackHistoryModel.indexer_id == TorrentModel.indexer_id,
+                PlaybackHistoryModel.torrent_id == TorrentModel.torrent_id,
+            )
+            .correlate(TorrentModel)
+            .scalar_subquery()
+        )
+
+        return func.coalesce(last_played_subquery, TorrentModel.created_at)
