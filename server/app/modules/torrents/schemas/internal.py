@@ -20,6 +20,12 @@ class TorrentKey(NamedTuple):
     torrent_id: str
 
 
+class StorageUsage(BaseModel):
+    used_bytes: int
+    free_bytes: int
+    total_bytes: int
+
+
 class TorrentCreate(BaseModel):
     indexer_id: str
     torrent_id: str

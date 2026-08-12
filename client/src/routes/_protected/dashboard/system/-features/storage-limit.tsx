@@ -1,5 +1,5 @@
 import { useForm } from '@tanstack/react-form'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useSuspenseQueries } from '@tanstack/react-query'
 import { InfoIcon } from 'lucide-react'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
@@ -25,12 +25,15 @@ import {
   InputGroupText,
 } from '@/shared/components/ui/input-group'
 import { Label } from '@/shared/components/ui/label'
+import { Separator } from '@/shared/components/ui/separator'
 import { Switch } from '@/shared/components/ui/switch'
 import { parseApiError } from '@/shared/lib/utils'
 import {
   getSystemSettings,
   useSystemSettingsUpdate,
 } from '@/shared/queries/system'
+import { getTorrentsStorage } from '@/shared/queries/torrents'
+import { formatFilesize } from '@/shared/utils/file.util'
 
 const BYTES_IN_GIGABYTE = 1024 * 1024 * 1024
 
@@ -44,7 +47,9 @@ const schema = z.object({
 })
 
 export function StorageLimit() {
-  const { data: systemSettings } = useSuspenseQuery(getSystemSettings)
+  const [{ data: systemSettings }, { data: storage }] = useSuspenseQueries({
+    queries: [getSystemSettings, getTorrentsStorage],
+  })
 
   const { mutateAsync: updateSetting } = useSystemSettingsUpdate()
 
@@ -147,6 +152,21 @@ export function StorageLimit() {
                       <FieldError errors={field.state.meta.errors} />
                     )}
                   </Field>
+                  <Separator />
+                  <div className="grid gap-2 text-sm">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-muted-foreground">Tárhely teljes mérete</span>
+                      <span>{formatFilesize(storage.totalBytes)}</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-muted-foreground">Letöltött fájlok</span>
+                      <span>{formatFilesize(storage.usedBytes)}</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-muted-foreground">Szabad</span>
+                      <span>{formatFilesize(storage.freeBytes)}</span>
+                    </div>
+                  </div>
                   {systemSettings.hitAndRun && (
                     <Alert>
                       <InfoIcon />
@@ -157,7 +177,8 @@ export function StorageLimit() {
                         Az „Automatikus torrent törlés” kártyán a
                         Hit&apos;n&apos;Run be van kapcsolva, így a még nem
                         teljesített torrentek a korlát ellenére sem törlődnek.
-                        Emiatt előfordulhat, hogy a beállított méret túllépésre kerül.
+                        Emiatt előfordulhat, hogy a beállított méret túllépésre
+                        kerül.
                       </AlertDescription>
                     </Alert>
                   )}

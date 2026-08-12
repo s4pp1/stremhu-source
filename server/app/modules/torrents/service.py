@@ -1,8 +1,11 @@
+import shutil
+
 import libtorrent as libtorrent
 from fastapi import HTTPException, status
 
 from app.common.constants import BYTES_IN_GIGABYTE, PRIO_0, PRIO_1
 from app.common.logger import logger
+from app.config import config
 from app.modules.indexer_accounts.service import IndexerAccountsService
 from app.modules.indexer_definitions.service import IndexerDefinitionsService
 from app.modules.relay.service import RelayService
@@ -11,6 +14,7 @@ from app.modules.torrent_files.service import TorrentFilesService
 from app.modules.torrents.models import TorrentModel
 from app.modules.torrents.repository import TorrentRepository
 from app.modules.torrents.schemas.internal import (
+    StorageUsage,
     TorrentKey,
     TorrentUpdate,
     TorrentWithRelay,
@@ -177,6 +181,22 @@ class TorrentsService:
         return sum(
             relay_torrent.downloaded
             for relay_torrent in self._relay_service.get_torrents()
+        )
+
+    def get_storage_usage(self) -> StorageUsage:
+        free_bytes = 0
+        total_bytes = 0
+
+        # Friss telepítésnél a letöltési mappa még nem létezik.
+        if config.downloads_dir.exists():
+            usage = shutil.disk_usage(config.downloads_dir)
+            free_bytes = usage.free
+            total_bytes = usage.total
+
+        return StorageUsage(
+            used_bytes=self.get_used_storage_bytes(),
+            free_bytes=free_bytes,
+            total_bytes=total_bytes,
         )
 
     def cleanup_storage_quota(

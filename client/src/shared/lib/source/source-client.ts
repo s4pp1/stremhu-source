@@ -458,6 +458,12 @@ export interface RelaySettingsUpdateRequest {
   enableUpnpAndNatpmp?: boolean | null
 }
 
+export interface StorageUsageResponse {
+  usedBytes: number
+  freeBytes: number
+  totalBytes: number
+}
+
 export interface StremioCatalogResponse {
   metas: MetaPreview[]
 }
@@ -1430,6 +1436,18 @@ export const torrentsGetList = (
 }
 
 /**
+ * @summary Get Storage
+ */
+export const torrentsGetStorage = (
+  options?: SecondParameter<typeof sourceClientInstance<StorageUsageResponse>>,
+) => {
+  return sourceClientInstance<StorageUsageResponse>(
+    { url: `/api/torrents/storage`, method: 'GET' },
+    options,
+  )
+}
+
+/**
  * @summary Get One
  */
 export const torrentsGetOne = (
@@ -1909,6 +1927,9 @@ export type NetworkSetupResult = NonNullable<
 >
 export type TorrentsGetListResult = NonNullable<
   Awaited<ReturnType<typeof torrentsGetList>>
+>
+export type TorrentsGetStorageResult = NonNullable<
+  Awaited<ReturnType<typeof torrentsGetStorage>>
 >
 export type TorrentsGetOneResult = NonNullable<
   Awaited<ReturnType<typeof torrentsGetOne>>

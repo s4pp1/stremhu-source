@@ -6,7 +6,11 @@ from fastapi import APIRouter, Depends
 from app.modules.auth.dependencies import SessionGuard
 from app.modules.roles.constants import UserRoleKey
 from app.modules.torrents.dependencies import get_torrents_service
-from app.modules.torrents.schemas.api import TorrentResponse, TorrentUpdateRequest
+from app.modules.torrents.schemas.api import (
+    StorageUsageResponse,
+    TorrentResponse,
+    TorrentUpdateRequest,
+)
 from app.modules.torrents.schemas.internal import TorrentUpdate
 from app.modules.torrents.service import TorrentsService
 from app.modules.users.models import UserModel
@@ -30,6 +34,17 @@ def get_list(
         TorrentResponse.from_torrent_with_relay(torrent_pair)
         for torrent_pair in torrent_pairs
     ]
+
+
+@router.get(
+    "/storage",
+    response_model=StorageUsageResponse,
+)
+def get_storage(
+    torrents_service: Annotated[TorrentsService, Depends(get_torrents_service)],
+    _: Annotated[UserModel, Depends(SessionGuard([UserRoleKey.ADMIN]))],
+):
+    return torrents_service.get_storage_usage()
 
 
 @router.get(
