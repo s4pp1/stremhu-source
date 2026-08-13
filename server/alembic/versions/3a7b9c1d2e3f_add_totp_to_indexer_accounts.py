@@ -21,9 +21,22 @@ depends_on: str | Sequence[str] | None = None
 
 def upgrade() -> None:
     with op.batch_alter_table("indexer_accounts", schema=None) as batch_op:
-        batch_op.add_column(sa.Column("totp", sa.String(), nullable=True))
+        batch_op.add_column(sa.Column("totp_secret", sa.String(), nullable=True))
+
+    with op.batch_alter_table("indexer_definitions", schema=None) as batch_op:
+        batch_op.add_column(
+            sa.Column(
+                "supports_totp",
+                sa.Boolean(),
+                server_default=sa.text("0"),
+                nullable=False,
+            )
+        )
 
 
 def downgrade() -> None:
+    with op.batch_alter_table("indexer_definitions", schema=None) as batch_op:
+        batch_op.drop_column("supports_totp")
+
     with op.batch_alter_table("indexer_accounts", schema=None) as batch_op:
-        batch_op.drop_column("totp")
+        batch_op.drop_column("totp_secret")

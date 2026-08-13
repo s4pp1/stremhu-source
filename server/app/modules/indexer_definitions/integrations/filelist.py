@@ -12,7 +12,7 @@ from app.modules.indexer_definitions.schemas.internal import (
     AuthError,
     AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
-    IndexerDefinitionLogin,
+    IndexerDefinitionLoginPayload,
     IndexerDefinitionTorrent,
 )
 from app.modules.media_attributes.constants import MediaAttributeKey
@@ -80,12 +80,12 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
 
         return None
 
-    async def _login(self, credential: IndexerDefinitionLogin) -> httpx.Response:
+    async def _login(self, payload: IndexerDefinitionLoginPayload) -> httpx.Response:
         # Először lekérjük a login oldalt a CSRF validator token miatt
         res = await self._client.get(self.login_path)
         form_data = self._build_login_form(res.text)
-        form_data["username"] = credential.username
-        form_data["password"] = credential.password
+        form_data["username"] = payload.username
+        form_data["password"] = payload.password
 
         return await self._client.post(
             urljoin(self.url, "/takelogin.php"),

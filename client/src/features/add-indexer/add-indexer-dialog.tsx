@@ -5,6 +5,7 @@ import * as z from 'zod'
 
 import type { OpenedDialog } from '@/routes/-features/dialogs/dialogs-store'
 import { useDialogsStore } from '@/routes/-features/dialogs/dialogs-store'
+import { Checkbox } from '@/shared/components/ui/checkbox'
 import {
   Dialog,
   DialogDescription,
@@ -13,12 +14,8 @@ import {
   DialogScrollContent,
   DialogTitle,
 } from '@/shared/components/ui/dialog'
-import {
-  Field,
-  FieldDescription,
-  FieldLabel,
-} from '@/shared/components/ui/field'
-import { Input } from '@/shared/components/ui/input'
+import { Field, FieldLabel } from '@/shared/components/ui/field'
+import { Label } from '@/shared/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -27,6 +24,7 @@ import {
   SelectValue,
 } from '@/shared/components/ui/select'
 import { useAppForm } from '@/shared/contexts/form-context'
+import type { IndexerDefinitionResponse } from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
 import {
   getIndexerDefinitions,
@@ -35,12 +33,26 @@ import {
 
 import type { AddIndexerDialog } from './add-indexer.types'
 
-const schema = z.object({
-  indexerId: z.string(),
-  username: z.string().trim().nonempty('A felhasználónév kitöltése kötelező'),
-  password: z.string().trim().nonempty('A jelszó kitöltése kötelező'),
-  totp: z.string(),
-})
+const schema = z
+  .object({
+    indexer: z.custom<IndexerDefinitionResponse>(
+      (val) => Boolean(val && typeof val === 'object'),
+      'A torrent oldal kiválasztása kötelező',
+    ),
+    username: z.string().trim().nonempty('A felhasználónév kitöltése kötelező'),
+    password: z.string().trim().nonempty('A jelszó kitöltése kötelező'),
+    useTotp: z.boolean(),
+    totpSecret: z.string(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.useTotp && !data.totpSecret.trim()) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'A 2FA titkos kulcs kitöltése kötelező',
+        path: ['totpSecret'],
+      })
+    }
+  })
 
 export function AddIndexerDialog(dialog: OpenedDialog & AddIndexerDialog) {
   const [{ data: indexerDefinitions }] = useSuspenseQueries({
@@ -59,17 +71,28 @@ export function AddIndexerDialog(dialog: OpenedDialog & AddIndexerDialog) {
 
   const form = useAppForm({
     defaultValues: {
-      indexerId: inactiveIndexers[0]?.id ?? '',
+      indexer: inactiveIndexers[0],
       username: '',
       password: '',
-      totp: '',
+      useTotp: false,
+      totpSecret: '',
     },
     validators: {
       onChange: schema,
     },
     onSubmit: async ({ value }) => {
       try {
-        await loginIndexer(value)
+        await loginIndexer({
+          indexerId: value.indexer.id,
+          username: value.username,
+          password: value.password,
+          totpSecret:
+            value.indexer.supportsTotp &&
+            value.useTotp &&
+            value.totpSecret.trim()
+              ? value.totpSecret.trim()
+              : null,
+        })
         dialogsStore.closeDialog(dialog.id)
       } catch (error) {
         const message = parseApiError(error)
@@ -105,14 +128,20 @@ export function AddIndexerDialog(dialog: OpenedDialog & AddIndexerDialog) {
                 adataidat.
               </DialogDescription>
             </DialogHeader>
-            <form.Field name="indexerId">
+            <form.Field name="indexer">
               {(field) => (
                 <Field>
                   <FieldLabel htmlFor={field.name}>Torrent oldal</FieldLabel>
                   <Select
-                    value={field.state.value}
+                    value={field.state.value.id}
                     name={field.name}
-                    onValueChange={(value) => field.handleChange(value)}
+                    onValueChange={(id) => {
+                      const selected = inactiveIndexers.find((i) => i.id === id)
+                      if (selected) {
+                        form.reset()
+                        field.setValue(selected)
+                      }
+                    }}
                   >
                     <SelectTrigger className="w-full">
                       <SelectValue />
@@ -140,38 +169,50 @@ export function AddIndexerDialog(dialog: OpenedDialog & AddIndexerDialog) {
                 <field.AppTextField label="Jelszó" type="password" />
               )}
             />
-            <form.Subscribe selector={(state) => state.values.indexerId}>
-              {(indexerId) =>
-                indexerId === 'ncore' ? (
-                  <form.Field name="totp">
-                    {(field) => (
-                      <Field>
-                        <FieldLabel htmlFor={field.name}>
-                          2FA titkos kulcs (TOTP)
-                        </FieldLabel>
-                        <Input
-                          id={field.name}
-                          name={field.name}
-                          value={field.state.value}
-                          onBlur={field.handleBlur}
-                          onChange={(e) => field.handleChange(e.target.value)}
-                        />
-                        <FieldDescription>
-                          Opcionális. Ha az nCore fiókodon be van kapcsolva a
-                          kétlépcsős azonosítás (2FA), add meg a 2FA titkos
-                          kulcsot. A kulcsot az nCore oldalon a{' '}
-                          <span className="font-semibold">
-                            Beállítások -&gt; Biztonság
-                          </span>{' '}
-                          menüpontban találod a QR kód alatt (a kód csak a 2FA
-                          bekapcsolásakor látható, ha nincs meg, akkor ki, majd
-                          újra be kell kapcsolni a 2FA-t).
-                        </FieldDescription>
-                      </Field>
-                    )}
-                  </form.Field>
-                ) : null
+            <form.Subscribe
+              selector={(state) =>
+                [state.values.indexer, state.values.useTotp] as const
               }
+            >
+              {([indexer, useTotp]) => {
+                if (!indexer.supportsTotp) return null
+
+                return (
+                  <div className="flex flex-col gap-3">
+                    <form.Field name="useTotp">
+                      {(field) => (
+                        <Field orientation="horizontal">
+                          <Checkbox
+                            id={field.name}
+                            name={field.name}
+                            checked={field.state.value}
+                            onCheckedChange={(checked) => {
+                              field.handleChange(Boolean(checked))
+                              if (!checked) {
+                                form.setFieldValue('totpSecret', '')
+                              }
+                            }}
+                          />
+                          <Label htmlFor={field.name}>
+                            Kétlépcsős azonosítás (2FA / TOTP) használata
+                          </Label>
+                        </Field>
+                      )}
+                    </form.Field>
+                    {useTotp && (
+                      <form.AppField
+                        name="totpSecret"
+                        children={(field) => (
+                          <field.AppTextField
+                            label="2FA titkos kulcs (TOTP)"
+                            description="Csak az alkalmazás alapú (pl. Google Authenticator, Authy) kétlépcsős azonosítás (2FA) támogatott. Add meg a 2FA beállításakor kapott titkos kulcsot (a QR kód alatt szokott lenni). Ha már be van állítva, a hitelesítő alkalmazásodból is kinyerhető (pl. QR kód exportálással), vagy az adott oldalon a 2FA kikapcsolásával és újbóli bekapcsolásával ismét megszerezheted."
+                          />
+                        )}
+                      />
+                    )}
+                  </div>
+                )
+              }}
             </form.Subscribe>
             <DialogFooter>
               <form.SubscribeButton

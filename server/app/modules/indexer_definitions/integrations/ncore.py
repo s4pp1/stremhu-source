@@ -6,7 +6,6 @@
 from urllib.parse import parse_qs, urljoin, urlparse
 
 import httpx
-import pyotp
 from selectolax.parser import HTMLParser
 
 from app.modules.indexer_definitions.base_indexer_definition import (
@@ -17,7 +16,7 @@ from app.modules.indexer_definitions.schemas.internal import (
     AuthError,
     AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
-    IndexerDefinitionLogin,
+    IndexerDefinitionLoginPayload,
     IndexerDefinitionTorrent,
 )
 from app.modules.media_attributes.constants import MediaAttributeKey
@@ -35,6 +34,10 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
     @property
     def requires_full_download(self) -> bool:
         return False
+
+    @property
+    def supports_totp(self) -> bool:
+        return True
 
     @property
     def url(self) -> str:
@@ -68,11 +71,11 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
 
     async def _login(
         self,
-        credential: IndexerDefinitionLogin,
+        payload: IndexerDefinitionLoginPayload,
     ) -> httpx.Response:
-        data = {"nev": credential.username, "pass": credential.password}
-        if credential.totp:
-            data["2factor"] = pyotp.TOTP(credential.totp).now()
+        data = {"nev": payload.username, "pass": payload.password}
+        if payload.totp_code:
+            data["2factor"] = payload.totp_code
 
         return await self._client.post(
             self.login_path,

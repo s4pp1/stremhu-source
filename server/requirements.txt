@@ -16,7 +16,7 @@ SQLAlchemy==2.0.51
 alembic==1.18.5
 itsdangerous==2.2.0
 argon2-cffi==25.1.0
-pyotp==2.9.0
+pyotp==2.10.0
 apscheduler==3.11.3
 openapi-python-client==0.29.0
 humanize==4.16.0

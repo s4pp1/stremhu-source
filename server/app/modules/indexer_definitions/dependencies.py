@@ -10,14 +10,14 @@ class IndexerAccountStorage:
     def get_credentials(self, indexer_id: str) -> IndexerDefinitionLogin | None:
         with db_session() as db:
             repository = IndexerAccountsRepository(db)
-            user = repository.find_by_id(indexer_id)
-            if not user:
+            indexer_account = repository.find_by_id(indexer_id)
+            if not indexer_account:
                 return None
             return IndexerDefinitionLogin(
-                username=user.username,
-                password=user.password,
-                totp=user.totp,
-                cookies=user.cookies,
+                username=indexer_account.username,
+                password=indexer_account.password,
+                totp_secret=indexer_account.totp_secret,
+                cookies=indexer_account.cookies,
             )
 
     def save_cookies(self, indexer_id: str, cookies: dict[str, str]) -> None:

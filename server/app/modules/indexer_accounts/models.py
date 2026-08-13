@@ -28,7 +28,9 @@ class IndexerAccountModel(Base):
 
     password: Mapped[str] = mapped_column(sa.String)
 
-    totp: Mapped[str | None] = mapped_column(sa.String, nullable=True, default=None)
+    totp_secret: Mapped[str | None] = mapped_column(
+        sa.String, nullable=True, default=None
+    )
 
     hit_and_run: Mapped[bool | None] = mapped_column(sa.Boolean, default=None)
 

@@ -11,7 +11,7 @@ from app.modules.indexer_definitions.schemas.internal import (
     AuthError,
     AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
-    IndexerDefinitionLogin,
+    IndexerDefinitionLoginPayload,
     IndexerDefinitionTorrent,
 )
 from app.modules.media_attributes.constants import MediaAttributeKey
@@ -69,13 +69,13 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
 
     async def _login(
         self,
-        credential: IndexerDefinitionLogin,
+        payload: IndexerDefinitionLoginPayload,
     ) -> httpx.Response:
         return await self._client.post(
             self.login_path,
             data={
-                "username": credential.username,
-                "password": credential.password,
+                "username": payload.username,
+                "password": payload.password,
                 "returnto": "/",
             },
             headers={"Content-Type": "application/x-www-form-urlencoded"},
