@@ -96,6 +96,7 @@ class IndexerDefinitionsService:
             "url",
             "details_path",
             "requires_full_download",
+            "supports_totp",
             "order",
             "disabled",
         ]
@@ -105,6 +106,7 @@ class IndexerDefinitionsService:
                 "url": instance.url,
                 "details_path": instance.details_path,
                 "requires_full_download": instance.requires_full_download,
+                "supports_totp": instance.supports_totp,
                 "disabled": instance.disabled,
                 "order": index,
             }

@@ -11,6 +11,7 @@ class IndexerDefinition(BaseModel):
     url: str
     details_path: str
     requires_full_download: bool
+    supports_totp: bool = False
 
 
 class AuthSessionError(BaseModel):
@@ -31,7 +32,14 @@ AuthError = AuthSessionError | AuthCredentialError | AuthOtherError | None
 class IndexerDefinitionLogin(BaseModel):
     username: str
     password: str
+    totp_secret: str | None = None
     cookies: dict[str, str] | None = None
+
+
+class IndexerDefinitionLoginPayload(BaseModel):
+    username: str
+    password: str
+    totp_code: str | None = None
 
 
 class IndexerDefinitionTorrent(BaseModel):
