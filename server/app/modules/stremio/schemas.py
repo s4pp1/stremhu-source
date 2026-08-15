@@ -137,6 +137,7 @@ class BehaviorHints(BaseModel):
     not_web_ready: bool = True
     binge_group: str | None = None
     filename: str | None = None
+    video_size: int | None = None
 
 
 class StremioStream(BaseModel):
@@ -167,6 +168,7 @@ class StremioStream(BaseModel):
                         if isinstance(attr, MediaAttributeModel)
                     ],
                 ),
+                video_size=torrent_stream.file_size,
             ),
         )
 
@@ -258,6 +260,7 @@ class StremioStream(BaseModel):
             behavior_hints=BehaviorHints(
                 filename=behavior_filename,
                 binge_group=binge_group,
+                video_size=torrent_stream.file_size,
             ),
         )
 
