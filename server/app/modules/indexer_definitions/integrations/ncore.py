@@ -16,7 +16,7 @@ from app.modules.indexer_definitions.schemas.internal import (
     AuthError,
     AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
-    IndexerDefinitionLogin,
+    IndexerDefinitionLoginPayload,
     IndexerDefinitionTorrent,
 )
 from app.modules.media_attributes.constants import MediaAttributeKey
@@ -34,6 +34,10 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
     @property
     def requires_full_download(self) -> bool:
         return False
+
+    @property
+    def supports_totp(self) -> bool:
+        return True
 
     @property
     def url(self) -> str:
@@ -67,11 +71,15 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
 
     async def _login(
         self,
-        credential: IndexerDefinitionLogin,
+        payload: IndexerDefinitionLoginPayload,
     ) -> httpx.Response:
+        data = {"nev": payload.username, "pass": payload.password}
+        if payload.totp_code:
+            data["2factor"] = payload.totp_code
+
         return await self._client.post(
             self.login_path,
-            data={"nev": credential.username, "pass": credential.password},
+            data=data,
             headers={"Content-Type": "application/x-www-form-urlencoded"},
         )
 

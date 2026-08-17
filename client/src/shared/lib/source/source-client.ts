@@ -85,12 +85,14 @@ export interface IndexerDefinitionResponse {
   url: string
   detailsPath: string
   requiresFullDownload: boolean
+  supportsTotp: boolean
 }
 
 export interface IndexerLoginRequest {
   indexerId: string
   username: string
   password: string
+  totpSecret?: string | null
 }
 
 export interface IndexerResponse {

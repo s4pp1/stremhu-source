@@ -1,18 +1,19 @@
 import { useStore } from '@tanstack/react-form'
-import type { HTMLInputTypeAttribute } from 'react'
+import type { HTMLInputTypeAttribute, ReactNode } from 'react'
 
 import { useFieldContext, useFormContext } from '@/shared/contexts/form-context'
 
-import { Field, FieldError, FieldLabel } from '../ui/field'
+import { Field, FieldDescription, FieldError, FieldLabel } from '../ui/field'
 import { Input } from '../ui/input'
 
 type AppTextField = {
   label?: string
+  description?: ReactNode
   type?: HTMLInputTypeAttribute
 }
 
 export function AppTextField(props: AppTextField) {
-  const { label, type } = props
+  const { label, description, type } = props
 
   const form = useFormContext()
   const { name, state, handleBlur, handleChange } = useFieldContext<string>()
@@ -36,6 +37,7 @@ export function AppTextField(props: AppTextField) {
         onChange={(e) => handleChange(e.target.value)}
       />
       {displayError && <FieldError errors={state.meta.errors} />}
+      {description && <FieldDescription>{description}</FieldDescription>}
     </Field>
   )
 }

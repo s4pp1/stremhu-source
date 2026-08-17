@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 
 import httpx
 import pydash
+import pyotp
 
 from app.modules.indexer_definitions.exceptions import (
     AuthenticationException,
@@ -19,6 +20,7 @@ from app.modules.indexer_definitions.schemas.internal import (
     AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
     IndexerDefinitionLogin,
+    IndexerDefinitionLoginPayload,
     IndexerDefinitionTorrent,
 )
 
@@ -148,6 +150,11 @@ class BaseIndexerDefinition(ABC):
         """Letiltott-e az indexer integráció (pl. törött működés miatt)."""
         return False
 
+    @property
+    def supports_totp(self) -> bool:
+        """Támogatja-e az indexer a TOTP (2FA) bejelentkezést."""
+        return False
+
     # --- Absztrakt üzleti metódusok ---
 
     @abstractmethod
@@ -162,7 +169,7 @@ class BaseIndexerDefinition(ABC):
         """
 
     @abstractmethod
-    async def _login(self, credential: IndexerDefinitionLogin) -> httpx.Response:
+    async def _login(self, payload: IndexerDefinitionLoginPayload) -> httpx.Response:
         """Végrehajtja a tényleges POST bejelentkezési kérést a indexer felé."""
 
     @abstractmethod
@@ -213,7 +220,22 @@ class BaseIndexerDefinition(ABC):
 
         self._client.cookies.clear()
 
-        await self._login(credential)
+        totp_code: str | None = None
+        if credential.totp_secret:
+            try:
+                totp_code = pyotp.TOTP(credential.totp_secret).now()
+            except Exception:
+                raise AuthenticationException(
+                    "Érvénytelen 2FA titkos kulcs (TOTP) formátum."
+                )
+
+        await self._login(
+            IndexerDefinitionLoginPayload(
+                username=credential.username,
+                password=credential.password,
+                totp_code=totp_code,
+            )
+        )
 
         if not is_first_login and self._indexer_account_storage:
             try:

@@ -13,7 +13,7 @@ from app.modules.indexer_definitions.schemas.internal import (
     AuthError,
     AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
-    IndexerDefinitionLogin,
+    IndexerDefinitionLoginPayload,
     IndexerDefinitionTorrent,
 )
 from app.modules.media_attributes.constants import MediaAttributeKey

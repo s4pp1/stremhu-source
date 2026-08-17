@@ -14,3 +14,4 @@ class IndexerDefinitionResponse(BaseModel):
     url: str
     details_path: str
     requires_full_download: bool
+    supports_totp: bool
