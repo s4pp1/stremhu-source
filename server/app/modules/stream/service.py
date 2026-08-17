@@ -36,6 +36,9 @@ from app.modules.torrents.service import TorrentsService
 torrent_locks = KeyedLock()
 playback_history_lock = KeyedLock()
 
+# A háttérben futó touch task-okra kell egy referencia, különben a GC elviheti őket
+_touch_tasks: set[asyncio.Task[None]] = set()
+
 
 class StreamService:
     def __init__(
@@ -57,11 +60,11 @@ class StreamService:
         torrent_id: str,
         file_index: int,
     ) -> tuple[ParsedRangeHeader, File]:
-        # A touch-ot nem védi a torrent lock: ha azon belül maradna, minden range
-        # kérés sorban állna miatta.
-        await asyncio.to_thread(
-            touch_isolated,
-            TorrentFileIdentifier(indexer_id=indexer_id, torrent_id=torrent_id),
+        # A touch csak egy LRU időbélyeg, a lejátszás nem függ tőle: nem várunk rá.
+        # Ha zárolt az adatbázis, a thread végigüli a 10 mp-es busy timeoutot,
+        # a range kérés viszont ettől függetlenül megy tovább.
+        self._touch_in_background(
+            TorrentFileIdentifier(indexer_id=indexer_id, torrent_id=torrent_id)
         )
 
         async with torrent_locks(f"{indexer_id}:{torrent_id}"):
@@ -143,6 +146,11 @@ class StreamService:
                 )
         except Exception as e:
             logger.warning(f"Nem sikerült menteni a lejátszási előzményt: {e}")
+
+    def _touch_in_background(self, identifier: TorrentFileIdentifier) -> None:
+        task = asyncio.create_task(asyncio.to_thread(touch_isolated, identifier))
+        _touch_tasks.add(task)
+        task.add_done_callback(_touch_tasks.discard)
 
     def _save_playback_history(self, payload: PlaybackHistoryCreate) -> None:
         """Külön session: egy sikertelen írás nem viheti magával a kérés tranzakcióját."""
