@@ -135,9 +135,12 @@ class RelayService:
         ]
 
     def get_active_streams(self) -> list[Stream]:
+        # Az add_torrent külön thread-en is futhat (asyncio.to_thread), ezért
+        # másolaton iterálunk: enélkül "dictionary changed size during iteration"
+        # hibát kapnánk.
         streams = []
-        for torrent in self._torrents.values():
-            for file in torrent.files.values():
+        for torrent in list(self._torrents.values()):
+            for file in list(torrent.files.values()):
                 streams.extend(list(file.streams.values()))
         return streams
 
@@ -156,7 +159,14 @@ class RelayService:
 
     def get_torrent_file(self, info_hash: str, file_index: int) -> File:
         sha1_info_hash = self._parse_info_hash(info_hash)
-        file = self._torrents[sha1_info_hash].files[file_index]
+
+        torrent = self._torrents.get(sha1_info_hash)
+        if torrent is None:
+            raise HTTPException(404, f'"{info_hash}" torrent nem található.')
+
+        file = torrent.files.get(file_index)
+        if file is None:
+            raise HTTPException(400, "Érvénytelen fájl index.")
 
         return file
 
@@ -287,7 +297,9 @@ class RelayService:
         if torrent_handle is None:
             return False
 
-        del self._torrents[info_hash]
+        # A libtorrent session előbb kapja meg a torrentet, mint a _torrents dict
+        # (és az add_torrent külön thread-en is futhat), ezért a hiányzó kulcs nem hiba.
+        self._torrents.pop(info_hash, None)
 
         self._libtorrent_session.remove_torrent(
             torrent_handle,

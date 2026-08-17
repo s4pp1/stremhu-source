@@ -1,6 +1,6 @@
-from venv import logger
+import asyncio
 
-from app.common.database import db_session
+from app.common.logger import logger
 from app.modules.stremio.constants import (
     SEARCH_ID,
 )
@@ -13,9 +13,8 @@ from app.modules.stremio.schemas import (
     ParsedExtra,
     StremioCatalogResponse,
 )
-from app.modules.torrent_files.dependencies import create_torrent_files_service
 from app.modules.torrent_files.schemas import TorrentFileIdentifier
-from app.modules.torrent_files.service import TorrentFilesService
+from app.modules.torrent_files.service import TorrentFilesService, touch_isolated
 from app.modules.torrent_source_provider.service import TorrentSourceProviderService
 
 
@@ -68,16 +67,16 @@ class StremioCatalogsService:
         torrent_id: str,
     ) -> MetaDetail | None:
 
-        with db_session() as local_db:
-            local_torrent_files_service = create_torrent_files_service(local_db)
-            local_torrent_files_service.touch(
-                TorrentFileIdentifier(
-                    indexer_id=indexer_id,
-                    torrent_id=torrent_id,
-                )
-            )
+        await asyncio.to_thread(
+            touch_isolated,
+            TorrentFileIdentifier(
+                indexer_id=indexer_id,
+                torrent_id=torrent_id,
+            ),
+        )
 
-        torrent_file = self._torrent_files_service.find_by_id(
+        torrent_file = await asyncio.to_thread(
+            self._torrent_files_service.find_by_id,
             indexer_id=indexer_id,
             torrent_id=torrent_id,
         )

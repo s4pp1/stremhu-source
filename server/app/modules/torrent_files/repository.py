@@ -1,10 +1,14 @@
 import datetime
 
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, false, or_
 from sqlalchemy.orm import Session, joinedload
 
 from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrent_files.schemas import TorrentFileIdentifier, TorrentFilesFilter
+
+# A lejátszó minden range kérésnél touch-ot hív, a retention viszont napokban mér:
+# ennél frissebb rekordot felesleges újraírni (az SQLite egyszerre egy írót enged).
+TOUCH_THROTTLE = datetime.timedelta(minutes=15)
 
 
 class TorrentFilesRepository:
@@ -29,7 +33,8 @@ class TorrentFilesRepository:
                 query = query.filter_by(indexer_id=filter.indexer_id)
             if filter.torrent_id:
                 query = query.filter_by(torrent_id=filter.torrent_id)
-            if filter.identifiers:
+            # Üres lista is szűrőnek számít: enélkül az egész tábla visszajönne.
+            if filter.identifiers is not None:
                 conditions = [
                     and_(
                         TorrentFileModel.indexer_id == identifier.indexer_id,
@@ -37,7 +42,7 @@ class TorrentFilesRepository:
                     )
                     for identifier in filter.identifiers
                 ]
-                query = query.filter(or_(*conditions))
+                query = query.filter(or_(*conditions) if conditions else false())
             if filter.exclude_persisted:
                 query = query.filter(~TorrentFileModel.torrent.has())
 
@@ -83,10 +88,31 @@ class TorrentFilesRepository:
             identifiers if isinstance(identifiers, list) else [identifiers]
         )
 
-        records = self.find_list(TorrentFilesFilter(identifiers=identifiers_list))
+        now = datetime.datetime.now()
+        stale_filter = and_(
+            or_(
+                *[
+                    and_(
+                        TorrentFileModel.indexer_id == identifier.indexer_id,
+                        TorrentFileModel.torrent_id == identifier.torrent_id,
+                    )
+                    for identifier in identifiers_list
+                ]
+            ),
+            TorrentFileModel.last_used_at <= now - TOUCH_THROTTLE,
+        )
 
-        if records:
-            now = datetime.datetime.now()
-            for record in records:
-                record.last_used_at = now
-            self.db.flush()
+        # Csak a kulcsokat olvassuk (a torrent_bytes blob és a joinedload nélkül),
+        # és csak akkor írunk, ha tényleg van elavult rekord: így a throttle-olt
+        # hívások nem nyitnak írási tranzakciót az SQLite-on.
+        has_stale = (
+            self.db.query(TorrentFileModel.indexer_id).filter(stale_filter).first()
+            is not None
+        )
+        if not has_stale:
+            return
+
+        self.db.query(TorrentFileModel).filter(stale_filter).update(
+            {TorrentFileModel.last_used_at: now},
+            synchronize_session=False,
+        )

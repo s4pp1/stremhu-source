@@ -1,4 +1,5 @@
-import libtorrent as libtorrent
+import asyncio
+
 from fastapi import HTTPException
 
 from app.common.database import isolated_db_session
@@ -6,21 +7,26 @@ from app.common.keyed_lock import KeyedLock
 from app.common.logger import logger
 from app.common.schemas.internal import ImdbInfo
 from app.modules.indexers.service import IndexersService
+from app.modules.playback_histories.dependencies import (
+    create_playback_histories_service,
+)
 from app.modules.playback_histories.schemas.internal import (
     PlaybackHistoryClientInfo,
     PlaybackHistoryCreate,
 )
-from app.modules.playback_histories.service import PlaybackHistoriesService
 from app.modules.relay.entities import File
 from app.modules.relay.service import RelayService
 from app.modules.stream.schemas import (
     ParsedRangeHeader,
     StreamToken,
 )
-from app.modules.torrent_files.dependencies import create_torrent_files_service
 from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrent_files.schemas import TorrentFileIdentifier
-from app.modules.torrent_files.service import TorrentFilesService
+from app.modules.torrent_files.service import (
+    TorrentFilesService,
+    create_isolated,
+    touch_isolated,
+)
 from app.modules.torrents.dependencies import (
     create_torrents_service,
 )
@@ -38,13 +44,11 @@ class StreamService:
         torrent_files_service: TorrentFilesService,
         indexers_service: IndexersService,
         relay_service: RelayService,
-        playback_histories_service: PlaybackHistoriesService,
     ):
         self._torrents_service = torrents_service
         self._torrent_files_service = torrent_files_service
         self._indexers_service = indexers_service
         self._relay_service = relay_service
-        self._playback_histories_service = playback_histories_service
 
     async def prepare_for_stream(
         self,
@@ -53,22 +57,23 @@ class StreamService:
         torrent_id: str,
         file_index: int,
     ) -> tuple[ParsedRangeHeader, File]:
+        # A touch-ot nem védi a torrent lock: ha azon belül maradna, minden range
+        # kérés sorban állna miatta.
+        await asyncio.to_thread(
+            touch_isolated,
+            TorrentFileIdentifier(indexer_id=indexer_id, torrent_id=torrent_id),
+        )
+
         async with torrent_locks(f"{indexer_id}:{torrent_id}"):
-            torrent_with_relay: TorrentWithRelay | None = (
-                self._torrents_service.find_by_id(
-                    indexer_id=indexer_id,
-                    torrent_id=torrent_id,
-                )
+            torrent_with_relay: TorrentWithRelay | None = await asyncio.to_thread(
+                self._torrents_service.find_by_id,
+                indexer_id=indexer_id,
+                torrent_id=torrent_id,
             )
 
-            with isolated_db_session() as local_db:
-                local_torrent_files_service = create_torrent_files_service(local_db)
-                local_torrent_files_service.touch(
-                    TorrentFileIdentifier(indexer_id=indexer_id, torrent_id=torrent_id)
-                )
-
             if torrent_with_relay is None:
-                torrent_file = self._torrent_files_service.find_by_id(
+                torrent_file = await asyncio.to_thread(
+                    self._torrent_files_service.find_by_id,
                     indexer_id=indexer_id,
                     torrent_id=torrent_id,
                 )
@@ -87,22 +92,18 @@ class StreamService:
                         )
                     )
 
-                    with isolated_db_session() as local_db:
-                        local_torrent_files_service = create_torrent_files_service(
-                            local_db
-                        )
-                        torrent_file = local_torrent_files_service.create(
-                            indexer_id=indexer_id,
-                            torrent_id=torrent_id,
-                            torrent_bytes=downloaded_torrent_file.torrent_bytes,
-                        )
-
-                with isolated_db_session() as local_db:
-                    self._validate_file(torrent_file, file_index)
-                    local_torrents_service = create_torrents_service(local_db)
-                    torrent_with_relay = (
-                        local_torrents_service.create_from_torrent_file(torrent_file)
+                    torrent_file = await asyncio.to_thread(
+                        create_isolated,
+                        indexer_id=indexer_id,
+                        torrent_id=torrent_id,
+                        torrent_bytes=downloaded_torrent_file.torrent_bytes,
                     )
+
+                torrent_with_relay = await asyncio.to_thread(
+                    self._create_torrent,
+                    torrent_file=torrent_file,
+                    file_index=file_index,
+                )
 
         file = self._relay_service.get_torrent_file(
             info_hash=torrent_with_relay.info_hash,
@@ -126,7 +127,8 @@ class StreamService:
     ) -> None:
         try:
             async with playback_history_lock(stream_token.playback_id):
-                self._playback_histories_service.get_or_create(
+                await asyncio.to_thread(
+                    self._save_playback_history,
                     PlaybackHistoryCreate(
                         client=client_info,
                         indexer_id=stream_token.indexer_id,
@@ -137,10 +139,29 @@ class StreamService:
                         imdb_info=imdb_info,
                         torrent_name=file.torrent.name,
                         file_name=file.name,
-                    )
+                    ),
                 )
         except Exception as e:
             logger.warning(f"Nem sikerült menteni a lejátszási előzményt: {e}")
+
+    def _save_playback_history(self, payload: PlaybackHistoryCreate) -> None:
+        """Külön session: egy sikertelen írás nem viheti magával a kérés tranzakcióját."""
+        with isolated_db_session() as local_db:
+            create_playback_histories_service(local_db).get_or_create(payload)
+
+    def _create_torrent(
+        self,
+        torrent_file: TorrentFileModel,
+        file_index: int,
+    ) -> TorrentWithRelay:
+        # A validáció nem érinti az adatbázist: hibás fájl index miatt ne nyissunk
+        # feleslegesen tranzakciót.
+        self._validate_file(torrent_file, file_index)
+
+        with isolated_db_session() as local_db:
+            return create_torrents_service(local_db).create_from_torrent_file(
+                torrent_file
+            )
 
     def _validate_file(
         self,
