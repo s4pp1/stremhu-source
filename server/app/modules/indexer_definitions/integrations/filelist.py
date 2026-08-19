@@ -123,6 +123,12 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
         if response.history:
             original_url = str(response.history[0].url)
 
+        # A GET /login.php szándékos kérés a CSRF form lekéréséhez —
+        # ezt sosem jelezzük hibának (a form tartalmaz name="username" mezőt,
+        # ezért ezt ELŐBB kell ellenőrizni mint a HTML tartalmat)
+        if response.request.method == "GET" and "/login.php" in original_url:
+            return None
+
         html = response.text
         normalized = html.lower()
 
@@ -133,11 +139,6 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
             or "numarul maxim permis de actiuni" in normalized
         ):
             return AuthSessionError()
-
-        # A GET /login.php szándékos kérés a CSRF form lekéréséhez —
-        # ezt sosem jelezzük hibának
-        if response.request.method == "GET" and "/login.php" in original_url:
-            return None
 
         # POST /takelogin.php → visszairányított /login.php-ra → rossz jelszó
         if "/takelogin.php" in original_url or "/check_2fa.php" in original_url:
