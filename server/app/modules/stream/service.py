@@ -20,13 +20,10 @@ from app.modules.stream.schemas import (
     ParsedRangeHeader,
     StreamToken,
 )
+from app.modules.torrent_files.isolated_service import IsolatedTorrentFilesService
 from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrent_files.schemas import TorrentFileIdentifier
-from app.modules.torrent_files.service import (
-    TorrentFilesService,
-    create_isolated,
-    touch_isolated,
-)
+from app.modules.torrent_files.service import TorrentFilesService
 from app.modules.torrents.dependencies import (
     create_torrents_service,
 )
@@ -36,9 +33,6 @@ from app.modules.torrents.service import TorrentsService
 torrent_locks = KeyedLock()
 playback_history_lock = KeyedLock()
 
-# A háttérben futó touch task-okra kell egy referencia, különben a GC elviheti őket
-_touch_tasks: set[asyncio.Task[None]] = set()
-
 
 class StreamService:
     def __init__(
@@ -47,11 +41,13 @@ class StreamService:
         torrent_files_service: TorrentFilesService,
         indexers_service: IndexersService,
         relay_service: RelayService,
+        isolated_torrent_files_service: IsolatedTorrentFilesService,
     ):
         self._torrents_service = torrents_service
         self._torrent_files_service = torrent_files_service
         self._indexers_service = indexers_service
         self._relay_service = relay_service
+        self._isolated_torrent_files_service = isolated_torrent_files_service
 
     async def prepare_for_stream(
         self,
@@ -60,10 +56,7 @@ class StreamService:
         torrent_id: str,
         file_index: int,
     ) -> tuple[ParsedRangeHeader, File]:
-        # A touch csak egy LRU időbélyeg, a lejátszás nem függ tőle: nem várunk rá.
-        # Ha zárolt az adatbázis, a thread végigüli a 10 mp-es busy timeoutot,
-        # a range kérés viszont ettől függetlenül megy tovább.
-        self._touch_in_background(
+        self._isolated_torrent_files_service.touch(
             TorrentFileIdentifier(indexer_id=indexer_id, torrent_id=torrent_id)
         )
 
@@ -96,7 +89,7 @@ class StreamService:
                     )
 
                     torrent_file = await asyncio.to_thread(
-                        create_isolated,
+                        self._isolated_torrent_files_service.create,
                         indexer_id=indexer_id,
                         torrent_id=torrent_id,
                         torrent_bytes=downloaded_torrent_file.torrent_bytes,
@@ -147,11 +140,6 @@ class StreamService:
         except Exception as e:
             logger.warning(f"Nem sikerült menteni a lejátszási előzményt: {e}")
 
-    def _touch_in_background(self, identifier: TorrentFileIdentifier) -> None:
-        task = asyncio.create_task(asyncio.to_thread(touch_isolated, identifier))
-        _touch_tasks.add(task)
-        task.add_done_callback(_touch_tasks.discard)
-
     def _save_playback_history(self, payload: PlaybackHistoryCreate) -> None:
         """Külön session: egy sikertelen írás nem viheti magával a kérés tranzakcióját."""
         with isolated_db_session() as local_db:
@@ -162,8 +150,6 @@ class StreamService:
         torrent_file: TorrentFileModel,
         file_index: int,
     ) -> TorrentWithRelay:
-        # A validáció nem érinti az adatbázist: hibás fájl index miatt ne nyissunk
-        # feleslegesen tranzakciót.
         self._validate_file(torrent_file, file_index)
 
         with isolated_db_session() as local_db:

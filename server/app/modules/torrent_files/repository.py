@@ -6,8 +6,6 @@ from sqlalchemy.orm import Session, joinedload
 from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrent_files.schemas import TorrentFileIdentifier, TorrentFilesFilter
 
-# A lejátszó minden range kérésnél touch-ot hív, a retention viszont napokban mér:
-# ennél frissebb rekordot felesleges újraírni (az SQLite egyszerre egy írót enged).
 TOUCH_THROTTLE = datetime.timedelta(minutes=15)
 
 
@@ -33,7 +31,6 @@ class TorrentFilesRepository:
                 query = query.filter_by(indexer_id=filter.indexer_id)
             if filter.torrent_id:
                 query = query.filter_by(torrent_id=filter.torrent_id)
-            # Üres lista is szűrőnek számít: enélkül az egész tábla visszajönne.
             if filter.identifiers is not None:
                 conditions = [
                     and_(
@@ -102,9 +99,6 @@ class TorrentFilesRepository:
             TorrentFileModel.last_used_at <= now - TOUCH_THROTTLE,
         )
 
-        # Csak a kulcsokat olvassuk (a torrent_bytes blob és a joinedload nélkül),
-        # és csak akkor írunk, ha tényleg van elavult rekord: így a throttle-olt
-        # hívások nem nyitnak írási tranzakciót az SQLite-on.
         has_stale = (
             self.db.query(TorrentFileModel.indexer_id).filter(stale_filter).first()
             is not None
