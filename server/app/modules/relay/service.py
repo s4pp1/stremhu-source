@@ -136,27 +136,21 @@ class RelayService:
 
     def get_active_streams(self) -> list[Stream]:
         streams = []
-        for torrent in self._torrents.values():
-            for file in torrent.files.values():
+        for torrent in list(self._torrents.values()):
+            for file in list(torrent.files.values()):
                 streams.extend(list(file.streams.values()))
         return streams
 
-    def _get_torrents(
-        self,
-    ) -> list[libtorrent.torrent_handle]:
-        torrent_handlers = self._libtorrent_session.get_torrents()
-
-        valid_torrent_handlers = [
-            torrent_handler
-            for torrent_handler in torrent_handlers
-            if torrent_handler.is_valid()
-        ]
-
-        return valid_torrent_handlers
-
     def get_torrent_file(self, info_hash: str, file_index: int) -> File:
         sha1_info_hash = self._parse_info_hash(info_hash)
-        file = self._torrents[sha1_info_hash].files[file_index]
+
+        torrent = self._torrents.get(sha1_info_hash)
+        if torrent is None:
+            raise HTTPException(404, f'"{info_hash}" torrent nem található.')
+
+        file = torrent.files.get(file_index)
+        if file is None:
+            raise HTTPException(400, "Érvénytelen fájl index.")
 
         return file
 
@@ -262,17 +256,6 @@ class RelayService:
 
         return relay_torrent
 
-    def _get_torrent(
-        self,
-        info_hash: libtorrent.sha1_hash,
-    ) -> libtorrent.torrent_handle | None:
-        torrent_handle = self._libtorrent_session.find_torrent(info_hash)
-
-        if not torrent_handle.is_valid():
-            return None
-
-        return torrent_handle
-
     def delete_torrent(
         self,
         info_hash: str,
@@ -287,7 +270,9 @@ class RelayService:
         if torrent_handle is None:
             return False
 
-        del self._torrents[info_hash]
+        # A libtorrent session előbb kapja meg a torrentet, mint a _torrents dict
+        # (és az add_torrent külön thread-en is futhat), ezért a hiányzó kulcs nem hiba.
+        self._torrents.pop(info_hash, None)
 
         self._libtorrent_session.remove_torrent(
             torrent_handle,
@@ -383,3 +368,27 @@ class RelayService:
     ) -> libtorrent.sha1_hash:
         info_hash = libtorrent.sha1_hash(bytes.fromhex(info_hash_str))
         return info_hash
+
+    def _get_torrents(
+        self,
+    ) -> list[libtorrent.torrent_handle]:
+        torrent_handlers = self._libtorrent_session.get_torrents()
+
+        valid_torrent_handlers = [
+            torrent_handler
+            for torrent_handler in torrent_handlers
+            if torrent_handler.is_valid()
+        ]
+
+        return valid_torrent_handlers
+
+    def _get_torrent(
+        self,
+        info_hash: libtorrent.sha1_hash,
+    ) -> libtorrent.torrent_handle | None:
+        torrent_handle = self._libtorrent_session.find_torrent(info_hash)
+
+        if not torrent_handle.is_valid():
+            return None
+
+        return torrent_handle

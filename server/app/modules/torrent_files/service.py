@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from app.common.logger import logger
 from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrent_files.repository import TorrentFilesRepository
-from app.modules.torrent_files.schemas import TorrentFileIdentifier, TorrentFilesFilter
+from app.modules.torrent_files.schemas import TorrentFilesFilter
 
 
 class TorrentFilesService:
@@ -14,32 +14,6 @@ class TorrentFilesService:
         torrent_files_repository: TorrentFilesRepository,
     ):
         self._torrent_files_repository = torrent_files_repository
-
-    def create(
-        self,
-        indexer_id: str,
-        torrent_id: str,
-        torrent_bytes: bytes,
-    ) -> TorrentFileModel:
-        """Elmenti a .torrent fájl bájtjait az adatbázisba."""
-        torrent_file = self.find_by_id(
-            indexer_id=indexer_id,
-            torrent_id=torrent_id,
-        )
-
-        if torrent_file:
-            raise HTTPException(
-                status_code=409,
-                detail=f"Már létezik torrent a gyorsítótárban: {indexer_id} - {torrent_id}",
-            )
-
-        return self._torrent_files_repository.create(
-            TorrentFileModel(
-                indexer_id=indexer_id,
-                torrent_id=torrent_id,
-                torrent_bytes=torrent_bytes,
-            )
-        )
 
     def find_list(
         self, filter: TorrentFilesFilter | None = None
@@ -54,13 +28,6 @@ class TorrentFilesService:
 
     def find_by_info_hash(self, info_hash: str) -> TorrentFileModel | None:
         return self._torrent_files_repository.find_by_info_hash(info_hash)
-
-    def touch(
-        self,
-        identifiers: TorrentFileIdentifier | list[TorrentFileIdentifier],
-    ) -> None:
-        """Frissíti a megadott .torrent fájl(ok) legutóbbi használati idejét (last_used_at) az adatbázisban."""
-        self._torrent_files_repository.touch(identifiers)
 
     def get_by_id(self, indexer_id: str, torrent_id: str) -> TorrentFileModel:
         record = self.find_by_id(indexer_id, torrent_id)

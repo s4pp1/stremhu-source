@@ -13,7 +13,10 @@ from app.modules.stremio.schemas import (
 )
 from app.modules.stremio.service import StremioService
 from app.modules.stremio.utils import parse_catalog_id, parse_extra, parse_stream_id
-from app.modules.torrent_files.dependencies import create_torrent_files_service
+from app.modules.torrent_files.dependencies import (
+    create_isolated_torrent_files_service,
+    create_torrent_files_service,
+)
 from app.modules.torrent_source_provider.dependencies import (
     create_torrent_source_provider_service,
 )
@@ -27,10 +30,12 @@ def create_stremio_catalogs_service(
 ) -> StremioCatalogsService:
     torrent_files_service = create_torrent_files_service(db)
     torrent_source_provider_service = create_torrent_source_provider_service(db)
+    isolated_torrent_files_service = create_isolated_torrent_files_service()
 
     return StremioCatalogsService(
         torrent_files_service=torrent_files_service,
         torrent_source_provider_service=torrent_source_provider_service,
+        isolated_torrent_files_service=isolated_torrent_files_service,
     )
 
 

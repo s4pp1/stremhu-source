@@ -6,14 +6,14 @@ from sqlalchemy.orm import Session
 
 from app.common.database import get_db
 from app.modules.indexers.dependencies import create_indexers_service
-from app.modules.playback_histories.dependencies import (
-    create_playback_histories_service,
-)
 from app.modules.relay.dependencies import get_relay_service
 from app.modules.stream.schemas import StreamToken
 from app.modules.stream.service import StreamService
 from app.modules.stream.utils.stream_token import parse_stream_token
-from app.modules.torrent_files.dependencies import create_torrent_files_service
+from app.modules.torrent_files.dependencies import (
+    create_isolated_torrent_files_service,
+    create_torrent_files_service,
+)
 from app.modules.torrents.dependencies import create_torrents_service
 
 
@@ -22,14 +22,15 @@ def create_stream_service(db: Session) -> StreamService:
     indexers_service = create_indexers_service(db)
     torrent_files_service = create_torrent_files_service(db)
     relay_service = get_relay_service()
-    playback_histories_service = create_playback_histories_service(db)
+
+    isolated_torrent_files_service = create_isolated_torrent_files_service()
 
     return StreamService(
         torrents_service=torrents_service,
         indexers_service=indexers_service,
         torrent_files_service=torrent_files_service,
         relay_service=relay_service,
-        playback_histories_service=playback_histories_service,
+        isolated_torrent_files_service=isolated_torrent_files_service,
     )
 
 
