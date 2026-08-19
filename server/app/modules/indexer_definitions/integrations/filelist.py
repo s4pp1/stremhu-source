@@ -13,7 +13,7 @@ from app.modules.indexer_definitions.schemas.internal import (
     AuthError,
     AuthSessionError,
     IndexerDefinitionFindTorrentsResult,
-    IndexerDefinitionLoginPayload,
+    IndexerDefinitionLogin,
     IndexerDefinitionTorrent,
 )
 from app.modules.media_attributes.constants import MediaAttributeKey
@@ -133,6 +133,11 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
             or "numarul maxim permis de actiuni" in normalized
         ):
             return AuthSessionError()
+
+        # A GET /login.php szándékos kérés a CSRF form lekéréséhez —
+        # ezt sosem jelezzük hibának
+        if response.request.method == "GET" and "/login.php" in original_url:
+            return None
 
         # POST /takelogin.php → visszairányított /login.php-ra → rossz jelszó
         if "/takelogin.php" in original_url or "/check_2fa.php" in original_url:
