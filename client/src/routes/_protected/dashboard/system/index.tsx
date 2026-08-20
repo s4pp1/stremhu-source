@@ -6,6 +6,7 @@ import { Indexers } from './-features/indexers'
 import { KeepSeeding } from './-features/keep-seeding'
 import { NetworkAccessInfo } from './-features/network-access-info'
 import { Restart } from './-features/restart'
+import { StorageLimit } from './-features/storage-limit'
 import { TorrentFilesCache } from './-features/torrent-files-cache'
 
 export const Route = createFileRoute('/_protected/dashboard/system/')({
@@ -22,13 +23,19 @@ function SystemRoute() {
           <NetworkAccessInfo />
         </div>
         <div className="break-inside-avoid mb-4">
-          <TorrentFilesCache />
+          <Restart />
         </div>
+      </div>
+      <Separator />
+      <div className="columns-1 md:columns-2 gap-4">
         <div className="break-inside-avoid mb-4">
           <KeepSeeding />
         </div>
         <div className="break-inside-avoid mb-4">
-          <Restart />
+          <StorageLimit />
+        </div>
+        <div className="break-inside-avoid mb-4">
+          <TorrentFilesCache />
         </div>
       </div>
     </div>

@@ -484,12 +484,14 @@ export interface SystemSettingsResponse {
   hitAndRun: boolean
   keepSeedSeconds: number
   cacheRetentionSeconds: number
+  maxStorageBytes: number
 }
 
 export interface SystemSettingsUpdateRequest {
   hitAndRun?: boolean | null
   keepSeedSeconds?: number | null
   cacheRetentionSeconds?: number | null
+  maxStorageBytes?: number | null
 }
 
 export interface SystemStatusResponse {
