@@ -24,7 +24,7 @@ from app.modules.indexers.schemas.internal import (
 from app.modules.media_attributes.utils import resolve_attribute_ids
 from app.modules.settings.schemas.internal import SystemSettings
 from app.modules.settings.service import SettingsService
-from app.modules.torrents.schemas.internal import TorrentUpdate
+from app.modules.torrents.schemas.internal import TorrentKey, TorrentUpdate
 from app.modules.torrents.service import TorrentsService
 
 
@@ -296,6 +296,64 @@ class IndexersService:
             for indexer_account in indexer_accounts
         ]
         await asyncio.gather(*tasks)
+
+    async def find_hit_and_run_torrent_keys(self) -> list[TorrentKey]:
+        indexer_accounts = await asyncio.to_thread(
+            self._indexer_accounts_service.find_list
+        )
+        system_settings = await asyncio.to_thread(self._settings_service.get_system)
+
+        keys_per_account = await asyncio.gather(
+            *[
+                self._find_hit_and_run_torrent_keys_for_indexer(
+                    indexer_account, system_settings
+                )
+                for indexer_account in indexer_accounts
+            ]
+        )
+
+        torrent_keys: list[TorrentKey] = []
+        for account_keys in keys_per_account:
+            torrent_keys.extend(account_keys)
+
+        return torrent_keys
+
+    async def _find_hit_and_run_torrent_keys_for_indexer(
+        self,
+        indexer_account: IndexerAccountModel,
+        system_settings: SystemSettings,
+    ) -> list[TorrentKey]:
+        enabled_hit_and_run = system_settings.hit_and_run
+        if indexer_account.hit_and_run is not None:
+            enabled_hit_and_run = indexer_account.hit_and_run
+
+        if not enabled_hit_and_run:
+            return []
+
+        indexer_definition = self._indexer_definitions_service.get_by_id(
+            indexer_account.indexer_id
+        )
+
+        try:
+            torrent_ids = await indexer_definition.find_hit_and_run_ids()
+        except Exception:
+            # Ha a tracker nem elérhető, inkább az indexer összes torrentjét védjük.
+            logger.exception(
+                f"‼️ A(z) '{indexer_account.indexer_id}' hit and run listája nem érhető el. Az indexer összes torrentjét védjük a takarítástól.",
+            )
+            torrents = await asyncio.to_thread(
+                self._torrents_service.find_by_indexer_id,
+                indexer_account.indexer_id,
+            )
+            return [
+                TorrentKey(indexer_id=torrent.indexer_id, torrent_id=torrent.torrent_id)
+                for torrent in torrents
+            ]
+
+        return [
+            TorrentKey(indexer_id=indexer_account.indexer_id, torrent_id=torrent_id)
+            for torrent_id in torrent_ids or []
+        ]
 
     async def cleanup_torrent_by_rules(
         self,

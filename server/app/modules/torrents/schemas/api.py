@@ -7,6 +7,17 @@ from app.modules.indexer_definitions.schemas.api import IndexerDefinitionRespons
 from app.modules.torrents.schemas.internal import TorrentWithRelay
 
 
+class StorageUsageResponse(BaseModel):
+    model_config = ConfigDict(
+        populate_by_name=True,
+        alias_generator=to_camel,
+    )
+
+    used_bytes: int
+    free_bytes: int
+    total_bytes: int
+
+
 class TorrentResponse(BaseModel):
     model_config = ConfigDict(
         populate_by_name=True,
