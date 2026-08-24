@@ -177,7 +177,7 @@ class TorrentSourceProviderService:
         created_torrent_files: list[TorrentFileModel] = []
         for result in results:
             if isinstance(result, BaseException):
-                logger.warning(f"⚠️ Hiba a torrent feldolgozása során: {result}")
+                logger.exception("⚠️ Hiba a torrent feldolgozása során", exc_info=result)
                 continue
             if result is not None:
                 created_torrent_files.append(result)
@@ -222,7 +222,7 @@ class TorrentSourceProviderService:
             f"{indexer_torrent.indexer_account.indexer_id}:{indexer_torrent.torrent_id}"
         ):
             existing_torrent = await asyncio.to_thread(
-                self._torrent_files_service.find_by_id,
+                self._isolated_torrent_files_service.find_by_id,
                 indexer_id=indexer_torrent.indexer_account.indexer_id,
                 torrent_id=indexer_torrent.torrent_id,
             )

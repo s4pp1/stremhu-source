@@ -19,14 +19,23 @@ class IsolatedTorrentFilesService:
         """Azonnal elindítja a touch-ot a háttérben, de nem várja meg az eredményét."""
         fire_and_forget(asyncio.to_thread(self._touch, identifiers))
 
+    def find_by_id(self, indexer_id: str, torrent_id: str) -> TorrentFileModel | None:
+        """Kikeresi a .torrent fájlt, rövid életű session-ben."""
+        with isolated_db_session() as local_db:
+            torrent_files_repository = TorrentFilesRepository(local_db)
+            torrent_file = torrent_files_repository.find_by_id(indexer_id, torrent_id)
+            if torrent_file:
+                local_db.expunge(torrent_file)
+            return torrent_file
+
     def create(
         self, indexer_id: str, torrent_id: str, torrent_bytes: bytes
     ) -> TorrentFileModel:
         """Elmenti a .torrent fájlt, rövid életű session-ben."""
         with isolated_db_session() as local_db:
-            repo = TorrentFilesRepository(local_db)
+            torrent_files_repository = TorrentFilesRepository(local_db)
 
-            torrent_file = repo.find_by_id(
+            torrent_file = torrent_files_repository.find_by_id(
                 indexer_id=indexer_id,
                 torrent_id=torrent_id,
             )
@@ -37,13 +46,15 @@ class IsolatedTorrentFilesService:
                     detail=f"Már létezik torrent a gyorsítótárban: {indexer_id} - {torrent_id}",
                 )
 
-            return repo.create(
+            torrent_file = torrent_files_repository.create(
                 TorrentFileModel(
                     indexer_id=indexer_id,
                     torrent_id=torrent_id,
                     torrent_bytes=torrent_bytes,
                 )
             )
+            local_db.expunge(torrent_file)
+            return torrent_file
 
     def _touch(
         self, identifiers: TorrentFileIdentifier | list[TorrentFileIdentifier]
