@@ -18,8 +18,10 @@ def setup_directories():
 
 def run_migrations():
     try:
-        alembic_ini_path = Path(__file__).resolve().parent.parent.parent / "alembic.ini"
+        root_dir = Path(__file__).resolve().parent.parent.parent
+        alembic_ini_path = root_dir / "alembic.ini"
         alembic_cfg = Config(str(alembic_ini_path))
+        alembic_cfg.set_main_option("script_location", str(root_dir / "alembic"))
         command.upgrade(alembic_cfg, "head")
     except Exception:
         logger.exception("Nem sikerült lefutattatni a migrációkat.")

@@ -14,6 +14,18 @@
       }
     },
     {
+      "type": "debugpy",
+      "request": "launch",
+      "name": "Desktop (Standalone)",
+      "program": "${workspaceFolder}/server/desktop.py",
+      "cwd": "${workspaceFolder}/server",
+      "subProcess": true,
+      "jinja": true,
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/server"
+      }
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Client (React.js)",

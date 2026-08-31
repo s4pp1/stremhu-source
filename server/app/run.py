@@ -15,7 +15,22 @@ from app.modules.settings.enums import NetworkModeEnum
 setup_logger()
 
 
-def start_server():
+def create_hypercorn_config(boot_config, use_reloader: bool) -> Config:
+    hypercorn_config = Config()
+    hypercorn_config.application_path = "app.main:app"
+    hypercorn_config.bind = [f"0.0.0.0:{config.port}"]
+    hypercorn_config.use_reloader = use_reloader
+
+    hypercorn_config.certfile = boot_config.cert_path
+    hypercorn_config.keyfile = boot_config.key_path
+    hypercorn_config.access_log_format = "%(m)s %(U)s%(q)s %(s)s %(L)s"
+    hypercorn_config.accesslog = logging.getLogger("hypercorn.access")
+    hypercorn_config.errorlog = logging.getLogger("hypercorn.error")
+
+    return hypercorn_config
+
+
+def start_server(use_reloader: bool | None = None):
     is_dev = config.node_env == NodeEnv.DEV
 
     ensure_default_settings()
@@ -54,16 +69,8 @@ def start_server():
     )
     console.print()
 
-    hypercorn_config = Config()
-    hypercorn_config.application_path = "app.main:app"
-    hypercorn_config.bind = [f"0.0.0.0:{config.port}"]
-    hypercorn_config.use_reloader = is_dev
-
-    hypercorn_config.certfile = boot_config.cert_path
-    hypercorn_config.keyfile = boot_config.key_path
-    hypercorn_config.access_log_format = "%(m)s %(U)s%(q)s %(s)s %(L)s"
-    hypercorn_config.accesslog = logging.getLogger("hypercorn.access")
-    hypercorn_config.errorlog = logging.getLogger("hypercorn.error")
+    reloader_enabled = use_reloader if use_reloader is not None else is_dev
+    hypercorn_config = create_hypercorn_config(boot_config, reloader_enabled)
 
     run(hypercorn_config)
 

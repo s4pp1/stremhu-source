@@ -1,4 +1,5 @@
 import asyncio
+import socket
 from pathlib import Path
 
 from app.boot.schemas import BootNetworkConfig
@@ -10,6 +11,19 @@ from app.modules.settings.enums import (
     NetworkModeEnum,
 )
 from app.modules.settings.schemas.internal import NetworkSettings
+
+
+def get_local_ip() -> str:
+    """Megállapítja a gép tényleges belső IP címét egy 'dummy' hálózati kapcsolaton keresztül."""
+    try:
+        # Nem küld adatot, csak a routing tábla alapján megállapítja, melyik interfész néz kifelé
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        return ip
+    except Exception:
+        return "127.0.0.1"
 
 
 def get_network_settings() -> NetworkSettings:

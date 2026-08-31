@@ -9,6 +9,18 @@ from rich.console import Console
 
 from app.common.validators import validate_domain
 
+def get_env_paths() -> tuple[Path, ...]:
+    if getattr(sys, "frozen", False):
+        exe_dir = Path(sys.executable).parent
+        if exe_dir.name == "MacOS" and exe_dir.parent.name == "Contents":
+            bundle_dir = exe_dir.parent.parent.parent
+            return (bundle_dir / ".env", exe_dir / ".env")
+        return (exe_dir / ".env",)
+    return (
+        Path(__file__).resolve().parent.parent / ".env",
+        Path.cwd() / ".env",
+    )
+
 
 class NodeEnv(str, Enum):
     DEV = "dev"
@@ -17,10 +29,7 @@ class NodeEnv(str, Enum):
 
 class Config(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=(
-            Path(__file__).resolve().parent / ".env",
-            Path.cwd() / ".env",
-        ),
+        env_file=get_env_paths(),
         env_file_encoding="utf-8",
         extra="ignore",
     )
@@ -42,7 +51,15 @@ class Config(BaseSettings):
         return 6881
 
     @property
+    def app_dir(self) -> Path:
+        if getattr(sys, "frozen", False):
+            return Path(sys._MEIPASS)
+        return Path(__file__).resolve().parent.parent
+
+    @property
     def root_dir(self) -> Path:
+        if getattr(sys, "frozen", False):
+            return Path(sys.executable).parent
         return Path(__file__).resolve().parent.parent
 
     @property
@@ -55,10 +72,14 @@ class Config(BaseSettings):
 
     @property
     def client_path(self) -> Path:
-        return self.root_dir / "client"
+        return self.app_dir / "client"
+
+    downloads_dir_override: str | None = None
 
     @property
     def downloads_dir(self) -> Path:
+        if self.downloads_dir_override:
+            return Path(self.downloads_dir_override)
         return self.base_data_dir / "downloads"
 
     @property
@@ -82,9 +103,12 @@ class Config(BaseSettings):
     @model_validator(mode="after")
     def validate_host_ip_and_domain(self) -> "Config":
         if not self.reverse_proxy_domain and not self.host_ip:
-            raise ValueError(
-                "A `HOST_IP` megadása kötelező, ha a `REVERSE_PROXY_DOMAIN` nincs beállítva!"
-            )
+            if getattr(sys, "frozen", False):
+                self.host_ip = "127.0.0.1"
+            else:
+                raise ValueError(
+                    "A `HOST_IP` megadása kötelező, ha a `REVERSE_PROXY_DOMAIN` nincs beállítva!"
+                )
 
         if self.host_ip:
             try:
@@ -94,7 +118,7 @@ class Config(BaseSettings):
                     f"A megadott `HOST_IP` ({self.host_ip}) formátuma érvénytelen! Kérlek érvényes IPv4 címet adj meg!"
                 )
 
-            if ip.is_loopback:
+            if ip.is_loopback and not getattr(sys, "frozen", False):
                 raise ValueError(
                     f"A megadott `HOST_IP` ({self.host_ip}) nem lehet a localhost!"
                 )
