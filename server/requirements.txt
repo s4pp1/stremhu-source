@@ -18,7 +18,7 @@ itsdangerous==2.2.0
 argon2-cffi==25.1.0
 pyotp==2.10.0
 apscheduler==3.11.3
-openapi-python-client==0.29.0
+openapi-python-client==0.29.1
 humanize==4.16.0
 tzlocal==5.4.4
 cryptography==50.0.1
@@ -27,7 +27,7 @@ rich==15.0.0
 email-validator==2.3.0
 
 # Development tools
-ruff==0.16.4
+ruff==0.16.6
 basedpyright==1.39.10
 pytest==9.1.1
 syrupy==6.0.0
