@@ -51,19 +51,29 @@ def test_is_torrent_stream_excluded():
 
     excluded_attribute_ids = {MediaAttributeKey.ENG}
     preference_multiple_map = {PreferenceKey.LANGUAGE: True}
+    preference_strict_exclusion_map = {PreferenceKey.LANGUAGE: False}
     assert not service._is_torrent_stream_excluded(
-        torrent, excluded_attribute_ids, preference_multiple_map
+        torrent,
+        excluded_attribute_ids,
+        preference_multiple_map,
+        preference_strict_exclusion_map,
     )
 
     excluded_attribute_ids = {MediaAttributeKey.ENG, MediaAttributeKey.HUN}
     assert service._is_torrent_stream_excluded(
-        torrent, excluded_attribute_ids, preference_multiple_map
+        torrent,
+        excluded_attribute_ids,
+        preference_multiple_map,
+        preference_strict_exclusion_map,
     )
 
     excluded_attribute_ids = {MediaAttributeKey.ENG}
     preference_multiple_map = {PreferenceKey.LANGUAGE: False}
     assert service._is_torrent_stream_excluded(
-        torrent, excluded_attribute_ids, preference_multiple_map
+        torrent,
+        excluded_attribute_ids,
+        preference_multiple_map,
+        preference_strict_exclusion_map,
     )
 
     torrent_with_indexer = TorrentStream(
@@ -80,11 +90,18 @@ def test_is_torrent_stream_excluded():
     )
     excluded_attribute_ids = {"ncore"}
     preference_multiple_map = {}
+    preference_strict_exclusion_map = {}
     assert service._is_torrent_stream_excluded(
-        torrent_with_indexer, excluded_attribute_ids, preference_multiple_map
+        torrent_with_indexer,
+        excluded_attribute_ids,
+        preference_multiple_map,
+        preference_strict_exclusion_map,
     )
 
     excluded_attribute_ids = {"something_else"}
     assert not service._is_torrent_stream_excluded(
-        torrent_with_indexer, excluded_attribute_ids, preference_multiple_map
+        torrent_with_indexer,
+        excluded_attribute_ids,
+        preference_multiple_map,
+        preference_strict_exclusion_map,
     )
