@@ -98,6 +98,7 @@ async def stream(
     headers = {
         "Accept-Ranges": "bytes",
         "Cache-Control": "no-store, no-transform",
+        "Connection": "close",
     }
 
     if range_header is None:
@@ -144,6 +145,7 @@ def _apply_capitalized_headers(response: Response) -> Response:
         b"accept-ranges": b"Accept-Ranges",
         b"cache-control": b"Cache-Control",
         b"content-type": b"Content-Type",
+        b"connection": b"Connection",
     }
     headers = []
     for key, value in response.raw_headers:
