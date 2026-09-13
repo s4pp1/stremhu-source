@@ -1,3 +1,4 @@
+import asyncio
 import re
 
 from app.config import NodeEnv, config
@@ -90,6 +91,7 @@ class StremioService:
         parsed_id: StreamId,
     ) -> list[StremioStream]:
         """Lekéri a lejátszható streameket az adatbázisból vagy indexerekből."""
+        app_url = await asyncio.to_thread(self._settings_service.get_app_url)
         if isinstance(parsed_id, TorrentStreamId):
             torrent_streams = await self._torrent_streams_service.find_by_torrent_id(
                 indexer_id=parsed_id.indexer_id,
@@ -113,5 +115,14 @@ class StremioService:
             StremioStream.from_imdb_torrent_stream(torrent_stream=torrent_stream)
             for torrent_stream in torrent_streams
         ]
+
+        for error in errors:
+            stremio_streams.append(
+                StremioStream(
+                    name="⚠️ [StremHU] Hiba",
+                    description=error,
+                    external_url=app_url,
+                )
+            )
 
         return stremio_streams

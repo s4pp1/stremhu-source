@@ -177,7 +177,22 @@ class IndexersService:
                 ),
             )
 
-        tasks = [fetch_and_map(indexer_account) for indexer_account in indexer_accounts]
+        async def fetch_and_map_with_timeout(
+            indexer_account: IndexerAccountModel,
+        ) -> IndexerTorrent | None:
+            try:
+                return await asyncio.wait_for(
+                    fetch_and_map(indexer_account), timeout=12.5
+                )
+            except asyncio.TimeoutError:
+                raise TimeoutError(
+                    f"A(z) '{indexer_account.indexer_definition.name}' indexer nem válaszolt időben."
+                )
+
+        tasks = [
+            fetch_and_map_with_timeout(indexer_account)
+            for indexer_account in indexer_accounts
+        ]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
         indexer_torrents: list[IndexerTorrent] = []
@@ -256,7 +271,22 @@ class IndexersService:
                 for indexer_definition_torrent in indexer_definition_torrents
             ]
 
-        tasks = [fetch_and_map(indexer_account) for indexer_account in indexer_accounts]
+        async def fetch_and_map_with_timeout(
+            indexer_account: IndexerAccountModel,
+        ) -> list[IndexerTorrent]:
+            try:
+                return await asyncio.wait_for(
+                    fetch_and_map(indexer_account), timeout=12.5
+                )
+            except asyncio.TimeoutError:
+                raise TimeoutError(
+                    f"A(z) '{indexer_account.indexer_definition.name}' indexer nem válaszolt időben."
+                )
+
+        tasks = [
+            fetch_and_map_with_timeout(indexer_account)
+            for indexer_account in indexer_accounts
+        ]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
         indexer_torrents: list[IndexerTorrent] = []

@@ -148,8 +148,9 @@ class StremioStream(BaseModel):
 
     name: str
     description: str
-    url: str
-    behavior_hints: BehaviorHints
+    url: str | None = None
+    external_url: str | None = None
+    behavior_hints: BehaviorHints | None = None
 
     @classmethod
     def from_id_torrent_stream(cls, torrent_stream: TorrentStream) -> StremioStream:
