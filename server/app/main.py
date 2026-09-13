@@ -117,6 +117,7 @@ app.mount(
     SPAStaticFiles(
         directory=config.client_path,
         html=True,
+        check_dir=False,
     ),
     name="frontend",
 )
