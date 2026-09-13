@@ -15,6 +15,17 @@ class TorrentWithRelay(NamedTuple):
         return self.torrent.info_hash
 
 
+class TorrentKey(NamedTuple):
+    indexer_id: str
+    torrent_id: str
+
+
+class StorageUsage(BaseModel):
+    used_bytes: int
+    free_bytes: int
+    total_bytes: int
+
+
 class TorrentCreate(BaseModel):
     indexer_id: str
     torrent_id: str

@@ -1,8 +1,11 @@
+import shutil
+
 import libtorrent as libtorrent
 from fastapi import HTTPException, status
 
-from app.common.constants import PRIO_0, PRIO_1
+from app.common.constants import BYTES_IN_GIGABYTE, PRIO_0, PRIO_1
 from app.common.logger import logger
+from app.config import config
 from app.modules.indexer_accounts.service import IndexerAccountsService
 from app.modules.indexer_definitions.service import IndexerDefinitionsService
 from app.modules.relay.service import RelayService
@@ -10,7 +13,12 @@ from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrent_files.service import TorrentFilesService
 from app.modules.torrents.models import TorrentModel
 from app.modules.torrents.repository import TorrentRepository
-from app.modules.torrents.schemas.internal import TorrentUpdate, TorrentWithRelay
+from app.modules.torrents.schemas.internal import (
+    StorageUsage,
+    TorrentKey,
+    TorrentUpdate,
+    TorrentWithRelay,
+)
 
 
 class TorrentsService:
@@ -147,6 +155,9 @@ class TorrentsService:
         self._torrent_repository.delete(info_hash=info_hash)
         self._relay_service.delete_torrent(info_hash=info_hash)
 
+    def find_by_indexer_id(self, indexer_id: str) -> list[TorrentModel]:
+        return self._torrent_repository.find_by_indexer_id(indexer_id)
+
     def delete_by_indexer_id(self, indexer_id: str) -> None:
         torrents = self._torrent_repository.find_by_indexer_id(indexer_id)
         for torrent in torrents:
@@ -165,6 +176,84 @@ class TorrentsService:
         )
         for torrent in torrents:
             self.delete(torrent.info_hash)
+
+    def get_used_storage_bytes(self) -> int:
+        return sum(
+            relay_torrent.downloaded
+            for relay_torrent in self._relay_service.get_torrents()
+        )
+
+    def get_storage_usage(self) -> StorageUsage:
+        free_bytes = 0
+        total_bytes = 0
+
+        # Friss telepítésnél a letöltési mappa még nem létezik.
+        if config.downloads_dir.exists():
+            usage = shutil.disk_usage(config.downloads_dir)
+            free_bytes = usage.free
+            total_bytes = usage.total
+
+        return StorageUsage(
+            used_bytes=self.get_used_storage_bytes(),
+            free_bytes=free_bytes,
+            total_bytes=total_bytes,
+        )
+
+    def cleanup_storage_quota(
+        self,
+        max_storage_bytes: int,
+        excluded_info_hashes: list[str] | None = None,
+        excluded_torrent_keys: list[TorrentKey] | None = None,
+    ) -> int:
+        """A kvótát túllépő torrentek törlése a legrégebben nézettel kezdve."""
+
+        if max_storage_bytes <= 0:
+            return 0
+
+        relay_torrents = self._relay_service.get_torrents()
+        relay_torrent_map = {
+            relay_torrent.info_hash: relay_torrent for relay_torrent in relay_torrents
+        }
+
+        used_bytes = sum(relay_torrent.downloaded for relay_torrent in relay_torrents)
+
+        if used_bytes <= max_storage_bytes:
+            return 0
+
+        bytes_to_free = used_bytes - max_storage_bytes
+
+        torrents = self._torrent_repository.find_for_storage_cleanup(
+            excluded_info_hashes=excluded_info_hashes,
+            excluded_torrent_keys=excluded_torrent_keys,
+        )
+
+        freed_bytes = 0
+        for torrent in torrents:
+            if freed_bytes >= bytes_to_free:
+                break
+
+            relay_torrent = relay_torrent_map.get(torrent.info_hash)
+            self.delete(torrent.info_hash)
+
+            if relay_torrent is None:
+                continue
+
+            freed_bytes += relay_torrent.downloaded
+            logger.info(
+                "🗑️ Tárhely takarítás törölte a(z) '%s' torrentet (%.1f GB).",
+                relay_torrent.name,
+                relay_torrent.downloaded / BYTES_IN_GIGABYTE,
+            )
+
+        if freed_bytes < bytes_to_free:
+            logger.warning(
+                "⚠️ A tárhely kvóta nem érhető el: %.1f GB szabadult fel a szükséges %.1f GB-ból. "
+                "A maradék torrentek védettek: streamelés alatt állnak, hit and run időn belül vannak, vagy seedben tartásra vannak jelölve.",
+                freed_bytes / BYTES_IN_GIGABYTE,
+                bytes_to_free / BYTES_IN_GIGABYTE,
+            )
+
+        return freed_bytes
 
     def parse_info_hash(self, info_hash_str: str) -> libtorrent.sha1_hash:
         sha1_hash = libtorrent.sha1_hash(bytes.fromhex(info_hash_str))

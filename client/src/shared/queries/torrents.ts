@@ -8,6 +8,7 @@ import type { TorrentUpdateRequest } from '../lib/source/source-client'
 import {
   torrentsDelete,
   torrentsGetList,
+  torrentsGetStorage,
   torrentsUpdate,
 } from '../lib/source/source-client'
 
@@ -16,6 +17,16 @@ export const getTorrents = queryOptions({
   refetchInterval: 1000,
   queryFn: async () => {
     const response = await torrentsGetList()
+
+    return response
+  },
+})
+
+export const getTorrentsStorage = queryOptions({
+  queryKey: ['torrents', 'storage'],
+  refetchInterval: 5000,
+  queryFn: async () => {
+    const response = await torrentsGetStorage()
 
     return response
   },
