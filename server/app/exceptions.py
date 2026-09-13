@@ -2,6 +2,11 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
+from app.modules.torznab.exceptions import (
+    TorznabProtocolError,
+    torznab_protocol_error_handler,
+)
+
 
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     messages = []
@@ -19,3 +24,4 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 def setup_exception_handlers(app: FastAPI):
     app.add_exception_handler(RequestValidationError, validation_exception_handler)  # type: ignore[arg-type]
+    app.add_exception_handler(TorznabProtocolError, torznab_protocol_error_handler)  # type: ignore[arg-type]

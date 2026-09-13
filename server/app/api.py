@@ -16,6 +16,7 @@ from app.modules.stream.router import router as stream_router
 from app.modules.stremio.router import router as stremio_router
 from app.modules.system.router import router as system_router
 from app.modules.torrents.router import router as torrents_router
+from app.modules.torznab.router import router as torznab_router
 from app.modules.users.router import router as users_router
 
 api_router = APIRouter(prefix="/api")
@@ -57,6 +58,7 @@ api_router.include_router(
     include_in_schema=show_internal_routes(),
 )
 api_router.include_router(stream_router)
+api_router.include_router(torznab_router)
 api_router.include_router(stremio_router)
 api_router.include_router(kodi_router)
 api_router.include_router(

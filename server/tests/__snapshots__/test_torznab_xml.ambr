@@ -1,0 +1,25 @@
+# serializer version: 1
+# name: test_capabilities
+  '''
+  <?xml version='1.0' encoding='utf-8'?>
+  <caps><server version="1.3" title="StremHU Source" /><limits max="200" default="100" /><searching><search available="yes" supportedParams="q" /><tv-search available="yes" supportedParams="q,imdbid,season,ep" /><movie-search available="yes" supportedParams="q,imdbid" /></searching><categories><category id="2000" name="Movies"><subcat id="2010" name="Foreign" /><subcat id="2030" name="SD" /><subcat id="2040" name="HD" /><subcat id="2045" name="UHD" /><subcat id="2060" name="3D" /></category><category id="5000" name="TV"><subcat id="5020" name="Foreign" /><subcat id="5030" name="SD" /><subcat id="5040" name="HD" /><subcat id="5045" name="UHD" /></category></categories></caps>
+  '''
+# ---
+# name: test_empty_feed
+  '''
+  <?xml version='1.0' encoding='utf-8'?>
+  <rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:newznab="http://www.newznab.com/DTD/2010/feeds/attributes/" version="2.0"><channel><atom:link href="https://stremhu.local/api/torznab/api" rel="self" type="application/rss+xml" /><title>StremHU Source</title><description>StremHU Source Torznab találatok</description><link>https://stremhu.local/api/torznab/api</link><language>hu</language><newznab:response offset="0" total="0" /></channel></rss>
+  '''
+# ---
+# name: test_error_document
+  '''
+  <?xml version='1.0' encoding='utf-8'?>
+  <error code="201" description="Incorrect parameter (cat)" />
+  '''
+# ---
+# name: test_feed_with_item
+  '''
+  <?xml version='1.0' encoding='utf-8'?>
+  <rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:newznab="http://www.newznab.com/DTD/2010/feeds/attributes/" xmlns:torznab="http://torznab.com/schemas/2015/feed" version="2.0"><channel><atom:link href="https://stremhu.local/api/torznab/api" rel="self" type="application/rss+xml" /><title>StremHU Source</title><description>StremHU Source Torznab találatok</description><link>https://stremhu.local/api/torznab/api</link><language>hu</language><newznab:response offset="0" total="1" /><item><title>Valami.Film.2024.1080p.WEB-DL.H264.HUN-GROUP</title><guid isPermaLink="false">0123456789abcdef0123456789abcdef01234567</guid><jackettindexer id="indexer-id">Teszt Indexer</jackettindexer><type>private</type><pubDate>Sat, 01 Jun 2024 12:00:00 GMT</pubDate><size>8589934592</size><category>2000</category><category>2040</category><enclosure url="magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567" length="8589934592" type="application/x-bittorrent" /><torznab:attr name="size" value="8589934592" /><torznab:attr name="category" value="2000" /><torznab:attr name="category" value="2040" /><torznab:attr name="infohash" value="0123456789abcdef0123456789abcdef01234567" /><torznab:attr name="seeders" value="12" /></item></channel></rss>
+  '''
+# ---

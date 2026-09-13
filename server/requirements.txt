@@ -5,6 +5,7 @@ libtorrent==2.0.13
 types-libtorrent==2.0.11.20250816
 pydantic==2.13.4
 pydantic-settings==2.15.0
+pydantic-xml==2.21.1
 debugpy==1.8.21
 content-types==0.5.7
 setproctitle==1.3.7
