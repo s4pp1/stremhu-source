@@ -322,6 +322,10 @@ class RelayService:
 
                     case libtorrent.piece_finished_alert():
                         info_hash = str(alert.handle.info_hash())
+                        piece_index = alert.piece_index
+                        request_key = (info_hash, piece_index)
+                        if request_key in self.pending_piece_requests:
+                            alert.handle.read_piece(piece_index)
                         self.trigger_priority_update(info_hash)
 
                     case libtorrent.read_piece_alert():
@@ -343,6 +347,12 @@ class RelayService:
 
                                 if error_code in (2, 3):
                                     err = FileNotFoundError(error_msg)
+                                    try:
+                                        alert.handle.force_recheck()
+                                    except Exception as recheck_err:
+                                        logger.error(
+                                            f"Hiba a force_recheck hívása közben: {recheck_err}"
+                                        )
                                 else:
                                     err = Exception(error_msg)
 
