@@ -21,6 +21,7 @@ from app.common.constants import (
 )
 from app.common.logger import logger
 from app.common.torrent_info import TorrentFileInfo, TorrentInfo
+from app.modules.relay.speed_meter import SpeedMeter
 
 
 class Torrent:
@@ -260,12 +261,18 @@ class Stream:
         self.current_stream_piece = stream_start_piece_index
 
         self.is_destroying = False
+        self._speed_meter = SpeedMeter()
 
         self.file.streams[self.id] = self
 
     @property
     def stream_pieces_range(self) -> range:
         return range(self.current_stream_piece, self.stream_end_piece_index + 1)
+
+    @property
+    def speed(self) -> int:
+        """A kliensnek ténylegesen kiküldött adat sebessége (bájt / másodperc)."""
+        return self._speed_meter.speed
 
     @property
     def current_stream_byte(self) -> int:
@@ -360,7 +367,10 @@ class Stream:
                     if await request.is_disconnected():
                         disconnected = True
                         break
-                    yield view[chunk_start : chunk_start + CHUNK_SIZE].tobytes()
+                    chunk = view[chunk_start : chunk_start + CHUNK_SIZE].tobytes()
+                    yield chunk
+                    # A yield után fut, vagyis amikor a kliens már átvette.
+                    self._speed_meter.add(len(chunk))
 
                 if disconnected:
                     break
