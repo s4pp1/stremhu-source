@@ -30,9 +30,19 @@ async def torznab_api(
     if query.function is TorznabFunction.CAPS:
         return xml_response(torznab_service.capabilities(), XML_MEDIA_TYPE)
 
-    link = await asyncio.to_thread(torznab_service.feed_link, request.url.path)
+    link = await asyncio.to_thread(
+        torznab_service.feed_link,
+        request.url.path,
+        request.url.query,
+    )
+    items, total = await torznab_service.search(query)
 
     return xml_response(
-        torznab_service.feed(link=link, offset=query.offset),
+        torznab_service.feed(
+            link=link,
+            items=items,
+            offset=query.offset,
+            total=total,
+        ),
         FEED_MEDIA_TYPE,
     )

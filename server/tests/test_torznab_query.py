@@ -65,16 +65,16 @@ def test_json_output_is_rejected():
 @pytest.mark.parametrize(
     "value,expected",
     [
-        ("tt0903747", "tt0903747"),
-        ("TT0903747", "tt0903747"),
-        ("0903747", "tt0903747"),
+        ("tt9999999", "tt9999999"),
+        ("TT9999999", "tt9999999"),
+        ("9999999", "tt9999999"),
     ],
 )
 def test_imdb_id_is_normalised(value: str, expected: str):
     assert parse(f"t=movie&imdbid={value}").imdb_id == expected
 
 
-@pytest.mark.parametrize("value", ["tt123", "abc", "tt09037470000"])
+@pytest.mark.parametrize("value", ["tt123", "abc", "tt99999990000"])
 def test_invalid_imdb_id(value: str):
     assert expect_error(f"t=movie&imdbid={value}").code == (
         TorznabErrorCode.INCORRECT_PARAMETER
@@ -87,11 +87,16 @@ def test_categories_from_repeated_parameters():
     assert query.categories == (2000, 2040, 5000)
 
 
-@pytest.mark.parametrize("value", ["2000,abc", "", "2000,", "-1"])
+@pytest.mark.parametrize("value", ["2000,abc", "2000,", "-1"])
 def test_invalid_categories(value: str):
     assert expect_error(f"t=search&cat={value}").code == (
         TorznabErrorCode.INCORRECT_PARAMETER
     )
+
+
+@pytest.mark.parametrize("name", ["cat", "limit", "offset", "season", "ep"])
+def test_empty_parameters_are_treated_as_missing(name: str):
+    assert parse(f"t=search&{name}=") == parse("t=search")
 
 
 def test_limit_is_capped_to_the_advertised_maximum():

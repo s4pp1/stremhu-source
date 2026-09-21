@@ -2,7 +2,7 @@
 # name: test_capabilities
   '''
   <?xml version='1.0' encoding='utf-8'?>
-  <caps><server version="1.3" title="StremHU Source" /><limits max="200" default="100" /><searching><search available="yes" supportedParams="q" /><tv-search available="yes" supportedParams="q,imdbid,season,ep" /><movie-search available="yes" supportedParams="q,imdbid" /></searching><categories><category id="2000" name="Movies"><subcat id="2010" name="Foreign" /><subcat id="2030" name="SD" /><subcat id="2040" name="HD" /><subcat id="2045" name="UHD" /><subcat id="2060" name="3D" /></category><category id="5000" name="TV"><subcat id="5020" name="Foreign" /><subcat id="5030" name="SD" /><subcat id="5040" name="HD" /><subcat id="5045" name="UHD" /></category></categories></caps>
+  <caps><server version="1.3" title="StremHU Source" /><limits max="200" default="100" /><searching><search available="no" supportedParams="imdbid" /><tv-search available="yes" supportedParams="imdbid,season,ep" /><movie-search available="yes" supportedParams="imdbid" /></searching><categories><category id="2000" name="Movies"><subcat id="2010" name="Foreign" /><subcat id="2030" name="SD" /><subcat id="2040" name="HD" /><subcat id="2045" name="UHD" /><subcat id="2060" name="3D" /></category><category id="5000" name="TV"><subcat id="5020" name="Foreign" /><subcat id="5030" name="SD" /><subcat id="5040" name="HD" /><subcat id="5045" name="UHD" /></category></categories></caps>
   '''
 # ---
 # name: test_empty_feed

@@ -8,6 +8,11 @@ class TorznabFunction(str, Enum):
     TV_SEARCH = "tvsearch"
 
 
+class TorznabCategory(IntEnum):
+    MOVIE = 2000
+    TV = 5000
+
+
 class TorznabErrorCode(IntEnum):
     INCORRECT_CREDENTIALS = 100
     MISSING_PARAMETER = 200

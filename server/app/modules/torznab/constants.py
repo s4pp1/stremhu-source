@@ -1,5 +1,7 @@
 from typing import NamedTuple
 
+from app.modules.torznab.enums import TorznabCategory
+
 ATOM_NAMESPACE = "http://www.w3.org/2005/Atom"
 TORZNAB_NAMESPACE = "http://torznab.com/schemas/2015/feed"
 NEWZNAB_NAMESPACE = "http://www.newznab.com/DTD/2010/feeds/attributes/"
@@ -26,6 +28,19 @@ XML_MEDIA_TYPE = "application/xml; charset=utf-8"
 
 TORRENT_MEDIA_TYPE = "application/x-bittorrent"
 
+INDEXER_PRIVACY = "private"
+
+
+class TorznabAttrName:
+    CATEGORY = "category"
+    SIZE = "size"
+    SEEDERS = "seeders"
+    INFOHASH = "infohash"
+    MAGNET_URL = "magneturl"
+    LANGUAGE = "language"
+    IMDB = "imdb"
+    IMDB_ID = "imdbid"
+
 
 UNIMPLEMENTED_FUNCTIONS = frozenset(
     {
@@ -45,17 +60,16 @@ UNIMPLEMENTED_FUNCTIONS = frozenset(
     }
 )
 
-SEARCH_AVAILABLE = True
-SEARCH_SUPPORTED_PARAMS = "q"
+# A paraméter nélküli `t=search` a legfrissebb találatok listáját kérné (RSS mód),
+# ilyenünk viszont (egyelőre) nincs: a Stremhu csak IMDb azonosítóra tud keresni.
+SEARCH_AVAILABLE = False
+SEARCH_SUPPORTED_PARAMS = "imdbid"
 
 TV_SEARCH_AVAILABLE = True
-TV_SEARCH_SUPPORTED_PARAMS = "q,imdbid,season,ep"
+TV_SEARCH_SUPPORTED_PARAMS = "imdbid,season,ep"
 
 MOVIE_SEARCH_AVAILABLE = True
-MOVIE_SEARCH_SUPPORTED_PARAMS = "q,imdbid"
-
-MOVIE_CATEGORY_ID = 2000
-TV_CATEGORY_ID = 5000
+MOVIE_SEARCH_SUPPORTED_PARAMS = "imdbid"
 
 
 class Subcategory(NamedTuple):
@@ -72,7 +86,7 @@ class Category(NamedTuple):
 # Specifikációból: https://torznab.github.io/spec-1.3-draft/external/newznab/api.html?highlight=foreign#predefined-categories
 CATEGORIES = (
     Category(
-        id=MOVIE_CATEGORY_ID,
+        id=TorznabCategory.MOVIE,
         name="Movies",
         subcategories=(
             Subcategory(2010, "Foreign"),
@@ -83,7 +97,7 @@ CATEGORIES = (
         ),
     ),
     Category(
-        id=TV_CATEGORY_ID,
+        id=TorznabCategory.TV,
         name="TV",
         subcategories=(
             Subcategory(5020, "Foreign"),

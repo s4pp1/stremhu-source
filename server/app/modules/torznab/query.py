@@ -49,6 +49,9 @@ def _collect(request: Request) -> tuple[dict[str, str], list[str]]:
     for raw_name, raw_value in request.query_params.multi_items():
         name = raw_name.casefold()
 
+        if not raw_value.strip():
+            continue
+
         if name == "cat":
             categories.append(raw_value)
         else:

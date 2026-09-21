@@ -25,8 +25,18 @@ class FakeSettingsService:
         return APP_URL
 
 
+class FakeTorrentSourceProviderService:
+    async def find_by_imdb_id(self, imdb_id: str):
+        _ = imdb_id
+
+        return [], []
+
+
 def build_service() -> TorznabService:
-    return TorznabService(settings_service=FakeSettingsService())  # type: ignore[arg-type]
+    return TorznabService(
+        settings_service=FakeSettingsService(),  # type: ignore[arg-type]
+        torrent_source_provider_service=FakeTorrentSourceProviderService(),  # type: ignore[arg-type]
+    )
 
 
 def serialize(model) -> str:

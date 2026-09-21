@@ -38,6 +38,13 @@ class FakeSettingsService:
         return APP_URL
 
 
+class FakeTorrentSourceProviderService:
+    async def find_by_imdb_id(self, imdb_id: str):
+        _ = imdb_id
+
+        return [], []
+
+
 @pytest.fixture
 def client() -> Iterator[TestClient]:
     app = FastAPI()
@@ -46,7 +53,8 @@ def client() -> Iterator[TestClient]:
 
     app.dependency_overrides[get_auth_service] = FakeAuthService
     app.dependency_overrides[get_torznab_service] = lambda: TorznabService(
-        settings_service=FakeSettingsService()  # type: ignore[arg-type]
+        settings_service=FakeSettingsService(),  # type: ignore[arg-type]
+        torrent_source_provider_service=FakeTorrentSourceProviderService(),  # type: ignore[arg-type]
     )
 
     yield TestClient(app)
@@ -78,15 +86,14 @@ def test_capabilities_is_served_on_every_supported_route(client: TestClient, url
 
 
 def test_search_returns_an_empty_feed(client: TestClient):
-    response = client.get(
-        f"/api/torznab/api?t=tvsearch&imdbid=tt0903747&apikey={API_KEY}"
-    )
+    query = "t=tvsearch&imdbid=tt9999999"
+    response = client.get(f"/api/torznab/api?{query}&apikey={API_KEY}")
     root = ElementTree.fromstring(response.text)
 
     assert response.headers["content-type"] == FEED_MEDIA_TYPE
     assert root.tag == "rss"
     assert root.findall("./channel/item") == []
-    assert root.findtext("./channel/link") == f"{APP_URL}/api/torznab/api"
+    assert root.findtext("./channel/link") == f"{APP_URL}/api/torznab/api?{query}"
 
 
 @pytest.mark.parametrize(
@@ -114,3 +121,9 @@ def test_authentication_is_checked_before_the_query(client: TestClient):
     response = client.get("/api/torznab/api?t=details")
 
     assert error_code(response.text) == 100
+
+
+def test_api_key_is_not_published_in_the_feed(client: TestClient):
+    response = client.get(f"/api/torznab/api?t=movie&imdbid=tt9999999&apikey={API_KEY}")
+
+    assert API_KEY not in response.text

@@ -11,6 +11,7 @@ from app.modules.torznab.constants import (
 from app.modules.torznab.utils import clean_xml_text
 
 XmlText = Annotated[str, BeforeValidator(clean_xml_text)]
+RequiredXmlText = Annotated[XmlText, Field(min_length=1)]
 
 YesNo = Annotated[
     bool,
@@ -51,7 +52,7 @@ class CapsSubcategory(BaseXmlModel, tag="subcat"):
 
 class CapsCategory(BaseXmlModel, tag="category"):
     id: int = attr()
-    name: str = attr()
+    name: XmlText = attr()
     subcategories: list[CapsSubcategory] = Field(default_factory=list)
 
 
@@ -94,16 +95,16 @@ class FeedItemEnclosure(BaseXmlModel, tag="enclosure"):
 
 
 class FeedItemIndexer(BaseXmlModel, tag="jackettindexer"):
-    id: str = attr()
+    id: XmlText = attr()
     name: XmlText
 
 
 class FeedItem(BaseXmlModel, tag="item"):
-    title: XmlText = element()
+    title: RequiredXmlText = element()
     guid: FeedItemGuid
     indexer: FeedItemIndexer | None = None
     type: XmlText | None = element(default=None)
-    pub_date: XmlText = element(tag="pubDate")
+    pub_date: RequiredXmlText = element(tag="pubDate")
     size: int | None = element(default=None)
     link: XmlText | None = element(default=None)
     categories: list[int] = element(tag="category", default_factory=list)
