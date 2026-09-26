@@ -47,6 +47,12 @@
     'original_name': 'Miraculous S01-S04 (WEB-DL_1280x720)',
   })
 # ---
+# name: test_clean_torrent_name[series_tapsi_hapsi]
+  dict({
+    'cleaned_name': '[nCore][hdser ]Tapsi Hapsi es baratai S02 torrent',
+    'original_name': '[nCore][hdser_hun]Tapsi_Hapsi_es_baratai_S02_720p.torrent',
+  })
+# ---
 # name: test_clean_torrent_name[series_the_boys]
   dict({
     'cleaned_name': 'The Boys S05 AMZN PTHD',

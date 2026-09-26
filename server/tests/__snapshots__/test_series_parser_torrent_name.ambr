@@ -93,6 +93,16 @@
     'torrent_name': 'Miraculous S01-S04 (WEB-DL_1280x720)',
   })
 # ---
+# name: test_series_parser_torrent_name[series_tapsi_hapsi]
+  dict({
+    'episodes': list([
+    ]),
+    'seasons': list([
+      2,
+    ]),
+    'torrent_name': '[nCore][hdser_hun]Tapsi_Hapsi_es_baratai_S02_720p.torrent',
+  })
+# ---
 # name: test_series_parser_torrent_name[series_the_boys]
   dict({
     'episodes': list([

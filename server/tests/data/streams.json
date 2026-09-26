@@ -368,5 +368,91 @@
       }
     ],
     "external_fallbacks": ["hun", "480p"]
+  },
+  "series_tapsi_hapsi": {
+    "torrent": {
+      "name": "[nCore][hdser_hun]Tapsi_Hapsi_es_baratai_S02_720p.torrent",
+      "files": [
+        {
+          "path": "Tapsi Hapsi és barátai - S02E01 Hazafias hiri, Cucu-rakéta.mkv",
+          "size": 306422000,
+          "is_video": true
+        },
+        {
+          "path": "Tapsi Hapsi és barátai - S02E02 Múmia-lak, Megint az úton.mkv",
+          "size": 255222000,
+          "is_video": true
+        },
+        {
+          "path": "Tapsi Hapsi és barátai - S02E03 Érzelmileg támogató állat, Fogadj örökbe#.mkv",
+          "size": 345044000,
+          "is_video": true
+        },
+        {
+          "path": "Tapsi Hapsi és barátai - S02E04 Mars a Marsról#, Kikapós kaptár, Rádióháború.mkv",
+          "size": 337025000,
+          "is_video": true
+        },
+        {
+          "path": "Tapsi Hapsi és barátai - S02E05 Csont-csetepaté, Csak lazán.mkv",
+          "size": 203004000,
+          "is_video": true
+        },
+        {
+          "path": "Tapsi Hapsi és barátai - S02E06 Digi-dagi nyúl, Malac a pácban.mkv",
+          "size": 321774000,
+          "is_video": true
+        },
+        {
+          "path": "Tapsi Hapsi és barátai - S02E07 Kacsa-cérna, Aszfalt és ütleg.mkv",
+          "size": 312759000,
+          "is_video": true
+        },
+        {
+          "path": "Tapsi Hapsi és barátai - S02E08 Priccs-perpatvar, Száll a léghajó.mkv",
+          "size": 323808000,
+          "is_video": true
+        },
+        {
+          "path": "Tapsi Hapsi és barátai - S02E09 Kosaras nyúl, Jégre, malac#.mkv",
+          "size": 272661000,
+          "is_video": true
+        },
+        {
+          "path": "Tapsi Hapsi és barátai - S02E10 Hegymászkálók, Gyors és kitartó.mkv",
+          "size": 269411000,
+          "is_video": true
+        },
+        {
+          "path": "Tapsi Hapsi és barátai - S02E11 Vizsga-vizslató, Nyúlvadász-tanfolyam.mkv",
+          "size": 436481000,
+          "is_video": true
+        }
+      ]
+    },
+    "queries": [
+      {
+        "series": {
+          "season": 2,
+          "episode": 9
+        },
+        "expected_file": "Tapsi Hapsi és barátai - S02E09 Kosaras nyúl, Jégre, malac#.mkv"
+      },
+      {
+        "series": {
+          "season": 2,
+          "episode": 3
+        },
+        "expected_file": "Tapsi Hapsi és barátai - S02E03 Érzelmileg támogató állat, Fogadj örökbe#.mkv"
+      },
+      {
+        "series": {
+          "season": 2,
+          "episode": 4
+        },
+        "expected_file": "Tapsi Hapsi és barátai - S02E04 Mars a Marsról#, Kikapós kaptár, Rádióháború.mkv"
+      }
+    ],
+    "external_fallbacks": ["hun", "720p"]
   }
 }
