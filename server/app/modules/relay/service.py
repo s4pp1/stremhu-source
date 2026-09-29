@@ -322,6 +322,10 @@ class RelayService:
 
                     case libtorrent.piece_finished_alert():
                         info_hash = str(alert.handle.info_hash())
+                        piece_index = alert.piece_index
+                        request_key = (info_hash, piece_index)
+                        if request_key in self.pending_piece_requests:
+                            alert.handle.read_piece(piece_index)
                         self.trigger_priority_update(info_hash)
 
                     case libtorrent.read_piece_alert():
