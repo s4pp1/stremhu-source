@@ -1,12 +1,16 @@
+import asyncio
 from urllib.parse import parse_qsl, urlencode
 
 from app.common.logger import logger
 from app.common.schemas.internal import SeriesInfo
 from app.modules.settings.service import SettingsService
+from app.modules.torrent_files.isolated_service import IsolatedTorrentFilesService
+from app.modules.torrent_files.schemas import TorrentFileIdentifier
 from app.modules.torrent_source_provider.schemas import TorrentSource
 from app.modules.torrent_source_provider.service import TorrentSourceProviderService
 from app.modules.torznab.constants import (
     CATEGORIES,
+    DOWNLOAD_PATH_TEMPLATE,
     FEED_DESCRIPTION,
     FEED_LANGUAGE,
     FEED_TITLE,
@@ -21,6 +25,10 @@ from app.modules.torznab.constants import (
     TV_SEARCH_AVAILABLE,
     TV_SEARCH_SUPPORTED_PARAMS,
 )
+from app.modules.torznab.download_token import (
+    generate_download_token,
+    parse_download_token,
+)
 from app.modules.torznab.enums import (
     TorznabCategory,
     TorznabErrorCode,
@@ -29,6 +37,7 @@ from app.modules.torznab.enums import (
 from app.modules.torznab.exceptions import TorznabProtocolError
 from app.modules.torznab.items import build_feed_item, contains_episode
 from app.modules.torznab.query import TorznabQuery
+from app.modules.torznab.schemas.download import TorznabDownloadToken
 from app.modules.torznab.schemas.xml import (
     AtomLink,
     Caps,
@@ -51,25 +60,23 @@ class TorznabService:
         self,
         settings_service: SettingsService,
         torrent_source_provider_service: TorrentSourceProviderService,
+        isolated_torrent_files_service: IsolatedTorrentFilesService,
     ):
         self._settings_service = settings_service
         self._torrent_source_provider_service = torrent_source_provider_service
+        self._isolated_torrent_files_service = isolated_torrent_files_service
 
     def feed_link(self, path: str, query: str = "") -> str:
-        try:
-            app_url = self._settings_service.get_app_url()
-        except ValueError as error:
-            raise TorznabProtocolError(
-                TorznabErrorCode.UNKNOWN_ERROR,
-                str(error),
-            ) from error
-
-        link = f"{app_url.rstrip('/')}{path}"
+        link = f"{self._app_url()}{path}"
         safe_query = self._strip_api_key(query)
 
         return f"{link}?{safe_query}" if safe_query else link
 
-    async def search(self, query: TorznabQuery) -> tuple[list[FeedItem], int]:
+    async def search(
+        self,
+        query: TorznabQuery,
+        api_key: str,
+    ) -> tuple[list[FeedItem], int]:
         if not query.imdb_id:
             return [], 0
 
@@ -101,7 +108,41 @@ class TorznabService:
 
         page = matching[query.offset : query.offset + query.limit]
 
-        return self._to_feed_items(page, self._category(query)), len(matching)
+        app_url = await asyncio.to_thread(self._app_url)
+
+        return (
+            self._to_feed_items(page, self._category(query), app_url, api_key),
+            len(matching),
+        )
+
+    async def torrent_bytes(self, token: str) -> bytes | None:
+        payload = parse_download_token(token)
+
+        if payload is None:
+            return None
+
+        torrent_file = await asyncio.to_thread(
+            self._isolated_torrent_files_service.find_by_id,
+            payload.indexer_id,
+            payload.torrent_id,
+        )
+
+        if torrent_file is not None:
+            self._isolated_torrent_files_service.touch(
+                TorrentFileIdentifier(
+                    indexer_id=payload.indexer_id,
+                    torrent_id=payload.torrent_id,
+                )
+            )
+
+            return torrent_file.torrent_bytes
+
+        source = await self._torrent_source_provider_service.find_one_by_indexer(
+            payload.indexer_id,
+            payload.torrent_id,
+        )
+
+        return source.torrent_file.torrent_bytes if source else None
 
     def capabilities(self) -> Caps:
         return Caps(
@@ -190,16 +231,41 @@ class TorznabService:
             torrent.torrent_id,
         )
 
+    def _app_url(self) -> str:
+        try:
+            return self._settings_service.get_app_url().rstrip("/")
+        except ValueError as error:
+            raise TorznabProtocolError(
+                TorznabErrorCode.UNKNOWN_ERROR,
+                str(error),
+            ) from error
+
     @staticmethod
+    def _download_url(source: TorrentSource, app_url: str, api_key: str) -> str:
+        token = generate_download_token(
+            TorznabDownloadToken(
+                indexer_id=source.torrent_file.indexer_id,
+                torrent_id=source.indexer_torrent.torrent_id,
+            )
+        )
+        path = DOWNLOAD_PATH_TEMPLATE.format(api_key=api_key, token=token)
+
+        return f"{app_url}{path}"
+
+    @classmethod
     def _to_feed_items(
+        cls,
         sources: list[TorrentSource],
         category: TorznabCategory,
+        app_url: str,
+        api_key: str,
     ) -> list[FeedItem]:
         items: list[FeedItem] = []
 
         for source in sources:
             try:
-                items.append(build_feed_item(source, category))
+                download_url = cls._download_url(source, app_url, api_key)
+                items.append(build_feed_item(source, category, download_url))
             except Exception as error:
                 logger.warning(
                     "Torznab: a(z) %s torrent kihagyva: %s",

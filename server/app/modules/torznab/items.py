@@ -110,7 +110,11 @@ def _attributes(
     return attributes
 
 
-def build_feed_item(source: TorrentSource, category: TorznabCategory) -> FeedItem:
+def build_feed_item(
+    source: TorrentSource,
+    category: TorznabCategory,
+    download_url: str,
+) -> FeedItem:
     torrent = source.torrent_file.info
     indexer = source.indexer_torrent.indexer_account.indexer_definition
 
@@ -124,10 +128,8 @@ def build_feed_item(source: TorrentSource, category: TorznabCategory) -> FeedIte
         type=INDEXER_PRIVACY,
         pub_date=format_date_to_rfc822(source.torrent_file.created_at),
         size=torrent.size,
-        link=magnet,
+        link=download_url,
         categories=[category],
-        enclosure=FeedItemEnclosure(
-            url=magnet, length=torrent.size
-        ),  # Ez ideiglenes, magnet link nem megy privát trackerekkel. Kövi PR-ben jön a .torrent letöltő feature.
+        enclosure=FeedItemEnclosure(url=download_url, length=torrent.size),
         attributes=_attributes(source, category, magnet),
     )
