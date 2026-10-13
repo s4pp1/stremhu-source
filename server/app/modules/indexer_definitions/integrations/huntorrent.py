@@ -6,7 +6,7 @@
 from urllib.parse import parse_qs, urljoin, urlparse
 
 import httpx
-from selectolax.parser import HTMLParser, Node
+from selectolax.lexbor import LexborHTMLParser, LexborNode
 
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
@@ -45,7 +45,7 @@ _CATEGORY_ATTRIBUTES: dict[str, list[str]] = {
 }
 
 
-def _get_attribute(node: Node | None, name: str) -> str | None:
+def _get_attribute(node: LexborNode | None, name: str) -> str | None:
     if node is None:
         return None
 
@@ -93,7 +93,7 @@ def _parse_poster_id(poster_id: str | None) -> str | None:
     return torrent_id
 
 
-def _parse_seeders(item: Node) -> int:
+def _parse_seeders(item: LexborNode) -> int:
     # A seed érték a "Seed" feliratú .poster-stat blokkban van; az értéket egy
     # <a> csomagolja, ezért csak a számjegyeket olvassuk ki.
     for stat in item.css(".poster-stat"):
@@ -185,7 +185,7 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
         # számláló nagyobb nullánál, azaz volt már sikertelen próbálkozás.
         # Olyankor egyszer kézzel, böngészőből kell belépni.
         form = await self._client.get(self.login_path)
-        csrf_node = HTMLParser(form.text).css_first('input[name="csrf_token"]')
+        csrf_node = LexborHTMLParser(form.text).css_first('input[name="csrf_token"]')
 
         return await self._client.post(
             _LOGIN_API_PATH,
@@ -219,7 +219,7 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
             },
         )
 
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
 
         # A böngésző oldal fiókfüggő nézetet ad: van táblázatos (tr.torrent-row)
         # és poszter-rács (div.poster-item) elrendezés is. Mindkettőt kezeljük,
@@ -231,7 +231,9 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
             next_page=self._resolve_next_page(tree, current_page),
         )
 
-    def _parse_table_rows(self, tree: HTMLParser) -> list[IndexerDefinitionTorrent]:
+    def _parse_table_rows(
+        self, tree: LexborHTMLParser
+    ) -> list[IndexerDefinitionTorrent]:
         # Táblázatos nézet: soronként egy tr.torrent-row, az adatok data-*
         # attribútumokban (data-torrent-id, data-seeders), a kategória a
         # .torrent-category img alt szövegében.
@@ -267,7 +269,9 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
 
         return torrents
 
-    def _parse_poster_items(self, tree: HTMLParser) -> list[IndexerDefinitionTorrent]:
+    def _parse_poster_items(
+        self, tree: LexborHTMLParser
+    ) -> list[IndexerDefinitionTorrent]:
         # Poszter-rács nézet: minden torrent egy div.poster-item, az azonosító
         # az id="poster-<id>" attribútumban, a kategória a .poster-category span
         # szövegében, a seed a "Seed" feliratú .poster-stat blokkban.
@@ -309,7 +313,7 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
         response = await self._client.get(
             self.details_path.format(torrent_id=torrent_id)
         )
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
 
         download_node = tree.css_first('a[href*="/download/"]')
         download_path = _get_attribute(download_node, "href")
@@ -328,7 +332,7 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
     async def _fetch_hit_and_run_ids(self) -> list[str]:
         # Az id paraméter nélkül a belépett felhasználó saját listája jön.
         response = await self._client.get("/seedkotelezettseg.php")
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
 
         # A "/" a details.php előtt fontos: enélkül a fejléc
         # userdetails.php?id=<uid> linkje is illeszkedne, és a felhasználó
@@ -343,7 +347,9 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
 
         return ids
 
-    def _resolve_next_page(self, tree: HTMLParser, current_page: int) -> int | None:
+    def _resolve_next_page(
+        self, tree: LexborHTMLParser, current_page: int
+    ) -> int | None:
         for link in tree.css("a.ht-pager-btn"):
             href = link.attributes.get("href")
             if not href:

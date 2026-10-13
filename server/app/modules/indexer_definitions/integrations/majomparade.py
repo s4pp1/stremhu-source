@@ -2,7 +2,7 @@ from urllib.parse import urljoin
 
 import httpx
 import pydash
-from selectolax.parser import HTMLParser
+from selectolax.lexbor import LexborHTMLParser
 
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
@@ -118,7 +118,7 @@ class MajomparadeIndexerDefinition(BaseIndexerDefinition):
         if not isinstance(html, str):
             return IndexerDefinitionFindTorrentsResult(torrents=[])
 
-        tree = HTMLParser(html)
+        tree = LexborHTMLParser(html)
         torrent_rows = tree.css("article.torrent-card")
         torrents: list[IndexerDefinitionTorrent] = []
 
@@ -210,7 +210,7 @@ class MajomparadeIndexerDefinition(BaseIndexerDefinition):
         torrent_id: str,
     ) -> IndexerDefinitionTorrent | None:
         response = await self._client.get(f"/torrent/{torrent_id}")
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
 
         html_node = tree.css_first("html")
         if html_node and "Ez a torrent nem létezik!" in html_node.text():
@@ -239,7 +239,7 @@ class MajomparadeIndexerDefinition(BaseIndexerDefinition):
 
     async def _fetch_hit_and_run_ids(self) -> list[str]:
         response = await self._client.get("/hnr")
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
 
         content = tree.css_first("#main-section")
         if not content:

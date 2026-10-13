@@ -1,7 +1,7 @@
 from urllib.parse import parse_qs, urljoin, urlparse
 
 import httpx
-from selectolax.parser import HTMLParser
+from selectolax.lexbor import LexborHTMLParser
 
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
@@ -100,7 +100,7 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
         if not isinstance(html, str):
             return IndexerDefinitionFindTorrentsResult(torrents=[])
 
-        tree = HTMLParser(html)
+        tree = LexborHTMLParser(html)
         torrent_rows = tree.css("#torrenttable tbody tr")[1:]
         torrents: list[IndexerDefinitionTorrent] = []
 
@@ -187,7 +187,7 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
         torrent_id: str,
     ) -> IndexerDefinitionTorrent | None:
         response = await self._client.get(f"/details.php?id={torrent_id}")
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
 
         html_node = tree.css_first("html")
         if html_node and "Nincs ilyen torrent." in html_node.text():
@@ -215,7 +215,7 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
         response = await self._client.get(
             "/hitnrun.php", params={"id": user_id, "hnr": "1"}
         )
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
 
         hrefs = [
             node.attributes.get("href")
@@ -239,7 +239,7 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
             return self._cached_user_id
 
         response = await self._client.get("/index.php")
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
 
         user_node = tree.css_first('#status a[href*="/userdetails.php?"]')
         user_detail_path = user_node.attributes.get("href") if user_node else None

@@ -6,7 +6,7 @@
 from urllib.parse import parse_qs, urljoin, urlparse
 
 import httpx
-from selectolax.parser import HTMLParser
+from selectolax.lexbor import LexborHTMLParser
 
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
@@ -102,7 +102,7 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
         try:
             data = response.json()
         except Exception:
-            tree = HTMLParser(response.text)
+            tree = LexborHTMLParser(response.text)
             error_node = tree.css_first(".lista_mini_error")
             error_text = error_node.text(strip=True) if error_node else None
             if error_text == "Nincs találat!":
@@ -142,7 +142,7 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
         details_url = self.details_path.replace("{torrent_id}", torrent_id)
         response = await self._client.get(details_url)
 
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
 
         html_node = tree.css_first("html")
         if html_node and "Nem található az adatbázisunkban" in html_node.text():
@@ -170,7 +170,7 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
 
     async def _fetch_hit_and_run_ids(self) -> list[str]:
         response = await self._client.get("/hitnrun.php", params={"showall": "false"})
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
 
         content = tree.css_first("#main_tartalom")
         if not content:

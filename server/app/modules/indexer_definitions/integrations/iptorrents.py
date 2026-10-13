@@ -2,7 +2,7 @@ import re
 from urllib.parse import urljoin
 
 import httpx
-from selectolax.parser import HTMLParser
+from selectolax.lexbor import LexborHTMLParser
 
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
@@ -339,7 +339,7 @@ class IptorrentsIndexerDefinition(BaseIndexerDefinition):
 
         params_all = self._build_params(imdb_id, "all", current_page)
         response = await self._client.get("/t", params=params_all)
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
         torrents = _parse_torrent_rows(tree, imdb_id)
 
         active_tree = tree
@@ -347,7 +347,7 @@ class IptorrentsIndexerDefinition(BaseIndexerDefinition):
             numeric_id = imdb_id.lstrip("t")
             params_ti = self._build_params(numeric_id, "all", current_page)
             response2 = await self._client.get("/t", params=params_ti)
-            active_tree = HTMLParser(response2.text)
+            active_tree = LexborHTMLParser(response2.text)
             torrents = _parse_torrent_rows(active_tree, imdb_id)
 
         # Rendezés seederek szerint, csak a legjobb 20 megtartása.
@@ -364,7 +364,7 @@ class IptorrentsIndexerDefinition(BaseIndexerDefinition):
     async def _fetch_torrent(self, torrent_id: str) -> IndexerDefinitionTorrent | None:
         detail_url = self.details_path.replace("{torrent_id}", torrent_id)
         response = await self._client.get(detail_url)
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
 
         title_node = tree.css_first("title")
         if title_node and "not found" in title_node.text().lower():
@@ -400,7 +400,7 @@ class IptorrentsIndexerDefinition(BaseIndexerDefinition):
         amelyek még nem teljesítették az 1:1 arányt VAGY a 336 óra seedelési időt.
         """
         response = await self._client.get("/seeding_required.php")
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
         rows = tree.css("tr[id^='line']")
         hit_and_run_ids: list[str] = []
         for row in rows:
