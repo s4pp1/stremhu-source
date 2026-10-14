@@ -30,25 +30,25 @@ def parse_torrent_info(torrent: bytes | libtorrent.torrent_info) -> TorrentInfo:
         torrent_info = torrent
 
     piece_size = torrent_info.piece_length()
-    files_count = torrent_info.num_files()
+    file_storage = torrent_info.layout()
+    files_count = file_storage.num_files()
 
     files = []
     for index in range(files_count):
-        file_entry = torrent_info.file_at(index)
-
-        name = file_entry.path.split("/")[-1]
-        offset = file_entry.offset
-        size = file_entry.size
+        file_path = file_storage.file_path(index)
+        name = file_storage.file_name(index)
+        offset = file_storage.file_offset(index)
+        size = file_storage.file_size(index)
 
         start_piece_index = offset // piece_size
         end_piece_index = (offset + size - 1) // piece_size
 
-        content_type = content_types.get_content_type(file_entry.path)
+        content_type = content_types.get_content_type(file_path)
 
         files.append(
             TorrentFileInfo(
                 name=name,
-                path=file_entry.path,
+                path=file_path,
                 index=index,
                 size=size,
                 offset=offset,
