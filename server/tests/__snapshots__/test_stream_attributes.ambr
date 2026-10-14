@@ -186,6 +186,94 @@
     'web-dl',
   ])
 # ---
+# name: test_stream_attributes_resolution[series_tapsi_hapsi_Tapsi Hapsi \xe9s bar\xe1tai - S02E01 Hazafias hiri, Cucu-rak\xe9ta.mkv]
+  list([
+    '720p',
+    'hun',
+    'sdr',
+    'theatrical',
+  ])
+# ---
+# name: test_stream_attributes_resolution[series_tapsi_hapsi_Tapsi Hapsi \xe9s bar\xe1tai - S02E02 M\xfamia-lak, Megint az \xfaton.mkv]
+  list([
+    '720p',
+    'hun',
+    'sdr',
+    'theatrical',
+  ])
+# ---
+# name: test_stream_attributes_resolution[series_tapsi_hapsi_Tapsi Hapsi \xe9s bar\xe1tai - S02E03 \xc9rzelmileg t\xe1mogat\xf3 \xe1llat, Fogadj \xf6r\xf6kbe#.mkv]
+  list([
+    '720p',
+    'hun',
+    'sdr',
+    'theatrical',
+  ])
+# ---
+# name: test_stream_attributes_resolution[series_tapsi_hapsi_Tapsi Hapsi \xe9s bar\xe1tai - S02E04 Mars a Marsr\xf3l#, Kikap\xf3s kapt\xe1r, R\xe1di\xf3h\xe1bor\xfa.mkv]
+  list([
+    '720p',
+    'hun',
+    'sdr',
+    'theatrical',
+  ])
+# ---
+# name: test_stream_attributes_resolution[series_tapsi_hapsi_Tapsi Hapsi \xe9s bar\xe1tai - S02E05 Csont-csetepat\xe9, Csak laz\xe1n.mkv]
+  list([
+    '720p',
+    'hun',
+    'sdr',
+    'theatrical',
+  ])
+# ---
+# name: test_stream_attributes_resolution[series_tapsi_hapsi_Tapsi Hapsi \xe9s bar\xe1tai - S02E06 Digi-dagi ny\xfal, Malac a p\xe1cban.mkv]
+  list([
+    '720p',
+    'hun',
+    'sdr',
+    'theatrical',
+  ])
+# ---
+# name: test_stream_attributes_resolution[series_tapsi_hapsi_Tapsi Hapsi \xe9s bar\xe1tai - S02E07 Kacsa-c\xe9rna, Aszfalt \xe9s \xfctleg.mkv]
+  list([
+    '720p',
+    'hun',
+    'sdr',
+    'theatrical',
+  ])
+# ---
+# name: test_stream_attributes_resolution[series_tapsi_hapsi_Tapsi Hapsi \xe9s bar\xe1tai - S02E08 Priccs-perpatvar, Sz\xe1ll a l\xe9ghaj\xf3.mkv]
+  list([
+    '720p',
+    'hun',
+    'sdr',
+    'theatrical',
+  ])
+# ---
+# name: test_stream_attributes_resolution[series_tapsi_hapsi_Tapsi Hapsi \xe9s bar\xe1tai - S02E09 Kosaras ny\xfal, J\xe9gre, malac#.mkv]
+  list([
+    '720p',
+    'hun',
+    'sdr',
+    'theatrical',
+  ])
+# ---
+# name: test_stream_attributes_resolution[series_tapsi_hapsi_Tapsi Hapsi \xe9s bar\xe1tai - S02E10 Hegym\xe1szk\xe1l\xf3k, Gyors \xe9s kitart\xf3.mkv]
+  list([
+    '720p',
+    'hun',
+    'sdr',
+    'theatrical',
+  ])
+# ---
+# name: test_stream_attributes_resolution[series_tapsi_hapsi_Tapsi Hapsi \xe9s bar\xe1tai - S02E11 Vizsga-vizslat\xf3, Ny\xfalvad\xe1sz-tanfolyam.mkv]
+  list([
+    '720p',
+    'hun',
+    'sdr',
+    'theatrical',
+  ])
+# ---
 # name: test_stream_attributes_resolution[series_the_boys_The.Boys.S05E01.1080p.AMZN.WEB-DL.DDP5.1.Atmos.H.264.HUN.ENG-PTHD.mkv]
   list([
     '1080p',

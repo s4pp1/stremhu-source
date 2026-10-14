@@ -249,7 +249,7 @@ class NetworkService:
 
             raise ValueError(
                 "A szerver nem érhető el a megadott domainen keresztül! "
-                "A DNS rekordokat visszaállítottuk. Ellenőrizd a router port forward beállításait (TCP 4300 port)!"
+                f"A DNS rekordokat visszaállítottuk. Ellenőrizd a router port forward beállításait (TCP {config.port} port)!"
             )
         return ip
 

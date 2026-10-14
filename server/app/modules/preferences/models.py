@@ -26,6 +26,11 @@ class PreferenceModel(Base):
         default=False,
     )
 
+    strict_exclusion: Mapped[bool] = mapped_column(
+        sa.Boolean,
+        default=False,
+    )
+
     order: Mapped[int] = mapped_column(
         sa.Integer,
         default=0,

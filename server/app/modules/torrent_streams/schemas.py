@@ -21,6 +21,7 @@ class TorrentStream(BaseModel):
     model_config = ConfigDict(
         validate_by_name=True,
         alias_generator=to_camel,
+        arbitrary_types_allowed=True,
     )
 
     indexer_account: IndexerAccountModel

@@ -112,6 +112,7 @@ class PreferencesRepository:
             "emoji",
             "order",
             "allow_best_torrent_grouping",
+            "strict_exclusion",
         ]
         for index, pref in enumerate(DEFAULT_PREFERENCES):
             pref.order = index

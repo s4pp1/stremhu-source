@@ -6,7 +6,7 @@
 from urllib.parse import parse_qs, urlparse
 
 import httpx
-from selectolax.parser import HTMLParser
+from selectolax.lexbor import LexborHTMLParser
 
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
@@ -115,7 +115,7 @@ class InsaneIndexerDefinition(BaseIndexerDefinition):
         if not isinstance(html, str):
             return IndexerDefinitionFindTorrentsResult(torrents=[])
 
-        tree = HTMLParser(html)
+        tree = LexborHTMLParser(html)
         torrent_rows = tree.css(".torrenttable tbody .torrentrow")
         torrents: list[IndexerDefinitionTorrent] = []
 
@@ -196,7 +196,7 @@ class InsaneIndexerDefinition(BaseIndexerDefinition):
         torrent_id: str,
     ) -> IndexerDefinitionTorrent | None:
         response = await self._client.get(f"/details.php?id={torrent_id}")
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
 
         html_node = tree.css_first("html")
         if html_node and "Torrent nem létezik" in html_node.text():
@@ -223,7 +223,7 @@ class InsaneIndexerDefinition(BaseIndexerDefinition):
 
     async def _fetch_hit_and_run_ids(self) -> list[str]:
         response = await self._client.get("/hitnrun.php")
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
 
         hrefs = [
             node.attributes.get("href")

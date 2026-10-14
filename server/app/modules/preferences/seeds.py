@@ -35,6 +35,7 @@ DEFAULT_PREFERENCES = [
         multiple=True,
         emoji="🏷️",
         allow_best_torrent_grouping=True,
+        strict_exclusion=True,
     ),
     PreferenceModel(
         id=PreferenceKey.SOURCE,
@@ -42,6 +43,7 @@ DEFAULT_PREFERENCES = [
         description="A kiadás forrástípusa / eredete.",
         multiple=True,
         emoji="💿",
+        strict_exclusion=True,
     ),
     PreferenceModel(
         id=PreferenceKey.VIDEO_CODEC,

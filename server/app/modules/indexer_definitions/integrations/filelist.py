@@ -3,7 +3,7 @@ import unicodedata
 from urllib.parse import parse_qs, urljoin, urlparse
 
 import httpx
-from selectolax.parser import HTMLParser
+from selectolax.lexbor import LexborHTMLParser
 
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
@@ -179,7 +179,7 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
         if not isinstance(html, str):
             return IndexerDefinitionFindTorrentsResult(torrents=[])
 
-        tree = HTMLParser(html)
+        tree = LexborHTMLParser(html)
         torrent_rows = tree.css(".torrentrow")
         torrents: list[IndexerDefinitionTorrent] = []
 
@@ -276,7 +276,7 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
 
     async def _fetch_torrent(self, torrent_id: str) -> IndexerDefinitionTorrent:
         response = await self._client.get(f"/details.php?id={torrent_id}")
-        tree = HTMLParser(response.text)
+        tree = LexborHTMLParser(response.text)
 
         dl_node = tree.css_first(f'a[href*="download.php?id={torrent_id}"]')
         download_path = dl_node.attributes.get("href") if dl_node else None
@@ -302,7 +302,7 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
         if not isinstance(html, str):
             raise Exception("A Filelist SnatchList nem talalhato.")
 
-        tree = HTMLParser(html)
+        tree = LexborHTMLParser(html)
         body_node = tree.css_first("body")
         body_text = body_node.text() if body_node else ""
         page_text = self._normalize_hnr_text(body_text)
@@ -340,7 +340,7 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
             if not torrent_id:
                 continue
 
-            row_clone = HTMLParser(row.html or "")
+            row_clone = LexborHTMLParser(row.html or "")
             for node in row_clone.css('a[href*="details.php?id="]'):
                 node.decompose()
 
@@ -375,7 +375,7 @@ class FilelistIndexerDefinition(BaseIndexerDefinition):
     # ─── Segédfüggvények ──────────────────────────────────────────────────────
 
     def _build_login_form(self, html: str) -> dict[str, str]:
-        tree = HTMLParser(html)
+        tree = LexborHTMLParser(html)
         form: dict[str, str] = {}
         for el in tree.css("form input[name]"):
             name = el.attributes.get("name")

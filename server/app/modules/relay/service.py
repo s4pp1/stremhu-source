@@ -55,17 +55,16 @@ class RelayService:
 
         self._torrent_connections_limit = 20
         self._torrents: dict[libtorrent.sha1_hash, Torrent] = {}
-        self.loop = asyncio.get_event_loop()
+        self._loop = asyncio.get_event_loop()
         self.priority_update_queue: asyncio.Queue[str] = asyncio.Queue()
 
         def on_alert():
-            self.loop.call_soon_threadsafe(self.process_alerts)
+            self._loop.call_soon_threadsafe(self.process_alerts)
 
         self._libtorrent_session.set_alert_notify(on_alert)
 
-        self.pending_piece_requests: dict[
-            tuple[str, int], list[asyncio.Future[bytes]]
-        ] = {}
+        self._piece_fetch_tasks: dict[tuple[str, int], asyncio.Task[bytes]] = {}
+        self._pending_piece_reads: dict[tuple[str, int], asyncio.Future[bytes]] = {}
 
         # Event hooks for resume data management (Observer Pattern)
         self.on_save_resume: list[Callable[[str, bytes], None]] = []
@@ -74,7 +73,9 @@ class RelayService:
         self,
         info_hash: str,
     ) -> None:
-        self.loop.call_soon_threadsafe(self.priority_update_queue.put_nowait, info_hash)
+        self._loop.call_soon_threadsafe(
+            self.priority_update_queue.put_nowait, info_hash
+        )
 
     async def priority_manager_loop(self):
         while True:
@@ -161,31 +162,57 @@ class RelayService:
     ) -> bytes:
         info_hash = str(torrent_handle.info_hash())
         request_key = (info_hash, piece_index)
-        for attempt in range(4):
-            future: asyncio.Future[bytes] = self.loop.create_future()
-            requests = self.pending_piece_requests.setdefault(request_key, [])
-            requests.append(future)
 
-            if torrent_handle.have_piece(piece_index):
-                torrent_handle.read_piece(piece_index)
+        task = self._piece_fetch_tasks.get(request_key)
+        if task is None or task.done():
+            task = asyncio.create_task(
+                self._fetch_piece_with_retry(torrent_handle, piece_index, request_key)
+            )
+            self._piece_fetch_tasks[request_key] = task
 
-            try:
-                return await future
-            except FileNotFoundError:
-                if attempt < 3:
-                    await asyncio.sleep(0.5)
-                    continue
-                raise
-            finally:
-                if future in requests:
-                    requests.remove(future)
-                    if not requests:
-                        self.pending_piece_requests.pop(request_key, None)
+        return await asyncio.shield(task)
 
-                if not future.done():
-                    future.cancel()
+    async def _fetch_piece_with_retry(
+        self,
+        torrent_handle: libtorrent.torrent_handle,
+        piece_index: int,
+        request_key: tuple[str, int],
+    ) -> bytes:
+        try:
+            for attempt in range(4):
+                try:
+                    return await self._fetch_piece_once(
+                        torrent_handle, piece_index, request_key
+                    )
+                except FileNotFoundError:
+                    if attempt < 3:
+                        await asyncio.sleep(0.5)
+                        continue
+                    raise
+            raise RuntimeError("Unreachable")
+        finally:
+            if self._piece_fetch_tasks.get(request_key) is asyncio.current_task():
+                self._piece_fetch_tasks.pop(request_key, None)
 
-        raise RuntimeError("Unreachable")
+    async def _fetch_piece_once(
+        self,
+        torrent_handle: libtorrent.torrent_handle,
+        piece_index: int,
+        request_key: tuple[str, int],
+    ) -> bytes:
+        future: asyncio.Future[bytes] = self._loop.create_future()
+        self._pending_piece_reads[request_key] = future
+
+        if torrent_handle.have_piece(piece_index):
+            torrent_handle.read_piece(piece_index)
+
+        try:
+            return await future
+        finally:
+            if self._pending_piece_reads.get(request_key) is future:
+                self._pending_piece_reads.pop(request_key, None)
+            if not future.done():
+                future.cancel()
 
     def add_torrent(
         self,
@@ -270,8 +297,6 @@ class RelayService:
         if torrent_handle is None:
             return False
 
-        # A libtorrent session előbb kapja meg a torrentet, mint a _torrents dict
-        # (és az add_torrent külön thread-en is futhat), ezért a hiányzó kulcs nem hiba.
         self._torrents.pop(info_hash, None)
 
         self._libtorrent_session.remove_torrent(
@@ -322,15 +347,17 @@ class RelayService:
 
                     case libtorrent.piece_finished_alert():
                         info_hash = str(alert.handle.info_hash())
+                        piece_index = alert.piece_index
+                        request_key = (info_hash, piece_index)
+                        if request_key in self._pending_piece_reads:
+                            alert.handle.read_piece(piece_index)
                         self.trigger_priority_update(info_hash)
 
                     case libtorrent.read_piece_alert():
                         info_hash = str(alert.handle.info_hash())
                         request_key = (info_hash, alert.piece)
 
-                        if futures := self.pending_piece_requests.pop(
-                            request_key, None
-                        ):
+                        if future := self._pending_piece_reads.pop(request_key, None):
                             has_error = alert.error and alert.error.value() != 0
 
                             if has_error:
@@ -346,18 +373,16 @@ class RelayService:
                                 else:
                                     err = Exception(error_msg)
 
-                                for future in futures:
-                                    if not future.done():
-                                        self.loop.call_soon_threadsafe(
-                                            future.set_exception, err
-                                        )
+                                if not future.done():
+                                    self._loop.call_soon_threadsafe(
+                                        future.set_exception, err
+                                    )
                             else:
                                 piece_data = bytes(alert.buffer)
-                                for future in futures:
-                                    if not future.done():
-                                        self.loop.call_soon_threadsafe(
-                                            future.set_result, piece_data
-                                        )
+                                if not future.done():
+                                    self._loop.call_soon_threadsafe(
+                                        future.set_result, piece_data
+                                    )
 
             except Exception as e:
                 logger.error(f"Hiba a {type(alert).__name__} feldolgozása közben: {e}")

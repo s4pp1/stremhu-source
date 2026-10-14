@@ -101,7 +101,6 @@ class Torrent:
                 self.torrent_handle.set_piece_deadline(
                     piece_index,
                     deadline,
-                    libtorrent.torrent_handle.alert_when_available,
                 )
                 self._active_deadlines[piece_index] = deadline
 
