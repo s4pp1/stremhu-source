@@ -414,6 +414,7 @@ export interface PlaybackResponse {
   fileName: string | null
   createdAt: string
   progress: number
+  speed: number
 }
 
 export interface PreferenceCreateRequest {
