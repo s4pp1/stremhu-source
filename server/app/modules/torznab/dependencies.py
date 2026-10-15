@@ -1,12 +1,15 @@
 from typing import Annotated
 
-from fastapi import Depends, HTTPException, Request
+from fastapi import Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
 from app.common.database import get_db
 from app.modules.auth.dependencies import get_auth_service
 from app.modules.auth.service import AuthService
 from app.modules.settings.dependencies import create_settings_service
+from app.modules.torrent_files.dependencies import (
+    create_isolated_torrent_files_service,
+)
 from app.modules.torrent_source_provider.dependencies import (
     create_torrent_source_provider_service,
 )
@@ -23,6 +26,7 @@ def create_torznab_service(db: Session) -> TorznabService:
     return TorznabService(
         settings_service=settings_service,
         torrent_source_provider_service=torrent_source_provider_service,
+        isolated_torrent_files_service=create_isolated_torrent_files_service(),
     )
 
 
@@ -50,4 +54,16 @@ def require_torznab_user(
         raise TorznabProtocolError(
             TorznabErrorCode.INCORRECT_CREDENTIALS,
             "Incorrect user credentials",
+        ) from error
+
+
+def require_torznab_path_user(
+    api_key: str,
+    auth_service: Annotated[AuthService, Depends(get_auth_service)],
+) -> UserModel:
+    try:
+        return auth_service.verify_api_key(api_key)
+    except HTTPException as error:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
         ) from error

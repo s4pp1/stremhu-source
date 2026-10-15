@@ -25,6 +25,16 @@ class FakeSettingsService:
         return APP_URL
 
 
+class FakeIsolatedTorrentFilesService:
+    def find_by_id(self, indexer_id: str, torrent_id: str):
+        _ = (indexer_id, torrent_id)
+
+        return None
+
+    def touch(self, identifiers) -> None:
+        _ = identifiers
+
+
 class FakeTorrentSourceProviderService:
     async def find_by_imdb_id(self, imdb_id: str):
         _ = imdb_id
@@ -36,6 +46,7 @@ def build_service() -> TorznabService:
     return TorznabService(
         settings_service=FakeSettingsService(),  # type: ignore[arg-type]
         torrent_source_provider_service=FakeTorrentSourceProviderService(),  # type: ignore[arg-type]
+        isolated_torrent_files_service=FakeIsolatedTorrentFilesService(),  # type: ignore[arg-type]
     )
 
 
