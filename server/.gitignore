@@ -28,3 +28,10 @@ Thumbs.db
 # Generated OpenAPI output
 openapi/
 /data
+
+!integrations
+integrations/*
+!integrations/*.py
+!patches
+patches/*
+!patches/*.append.py
