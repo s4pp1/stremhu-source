@@ -1,6 +1,5 @@
 import asyncio
 from collections.abc import Callable
-from typing import Any
 
 import libtorrent as libtorrent
 from fastapi import HTTPException
@@ -99,7 +98,7 @@ class RelayService:
         self,
         payload: RelaySettingsUpdate,
     ):
-        apply_settings: dict[str, Any] = {}
+        apply_settings: libtorrent.settings_pack = {}
 
         if payload.download_limit is not None:
             apply_settings["download_rate_limit"] = payload.download_limit
