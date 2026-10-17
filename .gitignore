@@ -10,8 +10,30 @@ stremhu.tar.gz
 AGENTS.md
 .cursorrules
 node_modules
+.conda
 .conda/
 __pycache__/
 *.py[cod]
 *$py.class
 junit.xml
+data/
+dist/
+build/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+core/client/
+server/client/
+
+# Secrets and environment files
+.env
+.env.*
+*.key
+session.key
+*.db
+*.sqlite3
+
+# OS files
+.DS_Store
+Thumbs.db
+

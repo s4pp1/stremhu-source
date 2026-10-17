@@ -51,13 +51,15 @@ function RouteComponent() {
     preferenceId,
   )
 
+  const defaultValues: PreferenceCreateRequest = {
+    preferenceId: preferenceDefinition.id,
+    attributeIds: preferenceDefinition.attributes.map(
+      (attribute) => attribute.id,
+    ),
+  }
+
   const form = useAppForm({
-    defaultValues: {
-      preferenceId: preferenceDefinition.id,
-      attributeIds: preferenceDefinition.attributes.map(
-        (attribute) => attribute.id,
-      ),
-    } as PreferenceCreateRequest,
+    defaultValues,
     onSubmit: async ({ value }) => {
       try {
         await updateUserPreference(value)

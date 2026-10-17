@@ -24,15 +24,19 @@ RUN echo "precedence ::ffff:0:0/96  100" >> /etc/gai.conf
 
 WORKDIR /app
 
-COPY server/requirements.txt ./
+COPY requirements.txt ./
 
 RUN python -m venv /opt/venv && \
   /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
 
 COPY --from=node-build /app/client/dist ./client
 
-COPY server ./
+COPY core ./core
+COPY server ./server
+
+ENV PYTHONPATH="/app/core:/app/server"
 ENV NODE_ENV=prod
+ENV CLIENT_DIR=/app/client
 ENV VERSION=${APP_VERSION}
 ENV PATH="/opt/venv/bin:${PATH}"
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
@@ -41,4 +45,4 @@ ENV SSL_CERT_DIR=/etc/ssl/certs
 EXPOSE 7070/tcp
 EXPOSE 6881/tcp 6881/udp
 
-CMD ["python", "-m", "app.run"]
+CMD ["python", "-m", "server"]

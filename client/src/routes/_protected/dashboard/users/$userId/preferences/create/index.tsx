@@ -59,11 +59,13 @@ function RouteComponent() {
   const { mutateAsync: createUserPreference } =
     useCreateUserPreferenceDefinition(userId)
 
+  const defaultValues: PreferenceCreateRequest = {
+    preferenceId: availablePreferences[0].id,
+    attributeIds: [],
+  }
+
   const form = useAppForm({
-    defaultValues: {
-      preferenceId: availablePreferences[0].id,
-      attributeIds: [],
-    } as PreferenceCreateRequest,
+    defaultValues,
     onSubmit: async ({ value }) => {
       try {
         await createUserPreference(value)

@@ -167,11 +167,9 @@ export const PreferenceForm = withForm({
                             resolveId={(i) => i}
                           >
                             <PreferenceItem
-                              attribute={
-                                preference.attributes.find(
-                                  (a) => a.id === item,
-                                )!
-                              }
+                              attribute={preference.attributes.find(
+                                (a) => a.id === item,
+                              )!}
                               actions={[
                                 <Button
                                   key="delete"

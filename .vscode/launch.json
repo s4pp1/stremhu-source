@@ -5,24 +5,24 @@
       "type": "debugpy",
       "request": "launch",
       "name": "Server (FastApi)",
-      "program": "${workspaceFolder}/server/app/run.py",
-      "cwd": "${workspaceFolder}/server",
+      "program": "${workspaceFolder}/server/run.py",
+      "cwd": "${workspaceFolder}",
       "subProcess": true,
       "jinja": true,
       "env": {
-        "PYTHONPATH": "${workspaceFolder}/server"
+        "PYTHONPATH": "${workspaceFolder}/core:${workspaceFolder}/server"
       }
     },
     {
       "type": "debugpy",
       "request": "launch",
       "name": "Desktop (Standalone)",
-      "program": "${workspaceFolder}/server/desktop.py",
-      "cwd": "${workspaceFolder}/server",
+      "program": "${workspaceFolder}/desktop/run.py",
+      "cwd": "${workspaceFolder}",
       "subProcess": true,
       "jinja": true,
       "env": {
-        "PYTHONPATH": "${workspaceFolder}/server"
+        "PYTHONPATH": "${workspaceFolder}/core:${workspaceFolder}"
       }
     },
     {

@@ -486,12 +486,16 @@ export interface SystemSettingsResponse {
   hitAndRun: boolean
   keepSeedSeconds: number
   cacheRetentionSeconds: number
+  downloadsDir?: string | null
+  port: number
 }
 
 export interface SystemSettingsUpdateRequest {
   hitAndRun?: boolean | null
   keepSeedSeconds?: number | null
   cacheRetentionSeconds?: number | null
+  downloadsDir?: string | null
+  port?: number | null
 }
 
 export interface SystemStatusResponse {
@@ -501,6 +505,8 @@ export interface SystemStatusResponse {
   hostIp: string
   port: number
   isReverseProxy: boolean
+  isDocker: boolean
+  isPortOverridden: boolean
 }
 
 export interface TorrentResponse {

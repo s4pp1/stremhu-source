@@ -1,0 +1,1 @@
+"""StremHU Desktop application layer."""

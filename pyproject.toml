@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stremhu-source"
+version = "0.0.0"
+description = "StremHU Source Core Engine, Server and Desktop runners"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+src = ["."]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "W"]
+ignore = ["B008", "E501", "B904"]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+order-by-type = true
+known-first-party = ["core", "server", "desktop"]
+
+[tool.basedpyright]
+typeCheckingMode = "standard"
+exclude = [
+    "**/.conda",
+    "**/__pycache__",
+    "**/dist",
+    "**/build",
+    "client",
+]
+venvPath = "."
+venv = ".conda"
+extraPaths = ["core", "server", "desktop", "."]
+reportImplicitRelativeImport = "none"
+reportUnannotatedClassAttribute = "none"
+reportUnusedCallResult = "none"
+reportImplicitOverride = "none"
+
+[tool.pytest.ini_options]
+testpaths = ["core/tests"]
+pythonpath = ["core", "server", "desktop", "."]

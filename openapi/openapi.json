@@ -1,0 +1,5968 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "StremHU Source",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/attributes/": {
+      "get": {
+        "tags": [
+          "Attributes"
+        ],
+        "summary": "Find List",
+        "operationId": "attributes_find_list",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AttributeResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Attributes Find List"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/preferences/": {
+      "get": {
+        "tags": [
+          "Preferences"
+        ],
+        "summary": "Get All",
+        "operationId": "preferences_get_all",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PreferenceResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Preferences Get All"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/preferences/{preference_id}": {
+      "get": {
+        "tags": [
+          "Preferences"
+        ],
+        "summary": "Get",
+        "operationId": "preferences_get",
+        "parameters": [
+          {
+            "name": "preference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Preference Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreferenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "tags": [
+          "Monitoring"
+        ],
+        "summary": "Health",
+        "operationId": "monitoring_health",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register",
+        "operationId": "auth_register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login",
+        "operationId": "auth_login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logout",
+        "operationId": "auth_logout",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/pair/init": {
+      "post": {
+        "tags": [
+          "Pairing"
+        ],
+        "summary": "Init",
+        "description": "Új eszközpárosítási folyamat kezdeményezése.",
+        "operationId": "pairing_init",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PairInitResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/pair/status/{device_code}": {
+      "get": {
+        "tags": [
+          "Pairing"
+        ],
+        "summary": "Status",
+        "description": "Eszköz párosítási státuszának lekérdezése.",
+        "operationId": "pairing_status",
+        "parameters": [
+          {
+            "name": "device_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Device Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PairStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/pair/verify": {
+      "post": {
+        "tags": [
+          "Pairing"
+        ],
+        "summary": "Verify",
+        "description": "4 jegyű párosító kód jóváhagyása a bejelentkezett felhasználó által.",
+        "operationId": "pairing_verify",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PairVerifyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get List",
+        "operationId": "users_get_list",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Users Get List"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create",
+        "operationId": "users_create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{user_id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get",
+        "operationId": "users_get",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update",
+        "operationId": "users_update",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete",
+        "operationId": "users_delete",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{user_id}/api_key/regenerate": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Regenerate Api Key",
+        "operationId": "users_regenerate_api_key",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{user_id}/preferences/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get Preferences",
+        "operationId": "users_get_preferences",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PreferenceResponse"
+                  },
+                  "title": "Response Users Get Preferences"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{user_id}/preferences/{preference_id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get Preference",
+        "operationId": "users_get_preference",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "preference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Preference Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreferenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{user_id}/preferences/definitions/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get Preference Definitions",
+        "operationId": "users_get_preference_definitions",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PreferenceResponse"
+                  },
+                  "title": "Response Users Get Preference Definitions"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create Preference Definition",
+        "operationId": "users_create_preference_definition",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreferenceCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreferenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{user_id}/preferences/definitions/reorder": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Reorder Preference Definitions",
+        "operationId": "users_reorder_preference_definitions",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreferencesReorderRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PreferenceResponse"
+                  },
+                  "title": "Response Users Reorder Preference Definitions"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{user_id}/preferences/definitions/{preference_id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get Preference Definition",
+        "operationId": "users_get_preference_definition",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "preference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Preference Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreferenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update Preference Definition",
+        "operationId": "users_update_preference_definition",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "preference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Preference Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreferenceUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreferenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete Preference Definition",
+        "operationId": "users_delete_preference_definition",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "preference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Preference Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{user_id}/attributes/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get Attributes",
+        "operationId": "users_get_attributes",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttributeResponse"
+                  },
+                  "title": "Response Users Get Attributes"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{user_id}/attributes/exclusions/": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get Attribute Exclusions",
+        "operationId": "users_get_attribute_exclusions",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AttributeResponse"
+                  },
+                  "title": "Response Users Get Attribute Exclusions"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create Attribute Exclusion",
+        "operationId": "users_create_attribute_exclusion",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttributeExclusionCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttributeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{user_id}/attributes/exclusions/{attribute_id}": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete Attribute Exclusion",
+        "operationId": "users_delete_attribute_exclusion",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "attribute_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Attribute Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/": {
+      "get": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Get",
+        "operationId": "me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/UserResponse"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Response Me Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Update",
+        "operationId": "me_update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/api-key/regenerate": {
+      "put": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Regenerate Api Key",
+        "operationId": "me_regenerate_api_key",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/preferences/": {
+      "get": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Get Preferences",
+        "operationId": "me_get_preferences",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PreferenceResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Me Get Preferences"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/preferences/{preference_id}": {
+      "get": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Get Preference",
+        "operationId": "me_get_preference",
+        "parameters": [
+          {
+            "name": "preference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Preference Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreferenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/preferences/definitions/": {
+      "get": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Get Preference Definitions",
+        "operationId": "me_get_preference_definitions",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PreferenceResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Me Get Preference Definitions"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Create Preference Definition",
+        "operationId": "me_create_preference_definition",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreferenceCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreferenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/preferences/definitions/reorder": {
+      "put": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Reorder Preference Definitions",
+        "operationId": "me_reorder_preference_definitions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreferencesReorderRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PreferenceResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Me Reorder Preference Definitions"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/preferences/definitions/{preference_id}": {
+      "get": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Get Preference Definition",
+        "operationId": "me_get_preference_definition",
+        "parameters": [
+          {
+            "name": "preference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Preference Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreferenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Update Preference Definition",
+        "operationId": "me_update_preference_definition",
+        "parameters": [
+          {
+            "name": "preference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Preference Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreferenceUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreferenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Delete Preference Definition",
+        "operationId": "me_delete_preference_definition",
+        "parameters": [
+          {
+            "name": "preference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Preference Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/attributes/": {
+      "get": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Get Attributes",
+        "operationId": "me_get_attributes",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AttributeResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Me Get Attributes"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/attributes/exclusions/": {
+      "get": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Get Attribute Exclusions",
+        "operationId": "me_get_attribute_exclusions",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AttributeResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Me Get Attribute Exclusions"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Create Attribute Exclusion",
+        "operationId": "me_create_attribute_exclusion",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttributeExclusionCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttributeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me/attributes/exclusions/{attribute_id}": {
+      "delete": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Delete Attribute Exclusion",
+        "operationId": "me_delete_attribute_exclusion",
+        "parameters": [
+          {
+            "name": "attribute_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Attribute Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/system/roles": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Get Roles",
+        "operationId": "system_get_roles",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RoleResponse"
+                  },
+                  "type": "array",
+                  "title": "Response System Get Roles"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/system/status": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Get Status",
+        "operationId": "system_get_status",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/system/settings": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Get Settings",
+        "operationId": "system_get_settings",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemSettingsResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Update Settings",
+        "operationId": "system_update_settings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SystemSettingsUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemSettingsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/system/torrent-files/cleanup": {
+      "post": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Torrent Files Cleanup",
+        "operationId": "system_torrent_files_cleanup",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/system/indexers/cleanup": {
+      "post": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Indexers Cleanup",
+        "operationId": "system_indexers_cleanup",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/system/restart": {
+      "post": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Restart",
+        "operationId": "system_restart",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/relay/settings": {
+      "get": {
+        "tags": [
+          "Relay"
+        ],
+        "summary": "Get Settings",
+        "operationId": "relay_get_settings",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelaySettingsResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Relay"
+        ],
+        "summary": "Update Settings",
+        "operationId": "relay_update_settings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RelaySettingsUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelaySettingsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{api_key}/relay/settings": {
+      "get": {
+        "tags": [
+          "Relay"
+        ],
+        "summary": "Get Settings With Api Key",
+        "operationId": "relay_get_settings_with_api_key",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A felhasználó API kulcsa",
+              "title": "Api Key"
+            },
+            "description": "A felhasználó API kulcsa"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelaySettingsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Relay"
+        ],
+        "summary": "Update Settings With Api Key",
+        "operationId": "relay_update_settings_with_api_key",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A felhasználó API kulcsa",
+              "title": "Api Key"
+            },
+            "description": "A felhasználó API kulcsa"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RelaySettingsUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RelaySettingsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/network/settings": {
+      "get": {
+        "tags": [
+          "Network"
+        ],
+        "summary": "Get Settings",
+        "operationId": "network_get_settings",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/NetworkLocalSettingsResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/NetworkAutoSettingsResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/NetworkManualSettingsResponse"
+                    }
+                  ],
+                  "title": "Response Network Get Settings",
+                  "discriminator": {
+                    "propertyName": "mode",
+                    "mapping": {
+                      "local": "#/components/schemas/NetworkLocalSettingsResponse",
+                      "auto": "#/components/schemas/NetworkAutoSettingsResponse",
+                      "manual": "#/components/schemas/NetworkManualSettingsResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/network/ddns/providers": {
+      "get": {
+        "tags": [
+          "Network"
+        ],
+        "summary": "Get Ddns Providers",
+        "operationId": "network_get_ddns_providers",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DDNSProviderResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Network Get Ddns Providers"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/network/setup": {
+      "post": {
+        "tags": [
+          "Network"
+        ],
+        "summary": "Setup",
+        "operationId": "network_setup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/NetworkLocalSetupRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/NetworkAutoSetupRequest"
+                  },
+                  {
+                    "$ref": "#/components/schemas/NetworkManualSetupRequest"
+                  }
+                ],
+                "title": "Payload",
+                "discriminator": {
+                  "propertyName": "mode",
+                  "mapping": {
+                    "local": "#/components/schemas/NetworkLocalSetupRequest",
+                    "auto": "#/components/schemas/NetworkAutoSetupRequest",
+                    "manual": "#/components/schemas/NetworkManualSetupRequest"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NetworkSetupResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/torrents/": {
+      "get": {
+        "tags": [
+          "Torrents"
+        ],
+        "summary": "Get List",
+        "operationId": "torrents_get_list",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TorrentResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Torrents Get List"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/torrents/{info_hash}": {
+      "get": {
+        "tags": [
+          "Torrents"
+        ],
+        "summary": "Get One",
+        "operationId": "torrents_get_one",
+        "parameters": [
+          {
+            "name": "info_hash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Info Hash"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TorrentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Torrents"
+        ],
+        "summary": "Update",
+        "operationId": "torrents_update",
+        "parameters": [
+          {
+            "name": "info_hash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Info Hash"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TorrentUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TorrentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Torrents"
+        ],
+        "summary": "Delete",
+        "operationId": "torrents_delete",
+        "parameters": [
+          {
+            "name": "info_hash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Info Hash"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{api_key}/stream/{stream_token}": {
+      "head": {
+        "tags": [
+          "Stream"
+        ],
+        "summary": "Stream",
+        "operationId": "stream_head_stream",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Api Key"
+            }
+          },
+          {
+            "name": "stream_token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Stream Token"
+            }
+          },
+          {
+            "name": "Range",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Range"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Stream"
+        ],
+        "summary": "Stream",
+        "operationId": "stream_stream",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Api Key"
+            }
+          },
+          {
+            "name": "stream_token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Stream Token"
+            }
+          },
+          {
+            "name": "Range",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Range"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{api_key}/stremio/manifest.json": {
+      "get": {
+        "tags": [
+          "Stremio"
+        ],
+        "summary": "Manifest",
+        "operationId": "stremio_manifest",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A felhasználó API kulcsa",
+              "title": "Api Key"
+            },
+            "description": "A felhasználó API kulcsa"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Manifest"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{api_key}/stremio/configure": {
+      "get": {
+        "tags": [
+          "Stremio"
+        ],
+        "summary": "Configure",
+        "operationId": "stremio_configure",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A felhasználó API kulcsa",
+              "title": "Api Key"
+            },
+            "description": "A felhasználó API kulcsa"
+          }
+        ],
+        "responses": {
+          "308": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{api_key}/stremio/stream/{media_type}/{stream_id}.json": {
+      "get": {
+        "tags": [
+          "Stremio"
+        ],
+        "summary": "Streams",
+        "operationId": "stremio_streams",
+        "parameters": [
+          {
+            "name": "media_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/MediaType",
+              "description": "A média típusa"
+            },
+            "description": "A média típusa"
+          },
+          {
+            "name": "stream_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Stream azonosító (IMDB ID vagy torrent ID)",
+              "title": "Stream Id"
+            },
+            "description": "Stream azonosító (IMDB ID vagy torrent ID)"
+          },
+          {
+            "name": "api_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A felhasználó API kulcsa",
+              "title": "Api Key"
+            },
+            "description": "A felhasználó API kulcsa"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StremioStreams"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{api_key}/stremio/catalog/{media_type}/{catalog_id}.json": {
+      "get": {
+        "tags": [
+          "Stremio"
+        ],
+        "summary": "Catalog",
+        "operationId": "stremio_catalog",
+        "parameters": [
+          {
+            "name": "media_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/MediaType"
+            }
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Catalog Id"
+            }
+          },
+          {
+            "name": "api_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A felhasználó API kulcsa",
+              "title": "Api Key"
+            },
+            "description": "A felhasználó API kulcsa"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StremioCatalogResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{api_key}/stremio/catalog/{media_type}/{catalog_id}/{extra}.json": {
+      "get": {
+        "tags": [
+          "Stremio"
+        ],
+        "summary": "Catalog With Extra",
+        "operationId": "stremio_catalog_with_extra",
+        "parameters": [
+          {
+            "name": "media_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/MediaType",
+              "description": "A média típusa"
+            },
+            "description": "A média típusa"
+          },
+          {
+            "name": "catalog_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A katalógus azonosítója",
+              "title": "Catalog Id"
+            },
+            "description": "A katalógus azonosítója"
+          },
+          {
+            "name": "extra",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Kiegészítő szűrési paraméterek (pl. search=film&skip=20)",
+              "title": "Extra"
+            },
+            "description": "Kiegészítő szűrési paraméterek (pl. search=film&skip=20)"
+          },
+          {
+            "name": "api_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A felhasználó API kulcsa",
+              "title": "Api Key"
+            },
+            "description": "A felhasználó API kulcsa"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StremioCatalogResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{api_key}/stremio/meta/{media_type}/{meta_id}.json": {
+      "get": {
+        "tags": [
+          "Stremio"
+        ],
+        "summary": "Meta",
+        "operationId": "stremio_meta",
+        "parameters": [
+          {
+            "name": "media_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/MediaType",
+              "description": "A média típusa"
+            },
+            "description": "A média típusa"
+          },
+          {
+            "name": "meta_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Katalógus / Meta azonosító (indexerId:torrentId)",
+              "title": "Meta Id"
+            },
+            "description": "Katalógus / Meta azonosító (indexerId:torrentId)"
+          },
+          {
+            "name": "api_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A felhasználó API kulcsa",
+              "title": "Api Key"
+            },
+            "description": "A felhasználó API kulcsa"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/{api_key}/kodi/imdb/{imdb_id}/streams": {
+      "get": {
+        "tags": [
+          "Kodi"
+        ],
+        "summary": "Find Streams",
+        "operationId": "kodi_find_streams",
+        "parameters": [
+          {
+            "name": "imdb_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "IMDb azonosító",
+              "title": "Imdb Id"
+            },
+            "description": "IMDb azonosító"
+          },
+          {
+            "name": "api_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "A felhasználó API kulcsa",
+              "title": "Api Key"
+            },
+            "description": "A felhasználó API kulcsa"
+          },
+          {
+            "name": "season",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Season"
+            }
+          },
+          {
+            "name": "episode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Episode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KodiImdbStreamsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/indexers/": {
+      "get": {
+        "tags": [
+          "Indexers"
+        ],
+        "summary": "Get List",
+        "description": "Bejelentkezett indexerek listájának lekérése.",
+        "operationId": "indexers_get_list",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/IndexerResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Indexers Get List"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/indexers/definitions": {
+      "get": {
+        "tags": [
+          "Indexers"
+        ],
+        "summary": "Get Definition List",
+        "operationId": "indexers_get_definition_list",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/IndexerDefinitionResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Indexers Get Definition List"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/indexers/login": {
+      "post": {
+        "tags": [
+          "Indexers"
+        ],
+        "summary": "Login",
+        "operationId": "indexers_login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IndexerLoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexerResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/indexers/cleanup": {
+      "post": {
+        "tags": [
+          "Indexers"
+        ],
+        "summary": "Cleanup",
+        "description": "Karbantartási takarítás manuális futtatása.",
+        "operationId": "indexers_cleanup",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        }
+      }
+    },
+    "/api/indexers/{indexer_id}": {
+      "put": {
+        "tags": [
+          "Indexers"
+        ],
+        "summary": "Update",
+        "operationId": "indexers_update",
+        "parameters": [
+          {
+            "name": "indexer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Indexer Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IndexerUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexerResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Indexers"
+        ],
+        "summary": "Delete",
+        "description": "Indexer törlése/kijelentkeztetése.",
+        "operationId": "indexers_delete",
+        "parameters": [
+          {
+            "name": "indexer_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Indexer Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/playbacks/": {
+      "get": {
+        "tags": [
+          "Playbacks"
+        ],
+        "summary": "Get List",
+        "operationId": "playbacks_get_list",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PlaybackResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Playbacks Get List"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/playbacks/history": {
+      "get": {
+        "tags": [
+          "Playbacks"
+        ],
+        "summary": "Get History List",
+        "operationId": "playbacks_get_history_list",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 10,
+              "title": "Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_PlaybackHistoryResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AttributeExclusionCreateRequest": {
+        "properties": {
+          "attributeId": {
+            "type": "string",
+            "title": "Attributeid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "attributeId"
+        ],
+        "title": "AttributeExclusionCreateRequest"
+      },
+      "AttributeResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "shortName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shortname"
+          },
+          "preferenceId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preferenceid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "AttributeResponse"
+      },
+      "BehaviorHints": {
+        "properties": {
+          "countryWhitelist": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Countrywhitelist"
+          },
+          "notWebReady": {
+            "type": "boolean",
+            "title": "Notwebready",
+            "default": true
+          },
+          "bingeGroup": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bingegroup"
+          },
+          "filename": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Filename"
+          },
+          "videoSize": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Videosize"
+          }
+        },
+        "type": "object",
+        "title": "BehaviorHints"
+      },
+      "ContentType": {
+        "type": "string",
+        "enum": [
+          "movie",
+          "series",
+          "channel",
+          "tv"
+        ],
+        "title": "ContentType"
+      },
+      "DDNSProviderResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "websiteUrl": {
+            "type": "string",
+            "title": "Websiteurl"
+          },
+          "domainRegex": {
+            "type": "string",
+            "title": "Domainregex"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "websiteUrl",
+          "domainRegex"
+        ],
+        "title": "DDNSProviderResponse"
+      },
+      "ExtraName": {
+        "type": "string",
+        "enum": [
+          "search",
+          "genre",
+          "skip"
+        ],
+        "title": "ExtraName"
+      },
+      "FullManifestResource": {
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/ShortManifestResource"
+          },
+          "types": {
+            "items": {
+              "$ref": "#/components/schemas/ContentType"
+            },
+            "type": "array",
+            "title": "Types"
+          },
+          "idPrefixes": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Idprefixes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "types"
+        ],
+        "title": "FullManifestResource"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "IndexerDefinitionResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "detailsPath": {
+            "type": "string",
+            "title": "Detailspath"
+          },
+          "requiresFullDownload": {
+            "type": "boolean",
+            "title": "Requiresfulldownload"
+          },
+          "supportsTotp": {
+            "type": "boolean",
+            "title": "Supportstotp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "url",
+          "detailsPath",
+          "requiresFullDownload",
+          "supportsTotp"
+        ],
+        "title": "IndexerDefinitionResponse"
+      },
+      "IndexerLoginRequest": {
+        "properties": {
+          "indexerId": {
+            "type": "string",
+            "title": "Indexerid"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "totpSecret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Totpsecret"
+          }
+        },
+        "type": "object",
+        "required": [
+          "indexerId",
+          "username",
+          "password"
+        ],
+        "title": "IndexerLoginRequest"
+      },
+      "IndexerResponse": {
+        "properties": {
+          "indexerId": {
+            "type": "string",
+            "title": "Indexerid"
+          },
+          "indexerDefinition": {
+            "$ref": "#/components/schemas/IndexerDefinitionResponse"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "downloadFullTorrent": {
+            "type": "boolean",
+            "title": "Downloadfulltorrent"
+          },
+          "hitAndRun": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hitandrun"
+          },
+          "keepSeedSeconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Keepseedseconds"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "indexerId",
+          "indexerDefinition",
+          "username",
+          "downloadFullTorrent",
+          "hitAndRun",
+          "keepSeedSeconds",
+          "updatedAt",
+          "createdAt"
+        ],
+        "title": "IndexerResponse"
+      },
+      "IndexerUpdateRequest": {
+        "properties": {
+          "downloadFullTorrent": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Downloadfulltorrent"
+          },
+          "hitAndRun": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hitandrun"
+          },
+          "keepSeedSeconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Keepseedseconds"
+          }
+        },
+        "type": "object",
+        "title": "IndexerUpdateRequest"
+      },
+      "KodiImdbStreamResponse": {
+        "properties": {
+          "torrentName": {
+            "type": "string",
+            "title": "Torrentname"
+          },
+          "fileName": {
+            "type": "string",
+            "title": "Filename"
+          },
+          "seeders": {
+            "type": "integer",
+            "title": "Seeders"
+          },
+          "size": {
+            "type": "string",
+            "title": "Size"
+          },
+          "indexer": {
+            "$ref": "#/components/schemas/IndexerDefinitionResponse"
+          },
+          "mediaAttributes": {
+            "items": {
+              "$ref": "#/components/schemas/AttributeResponse"
+            },
+            "type": "array",
+            "title": "Mediaattributes"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "torrentName",
+          "fileName",
+          "seeders",
+          "size",
+          "indexer",
+          "mediaAttributes",
+          "url"
+        ],
+        "title": "KodiImdbStreamResponse"
+      },
+      "KodiImdbStreamsResponse": {
+        "properties": {
+          "streams": {
+            "items": {
+              "$ref": "#/components/schemas/KodiImdbStreamResponse"
+            },
+            "type": "array",
+            "title": "Streams"
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Errors"
+          }
+        },
+        "type": "object",
+        "required": [
+          "streams",
+          "errors"
+        ],
+        "title": "KodiImdbStreamsResponse"
+      },
+      "LoginRequest": {
+        "properties": {
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "LoginRequest"
+      },
+      "Manifest": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "resources": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ShortManifestResource"
+                },
+                {
+                  "$ref": "#/components/schemas/FullManifestResource"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Resources"
+          },
+          "types": {
+            "items": {
+              "$ref": "#/components/schemas/ContentType"
+            },
+            "type": "array",
+            "title": "Types"
+          },
+          "idPrefixes": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Idprefixes"
+          },
+          "catalogs": {
+            "items": {
+              "$ref": "#/components/schemas/ManifestCatalog"
+            },
+            "type": "array",
+            "title": "Catalogs"
+          },
+          "addonCatalogs": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ManifestCatalog"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Addoncatalogs"
+          },
+          "config": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ManifestConfig"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Config"
+          },
+          "background": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Background"
+          },
+          "logo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logo"
+          },
+          "contactEmail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contactemail"
+          },
+          "behaviorHints": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ManifestBehaviorHints"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "version",
+          "resources",
+          "types",
+          "catalogs"
+        ],
+        "title": "Manifest",
+        "description": "Stremio addon manifest - https://stremio.github.io/stremio-addon-guide/"
+      },
+      "ManifestBehaviorHints": {
+        "properties": {
+          "adult": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Adult"
+          },
+          "p2P": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P2P"
+          },
+          "configurable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Configurable"
+          },
+          "configurationRequired": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Configurationrequired"
+          }
+        },
+        "type": "object",
+        "title": "ManifestBehaviorHints"
+      },
+      "ManifestCatalog": {
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/ContentType"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "extra": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ManifestExtra"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extra"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "id",
+          "name"
+        ],
+        "title": "ManifestCatalog"
+      },
+      "ManifestConfig": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ManifestConfigType"
+          },
+          "default": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Default"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "options": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Options"
+          },
+          "required": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Required"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "type"
+        ],
+        "title": "ManifestConfig"
+      },
+      "ManifestConfigType": {
+        "type": "string",
+        "enum": [
+          "text",
+          "number",
+          "password",
+          "checkbox",
+          "select"
+        ],
+        "title": "ManifestConfigType"
+      },
+      "ManifestExtra": {
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/ExtraName"
+          },
+          "isRequired": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isrequired"
+          },
+          "options": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Options"
+          },
+          "optionsLimit": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Optionslimit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "ManifestExtra"
+      },
+      "MeUpdateRequest": {
+        "properties": {
+          "username": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Username"
+          },
+          "password": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Password"
+          },
+          "torrentSeed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Torrentseed"
+          },
+          "enableSmartFilter": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enablesmartfilter"
+          },
+          "smartFilterGroupingPreferenceId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Smartfiltergroupingpreferenceid"
+          },
+          "smartFilterLimit": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Smartfilterlimit"
+          }
+        },
+        "type": "object",
+        "title": "MeUpdateRequest"
+      },
+      "MediaType": {
+        "type": "string",
+        "enum": [
+          "movie",
+          "series"
+        ],
+        "title": "MediaType"
+      },
+      "MetaDetail": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "imdbId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Imdbid"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ContentType"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "poster": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Poster"
+          },
+          "posterShape": {
+            "$ref": "#/components/schemas/PosterShape",
+            "default": "regular"
+          },
+          "background": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Background"
+          },
+          "logo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logo"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "imdbRating": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Imdbrating"
+          },
+          "releaseInfo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Releaseinfo"
+          },
+          "genres": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Genres"
+          },
+          "cast": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cast"
+          },
+          "director": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Director"
+          },
+          "links": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MetaLink"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Links"
+          },
+          "released": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Released"
+          },
+          "year": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year"
+          },
+          "trailers": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MetaTrailer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trailers"
+          },
+          "videos": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MetaVideo"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Videos"
+          },
+          "runtime": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Runtime"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country"
+          },
+          "awards": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Awards"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website"
+          },
+          "behaviorHints": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MetaDetailBehaviorHints"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "writer": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Writer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "name"
+        ],
+        "title": "MetaDetail"
+      },
+      "MetaDetailBehaviorHints": {
+        "properties": {
+          "defaultVideoId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Defaultvideoid"
+          },
+          "hasScheduledVideos": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hasscheduledvideos"
+          }
+        },
+        "type": "object",
+        "title": "MetaDetailBehaviorHints"
+      },
+      "MetaLink": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "category",
+          "url"
+        ],
+        "title": "MetaLink"
+      },
+      "MetaPreview": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "imdbId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Imdbid"
+          },
+          "type": {
+            "$ref": "#/components/schemas/ContentType"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "poster": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Poster"
+          },
+          "posterShape": {
+            "$ref": "#/components/schemas/PosterShape",
+            "default": "regular"
+          },
+          "background": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Background"
+          },
+          "logo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logo"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "imdbRating": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Imdbrating"
+          },
+          "releaseInfo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Releaseinfo"
+          },
+          "genres": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Genres"
+          },
+          "cast": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cast"
+          },
+          "director": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Director"
+          },
+          "links": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MetaLink"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Links"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "name"
+        ],
+        "title": "MetaPreview"
+      },
+      "MetaResponse": {
+        "properties": {
+          "meta": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MetaDetail"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "meta"
+        ],
+        "title": "MetaResponse"
+      },
+      "MetaTrailer": {
+        "properties": {
+          "ytId": {
+            "type": "string",
+            "title": "Ytid"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ytId",
+          "description"
+        ],
+        "title": "MetaTrailer"
+      },
+      "MetaVideo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "released": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Released"
+          },
+          "thumbnail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thumbnail"
+          },
+          "available": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Available"
+          },
+          "episode": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Episode"
+          },
+          "season": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Season"
+          },
+          "trailer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trailer"
+          },
+          "overview": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overview"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title"
+        ],
+        "title": "MetaVideo"
+      },
+      "NetworkAutoSettingsResponse": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "auto",
+            "title": "Mode"
+          },
+          "host": {
+            "type": "string",
+            "title": "Host"
+          },
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "connection": {
+            "$ref": "#/components/schemas/NetworkConnectionEnum"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "ip": {
+            "type": "string",
+            "title": "Ip"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expiresat"
+          },
+          "lastIpSyncAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Lastipsyncat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode",
+          "host",
+          "token",
+          "email",
+          "connection",
+          "provider",
+          "ip",
+          "expiresAt",
+          "lastIpSyncAt"
+        ],
+        "title": "NetworkAutoSettingsResponse"
+      },
+      "NetworkAutoSetupRequest": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "auto",
+            "title": "Mode"
+          },
+          "host": {
+            "type": "string",
+            "title": "Host"
+          },
+          "connection": {
+            "$ref": "#/components/schemas/NetworkConnectionEnum"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode",
+          "host",
+          "connection",
+          "provider",
+          "token",
+          "email"
+        ],
+        "title": "NetworkAutoSetupRequest"
+      },
+      "NetworkConnectionEnum": {
+        "type": "string",
+        "enum": [
+          "local",
+          "public"
+        ],
+        "title": "NetworkConnectionEnum"
+      },
+      "NetworkLocalSettingsResponse": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "local",
+            "title": "Mode"
+          },
+          "host": {
+            "type": "string",
+            "title": "Host"
+          },
+          "ip": {
+            "type": "string",
+            "title": "Ip"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expiresat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode",
+          "host",
+          "ip",
+          "expiresAt"
+        ],
+        "title": "NetworkLocalSettingsResponse"
+      },
+      "NetworkLocalSetupRequest": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "local",
+            "title": "Mode"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode"
+        ],
+        "title": "NetworkLocalSetupRequest"
+      },
+      "NetworkManualSettingsResponse": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "manual",
+            "title": "Mode"
+          },
+          "host": {
+            "type": "string",
+            "title": "Host"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode",
+          "host"
+        ],
+        "title": "NetworkManualSettingsResponse"
+      },
+      "NetworkManualSetupRequest": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "manual",
+            "title": "Mode"
+          },
+          "host": {
+            "type": "string",
+            "title": "Host"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode",
+          "host"
+        ],
+        "title": "NetworkManualSetupRequest"
+      },
+      "NetworkSetupResponse": {
+        "properties": {
+          "appUrl": {
+            "type": "string",
+            "title": "Appurl"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "appUrl",
+          "message"
+        ],
+        "title": "NetworkSetupResponse"
+      },
+      "Page_PlaybackHistoryResponse_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PlaybackHistoryResponse"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "size": {
+            "type": "integer",
+            "title": "Size"
+          },
+          "pages": {
+            "type": "integer",
+            "title": "Pages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "page",
+          "size",
+          "pages"
+        ],
+        "title": "Page[PlaybackHistoryResponse]"
+      },
+      "PairInitResponse": {
+        "properties": {
+          "userCode": {
+            "type": "string",
+            "title": "Usercode"
+          },
+          "deviceCode": {
+            "type": "string",
+            "title": "Devicecode"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expiresat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "userCode",
+          "deviceCode",
+          "expiresAt"
+        ],
+        "title": "PairInitResponse"
+      },
+      "PairStatusResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "PairStatusResponse"
+      },
+      "PairVerifyRequest": {
+        "properties": {
+          "userCode": {
+            "type": "string",
+            "title": "Usercode"
+          }
+        },
+        "type": "object",
+        "required": [
+          "userCode"
+        ],
+        "title": "PairVerifyRequest"
+      },
+      "PlaybackHistoryResponse": {
+        "properties": {
+          "playbackId": {
+            "type": "string",
+            "title": "Playbackid"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserResponse"
+          },
+          "indexerDefinition": {
+            "$ref": "#/components/schemas/IndexerDefinitionResponse"
+          },
+          "torrentName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Torrentname"
+          },
+          "fileName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Filename"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "playbackId",
+          "user",
+          "indexerDefinition",
+          "torrentName",
+          "fileName",
+          "createdAt"
+        ],
+        "title": "PlaybackHistoryResponse"
+      },
+      "PlaybackResponse": {
+        "properties": {
+          "playbackId": {
+            "type": "string",
+            "title": "Playbackid"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserResponse"
+          },
+          "indexerDefinition": {
+            "$ref": "#/components/schemas/IndexerDefinitionResponse"
+          },
+          "torrentName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Torrentname"
+          },
+          "fileName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Filename"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          },
+          "progress": {
+            "type": "number",
+            "title": "Progress"
+          }
+        },
+        "type": "object",
+        "required": [
+          "playbackId",
+          "user",
+          "indexerDefinition",
+          "torrentName",
+          "fileName",
+          "createdAt",
+          "progress"
+        ],
+        "title": "PlaybackResponse"
+      },
+      "PosterShape": {
+        "type": "string",
+        "enum": [
+          "square",
+          "regular",
+          "landscape"
+        ],
+        "title": "PosterShape"
+      },
+      "PreferenceCreateRequest": {
+        "properties": {
+          "preferenceId": {
+            "type": "string",
+            "title": "Preferenceid"
+          },
+          "attributeIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Attributeids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "preferenceId",
+          "attributeIds"
+        ],
+        "title": "PreferenceCreateRequest"
+      },
+      "PreferenceResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "emoji": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Emoji"
+          },
+          "allowBestTorrentGrouping": {
+            "type": "boolean",
+            "title": "Allowbesttorrentgrouping"
+          },
+          "attributes": {
+            "items": {
+              "$ref": "#/components/schemas/AttributeResponse"
+            },
+            "type": "array",
+            "title": "Attributes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "emoji",
+          "allowBestTorrentGrouping",
+          "attributes"
+        ],
+        "title": "PreferenceResponse"
+      },
+      "PreferenceUpdateRequest": {
+        "properties": {
+          "attributeIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Attributeids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "attributeIds"
+        ],
+        "title": "PreferenceUpdateRequest"
+      },
+      "PreferencesReorderRequest": {
+        "properties": {
+          "preferenceIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Preferenceids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "preferenceIds"
+        ],
+        "title": "PreferencesReorderRequest"
+      },
+      "RegisterRequest": {
+        "properties": {
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "RegisterRequest"
+      },
+      "RelaySettingsResponse": {
+        "properties": {
+          "port": {
+            "type": "integer",
+            "title": "Port"
+          },
+          "downloadLimit": {
+            "type": "integer",
+            "title": "Downloadlimit"
+          },
+          "uploadLimit": {
+            "type": "integer",
+            "title": "Uploadlimit"
+          },
+          "connectionsLimit": {
+            "type": "integer",
+            "title": "Connectionslimit"
+          },
+          "torrentConnectionsLimit": {
+            "type": "integer",
+            "title": "Torrentconnectionslimit"
+          },
+          "enableUpnpAndNatpmp": {
+            "type": "boolean",
+            "title": "Enableupnpandnatpmp"
+          }
+        },
+        "type": "object",
+        "required": [
+          "port",
+          "downloadLimit",
+          "uploadLimit",
+          "connectionsLimit",
+          "torrentConnectionsLimit",
+          "enableUpnpAndNatpmp"
+        ],
+        "title": "RelaySettingsResponse"
+      },
+      "RelaySettingsUpdateRequest": {
+        "properties": {
+          "port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Port"
+          },
+          "downloadLimit": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Downloadlimit"
+          },
+          "uploadLimit": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uploadlimit"
+          },
+          "connectionsLimit": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Connectionslimit"
+          },
+          "torrentConnectionsLimit": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Torrentconnectionslimit"
+          },
+          "enableUpnpAndNatpmp": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enableupnpandnatpmp"
+          }
+        },
+        "type": "object",
+        "title": "RelaySettingsUpdateRequest"
+      },
+      "RoleResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "RoleResponse"
+      },
+      "ShortManifestResource": {
+        "type": "string",
+        "enum": [
+          "catalog",
+          "meta",
+          "stream",
+          "subtitles",
+          "addon_catalog"
+        ],
+        "title": "ShortManifestResource"
+      },
+      "StremioCatalogResponse": {
+        "properties": {
+          "metas": {
+            "items": {
+              "$ref": "#/components/schemas/MetaPreview"
+            },
+            "type": "array",
+            "title": "Metas"
+          }
+        },
+        "type": "object",
+        "required": [
+          "metas"
+        ],
+        "title": "StremioCatalogResponse"
+      },
+      "StremioStream": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "externalUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Externalurl"
+          },
+          "behaviorHints": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BehaviorHints"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description"
+        ],
+        "title": "StremioStream"
+      },
+      "StremioStreams": {
+        "properties": {
+          "streams": {
+            "items": {
+              "$ref": "#/components/schemas/StremioStream"
+            },
+            "type": "array",
+            "title": "Streams"
+          }
+        },
+        "type": "object",
+        "required": [
+          "streams"
+        ],
+        "title": "StremioStreams"
+      },
+      "SuccessResponse": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success"
+        ],
+        "title": "SuccessResponse"
+      },
+      "SystemSettingsResponse": {
+        "properties": {
+          "hitAndRun": {
+            "type": "boolean",
+            "title": "Hitandrun"
+          },
+          "keepSeedSeconds": {
+            "type": "integer",
+            "title": "Keepseedseconds"
+          },
+          "cacheRetentionSeconds": {
+            "type": "integer",
+            "title": "Cacheretentionseconds"
+          },
+          "downloadsDir": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Downloadsdir"
+          },
+          "port": {
+            "type": "integer",
+            "title": "Port"
+          }
+        },
+        "type": "object",
+        "required": [
+          "hitAndRun",
+          "keepSeedSeconds",
+          "cacheRetentionSeconds",
+          "port"
+        ],
+        "title": "SystemSettingsResponse"
+      },
+      "SystemSettingsUpdateRequest": {
+        "properties": {
+          "hitAndRun": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hitandrun"
+          },
+          "keepSeedSeconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Keepseedseconds"
+          },
+          "cacheRetentionSeconds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cacheretentionseconds"
+          },
+          "downloadsDir": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Downloadsdir"
+          },
+          "port": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Port"
+          }
+        },
+        "type": "object",
+        "title": "SystemSettingsUpdateRequest"
+      },
+      "SystemStatusResponse": {
+        "properties": {
+          "configured": {
+            "type": "boolean",
+            "title": "Configured"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "appUrl": {
+            "type": "string",
+            "title": "Appurl"
+          },
+          "hostIp": {
+            "type": "string",
+            "title": "Hostip"
+          },
+          "port": {
+            "type": "integer",
+            "title": "Port"
+          },
+          "isReverseProxy": {
+            "type": "boolean",
+            "title": "Isreverseproxy"
+          },
+          "isDocker": {
+            "type": "boolean",
+            "title": "Isdocker"
+          },
+          "isPortOverridden": {
+            "type": "boolean",
+            "title": "Isportoverridden"
+          }
+        },
+        "type": "object",
+        "required": [
+          "configured",
+          "version",
+          "appUrl",
+          "hostIp",
+          "port",
+          "isReverseProxy",
+          "isDocker",
+          "isPortOverridden"
+        ],
+        "title": "SystemStatusResponse"
+      },
+      "TorrentResponse": {
+        "properties": {
+          "infoHash": {
+            "type": "string",
+            "title": "Infohash"
+          },
+          "indexerDefinition": {
+            "$ref": "#/components/schemas/IndexerDefinitionResponse"
+          },
+          "torrentId": {
+            "type": "string",
+            "title": "Torrentid"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "downloadSpeed": {
+            "type": "integer",
+            "title": "Downloadspeed"
+          },
+          "uploadSpeed": {
+            "type": "integer",
+            "title": "Uploadspeed"
+          },
+          "downloaded": {
+            "type": "integer",
+            "title": "Downloaded"
+          },
+          "uploaded": {
+            "type": "integer",
+            "title": "Uploaded"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "isPersisted": {
+            "type": "boolean",
+            "title": "Ispersisted"
+          },
+          "fullDownload": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fulldownload"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "infoHash",
+          "indexerDefinition",
+          "torrentId",
+          "name",
+          "downloadSpeed",
+          "uploadSpeed",
+          "downloaded",
+          "uploaded",
+          "total",
+          "isPersisted",
+          "fullDownload",
+          "updatedAt",
+          "createdAt"
+        ],
+        "title": "TorrentResponse"
+      },
+      "TorrentUpdateRequest": {
+        "properties": {
+          "isPersisted": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ispersisted"
+          },
+          "fullDownload": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fulldownload"
+          }
+        },
+        "type": "object",
+        "title": "TorrentUpdateRequest"
+      },
+      "UserCreateRequest": {
+        "properties": {
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "torrentSeed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Torrentseed"
+          },
+          "enableSmartFilter": {
+            "type": "boolean",
+            "title": "Enablesmartfilter",
+            "default": false
+          },
+          "smartFilterGroupingPreferenceId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Smartfiltergroupingpreferenceid"
+          },
+          "smartFilterLimit": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Smartfilterlimit",
+            "default": 1
+          },
+          "maxConcurrentStreams": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maxconcurrentstreams"
+          },
+          "password": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Password"
+          },
+          "roleId": {
+            "type": "string",
+            "title": "Roleid",
+            "default": "user"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username"
+        ],
+        "title": "UserCreateRequest"
+      },
+      "UserResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "role": {
+            "$ref": "#/components/schemas/RoleResponse"
+          },
+          "apiKey": {
+            "type": "string",
+            "title": "Apikey"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          },
+          "torrentSeed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Torrentseed"
+          },
+          "enableSmartFilter": {
+            "type": "boolean",
+            "title": "Enablesmartfilter"
+          },
+          "smartFilterGroupingPreferenceId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Smartfiltergroupingpreferenceid"
+          },
+          "smartFilterLimit": {
+            "type": "integer",
+            "title": "Smartfilterlimit"
+          },
+          "maxConcurrentStreams": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maxconcurrentstreams"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "username",
+          "role",
+          "apiKey",
+          "updatedAt",
+          "createdAt",
+          "torrentSeed",
+          "enableSmartFilter",
+          "smartFilterGroupingPreferenceId",
+          "smartFilterLimit",
+          "maxConcurrentStreams"
+        ],
+        "title": "UserResponse"
+      },
+      "UserUpdateRequest": {
+        "properties": {
+          "username": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Username"
+          },
+          "password": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Password"
+          },
+          "roleId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Roleid"
+          },
+          "torrentSeed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Torrentseed"
+          },
+          "enableSmartFilter": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enablesmartfilter"
+          },
+          "smartFilterGroupingPreferenceId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Smartfiltergroupingpreferenceid"
+          },
+          "smartFilterLimit": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Smartfilterlimit"
+          },
+          "maxConcurrentStreams": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maxconcurrentstreams"
+          }
+        },
+        "type": "object",
+        "title": "UserUpdateRequest"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
