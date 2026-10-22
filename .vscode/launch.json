@@ -5,12 +5,13 @@
       "type": "debugpy",
       "request": "launch",
       "name": "Server (FastApi)",
-      "program": "${workspaceFolder}/server/run.py",
+      "module": "server",
+      "args": ["--reload"],
       "cwd": "${workspaceFolder}",
       "subProcess": true,
       "jinja": true,
       "env": {
-        "PYTHONPATH": "${workspaceFolder}/core:${workspaceFolder}/server"
+        "PYTHONPATH": "${workspaceFolder}"
       }
     },
     {
@@ -22,7 +23,7 @@
       "subProcess": true,
       "jinja": true,
       "env": {
-        "PYTHONPATH": "${workspaceFolder}/core:${workspaceFolder}"
+        "PYTHONPATH": "${workspaceFolder}"
       }
     },
     {

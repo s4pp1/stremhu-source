@@ -13,20 +13,19 @@ from PyInstaller.utils.hooks import collect_submodules
 spec_dir = Path(SPECPATH).resolve()
 root_dir = spec_dir.parent if spec_dir.name == "desktop" else spec_dir
 
-sys.path.insert(0, str(root_dir / "core"))
+sys.path.insert(0, str(root_dir / "server"))
 sys.path.insert(0, str(root_dir))
 
-core_modules = collect_submodules("core")
-desktop_modules = collect_submodules("desktop")
 server_modules = collect_submodules("server")
+desktop_modules = collect_submodules("desktop")
 
 datas = [
-    (str(root_dir / "core" / "alembic.ini"), "."),
-    (str(root_dir / "core" / "alembic"), "alembic"),
+    (str(root_dir / "server" / "alembic.ini"), "."),
+    (str(root_dir / "server" / "alembic"), "alembic"),
 ]
 
 client_candidates = [
-    root_dir / "core" / "client",
+    root_dir / "server" / "client",
     root_dir / "client" / "dist",
 ]
 for candidate in client_candidates:
@@ -70,14 +69,13 @@ hiddenimports = (
         "dns",
         "email_validator",
     ]
-    + core_modules
-    + desktop_modules
     + server_modules
+    + desktop_modules
 )
 
 a = Analysis(
     [str(root_dir / "desktop" / "__main__.py")],
-    pathex=[str(root_dir / "core"), str(root_dir)],
+    pathex=[str(root_dir / "server"), str(root_dir)],
     binaries=[],
     datas=datas,
     hiddenimports=hiddenimports,

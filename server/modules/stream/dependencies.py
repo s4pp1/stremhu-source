@@ -1,0 +1,52 @@
+from typing import Annotated
+
+from fastapi import Depends, HTTPException, Path, status
+from itsdangerous import BadSignature
+from sqlalchemy.orm import Session
+
+from server.common.database import get_db
+from server.modules.indexers.dependencies import create_indexers_service
+from server.modules.relay.dependencies import get_relay_service
+from server.modules.stream.schemas import StreamToken
+from server.modules.stream.service import StreamService
+from server.modules.stream.utils.stream_token import parse_stream_token
+from server.modules.torrent_files.dependencies import (
+    create_isolated_torrent_files_service,
+    create_torrent_files_service,
+)
+from server.modules.torrents.dependencies import create_torrents_service
+
+
+def create_stream_service(db: Session) -> StreamService:
+    torrents_service = create_torrents_service(db)
+    indexers_service = create_indexers_service(db)
+    torrent_files_service = create_torrent_files_service(db)
+    relay_service = get_relay_service()
+
+    isolated_torrent_files_service = create_isolated_torrent_files_service()
+
+    return StreamService(
+        torrents_service=torrents_service,
+        indexers_service=indexers_service,
+        torrent_files_service=torrent_files_service,
+        relay_service=relay_service,
+        isolated_torrent_files_service=isolated_torrent_files_service,
+    )
+
+
+def get_stream_service(
+    db: Annotated[Session, Depends(get_db)],
+) -> StreamService:
+    return create_stream_service(db)
+
+
+def get_parsed_stream_token(
+    stream_token: Annotated[str, Path(...)],
+) -> StreamToken:
+    try:
+        return parse_stream_token(stream_token)
+    except BadSignature:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Érvénytelen vagy lejárt stream token!",
+        )

@@ -31,12 +31,12 @@ RUN python -m venv /opt/venv && \
 
 COPY --from=node-build /app/client/dist ./client
 
-COPY core ./core
 COPY server ./server
 
-ENV PYTHONPATH="/app/core:/app/server"
+ENV PYTHONPATH="/app"
 ENV NODE_ENV=prod
-ENV CLIENT_DIR=/app/client
+ENV CLIENT_PATH=/app/client
+ENV SYSTEM_DIR=/data
 ENV VERSION=${APP_VERSION}
 ENV PATH="/opt/venv/bin:${PATH}"
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt

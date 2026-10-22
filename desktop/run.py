@@ -40,11 +40,11 @@ def start_desktop_app() -> None:
 
 def main() -> None:
     multiprocessing.freeze_support()
-    # Ha a csomagolt binárist a --core kapcsolóval indítják, a háttérmotort futtatjuk
-    if "--core" in sys.argv:
-        from server.run import main as server_main
+    # Ha a csomagolt binárist a --server kapcsolóval indítják, a kiszolgálót futtatjuk
+    if "--server" in sys.argv:
+        from server.main import run
 
-        server_main()
+        run()
         return
 
     start_desktop_app()

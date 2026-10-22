@@ -7,8 +7,8 @@ from pathlib import Path
 
 from PySide6.QtCore import QObject, QTimer
 
-from core.config import config
 from desktop.core.signals import AppStatus, DesktopSignals, app_signals
+from server.config import config
 
 
 def is_port_in_use(port: int) -> bool:
@@ -83,10 +83,10 @@ def get_desktop_client_dir() -> Path:
                 return c
 
     root_dir = Path(__file__).resolve().parent.parent.parent
-    for candidate in [root_dir / "core" / "client", root_dir / "client" / "dist"]:
+    for candidate in [root_dir / "server" / "client", root_dir / "client" / "dist"]:
         if candidate.exists():
             return candidate
-    return root_dir / "core" / "client"
+    return root_dir / "server" / "client"
 
 
 class ServerProcessManager(QObject):
@@ -98,7 +98,7 @@ class ServerProcessManager(QObject):
     2. Ha még nem fut, ellenőrzi, hogy a beállított port szabad-e. Ha idegen
        alkalmazás foglalja, automatikusan szabad portot választ és ment az adatbázisba.
     3. Elindítja a háttérfolyamatot (frozen módban a natív binárist,
-       dev módban a server/run.py-t). A szerver logjai közvetlenül a konzolra íródnak.
+       dev módban a 'python -m server'-t). A szerver logjai közvetlenül a konzolra íródnak.
     4. Ha a szerver újraindul (pl. a web UI 'Újraindítás' gombjára nyomva),
        automatikusan újraindítja a child processzt anélkül, hogy a desktop app bezáródna.
     5. Kilépéskor kulturáltan leállítja a saját maga által indított child processzt.
@@ -124,10 +124,10 @@ class ServerProcessManager(QObject):
         # Port inicializálása és szinkronizálása az adatbázisból
         self.port = 7070
         try:
-            from core.boot.settings import ensure_default_settings
-            from core.boot.setup import run_migrations, setup_system_dir
-            from core.common.database import db_session
-            from core.modules.settings.dependencies import create_settings_service
+            from server.boot.settings import ensure_default_settings
+            from server.boot.setup import run_migrations, setup_system_dir
+            from server.common.database import db_session
+            from server.modules.settings.dependencies import create_settings_service
 
             setup_system_dir()
             run_migrations()
@@ -136,7 +136,7 @@ class ServerProcessManager(QObject):
                 service = create_settings_service(db)
                 self.port = service.get_system().port
         except Exception:
-            self.port = config.port
+            self.port = config.port or 7070
 
         # 1. Intelligens csatlakozás: ha már fut a szerver, nem indítunk újat
         if is_server_port_open(self.port):
@@ -149,9 +149,11 @@ class ServerProcessManager(QObject):
         if not config.is_port_overridden and is_port_in_use(self.port):
             try:
                 new_port = find_available_port(self.port + 1)
-                from core.common.database import db_session
-                from core.modules.settings.dependencies import create_settings_service
-                from core.modules.settings.schemas.internal import SystemSettingsUpdate
+                from server.common.database import db_session
+                from server.modules.settings.dependencies import create_settings_service
+                from server.modules.settings.schemas.internal import (
+                    SystemSettingsUpdate,
+                )
 
                 with db_session() as db:
                     service = create_settings_service(db)
@@ -166,43 +168,35 @@ class ServerProcessManager(QObject):
         root_dir = Path(__file__).resolve().parent.parent.parent
 
         env = os.environ.copy()
-        env["CLIENT_DIR"] = str(get_desktop_client_dir())
-
         existing_pp = env.get("PYTHONPATH", "")
-        needed_paths = [str(root_dir), str(root_dir / "core"), str(root_dir / "server")]
+        needed_paths = [str(root_dir), str(root_dir / "server")]
         env["PYTHONPATH"] = ":".join(
             [p for p in needed_paths if p] + ([existing_pp] if existing_pp else [])
         )
 
-        client_dir = str(get_desktop_client_dir())
-        from core.config import get_cli_data_dir, get_cli_host_ip
+        import platformdirs
+
         from desktop.core.network import get_local_ip
 
-        host_ip = get_cli_host_ip() or get_local_ip()
-        data_dir = get_cli_data_dir()
+        client_path = str(get_desktop_client_dir())
+        host_ip = get_local_ip()
+        system_dir = Path(platformdirs.user_data_dir("stremhu", "stremhu"))
+
+        cmd_args = [
+            "--client-path",
+            client_path,
+            "--host-ip",
+            host_ip,
+            "--system-dir",
+            str(system_dir),
+            "--port",
+            str(self.port),
+        ]
 
         if getattr(sys, "frozen", False):
-            cmd = [
-                sys.executable,
-                "--core",
-                "--client-dir",
-                client_dir,
-                "--host-ip",
-                host_ip,
-            ]
+            cmd = [sys.executable, "--server"] + cmd_args
         else:
-            server_script = root_dir / "server" / "run.py"
-            cmd = [
-                sys.executable,
-                str(server_script),
-                "--client-dir",
-                client_dir,
-                "--host-ip",
-                host_ip,
-            ]
-
-        if data_dir:
-            cmd.extend(["--data-dir", data_dir])
+            cmd = [sys.executable, "-m", "server"] + cmd_args
 
         self._last_start_time = time.time()
         # stdout és stderr öröklődik a konzolra, így látszanak az élő szerver logok

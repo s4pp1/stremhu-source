@@ -13,7 +13,6 @@
     "python.defaultInterpreterPath": "${workspaceFolder:Root}/.conda/bin/python",
     "python.analysis.extraPaths": [
       "${workspaceFolder:Root}",
-      "${workspaceFolder:Root}/core",
       "${workspaceFolder:Root}/server",
       "${workspaceFolder:Root}/desktop",
     ],

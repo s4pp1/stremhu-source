@@ -27,7 +27,7 @@ unfixable = []
 [tool.ruff.lint.isort]
 combine-as-imports = true
 order-by-type = true
-known-first-party = ["core", "server", "desktop"]
+known-first-party = ["server", "desktop"]
 
 [tool.basedpyright]
 typeCheckingMode = "standard"
@@ -40,12 +40,12 @@ exclude = [
 ]
 venvPath = "."
 venv = ".conda"
-extraPaths = ["core", "server", "desktop", "."]
+extraPaths = ["server", "desktop", "."]
 reportImplicitRelativeImport = "none"
 reportUnannotatedClassAttribute = "none"
 reportUnusedCallResult = "none"
 reportImplicitOverride = "none"
 
 [tool.pytest.ini_options]
-testpaths = ["core/tests"]
-pythonpath = ["core", "server", "desktop", "."]
+testpaths = ["server/tests"]
+pythonpath = ["server", "desktop", "."]

@@ -47,8 +47,8 @@ if [ "$(uname)" = "Darwin" ]; then
 fi
 
 echo "=== Statikus Fájlok Másolása ==="
-rm -rf core/client server/client
-cp -r client/dist core/client
+rm -rf server/client
+cp -r client/dist server/client
 
 echo "=== Python Csomagok Telepítése / Ellenőrzése ==="
 "$PYTHON_BIN" -m pip install -r requirements.txt

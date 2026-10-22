@@ -8,10 +8,10 @@ from typing import TYPE_CHECKING
 from PySide6.QtCore import QObject, Slot
 from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon
 
-from core.config import config
 from desktop.core.assets import create_tray_icon
 from desktop.core.signals import AppStatus, DesktopSignals
 from desktop.ui.dialogs import _ensure_qapp, pick_directory, show_error, show_info
+from server.config import config
 
 if TYPE_CHECKING:
     from desktop.core.runner import ServerProcessManager
@@ -82,8 +82,8 @@ class TrayController(QObject):
 
     def get_app_url(self) -> str:
         try:
-            from core.common.database import db_session
-            from core.modules.settings.dependencies import create_settings_service
+            from server.common.database import db_session
+            from server.modules.settings.dependencies import create_settings_service
 
             with db_session() as db:
                 service = create_settings_service(db)
@@ -124,9 +124,9 @@ class TrayController(QObject):
             title="Válaszd ki a StremHU letöltési mappáját",
         )
         if new_dir:
-            from core.common.database import db_session
-            from core.modules.settings.dependencies import create_settings_service
-            from core.modules.settings.schemas.internal import SystemSettingsUpdate
+            from server.common.database import db_session
+            from server.modules.settings.dependencies import create_settings_service
+            from server.modules.settings.schemas.internal import SystemSettingsUpdate
 
             with db_session() as db:
                 settings_service = create_settings_service(db)
