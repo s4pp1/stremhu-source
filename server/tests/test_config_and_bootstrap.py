@@ -1,5 +1,4 @@
 from pathlib import Path
-from unittest.mock import PropertyMock
 
 from server.boot.bootstrap import bootstrap_app
 from server.common.database import db_session
@@ -81,6 +80,30 @@ def test_config_env_file_loading(tmp_path: Path):
     assert cfg.reload is True
 
 
+def test_config_is_dev_flags(monkeypatch):
+    import sys
+
+    from server.config import Config
+
+    # Default is False
+    monkeypatch.setattr(sys, "argv", ["stremhu", "--host-ip", "192.168.1.200"])
+    monkeypatch.delenv("IS_DEV", raising=False)
+    assert Config(_env_file=None).is_dev is False
+
+    # CLI --is-dev
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["stremhu", "--host-ip", "192.168.1.200", "--is-dev"],
+    )
+    assert Config(_env_file=None).is_dev is True
+
+    # ENV IS_DEV=true
+    monkeypatch.setattr(sys, "argv", ["stremhu", "--host-ip", "192.168.1.200"])
+    monkeypatch.setenv("IS_DEV", "true")
+    assert Config(_env_file=None).is_dev is True
+
+
 def test_config_cli_overrides_env_and_defaults(monkeypatch, tmp_path: Path):
     import sys
 
@@ -113,56 +136,115 @@ def test_bootstrap_app():
     assert boot_config.port is not None
 
 
-def test_bootstrap_port_from_system_settings():
-    with db_session() as db:
-        service = create_settings_service(db)
-        service.save_system(SystemSettingsUpdate(port=7777))
-
-    boot_config = bootstrap_app()
-    assert boot_config.port == 7777
-
-    # Visszaállítjuk
-    with db_session() as db:
-        service = create_settings_service(db)
-        service.save_system(SystemSettingsUpdate(port=7070))
-
-
-def test_bootstrap_port_env_override(monkeypatch):
+def test_bootstrap_port_config_override(monkeypatch):
     from server.config import config
 
     monkeypatch.setattr(config, "port", 8888)
-    monkeypatch.setattr(Config, "is_port_overridden", PropertyMock(return_value=True))
 
     boot_config = bootstrap_app()
     assert boot_config.port == 8888
 
-    # Ellenőrizzük, hogy az adatbázisba is beíródott az ENV portja
-    with db_session() as db:
-        service = create_settings_service(db)
-        assert service.get_system().port == 8888
 
-
-def test_save_system_port_forbidden_when_overridden(monkeypatch):
+def test_save_system_downloads_dir_forbidden_when_overridden(monkeypatch):
     import pytest
     from fastapi import HTTPException
 
-    from server.config import Config
+    from server.config import config
 
-    monkeypatch.setattr(Config, "is_port_overridden", PropertyMock(return_value=True))
+    monkeypatch.setattr(config, "downloads_dir", Path("/downloads"))
 
     with db_session() as db:
         service = create_settings_service(db)
         with pytest.raises(HTTPException) as exc_info:
-            service.save_system(SystemSettingsUpdate(port=9999))
+            service.save_system(SystemSettingsUpdate(downloads_dir=Path("/other")))
         assert exc_info.value.status_code == 403
 
 
-def test_get_app_url_uses_system_settings_port():
+def test_save_system_downloads_dir_allowed_when_not_overridden(monkeypatch):
+    from server.config import config
+
+    monkeypatch.setattr(config, "downloads_dir", None)
+    monkeypatch.setattr(config, "default_downloads_dir", Path("/default"))
+
     with db_session() as db:
         service = create_settings_service(db)
-        service.save_system(SystemSettingsUpdate(port=7075))
+        updated = service.save_system(
+            SystemSettingsUpdate(downloads_dir=Path("/allowed_new_dir"))
+        )
+        assert updated.downloads_dir == Path("/allowed_new_dir")
+
+
+def test_config_downloads_dir_required(monkeypatch):
+    import pytest
+    from pydantic import ValidationError
+
+    monkeypatch.delenv("DEFAULT_DOWNLOADS_DIR", raising=False)
+    monkeypatch.delenv("DOWNLOADS_DIR", raising=False)
+
+    with pytest.raises(ValidationError) as exc_info:
+        Config(
+            _env_file=None,
+            host_ip="192.168.1.100",
+            system_dir=Path("/tmp/data"),
+            client_path=Path("client/dist"),
+            default_downloads_dir=None,
+            downloads_dir=None,
+        )
+    assert "DEFAULT_DOWNLOADS_DIR" in str(exc_info.value)
+
+
+def test_config_downloads_dir_overridden_status():
+    cfg_default = Config(
+        host_ip="192.168.1.100",
+        system_dir=Path("/tmp/data"),
+        client_path=Path("client/dist"),
+        default_downloads_dir=Path("/default"),
+        downloads_dir=None,
+    )
+    assert cfg_default.is_downloads_dir_overridden is False
+
+    cfg_overridden = Config(
+        host_ip="192.168.1.100",
+        system_dir=Path("/tmp/data"),
+        client_path=Path("client/dist"),
+        downloads_dir=Path("/downloads"),
+    )
+    assert cfg_overridden.is_downloads_dir_overridden is True
+
+
+def test_get_app_url_uses_config_port(monkeypatch):
+    from server.config import config
+
+    monkeypatch.setattr(config, "port", 7075)
+    with db_session() as db:
+        service = create_settings_service(db)
         url = service.get_app_url()
         assert ":7075" in url
 
-        # Visszaállítás
-        service.save_system(SystemSettingsUpdate(port=7070))
+
+def test_system_settings_response_path_serialization():
+    from server.modules.settings.schemas.api import SystemSettingsResponse
+    from server.modules.settings.schemas.internal import SystemSettings
+    from server.modules.system.schemas.api import SystemStatusResponse
+    from server.modules.system.schemas.internal import SystemStatus
+
+    system_settings = SystemSettings(downloads_dir=Path("/Users/test/Downloads"))
+    settings_resp = SystemSettingsResponse.model_validate(system_settings)
+    assert settings_resp.downloads_dir == Path("/Users/test/Downloads")
+    dumped_settings = settings_resp.model_dump(mode="json", by_alias=True)
+    assert dumped_settings["downloadsDir"] == "/Users/test/Downloads"
+
+    status = SystemStatus(
+        configured=True,
+        version="0.0.0",
+        app_url="https://stremhu.local:7070",
+        host_ip="192.168.1.100",
+        port=7070,
+        downloads_dir=Path("/Users/test/Downloads"),
+        is_reverse_proxy=False,
+        is_downloads_dir_overridden=False,
+    )
+    status_resp = SystemStatusResponse.model_validate(status)
+    assert status_resp.downloads_dir == Path("/Users/test/Downloads")
+    dumped_status = status_resp.model_dump(mode="json", by_alias=True)
+    assert dumped_status["downloadsDir"] == "/Users/test/Downloads"

@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -16,13 +17,13 @@ class SystemSettingsResponse(BaseModel):
     model_config = ConfigDict(
         validate_by_name=True,
         alias_generator=to_camel,
+        from_attributes=True,
     )
 
     hit_and_run: bool
     keep_seed_seconds: int
     cache_retention_seconds: int
-    downloads_dir: str | None = None
-    port: int
+    downloads_dir: Path
 
 
 class SystemSettingsUpdateRequest(SystemSettingsUpdate):
@@ -36,6 +37,7 @@ class RelaySettingsResponse(BaseModel):
     model_config = ConfigDict(
         validate_by_name=True,
         alias_generator=to_camel,
+        from_attributes=True,
     )
 
     port: int

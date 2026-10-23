@@ -12,12 +12,7 @@ from server.modules.settings.enums import NetworkModeEnum
 
 async def wait_for_port(port: int | None = None) -> bool:
     if port is None:
-        try:
-            with db_session() as db:
-                settings_service = create_settings_service(db)
-                port = settings_service.get_system().port
-        except Exception:
-            port = config.port
+        port = config.port
 
     start_time = asyncio.get_running_loop().time()
     while asyncio.get_running_loop().time() - start_time < 10.0:
@@ -34,17 +29,15 @@ async def wait_for_port(port: int | None = None) -> bool:
 
 
 async def verify_self_connection() -> None:
+    port = config.port
     try:
         with db_session() as db:
             settings_service = create_settings_service(db)
-            system_settings = settings_service.get_system()
-            port = system_settings.port
             network_settings = settings_service.get_network()
             protocol = (
                 "http" if network_settings.mode == NetworkModeEnum.MANUAL else "https"
             )
     except Exception:
-        port = config.port
         protocol = "https"
 
     port_ready = await wait_for_port(port)

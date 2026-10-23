@@ -1,7 +1,7 @@
 import asyncio
 import re
 
-from server.config import NodeEnv, config
+from server.config import config
 from server.modules.settings.service import SettingsService
 from server.modules.stremio.constants import (
     ADDON_APP_PREFIX_ID,
@@ -46,7 +46,7 @@ class StremioService:
             addon_id = f"{addon_id}.beta"
             name = f"{name} (Beta)"
 
-        if config.node_env != NodeEnv.PROD:
+        if config.is_dev:
             version = "0.0.0"
             addon_id = f"{addon_id}.dev"
             name = f"{name} (DEV)"

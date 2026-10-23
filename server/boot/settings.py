@@ -19,9 +19,6 @@ def ensure_default_settings():
             if config.downloads_dir:
                 system_settings_payload.downloads_dir = config.downloads_dir
 
-            if config.port:
-                system_settings_payload.port = config.port
-
             settings_service.save_system(system_settings_payload)
 
             # Relay Settings inicializálása/frissítése

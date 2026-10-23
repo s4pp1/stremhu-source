@@ -11,11 +11,9 @@
   ],
   "settings": {
     "python.defaultInterpreterPath": "${workspaceFolder:Root}/.conda/bin/python",
-    "python.analysis.extraPaths": [
-      "${workspaceFolder:Root}",
-      "${workspaceFolder:Root}/server",
-      "${workspaceFolder:Root}/desktop",
-    ],
+    "files.associations": {
+      "*.spec": "python",
+    },
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit",

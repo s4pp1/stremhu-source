@@ -8,4 +8,5 @@ class SystemStatusResponse(SystemStatus):
     model_config = ConfigDict(
         validate_by_name=True,
         alias_generator=to_camel,
+        from_attributes=True,
     )

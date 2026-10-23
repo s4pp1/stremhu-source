@@ -24,3 +24,4 @@ acme==5.8.0
 rich==15.0.0
 email-validator==2.3.0
 platformdirs==4.13.0
+httpx==0.28.1

@@ -68,14 +68,9 @@ def ensure_network_settings() -> BootNetworkConfig:
         cert_path_str = str(cert_path)
         key_path_str = str(key_path)
 
-    with db_session() as db:
-        settings_service = create_settings_service(db)
-        system_settings = settings_service.get_system()
-        port = system_settings.port
-
     return BootNetworkConfig(
         network_settings=network_settings,
         cert_path=cert_path_str,
         key_path=key_path_str,
-        port=port,
+        port=config.port,
     )

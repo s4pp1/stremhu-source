@@ -153,52 +153,81 @@ def test_server_process_manager_frozen_mode(monkeypatch: MonkeyPatch):
     mock_process.terminate.assert_called_once()
 
 
-def test_server_process_manager_port_collision_resolution(monkeypatch: MonkeyPatch):
+def test_server_process_manager_does_not_modify_port(monkeypatch: MonkeyPatch):
     from unittest.mock import MagicMock
 
     from desktop.core.runner import ServerProcessManager
-    from server.common.database import db_session
-    from server.config import config
-    from server.modules.settings.dependencies import create_settings_service
-    from server.modules.settings.schemas.internal import SystemSettingsUpdate
 
     signals = DesktopSignals()
     manager = ServerProcessManager(signals=signals)
 
     monkeypatch.setattr("desktop.core.runner.is_server_port_open", lambda port: False)
 
-    # Szimuláljuk, hogy a 7070 foglalt, de a 7071 szabad
-    def fake_is_port_in_use(port: int) -> bool:
-        return port == 7070
-
-    monkeypatch.setattr("desktop.core.runner.is_port_in_use", fake_is_port_in_use)
-
     mock_process = MagicMock()
     mock_process.poll.return_value = None
-    monkeypatch.setattr("subprocess.Popen", lambda *args, **kwargs: mock_process)
+    spawn_cmd = []
 
-    # Biztosítjuk, hogy a DB-ben 7070 az induló port
-    with db_session() as db:
-        service = create_settings_service(db)
-        service.save_system(SystemSettingsUpdate(port=7070))
+    def mock_popen(cmd, *args, **kwargs):
+        nonlocal spawn_cmd
+        spawn_cmd = cmd
+        return mock_process
 
-    config.port = 7070
-    try:
-        manager.start()
+    monkeypatch.setattr("subprocess.Popen", mock_popen)
 
-        assert manager.port == 7071
-        assert config.port == 7071
-        with db_session() as db:
-            service = create_settings_service(db)
-            assert service.get_system().port == 7071
+    manager.start()
+    assert manager.port == 7070
+    # Desktop nem passzol --port-ot, a szerver saját maga kezeli a portját
+    assert "--port" not in spawn_cmd
+    assert manager.process is not None
+    manager.stop()
 
-        assert manager.process is not None
-        manager.stop()
-    finally:
-        with db_session() as db:
-            service = create_settings_service(db)
-            service.save_system(SystemSettingsUpdate(port=7070))
-        config.port = 7070
+
+def test_tray_controller_get_app_url_via_rest_api(monkeypatch: MonkeyPatch):
+    from pathlib import Path
+
+    from server.modules.system.schemas.api import SystemStatusResponse
+
+    fake_status = SystemStatusResponse(
+        configured=True,
+        version="1.0.0",
+        app_url="https://custom.stremhu.app:7070",
+        host_ip="192.168.1.100",
+        port=7070,
+        downloads_dir=Path("/downloads"),
+        is_reverse_proxy=False,
+        is_downloads_dir_overridden=False,
+    )
+    monkeypatch.setattr(
+        "desktop.ui.tray.fetch_system_status",
+        lambda port: fake_status,
+    )
+
+    controller = TrayController()
+    assert controller.get_app_url() == "https://custom.stremhu.app:7070"
+
+
+def test_tray_controller_downloads_dir_via_rest_api(monkeypatch: MonkeyPatch):
+    from pathlib import Path
+
+    from server.modules.system.schemas.api import SystemStatusResponse
+
+    fake_status = SystemStatusResponse(
+        configured=True,
+        version="1.0.0",
+        app_url="https://custom.stremhu.app:7070",
+        host_ip="192.168.1.100",
+        port=7070,
+        downloads_dir=Path("/api/downloads/path"),
+        is_reverse_proxy=False,
+        is_downloads_dir_overridden=False,
+    )
+    monkeypatch.setattr(
+        "desktop.ui.tray.fetch_system_status",
+        lambda port: fake_status,
+    )
+
+    controller = TrayController()
+    assert controller._get_downloads_dir() == Path("/api/downloads/path")
 
 
 def test_get_local_ip():

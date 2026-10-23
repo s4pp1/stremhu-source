@@ -34,9 +34,11 @@ COPY --from=node-build /app/client/dist ./client
 COPY server ./server
 
 ENV PYTHONPATH="/app"
-ENV NODE_ENV=prod
+ENV IS_DEV=false
 ENV CLIENT_PATH=/app/client
 ENV SYSTEM_DIR=/data
+ENV DOWNLOADS_DIR=/downloads
+ENV PORT=7070
 ENV VERSION=${APP_VERSION}
 ENV PATH="/opt/venv/bin:${PATH}"
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt

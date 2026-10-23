@@ -34,10 +34,10 @@ class SystemService:
             app_url=app_url,
             version=config.version,
             host_ip=config.host_ip,
-            port=system_settings.port,
+            port=config.port,
+            downloads_dir=system_settings.downloads_dir,
             is_reverse_proxy=config.reverse_proxy_domain is not None,
-            is_docker=config.is_docker,
-            is_port_overridden=config.is_port_overridden,
+            is_downloads_dir_overridden=config.is_downloads_dir_overridden,
         )
 
     async def restart(self):

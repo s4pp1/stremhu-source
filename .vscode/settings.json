@@ -2,6 +2,9 @@
   "files.exclude": {
     "client": true
   },
+  "files.associations": {
+    "*.spec": "python"
+  },
   "search.exclude": {
     "**/.conda": true,
     "**/__pycache__": true

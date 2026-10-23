@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from pydantic import BaseModel
 
 
@@ -12,6 +14,7 @@ class SystemStatus(BaseModel):
 
     port: int
 
+    downloads_dir: Path
+
     is_reverse_proxy: bool
-    is_docker: bool
-    is_port_overridden: bool
+    is_downloads_dir_overridden: bool

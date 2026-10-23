@@ -4,7 +4,7 @@ import shutil
 from rich.console import Console
 from rich.logging import RichHandler
 
-from server.config import NodeEnv, config
+from server.config import config
 
 
 class IgnoreHypercornDisconnectErrorFilter(logging.Filter):
@@ -21,7 +21,7 @@ class IgnoreHypercornDisconnectErrorFilter(logging.Filter):
 
 
 def setup_logger():
-    is_prod = config.node_env == NodeEnv.PROD
+    is_prod = not config.is_dev
 
     terminal_width = shutil.get_terminal_size(fallback=(120, 50)).columns
     console = Console(width=terminal_width)

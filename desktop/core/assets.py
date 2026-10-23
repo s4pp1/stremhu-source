@@ -20,6 +20,16 @@ def get_asset_path(filename: str) -> Path | None:
                 Path(meipass) / "assets" / filename,
             ]
         )
+    if getattr(sys, "frozen", False):
+        exe = Path(sys.executable)
+        candidates.extend(
+            [
+                exe.parent / "desktop" / "assets" / filename,
+                exe.parent / "assets" / filename,
+                exe.parent.parent / "Resources" / "desktop" / "assets" / filename,
+                exe.parent.parent / "Resources" / "assets" / filename,
+            ]
+        )
 
     # Fejlesztői környezet
     candidates.append(Path(__file__).resolve().parent.parent / "assets" / filename)

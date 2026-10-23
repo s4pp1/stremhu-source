@@ -22,12 +22,13 @@ build/
 *.egg-info/
 .pytest_cache/
 .ruff_cache/
-core/client/
-server/client/
+server/openapi/
 
 # Secrets and environment files
 .env
 .env.*
+!.env.example
+!**/.env.example
 *.key
 session.key
 *.db

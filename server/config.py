@@ -1,10 +1,7 @@
 import ipaddress
-import os
 import sys
-from enum import Enum
 from pathlib import Path
 
-import platformdirs
 from pydantic import (
     Field,
     ValidationError,
@@ -17,46 +14,13 @@ from rich.console import Console
 from server.common.validators import validate_domain
 
 
-class NodeEnv(str, Enum):
-    DEV = "dev"
-    PROD = "prod"
-
-
 def is_running_tests() -> bool:
     return "pytest" in sys.modules or any("pytest" in a for a in sys.argv)
 
 
-def get_default_system_dir() -> Path:
-    if is_running_tests():
-        return Path("/tmp/stremhu_test")
-    if Path("/data").exists():
-        return Path("/data")
-    return Path(platformdirs.user_data_dir("stremhu", "stremhu"))
-
-
-def get_default_client_path() -> Path:
-    if getattr(sys, "frozen", False):
-        meipass = getattr(sys, "_MEIPASS", None)
-        if meipass and (Path(meipass) / "client").exists():
-            return Path(meipass) / "client"
-    for p in [Path("server/client"), Path("client/dist"), Path("/app/client")]:
-        if p.exists():
-            return p.resolve()
-    return Path("client/dist")
-
-
-def get_default_downloads_dir() -> Path:
-    if Path("/downloads").exists():
-        return Path("/downloads")
-    try:
-        return Path(platformdirs.user_downloads_dir())
-    except Exception:
-        return Path.home() / "Downloads"
-
-
 class Config(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=Path(__file__).resolve().parent / ".env",
         env_file_encoding="utf-8",
         extra="ignore",
         cli_parse_args=True,
@@ -65,33 +29,25 @@ class Config(BaseSettings):
         cli_implicit_flags=True,
     )
 
-    node_env: NodeEnv = NodeEnv.PROD
+    reload: bool = False
+    is_dev: bool = False
     version: str = "0.0.0"
     description: str = "Torrentalapú streaming magyar torrentoldalakra építve."
-    is_docker: bool = False
     host_ip: str = ""
-    reload: bool = False
     reverse_proxy_domain: str | None = Field(
         default=None,
     )
 
-    port: int | None = Field(
-        default=None,
-    )
+    port: int = 7070
 
-    system_dir: Path = Field(
-        default_factory=get_default_system_dir,
-    )
+    system_dir: Path
+    client_path: Path
 
     default_downloads_dir: Path | None = Field(
-        default_factory=get_default_downloads_dir,
+        default=None,
     )
     downloads_dir: Path | None = Field(
         default=None,
-    )
-
-    client_path: Path = Field(
-        default_factory=get_default_client_path,
     )
 
     openapi_dir: Path | None = Field(
@@ -100,13 +56,9 @@ class Config(BaseSettings):
 
     acme_directory_url: str = "https://acme-v02.api.letsencrypt.org/directory"
 
-    port_override: bool = False
-
     @property
-    def is_port_overridden(self) -> bool:
-        if self.port_override:
-            return True
-        return any(a.startswith("--port") for a in sys.argv) or "PORT" in os.environ
+    def is_downloads_dir_overridden(self) -> bool:
+        return self.downloads_dir is not None
 
     @property
     def libtorrent_port(self) -> int:
@@ -123,6 +75,26 @@ class Config(BaseSettings):
     @property
     def certificates_dir(self) -> Path:
         return self.system_dir / "certificates"
+
+    @model_validator(mode="before")
+    @classmethod
+    def set_test_defaults(cls, data: object) -> object:
+        if is_running_tests() and isinstance(data, dict):
+            data.setdefault("system_dir", Path("/tmp/stremhu_test"))
+            data.setdefault("client_path", Path("client/dist"))
+            if "default_downloads_dir" not in data and "downloads_dir" not in data:
+                data.setdefault(
+                    "default_downloads_dir", Path("/tmp/stremhu_test/downloads")
+                )
+        return data
+
+    @model_validator(mode="after")
+    def validate_downloads_dir(self) -> "Config":
+        if self.default_downloads_dir is None and self.downloads_dir is None:
+            raise ValueError(
+                "A `DEFAULT_DOWNLOADS_DIR` vagy a `DOWNLOADS_DIR` megadása kötelező!"
+            )
+        return self
 
     @model_validator(mode="after")
     def validate_host_ip_and_domain(self) -> "Config":
@@ -184,7 +156,7 @@ except ValidationError as e:
 
 
 def show_internal_routes() -> bool:
-    return config.node_env == NodeEnv.DEV
+    return config.is_dev
 
 
 def is_public_ip(ip_str: str) -> bool:

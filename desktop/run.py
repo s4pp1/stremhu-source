@@ -12,7 +12,7 @@ from desktop.ui.tray import TrayController
 def start_desktop_app() -> None:
     """Elindítja az asztali alkalmazást: PySide6 QSystemTrayIcon a fő GUI folyamatban,
 
-    és a StremHU Core önálló háttérfolyamatként fut.
+    és a StremHU Server önálló háttérfolyamatként fut.
     """
     try:
         setproctitle.setproctitle("StremHU Desktop")
@@ -29,7 +29,7 @@ def start_desktop_app() -> None:
     tray = tray_controller.create_tray()
     tray.show()
 
-    # Elindítjuk a StremHU Core önálló folyamatot
+    # Elindítjuk a StremHU Server önálló folyamatot
     server_manager.start()
 
     # A PySide6 eseményhurkot futtatjuk a fő szálon

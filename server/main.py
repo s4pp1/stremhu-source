@@ -4,6 +4,7 @@ from hypercorn.config import Config
 from hypercorn.run import run as run_hypercorn
 from rich.console import Console
 from rich.panel import Panel
+from setproctitle import setproctitle
 
 from server.boot.bootstrap import bootstrap_app
 from server.boot.schemas import BootNetworkConfig
@@ -13,6 +14,7 @@ from server.modules.settings.enums import NetworkModeEnum
 
 
 def run() -> None:
+    setproctitle("StremHU Server")
     setup_logger()
     boot_config = bootstrap_app()
 
@@ -60,6 +62,7 @@ def _create_hypercorn_config(
     hypercorn_config = Config()
     hypercorn_config.application_path = "server.app:app"
     hypercorn_config.bind = [f"0.0.0.0:{boot_config.port}"]
+    hypercorn_config.workers = 1 if use_reloader else 0
     hypercorn_config.use_reloader = use_reloader
 
     hypercorn_config.certfile = boot_config.cert_path

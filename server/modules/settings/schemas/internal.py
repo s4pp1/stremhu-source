@@ -48,7 +48,6 @@ class SystemSettings(BaseModel):
     keep_seed_seconds: int = 0
     cache_retention_seconds: int = 14 * 24 * 60 * 60
     downloads_dir: Path
-    port: int = 7070
 
 
 class SystemSettingsUpdate(BaseModel):
@@ -56,7 +55,6 @@ class SystemSettingsUpdate(BaseModel):
     keep_seed_seconds: int | None = None
     cache_retention_seconds: int | None = None
     downloads_dir: Path | None = None
-    port: int | None = None
 
 
 class RelaySettings(BaseModel):

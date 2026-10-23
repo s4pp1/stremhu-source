@@ -28,16 +28,14 @@ class SettingsService:
         payload: SystemSettingsUpdate,
     ) -> SystemSettings:
         if (
-            config.is_port_overridden
-            and payload.port is not None
-            and config.port is not None
-            and payload.port != config.port
+            config.is_downloads_dir_overridden
+            and payload.downloads_dir is not None
+            and config.downloads_dir is not None
+            and payload.downloads_dir != config.downloads_dir
         ):
-            from fastapi import HTTPException
-
             raise HTTPException(
                 status_code=403,
-                detail="A port nem módosítható, mert felül van bírálva.",
+                detail="A letöltési könyvtár nem módosítható, mert felül van bírálva.",
             )
 
         system_settings = self.find_system()
@@ -52,9 +50,6 @@ class SettingsService:
         updated_data = system_settings.model_copy(update=data).model_dump(mode="json")
 
         self._settings_repository.save(SettingsKeyEnum.SYSTEM, updated_data)
-
-        if payload.port is not None:
-            config.port = payload.port
 
         return SystemSettings.model_validate(updated_data)
 
@@ -130,5 +125,4 @@ class SettingsService:
         if network_settings.mode == NetworkModeEnum.MANUAL:
             return f"https://{network_settings.host}"
 
-        system_settings = self.get_system()
-        return f"https://{network_settings.host}:{system_settings.port}"
+        return f"https://{network_settings.host}:{config.port}"

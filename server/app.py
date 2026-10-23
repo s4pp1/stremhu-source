@@ -6,7 +6,6 @@ import pydash
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.routing import APIRoute
-from setproctitle import setproctitle
 from starlette.middleware.sessions import SessionMiddleware
 
 import server.common.models  # noqa: F401
@@ -28,8 +27,6 @@ from server.modules.torrents.background_tasks import (
 )
 from server.scheduler import setup_scheduler
 from server.sync import sync_database_and_settings
-
-setproctitle("StremHU Core")
 
 
 @asynccontextmanager

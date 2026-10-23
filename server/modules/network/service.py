@@ -75,8 +75,7 @@ class NetworkService:
     ) -> bool:
         """Ellenőrzi, hogy a szerver elérhető-e kívülről a megadott domain-en."""
 
-        system_settings = self._settings_service.get_system()
-        url = f"https://{host}:{system_settings.port}/api/health"
+        url = f"https://{host}:{config.port}/api/health"
 
         logger.info("🔍 Hálózati elérhetőség ellenőrzése: %s", url)
 
@@ -248,10 +247,9 @@ class NetworkService:
                     ),
                 )
 
-            system_settings = self._settings_service.get_system()
             raise ValueError(
                 "A szerver nem érhető el a megadott domainen keresztül! "
-                f"A DNS rekordokat visszaállítottuk. Ellenőrizd a router port forward beállításait (TCP {system_settings.port} port)!"
+                f"A DNS rekordokat visszaállítottuk. Ellenőrizd a router port forward beállításait (TCP {config.port} port)!"
             )
         return ip
 
