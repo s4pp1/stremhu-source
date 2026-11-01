@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Connection } from './-features/connection'
+import { PeerProtocol } from './-features/peer-protocol'
 import { Port } from './-features/port'
 import { Speed } from './-features/speed'
 
@@ -20,6 +21,9 @@ function RouteComponent() {
         </div>
         <div className="break-inside-avoid mb-4">
           <Connection />
+        </div>
+        <div className="break-inside-avoid mb-4">
+          <PeerProtocol />
         </div>
       </div>
     </div>

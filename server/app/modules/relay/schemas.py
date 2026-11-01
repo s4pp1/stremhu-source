@@ -2,6 +2,8 @@ import libtorrent as libtorrent
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
+from app.modules.settings.enums import RelayEncryptionEnum
+
 
 class RelaySettingsUpdate(BaseModel):
     model_config = ConfigDict(
@@ -15,6 +17,8 @@ class RelaySettingsUpdate(BaseModel):
     connections_limit: int | None = None
     torrent_connections_limit: int | None = None
     enable_upnp_and_natpmp: bool | None = None
+    encryption: RelayEncryptionEnum | None = None
+    enable_utp: bool | None = None
 
 
 class RelayTorrentUpdate(BaseModel):

@@ -34,6 +34,8 @@ class RelaySettingsService:
             connections_limit=settings.connections_limit,
             torrent_connections_limit=settings.torrent_connections_limit,
             enable_upnp_and_natpmp=settings.enable_upnp_and_natpmp,
+            encryption=settings.encryption,
+            enable_utp=settings.enable_utp,
         )
         try:
             self._relay_service.update_settings(libtorrent_update)
