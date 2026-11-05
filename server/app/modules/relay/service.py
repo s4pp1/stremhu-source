@@ -30,7 +30,9 @@ class RelayService:
         self._libtorrent_session.apply_settings(
             {
                 "alert_mask": alert_mask,
-                "listen_interfaces": f"0.0.0.0:{config.libtorrent_port},[::]:{config.libtorrent_port}",
+                "listen_interfaces": config.libtorrent_listen_interfaces(
+                    config.libtorrent_port
+                ),
                 "connections_limit": 300,
                 "enable_dht": False,
                 "enable_lsd": False,
@@ -120,8 +122,8 @@ class RelayService:
                     torrent_handle.set_max_connections(self._torrent_connections_limit)
 
         if payload.port is not None:
-            apply_settings["listen_interfaces"] = (
-                f"0.0.0.0:{payload.port},[::]:{payload.port}"
+            apply_settings["listen_interfaces"] = config.libtorrent_listen_interfaces(
+                payload.port
             )
 
         self._libtorrent_session.apply_settings(apply_settings)

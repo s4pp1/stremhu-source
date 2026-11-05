@@ -37,9 +37,16 @@ class Config(BaseSettings):
 
     port: int = 7070
 
+    libtorrent_interface: str | None = None
+
     @property
     def libtorrent_port(self) -> int:
         return 6881
+
+    def libtorrent_listen_interfaces(self, port: int) -> str:
+        if self.libtorrent_interface:
+            return f"{self.libtorrent_interface}:{port}"
+        return f"0.0.0.0:{port},[::]:{port}"
 
     @property
     def root_dir(self) -> Path:
