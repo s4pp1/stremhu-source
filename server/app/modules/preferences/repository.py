@@ -4,6 +4,7 @@ import pydash
 import sqlalchemy as sa
 from sqlalchemy.orm import Session, contains_eager, with_polymorphic
 
+from app.common.commit_actions import commit_session, mark_stream_cache_dirty
 from app.common.logger import logger
 from app.modules.attribute_exclusions.models import AttributeExclusionModel
 from app.modules.attributes.models import AttributeModel
@@ -130,4 +131,5 @@ class PreferencesRepository:
                 )
                 self.db.add(new_pref)
 
-        self.db.commit()
+        mark_stream_cache_dirty(self.db)
+        commit_session(self.db)

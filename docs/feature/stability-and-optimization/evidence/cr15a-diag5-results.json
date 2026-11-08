@@ -1,0 +1,1697 @@
+{
+ "diagnostic_only": true,
+ "results": [
+  {
+   "variant": "before-cfg",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40235008,
+   "anon_peak": 40771584,
+   "p50_ms": 1.712326,
+   "cpu_seconds": 0.11112586500000005,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42356736,
+   "anon_peak": 41828352,
+   "p50_ms": 6.610967,
+   "cpu_seconds": 0.11238532200000007,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 41541632,
+   "anon_peak": 41549824,
+   "p50_ms": 16.178386,
+   "cpu_seconds": 0.128686054,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 64925696,
+   "anon_peak": 76013568,
+   "p50_ms": 2.77531,
+   "cpu_seconds": 0.282101861,
+   "retention": {
+    "immediate": {
+     "cg_anon": 64925696,
+     "rss_anon": 64925696,
+     "heap_in_use": 33924896,
+     "heap_free": 3881184,
+     "heap_arena": 37806080,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41099264,
+     "rss_anon": 41099264,
+     "heap_in_use": 10750192,
+     "heap_free": 3098384,
+     "heap_arena": 13848576,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39260160,
+     "rss_anon": 39260160,
+     "heap_in_use": 10750192,
+     "heap_free": 2967312,
+     "heap_arena": 13717504,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 74772480,
+   "anon_peak": 87064576,
+   "p50_ms": 12.712557,
+   "cpu_seconds": 0.28017226000000006,
+   "retention": {
+    "immediate": {
+     "cg_anon": 74772480,
+     "rss_anon": 74772480,
+     "heap_in_use": 39390192,
+     "heap_free": 8193040,
+     "heap_arena": 47583232,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41168896,
+     "rss_anon": 41168896,
+     "heap_in_use": 10760784,
+     "heap_free": 3087792,
+     "heap_arena": 13848576,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39297024,
+     "rss_anon": 39297024,
+     "heap_in_use": 10760784,
+     "heap_free": 2956720,
+     "heap_arena": 13717504,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 104570880,
+   "anon_peak": 89800704,
+   "p50_ms": 25.204585,
+   "cpu_seconds": 0.2727428410000001,
+   "retention": {
+    "immediate": {
+     "cg_anon": 104570880,
+     "rss_anon": 104570880,
+     "heap_in_use": 69393264,
+     "heap_free": 8025232,
+     "heap_arena": 77418496,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41263104,
+     "rss_anon": 41263104,
+     "heap_in_use": 10769968,
+     "heap_free": 3209680,
+     "heap_arena": 13979648,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39448576,
+     "rss_anon": 39448576,
+     "heap_in_use": 10769968,
+     "heap_free": 3078608,
+     "heap_arena": 13848576,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40288256,
+   "anon_peak": 40927232,
+   "p50_ms": 1.746305,
+   "cpu_seconds": 0.111585655,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42479616,
+   "anon_peak": 41914368,
+   "p50_ms": 6.75766,
+   "cpu_seconds": 0.11486192899999997,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 42131456,
+   "anon_peak": 42151936,
+   "p50_ms": 15.488119,
+   "cpu_seconds": 0.12990116200000001,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 66539520,
+   "anon_peak": 73355264,
+   "p50_ms": 2.727852,
+   "cpu_seconds": 0.2646243640000001,
+   "retention": {
+    "immediate": {
+     "cg_anon": 66539520,
+     "rss_anon": 66539520,
+     "heap_in_use": 35295504,
+     "heap_free": 4087536,
+     "heap_arena": 39383040,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42139648,
+     "rss_anon": 42139648,
+     "heap_in_use": 10757344,
+     "heap_free": 4094752,
+     "heap_arena": 14852096,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39313408,
+     "rss_anon": 39313408,
+     "heap_in_use": 10757344,
+     "heap_free": 3963680,
+     "heap_arena": 14721024,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 84111360,
+   "anon_peak": 82591744,
+   "p50_ms": 12.279323,
+   "cpu_seconds": 0.26544418400000014,
+   "retention": {
+    "immediate": {
+     "cg_anon": 84111360,
+     "rss_anon": 84111360,
+     "heap_in_use": 48945520,
+     "heap_free": 7988880,
+     "heap_arena": 56934400,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41009152,
+     "rss_anon": 41009152,
+     "heap_in_use": 10773328,
+     "heap_free": 2927792,
+     "heap_arena": 13701120,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39313408,
+     "rss_anon": 39313408,
+     "heap_in_use": 10773328,
+     "heap_free": 2796720,
+     "heap_arena": 13570048,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 105943040,
+   "anon_peak": 93671424,
+   "p50_ms": 24.600559,
+   "cpu_seconds": 0.26993012500000013,
+   "retention": {
+    "immediate": {
+     "cg_anon": 105943040,
+     "rss_anon": 105943040,
+     "heap_in_use": 69405744,
+     "heap_free": 9409488,
+     "heap_arena": 78815232,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41095168,
+     "rss_anon": 41095168,
+     "heap_in_use": 10782448,
+     "heap_free": 3053840,
+     "heap_arena": 13836288,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39444480,
+     "rss_anon": 39444480,
+     "heap_in_use": 10782448,
+     "heap_free": 2922768,
+     "heap_arena": 13705216,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40648704,
+   "anon_peak": 40857600,
+   "p50_ms": 1.69927,
+   "cpu_seconds": 0.10934474599999999,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42762240,
+   "anon_peak": 42389504,
+   "p50_ms": 6.830783,
+   "cpu_seconds": 0.11387655700000004,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 41492480,
+   "anon_peak": 41783296,
+   "p50_ms": 17.688468,
+   "cpu_seconds": 0.135557928,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 63590400,
+   "anon_peak": 71770112,
+   "p50_ms": 2.723896,
+   "cpu_seconds": 0.26456680900000007,
+   "retention": {
+    "immediate": {
+     "cg_anon": 63590400,
+     "rss_anon": 63590400,
+     "heap_in_use": 32569712,
+     "heap_free": 3896976,
+     "heap_arena": 36466688,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41328640,
+     "rss_anon": 41328640,
+     "heap_in_use": 10758416,
+     "heap_free": 3315440,
+     "heap_arena": 14073856,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39235584,
+     "rss_anon": 39235584,
+     "heap_in_use": 10758416,
+     "heap_free": 3184368,
+     "heap_arena": 13942784,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 71659520,
+   "anon_peak": 85721088,
+   "p50_ms": 12.828808,
+   "cpu_seconds": 0.2749722939999999,
+   "retention": {
+    "immediate": {
+     "cg_anon": 71659520,
+     "rss_anon": 71659520,
+     "heap_in_use": 36673072,
+     "heap_free": 7834064,
+     "heap_arena": 44507136,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41353216,
+     "rss_anon": 41353216,
+     "heap_in_use": 10770496,
+     "heap_free": 3299264,
+     "heap_arena": 14069760,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39247872,
+     "rss_anon": 39247872,
+     "heap_in_use": 10770496,
+     "heap_free": 3168192,
+     "heap_arena": 13938688,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 102395904,
+   "anon_peak": 88555520,
+   "p50_ms": 25.674138,
+   "cpu_seconds": 0.281171861,
+   "retention": {
+    "immediate": {
+     "cg_anon": 102395904,
+     "rss_anon": 102395904,
+     "heap_in_use": 65309168,
+     "heap_free": 9893392,
+     "heap_arena": 75202560,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41394176,
+     "rss_anon": 41394176,
+     "heap_in_use": 10776096,
+     "heap_free": 3293664,
+     "heap_arena": 14069760,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39301120,
+     "rss_anon": 39301120,
+     "heap_in_use": 10776096,
+     "heap_free": 3162592,
+     "heap_arena": 13938688,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40144896,
+   "anon_peak": 40869888,
+   "p50_ms": 1.755896,
+   "cpu_seconds": 0.11208195800000004,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 41955328,
+   "anon_peak": 41955328,
+   "p50_ms": 6.511892,
+   "cpu_seconds": 0.10851734200000002,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 43212800,
+   "anon_peak": 42090496,
+   "p50_ms": 17.47198,
+   "cpu_seconds": 0.13598884299999991,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 60829696,
+   "anon_peak": 70369280,
+   "p50_ms": 2.771511,
+   "cpu_seconds": 0.27017129100000004,
+   "retention": {
+    "immediate": {
+     "cg_anon": 60829696,
+     "rss_anon": 60829696,
+     "heap_in_use": 29833136,
+     "heap_free": 3868752,
+     "heap_arena": 33701888,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41029632,
+     "rss_anon": 41029632,
+     "heap_in_use": 10748656,
+     "heap_free": 3022096,
+     "heap_arena": 13770752,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39235584,
+     "rss_anon": 39235584,
+     "heap_in_use": 10748656,
+     "heap_free": 2891024,
+     "heap_arena": 13639680,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 71512064,
+   "anon_peak": 88240128,
+   "p50_ms": 12.141109,
+   "cpu_seconds": 0.263301378,
+   "retention": {
+    "immediate": {
+     "cg_anon": 71512064,
+     "rss_anon": 71512064,
+     "heap_in_use": 36665792,
+     "heap_free": 7702080,
+     "heap_arena": 44367872,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41041920,
+     "rss_anon": 41041920,
+     "heap_in_use": 10762672,
+     "heap_free": 3003984,
+     "heap_arena": 13766656,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39264256,
+     "rss_anon": 39264256,
+     "heap_in_use": 10762672,
+     "heap_free": 2872912,
+     "heap_arena": 13635584,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 98353152,
+   "anon_peak": 91930624,
+   "p50_ms": 24.857407,
+   "cpu_seconds": 0.26750233499999987,
+   "retention": {
+    "immediate": {
+     "cg_anon": 98353152,
+     "rss_anon": 98353152,
+     "heap_in_use": 62571616,
+     "heap_free": 8584096,
+     "heap_arena": 71155712,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41095168,
+     "rss_anon": 41095168,
+     "heap_in_use": 10765360,
+     "heap_free": 3001296,
+     "heap_arena": 13766656,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39350272,
+     "rss_anon": 39350272,
+     "heap_in_use": 10765360,
+     "heap_free": 2870224,
+     "heap_arena": 13635584,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40222720,
+   "anon_peak": 40980480,
+   "p50_ms": 1.714225,
+   "cpu_seconds": 0.10889860200000001,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 41934848,
+   "anon_peak": 41754624,
+   "p50_ms": 6.701605,
+   "cpu_seconds": 0.11053352300000002,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 42303488,
+   "anon_peak": 41934848,
+   "p50_ms": 17.750532,
+   "cpu_seconds": 0.138230968,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 61050880,
+   "anon_peak": 70590464,
+   "p50_ms": 2.741731,
+   "cpu_seconds": 0.26565385099999994,
+   "retention": {
+    "immediate": {
+     "cg_anon": 61050880,
+     "rss_anon": 61050880,
+     "heap_in_use": 29834112,
+     "heap_free": 4076672,
+     "heap_arena": 33910784,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42102784,
+     "rss_anon": 42102784,
+     "heap_in_use": 10749600,
+     "heap_free": 4082016,
+     "heap_arena": 14831616,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39292928,
+     "rss_anon": 39292928,
+     "heap_in_use": 10749600,
+     "heap_free": 3950944,
+     "heap_arena": 14700544,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 71725056,
+   "anon_peak": 85401600,
+   "p50_ms": 12.896252,
+   "cpu_seconds": 0.28057548200000015,
+   "retention": {
+    "immediate": {
+     "cg_anon": 71725056,
+     "rss_anon": 71725056,
+     "heap_in_use": 36665072,
+     "heap_free": 7923984,
+     "heap_arena": 44589056,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41910272,
+     "rss_anon": 41910272,
+     "heap_in_use": 10761952,
+     "heap_free": 3881248,
+     "heap_arena": 14643200,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39280640,
+     "rss_anon": 39284736,
+     "heap_in_use": 10761952,
+     "heap_free": 3750176,
+     "heap_arena": 14512128,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 106459136,
+   "anon_peak": 87224320,
+   "p50_ms": 26.0649,
+   "cpu_seconds": 0.28478638200000006,
+   "retention": {
+    "immediate": {
+     "cg_anon": 106459136,
+     "rss_anon": 106459136,
+     "heap_in_use": 69396544,
+     "heap_free": 9938880,
+     "heap_arena": 79335424,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42033152,
+     "rss_anon": 42033152,
+     "heap_in_use": 10773248,
+     "heap_free": 4005120,
+     "heap_arena": 14778368,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39383040,
+     "rss_anon": 39383040,
+     "heap_in_use": 10773248,
+     "heap_free": 3874048,
+     "heap_arena": 14647296,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40714240,
+   "anon_peak": 40980480,
+   "p50_ms": 1.723542,
+   "cpu_seconds": 0.10865427,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42942464,
+   "anon_peak": 41701376,
+   "p50_ms": 6.875963,
+   "cpu_seconds": 0.11620778200000004,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 42033152,
+   "anon_peak": 42942464,
+   "p50_ms": 16.78389,
+   "cpu_seconds": 0.13548929799999998,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 65081344,
+   "anon_peak": 67809280,
+   "p50_ms": 2.77376,
+   "cpu_seconds": 0.268470533,
+   "retention": {
+    "immediate": {
+     "cg_anon": 65081344,
+     "rss_anon": 65081344,
+     "heap_in_use": 33931200,
+     "heap_free": 4005952,
+     "heap_arena": 37937152,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 43409408,
+     "rss_anon": 43409408,
+     "heap_in_use": 10756480,
+     "heap_free": 5377664,
+     "heap_arena": 16134144,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39280640,
+     "rss_anon": 39280640,
+     "heap_in_use": 10756480,
+     "heap_free": 3882624,
+     "heap_arena": 14639104,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 73940992,
+   "anon_peak": 80732160,
+   "p50_ms": 13.251919,
+   "cpu_seconds": 0.29307823200000005,
+   "retention": {
+    "immediate": {
+     "cg_anon": 73940992,
+     "rss_anon": 73940992,
+     "heap_in_use": 39396576,
+     "heap_free": 7404320,
+     "heap_arena": 46800896,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42041344,
+     "rss_anon": 42041344,
+     "heap_in_use": 10767712,
+     "heap_free": 4002464,
+     "heap_arena": 14770176,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39256064,
+     "rss_anon": 39256064,
+     "heap_in_use": 10767712,
+     "heap_free": 3871392,
+     "heap_arena": 14639104,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 103620608,
+   "anon_peak": 86790144,
+   "p50_ms": 26.438309,
+   "cpu_seconds": 0.28717543199999995,
+   "retention": {
+    "immediate": {
+     "cg_anon": 103620608,
+     "rss_anon": 103620608,
+     "heap_in_use": 66674336,
+     "heap_free": 9773408,
+     "heap_arena": 76447744,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42074112,
+     "rss_anon": 42074112,
+     "heap_in_use": 10777856,
+     "heap_free": 3992320,
+     "heap_arena": 14770176,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39383040,
+     "rss_anon": 39383040,
+     "heap_in_use": 10777856,
+     "heap_free": 3861248,
+     "heap_arena": 14639104,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 3,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40632320,
+   "anon_peak": 41107456,
+   "p50_ms": 1.718494,
+   "cpu_seconds": 0.10763092299999999,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 3,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42590208,
+   "anon_peak": 41652224,
+   "p50_ms": 6.64975,
+   "cpu_seconds": 0.11066774500000004,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 3,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 42905600,
+   "anon_peak": 42889216,
+   "p50_ms": 16.945396,
+   "cpu_seconds": 0.1303631879999999,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 3,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 69795840,
+   "anon_peak": 67067904,
+   "p50_ms": 2.679712,
+   "cpu_seconds": 0.25936831799999993,
+   "retention": {
+    "immediate": {
+     "cg_anon": 69795840,
+     "rss_anon": 69795840,
+     "heap_in_use": 38023680,
+     "heap_free": 4623872,
+     "heap_arena": 42647552,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42668032,
+     "rss_anon": 42668032,
+     "heap_in_use": 10758752,
+     "heap_free": 4629920,
+     "heap_arena": 15388672,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39272448,
+     "rss_anon": 39272448,
+     "heap_in_use": 10758752,
+     "heap_free": 4498848,
+     "heap_arena": 15257600,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 3,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 72376320,
+   "anon_peak": 84815872,
+   "p50_ms": 12.794302,
+   "cpu_seconds": 0.278325465,
+   "retention": {
+    "immediate": {
+     "cg_anon": 72376320,
+     "rss_anon": 72376320,
+     "heap_in_use": 38038176,
+     "heap_free": 7177568,
+     "heap_arena": 45215744,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42672128,
+     "rss_anon": 42672128,
+     "heap_in_use": 10772192,
+     "heap_free": 4608288,
+     "heap_arena": 15380480,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39276544,
+     "rss_anon": 39276544,
+     "heap_in_use": 10772192,
+     "heap_free": 4477216,
+     "heap_arena": 15249408,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 3,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 99819520,
+   "anon_peak": 86925312,
+   "p50_ms": 25.879607,
+   "cpu_seconds": 0.27957786100000015,
+   "retention": {
+    "immediate": {
+     "cg_anon": 99819520,
+     "rss_anon": 99819520,
+     "heap_in_use": 63952128,
+     "heap_free": 8801024,
+     "heap_arena": 72753152,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42704896,
+     "rss_anon": 42704896,
+     "heap_in_use": 10782464,
+     "heap_free": 4724992,
+     "heap_arena": 15507456,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39415808,
+     "rss_anon": 39415808,
+     "heap_in_use": 10782464,
+     "heap_free": 4593920,
+     "heap_arena": 15376384,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 3,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40210432,
+   "anon_peak": 40968192,
+   "p50_ms": 1.752305,
+   "cpu_seconds": 0.11208183299999996,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 3,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42164224,
+   "anon_peak": 41611264,
+   "p50_ms": 6.442969,
+   "cpu_seconds": 0.10896050200000001,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 3,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 42860544,
+   "anon_peak": 42164224,
+   "p50_ms": 17.491616,
+   "cpu_seconds": 0.13532104300000003,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 3,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 61116416,
+   "anon_peak": 70656000,
+   "p50_ms": 2.720239,
+   "cpu_seconds": 0.266149623,
+   "retention": {
+    "immediate": {
+     "cg_anon": 61116416,
+     "rss_anon": 61116416,
+     "heap_in_use": 29833584,
+     "heap_free": 4171408,
+     "heap_arena": 34004992,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42168320,
+     "rss_anon": 42168320,
+     "heap_in_use": 10749136,
+     "heap_free": 4176688,
+     "heap_arena": 14925824,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39235584,
+     "rss_anon": 39235584,
+     "heap_in_use": 10749136,
+     "heap_free": 4045616,
+     "heap_arena": 14794752,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 3,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 76812288,
+   "anon_peak": 81358848,
+   "p50_ms": 12.68483,
+   "cpu_seconds": 0.269659616,
+   "retention": {
+    "immediate": {
+     "cg_anon": 76812288,
+     "rss_anon": 76812288,
+     "heap_in_use": 42117184,
+     "heap_free": 7530432,
+     "heap_arena": 49647616,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41152512,
+     "rss_anon": 41152512,
+     "heap_in_use": 10762064,
+     "heap_free": 3094704,
+     "heap_arena": 13856768,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39247872,
+     "rss_anon": 39251968,
+     "heap_in_use": 10762064,
+     "heap_free": 2963632,
+     "heap_arena": 13725696,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 3,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 98082816,
+   "anon_peak": 89882624,
+   "p50_ms": 25.331841,
+   "cpu_seconds": 0.275820411,
+   "retention": {
+    "immediate": {
+     "cg_anon": 98082816,
+     "rss_anon": 98082816,
+     "heap_in_use": 61216032,
+     "heap_free": 9726688,
+     "heap_arena": 70942720,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41263104,
+     "rss_anon": 41263104,
+     "heap_in_use": 10773744,
+     "heap_free": 3218192,
+     "heap_arena": 13991936,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39399424,
+     "rss_anon": 39399424,
+     "heap_in_use": 10773744,
+     "heap_free": 3087120,
+     "heap_arena": 13860864,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 4,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 39944192,
+   "anon_peak": 40951808,
+   "p50_ms": 1.732372,
+   "cpu_seconds": 0.11038769100000001,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 4,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42090496,
+   "anon_peak": 41852928,
+   "p50_ms": 6.449218,
+   "cpu_seconds": 0.10606364300000004,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 4,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 43061248,
+   "anon_peak": 42299392,
+   "p50_ms": 16.791785,
+   "cpu_seconds": 0.13703040100000008,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 4,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 59158528,
+   "anon_peak": 72790016,
+   "p50_ms": 2.681754,
+   "cpu_seconds": 0.26024908700000005,
+   "retention": {
+    "immediate": {
+     "cg_anon": 59158528,
+     "rss_anon": 59158528,
+     "heap_in_use": 27106768,
+     "heap_free": 4940336,
+     "heap_arena": 32047104,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42938368,
+     "rss_anon": 42938368,
+     "heap_in_use": 10749136,
+     "heap_free": 4946736,
+     "heap_arena": 15695872,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39194624,
+     "rss_anon": 39198720,
+     "heap_in_use": 10749136,
+     "heap_free": 4815664,
+     "heap_arena": 15564800,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 4,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 74113024,
+   "anon_peak": 86626304,
+   "p50_ms": 12.895967,
+   "cpu_seconds": 0.279125995,
+   "retention": {
+    "immediate": {
+     "cg_anon": 74113024,
+     "rss_anon": 74113024,
+     "heap_in_use": 39389552,
+     "heap_free": 7595664,
+     "heap_arena": 46985216,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42131456,
+     "rss_anon": 42131456,
+     "heap_in_use": 10760144,
+     "heap_free": 4112432,
+     "heap_arena": 14872576,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39211008,
+     "rss_anon": 39211008,
+     "heap_in_use": 10760144,
+     "heap_free": 3981360,
+     "heap_arena": 14741504,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 4,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 98357248,
+   "anon_peak": 94269440,
+   "p50_ms": 25.80366,
+   "cpu_seconds": 0.292466447,
+   "retention": {
+    "immediate": {
+     "cg_anon": 98357248,
+     "rss_anon": 98357248,
+     "heap_in_use": 61215632,
+     "heap_free": 10034288,
+     "heap_arena": 71249920,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42246144,
+     "rss_anon": 42246144,
+     "heap_in_use": 10772800,
+     "heap_free": 4234944,
+     "heap_arena": 15007744,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39350272,
+     "rss_anon": 39350272,
+     "heap_in_use": 10772800,
+     "heap_free": 4103872,
+     "heap_arena": 14876672,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 4,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40488960,
+   "anon_peak": 40624128,
+   "p50_ms": 1.745442,
+   "cpu_seconds": 0.11214508299999998,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 4,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42680320,
+   "anon_peak": 41934848,
+   "p50_ms": 6.738931,
+   "cpu_seconds": 0.11298048099999997,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 4,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 41947136,
+   "anon_peak": 41988096,
+   "p50_ms": 17.461852,
+   "cpu_seconds": 0.133885123,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 4,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 63565824,
+   "anon_peak": 74469376,
+   "p50_ms": 2.686078,
+   "cpu_seconds": 0.26065393300000006,
+   "retention": {
+    "immediate": {
+     "cg_anon": 63565824,
+     "rss_anon": 63565824,
+     "heap_in_use": 32566512,
+     "heap_free": 3871504,
+     "heap_arena": 36438016,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41369600,
+     "rss_anon": 41369600,
+     "heap_in_use": 10755216,
+     "heap_free": 3355504,
+     "heap_arena": 14110720,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39235584,
+     "rss_anon": 39235584,
+     "heap_in_use": 10755216,
+     "heap_free": 3224432,
+     "heap_arena": 13979648,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 4,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 85422080,
+   "anon_peak": 82862080,
+   "p50_ms": 12.344616,
+   "cpu_seconds": 0.2682759250000002,
+   "retention": {
+    "immediate": {
+     "cg_anon": 85422080,
+     "rss_anon": 85422080,
+     "heap_in_use": 50307984,
+     "heap_free": 7961712,
+     "heap_arena": 58269696,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41390080,
+     "rss_anon": 41390080,
+     "heap_in_use": 10772400,
+     "heap_free": 3334224,
+     "heap_arena": 14106624,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39219200,
+     "rss_anon": 39219200,
+     "heap_in_use": 10772400,
+     "heap_free": 3203152,
+     "heap_arena": 13975552,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 4,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 101507072,
+   "anon_peak": 85721088,
+   "p50_ms": 25.582985,
+   "cpu_seconds": 0.2824366599999999,
+   "retention": {
+    "immediate": {
+     "cg_anon": 101507072,
+     "rss_anon": 101507072,
+     "heap_in_use": 65315216,
+     "heap_free": 9121392,
+     "heap_arena": 74436608,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 41439232,
+     "rss_anon": 41439232,
+     "heap_in_use": 10782128,
+     "heap_free": 3455568,
+     "heap_arena": 14237696,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39313408,
+     "rss_anon": 39313408,
+     "heap_in_use": 10782128,
+     "heap_free": 3324496,
+     "heap_arena": 14106624,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 5,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40701952,
+   "anon_peak": 40935424,
+   "p50_ms": 1.74812,
+   "cpu_seconds": 0.111741698,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 5,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42418176,
+   "anon_peak": 41988096,
+   "p50_ms": 6.854873,
+   "cpu_seconds": 0.116953111,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 5,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 42790912,
+   "anon_peak": 42672128,
+   "p50_ms": 17.699862,
+   "cpu_seconds": 0.136330768,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 5,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 66883584,
+   "anon_peak": 73695232,
+   "p50_ms": 2.710027,
+   "cpu_seconds": 0.2649886899999999,
+   "retention": {
+    "immediate": {
+     "cg_anon": 66883584,
+     "rss_anon": 66883584,
+     "heap_in_use": 35296672,
+     "heap_free": 4455008,
+     "heap_arena": 39751680,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42483712,
+     "rss_anon": 42483712,
+     "heap_in_use": 10758544,
+     "heap_free": 4462192,
+     "heap_arena": 15220736,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39268352,
+     "rss_anon": 39268352,
+     "heap_in_use": 10758544,
+     "heap_free": 4331120,
+     "heap_arena": 15089664,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 5,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 74633216,
+   "anon_peak": 92418048,
+   "p50_ms": 12.230419,
+   "cpu_seconds": 0.2673302369999999,
+   "retention": {
+    "immediate": {
+     "cg_anon": 74633216,
+     "rss_anon": 74633216,
+     "heap_in_use": 39399664,
+     "heap_free": 8072976,
+     "heap_arena": 47472640,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42504192,
+     "rss_anon": 42504192,
+     "heap_in_use": 10770816,
+     "heap_free": 4441728,
+     "heap_arena": 15212544,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39276544,
+     "rss_anon": 39280640,
+     "heap_in_use": 10770816,
+     "heap_free": 4310656,
+     "heap_arena": 15081472,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 5,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 102944768,
+   "anon_peak": 88383488,
+   "p50_ms": 25.552201,
+   "cpu_seconds": 0.279816308,
+   "retention": {
+    "immediate": {
+     "cg_anon": 102944768,
+     "rss_anon": 102944768,
+     "heap_in_use": 65310448,
+     "heap_free": 10473744,
+     "heap_arena": 75784192,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42500096,
+     "rss_anon": 42500096,
+     "heap_in_use": 10777392,
+     "heap_free": 4431056,
+     "heap_arena": 15208448,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39362560,
+     "rss_anon": 39362560,
+     "heap_in_use": 10777392,
+     "heap_free": 4299984,
+     "heap_arena": 15077376,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 5,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40013824,
+   "anon_peak": 40910848,
+   "p50_ms": 1.726537,
+   "cpu_seconds": 0.11127834199999997,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 5,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42348544,
+   "anon_peak": 41750528,
+   "p50_ms": 6.765683,
+   "cpu_seconds": 0.11357707599999994,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 5,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 42328064,
+   "anon_peak": 42348544,
+   "p50_ms": 17.493702,
+   "cpu_seconds": 0.13461024499999996,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 5,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 62517248,
+   "anon_peak": 73420800,
+   "p50_ms": 2.682407,
+   "cpu_seconds": 0.2635384150000001,
+   "retention": {
+    "immediate": {
+     "cg_anon": 62517248,
+     "rss_anon": 62517248,
+     "heap_in_use": 31197296,
+     "heap_free": 4179856,
+     "heap_arena": 35377152,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42205184,
+     "rss_anon": 42205184,
+     "heap_in_use": 10749424,
+     "heap_free": 4184592,
+     "heap_arena": 14934016,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39276544,
+     "rss_anon": 39276544,
+     "heap_in_use": 10749424,
+     "heap_free": 4053520,
+     "heap_arena": 14802944,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 5,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 78069760,
+   "anon_peak": 78159872,
+   "p50_ms": 12.319378,
+   "cpu_seconds": 0.269903676,
+   "retention": {
+    "immediate": {
+     "cg_anon": 78069760,
+     "rss_anon": 78069760,
+     "heap_in_use": 43480432,
+     "heap_free": 7441040,
+     "heap_arena": 50921472,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42213376,
+     "rss_anon": 42213376,
+     "heap_in_use": 10761904,
+     "heap_free": 4172112,
+     "heap_arena": 14934016,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39268352,
+     "rss_anon": 39268352,
+     "heap_in_use": 10761904,
+     "heap_free": 4041040,
+     "heap_arena": 14802944,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 5,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 100593664,
+   "anon_peak": 86982656,
+   "p50_ms": 26.462968,
+   "cpu_seconds": 0.29021153099999997,
+   "retention": {
+    "immediate": {
+     "cg_anon": 100593664,
+     "rss_anon": 100593664,
+     "heap_in_use": 63933344,
+     "heap_free": 9450592,
+     "heap_arena": 73383936,
+     "mmapped": 1363968
+    },
+    "settled": {
+     "cg_anon": 42274816,
+     "rss_anon": 42274816,
+     "heap_in_use": 10763664,
+     "heap_free": 4170352,
+     "heap_arena": 14934016,
+     "mmapped": 1363968
+    },
+    "trimmed": {
+     "cg_anon": 39374848,
+     "rss_anon": 39374848,
+     "heap_in_use": 10763664,
+     "heap_free": 4039280,
+     "heap_arena": 14802944,
+     "mmapped": 1363968
+    }
+   }
+  }
+ ]
+}

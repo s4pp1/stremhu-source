@@ -1,0 +1,32 @@
+{
+ "id": "cr15b2-redirect-v1",
+ "registered_at_utc": "2026-11-07T18:33:25.494213+00:00",
+ "status": "Final packet 26b functional redirect-body gate; registered before any run (a 2-request wiring smoke preceded it).",
+ "change": "get_bounded follows redirects itself via Response.next_request, closes each redirect body unread, keeps history, max 10 hops.",
+ "before": "frozen 87dfeba server/app (CR15a + 26a; cr15b-after-v1 manifest)",
+ "after": "frozen b924db7 server/app (cr15b2-after-v1 manifest)",
+ "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+ "fixture_sha256": {
+  "redirect_server.py": "39abd92bca91af2cfff07da4046209023246730dcfcf458bb6613b4fe5cc1936",
+  "redirect_probe.py": "f881422b702a0ff800a071bf94a734bb57240eb613b51a0a9cc4308be248837d",
+  "metadata_sizes.py": "ae4df3ab93935cd8961f7efd36b5d8bd125c57d1a7d56d3858a9f0e5c896ed4c"
+ },
+ "controller_sha256": "7f92ea0a90a54317cdb6b611e4a781bc590b55591f8f02af50c65953e58d6096",
+ "runs": [
+  [
+   "before",
+   0
+  ],
+  [
+   "after",
+   0
+  ],
+  [
+   "after",
+   1
+  ]
+ ],
+ "workload": "download_torrent through a 302 (Location: /final) whose chunked body is 64 MiB; the final is one natively valid 1 GiB/1-file metadata-only torrent. 20 sequential requests, then 20 at concurrency 4; fresh client process per run.",
+ "resources": "client 2 CPU on 2,3 / 1 GiB; server 1 CPU on 4 / 512 MiB; internal network, no outbound; runs after G03 has finished.",
+ "decision": "PASS iff every run exits 0 without OOM and every request returns the same final hash; before reproduces the defect (every redirect body written completely, 64 MiB per request); in both after runs the server wrote at most 16 MiB of redirect body per request on average (socket buffers only) and no redirect body completed. Otherwise FAIL; missing runs INVALID."
+}

@@ -1,0 +1,3031 @@
+{
+  "status": "Prepared fixture only; NO native matrix case executed yet, no gate decision",
+  "cases": [
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 100,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 20,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 50,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 0,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 4,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 262144,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 1048576,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    }
+  ],
+  "fixture_sha256": "3fcd726312991660d97e8e5fdf11790bc64f10c95b4297afd40fc3a6cea21ead",
+  "scope": "Warm Range seek extension plus full case enumeration. Full cold/uncached seek coverage, noise cohorts, sequential rotatedABC and eventual candidate comparison still required. Runtime smoke must pass before measurements. No positiveG01 claim."
+}

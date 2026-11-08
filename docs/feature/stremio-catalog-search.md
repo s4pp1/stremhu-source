@@ -1,10 +1,46 @@
+---
+doc_id: "feature-stremio-catalog-search"
+title: "Fejlesztői Dokumentáció: feature/stremio-catalog-search"
+kind: "feature-reference"
+status: "historical-reference"
+audience: ["developer", "ai-agent"]
+tags: ["stremio", "catalog", "meta", "movie", "series", "search"]
+source_commit: null
+baseline: "8c99c7d"
+verification: "structure-only"
+structure_reviewed: "2026-11-03"
+related_docs: ["docs/feature/README.md", "docs/feature/search-filter-tmdb-tvdb.md"]
+source_paths: ["server/app/modules/stremio/catalogs_service.py", "server/app/modules/torrent_source_provider/service.py"]
+---
+
 # Fejlesztői Dokumentáció: `feature/stremio-catalog-search`
+
+<!-- doc-nav:start -->
+**Navigáció:** [Dokumentáció](../README.md) · [AI-index](../AI-INDEX.md)
+
+> **Státusz:** Korábbi feature technikai referenciája. A tartalom és a mérések nem kaptak most új runtime-verifikációt; aktuális működéshez kövesd a forráskódot.
+
+**Kapcsolódó:** [README.md](README.md) · [search-filter-tmdb-tvdb.md](search-filter-tmdb-tvdb.md)
+
+<details>
+<summary>Fejezetek / közvetlen ugrás</summary>
+
+- [1. A Branch Célja és Motivációja](#doc-1-a-branch-celja-es-motivacioja)
+- [2. Módosított és Új Fájlok Áttekintése (Diff Mátrix s4pp1/stremhu-source vs feature/stremio-catalog-search)](#doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix-s4pp1stremhu-source-vs-featurestremio-catalog-search)
+- [3. Architektúra és Működési Folyamatábrák](#doc-3-architektura-es-mukodesi-folyamatabrak)
+- [4. Tesztelési és Ellenőrzési Referencia](#doc-4-tesztelesi-es-ellenorzesi-referencia)
+
+</details>
+
+<!-- doc-nav:end -->
 
 > **Viszonyítási alap (Baseline):** Eredeti upstream [`s4pp1/stremhu-source`](https://github.com/s4pp1/stremhu-source) (`8c99c7d` commit).
 > Ez a dokumentum a `feature/stremio-catalog-search` branch által bevezetett közvetlen katalógus-keresési, kategória szerinti szétválasztási (Filmek vs Sorozatok), borítókép/IMDb integrációs és sorozat-epizódfelbontási fejlesztéseit részletezi.
 
 ---
 
+<!-- doc-anchor:doc-1-a-branch-celja-es-motivacioja -->
+<a id="doc-1-a-branch-celja-es-motivacioja"></a>
 ## 1. A Branch Célja és Motivációja
 
 Az eredeti upstream `s4pp1/stremhu-source` két keresési katalógust regisztrál a Stremio manifestben:
@@ -24,6 +60,8 @@ Ez a gyakorlatban azt jelentette, hogy:
 3. Sorozatok esetén hiányzott a torrenten belüli fájlok automatikus epizódlistává (`MetaVideo`) alakítása, így a Stremio UI nem tudott epizódválasztót renderelni közvetlen torrent metaadatokból.
 4. **Kategória-keveredés és fekete kártyák:** A kezdeti közvetlen keresés mindkét katalógusban azonos listát adott vissza (filmeknél sorozatok, sorozatoknál filmek jelentek meg), és hiányoztak a poszterek.
 
+<!-- doc-anchor:doc-a-megoldott-fejlesztesek -->
+<a id="doc-a-megoldott-fejlesztesek"></a>
 ### A megoldott fejlesztések:
 - **Közvetlen szabadszavas tracker keresés (`find_by_query`):** Bármilyen szöveges keresőkifejezésre azonnal lekéri a beállított indexerek (nCore, HunTorrent, stb.) találatait, seederek szerint csökkenő sorrendben.
 - **Kategória szerinti szétválasztás (Filmek vs Sorozatok):**
@@ -34,12 +72,15 @@ Ez a gyakorlatban azt jelentette, hogy:
 - **Automatikus sorozat- és epizódfelbontás (`MetaDetail.videos`):** A sorozatkiadásokban és évadpakkokban lévő videofájlokat a `SeriesParser` segítségével automatikusan felbontja évadokra és epizódokra (`S04E01`, `S04E02`, stb.).
 - **Fájlszintű közvetlen streaming (`file_index`):** A generált stream azonosító (`stremhu-source:{indexer_id}:{torrent_id}:{file_index}`) révén a Stremio epizódonként tudja elindítani a lejátszást évadcsomagokból is.
 - **Felhasználónkénti beállítás és UI kapcsoló (`enable_catalog_search`):**
-  - Ha a felhasználó nem szeretné, hogy a Stremio felső keresője a trackereket közvetlenül terhelje vagy külön torrent-katalógus sorokat rendereljen, a webes felületen (**Beállítások -> Preferenciák -> További preferenciák**) egyetlen kapcsolóval kikapcsolhatja.
-  - Kikapcsolt állapotban a dinamikus Stremio manifest (`/manifest.json`) teljesen elhagyja a `catalog` erőforrást és a keresési katalógusokat (`catalogs: []`), így a Stremio egyetlen felesleges keresési kérést sem küld.
+  - Ha a felhasználó nem szeretné, hogy a Stremio felső keresője a trackereket közvetlenül terhelje, a webes felületen (**Beállítások -> Preferenciák -> További preferenciák**) egyetlen kapcsolóval kikapcsolhatja.
+  - A manifest (`/manifest.json`) a kapcsolótól függetlenül **mindig** hirdeti a `catalog` erőforrást és a két keresési katalógust. A Stremio és a Nuvio a manifestet a telepítéskor tárolja, így a kapcsolótól függő manifest csak az addon újratelepítése után érvényesült (hibajelentés, 2026-11-08: kikapcsolt állapotban telepítve a később bekapcsolt keresést a Nuvio nem látta). A kapcsoló így újratelepítés nélkül, azonnal érvényes.
+  - Kikapcsolva a kliens a keresési kérést elküldheti, és a StremHU keresési sora üresen megjelenhet; a szerver ilyenkor trackerlekérdezés nélkül üres listát ad.
   - A backend végpontok (`/catalog/...`) védettek: közvetlen hívás esetén is azonnal üres listát (`metas: []`) adnak vissza felesleges tracker lekérdezések futtatása nélkül.
 
 ---
 
+<!-- doc-anchor:doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix-s4pp1stremhu-source-vs-featurestremio-catalog-search -->
+<a id="doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix-s4pp1stremhu-source-vs-featurestremio-catalog-search"></a>
 ## 2. Módosított és Új Fájlok Áttekintése (Diff Mátrix `s4pp1/stremhu-source` vs `feature/stremio-catalog-search`)
 
 | Fájl elérési útja | Státusz | Változtatás összefoglalása |
@@ -68,8 +109,12 @@ Ez a gyakorlatban azt jelentette, hogy:
 
 ---
 
+<!-- doc-anchor:doc-3-architektura-es-mukodesi-folyamatabrak -->
+<a id="doc-3-architektura-es-mukodesi-folyamatabrak"></a>
 ## 3. Architektúra és Működési Folyamatábrák
 
+<!-- doc-anchor:doc-31-kategoria-celzott-katalogus-kereses-es-boritokep-generalas -->
+<a id="doc-31-kategoria-celzott-katalogus-kereses-es-boritokep-generalas"></a>
 ### 3.1. Kategória-Célzott Katalógus Keresés és Borítókép Generálás
 
 ```mermaid
@@ -109,8 +154,12 @@ sequenceDiagram
 
 ---
 
+<!-- doc-anchor:doc-4-tesztelesi-es-ellenorzesi-referencia -->
+<a id="doc-4-tesztelesi-es-ellenorzesi-referencia"></a>
 ## 4. Tesztelési és Ellenőrzési Referencia
 
+<!-- doc-anchor:doc-41-unit-tesztek-es-linter-eredmenyek -->
+<a id="doc-41-unit-tesztek-es-linter-eredmenyek"></a>
 ### 4.1. Unit Tesztek és Linter Eredmények
 ```powershell
 $env:HOST_IP="<HOST_IP>"; $env:PYTHONIOENCODING="utf-8"; cd server; .venv\Scripts\python -m ruff check .; .venv\Scripts\basedpyright.exe; .venv\Scripts\python -m pytest tests
@@ -119,6 +168,8 @@ $env:HOST_IP="<HOST_IP>"; $env:PYTHONIOENCODING="utf-8"; cd server; .venv\Script
 - **Basedpyright:** `0 errors, 0 warnings, 0 notes`
 - **Pytest:** `223 passed, 64 snapshots passed in 2.42s` (beleértve a `test_catalog_disabled_for_user` és `test_manifest_catalog_gating` teszteket)
 
+<!-- doc-anchor:doc-42-elo-docker-desktop-verifikacio-stremhu-local-test -->
+<a id="doc-42-elo-docker-desktop-verifikacio-stremhu-local-test"></a>
 ### 4.2. Élő Docker Desktop Verifikáció (`stremhu-local-test`)
 - **Bekapcsolt állapotban (`enable_catalog_search = True`):**
   - **Manifest lekérés:**
@@ -138,6 +189,6 @@ $env:HOST_IP="<HOST_IP>"; $env:PYTHONIOENCODING="utf-8"; cd server; .venv\Script
     *Eredmény:* 14 db tiszta mozifilm találat (`Arsene.Lupin.2004...`, `Lupin.III.Cagliostro...`), mindegyikhez saját `imdbId` (`tt0373690`, `tt0079833`) és hivatalos borítókép.
 - **Kikapcsolt állapotban (`enable_catalog_search = False`):**
   - **Manifest lekérés:**
-    *Eredmény:* `resources: [stream, meta, subtitles]` (a `catalog` hiányzik), `catalogs: 0 db` (`[]`).
+    *Eredmény (2026-11-08 óta):* a manifest azonos a bekapcsolt állapotéval (`catalog` erőforrás, 2 keresési katalógus), hogy a kapcsoló újratelepítés nélkül működjön. *(Korábban a `catalog` hiányzott, ezért a később bekapcsolt keresést a kliensek nem látták.)*
   - **Katalógus végpont lekérés:**
     *Eredmény:* `metas: []` azonnali üres válasz tracker lekérdezések futtatása nélkül.

@@ -1,0 +1,17 @@
+{
+  "id": "cr17b-policy-after-composite-v6",
+  "registered_utc": "2026-11-05T19:07:49.303516+00:00",
+  "baseline_commit": "050cb33718353d16cbeeaca6ca41a0d9d7d45d6d",
+  "candidate_source": "cr17b-after-v4-source",
+  "candidate_manifest_sha256": "685da44bf9836f4c7a38d2440e885dce219aa1d29631a5556500ad197dc2cdc4",
+  "scope": "Packet20 immutable policy/filter/sort and in-flight-only policy reader Singleflight; SourceV4 checked48targeted,Ruff0,based0,626pytest/64snapshots. Provider/file UoW and provider integration remain21/22. OldSource3shortFAIL and Kodi139 preserved; no causal attribution without diagnosis.",
+  "sampling": "Freshpaired Source2before/Source4after: two5-run cohorts x12cells x100requests,alternating AB/BA each repetition;then5rotatedABC. TwoFULL1800s/60cycle Source4heap controls,preselectedSource2long0/1 baseline. Direct/Kodi same2x5C+5rotatedABC observations. Cold and warmup separate. No Source4runtime starts until both Source3full1800s runs finish.",
+  "acceptance": "Exact normalized payload/order/count and user/auth boundary,no new functionalerror class in covered policy paths; failedpreexistingprovider/filecells explicitlyexcludedfromtiming andremain21/22. SQL/request no increase on same cache state;normalprimary/direct p95 cohortmedian<=max(two beforecohortmedians)+10ms,CPU/request<=maxbeforemedian*1.10,overallfixedmemory<=maxbeforemedian+2MiB. No aggregate sub-budget addition. Profiled metrics same HTTP+10ms/CPU+10%/memory+2MiB,strictothermetrics fullbefore range+J,coldwall separatelybefore range+J; completequiescence/pool0/background0. No numericalspeedclaim required; positiveG17ownershiprepro is reasonforchange. Anyfailure staysopen,not retrospectively waived.",
+  "before": "Fresh paired short before is acceptedcleanupSource2; existing twoSource2long runs preselected0/1 retained. Existing direct/Kodi exactSource2 V4 baseline retained. Primary V5negatives remain immutable. No threshold changed fromV5.",
+  "resources": "Localdesktop-linux npipe,networknone,ROfrozenapp,tmpfssyntheticDB. Primaryshort/refs/direct/Kodi CPU8,9/1GiB serial. Two fullheap CPU6,7/1GiB sequential after Source3fullcompletion; no unrelated Dockerbenchmark until candidate controls finish.",
+  "controller_sha256": {
+    "cr17b_after_v6.py": "b74cb88e98198fc19036f976df8ad56d0b69d2613c53e08e1b7f2826f5e00954",
+    "cr17b_complementary_after_v6.py": "6b4324fbd512bda26a68648ed7938ba693a916f13c1b6ac9a2cc150c3cdec344",
+    "cr17b_kodi_after_v6.py": "c9f57c0f911068e6b8670f3a3b6d37dd842929fb6c664c953f62fa8753c01a76"
+  }
+}

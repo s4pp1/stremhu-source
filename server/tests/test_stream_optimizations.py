@@ -3,6 +3,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from app.modules.indexer_accounts.models import IndexerAccountModel
+from app.modules.indexer_accounts.schemas import IndexerAccountRef
 from app.modules.indexer_definitions.models import IndexerDefinitionModel
 from app.modules.media_attributes.models import MediaAttributeModel
 from app.modules.relay.entities import File
@@ -11,7 +12,7 @@ from app.modules.torrent_streams.schemas import TorrentStream
 from app.modules.torrent_streams.service import TorrentStreamsService
 
 
-def _create_mock_indexer(indexer_id: str, indexer_name: str) -> IndexerAccountModel:
+def _create_mock_indexer(indexer_id: str, indexer_name: str) -> IndexerAccountRef:
     definition = IndexerDefinitionModel(
         id=indexer_id,
         name=indexer_name,
@@ -24,7 +25,7 @@ def _create_mock_indexer(indexer_id: str, indexer_name: str) -> IndexerAccountMo
         password="teszt",
     )
     account.indexer_definition = definition
-    return account
+    return IndexerAccountRef.from_model(account)
 
 
 def test_deduplicate_torrent_streams_by_info_hash():

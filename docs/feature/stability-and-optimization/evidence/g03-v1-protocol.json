@@ -1,0 +1,90 @@
+{
+ "id": "g03-v1",
+ "registered_at_utc": "2026-11-07T15:39:14.394364+00:00",
+ "status": "Final G03 benefit/cost gate and decision rule; registered before any measured batch (only the n=5 fixture smoke ran).",
+ "question": "Does route-scoped gzip of Stremio JSON give a repeatable net benefit without LAN/CPU degradation beyond the plan 2.3 common gate?",
+ "source": "C image + frozen aaa9ee5 server/app overlay (g02-post-cr17-v2 manifest, re-verified by controller).",
+ "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+ "params": {
+  "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+  "profiles": [
+   "lan",
+   "wan50",
+   "wan10",
+   "mob2"
+  ],
+  "profile_params": {
+   "lan": {
+    "rate_Bps": 0,
+    "one_way_delay_ms": 0,
+    "note": "direct Docker internal network, no shaper"
+   },
+   "wan50": {
+    "rate_Bps": 6250000,
+    "one_way_delay_ms": 10,
+    "note": "50 Mbit/s shared, 20 ms RTT"
+   },
+   "wan10": {
+    "rate_Bps": 1250000,
+    "one_way_delay_ms": 20,
+    "note": "10 Mbit/s shared, 40 ms RTT"
+   },
+   "mob2": {
+    "rate_Bps": 250000,
+    "one_way_delay_ms": 40,
+    "note": "2 Mbit/s shared, 80 ms RTT"
+   }
+  },
+  "payloads": [
+   "streams/0",
+   "streams/1",
+   "streams/10",
+   "streams/40",
+   "streams/200",
+   "meta",
+   "catalog/200"
+  ],
+  "variants": [
+   "identity-a",
+   "identity-b",
+   "gzip1",
+   "gzip4",
+   "gzip6"
+  ],
+  "modes": [
+   "c1",
+   "c4",
+   "c8",
+   "fresh"
+  ],
+  "n_keepalive": 100,
+  "n_fresh": 100,
+  "warmup": 3,
+  "repetitions": 5,
+  "cpusets": {
+   "client": "2,3",
+   "server": "4",
+   "shaper": "5"
+  }
+ },
+ "fixture_sha256": {
+  "server.py": "a3793c7078e8bdc6c1cb8d178c6d72a27555b4133ed3eec2d64a8df5248b87c9",
+  "shaper.py": "c960bf03f1ae8f387b267bf80ab4ca331c9370a7e0c83bd30974394010a5c2cf",
+  "client.py": "9e2b5f8920071d02a281fbb652eafea56db244c6601803120427c4ce1f2797b4",
+  "params.json": "8055d841860af70cb1e6330810a0210a7800dca23e1c4edc81102bbc220e8d37"
+ },
+ "controller_sha256": "6c73c2b5c3dd2699c70fd4760cd5561421d3c8d32fba1b8eecec4166c54a0901",
+ "assessor_sha256": "e7ed8c2a2b8701c63ed0428150d899d2979cfb2d2a7539d72dde18ec62a49ce4",
+ "workload": "Real StremioStreams/MetaResponse/StremioCatalogResponse models via FastAPI response_model under Hypercorn run() defaults; payloads streams 0/1/10/40/200 (40 = normal max path, 200 = stress), series meta with 50 videos, catalog 200 (stress). Upstream cost stubbed constant (prebuilt seeded instances); serialization per request real. Accept-Encoding: gzip on every request.",
+ "variants": "identity-a and identity-b (noise baseline, same process, interleaved), gzip1/4/6 = Starlette GZipMiddleware minimum_size=1.",
+ "thresholds": "Candidate thresholds 1/2/4/8 KiB are derived: payloads below T stay identity (identity cells), payloads >= T use gzip cells.",
+ "profiles": "lan = direct Docker internal network; wan50/wan10/mob2 = shared-bottleneck relay (50/10/2 Mbit/s, 20/40/80 ms RTT). Limit: the relay delays data, not the TCP handshake, so fresh-connection cells do not include handshake RTT (identical for all variants).",
+ "sampling": "5 repetitions; per repetition one fresh server per profile; profile order rotated by repetition; variant order rotated by repetition+payload; modes c1/c4/c8 keep-alive and fresh (new connection per request, c1); 100 measured requests per cell after separate warmup.",
+ "resources": "client 2 CPU on 2,3 / 1 GiB; server 1 CPU on 4 / 512 MiB; relay 1 CPU on 5 / 256 MiB; internal network, no host ports, no outbound, no real credentials.",
+ "concurrency_note": "Runs alongside G02 (CPU 0,1, until ~17:00) and G04 (CPU 12-14) on disjoint cpusets; shared host may add noise, absorbed by identity-a/b J and range.",
+ "metrics": "total p50/p95/p99, ttfb p95, server process CPU per request (/__stats process_time delta), wire bytes, client decode time (outside timed window), decoded sha256.",
+ "correctness": "All 200; identity without Content-Encoding; gzip with Content-Encoding gzip and Vary Accept-Encoding; one decoded sha256 per payload across all variants/repetitions; same server pid per cell; all batches and full row counts. Any failure => INVALID.",
+ "decision": "Strict plan 2.3 common gate (no CPU/UX budget was designated in writing before measurement). Benefit = median < identity range min - J and >= 2 repetitions below. Repeatable degradation = median > identity range max + J and >= 2 repetitions above. (level, threshold) eligible at a profile iff streams/40 compressed and benefits in all modes at that profile, >= 30 % byte reduction for compressed payloads >= 16 KiB, and no compressed payload shows repeatable degradation of total p95, ttfb p95 or server CPU/request at any profile (LAN included). PASS_CANDIDATE if any profile has an eligible pair (lowest streams/40 c1 p95 chosen); else REJECT_UNDER_COMMON_GATE. Either way the full trade-off table is published; a later budget-based adoption would be a user product decision, not this gate passing.",
+ "not_covered": "Starlette 1.10.0 GZipMiddleware ignores q=0 (g03-api-preparation): even a PASS_CANDIDATE cannot be implemented with it as-is. Per-variant server memory is not separable (one process serves all variants); process RSS/maxRSS reported only. TLS not covered (packet 24).",
+ "validation_before_registration": "Assessor run on duplicated smoke data: REJECT_UNDER_COMMON_GATE; with LAN cost and CPU/ttfb artificially neutralized: PASS_CANDIDATE at mob2. Smoke: 0 correctness problems, one decoded sha per payload."
+}

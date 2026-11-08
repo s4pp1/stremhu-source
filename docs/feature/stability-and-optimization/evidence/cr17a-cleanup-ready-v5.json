@@ -1,0 +1,29 @@
+{
+  "status": "Accepted/tested cleanup milestone READY;commit/push pending",
+  "baseline_head": "c41eefadf7e91bfeba5cc960b74e7954c2d4a7fe",
+  "tested_server_tree": "74931ad1a5a0404004ef8a993c9cb6cae2288186",
+  "tested_source": "cr17a-drain-fix-v2-source",
+  "tested_python_files": 328,
+  "code_delta": [
+    "server/app/common/async_utils.py",
+    "server/tests/test_background_drain.py"
+  ],
+  "mandatory_checks": {
+    "source": "cr17a-drain-fix-v2-source",
+    "baseline_head": "c41eefadf7e91bfeba5cc960b74e7954c2d4a7fe",
+    "checked_utc": "2026-11-05T17:37:22.6205466Z",
+    "protected_configuration_loaded": false,
+    "ruff_exit": 0,
+    "basedpyright_exit": 0,
+    "pytest_exit": 0,
+    "pytest_summary": [
+      "64 snapshots passed.",
+      "====================== 604 passed, 20 warnings in 37.75s ======================"
+    ],
+    "status": "PASS"
+  },
+  "acceptance_assessment": "cr17a-drain-final-assessment-v5.json",
+  "acceptance_raw_sha256": "02b958f54a363e9aa804af2472ef950034f90c0217472ebf823291c3777662b2",
+  "acceptance_scope": "FreshuserapprovedcoldV5 plus retained93otheroriginalmetrics,normalHTTP/native/lifecycle; earlierV1/V2/V3failures preserved. Source20policydraft NOT part of this code tree.",
+  "rollback": "Removing these four common lines restores the reproduced starvation; isolate a faulty release rather than claim the old drain is fixed. No schema/API/TLS-default change in this followup."
+}

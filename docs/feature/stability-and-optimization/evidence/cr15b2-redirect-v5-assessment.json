@@ -1,0 +1,167 @@
+{
+ "status": "PASS",
+ "problems": [],
+ "checks": {
+  "giant_subdomain_success_same_hash": true,
+  "subdomain_used": true,
+  "before_reads_redirect_bodies": true,
+  "before_follows_foreign": true,
+  "after_does_not_read": true,
+  "after_blocks_foreign": true,
+  "no_outbound": true
+ },
+ "summary": {
+  "before-0": [
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 64.0,
+    "anon_peak_delta_mib": 982.3984375
+   },
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 4,
+    "redirect_mib_per_request": 64.0,
+    "anon_peak_delta_mib": 884.2578125
+   },
+   {
+    "case": "subdomain",
+    "successes": 10,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 10,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0
+   },
+   {
+    "case": "foreign",
+    "successes": 10,
+    "final_by_host": {
+     "cdn.other.invalid": 10,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.046875
+   }
+  ],
+  "after-0": [
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.65625,
+    "anon_peak_delta_mib": 0.7578125
+   },
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 4,
+    "redirect_mib_per_request": 3.26875,
+    "anon_peak_delta_mib": 3.58984375
+   },
+   {
+    "case": "subdomain",
+    "successes": 10,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 10,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0
+   },
+   {
+    "case": "foreign",
+    "successes": 0,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0703125
+   }
+  ],
+  "after-1": [
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.590625,
+    "anon_peak_delta_mib": 0.75390625
+   },
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 4,
+    "redirect_mib_per_request": 3.765625,
+    "anon_peak_delta_mib": 3.34765625
+   },
+   {
+    "case": "subdomain",
+    "successes": 10,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 10,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0
+   },
+   {
+    "case": "foreign",
+    "successes": 0,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0
+   }
+  ]
+ },
+ "protocol_sha256": "9b7aaf5b807ddb69cfaf74e89565e8f3638b11d00d0e8dca605fa23aae26a0b6",
+ "assessor_sha256": "536519d6f7c429ca66bea5f350c0aca776087f3d805f519a32ae77fc06ea7e28"
+}

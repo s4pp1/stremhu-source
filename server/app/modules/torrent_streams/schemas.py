@@ -6,14 +6,13 @@ from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
 from app.common.schemas.internal import SeriesInfo
-from app.modules.indexer_accounts.models import IndexerAccountModel
-from app.modules.indexer_definitions.models import IndexerDefinitionModel
+from app.modules.indexer_accounts.schemas import IndexerAccountRef, IndexerDefinitionRef
 from app.modules.indexers.schemas.internal import IndexerTorrent
 from app.modules.media_attributes.models import MediaAttributeModel
 from app.modules.media_attributes.parser import parse_torrent_name
 from app.modules.stream.schemas import StreamToken
 from app.modules.stream.utils.stream_token import generate_stream_token
-from app.modules.torrent_files.models import TorrentFileModel
+from app.modules.torrent_files.schemas import TorrentFileSnapshot
 from app.modules.torrent_streams.utils.resolver_helpers import (
     detect_subtitle_language,
     is_sample_or_trash,
@@ -45,7 +44,7 @@ class TorrentStream(BaseModel):
         arbitrary_types_allowed=True,
     )
 
-    indexer_account: IndexerAccountModel
+    indexer_account: IndexerAccountRef
     torrent_id: str
     info_hash: str
     torrent_name: str
@@ -54,7 +53,7 @@ class TorrentStream(BaseModel):
     file_index: int
     play_url: str
     seeders: int | None = None
-    attributes: list[MediaAttributeModel | IndexerDefinitionModel] = []
+    attributes: list[MediaAttributeModel | IndexerDefinitionRef] = []
     subtitles: list[TorrentStreamSubtitle] | None = None
     has_hungarian_sub: bool = False
     is_persisted_torrent: bool = False
@@ -65,7 +64,7 @@ class TorrentStream(BaseModel):
     def from_torrent_id(
         cls,
         indexer_torrent: IndexerTorrent,
-        torrent_file: TorrentFileModel,
+        torrent_file: TorrentFileSnapshot,
         app_url: str,
         user: UserModel,
         file_index: int | None = None,
@@ -204,7 +203,7 @@ class TorrentStream(BaseModel):
     def from_imdb_id(
         cls,
         indexer_torrent: IndexerTorrent,
-        torrent_file: TorrentFileModel,
+        torrent_file: TorrentFileSnapshot,
         app_url: str,
         user: UserModel,
         series: SeriesInfo | None = None,

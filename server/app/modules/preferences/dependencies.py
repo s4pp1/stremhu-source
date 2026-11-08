@@ -16,6 +16,6 @@ def create_preferences_service(
 
 
 def get_preferences_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> PreferencesService:
     return create_preferences_service(db)

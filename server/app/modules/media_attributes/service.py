@@ -1,5 +1,6 @@
 import pydash
 
+from app.common.commit_actions import mark_stream_cache_dirty
 from app.common.logger import logger
 from app.modules.media_attributes.models import MediaAttributeModel
 from app.modules.media_attributes.repository import MediaAttributesRepository
@@ -73,3 +74,5 @@ class MediaAttributesService:
                     show_in_details=code_attribute.show_in_details,
                 )
                 self._repository.add(new_attribute)
+
+        mark_stream_cache_dirty(self._repository.db)

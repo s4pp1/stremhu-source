@@ -1,0 +1,67 @@
+{
+  "status": "Preliminary library incompatibility, not a completed performance gate or performance rejection. Production gzip unchanged.",
+  "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+  "probe": {
+    "fixture": "g03-public-middleware-encoding-gate-v1",
+    "starlette": "1.10.0",
+    "rows": [
+      {
+        "accept_encoding": "identity",
+        "status": 200,
+        "encoding": "identity",
+        "wire_bytes": 4016,
+        "decoded_sha256": "e9f961222c3e93c14f37083977722988a4ce1fc15e2b071c4f884ea7af1f453b",
+        "vary": "Accept-Encoding",
+        "forbidden_gzip_sent": false
+      },
+      {
+        "accept_encoding": "gzip",
+        "status": 200,
+        "encoding": "gzip",
+        "wire_bytes": 100,
+        "decoded_sha256": "e9f961222c3e93c14f37083977722988a4ce1fc15e2b071c4f884ea7af1f453b",
+        "vary": "Accept-Encoding",
+        "forbidden_gzip_sent": false
+      },
+      {
+        "accept_encoding": "gzip;q=0",
+        "status": 200,
+        "encoding": "gzip",
+        "wire_bytes": 100,
+        "decoded_sha256": "e9f961222c3e93c14f37083977722988a4ce1fc15e2b071c4f884ea7af1f453b",
+        "vary": "Accept-Encoding",
+        "forbidden_gzip_sent": true
+      },
+      {
+        "accept_encoding": "gzip;q=0, identity;q=1",
+        "status": 200,
+        "encoding": "gzip",
+        "wire_bytes": 100,
+        "decoded_sha256": "e9f961222c3e93c14f37083977722988a4ce1fc15e2b071c4f884ea7af1f453b",
+        "vary": "Accept-Encoding",
+        "forbidden_gzip_sent": true
+      },
+      {
+        "accept_encoding": "br, gzip;q=0.5",
+        "status": 200,
+        "encoding": "gzip",
+        "wire_bytes": 100,
+        "decoded_sha256": "e9f961222c3e93c14f37083977722988a4ce1fc15e2b071c4f884ea7af1f453b",
+        "vary": "Accept-Encoding",
+        "forbidden_gzip_sent": false
+      },
+      {
+        "accept_encoding": "gzip;q=0.1, identity;q=1",
+        "status": 200,
+        "encoding": "gzip",
+        "wire_bytes": 100,
+        "decoded_sha256": "e9f961222c3e93c14f37083977722988a4ce1fc15e2b071c4f884ea7af1f453b",
+        "vary": "Accept-Encoding",
+        "forbidden_gzip_sent": false
+      }
+    ],
+    "all_decoded_identical": true,
+    "forbidden_encoding_count": 2
+  },
+  "next": "At table position G03, establish a verified library negotiation path honoring q=0 before any candidate performance/deployment decision. No homemade q parser or global gzip activation."
+}

@@ -15,7 +15,7 @@ def create_pairings_service(db: Session) -> PairingsService:
 
 
 def get_pairings_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> PairingsService:
     """FastAPI függőség-injektáló provider a PairingsService példányosításához."""
     return create_pairings_service(db)

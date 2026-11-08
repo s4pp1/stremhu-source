@@ -18,6 +18,6 @@ def create_relay_settings_service(
 
 
 def get_relay_settings_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> RelaySettingsService:
     return create_relay_settings_service(db)

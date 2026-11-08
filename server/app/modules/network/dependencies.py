@@ -27,7 +27,7 @@ def create_network_service(db: Session) -> NetworkService:
 
 
 def get_network_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> NetworkService:
     """FastAPI függőség-injektáló provider a NetworkService példányosításához."""
     return create_network_service(db)

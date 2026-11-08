@@ -1,0 +1,12 @@
+{
+  "id": "cr17b-policy-after-composite-v5",
+  "registered_utc": "2026-11-05T18:20:11.327107+00:00",
+  "baseline_commit": "050cb33718353d16cbeeaca6ca41a0d9d7d45d6d",
+  "candidate_source": "cr17b-after-v3-source",
+  "candidate_manifest_sha256": "3491e032e93ace1331f918738dc0f833af9d996f2ff0f02efda8b5c99ae5e5c9",
+  "scope": "Packet20 SearchPolicySnapshot/filter/sort only; provider/file DTO and owned provider integration are21/22. Sourcechecked622/64,Ruff/based0,unchanged331Python; acceptedcleanupSource2baseline604/64,actualcommit/pushverified.",
+  "sampling": "Primaryshort two5-runC cohorts x12cells x100requests,then5rotatedABC; primaryheap2FULL1800s/60cycle x100requests/cycle; complementarydirect two5-runC+5rotatedABC;Kodi same25attempts observation with knownresidualfileORMerrors. Cold/warmup separate,allcompletedruns retained,failedcells nottiming.",
+  "acceptance": "Exact normalized payload/order/count and user/auth boundary,no new functionalerror class in covered policy paths; failedpreexistingprovider/filecells explicitlyexcludedfromtiming andremain21/22. SQL/request no increase on same cache state;normalprimary/direct p95 cohortmedian<=max(two beforecohortmedians)+10ms,CPU/request<=maxbeforemedian*1.10,overallfixedmemory<=maxbeforemedian+2MiB. No aggregate sub-budget addition. Profiled metrics same HTTP+10ms/CPU+10%/memory+2MiB,strictothermetrics fullbefore range+J,coldwall separatelybefore range+J; completequiescence/pool0/background0. No numericalspeedclaim required; positiveG17ownershiprepro is reasonforchange. Anyfailure staysopen,not retrospectively waived.",
+  "before": "Primary exactconditionalSource2 shortV2 controls; preselected fullheap cleanupafter-runs0/1 (other3retainednoisecontext); direct/Kodi beforeV4 exactsource. DirectA4DetachedInstanceError+1exit139=no completetiming;KodiC450existingDetachedInstanceError/500 across45cells,not an acceptedprovidercontract.",
+  "resources": "Primaryshort/refs/direct/Kodi CPU8,9/1GiB strictlyserial; heapCPU6,7/1GiB twofull30min sequential. Localnpipe,networknone,ROfrozenapp,tmpfs syntheticDB; no other benchmarkduringthisphase."
+}

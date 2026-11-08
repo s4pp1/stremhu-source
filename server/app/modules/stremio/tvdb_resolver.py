@@ -7,7 +7,9 @@ from urllib.parse import quote
 import httpx
 
 from app.common.keyed_lock import KeyedLock
+from app.common.log_safety import network_error_fields
 from app.common.logger import logger
+from app.common.validators import validate_numeric_media_id
 from app.config import config
 
 _MAX_CACHE_ENTRIES = 10000
@@ -81,9 +83,15 @@ class TvdbResolver:
         return self._client
 
     async def aclose(self) -> None:
-        if self._client and not self._client.is_closed:
-            await self._client.aclose()
+        try:
+            if self._client and not self._client.is_closed:
+                await self._client.aclose()
+        finally:
             self._client = None
+            self._cache.clear()
+            self._series_epmap.clear()
+            self._cinemeta_counts.clear()
+            self._animation_ids.clear()
 
     def _set_cache(self, key: str, value: str | tuple | list | None) -> None:
         if len(self._cache) >= _MAX_CACHE_ENTRIES:
@@ -105,7 +113,7 @@ class TvdbResolver:
         if not tvdb_id:
             return None, None
 
-        clean_id = tvdb_id.strip()
+        clean_id = validate_numeric_media_id(tvdb_id)
         cache_key = f"tvdb_{clean_id}_{is_series}"
         if cache_key in self._cache:
             cached = self._cache[cache_key]
@@ -170,7 +178,7 @@ class TvdbResolver:
                                 self._set_cache(f"title_{found_imdb}", found_title)
                             return res
             except Exception as e:
-                logger.debug(f"[TvdbResolver] Wikidata SPARQL hiba TVDB-re ({clean_id}): {e}")
+                logger.debug(f"[TvdbResolver] Wikidata SPARQL hiba TVDB-re ({clean_id}): {network_error_fields(e)}")
 
             # 3. Próbálkozás: TMDB API (ha van beállítva TMDB API kulcs)
             if config.tmdb_api_key:
@@ -188,7 +196,7 @@ class TvdbResolver:
         """
         if not tvdb_id:
             return None
-        clean_id = tvdb_id.strip()
+        clean_id = validate_numeric_media_id(tvdb_id)
         if clean_id in self._cache:
             val = self._cache[clean_id]
             if isinstance(val, str):
@@ -220,7 +228,7 @@ class TvdbResolver:
                     )
                     return clean_imdb, clean_title
         except Exception as e:
-            logger.debug(f"[TvdbResolver] TVMaze feloldási hiba ({tvdb_id}): {e}")
+            logger.debug(f"[TvdbResolver] TVMaze feloldási hiba ({tvdb_id}): {network_error_fields(e)}")
 
         return None, None
 
@@ -239,7 +247,7 @@ class TvdbResolver:
                     )
                     return imdb
         except Exception as e:
-            logger.debug(f"[TvdbResolver] TVMaze feloldási hiba ({tvdb_id}): {e}")
+            logger.debug(f"[TvdbResolver] TVMaze feloldási hiba ({tvdb_id}): {network_error_fields(e)}")
 
         return None
 
@@ -288,7 +296,7 @@ class TvdbResolver:
                             )
                             return imdb
         except Exception as e:
-            logger.debug(f"[TvdbResolver] TMDB feloldási hiba ({tvdb_id}): {e}")
+            logger.debug(f"[TvdbResolver] TMDB feloldási hiba ({tvdb_id}): {network_error_fields(e)}")
 
         return None
 
@@ -301,7 +309,7 @@ class TvdbResolver:
         if not kitsu_id:
             return None, None, None, [], [], None
 
-        clean_id = str(kitsu_id).strip()
+        clean_id = validate_numeric_media_id(str(kitsu_id))
         cache_key = f"kitsu_{clean_id}_{episode}"
         if cache_key in self._cache:
             cached = self._cache[cache_key]
@@ -337,7 +345,7 @@ class TvdbResolver:
         """
         Kompatibilitási wrapper az 5 vagy 3 elemű visszatérési értéket váró hívóknak.
         """
-        clean_id = str(kitsu_id).strip() if kitsu_id else ""
+        clean_id = validate_numeric_media_id(str(kitsu_id)) if kitsu_id else ""
         cache_key = f"kitsu_{clean_id}_{episode}"
         if cache_key in self._cache:
             cached = self._cache[cache_key]
@@ -390,7 +398,7 @@ class TvdbResolver:
                         )
                         return imdb_id, season, ep, alt_eps, alt_seasons, anime_name
             except Exception as e:
-                logger.debug(f"[TvdbResolver] Anime-Kitsu hiba ({kitsu_id}): {e}")
+                logger.debug(f"[TvdbResolver] Anime-Kitsu hiba ({kitsu_id}): {network_error_fields(e)}")
 
         return None, None, None, [], [], None
 
@@ -439,7 +447,7 @@ class TvdbResolver:
                     )
                     return None, 1, episode, [], [], canonical
         except Exception as e:
-            logger.debug(f"[TvdbResolver] Kitsu TVMaze feloldási hiba ({kitsu_id}): {e}")
+            logger.debug(f"[TvdbResolver] Kitsu TVMaze feloldási hiba ({kitsu_id}): {network_error_fields(e)}")
 
         return None, None, None, [], [], None
 
@@ -455,7 +463,7 @@ class TvdbResolver:
         if not mal_id:
             return None, None, None, [], [], None
 
-        clean_id = mal_id.strip()
+        clean_id = validate_numeric_media_id(mal_id)
         cache_key = f"mal_{clean_id}_{episode}"
         if cache_key in self._cache:
             cached = self._cache[cache_key]
@@ -506,7 +514,7 @@ class TvdbResolver:
                             self._set_cache(cache_key, kitsu_res)
                             return kitsu_res
             except Exception as e:
-                logger.debug(f"[TvdbResolver] Kitsu MAL mapping hiba ({clean_id}): {e}")
+                logger.debug(f"[TvdbResolver] Kitsu MAL mapping hiba ({clean_id}): {network_error_fields(e)}")
 
             # 2. Próbálkozás: Wikidata SPARQL API (P4086 MyAnimeList ID)
             try:
@@ -550,7 +558,7 @@ class TvdbResolver:
                                 self._set_cache(f"title_{found_imdb}", found_title)
                             return res
             except Exception as e:
-                logger.debug(f"[TvdbResolver] Wikidata SPARQL hiba MAL-ra ({clean_id}): {e}")
+                logger.debug(f"[TvdbResolver] Wikidata SPARQL hiba MAL-ra ({clean_id}): {network_error_fields(e)}")
 
             return None, None, None, [], [], None
 
@@ -601,7 +609,7 @@ class TvdbResolver:
         if not tmdb_id:
             return None, None
 
-        clean_id = tmdb_id.strip()
+        clean_id = validate_numeric_media_id(tmdb_id)
         cache_key = f"tmdb_{clean_id}_{is_series}"
         if cache_key in self._cache:
             cached = self._cache[cache_key]
@@ -664,7 +672,7 @@ class TvdbResolver:
                                     self._set_cache(f"title_{ext_imdb_clean}", str(title))
                                 return res
                     except Exception as e:
-                        logger.debug(f"[TvdbResolver] TMDB API hiba ({clean_id}): {e}")
+                        logger.debug(f"[TvdbResolver] TMDB API hiba ({clean_id}): {network_error_fields(e)}")
 
             # 2. Próbálkozás: Wikidata SPARQL API (ingyenes, gyors, pontos IMDb ID + hu/en cím)
             # Mind a film (P4947), mind a sorozat (P4983) azonosítót ellenőrizzük UNION-nal,
@@ -715,7 +723,7 @@ class TvdbResolver:
                                 self._set_cache(f"title_{found_imdb}", found_title)
                             return res
             except Exception as e:
-                logger.debug(f"[TvdbResolver] Wikidata SPARQL hiba ({clean_id}): {e}")
+                logger.debug(f"[TvdbResolver] Wikidata SPARQL hiba ({clean_id}): {network_error_fields(e)}")
 
             # 3. Próbálkozás: Publikus TMDB oldal lekérése és elemzése (curl UA-val Cloudflare védelem kikerüléséhez)
             client = self._get_client()
@@ -777,7 +785,7 @@ class TvdbResolver:
                             return res
                 except Exception as e:
                     logger.debug(
-                        f"[TvdbResolver] TMDB web scraping hiba ({clean_id}, {u_type}): {e}"
+                        f"[TvdbResolver] TMDB web scraping hiba ({clean_id}, {u_type}): {network_error_fields(e)}"
                     )
 
             # Ne mérgezzük a gyorsítótárat sikertelen hálózati kérés esetén
@@ -880,7 +888,7 @@ class TvdbResolver:
                                 self._set_cache(cache_key, res)
                                 return res
                 except Exception as e:
-                    logger.debug(f"[TvdbResolver] Anime Kitsu epmap lekérési hiba ({c_imdb}): {e}")
+                    logger.debug(f"[TvdbResolver] Anime Kitsu epmap lekérési hiba ({c_imdb}): {network_error_fields(e)}")
 
         # 2. Cinemeta kumulatív számítás (nyugati sorozatoknál azonnal ez fut le 404-es Kitsu probe nélkül!)
         is_animation = imdb_id in self._animation_ids
@@ -916,7 +924,7 @@ class TvdbResolver:
                             self._animation_ids.discard(old_k)
                     self._cinemeta_counts[imdb_id] = s_counts
             except Exception as e:
-                logger.debug(f"[TvdbResolver] Cinemeta epmap lekérési hiba ({imdb_id}): {e}")
+                logger.debug(f"[TvdbResolver] Cinemeta epmap lekérési hiba ({imdb_id}): {network_error_fields(e)}")
 
         if s_counts and len(s_counts) > 1:
             if season in s_counts:
@@ -950,7 +958,7 @@ class TvdbResolver:
                         if v_s == season and v_e == episode and v_abs and v_abs != episode:
                             alt_eps.add(v_abs)
             except Exception as e:
-                logger.debug(f"[TvdbResolver] Fallback Anime Kitsu hiba ({imdb_id}): {e}")
+                logger.debug(f"[TvdbResolver] Fallback Anime Kitsu hiba ({imdb_id}): {network_error_fields(e)}")
 
         result = (sorted(list(alt_eps)), sorted(list(alt_seasons)))
         self._set_cache(cache_key, result)
@@ -1043,7 +1051,7 @@ class TvdbResolver:
                                         dynamic_aliases.append(discovered_imdb)
             except Exception as e:
                 logger.debug(
-                    f"[TvdbResolver] Dinamikus IMDb alias keresési hiba ({imdb_id}): {e}"
+                    f"[TvdbResolver] Dinamikus IMDb alias keresési hiba ({imdb_id}): {network_error_fields(e)}"
                 )
 
             self._set_cache(cache_key, dynamic_aliases)

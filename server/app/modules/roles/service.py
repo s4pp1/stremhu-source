@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 
+from app.common.commit_actions import commit_session, mark_stream_cache_dirty
 from app.common.logger import logger
 from app.modules.roles.models import RoleModel
 from app.modules.roles.seeds import DEFAULT_ROLES
@@ -40,4 +41,5 @@ class RolesService:
             else:
                 self.db.add(RoleModel(id=code_role.id, name=code_role.name))
 
-        self.db.commit()
+        mark_stream_cache_dirty(self.db)
+        commit_session(self.db)

@@ -1,0 +1,16 @@
+{
+  "status": "SourceV3 policyafter: shortgateFAIL, Kodi observation INCOMPLETE, fullheapcontinues",
+  "primary_short": "cr17b-primary-short-assessment-v5.json",
+  "kodi_completed_files": [
+    "cr17b-kodi-observation-after-v5-C-kodi-observation-a-0.json",
+    "cr17b-kodi-observation-after-v5-C-kodi-observation-a-1.json",
+    "cr17b-kodi-observation-after-v5-C-kodi-observation-a-2.json",
+    "cr17b-kodi-observation-after-v5-C-kodi-observation-a-3.json",
+    "cr17b-kodi-observation-after-v5-C-kodi-observation-a-4.json",
+    "cr17b-kodi-observation-after-v5-C-kodi-observation-b-0.json"
+  ],
+  "kodi_failed_attempt": "C/kodi-observation-b/1",
+  "kodi_exit_code": 139,
+  "kodi_cause": "No stdout/stderr from failed process; cause not established. Preexisting file/provider DetachedInstanceError is recorded separately, not asserted as this crash cause.",
+  "scope": "No policy milestone accepted or committed. Completed/failed referencecells not misreported as successful timing. OldSource3frozenfiles and running full30minute controls unchanged."
+}

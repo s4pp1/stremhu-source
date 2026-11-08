@@ -1,0 +1,394 @@
+{
+  "fixture": "cr17a-cold-GC-diagnostic-v4",
+  "is_measurement": false,
+  "cold": [
+    {
+      "sql_statements": 10,
+      "count": 100,
+      "user": 0,
+      "wall_seconds": 0.34552793600005316,
+      "result_count": 100,
+      "payload_hash": "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e"
+    },
+    {
+      "sql_statements": 10,
+      "count": 100,
+      "user": 1,
+      "wall_seconds": 0.10580245100027241,
+      "result_count": 30,
+      "payload_hash": "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+    }
+  ],
+  "gc_events": [
+    {
+      "phase": "initialization",
+      "generation": 0,
+      "seconds": 6.238500009203563e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "initialization",
+      "generation": 0,
+      "seconds": 2.173100028812769e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "initialization",
+      "generation": 0,
+      "seconds": 5.130399995323387e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "initialization",
+      "generation": 0,
+      "seconds": 7.508500038966304e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "initialization",
+      "generation": 0,
+      "seconds": 6.486500024038833e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "initialization",
+      "generation": 0,
+      "seconds": 4.341299973020796e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 1,
+      "seconds": 0.00040886699980546837,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 3.7552999856416136e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 3.736200005732826e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 4.1802999930951046e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 4.089300000487128e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 3.945299977203831e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 3.8083000163169345e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 3.8362999930541264e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 3.694199995152303e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 4.006200015282957e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 4.535300013230881e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 3.913299997293507e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 1,
+      "seconds": 0.00028655899996010703,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 4.4273000185057754e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 9.014599982037907e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 5.9903999954258325e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 7.456499997715582e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 5.411399979493581e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 7.936500014693593e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 3.157199989800574e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 2.9971999992994824e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 3.51230000887881e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 4.92429999212618e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 4.367200017441064e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 1,
+      "seconds": 0.0004694710000876512,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 1.6820999917399604e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 2.4592000045231543e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 3.413300009924569e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 4.178299968771171e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 3.578199994080933e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 2.2681000245938776e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 2.8141999791841954e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 5.876400018678396e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 3.59020000360033e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 7.003500013524899e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 0,
+      "seconds": 7.00949999554723e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-0",
+      "generation": 1,
+      "seconds": 0.0004069070000696229,
+      "collected": 27,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-1",
+      "generation": 2,
+      "seconds": 0.02663850299995829,
+      "collected": 65,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-1",
+      "generation": 0,
+      "seconds": 2.9461999929480953e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-1",
+      "generation": 0,
+      "seconds": 2.4731999928917503e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-1",
+      "generation": 0,
+      "seconds": 2.8811999982281122e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-1",
+      "generation": 0,
+      "seconds": 3.7693000194849446e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-1",
+      "generation": 0,
+      "seconds": 1.5870999959588517e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-1",
+      "generation": 0,
+      "seconds": 4.266199994162889e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-1",
+      "generation": 0,
+      "seconds": 6.748500027242699e-05,
+      "collected": 0,
+      "uncollectable": 0
+    },
+    {
+      "phase": "cold-1",
+      "generation": 0,
+      "seconds": 8.155600016834796e-05,
+      "collected": 0,
+      "uncollectable": 0
+    }
+  ],
+  "default_gc_enabled": true,
+  "scope": "Observe default GC only, no forced collect/threshold changes. Actual original two cold calls,not timing acceptance or a heap run.",
+  "protocol": "cr17a-cold-GC-diagnostic-v4",
+  "label": "before",
+  "repetition": 0,
+  "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52"
+}

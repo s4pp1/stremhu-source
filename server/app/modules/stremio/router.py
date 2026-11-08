@@ -40,9 +40,10 @@ router = APIRouter(
 )
 def manifest(
     stremio_service: Annotated[StremioService, Depends(get_stremio_service)],
-    user: Annotated[UserModel, Depends(ApiKeyGuard())],
+    _: Annotated[UserModel, Depends(ApiKeyGuard())],
 ) -> Manifest:
-    return stremio_service.manifest(user)
+    # Az API-kulcs csak hitelesít: a manifest tartalma szándékosan felhasználófüggetlen.
+    return stremio_service.manifest()
 
 
 @router.get(

@@ -1,5 +1,6 @@
 from unittest.mock import AsyncMock, MagicMock
 
+import httpx
 import pytest
 from fastapi.testclient import TestClient
 
@@ -601,11 +602,22 @@ async def test_get_alternate_imdb_ids_dbz():
 @pytest.mark.anyio
 async def test_get_episode_mappings_uses_alias_for_dbz():
     resolver = TvdbResolver()
-    # Mock Anime-Kitsu cache to verify that tt0121220 queries tt0214341
+    # Hermetic: Anime-Kitsu has no entry for tt0121220, so the cached alias tt0214341 must answer.
+    requested: list[str] = []
+
+    def kitsu_not_found(request: httpx.Request) -> httpx.Response:
+        requested.append(str(request.url))
+        return httpx.Response(404)
+
+    resolver._client = httpx.AsyncClient(transport=httpx.MockTransport(kitsu_not_found))
     # Ep 141 is Season 5 Episode 2
     resolver._series_epmap["tt0214341"] = {(5, 2): ([141], [])}
-    alts, seasons = await resolver.get_episode_mappings("tt0121220", 5, 2)
+    try:
+        alts, seasons = await resolver.get_episode_mappings("tt0121220", 5, 2)
+    finally:
+        await resolver.aclose()
     assert 141 in alts
+    assert requested == ["https://anime-kitsu.strem.fun/meta/series/tt0121220.json"]
 
 
 @pytest.mark.anyio
@@ -778,6 +790,7 @@ async def test_find_by_imdb_fallback_when_imdb_has_different_episode_only():
 
     from app.common.torrent_info import TorrentFileInfo, TorrentInfo
     from app.modules.indexer_accounts.models import IndexerAccountModel
+    from app.modules.indexer_accounts.schemas import IndexerAccountRef
     from app.modules.indexer_definitions.models import IndexerDefinitionModel
     from app.modules.preferences.service import PreferencesService
     from app.modules.torrent_source_provider.service import (
@@ -793,6 +806,7 @@ async def test_find_by_imdb_fallback_when_imdb_has_different_episode_only():
         indexer_id="ncore", username="test", password="pwd"
     )
     dummy_indexer_account.indexer_definition = dummy_indexer_def
+    dummy_account_ref = IndexerAccountRef.from_model(dummy_indexer_account)
 
     t3_info = TorrentInfo(
         info_hash="hash3",
@@ -813,7 +827,7 @@ async def test_find_by_imdb_fallback_when_imdb_has_different_episode_only():
         ],
     )
     mock_src_ep3 = MagicMock()
-    mock_src_ep3.indexer_torrent.indexer_account = dummy_indexer_account
+    mock_src_ep3.indexer_torrent.indexer_account = dummy_account_ref
     mock_src_ep3.indexer_torrent.torrent_id = "300"
     mock_src_ep3.indexer_torrent.imdb_id = "tt50140701"
     mock_src_ep3.indexer_torrent.seeders = 10
@@ -843,7 +857,7 @@ async def test_find_by_imdb_fallback_when_imdb_has_different_episode_only():
         ],
     )
     mock_src_ep1 = MagicMock()
-    mock_src_ep1.indexer_torrent.indexer_account = dummy_indexer_account
+    mock_src_ep1.indexer_torrent.indexer_account = dummy_account_ref
     mock_src_ep1.indexer_torrent.torrent_id = "100"
     mock_src_ep1.indexer_torrent.imdb_id = None
     mock_src_ep1.indexer_torrent.seeders = 20
@@ -898,9 +912,8 @@ async def test_batch_torrent_download_and_save_single_transaction():
     from app.modules.torrent_source_provider.service import TorrentSourceProviderService
 
     mock_indexers = AsyncMock()
-    mock_torrent_files = MagicMock()
-    mock_torrent_files.find_list.return_value = []
     mock_isolated_files = MagicMock()
+    mock_isolated_files.find_snapshots.return_value = []
 
     async def fake_download(indexer_id: str, torrent_id: str, url: str):
         return DownloadedTorrentFile(
@@ -928,13 +941,12 @@ async def test_batch_torrent_download_and_save_single_transaction():
 
     provider = TorrentSourceProviderService(
         indexers_service=mock_indexers,
-        torrent_files_service=mock_torrent_files,
         isolated_torrent_files_service=mock_isolated_files,
     )
 
     torrents = [s.indexer_torrent for s in sources_by_id.values()]
 
-    sources = await provider._sync_torrent_files(torrents)
+    sources = await provider._shared_search()._sync_torrent_files(torrents)
     assert len(sources) == 3
     # Egyetlen kötegelt create_many tranzakció futott le 3 külön create helyett
     mock_isolated_files.create_many.assert_called_once()

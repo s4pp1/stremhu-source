@@ -1,13 +1,13 @@
 from pydantic import BaseModel, ConfigDict
 
 from app.modules.indexers.schemas.internal import IndexerTorrent
-from app.modules.torrent_files.models import TorrentFileModel
+from app.modules.torrent_files.schemas import TorrentFileSnapshot
 
 
 class TorrentSource(BaseModel):
-    model_config = ConfigDict(
-        arbitrary_types_allowed=True,
-    )
+    """Megosztott keresési eredmény: csak Session nélküli, módosíthatatlan értéket tartalmaz."""
+
+    model_config = ConfigDict(frozen=True)
 
     indexer_torrent: IndexerTorrent
-    torrent_file: TorrentFileModel
+    torrent_file: TorrentFileSnapshot

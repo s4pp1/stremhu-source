@@ -9,6 +9,7 @@ from urllib.parse import parse_qs, urljoin, urlparse
 import httpx
 from selectolax.lexbor import LexborHTMLParser
 
+from app.common.log_safety import network_error_fields
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
@@ -307,7 +308,7 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
                 if r_drop.status_code == 200 and r_drop.text.strip():
                     drop_text = r_drop.text
         except Exception as e:
-            self.logger.debug(f"[nCore] fetch_tech_info hiba ({torrent_id}): {e}")
+            self.logger.debug(f"[nCore] fetch_tech_info hiba ({torrent_id}): {network_error_fields(e)}")
 
         return nfo_text, drop_text
 

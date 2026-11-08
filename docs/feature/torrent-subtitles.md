@@ -1,4 +1,39 @@
+---
+doc_id: "feature-torrent-subtitles"
+title: "Fejlesztői és AI Agent Dokumentáció: feature/torrent-subtitles"
+kind: "feature-reference"
+status: "historical-reference"
+audience: ["developer", "ai-agent"]
+tags: ["subtitle", "srt", "ass", "ssa", "vtt", "active-playback", "range", "fallback"]
+source_commit: null
+baseline: "8c99c7d"
+verification: "structure-only"
+structure_reviewed: "2026-11-03"
+related_docs: ["docs/feature/README.md", "docs/feature/audio-subtitle-detection.md"]
+source_paths: ["server/app/modules/stream/router.py", "server/app/modules/stream/utils/subtitles.py", "server/app/modules/stream/active_playback.py"]
+---
+
 # Fejlesztői és AI Agent Dokumentáció: `feature/torrent-subtitles`
+
+<!-- doc-nav:start -->
+**Navigáció:** [Dokumentáció](../README.md) · [AI-index](../AI-INDEX.md)
+
+> **Státusz:** Korábbi feature technikai referenciája. A tartalom és a mérések nem kaptak most új runtime-verifikációt; aktuális működéshez kövesd a forráskódot.
+
+**Kapcsolódó:** [README.md](README.md) · [audio-subtitle-detection.md](audio-subtitle-detection.md)
+
+<details>
+<summary>Fejezetek / közvetlen ugrás</summary>
+
+- [1. A Branch Célja és Motivációja](#doc-1-a-branch-celja-es-motivacioja)
+- [2. Módosított és Új Fájlok Áttekintése (Diff Mátrix)](#doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix)
+- [3. Architektúra és Folyamatábrák](#doc-3-architektura-es-folyamatabrak)
+- [4. Modulonkénti Részletes Működés és Kritikus Invariánsok](#doc-4-modulonkenti-reszletes-mukodes-es-kritikus-invariansok)
+- [5. Hidegindítási és Keresési Teljesítmény-Optimalizációk (Smart Anime Gating & Lazy Dynamic Alias)](#doc-5-hideginditasi-es-keresesi-teljesitmeny-optimalizaciok-smart-anime-gating-lazy-dynamic-alias)
+
+</details>
+
+<!-- doc-nav:end -->
 
 > [!IMPORTANT]
 > **Viszonyítási alap (Baseline):**
@@ -6,6 +41,8 @@
 
 ---
 
+<!-- doc-anchor:doc-1-a-branch-celja-es-motivacioja -->
+<a id="doc-1-a-branch-celja-es-motivacioja"></a>
 ## 1. A Branch Célja és Motivációja
 
 Az eredeti upstream `s4pp1/stremhu-source` kizárólag a torrentben található **videófájl** streamelését támogatta. Magyar és anime torrenteknél azonban a magyar felirat nagyon gyakran **különálló fájlként** (`.srt`, `.ass`, `.ssa`, `.vtt`, `.sub`) található a torrent gyökerében vagy egy `Feliratok` / `Subs` almappában (pl. `[Naruto-Kun.Hu] Naruto Shippuden - E001.srt`, `Noragami - 01.ass`).
@@ -20,6 +57,8 @@ A `feature/torrent-subtitles` ág az alábbi problémákat oldja meg:
 
 ---
 
+<!-- doc-anchor:doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix -->
+<a id="doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix"></a>
 ## 2. Módosított és Új Fájlok Áttekintése (Diff Mátrix)
 
 | Modul / Fájl | Státusz | Változtatás összefoglalása |
@@ -33,13 +72,17 @@ A `feature/torrent-subtitles` ág az alábbi problémákat oldja meg:
 | `server/app/modules/stream/router.py` & `service.py` | Módosult | `/api/{api_key}/subtitles/{stream_token}/{filename}` végpont (`GET`/`HEAD`, `Range: bytes=...` / `206 Partial Content`), in-flight kérés-összevonás (`_subtitle_locks`), `_subtitle_content_cache` memória-gyorsítótár. |
 | `server/app/modules/relay/entities.py` | Módosult | `File.is_subtitle`, `File.get_matched_subtitle_pieces` (magyar feliratok prioritásával a 6-darabos kvótában) és `Torrent._set_matched_subtitle_priorities` (`500 ms` deadline a lejátszott epizód felirat-piece-eire). |
 | `server/app/modules/users/models.py` & Alembic migráció | Módosult | `enable_fallback_subtitles: Mapped[bool]` mező a `users` táblán (`d41f8e2a1b5c` migráció). |
-| `client/src/features/subtitle-settings/subtitle-settings.tsx` | **ÚJ** | `SubtitleSettingsCard` React komponens: *„Felirat kölcsönzése más találatból”* kapcsoló, Hit'n'Run figyelmeztető `Alert` és lenyitható `Accordion` tájékoztató fül. |
+| `client/src/features/subtitle-settings/subtitle-settings.tsx` | **ÚJ** | `SubtitleSettingsCard` React komponens: *„Felirat kölcsönzése más találatból”* kapcsoló, Hit'n'Run figyelmeztető `Alert` és lenyitható `Accordion` tájékoztató fül. Felhasználónkénti beállítás (`/api/me`), ezért egyetlen helyen jelenik meg: **Beállítások → Preferenciák → További preferenciák** (2026-11-08 óta az admin Rendszer oldalról eltávolítva, ahol csak az admin saját beállítását írta). |
 | `server/tests/test_subtitles.py` | **ÚJ** | 16 db átfogó unit és integrációs teszt a nyelvfelismeréshez, ASS->VTT konverzióhoz, határeset-prefixekhez, konkurens aktív lejátszás követéséhez, GUI fallback kapcsolóhoz és felirat-piece előtöltéshez. |
 
 ---
 
+<!-- doc-anchor:doc-3-architektura-es-folyamatabrak -->
+<a id="doc-3-architektura-es-folyamatabrak"></a>
 ## 3. Architektúra és Folyamatábrák
 
+<!-- doc-anchor:doc-31-felirat-feloldas-aktiv-lejatszas-kovetes-es-fallback-dontesi-folyamat -->
+<a id="doc-31-felirat-feloldas-aktiv-lejatszas-kovetes-es-fallback-dontesi-folyamat"></a>
 ### 3.1. Felirat-feloldás, Aktív Lejátszás Követés és Fallback Döntési Folyamat
 
 ```mermaid
@@ -70,6 +113,8 @@ flowchart TD
     CheckCanBorrow -- Nem --> ReturnEmpty
 ```
 
+<!-- doc-anchor:doc-32-video-inditas-felirat-piece-prefetch-500-ms-es-memoria-cache-szekvencia -->
+<a id="doc-32-video-inditas-felirat-piece-prefetch-500-ms-es-memoria-cache-szekvencia"></a>
 ### 3.2. Videó Indítás, Felirat Piece-Prefetch (`500 ms`) és Memória-Cache Szekvencia
 
 ```mermaid
@@ -106,6 +151,8 @@ sequenceDiagram
 
 ---
 
+<!-- doc-anchor:doc-4-modulonkenti-reszletes-mukodes-es-kritikus-invariansok -->
+<a id="doc-4-modulonkenti-reszletes-mukodes-es-kritikus-invariansok"></a>
 ## 4. Modulonkénti Részletes Működés és Kritikus Invariánsok
 
 1. **`detect_subtitle_language(filename: str, path: str = "")` (`resolver_helpers.py`):**
@@ -132,6 +179,8 @@ sequenceDiagram
 
 ---
 
+<!-- doc-anchor:doc-5-hideginditasi-es-keresesi-teljesitmeny-optimalizaciok-smart-anime-gating-lazy-dynamic-alias -->
+<a id="doc-5-hideginditasi-es-keresesi-teljesitmeny-optimalizaciok-smart-anime-gating-lazy-dynamic-alias"></a>
 ## 5. Hidegindítási és Keresési Teljesítmény-Optimalizációk (Smart Anime Gating & Lazy Dynamic Alias)
 
 1. **Intelligens Anime-Kapu (`TvdbResolver.get_alternate_imdb_ids`):**

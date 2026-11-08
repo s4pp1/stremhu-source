@@ -5,6 +5,8 @@ import httpx
 import pydash
 from cryptography import x509
 
+from app.common.async_utils import owned_to_thread
+from app.common.log_safety import network_error_fields
 from app.common.logger import logger
 from app.config import config
 from app.modules.network.ddns.schemas.internal import DDNSIpUpdate
@@ -26,6 +28,25 @@ from app.modules.settings.service import SettingsService
 from app.modules.system.service import SystemService
 
 _active_setup_task: asyncio.Task | None = None
+_restart_task: asyncio.Task[None] | None = None
+
+
+async def close_network_setup() -> None:
+    global _active_setup_task, _restart_task
+    task = _active_setup_task
+    if task is not None:
+        if not task.done():
+            task.cancel()
+        await asyncio.gather(task, return_exceptions=True)
+        if _active_setup_task is task:
+            _active_setup_task = None
+    restart = _restart_task
+    if restart is not None:
+        if not restart.done():
+            restart.cancel()
+        await asyncio.gather(restart, return_exceptions=True)
+        if _restart_task is restart:
+            _restart_task = None
 
 
 class NetworkService:
@@ -40,6 +61,19 @@ class NetworkService:
         self._ssl_service = ssl_service
         self._ddns_service = ddns_service
         self._system_service = system_service
+
+    def _schedule_restart(self) -> None:
+        global _restart_task
+        # Every pending request has the same process-restart outcome. One
+        # owned task is sufficient and can be cancelled during graceful close.
+        if _restart_task is None or _restart_task.done():
+            _restart_task = asyncio.create_task(self._system_service.restart(), name="network-restart")
+
+            def finished(task: asyncio.Task[None]) -> None:
+                if not task.cancelled() and (error := task.exception()) is not None:
+                    logger.error("Network restart failed: kind=%s", type(error).__name__)
+
+            _restart_task.add_done_callback(finished)
 
     async def setup_local(self) -> tuple[NetworkSettings, SelfSignedCertificate]:
         certs = await self._ssl_service.get_local_ip_certificate(config.host_ip)
@@ -62,7 +96,7 @@ class NetworkService:
             expires_at=certs.expires_at,
         )
 
-        network_settings = await asyncio.to_thread(
+        network_settings = await owned_to_thread(
             self._settings_service.save_network,
             local_settings,
         )
@@ -114,13 +148,13 @@ class NetworkService:
             _active_setup_task = None
 
     async def _do_setup(self, payload: NetworkSetup) -> NetworkSettings:
-        current_network_settings = await asyncio.to_thread(
+        current_network_settings = await owned_to_thread(
             self._settings_service.get_network
         )
 
         if payload.mode == NetworkModeEnum.LOCAL:
             network_settings, _ = await self.setup_local()
-            asyncio.create_task(self._system_service.restart())
+            self._schedule_restart()
             return network_settings
 
         if payload.mode == NetworkModeEnum.MANUAL:
@@ -128,11 +162,11 @@ class NetworkService:
                 mode=NetworkModeEnum.MANUAL,
                 host=payload.host,
             )
-            network_settings = await asyncio.to_thread(
+            network_settings = await owned_to_thread(
                 self._settings_service.save_network,
                 manual_network_settings,
             )
-            asyncio.create_task(self._system_service.restart())
+            self._schedule_restart()
             return network_settings
 
         return await self._setup_auto(payload, current_network_settings)
@@ -213,11 +247,11 @@ class NetworkService:
             expires_at=expires_at,
             account_key=account_key,
         )
-        network_settings = await asyncio.to_thread(
+        network_settings = await owned_to_thread(
             self._settings_service.save_network, auto_network
         )
 
-        asyncio.create_task(self._system_service.restart())
+        self._schedule_restart()
         return network_settings
 
     async def _setup_auto_dns(
@@ -273,7 +307,7 @@ class NetworkService:
 
     async def sync_ip(self):
         try:
-            network_settings = await asyncio.to_thread(
+            network_settings = await owned_to_thread(
                 self._settings_service.get_network
             )
 
@@ -305,16 +339,16 @@ class NetworkService:
                 network_settings.ip = current_ip
                 network_settings.last_ip_sync_at = int(time.time())
 
-                await asyncio.to_thread(
+                await owned_to_thread(
                     self._settings_service.save_network,
                     network_settings,
                 )
 
-        except Exception:
-            logger.exception("‼️ Sikertelen IP / SSL szinkronizáció háttérfeladat.")
+        except Exception as exc:
+            logger.error("operation=ip-ssl-sync %s", network_error_fields(exc))
 
     async def check_ssl_certificate(self):
-        network_settings = await asyncio.to_thread(self._settings_service.get_network)
+        network_settings = await owned_to_thread(self._settings_service.get_network)
 
         if network_settings.mode == NetworkModeEnum.MANUAL:
             return
@@ -349,17 +383,15 @@ class NetworkService:
                     network_settings.expires_at = certs.expires_at
                     network_settings.account_key = certs.account_key
 
-                    await asyncio.to_thread(
+                    await owned_to_thread(
                         self._settings_service.save_network,
                         network_settings,
                     )
 
                     ssl_renewed = True
-                except Exception:
-                    logger.exception(
-                        "‼️ Sikertelen Let's Encrypt SSL megújítás a háttérben"
-                    )
+                except Exception as exc:
+                    logger.error("operation=ssl-renewal %s", network_error_fields(exc))
 
         if ssl_renewed:
             logger.info("🔄 SSL megújítás sikeres, újraindítás...")
-            asyncio.create_task(self._system_service.restart())
+            self._schedule_restart()

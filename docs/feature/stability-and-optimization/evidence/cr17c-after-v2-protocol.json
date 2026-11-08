@@ -1,0 +1,38 @@
+{
+  "id": "cr17c-after-v2",
+  "registered_utc": "2026-11-07T01:58:24.582032+00:00",
+  "baseline_commit": "050cb33718353d16cbeeaca6ca41a0d9d7d45d6d",
+  "before_source": "cr17a-drain-fix-v2-source (byte-identical, EOL-normalized, to 050cb337 server/app: 268 files)",
+  "before_manifest_sha256": "b22bfd0500a93277146ea341db7c5675aab8e2ab37e4fa112b92b98ecfda5742",
+  "candidate_source": "cr17c-after-v1-source",
+  "candidate_manifest_sha256": "8ad38ecb0a2932f933aff8b0cfe9548d7d106c0322c85fddc37948f196424385",
+  "scope": "Packet21b (CR17/c): shared provider results carry Session-free frozen IndexerAccountRef/IndexerDefinitionRef/TorrentFileSnapshot. Packet20 set aside by user decision. Singleflight factory/session ownership is packet22 and out of scope.",
+  "fixtures_note": "cr17c fixtures = cr17b policy v2 / reference v4 / direct v1 / kodi v3 plus one adapter: on sources exposing IndexerAccountRef the synthetic indexer stub returns refs built once at setup (no account SQL, like the unchanged before path); Source2/A/B take the old path. Because the fixture hash changed, all before data is fresh; old Source2 runs are context only. Pre-registration functional smoke (8 runs, scratch outputs) only checked exit/rows/no external HTTP. v2: derived by make_cr17c_v2_fixtures.py (cold gc.collect()/gc_collections only). Pre-registration wiring smoke (6 runs, scratch outputs): only exit code, gc_collections presence and no external HTTP were checked; timings were not read.",
+  "sampling": "Serial. smoke(after,before) -> short 2x5 paired before/after (AB/BA alternating) + 5 rotated ABC references (reference fixture) -> direct 2x5 paired + 5 rotated ABC -> kodi 2x5 paired + 5 rotated ABC -> long: 3 contemporaneous full1800s/60cycle pairs, order after,before / before,after / after,before. 12 cells x 100 requests per short run. Cold and warmup separate. Every attempt retained; failures recorded, never rerun or replaced.",
+  "acceptance": "PASS only if every gate check passes. Ownership (primary): C Kodi series 0 DetachedInstanceError, only HTTP 200, all 10 runs complete; C direct series all 10 runs complete (fixture aborts on any non-200). Functional: C smoke/short/direct/kodi/long complete, no external HTTP, identical normalized payload/order/count per cell (Kodi on error-free rows), long quiescence/pool0/background0. Timing/resources (V6 thresholds unchanged): short and direct cohort medians, heap run medians each <= HTTP p95 max(before medians)+10ms, CPU max*1.10, memory max+2MiB (RSS +2048KiB), SQL <= max before value; strict metrics (cold wall, loop lag, file bytes) <= max(before values)+J, J=max-min of before group medians. Heap before = the 3 fresh Source2 runs, after = the 3 C runs, every after run median within limit. Observations, not gates: Kodi timing, A/B/C reference timing, A failures (expected preexisting DetachedInstanceError), contemporaneous paired heap p95 differences, gen2 cold phases, heap trend. Any failure stays open; no threshold change or waiver after results.",
+  "resources": "Local desktop-linux npipe, network none, read-only frozen app mount, tmpfs disposable synthetic DB, no dotenv/real credentials. short/direct/kodi/references CPU8,9; long CPU6,7; 2 CPU/1GiB each; strictly serial; no other Docker benchmark during this protocol.",
+  "images": {
+    "A": "s4pp1/stremhu-source@sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+    "B": "stremhu-source@sha256:6ca708d99b8698e6cf116a6183c283922ebd2e53940c366a93a421b4ca974a38",
+    "C": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52"
+  },
+  "fixture_sha256": {
+    "cr17c-policy-fixture-v2.py": "74563a203ff6f32fc75d6de1ea0cb50a3228ad39aa20e8d21ca6d619e9d6c80e",
+    "cr17c-policy-reference-fixture-v2.py": "e57c8f99f2384341c408fcd55df7b40266c03ce86d95b7913e60ab46231c622c",
+    "cr17c-policy-direct-fixture-v2.py": "a7e7fbc674f3a37fc0265e89ec1a046f229a449eef2cbc95119b2a480108f887",
+    "cr17c-kodi-ownership-observation-v2.py": "25b806e9ca600e0c8ca87d43b389b20f053f3095134d23193e9562157bf3326f"
+  },
+  "controller_sha256": "15258a5ed76d4d6ddc1a5f05ed0aa23ca4ddab3a8c40ff7b9740cdb1fb8190c3",
+  "assessor": "assess_cr17c_after_v2.py",
+  "assessor_sha256": "bce6f99ac1dab98a95f1a5dc3a1375dce67cd8baa01d1fedb6d2c70e2fbd40b5",
+  "assessor_note": "v2 assessor dry-run on renamed copies of the v1 raw files before registration (reproduced the v1 status); no v2 results existed.",
+  "supersedes": {
+    "protocol": "cr17c-after-v1",
+    "protocol_sha256": "c9d0dd376968e245059ab8078a76794eebc09cf417c0453f3850ab29e0ec400a",
+    "v1_status": "FAIL (1/316: heap/cold1 wall_seconds); retained unchanged, not waived",
+    "diagnostic": "cr17c-cold-gc-diagnostic-v1.json"
+  },
+  "decision": "User decision 2026-11-07: run a new preregistered v2 gate with GC-controlled cold requests (\"Új v2 kapu\"), all else unchanged.",
+  "change_from_v1": "Only the cold section of all four fixtures: a full gc.collect() immediately before each cold request, outside its timed interval, identically in every arm (before, after, A, B, C), plus per-generation collection counts during each cold request (gc_collections). Controller: v1 with v2 names/fixtures. Assessor: v1 with v2 names and one observation (gc_collections). Sampling, order, resources, images, sources, gates and thresholds are unchanged. All before data is fresh; v1 data is context only and not pooled.",
+  "generator_sha256": "215ef0f8992d4d10035b7c05ff806f0924921f60d4c7342d8cb06663386d088f"
+}

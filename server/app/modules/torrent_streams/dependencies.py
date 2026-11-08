@@ -19,7 +19,7 @@ from app.modules.torrents.dependencies import create_torrents_service
 def create_torrent_streams_service(
     db: Session,
 ) -> TorrentStreamsService:
-    torrent_source_provider_service = create_torrent_source_provider_service(db)
+    torrent_source_provider_service = create_torrent_source_provider_service()
     torrents_service = create_torrents_service(db)
     settings_service = create_settings_service(db)
     preferences_service = create_preferences_service(db)
@@ -36,6 +36,6 @@ def create_torrent_streams_service(
 
 
 def get_torrent_streams_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> TorrentStreamsService:
     return create_torrent_streams_service(db)

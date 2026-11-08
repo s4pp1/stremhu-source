@@ -1,0 +1,92 @@
+{
+  "status": "Six native/Range edge wiring cases PASS; fullG01 OPEN",
+  "cases": [
+    {
+      "case": {
+        "global": 50,
+        "base": 10,
+        "streams": 0,
+        "piece_bytes": 262144,
+        "ram_mib": 512
+      },
+      "verified_paced_bytes": 0,
+      "warm_ranges": 0,
+      "warm_range_bytes": 0,
+      "seed_errors": 0,
+      "raw_sha256": "b0cb7a625c82c208de5665fec741c35a78d52c9d0215c6075600e33902ab799b"
+    },
+    {
+      "case": {
+        "global": 50,
+        "base": 10,
+        "streams": 1,
+        "piece_bytes": 262144,
+        "ram_mib": 512
+      },
+      "verified_paced_bytes": 33554432,
+      "warm_ranges": 100,
+      "warm_range_bytes": 104857600,
+      "seed_errors": 0,
+      "raw_sha256": "de27827f0e16e6ef04a58f3a29b2172e27e7ea2543114657f07d8a2ffd4f2e92"
+    },
+    {
+      "case": {
+        "global": 100,
+        "base": 20,
+        "streams": 4,
+        "piece_bytes": 1048576,
+        "ram_mib": 1024
+      },
+      "verified_paced_bytes": 134217728,
+      "warm_ranges": 100,
+      "warm_range_bytes": 104857600,
+      "seed_errors": 0,
+      "raw_sha256": "e6acb34dffb5d907f1e692908cb6e90cc736bba3bc43e69081a66aabc4a4f0d4"
+    },
+    {
+      "case": {
+        "global": 200,
+        "base": 80,
+        "streams": 8,
+        "piece_bytes": 4194304,
+        "ram_mib": 2048
+      },
+      "verified_paced_bytes": 268435456,
+      "warm_ranges": 104,
+      "warm_range_bytes": 109051904,
+      "seed_errors": 0,
+      "raw_sha256": "58535c96538dc14471cb73ef8fd2d9a05437a4905a734323231c55ce9f3b8bb4"
+    },
+    {
+      "case": {
+        "global": 200,
+        "base": 10,
+        "streams": 8,
+        "piece_bytes": 4194304,
+        "ram_mib": 512
+      },
+      "verified_paced_bytes": 268435456,
+      "warm_ranges": 104,
+      "warm_range_bytes": 109051904,
+      "seed_errors": 0,
+      "raw_sha256": "9c5d76e23f5edb6bf5b1ca26e86ba3d2b04289628e6ec8414c810a8c6dc5bc30"
+    },
+    {
+      "case": {
+        "global": 50,
+        "base": 80,
+        "streams": 1,
+        "piece_bytes": 1048576,
+        "ram_mib": 1024
+      },
+      "verified_paced_bytes": 33554432,
+      "warm_ranges": 100,
+      "warm_range_bytes": 104857600,
+      "seed_errors": 0,
+      "raw_sha256": "49974e3b24b143ee27905d921eb52c18132825d810a0224982ecf24d5b96c0ef"
+    }
+  ],
+  "verified_paced_bytes": 738197504,
+  "warm_range_observations": 508,
+  "scope": "Functional wiring only,not timed benchmark. Legacy active50 preserved (base80 remains80),idle never registers a stream and sends0payload. Full432matrix,uncachedseeks,noise/repetitions,ABC and eventualcandidate remain unexecuted. V3 idlecase incorrectly registered/destroyed stream and observed legitimate boundaryprefetch;failedfixture retained,productionunchanged."
+}

@@ -1,14 +1,16 @@
 import asyncio
 import re
-import time
 from urllib.parse import unquote
 
+from app.common.async_utils import owned_to_thread
+from app.common.log_safety import network_error_fields
 from app.common.logger import logger
 from app.common.schemas.internal import SeriesInfo
 from app.common.singleflight import Singleflight
 from app.config import NodeEnv, config
 from app.modules.settings.service import SettingsService
 from app.modules.stream.active_playback import wait_for_active_binge_group
+from app.modules.stremio.cache import stream_cache_state as _stream_cache_state
 from app.modules.stremio.constants import (
     ADDON_APP_PREFIX_ID,
     SEARCH_ID,
@@ -37,28 +39,30 @@ from app.modules.stremio.tvdb_resolver import TvdbResolver, tvdb_resolver
 from app.modules.torrent_streams.service import TorrentStreamsService
 from app.modules.users.models import UserModel
 
-_STREAM_CACHE_TTL_SECONDS = 60.0
-_MAX_STREAM_CACHE_ENTRIES = 500
-_stream_cache: dict[str, tuple[float, list[StremioStream]]] = {}
-_user_cache_generations: dict[str, int] = {}
 _stream_singleflight: Singleflight[list[StremioStream]] = Singleflight()
 
 
+def open_stream_searches() -> None:
+    global _stream_singleflight
+    if _stream_singleflight.closed:
+        _stream_singleflight = Singleflight()
+
+
+async def close_stream_searches() -> None:
+    await _stream_singleflight.aclose()
+    invalidate_stream_cache()
+
+
 def get_user_cache_generation(user_id: str) -> int:
-    return _user_cache_generations.get(user_id, 0)
+    return _stream_cache_state.revision(user_id)[1]
 
 
 def invalidate_stream_cache(user_id: str | None = None) -> None:
     """M05: Explicit stream cache invalidálás és generációszámláló inkrementálás."""
     if user_id is not None:
-        _user_cache_generations[user_id] = _user_cache_generations.get(user_id, 0) + 1
-        prefix = f"{user_id}:"
-        for key in list(_stream_cache.keys()):
-            if key.startswith(prefix):
-                _stream_cache.pop(key, None)
+        _stream_cache_state.invalidate_user(user_id)
     else:
-        _user_cache_generations.clear()
-        _stream_cache.clear()
+        _stream_cache_state.invalidate_all()
 
 
 class StremioService:
@@ -72,7 +76,9 @@ class StremioService:
         self._settings_service = settings_service
         self._tvdb_resolver = tvdb_resolver_service or tvdb_resolver
 
-    def manifest(self, user: UserModel) -> Manifest:
+    def manifest(self) -> Manifest:
+        """Felhasználófüggetlen manifest: a Stremio/Nuvio telepítéskor tárolja, ezért
+        felhasználói beállítástól függő tartalom csak újratelepítés után érvényesülne."""
         app_url = self._settings_service.get_app_url()
 
         addon_id = "hu.stremhu-source.addon"
@@ -89,42 +95,41 @@ class StremioService:
             addon_id = f"{addon_id}.dev"
             name = f"{name} (DEV)"
 
-        enable_catalog = getattr(user, "enable_catalog_search", True)
-
-        catalogs: list[ManifestCatalog] = []
-        if enable_catalog:
-            catalogs = [
-                ManifestCatalog(
-                    id=SEARCH_ID,
-                    name="🔍 Torrent - StremHU",
-                    type=ContentType.MOVIE,
-                    extra=[
-                        ManifestExtra(
-                            name=ExtraName.SEARCH,
-                            is_required=True,
-                        )
-                    ],
-                ),
-                ManifestCatalog(
-                    id=SEARCH_ID,
-                    name="🔍 Torrent - StremHU",
-                    type=ContentType.SERIES,
-                    extra=[
-                        ManifestExtra(
-                            name=ExtraName.SEARCH,
-                            is_required=True,
-                        )
-                    ],
-                ),
-            ]
+        # A keresési katalógust a manifest mindig hirdeti: a Stremio/Nuvio a manifestet a
+        # telepítéskor tárolja, így egy beállításfüggő manifest csak újratelepítés után követné a
+        # kapcsolót. A felhasználói kapcsolót a katalógus-végpont érvényesíti
+        # (StremioCatalogsService.get_catalog: kikapcsolva üres lista, trackerlekérdezés nélkül).
+        catalogs: list[ManifestCatalog] = [
+            ManifestCatalog(
+                id=SEARCH_ID,
+                name="🔍 Torrent - StremHU",
+                type=ContentType.MOVIE,
+                extra=[
+                    ManifestExtra(
+                        name=ExtraName.SEARCH,
+                        is_required=True,
+                    )
+                ],
+            ),
+            ManifestCatalog(
+                id=SEARCH_ID,
+                name="🔍 Torrent - StremHU",
+                type=ContentType.SERIES,
+                extra=[
+                    ManifestExtra(
+                        name=ExtraName.SEARCH,
+                        is_required=True,
+                    )
+                ],
+            ),
+        ]
 
         resources: list[ShortManifestResource | FullManifestResource] = [
             ShortManifestResource.STREAM,
+            ShortManifestResource.CATALOG,
             ShortManifestResource.META,
             ShortManifestResource.SUBTITLES,
         ]
-        if enable_catalog:
-            resources.insert(1, ShortManifestResource.CATALOG)
 
         return Manifest(
             id=addon_id,
@@ -161,16 +166,12 @@ class StremioService:
         """Lekéri a lejátszható streameket az adatbázisból vagy indexerekből."""
         dedup_val = getattr(user, "enable_stream_deduplication", True)
         enable_fallback = bool(getattr(user, "enable_fallback_subtitles", False))
-        user_gen = get_user_cache_generation(user.id)
+        user_gen = _stream_cache_state.revision(user.id)
         api_key = getattr(user, "api_key", "")
         cache_key = f"{user.id}:{user_gen}:{api_key}:{dedup_val}:{enable_fallback}:{user.enable_smart_filter}:{user.smart_filter_limit}:{parsed_id.model_dump_json()}"
-        now = time.monotonic()
-        cached = _stream_cache.get(cache_key)
+        cached = _stream_cache_state.get(cache_key)
         if cached is not None:
-            ts, cached_streams = cached
-            if now - ts < _STREAM_CACHE_TTL_SECONDS:
-                return cached_streams
-            _stream_cache.pop(cache_key, None)
+            return cached
 
         async def _fetch() -> list[StremioStream]:
             streams = await self._get_streams_uncached(user, parsed_id)
@@ -179,12 +180,8 @@ class StremioService:
             if (
                 streams
                 and any(s.url is not None for s in streams)
-                and get_user_cache_generation(user.id) == user_gen
             ):
-                if len(_stream_cache) >= _MAX_STREAM_CACHE_ENTRIES:
-                    for k in list(_stream_cache.keys())[:100]:
-                        _stream_cache.pop(k, None)
-                _stream_cache[cache_key] = (time.monotonic(), streams)
+                _stream_cache_state.put_if_revision(user.id, cache_key, user_gen, streams)
             return streams
 
         return await _stream_singleflight.run(cache_key, _fetch)
@@ -194,7 +191,7 @@ class StremioService:
         user: UserModel,
         parsed_id: StreamId,
     ) -> list[StremioStream]:
-        app_url = await asyncio.to_thread(self._settings_service.get_app_url)
+        app_url = await owned_to_thread(self._settings_service.get_app_url)
         if isinstance(parsed_id, TorrentStreamId):
             torrent_streams = await self._torrent_streams_service.find_by_torrent_id(
                 indexer_id=parsed_id.indexer_id,
@@ -355,7 +352,7 @@ class StremioService:
                         if dyn_alt_seasons:
                             series_info.alternate_seasons = dyn_alt_seasons
                     except Exception as e:
-                        logger.debug(f"[StremioService] Epizód leképezés hiba: {e}")
+                        logger.debug("operation=episode-mapping %s", network_error_fields(e))
 
             is_series = series_info is not None
             if imdb_id and hasattr(self._tvdb_resolver, "get_alternate_imdb_ids"):
@@ -370,7 +367,7 @@ class StremioService:
                         alternate_imdb_ids = alt_res
                 except Exception as e:
                     logger.debug(
-                        f"[StremioService] Alternatív IMDb feloldási hiba: {e}"
+                        "operation=imdb-alias %s", network_error_fields(e)
                     )
 
             # IMDb alapú stream lekérdezés kereséssel és feloldással
@@ -423,11 +420,12 @@ class StremioService:
                         errors.extend(new_errors)
                 except Exception as e:
                     logger.debug(
-                        f"[StremioService] Lusta dinamikus alias keresési hiba: {e}"
+                        "operation=dynamic-imdb-alias %s", network_error_fields(e)
                     )
         finally:
             if prefetch_task is not None and not prefetch_task.done():
                 prefetch_task.cancel()
+                await asyncio.gather(prefetch_task, return_exceptions=True)
 
         stremio_streams = [
             StremioStream.from_imdb_torrent_stream(
@@ -580,7 +578,7 @@ class StremioService:
             }
             if valid_binge_groups:
                 active_bg = await wait_for_active_binge_group(
-                    api_key=user.api_key,
+                    user_id=user.id,
                     valid_binge_groups=valid_binge_groups,
                     timeout=0.4,
                 )

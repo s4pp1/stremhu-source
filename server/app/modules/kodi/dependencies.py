@@ -19,7 +19,7 @@ def create_kodi_service(
 
 
 def get_kodi_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> KodiService:
     """FastAPI függőség-injektáló provider a KodiService példányosításához."""
     return create_kodi_service(db)

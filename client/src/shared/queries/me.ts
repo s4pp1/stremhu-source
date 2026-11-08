@@ -61,7 +61,11 @@ export function useUpdateMe() {
       const me = await meUpdate(payload)
       return me
     },
-    onSuccess: (updated) => {
+    onSuccess: (updated, payload) => {
+      if (payload.password !== undefined) {
+        queryClient.clear()
+        return
+      }
       queryClient.setQueryData(['me'], updated)
       queryClient.invalidateQueries({ queryKey: getUsers.queryKey })
     },

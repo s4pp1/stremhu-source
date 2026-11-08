@@ -46,6 +46,8 @@ class UserModel(Base):
         default_factory=lambda: str(uuid.uuid4()),
     )
 
+    session_epoch: Mapped[int] = mapped_column(sa.Integer, default=0, server_default=sa.text("0"))
+
     password_hash: Mapped[str | None] = mapped_column(
         sa.Text,
         default=None,

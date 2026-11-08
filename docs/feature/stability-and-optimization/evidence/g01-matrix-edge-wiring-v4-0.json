@@ -1,0 +1,3227 @@
+{
+  "fixture": "g01-full-parameter-native-warm-seek-v4",
+  "is_measurement": false,
+  "variant": "legacy",
+  "peer_block_delay_ms": 2,
+  "case": {
+    "global": 50,
+    "base": 10,
+    "streams": 0,
+    "piece_bytes": 262144,
+    "ram_mib": 512
+  },
+  "streams": 0,
+  "warm_seek_rows": [],
+  "piece_bytes": 262144,
+  "bytes_per_stream": 33554432,
+  "consumer_bytes_per_second": 4194304,
+  "late_data_threshold_ms": 100,
+  "rows": [],
+  "resource_samples": [
+    {
+      "seconds": 2399.361928894,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 90904
+      }
+    },
+    {
+      "seconds": 2399.412361814,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 90904
+      }
+    },
+    {
+      "seconds": 2399.462682043,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 90904
+      }
+    },
+    {
+      "seconds": 2399.513003812,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 90904
+      }
+    },
+    {
+      "seconds": 2399.563318022,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 90904
+      }
+    },
+    {
+      "seconds": 2399.613627721,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 90904
+      }
+    },
+    {
+      "seconds": 2399.663954147,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 90904
+      }
+    },
+    {
+      "seconds": 2399.714439637,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 90904
+      }
+    },
+    {
+      "seconds": 2399.764758494,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 90904
+      }
+    },
+    {
+      "seconds": 2399.815197147,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2399.86552033,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2399.91585316,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2399.966233882,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.016587299,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.066925869,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.117248973,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.167594194,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.218017554,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.268544532,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.319210626,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.36962567,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.419972471,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.470361575,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.520699355,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.571035638,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.621361508,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.671696876,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.722037481,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.772404644,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.822725459,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.873086935,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.923420036,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2400.973776945,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2401.024137113,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2401.074517424,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63074304,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2401.124858872,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2401.17523776,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2401.225657215,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2401.27599862,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2401.326372753,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2401.376693779,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2401.427044,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2401.477365892,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91288
+      }
+    },
+    {
+      "seconds": 2401.527697748,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2401.578028978,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2401.628363793,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2401.67871541,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2401.729160998,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2401.779592299,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2401.829967382,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2401.880350442,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2401.930847705,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2401.981413433,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.031917837,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.082415158,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.132889528,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.183218419,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.233577391,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.284056539,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.334397183,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.384726443,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.435050793,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.485366157,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.535698461,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.586050549,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.636378627,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.686721618,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.73703792,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.78736299,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91416
+      }
+    },
+    {
+      "seconds": 2402.837744991,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2402.888138754,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2402.938602203,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2402.988937124,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.039266433,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.08965353,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63119360,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.140024053,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.190430751,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.240931313,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.291246304,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.341560053,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.39206532,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.44239115,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.492756724,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.543097812,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.593426979,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.643752596,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.694090233,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.74441165,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.794736516,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.8451261,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.895458727,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.945791994,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2403.996153765,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.046500096,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.096839103,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.14717047,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.197532989,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.247863781,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.298272164,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.348705822,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.399031644,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.449363705,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.4996864,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.550014317,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.600368817,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.650719135,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.701091194,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.751444698,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.801770481,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.8521279,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.902451029,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2404.952785432,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.003115831,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.053436651,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.103793952,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63160320,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.154192899,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.204522422,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.254861249,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.305178691,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.355503398,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.405826293,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.456152732,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.506482652,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.556826434,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.607157472,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.657491099,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.707832757,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.758155759,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.808464808,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.858782962,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.909140671,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2405.95949829,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.009847873,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.060263659,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.110596199,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.160922844,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.211250221,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.261569441,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.311895928,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.362282849,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.412619216,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.462941309,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.513272129,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.563579973,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.613928151,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.664326439,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68153344,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.71471504,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.76518149,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.815572213,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.865952042,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.916319091,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2406.966640361,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.016967006,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.067280472,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.117602271,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63197184,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.167973375,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.218442334,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.268847619,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.319211072,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.369558256,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.419890573,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.470280352,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.52060941,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.570935785,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.621265662,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.6715889,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.721952633,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.772400662,
+      "connections": [
+        10
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.822718643,
+      "connections": [
+        1
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.873066464,
+      "connections": [
+        1
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.923387421,
+      "connections": [
+        1
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2407.973777728,
+      "connections": [
+        1
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.024121663,
+      "connections": [
+        1
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.074552903,
+      "connections": [
+        1
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.124876499,
+      "connections": [
+        1
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68100096,
+        "peak_bytes": 68153344,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.17523875,
+      "connections": [
+        1
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68362240,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.22556855,
+      "connections": [
+        1
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.275903973,
+      "connections": [
+        1
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.32628977,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.376641988,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.427015843,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.477349534,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.527675401,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.578011265,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.628329886,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.678651317,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.728967096,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.779304308,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.829629846,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.879963849,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.930327061,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2408.980679382,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2409.031013869,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2409.081340556,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2409.131670596,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63238144,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2409.182004065,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63266816,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2409.232366043,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63266816,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2409.282736522,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63266816,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    },
+    {
+      "seconds": 2409.333077612,
+      "connections": [
+        0
+      ],
+      "limits": [
+        10
+      ],
+      "memory": {
+        "anon_bytes": 63266816,
+        "file_bytes": 700416,
+        "current_bytes": 68358144,
+        "peak_bytes": 68362240,
+        "max_rss_kib": 91544
+      }
+    }
+  ],
+  "wall_seconds": 10.025158671999634,
+  "cpu_seconds": 0.062636998,
+  "seed_stats": {
+    "active": true,
+    "handshakes": 20,
+    "requests": 0,
+    "bytes_sent": 0,
+    "peak_connections": 10,
+    "active_connections": 0,
+    "errors": []
+  },
+  "scope": "Parameterized full432cell legacy fixture; this invocation alone is one case.32MiB/file verified paced4MiB/s; cold startup separate, >=100warm-native Range observations per activecell, not uncached seek. Idle0 has one native torrent/no stream/no payload and10real seconds. Test-only sameIP seed setting, nativeplayer buffer/trust untested; no policy decision or productionchange.",
+  "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+  "client_resource": "2CPU0,1/512MiB",
+  "server_resource": "1CPU15/256MiB",
+  "storage": "Own labelled local Docker volume, retained;native data is reclaimable file cache,not tmpfs",
+  "fixture_hashes": {
+    "g01-separated-seed-base-v1.py": "0f53af0b63c51322a807107388524cd1096f949f5c33c5e560791f24567b71f3",
+    "g01_seed_server_v1.py": "daa0dee2dd1e13788f2c1913093d5f6fda8f639a3743512c143094b1284f015a",
+    "g01_matrix_native_v4.py": "dab29c3f96a2aabaa37046719c2143a94f2a92bdb2a01a104c98e9b730894aa9"
+  }
+}

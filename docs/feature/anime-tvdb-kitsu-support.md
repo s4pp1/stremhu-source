@@ -1,4 +1,41 @@
+---
+doc_id: "feature-anime-tvdb-kitsu-support"
+title: "Fejlesztői és AI Agent Dokumentáció: feature/anime-tvdb-kitsu-support"
+kind: "feature-reference"
+status: "historical-reference"
+audience: ["developer", "ai-agent"]
+tags: ["anime", "tvdb", "kitsu", "mal", "imdb", "episode", "alias", "resolver"]
+source_commit: null
+baseline: "8c99c7d"
+verification: "structure-only"
+structure_reviewed: "2026-11-03"
+related_docs: ["docs/feature/README.md", "docs/feature/search-filter-tmdb-tvdb.md"]
+source_paths: ["server/app/modules/stremio/tvdb_resolver.py", "server/app/modules/stremio/utils.py", "server/app/modules/torrent_streams/utils/stream_file_resolver.py", "server/app/modules/torrent_streams/utils/series_parser.py"]
+---
+
 # Fejlesztői és AI Agent Dokumentáció: `feature/anime-tvdb-kitsu-support`
+
+<!-- doc-nav:start -->
+**Navigáció:** [Dokumentáció](../README.md) · [AI-index](../AI-INDEX.md)
+
+> **Státusz:** Korábbi feature technikai referenciája. A tartalom és a mérések nem kaptak most új runtime-verifikációt; aktuális működéshez kövesd a forráskódot.
+
+**Kapcsolódó:** [README.md](README.md) · [search-filter-tmdb-tvdb.md](search-filter-tmdb-tvdb.md)
+
+<details>
+<summary>Fejezetek / közvetlen ugrás</summary>
+
+- [1. A Branch Célja és Motivációja](#doc-1-a-branch-celja-es-motivacioja)
+- [2. Módosított és Új Fájlok Áttekintése (Diff Mátrix s4pp1/stremhu-source óta)](#doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix-s4pp1stremhu-source-ota)
+- [3. Architektúra és Megvalósítás Ábrázolása](#doc-3-architektura-es-megvalositas-abrazolasa)
+- [4. Részletes Működési Leírás Modulonként (AI Agent Referencia)](#doc-4-reszletes-mukodesi-leiras-modulonkent-ai-agent-referencia)
+- [5. A 4 Teljesítmény-optimalizálás Technikai Részletei](#doc-5-a-4-teljesitmeny-optimalizalas-technikai-reszletei)
+- [6. Mérési Eredmények (Benchmark: Upstream s4pp1/stremhu-source vs. feature/anime-tvdb-kitsu-support)](#doc-6-meresi-eredmenyek-benchmark-upstream-s4pp1stremhu-source-vs-featureanime-tvdb-kitsu-support)
+- [7. Tesztelési Útmutató Fejlesztőknek és AI Ágenseknek](#doc-7-tesztelesi-utmutato-fejlesztoknek-es-ai-agenseknek)
+
+</details>
+
+<!-- doc-nav:end -->
 
 > [!IMPORTANT]
 > **Viszonyítási alap (Baseline):**
@@ -7,6 +44,8 @@
 
 ---
 
+<!-- doc-anchor:doc-1-a-branch-celja-es-motivacioja -->
+<a id="doc-1-a-branch-celja-es-motivacioja"></a>
 ## 1. A Branch Célja és Motivációja
 
 Az eredeti upstream `s4pp1/stremhu-source` kizárólag a hagyományos nyugati filmek és sorozatok **IMDb azonosító (`tt...`) + standard `SxxExx` számozás** kombinációjára épült. Anime tartalmak, több évados gyűjtemények (season packok) és alternatív metaadat-kiegészítők (Nuvio, Stremio Anime Kitsu, TheTVDB) használatakor az upstream rendszer az alábbi okok miatt nem talált lejátszható forrást, vagy hibás epizódot indított el:
@@ -20,6 +59,8 @@ Az eredeti upstream `s4pp1/stremhu-source` kizárólag a hagyományos nyugati fi
 
 ---
 
+<!-- doc-anchor:doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix-s4pp1stremhu-source-ota -->
+<a id="doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix-s4pp1stremhu-source-ota"></a>
 ## 2. Módosított és Új Fájlok Áttekintése (Diff Mátrix `s4pp1/stremhu-source` óta)
 
 | Modul / Fájl | Státusz | Változtatás összefoglalása az upstreamhez képest |
@@ -48,8 +89,12 @@ Az eredeti upstream `s4pp1/stremhu-source` kizárólag a hagyományos nyugati fi
 
 ---
 
+<!-- doc-anchor:doc-3-architektura-es-megvalositas-abrazolasa -->
+<a id="doc-3-architektura-es-megvalositas-abrazolasa"></a>
 ## 3. Architektúra és Megvalósítás Ábrázolása
 
+<!-- doc-anchor:doc-31-komponens-es-gyorsitotar-architektura -->
+<a id="doc-31-komponens-es-gyorsitotar-architektura"></a>
 ### 3.1. Komponens- és Gyorsítótár-architektúra
 
 ```mermaid
@@ -98,6 +143,8 @@ flowchart TD
 
 ---
 
+<!-- doc-anchor:doc-32-end-to-end-szekvenciadiagram-parhuzamos-cold-start-es-epizodvaltas -->
+<a id="doc-32-end-to-end-szekvenciadiagram-parhuzamos-cold-start-es-epizodvaltas"></a>
 ### 3.2. End-to-End Szekvenciadiagram (Párhuzamos Cold Start és Epizódváltás)
 
 Az alábbi diagram bemutatja, hogyan fut **párhuzamosan** a tracker-keresés és a metaadat-leképezés az első indításkor (Cold Start), és hogyan kerülnek ki minden hálózati hívást a későbbi epizódváltások (Warm / Binge-Watching):
@@ -154,6 +201,8 @@ sequenceDiagram
 
 ---
 
+<!-- doc-anchor:doc-33-a-streamfileresolver-es-seriesparser-dontesi-folyamata -->
+<a id="doc-33-a-streamfileresolver-es-seriesparser-dontesi-folyamata"></a>
 ### 3.3. A `StreamFileResolver` és `SeriesParser` Döntési Folyamata
 
 ```mermaid
@@ -198,8 +247,12 @@ flowchart TD
 
 ---
 
+<!-- doc-anchor:doc-4-reszletes-mukodesi-leiras-modulonkent-ai-agent-referencia -->
+<a id="doc-4-reszletes-mukodesi-leiras-modulonkent-ai-agent-referencia"></a>
 ## 4. Részletes Működési Leírás Modulonként (AI Agent Referencia)
 
+<!-- doc-anchor:doc-41-stream-id-elemzes-es-semak-stremioutilspy-stremioschemaspy-commonschemasinternalpy -->
+<a id="doc-41-stream-id-elemzes-es-semak-stremioutilspy-stremioschemaspy-commonschemasinternalpy"></a>
 ### 4.1. Stream ID Elemzés és Sémák (`stremio/utils.py`, `stremio/schemas.py`, `common/schemas/internal.py`)
 
 1. **`SeriesInfo` bővítése (`server/app/common/schemas/internal.py`):**
@@ -222,10 +275,14 @@ flowchart TD
 
 ---
 
+<!-- doc-anchor:doc-42-metaadat-es-szamozas-feloldo-serverappmodulesstremiotvdbresolverpy -->
+<a id="doc-42-metaadat-es-szamozas-feloldo-serverappmodulesstremiotvdbresolverpy"></a>
 ### 4.2. Metaadat és Számozás Feloldó (`server/app/modules/stremio/tvdb_resolver.py`)
 
 A `TvdbResolver` (singleton példánya: `tvdb_resolver`) egy újrafelhasználható `httpx.AsyncClient` connection poolt (`max_keepalive_connections=20, max_connections=50`) és `KeyedLock` zárolást használ a párhuzamos kérések deduplikálására.
 
+<!-- doc-anchor:doc-fobb-metodusok-es-invariansok -->
+<a id="doc-fobb-metodusok-es-invariansok"></a>
 #### Főbb metódusok és invariánsok:
 
 1. **`resolve_tvdb_to_imdb(tvdb_id: str) -> str | None`**
@@ -253,8 +310,12 @@ A `TvdbResolver` (singleton példánya: `tvdb_resolver`) egy újrafelhasználhat
 
 ---
 
+<!-- doc-anchor:doc-43-intelligens-fajlnev-elemzo-es-fajlfeloldo-seriesparserpy-streamfileresolverpy -->
+<a id="doc-43-intelligens-fajlnev-elemzo-es-fajlfeloldo-seriesparserpy-streamfileresolverpy"></a>
 ### 4.3. Intelligens Fájlnév-elemző és Fájlfeloldó (`series_parser.py` & `stream_file_resolver.py`)
 
+<!-- doc-anchor:doc-seriesparser-serverappmodulestorrentstreamsutilsseriesparserpy -->
+<a id="doc-seriesparser-serverappmodulestorrentstreamsutilsseriesparserpy"></a>
 #### `SeriesParser` (`server/app/modules/torrent_streams/utils/series_parser.py`)
 A `SeriesParser` mappanevekből, torrentnevekből és fájlnevekből nyeri ki a `(seasons: list[int], episodes: list[int])` párost:
 - **1. Exact `SxxExx` minták (`_match_exact_sxx_exx`):**
@@ -276,6 +337,8 @@ A `SeriesParser` mappanevekből, torrentnevekből és fájlnevekből nyeri ki a 
   - Csak akkor fut le, ha `allow_standalone_episode=True` (fájloknál `True`, mappáknál és a torrent gyökérnevénél `False`!).
   - Nullával kezdődő (`01`, `05`) vagy a fájlnév végén álló számot választja a felbontások (`1920x1080`, `1080`, `720`) és évszámok (`2023`) kiszűrése után.
 
+<!-- doc-anchor:doc-streamfileresolver-serverappmodulestorrentstreamsutilsstreamfileresolverpy -->
+<a id="doc-streamfileresolver-serverappmodulestorrentstreamsutilsstreamfileresolverpy"></a>
 #### `StreamFileResolver` (`server/app/modules/torrent_streams/utils/stream_file_resolver.py`)
 A `StreamFileResolver` feladata kiválasztani a torrent fájljai közül a kért epizódhoz tartozó videófájlt, miközben **nulla fals pozitív** találatot enged át:
 1. **Gyökérszintű szűrés (`resolve()`):**
@@ -293,6 +356,8 @@ A `StreamFileResolver` feladata kiválasztani a torrent fájljai közül a kért
 
 ---
 
+<!-- doc-anchor:doc-44-masodlagos-cim-alapu-kereses-es-iker-imdb-egyesites-torrentstreamsservicepy -->
+<a id="doc-44-masodlagos-cim-alapu-kereses-es-iker-imdb-egyesites-torrentstreamsservicepy"></a>
 ### 4.4. Másodlagos Cím Alapú Keresés és Iker-IMDb Egyesítés (`torrent_streams/service.py`)
 
 A `TorrentStreamsService.find_by_imdb` metódus két szinten bővíti a találati halmazt:
@@ -304,12 +369,18 @@ A `TorrentStreamsService.find_by_imdb` metódus két szinten bővíti a találat
 
 ---
 
+<!-- doc-anchor:doc-5-a-4-teljesitmeny-optimalizalas-technikai-reszletei -->
+<a id="doc-5-a-4-teljesitmeny-optimalizalas-technikai-reszletei"></a>
 ## 5. A 4 Teljesítmény-optimalizálás Technikai Részletei
 
+<!-- doc-anchor:doc-1-optimalizacio-parhuzamos-tracker-prefetch-es-okos-alias-kihagyas-cold-start -->
+<a id="doc-1-optimalizacio-parhuzamos-tracker-prefetch-es-okos-alias-kihagyas-cold-start"></a>
 ### 1. Optimalizáció: Párhuzamos Tracker Prefetch és Okos Alias Kihagyás (Cold Start)
 - **Hol:** [`StremioService._get_streams_uncached`](file:///d:/Git/stremhu-source-anime/server/app/modules/stremio/service.py#L204-L246) és [`TvdbResolver`](file:///d:/Git/stremhu-source-anime/server/app/modules/stremio/tvdb_resolver.py#L387-L551).
 - **Működés:** Mielőtt a `StremioService` bevárná a `get_episode_mappings` (Anime-Kitsu / Cinemeta) hálózati hívást, azonnal elindít egy `asyncio.create_task(provider.find_by_imdb_id(imdb_id))` háttérfeladatot. Mivel a `TorrentSourceProviderService.find_by_imdb_id` az `_ongoing_tasks[f"imdb:{imdb_id}"]` szótárban regisztrálja a futó taskot, a `get_episode_mappings` befejezése után meghívott `TorrentStreamsService.find_by_imdb` nem indít új keresést, hanem rácsatlakozik a már `200-400 ms` óta futó tracker-lekérdezésre.
 
+<!-- doc-anchor:doc-2-optimalizacio-session-biztos-memoria-gyorsitotarak-epizodvaltas-binge-watching -->
+<a id="doc-2-optimalizacio-session-biztos-memoria-gyorsitotarak-epizodvaltas-binge-watching"></a>
 ### 2. Optimalizáció: Session-biztos Memória-gyorsítótárak (Epizódváltás / Binge-Watching)
 - **Hol:**
   - [`IndexersService.get_torrents_by_imdb_id`](file:///d:/Git/stremhu-source-anime/server/app/modules/indexers/service.py#L32-L34) (`_imdb_tracker_cache`, TTL: `180 mp`, max: `1000` elem)
@@ -321,10 +392,14 @@ A `TorrentStreamsService.find_by_imdb` metódus két szinten bővíti a találat
   - Ezért **tilos** ORM modelleket tartalmazó `TorrentSource` vagy `IndexerTorrent` példányokat kérések között memóriában gyorsítótárazni!
   - Ehelyett az `_imdb_tracker_cache` kizárólag a tiszta Pydantic `IndexerDefinitionTorrent` listákat gyorsítótárazza `(indexer_id, imdb_id)` kulcs alatt, a `_TORRENT_INFO_CACHE` pedig a tiszta `TorrentInfo` adatstruktúrát `info_hash` alatt. Így a következő epizód (`S01E02`) lekérésekor az ORM objektumok az aktuális kérés élő SQLite sessionjéből töltődnek be `~1 ms` alatt, míg a lassú tracker HTTP keresés és a `libtorrent` bdecode `0 ms` alatt memóriából szolgálódik ki.
 
+<!-- doc-anchor:doc-3-optimalizacio-kotegelt-batch-sqlite-torrent-mentes-createmany -->
+<a id="doc-3-optimalizacio-kotegelt-batch-sqlite-torrent-mentes-createmany"></a>
 ### 3. Optimalizáció: Kötegelt (Batch) SQLite `.torrent` Mentés (`create_many`)
 - **Hol:** [`IsolatedTorrentFilesService.create_many`](file:///d:/Git/stremhu-source-anime/server/app/modules/torrent_files/isolated_service.py#L59-L104), [`TorrentFilesRepository.create_many`](file:///d:/Git/stremhu-source-anime/server/app/modules/torrent_files/repository.py#L21-L26) és [`TorrentSourceProviderService._sync_torrent_files`](file:///d:/Git/stremhu-source-anime/server/app/modules/torrent_source_provider/service.py#L198-L246).
 - **Működés:** Egy új film vagy sorozat első lekérésekor 20–40 `.torrent` fájlt kell letölteni a trackerekről. Korábban minden egyes `.torrent` fájl külön `isolated_db_session()` tranzakciót és külön SQLite `COMMIT` (disk fsync) műveletet nyitott (30 torrentnél 60 külön DB session!). Most a `_download_torrent_bytes` párhuzamosan letölti a bájtokat a memóriába, majd egyetlen `create_many(downloaded_items)` hívással, **1 darab SQLite tranzakcióban** (`db.add_all` + `db.flush`) menti el az összeset.
 
+<!-- doc-anchor:doc-4-optimalizacio-agresszivebb-libtorrent-piece-deadline-utemezes -->
+<a id="doc-4-optimalizacio-agresszivebb-libtorrent-piece-deadline-utemezes"></a>
 ### 4. Optimalizáció: Agresszívebb `libtorrent` Piece-Deadline Ütemezés
 - **Hol:** [`Torrent.get_deadlines`](file:///d:/Git/stremhu-source-anime/server/app/modules/relay/entities.py#L164-L177).
 - **Működés:** Amikor a lejátszó elindítja a videót vagy belekeres (seek), a `Stream` kiszámítja az előtöltendő piece-ek távolságát (`piece_distance`):
@@ -334,6 +409,8 @@ A `TorrentStreamsService.find_by_imdb` metódus két szinten bővíti a találat
 
 ---
 
+<!-- doc-anchor:doc-6-meresi-eredmenyek-benchmark-upstream-s4pp1stremhu-source-vs-featureanime-tvdb-kitsu-support -->
+<a id="doc-6-meresi-eredmenyek-benchmark-upstream-s4pp1stremhu-source-vs-featureanime-tvdb-kitsu-support"></a>
 ## 6. Mérési Eredmények (Benchmark: Upstream `s4pp1/stremhu-source` vs. `feature/anime-tvdb-kitsu-support`)
 
 Az éles tracker-hívásokkal (nCore + HunTorrent + Majomparádé) végzett helyi Docker A/B mérések eredményei:
@@ -347,6 +424,8 @@ Az éles tracker-hívásokkal (nCore + HunTorrent + Majomparádé) végzett hely
 
 ---
 
+<!-- doc-anchor:doc-7-tesztelesi-utmutato-fejlesztoknek-es-ai-agenseknek -->
+<a id="doc-7-tesztelesi-utmutato-fejlesztoknek-es-ai-agenseknek"></a>
 ## 7. Tesztelési Útmutató Fejlesztőknek és AI Ágenseknek
 
 Minden módosítás után kötelező lefuttatni a `server/tests/test_tvdb_streams.py` és a teljes `pytest` tesztcsomagot:
@@ -355,10 +434,11 @@ Minden módosítás után kötelező lefuttatni a `server/tests/test_tvdb_stream
 $env:HOST_IP="<HOST_IP>"; $env:PYTHONIOENCODING="utf-8"; cd server; .venv\Scripts\python -m pytest tests
 ```
 
+<!-- doc-anchor:doc-fontos-teszt-invariansok-serverteststesttvdbstreamspy -->
+<a id="doc-fontos-teszt-invariansok-serverteststesttvdbstreamspy"></a>
 ### Fontos teszt-invariánsok (`server/tests/test_tvdb_streams.py`):
 - `test_resolve_kitsu_aot_season_isolation`: Ellenőrzi, hogy a Kitsu `season=1` belső index sosem kerül be az `alt_seasons`-be, ha a valódi IMDb évad `> 1`.
 - `test_anime_file_resolution`: Ellenőrzi az abszolút epizódszámok (*One Piece*, *Naruto Shippuden*), a több évados pakkok (*Noragami*, *Code Geass R2*, *Mob Psycho 100 2nd Season*), valamint a szezon-izoláció (*Attack on Titan S03E02* nem illeszkedhet az `S01E02` vagy évad nélküli `- 02` fájlokra) helyességét.
 - `test_find_by_imdb_searches_alternate_imdb_ids`: Ellenőrzi a *Dragon Ball Z* (`tt0121220` + `tt0214341`) párhuzamos iker-IMDb keresését és seeder szerinti egyesítését.
 - `test_batch_torrent_download_and_save_single_transaction`: Ellenőrzi, hogy a hiányzó `.torrent` fájlok letöltése után pontosan **egyetlen** kötegelt `create_many` tranzakció fut le.
 - `test_relay_tighter_piece_deadlines`: Ellenőrzi a `0 ms`, `300 ms` és `1000 + d * 500 ms` piece-deadline ütemezést.
-

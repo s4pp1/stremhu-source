@@ -1,10 +1,15 @@
 import asyncio
+import socket
+import threading
 from collections.abc import Callable
+from dataclasses import dataclass
 
 import libtorrent as libtorrent
 from fastapi import HTTPException
 
+from app.common.async_utils import owned_to_thread
 from app.common.logger import logger
+from app.common.singleflight import SearchStoppingError
 from app.common.torrent_info import parse_torrent_info
 from app.config import config
 from app.modules.relay.entities import File, Stream, Torrent
@@ -18,10 +23,28 @@ class PieceReadAbortedError(Exception):
     """A darabolvasás a torrent eltávolítása vagy leállítás miatt megszakadt."""
 
 
+@dataclass(frozen=True)
+class ResumeSaveResult:
+    requested: int
+    accepted: int
+    failed: int
+    timed_out: int
+
+    @property
+    def complete(self) -> bool:
+        return self.failed == self.timed_out == 0
+
+
 class RelayService:
     def __init__(
         self,
     ):
+        self._accepting = True
+        self._closed = False
+        self._native_close_task: asyncio.Task[None] | None = None
+        self._alert_task: asyncio.Task[None] | None = None
+        self._alert_failed = False
+        self._resume_pending: dict[str, asyncio.Future[bool]] = {}
         self._libtorrent_session = libtorrent.session()
 
         alert_mask = (
@@ -56,29 +79,68 @@ class RelayService:
             }
         )
 
+        self._connection_policy_lock = threading.RLock()
         self._torrent_connections_limit = 20
         self._torrents: dict[libtorrent.sha1_hash, Torrent] = {}
         self._loop = asyncio.get_event_loop()
         self.priority_update_queue: asyncio.Queue[str] = asyncio.Queue()
 
-        def on_alert():
-            self._loop.call_soon_threadsafe(self.process_alerts)
-
-        self._libtorrent_session.set_alert_notify(on_alert)
-
         self._piece_fetch_tasks: dict[tuple[str, int], asyncio.Task[bytes]] = {}
         self._pending_piece_reads: dict[tuple[str, int], asyncio.Future[bytes]] = {}
 
         # Event hooks for resume data management (Observer Pattern)
-        self.on_save_resume: list[Callable[[str, bytes], None]] = []
+        self.on_save_resume: list[Callable[[str, bytes], bool | None]] = []
+
+        # The binding's Python callback requires the GIL on a native thread.
+        # Its documented Python interface is an FD wakeup instead. Both ends
+        # stay open until the native owner is really gone, preventing fd reuse.
+        self._alert_reader, self._alert_writer = socket.socketpair()
+        self._alert_reader.setblocking(False)
+        self._alert_writer.setblocking(False)
+        self._libtorrent_session.set_alert_fd(self._alert_writer.fileno())
+        self._alert_task = self._loop.create_task(self._pump_alerts(), name="relay-alerts")
+        self._alert_task.add_done_callback(self._alert_task_finished)
+
+    async def _pump_alerts(self) -> None:
+        # Startup alerts may already have been queued before fd registration.
+        self.process_alerts()
+        while not self._closed:
+            data = await self._loop.sock_recv(self._alert_reader, 4096)
+            if not data:
+                raise RuntimeError("Native alert channel closed")
+            self.process_alerts()
+
+    def _alert_task_finished(self, task: asyncio.Task[None]) -> None:
+        if task.cancelled():
+            return
+        error = task.exception()
+        if error is None:
+            return
+        self._alert_failed = True
+        self.stop_admission()
+        logger.error("Native alert channel failed: kind=%s", type(error).__name__)
+        for key in tuple(self._resume_pending):
+            self._finish_resume(key, False)
+        for future in self._pending_piece_reads.values():
+            if not future.done():
+                future.set_exception(PieceReadAbortedError("Native alert channel stopped"))
 
     def trigger_priority_update(
         self,
         info_hash: str,
     ) -> None:
+        if not getattr(self, "_accepting", True):
+            return
         self._loop.call_soon_threadsafe(
-            self.priority_update_queue.put_nowait, info_hash
+            self._enqueue_priority, info_hash
         )
+
+    def _enqueue_priority(self, info_hash: str) -> None:
+        if getattr(self, "_accepting", True):
+            self.priority_update_queue.put_nowait(info_hash)
+
+    def stop_admission(self) -> None:
+        self._accepting = False
 
     async def priority_manager_loop(self):
         while True:
@@ -96,7 +158,7 @@ class RelayService:
             for info_hash in info_hashes:
                 sha1_hash = self._parse_info_hash(info_hash)
                 if torrent := self._torrents.get(sha1_hash):
-                    await asyncio.to_thread(torrent.priority_manager)
+                    await owned_to_thread(torrent.priority_manager)
 
     def update_settings(
         self,
@@ -118,10 +180,10 @@ class RelayService:
             apply_settings["enable_natpmp"] = payload.enable_upnp_and_natpmp
 
         if payload.torrent_connections_limit is not None:
-            self._torrent_connections_limit = payload.torrent_connections_limit
-            for torrent_handle in self._libtorrent_session.get_torrents():
-                if torrent_handle.is_valid():
-                    torrent_handle.set_max_connections(self._torrent_connections_limit)
+            with self._connection_policy_lock:
+                self._torrent_connections_limit = payload.torrent_connections_limit
+                for torrent in list(self._torrents.values()):
+                    self.apply_torrent_connection_policy(torrent)
 
         if payload.port is not None:
             apply_settings["listen_interfaces"] = (
@@ -129,6 +191,30 @@ class RelayService:
             )
 
         self._libtorrent_session.apply_settings(apply_settings)
+
+    def apply_torrent_connection_policy(self, torrent: Torrent) -> None:
+        with self._connection_policy_lock:
+            handle = torrent.torrent_handle
+            try:
+                owned = self._torrents.get(self._parse_info_hash(torrent.info_hash)) is torrent
+                if not owned or not handle.is_valid():
+                    torrent._last_applied_limit = None
+                    torrent._last_applied_handle = None
+                    return
+                target = max(self._torrent_connections_limit, 50) if torrent.has_active_streams else self._torrent_connections_limit
+                if torrent._last_applied_limit == target and torrent._last_applied_handle is handle:
+                    return
+                # A failed native call leaves the actual value unknown. A later
+                # call must retry even if the policy returns to the old target.
+                torrent._last_applied_limit = None
+                torrent._last_applied_handle = None
+                handle.set_max_connections(target)
+            except Exception:
+                torrent._last_applied_limit = None
+                torrent._last_applied_handle = None
+                raise
+            torrent._last_applied_limit = target
+            torrent._last_applied_handle = handle
 
     def get_torrents(self) -> list[RelayTorrent]:
         torrent_handlers = self._get_torrents()
@@ -163,6 +249,8 @@ class RelayService:
         torrent_handle: libtorrent.torrent_handle,
         piece_index: int,
     ) -> bytes:
+        if not getattr(self, "_accepting", True):
+            raise PieceReadAbortedError("Relay is stopping")
         info_hash = str(torrent_handle.info_hash())
         request_key = (info_hash, piece_index)
 
@@ -207,6 +295,7 @@ class RelayService:
 
     async def close_piece_requests(self) -> None:
         """Leállításkor az összes darabolvasó task leállítása és megvárása."""
+        self.stop_admission()
         tasks = list(self._piece_fetch_tasks.values())
         for task in tasks:
             task.cancel()
@@ -215,7 +304,7 @@ class RelayService:
             if isinstance(result, BaseException) and not isinstance(
                 result, (asyncio.CancelledError, PieceReadAbortedError, TimeoutError)
             ):
-                logger.debug(f"Darabolvasó task hibával zárult leállításkor: {result!r}")
+                logger.debug("Piece cleanup failed: kind=%s", type(result).__name__)
 
     async def _fetch_piece_with_retry(
         self,
@@ -269,6 +358,8 @@ class RelayService:
         priority: int = 0,
         resume_bytes: bytes | None = None,
     ) -> RelayTorrent:
+        if not getattr(self, "_accepting", True):
+            raise SearchStoppingError("Relay is stopping")
         save_path = str(config.downloads_dir.absolute())
 
         try:
@@ -288,7 +379,6 @@ class RelayService:
         params.storage_mode = libtorrent.storage_mode_t.storage_mode_sparse
 
         torrent_handle = self._libtorrent_session.add_torrent(params)
-        torrent_handle.set_max_connections(self._torrent_connections_limit)
         torrent_handle.unset_flags(libtorrent.torrent_flags.disable_pex)
 
         priorities = torrent_handle.piece_priorities()
@@ -303,7 +393,9 @@ class RelayService:
             default_priority=priority,
         )
 
-        self._torrents[torrent_info.info_hash()] = torrent
+        with self._connection_policy_lock:
+            self._torrents[torrent_info.info_hash()] = torrent
+            self.apply_torrent_connection_policy(torrent)
 
         return RelayTorrent.from_libtorrent_handle(torrent_handle)
 
@@ -370,7 +462,8 @@ class RelayService:
         if torrent_handle is None:
             return False
 
-        self._torrents.pop(info_hash, None)
+        with self._connection_policy_lock:
+            self._torrents.pop(info_hash, None)
         self._loop.call_soon_threadsafe(self.cancel_piece_requests, str(info_hash))
 
         self._libtorrent_session.remove_torrent(
@@ -380,20 +473,110 @@ class RelayService:
 
         return True
 
-    def trigger_save_resume_data(self):
-        for torrent_handle in self._libtorrent_session.get_torrents():
-            if torrent_handle.is_valid():
-                torrent_handle.save_resume_data(
-                    libtorrent.save_resume_flags_t.flush_disk_cache
-                )
+    def _request_resume(self, handle: libtorrent.torrent_handle) -> asyncio.Future[bool]:
+        key = str(handle.info_hash())
+        previous = self._resume_pending.get(key)
+        if previous is not None:
+            return previous
+        result: asyncio.Future[bool] = self._loop.create_future()
+        # Install before the native call: even an immediate alert has an owner.
+        self._resume_pending[key] = result
+        try:
+            handle.save_resume_data(libtorrent.save_resume_flags_t.flush_disk_cache)
+        except Exception as error:
+            self._finish_resume(key, False)
+            logger.error("Resume request failed: kind=%s", type(error).__name__)
+        return result
+
+    def _finish_resume(self, key: str, accepted: bool) -> None:
+        future = getattr(self, "_resume_pending", {}).pop(key, None)
+        if future is not None and not future.done():
+            future.set_result(accepted)
+
+    def trigger_save_resume_data(self) -> None:
+        if not self._accepting:
+            return
+        for handle in self._get_torrents():
+            self._request_resume(handle)
+
+    async def save_final_resume(self, timeout: float = 5.0) -> ResumeSaveResult:
+        """Old periodic alerts must finish before a final request for that hash.
+
+        A timeout leaves the old request in place; a late old alert can never
+        acknowledge a new final request. The writer and native pump stay alive.
+        """
+        if getattr(self, "_alert_failed", False) or getattr(self, "_closed", False):
+            return ResumeSaveResult(0, 0, 1, 0)
+        deadline = self._loop.time() + timeout
+        previous = tuple(self._resume_pending.values())
+        if previous:
+            _, pending = await asyncio.wait(previous, timeout=max(0, deadline-self._loop.time()))
+            if pending:
+                return ResumeSaveResult(0, 0, 0, len(pending))
+        handles = self._get_torrents()
+        requests = [self._request_resume(handle) for handle in handles]
+        if not requests:
+            return ResumeSaveResult(0, 0, 0, 0)
+        done, pending = await asyncio.wait(requests, timeout=max(0, deadline-self._loop.time()))
+        accepted = sum(future.result() for future in done)
+        return ResumeSaveResult(len(requests), accepted, len(done)-accepted, len(pending))
+
+    async def close_native(self) -> None:
+        from app.common.async_utils import await_owned_task
+
+        if self._native_close_task is None:
+            self._native_close_task = asyncio.create_task(self._release_native(), name="relay-native-close")
+        await await_owned_task(self._native_close_task)
+
+    async def _release_native(self) -> None:
+        self.stop_admission()
+        self._closed = True
+        alert_task = getattr(self, "_alert_task", None)
+        if alert_task is not None:
+            if not alert_task.done():
+                alert_task.cancel()
+            await asyncio.gather(alert_task, return_exceptions=True)
+        try:
+            # This keeps a native-only notification function, with no Python
+            # callback/GIL dependency. The sockets remain owned until join.
+            self._libtorrent_session.set_alert_fd(-1)
+            self._libtorrent_session.pause()
+        finally:
+            for future in self._resume_pending.values():
+                if not future.done():
+                    future.set_result(False)
+            self._resume_pending.clear()
+            self.on_save_resume.clear()
+            # Drop all owned handle references before releasing the native
+            # session's last reference on a worker (2.1.1 has no abort/close).
+            self._torrents.clear()
+            while not self.priority_update_queue.empty():
+                self.priority_update_queue.get_nowait()
+            holder = [self._libtorrent_session]
+            del self._libtorrent_session
+            try:
+                await owned_to_thread(holder.clear)
+            finally:
+                reader = getattr(self, "_alert_reader", None)
+                writer = getattr(self, "_alert_writer", None)
+                if reader is not None:
+                    reader.close()
+                if writer is not None:
+                    writer.close()
+        if getattr(self, "_alert_failed", False):
+            raise RuntimeError("Native alert channel failed")
 
     def process_alerts(self):
+        if getattr(self, "_closed", False):
+            return
         alerts = self._libtorrent_session.pop_alerts()
 
         for alert in alerts:
             try:
                 match alert:
                     case libtorrent.save_resume_data_alert():
+                        key = str(alert.handle.info_hash())
+                        accepted = True
                         try:
                             resume_data = libtorrent.bencode(
                                 libtorrent.write_resume_data(alert.params)
@@ -402,21 +585,29 @@ class RelayService:
                             if torrent_handle.is_valid():
                                 info_hash_str = str(torrent_handle.info_hash())
 
-                                for callback in self.on_save_resume:
+                                for callback in tuple(self.on_save_resume):
                                     try:
-                                        callback(info_hash_str, resume_data)
-                                    except Exception as e:
+                                        if callback(info_hash_str, resume_data) is False:
+                                            accepted = False
+                                    except Exception as error:
+                                        accepted = False
                                         logger.error(
-                                            f"Hiba történt az on_save_resume eseménykezelő futtatása közben: {e}"
+                                            "Resume callback failed: kind=%s", type(error).__name__
                                         )
-                        except Exception as e:
+                            else:
+                                accepted = False
+                        except Exception as error:
+                            accepted = False
                             logger.error(
-                                f"Hiba történt a torrent visszaállítási adatok mentése közben: {e}"
+                                "Resume serialization failed: kind=%s", type(error).__name__
                             )
+                        finally:
+                            self._finish_resume(key, accepted)
 
                     case libtorrent.save_resume_data_failed_alert():
+                        self._finish_resume(str(alert.handle.info_hash()), False)
                         logger.error(
-                            f"Hiba történt a torrent visszaállítási adatok mentése közben: {alert.message()}"
+                            "Resume snapshot alert failed: kind=%s", type(alert).__name__
                         )
 
                     case libtorrent.piece_finished_alert():
@@ -439,7 +630,7 @@ class RelayService:
                                 error_code = alert.error.value()
 
                                 logger.error(
-                                    f"Hiba a libtorrent.read_piece_alert során: {error_msg} (Kód: {error_code})"
+                                    "Native piece read failed: code=%s", error_code
                                 )
 
                                 if error_code in (2, 3):
@@ -454,8 +645,8 @@ class RelayService:
                                 if not future.done():
                                     future.set_result(piece_data)
 
-            except Exception as e:
-                logger.error(f"Hiba a {type(alert).__name__} feldolgozása közben: {e}")
+            except Exception as error:
+                logger.error("Native alert failed: alert=%s kind=%s", type(alert).__name__, type(error).__name__)
 
     def _parse_info_hash(
         self,

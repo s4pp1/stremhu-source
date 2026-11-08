@@ -1,0 +1,1601 @@
+{
+  "status": "FAIL",
+  "scope": "Only primary normal12cells and4unprofiledcold controls; NOT packet20 acceptance. Fullprofile,direct/Kodi,refs and ownership tests separate.",
+  "rows": [
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 1,
+      "metric": "p95_ms",
+      "before_cohort_medians": [
+        2.628288,
+        2.673784
+      ],
+      "after_cohort_medians": [
+        2.803999,
+        2.80888
+      ],
+      "J": 0.04549599999999998,
+      "limit": 12.673784,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 1,
+      "metric": "cpu_seconds",
+      "before_cohort_medians": [
+        0.28013365,
+        0.28433995599999995
+      ],
+      "after_cohort_medians": [
+        0.26048486699999995,
+        0.2677998909999999
+      ],
+      "J": 0.0042063059999999375,
+      "limit": 0.3127739516,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 1,
+      "metric": "sql_statements",
+      "before_cohort_medians": [
+        100,
+        100
+      ],
+      "after_cohort_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 1,
+      "metric": "memory.anon_bytes",
+      "before_cohort_medians": [
+        91004928,
+        91021312
+      ],
+      "after_cohort_medians": [
+        91242496,
+        91217920
+      ],
+      "J": 16384,
+      "limit": 93118464,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 1,
+      "metric": "memory.current_bytes",
+      "before_cohort_medians": [
+        96219136,
+        95924224
+      ],
+      "after_cohort_medians": [
+        96194560,
+        96305152
+      ],
+      "J": 294912,
+      "limit": 98316288,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 1,
+      "metric": "memory.peak_bytes",
+      "before_cohort_medians": [
+        96243712,
+        96190464
+      ],
+      "after_cohort_medians": [
+        96464896,
+        96571392
+      ],
+      "J": 53248,
+      "limit": 98340864,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 1,
+      "metric": "memory.max_rss_kib",
+      "before_cohort_medians": [
+        122304,
+        122412
+      ],
+      "after_cohort_medians": [
+        122184,
+        122344
+      ],
+      "J": 108,
+      "limit": 124460,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 4,
+      "metric": "p95_ms",
+      "before_cohort_medians": [
+        15.187615,
+        15.194405
+      ],
+      "after_cohort_medians": [
+        15.02076,
+        16.28359
+      ],
+      "J": 0.006790000000000518,
+      "limit": 25.194405,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 4,
+      "metric": "cpu_seconds",
+      "before_cohort_medians": [
+        0.3300747660000001,
+        0.3285863710000001
+      ],
+      "after_cohort_medians": [
+        0.3258021320000002,
+        0.3333830200000001
+      ],
+      "J": 0.0014883949999999757,
+      "limit": 0.3630822426000001,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 4,
+      "metric": "sql_statements",
+      "before_cohort_medians": [
+        100,
+        100
+      ],
+      "after_cohort_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 4,
+      "metric": "memory.anon_bytes",
+      "before_cohort_medians": [
+        91594752,
+        91594752
+      ],
+      "after_cohort_medians": [
+        91607040,
+        91283456
+      ],
+      "J": 0,
+      "limit": 93691904,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 4,
+      "metric": "memory.current_bytes",
+      "before_cohort_medians": [
+        96993280,
+        96706560
+      ],
+      "after_cohort_medians": [
+        96980992,
+        97091584
+      ],
+      "J": 286720,
+      "limit": 99090432,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 4,
+      "metric": "memory.peak_bytes",
+      "before_cohort_medians": [
+        97026048,
+        96710656
+      ],
+      "after_cohort_medians": [
+        96980992,
+        97091584
+      ],
+      "J": 315392,
+      "limit": 99123200,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 4,
+      "metric": "memory.max_rss_kib",
+      "before_cohort_medians": [
+        122904,
+        123052
+      ],
+      "after_cohort_medians": [
+        122824,
+        122856
+      ],
+      "J": 148,
+      "limit": 125100,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 8,
+      "metric": "p95_ms",
+      "before_cohort_medians": [
+        28.898623,
+        30.344326
+      ],
+      "after_cohort_medians": [
+        31.264816,
+        33.169852
+      ],
+      "J": 1.4457029999999982,
+      "limit": 40.344325999999995,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 8,
+      "metric": "cpu_seconds",
+      "before_cohort_medians": [
+        0.3264123780000001,
+        0.325740312
+      ],
+      "after_cohort_medians": [
+        0.32951615200000006,
+        0.3390400750000002
+      ],
+      "J": 0.0006720660000001377,
+      "limit": 0.35905361580000017,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 8,
+      "metric": "sql_statements",
+      "before_cohort_medians": [
+        100,
+        100
+      ],
+      "after_cohort_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 8,
+      "metric": "memory.anon_bytes",
+      "before_cohort_medians": [
+        92770304,
+        92721152
+      ],
+      "after_cohort_medians": [
+        92975104,
+        92766208
+      ],
+      "J": 49152,
+      "limit": 94867456,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 8,
+      "metric": "memory.current_bytes",
+      "before_cohort_medians": [
+        98283520,
+        97988608
+      ],
+      "after_cohort_medians": [
+        98521088,
+        98664448
+      ],
+      "J": 294912,
+      "limit": 100380672,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 8,
+      "metric": "memory.peak_bytes",
+      "before_cohort_medians": [
+        98283520,
+        97996800
+      ],
+      "after_cohort_medians": [
+        98553856,
+        98664448
+      ],
+      "J": 286720,
+      "limit": 100380672,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "same-result-key",
+      "concurrency": 8,
+      "metric": "memory.max_rss_kib",
+      "before_cohort_medians": [
+        124056,
+        124280
+      ],
+      "after_cohort_medians": [
+        123720,
+        124260
+      ],
+      "J": 224,
+      "limit": 126328,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 1,
+      "metric": "p95_ms",
+      "before_cohort_medians": [
+        11.80851,
+        11.696659
+      ],
+      "after_cohort_medians": [
+        10.74278,
+        10.839404
+      ],
+      "J": 0.1118509999999997,
+      "limit": 21.80851,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 1,
+      "metric": "cpu_seconds",
+      "before_cohort_medians": [
+        0.9551108950000002,
+        0.9322264259999997
+      ],
+      "after_cohort_medians": [
+        0.838176308,
+        0.869377772
+      ],
+      "J": 0.022884469000000518,
+      "limit": 1.0506219845000004,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 1,
+      "metric": "sql_statements",
+      "before_cohort_medians": [
+        1000,
+        1000
+      ],
+      "after_cohort_medians": [
+        400,
+        400
+      ],
+      "J": 0,
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 1,
+      "metric": "memory.anon_bytes",
+      "before_cohort_medians": [
+        97554432,
+        97071104
+      ],
+      "after_cohort_medians": [
+        98615296,
+        98914304
+      ],
+      "J": 483328,
+      "limit": 99651584,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 1,
+      "metric": "memory.current_bytes",
+      "before_cohort_medians": [
+        103276544,
+        102666240
+      ],
+      "after_cohort_medians": [
+        104579072,
+        104898560
+      ],
+      "J": 610304,
+      "limit": 105373696,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 1,
+      "metric": "memory.peak_bytes",
+      "before_cohort_medians": [
+        103280640,
+        102666240
+      ],
+      "after_cohort_medians": [
+        104579072,
+        104898560
+      ],
+      "J": 614400,
+      "limit": 105377792,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 1,
+      "metric": "memory.max_rss_kib",
+      "before_cohort_medians": [
+        128832,
+        128404
+      ],
+      "after_cohort_medians": [
+        129352,
+        129508
+      ],
+      "J": 428,
+      "limit": 130880,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "p95_ms",
+      "before_cohort_medians": [
+        61.371901,
+        63.521617
+      ],
+      "after_cohort_medians": [
+        58.818241,
+        59.298681
+      ],
+      "J": 2.149715999999998,
+      "limit": 73.52161699999999,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "cpu_seconds",
+      "before_cohort_medians": [
+        1.247812427,
+        1.2532545129999995
+      ],
+      "after_cohort_medians": [
+        1.1932982830000003,
+        1.2235843970000002
+      ],
+      "J": 0.005442085999999513,
+      "limit": 1.3785799642999996,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "sql_statements",
+      "before_cohort_medians": [
+        1000,
+        1000
+      ],
+      "after_cohort_medians": [
+        400,
+        400
+      ],
+      "J": 0,
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "memory.anon_bytes",
+      "before_cohort_medians": [
+        99831808,
+        99819520
+      ],
+      "after_cohort_medians": [
+        102035456,
+        102658048
+      ],
+      "J": 12288,
+      "limit": 101928960,
+      "passed": false
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "memory.current_bytes",
+      "before_cohort_medians": [
+        106205184,
+        105537536
+      ],
+      "after_cohort_medians": [
+        108486656,
+        108535808
+      ],
+      "J": 667648,
+      "limit": 108302336,
+      "passed": false
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "memory.peak_bytes",
+      "before_cohort_medians": [
+        106205184,
+        105537536
+      ],
+      "after_cohort_medians": [
+        108486656,
+        108535808
+      ],
+      "J": 667648,
+      "limit": 108302336,
+      "passed": false
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "memory.max_rss_kib",
+      "before_cohort_medians": [
+        131392,
+        131320
+      ],
+      "after_cohort_medians": [
+        132936,
+        133596
+      ],
+      "J": 72,
+      "limit": 133440,
+      "passed": false
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "p95_ms",
+      "before_cohort_medians": [
+        124.708882,
+        123.986963
+      ],
+      "after_cohort_medians": [
+        123.999526,
+        132.24723
+      ],
+      "J": 0.7219189999999998,
+      "limit": 134.70888200000002,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "cpu_seconds",
+      "before_cohort_medians": [
+        1.300677318,
+        1.2994229330000007
+      ],
+      "after_cohort_medians": [
+        1.2859301949999997,
+        1.3499912319999998
+      ],
+      "J": 0.0012543849999993029,
+      "limit": 1.4307450498,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "sql_statements",
+      "before_cohort_medians": [
+        1000,
+        1000
+      ],
+      "after_cohort_medians": [
+        400,
+        400
+      ],
+      "J": 0,
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "memory.anon_bytes",
+      "before_cohort_medians": [
+        105103360,
+        104554496
+      ],
+      "after_cohort_medians": [
+        106586112,
+        106536960
+      ],
+      "J": 548864,
+      "limit": 107200512,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "memory.current_bytes",
+      "before_cohort_medians": [
+        111116288,
+        110518272
+      ],
+      "after_cohort_medians": [
+        112693248,
+        112730112
+      ],
+      "J": 598016,
+      "limit": 113213440,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "memory.peak_bytes",
+      "before_cohort_medians": [
+        111116288,
+        110518272
+      ],
+      "after_cohort_medians": [
+        112693248,
+        112730112
+      ],
+      "J": 598016,
+      "limit": 113213440,
+      "passed": true
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "memory.max_rss_kib",
+      "before_cohort_medians": [
+        135960,
+        135800
+      ],
+      "after_cohort_medians": [
+        137288,
+        137444
+      ],
+      "J": 160,
+      "limit": 138008,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 1,
+      "metric": "p95_ms",
+      "before_cohort_medians": [
+        2.686461,
+        2.742619
+      ],
+      "after_cohort_medians": [
+        2.78569,
+        2.866424
+      ],
+      "J": 0.05615799999999993,
+      "limit": 12.742619,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 1,
+      "metric": "cpu_seconds",
+      "before_cohort_medians": [
+        0.2906480500000006,
+        0.28925351900000074
+      ],
+      "after_cohort_medians": [
+        0.2930346669999997,
+        0.3007901610000001
+      ],
+      "J": 0.0013945309999998656,
+      "limit": 0.3197128550000007,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 1,
+      "metric": "sql_statements",
+      "before_cohort_medians": [
+        100,
+        100
+      ],
+      "after_cohort_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 1,
+      "metric": "memory.anon_bytes",
+      "before_cohort_medians": [
+        108044288,
+        107700224
+      ],
+      "after_cohort_medians": [
+        109191168,
+        109150208
+      ],
+      "J": 344064,
+      "limit": 110141440,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 1,
+      "metric": "memory.current_bytes",
+      "before_cohort_medians": [
+        114663424,
+        114307072
+      ],
+      "after_cohort_medians": [
+        115998720,
+        115974144
+      ],
+      "J": 356352,
+      "limit": 116760576,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 1,
+      "metric": "memory.peak_bytes",
+      "before_cohort_medians": [
+        114679808,
+        114364416
+      ],
+      "after_cohort_medians": [
+        116002816,
+        116015104
+      ],
+      "J": 315392,
+      "limit": 116776960,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 1,
+      "metric": "memory.max_rss_kib",
+      "before_cohort_medians": [
+        138912,
+        138616
+      ],
+      "after_cohort_medians": [
+        139848,
+        140116
+      ],
+      "J": 296,
+      "limit": 140960,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 4,
+      "metric": "p95_ms",
+      "before_cohort_medians": [
+        16.343154,
+        16.412696
+      ],
+      "after_cohort_medians": [
+        16.512962,
+        17.107666
+      ],
+      "J": 0.06954200000000199,
+      "limit": 26.412696,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 4,
+      "metric": "cpu_seconds",
+      "before_cohort_medians": [
+        0.3615557579999997,
+        0.36128140900000005
+      ],
+      "after_cohort_medians": [
+        0.35595989900000014,
+        0.36661009400000033
+      ],
+      "J": 0.000274348999999674,
+      "limit": 0.39771133379999973,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 4,
+      "metric": "sql_statements",
+      "before_cohort_medians": [
+        100,
+        100
+      ],
+      "after_cohort_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 4,
+      "metric": "memory.anon_bytes",
+      "before_cohort_medians": [
+        108044288,
+        107700224
+      ],
+      "after_cohort_medians": [
+        109191168,
+        109174784
+      ],
+      "J": 344064,
+      "limit": 110141440,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 4,
+      "metric": "memory.current_bytes",
+      "before_cohort_medians": [
+        114663424,
+        114360320
+      ],
+      "after_cohort_medians": [
+        115998720,
+        115994624
+      ],
+      "J": 303104,
+      "limit": 116760576,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 4,
+      "metric": "memory.peak_bytes",
+      "before_cohort_medians": [
+        114679808,
+        114364416
+      ],
+      "after_cohort_medians": [
+        116002816,
+        116015104
+      ],
+      "J": 315392,
+      "limit": 116776960,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 4,
+      "metric": "memory.max_rss_kib",
+      "before_cohort_medians": [
+        138912,
+        138616
+      ],
+      "after_cohort_medians": [
+        139976,
+        140116
+      ],
+      "J": 296,
+      "limit": 140960,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 8,
+      "metric": "p95_ms",
+      "before_cohort_medians": [
+        32.340507,
+        33.442019
+      ],
+      "after_cohort_medians": [
+        32.294262,
+        32.356501
+      ],
+      "J": 1.1015119999999996,
+      "limit": 43.442019,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 8,
+      "metric": "cpu_seconds",
+      "before_cohort_medians": [
+        0.3566229700000001,
+        0.3560089179999997
+      ],
+      "after_cohort_medians": [
+        0.3571929159999998,
+        0.36618892400000025
+      ],
+      "J": 0.0006140520000004202,
+      "limit": 0.39228526700000016,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 8,
+      "metric": "sql_statements",
+      "before_cohort_medians": [
+        100,
+        100
+      ],
+      "after_cohort_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 8,
+      "metric": "memory.anon_bytes",
+      "before_cohort_medians": [
+        109121536,
+        108744704
+      ],
+      "after_cohort_medians": [
+        109932544,
+        109834240
+      ],
+      "J": 376832,
+      "limit": 111218688,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 8,
+      "metric": "memory.current_bytes",
+      "before_cohort_medians": [
+        115691520,
+        115408896
+      ],
+      "after_cohort_medians": [
+        117039104,
+        116781056
+      ],
+      "J": 282624,
+      "limit": 117788672,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 8,
+      "metric": "memory.peak_bytes",
+      "before_cohort_medians": [
+        115724288,
+        115412992
+      ],
+      "after_cohort_medians": [
+        117039104,
+        116781056
+      ],
+      "J": 311296,
+      "limit": 117821440,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "same-result-key",
+      "concurrency": 8,
+      "metric": "memory.max_rss_kib",
+      "before_cohort_medians": [
+        140056,
+        139768
+      ],
+      "after_cohort_medians": [
+        140488,
+        140756
+      ],
+      "J": 288,
+      "limit": 142104,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 1,
+      "metric": "p95_ms",
+      "before_cohort_medians": [
+        25.437587,
+        26.604335
+      ],
+      "after_cohort_medians": [
+        28.069238,
+        28.22385
+      ],
+      "J": 1.1667479999999983,
+      "limit": 36.604335,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 1,
+      "metric": "cpu_seconds",
+      "before_cohort_medians": [
+        2.1978960579999995,
+        2.186451893
+      ],
+      "after_cohort_medians": [
+        2.112082644000001,
+        2.1756266669999995
+      ],
+      "J": 0.011444164999999451,
+      "limit": 2.4176856637999995,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 1,
+      "metric": "sql_statements",
+      "before_cohort_medians": [
+        1000,
+        1000
+      ],
+      "after_cohort_medians": [
+        400,
+        400
+      ],
+      "J": 0,
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 1,
+      "metric": "memory.anon_bytes",
+      "before_cohort_medians": [
+        126996480,
+        126734336
+      ],
+      "after_cohort_medians": [
+        127791104,
+        127455232
+      ],
+      "J": 262144,
+      "limit": 129093632,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 1,
+      "metric": "memory.current_bytes",
+      "before_cohort_medians": [
+        133419008,
+        132939776
+      ],
+      "after_cohort_medians": [
+        134283264,
+        134328320
+      ],
+      "J": 479232,
+      "limit": 135516160,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 1,
+      "metric": "memory.peak_bytes",
+      "before_cohort_medians": [
+        133419008,
+        132939776
+      ],
+      "after_cohort_medians": [
+        134283264,
+        134328320
+      ],
+      "J": 479232,
+      "limit": 135516160,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 1,
+      "metric": "memory.max_rss_kib",
+      "before_cohort_medians": [
+        157080,
+        157228
+      ],
+      "after_cohort_medians": [
+        157896,
+        158056
+      ],
+      "J": 148,
+      "limit": 159276,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "p95_ms",
+      "before_cohort_medians": [
+        186.196631,
+        185.520577
+      ],
+      "after_cohort_medians": [
+        187.937951,
+        189.005309
+      ],
+      "J": 0.6760539999999935,
+      "limit": 196.196631,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "cpu_seconds",
+      "before_cohort_medians": [
+        3.520423394,
+        3.511711342
+      ],
+      "after_cohort_medians": [
+        3.4224357750000003,
+        3.5031281100000005
+      ],
+      "J": 0.008712051999999915,
+      "limit": 3.8724657334000003,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "sql_statements",
+      "before_cohort_medians": [
+        1000,
+        1000
+      ],
+      "after_cohort_medians": [
+        400,
+        400
+      ],
+      "J": 0,
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "memory.anon_bytes",
+      "before_cohort_medians": [
+        130617344,
+        129957888
+      ],
+      "after_cohort_medians": [
+        130928640,
+        131366912
+      ],
+      "J": 659456,
+      "limit": 132714496,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "memory.current_bytes",
+      "before_cohort_medians": [
+        137089024,
+        136347648
+      ],
+      "after_cohort_medians": [
+        138493952,
+        138539008
+      ],
+      "J": 741376,
+      "limit": 139186176,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "memory.peak_bytes",
+      "before_cohort_medians": [
+        137089024,
+        136347648
+      ],
+      "after_cohort_medians": [
+        138493952,
+        138539008
+      ],
+      "J": 741376,
+      "limit": 139186176,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "memory.max_rss_kib",
+      "before_cohort_medians": [
+        160920,
+        160760
+      ],
+      "after_cohort_medians": [
+        161428,
+        161764
+      ],
+      "J": 160,
+      "limit": 162968,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "p95_ms",
+      "before_cohort_medians": [
+        392.853612,
+        386.30181
+      ],
+      "after_cohort_medians": [
+        423.659498,
+        434.463396
+      ],
+      "J": 6.551802000000009,
+      "limit": 402.853612,
+      "passed": false
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "cpu_seconds",
+      "before_cohort_medians": [
+        3.6151900900000022,
+        3.571112510999999
+      ],
+      "after_cohort_medians": [
+        3.7478717779999986,
+        3.8755081549999986
+      ],
+      "J": 0.0440775790000032,
+      "limit": 3.976709099000003,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "sql_statements",
+      "before_cohort_medians": [
+        1000,
+        1000
+      ],
+      "after_cohort_medians": [
+        400,
+        400
+      ],
+      "J": 0,
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "memory.anon_bytes",
+      "before_cohort_medians": [
+        141549568,
+        142196736
+      ],
+      "after_cohort_medians": [
+        142065664,
+        142483456
+      ],
+      "J": 647168,
+      "limit": 144293888,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "memory.current_bytes",
+      "before_cohort_medians": [
+        147873792,
+        148688896
+      ],
+      "after_cohort_medians": [
+        150523904,
+        149225472
+      ],
+      "J": 815104,
+      "limit": 150786048,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "memory.peak_bytes",
+      "before_cohort_medians": [
+        147873792,
+        148688896
+      ],
+      "after_cohort_medians": [
+        150523904,
+        149225472
+      ],
+      "J": 815104,
+      "limit": 150786048,
+      "passed": true
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "memory.max_rss_kib",
+      "before_cohort_medians": [
+        172128,
+        171928
+      ],
+      "after_cohort_medians": [
+        171848,
+        172016
+      ],
+      "J": 200,
+      "limit": 174176,
+      "passed": true
+    },
+    {
+      "scope": "cold",
+      "index": 0,
+      "metric": "wall_seconds",
+      "before_cohort_medians": [
+        0.07027542800005904,
+        0.06860813000002963
+      ],
+      "after_cohort_medians": [
+        0.06683604499994544,
+        0.06630800099992484
+      ],
+      "J": 0.0016672980000294046,
+      "limit": 0.07699224999998933,
+      "passed": true
+    },
+    {
+      "scope": "cold",
+      "index": 1,
+      "metric": "wall_seconds",
+      "before_cohort_medians": [
+        0.012095100999999886,
+        0.011311664999993809
+      ],
+      "after_cohort_medians": [
+        0.010784200000671262,
+        0.010650958999576687
+      ],
+      "J": 0.0007834360000060769,
+      "limit": 0.013183456999968257,
+      "passed": true
+    },
+    {
+      "scope": "cold",
+      "index": 2,
+      "metric": "wall_seconds",
+      "before_cohort_medians": [
+        0.044430132999991656,
+        0.040749277000031725
+      ],
+      "after_cohort_medians": [
+        0.046147951999955694,
+        0.041134737999527715
+      ],
+      "J": 0.003680855999959931,
+      "limit": 0.05484493499989185,
+      "passed": true
+    },
+    {
+      "scope": "cold",
+      "index": 3,
+      "metric": "wall_seconds",
+      "before_cohort_medians": [
+        0.02271488799999588,
+        0.022238714999957665
+      ],
+      "after_cohort_medians": [
+        0.02377742600037891,
+        0.029213240999524714
+      ],
+      "J": 0.00047617300003821583,
+      "limit": 0.02556413000002067,
+      "passed": false
+    }
+  ],
+  "failures": [
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "memory.anon_bytes",
+      "before_cohort_medians": [
+        99831808,
+        99819520
+      ],
+      "after_cohort_medians": [
+        102035456,
+        102658048
+      ],
+      "J": 12288,
+      "limit": 101928960,
+      "passed": false
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "memory.current_bytes",
+      "before_cohort_medians": [
+        106205184,
+        105537536
+      ],
+      "after_cohort_medians": [
+        108486656,
+        108535808
+      ],
+      "J": 667648,
+      "limit": 108302336,
+      "passed": false
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "memory.peak_bytes",
+      "before_cohort_medians": [
+        106205184,
+        105537536
+      ],
+      "after_cohort_medians": [
+        108486656,
+        108535808
+      ],
+      "J": 667648,
+      "limit": 108302336,
+      "passed": false
+    },
+    {
+      "count": 20,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 4,
+      "metric": "memory.max_rss_kib",
+      "before_cohort_medians": [
+        131392,
+        131320
+      ],
+      "after_cohort_medians": [
+        132936,
+        133596
+      ],
+      "J": 72,
+      "limit": 133440,
+      "passed": false
+    },
+    {
+      "count": 100,
+      "kind": "unique-result-key-warm-metadata",
+      "concurrency": 8,
+      "metric": "p95_ms",
+      "before_cohort_medians": [
+        392.853612,
+        386.30181
+      ],
+      "after_cohort_medians": [
+        423.659498,
+        434.463396
+      ],
+      "J": 6.551802000000009,
+      "limit": 402.853612,
+      "passed": false
+    },
+    {
+      "scope": "cold",
+      "index": 3,
+      "metric": "wall_seconds",
+      "before_cohort_medians": [
+        0.02271488799999588,
+        0.022238714999957665
+      ],
+      "after_cohort_medians": [
+        0.02377742600037891,
+        0.029213240999524714
+      ],
+      "J": 0.00047617300003821583,
+      "limit": 0.02556413000002067,
+      "passed": false
+    }
+  ]
+}

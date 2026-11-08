@@ -1,0 +1,165 @@
+{
+  "status": "GC phase shift observed in all5pairs; NOT acceptance",
+  "groups": {
+    "before": [
+      {
+        "repetition": 0,
+        "cold_ms": [
+          345.52793600005316,
+          105.80245100027241
+        ],
+        "combined_ms": 451.3303870003256,
+        "gc2": {
+          "phase": "cold-1",
+          "generation": 2,
+          "seconds": 0.02663850299995829,
+          "collected": 65,
+          "uncollectable": 0
+        }
+      },
+      {
+        "repetition": 1,
+        "cold_ms": [
+          337.434562999988,
+          100.47934600015651
+        ],
+        "combined_ms": 437.9139090001445,
+        "gc2": {
+          "phase": "cold-1",
+          "generation": 2,
+          "seconds": 0.02700016600010713,
+          "collected": 65,
+          "uncollectable": 0
+        }
+      },
+      {
+        "repetition": 2,
+        "cold_ms": [
+          340.20905999977913,
+          103.02729900013219
+        ],
+        "combined_ms": 443.2363589999113,
+        "gc2": {
+          "phase": "cold-1",
+          "generation": 2,
+          "seconds": 0.0282067680000182,
+          "collected": 65,
+          "uncollectable": 0
+        }
+      },
+      {
+        "repetition": 3,
+        "cold_ms": [
+          337.271361999683,
+          102.30493600010959
+        ],
+        "combined_ms": 439.5762979997926,
+        "gc2": {
+          "phase": "cold-1",
+          "generation": 2,
+          "seconds": 0.027178372999969724,
+          "collected": 65,
+          "uncollectable": 0
+        }
+      },
+      {
+        "repetition": 4,
+        "cold_ms": [
+          330.0814859999264,
+          102.50727599986931
+        ],
+        "combined_ms": 432.5887619997957,
+        "gc2": {
+          "phase": "cold-1",
+          "generation": 2,
+          "seconds": 0.0283062210000935,
+          "collected": 65,
+          "uncollectable": 0
+        }
+      }
+    ],
+    "after": [
+      {
+        "repetition": 0,
+        "cold_ms": [
+          359.51058299997385,
+          77.30974799960677
+        ],
+        "combined_ms": 436.8203309995806,
+        "gc2": {
+          "phase": "cold-0",
+          "generation": 2,
+          "seconds": 0.026726187999884132,
+          "collected": 91,
+          "uncollectable": 0
+        }
+      },
+      {
+        "repetition": 1,
+        "cold_ms": [
+          360.5689030000576,
+          72.76213199975246
+        ],
+        "combined_ms": 433.3310349998101,
+        "gc2": {
+          "phase": "cold-0",
+          "generation": 2,
+          "seconds": 0.026719796999714163,
+          "collected": 91,
+          "uncollectable": 0
+        }
+      },
+      {
+        "repetition": 2,
+        "cold_ms": [
+          355.40734299956966,
+          74.44155299981503
+        ],
+        "combined_ms": 429.8488959993847,
+        "gc2": {
+          "phase": "cold-0",
+          "generation": 2,
+          "seconds": 0.026430669999626843,
+          "collected": 91,
+          "uncollectable": 0
+        }
+      },
+      {
+        "repetition": 3,
+        "cold_ms": [
+          370.71560399999726,
+          74.55290500001865
+        ],
+        "combined_ms": 445.2685090000159,
+        "gc2": {
+          "phase": "cold-0",
+          "generation": 2,
+          "seconds": 0.02705605499977537,
+          "collected": 91,
+          "uncollectable": 0
+        }
+      },
+      {
+        "repetition": 4,
+        "cold_ms": [
+          374.07669099957275,
+          76.59763699984978
+        ],
+        "combined_ms": 450.67432799942253,
+        "gc2": {
+          "phase": "cold-0",
+          "generation": 2,
+          "seconds": 0.029419786999824282,
+          "collected": 91,
+          "uncollectable": 0
+        }
+      }
+    ]
+  },
+  "combined_medians_ms": {
+    "before": 439.5762979997926,
+    "after": 436.8203309995806
+  },
+  "scope": "Observational callbacks only; defaultGC enabled,thresholds unchanged,no forcedGC or productioncodechange. One gen2collection during colduser1 on original, colduser0 on conditionalcleanup in every pair. This does not waive V2/V3 negative cold gates, prove a leak, or approve a new budget.",
+  "decision": "User asked whether firstcold+40ms and combinedcoldpair+10ms are acceptable while normalHTTPp95+10ms stays unchanged. Answer pending; no dependent policy after,staging,commit orpush."
+}

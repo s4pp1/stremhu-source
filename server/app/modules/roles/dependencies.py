@@ -11,5 +11,5 @@ def create_roles_service(db: Session) -> RolesService:
     return RolesService(db)
 
 
-def get_roles_service(db: Annotated[Session, Depends(get_db)]) -> RolesService:
+def get_roles_service(db: Annotated[Session, Depends(get_db, scope="function")]) -> RolesService:
     return create_roles_service(db)

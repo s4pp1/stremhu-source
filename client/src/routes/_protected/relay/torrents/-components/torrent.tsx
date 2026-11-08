@@ -15,7 +15,7 @@ import {
   TrashIcon,
 } from 'lucide-react'
 import type { JSX, MouseEventHandler } from 'react'
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { toast } from 'sonner'
 
 import { useConfirmDialog } from '@/features/confirm/use-confirm-dialog'
@@ -60,7 +60,7 @@ function TorrentDetail(props: TorrentDetailProps) {
   )
 }
 
-export function Torrent(props: TorrentProps) {
+function TorrentRow(props: TorrentProps) {
   const { torrent } = props
 
   const confirmDialog = useConfirmDialog()
@@ -253,3 +253,8 @@ export function Torrent(props: TorrentProps) {
     </div>
   )
 }
+
+// G04: a lista lekérdezés structural sharinggel a változatlan sorok objektumát megtartja,
+// így a memo csak a ténylegesen megváltozott sort rajzolja újra (az alapmérésben 500 sornál
+// egyetlen változó sor is mind az 500 sort újrarajzolta).
+export const Torrent = memo(TorrentRow)

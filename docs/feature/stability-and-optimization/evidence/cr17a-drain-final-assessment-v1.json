@@ -1,0 +1,2169 @@
+{
+  "status": "FAIL",
+  "scope": "Isolated cleanup-only followup;not policy completion or resolution of provider/file ORM defect",
+  "rows": [
+    {
+      "scope": "lifecycle/1",
+      "metric": "http_cpu_seconds",
+      "before_medians": [
+        0.6137969295000003,
+        0.592356109499999
+      ],
+      "after_medians": [
+        0.6046693245000014,
+        0.6049840215
+      ],
+      "before_range": [
+        0.5790800589999989,
+        0.624020225999999
+      ],
+      "J": 0.02144082000000136,
+      "limit": 0.6751766224500004,
+      "kind": "cpu",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/1",
+      "metric": "heap_bytes_quiescent",
+      "before_medians": [
+        6059525.0,
+        6064904.0
+      ],
+      "after_medians": [
+        6069592.0,
+        6061032.5
+      ],
+      "before_range": [
+        6043610,
+        6104617
+      ],
+      "J": 5379.0,
+      "limit": 8162056.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/1",
+      "metric": "heap_bytes_at_close",
+      "before_medians": [
+        6096370.0,
+        6102124.5
+      ],
+      "after_medians": [
+        6106421.0,
+        6098301.5
+      ],
+      "before_range": [
+        6080439,
+        6152110
+      ],
+      "J": 5754.5,
+      "limit": 8199276.5,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/1",
+      "metric": "max_rss_kib",
+      "before_medians": [
+        148764.0,
+        148464.0
+      ],
+      "after_medians": [
+        149776.0,
+        148876.0
+      ],
+      "before_range": [
+        145840,
+        149276
+      ],
+      "J": 300.0,
+      "limit": 150812.0,
+      "kind": "kib",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/1",
+      "metric": "startup_seconds",
+      "before_medians": [
+        0.3186317200002122,
+        0.311463965999792
+      ],
+      "after_medians": [
+        0.3213626385004318,
+        0.31792929750008625
+      ],
+      "before_range": [
+        0.3044728009999744,
+        0.36892903499938257
+      ],
+      "J": 0.007167754000420246,
+      "limit": 0.3760967889998028,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/1",
+      "metric": "shutdown_seconds",
+      "before_medians": [
+        1.9950244359997669,
+        1.994982709999931
+      ],
+      "after_medians": [
+        1.995064820001062,
+        1.9950893665009062
+      ],
+      "before_range": [
+        1.9947850529997595,
+        1.9994738209998104
+      ],
+      "J": 4.1725999835762195e-05,
+      "limit": 1.9995155469996462,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/1",
+      "metric": "sql_statements",
+      "before_medians": [
+        100.0,
+        100.0
+      ],
+      "after_medians": [
+        100.0,
+        100.0
+      ],
+      "before_range": [
+        100,
+        100
+      ],
+      "J": 1e-06,
+      "limit": 100.000001,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/1",
+      "metric": "http0.p95_ms",
+      "before_medians": [
+        1.906806,
+        1.8406385
+      ],
+      "after_medians": [
+        1.9060345,
+        1.9090924999999999
+      ],
+      "before_range": [
+        1.734031,
+        2.12953
+      ],
+      "J": 0.06616749999999993,
+      "limit": 11.906806,
+      "kind": "http",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/1",
+      "metric": "http1.p95_ms",
+      "before_medians": [
+        4.606948,
+        4.4956565
+      ],
+      "after_medians": [
+        4.560256,
+        4.6405475
+      ],
+      "before_range": [
+        4.286317,
+        4.933005
+      ],
+      "J": 0.1112915000000001,
+      "limit": 14.606948,
+      "kind": "http",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/4",
+      "metric": "http_cpu_seconds",
+      "before_medians": [
+        0.7018215935000001,
+        0.6797312274999996
+      ],
+      "after_medians": [
+        0.6902908215000032,
+        0.6901003934999999
+      ],
+      "before_range": [
+        0.6693568800000023,
+        0.7292166790000039
+      ],
+      "J": 0.022090366000000472,
+      "limit": 0.7720037528500001,
+      "kind": "cpu",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/4",
+      "metric": "heap_bytes_quiescent",
+      "before_medians": [
+        6087034.0,
+        6086362.0
+      ],
+      "after_medians": [
+        6094450.0,
+        6078937.0
+      ],
+      "before_range": [
+        6062716,
+        6105183
+      ],
+      "J": 672.0,
+      "limit": 8184186.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/4",
+      "metric": "heap_bytes_at_close",
+      "before_medians": [
+        6123863.0,
+        6123591.0
+      ],
+      "after_medians": [
+        6131279.0,
+        6115798.0
+      ],
+      "before_range": [
+        6100849,
+        6142012
+      ],
+      "J": 272.0,
+      "limit": 8221015.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/4",
+      "metric": "max_rss_kib",
+      "before_medians": [
+        148764.0,
+        148464.0
+      ],
+      "after_medians": [
+        149776.0,
+        148876.0
+      ],
+      "before_range": [
+        146096,
+        149276
+      ],
+      "J": 300.0,
+      "limit": 150812.0,
+      "kind": "kib",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/4",
+      "metric": "startup_seconds",
+      "before_medians": [
+        0.320256474999951,
+        0.31132013199976427
+      ],
+      "after_medians": [
+        0.3227708324993728,
+        0.314596956501191
+      ],
+      "before_range": [
+        0.30412043999967864,
+        0.3522594930000196
+      ],
+      "J": 0.008936343000186753,
+      "limit": 0.3611958360002063,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/4",
+      "metric": "shutdown_seconds",
+      "before_medians": [
+        1.9949477595005192,
+        1.9949467964993346
+      ],
+      "after_medians": [
+        1.9949478765011008,
+        1.9949927885008947
+      ],
+      "before_range": [
+        1.9946628229999988,
+        1.9959726279994356
+      ],
+      "J": 1e-06,
+      "limit": 1.9959736279994356,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/4",
+      "metric": "sql_statements",
+      "before_medians": [
+        100.0,
+        100.0
+      ],
+      "after_medians": [
+        100.0,
+        100.0
+      ],
+      "before_range": [
+        100,
+        100
+      ],
+      "J": 1e-06,
+      "limit": 100.000001,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/4",
+      "metric": "http0.p95_ms",
+      "before_medians": [
+        11.385917500000001,
+        11.140715
+      ],
+      "after_medians": [
+        10.853083999999999,
+        11.1951445
+      ],
+      "before_range": [
+        9.569418,
+        12.669449
+      ],
+      "J": 0.24520250000000132,
+      "limit": 21.3859175,
+      "kind": "http",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/4",
+      "metric": "http1.p95_ms",
+      "before_medians": [
+        24.258331499999997,
+        23.4599765
+      ],
+      "after_medians": [
+        23.4009015,
+        23.831567
+      ],
+      "before_range": [
+        21.681118,
+        28.145106
+      ],
+      "J": 0.7983549999999973,
+      "limit": 34.2583315,
+      "kind": "http",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/8",
+      "metric": "http_cpu_seconds",
+      "before_medians": [
+        0.6669125500000002,
+        0.6534406685000018
+      ],
+      "after_medians": [
+        0.6580396464999976,
+        0.6549430034999975
+      ],
+      "before_range": [
+        0.6403289160000014,
+        0.6902864609999995
+      ],
+      "J": 0.01347188149999834,
+      "limit": 0.7336038050000002,
+      "kind": "cpu",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/8",
+      "metric": "heap_bytes_quiescent",
+      "before_medians": [
+        6106842.0,
+        6115973.0
+      ],
+      "after_medians": [
+        6120049.0,
+        6108267.0
+      ],
+      "before_range": [
+        6093815,
+        6140787
+      ],
+      "J": 9131.0,
+      "limit": 8213125.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/8",
+      "metric": "heap_bytes_at_close",
+      "before_medians": [
+        6144939.0,
+        6153586.0
+      ],
+      "after_medians": [
+        6156882.0,
+        6145476.0
+      ],
+      "before_range": [
+        6132212,
+        6177616
+      ],
+      "J": 8647.0,
+      "limit": 8250738.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/8",
+      "metric": "max_rss_kib",
+      "before_medians": [
+        148828.0,
+        148528.0
+      ],
+      "after_medians": [
+        149776.0,
+        148940.0
+      ],
+      "before_range": [
+        146480,
+        149404
+      ],
+      "J": 300.0,
+      "limit": 150876.0,
+      "kind": "kib",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/8",
+      "metric": "startup_seconds",
+      "before_medians": [
+        0.31991400600009,
+        0.30894261599996753
+      ],
+      "after_medians": [
+        0.3165142335019482,
+        0.31664207550056744
+      ],
+      "before_range": [
+        0.30417298300017137,
+        0.33426556500035076
+      ],
+      "J": 0.010971390000122483,
+      "limit": 0.34523695500047324,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/8",
+      "metric": "shutdown_seconds",
+      "before_medians": [
+        1.9950033494997115,
+        1.994963695500246
+      ],
+      "after_medians": [
+        1.9949473649994616,
+        1.994976443998894
+      ],
+      "before_range": [
+        1.9946263570000156,
+        1.9959906470012356
+      ],
+      "J": 3.965399946537218e-05,
+      "limit": 1.996030301000701,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/8",
+      "metric": "sql_statements",
+      "before_medians": [
+        100.0,
+        100.0
+      ],
+      "after_medians": [
+        100.0,
+        100.0
+      ],
+      "before_range": [
+        100,
+        100
+      ],
+      "J": 1e-06,
+      "limit": 100.000001,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/8",
+      "metric": "http0.p95_ms",
+      "before_medians": [
+        21.093103,
+        21.040937
+      ],
+      "after_medians": [
+        20.013609000000002,
+        21.011660499999998
+      ],
+      "before_range": [
+        18.61199,
+        25.02848
+      ],
+      "J": 0.05216599999999971,
+      "limit": 31.093103,
+      "kind": "http",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/8",
+      "metric": "http1.p95_ms",
+      "before_medians": [
+        47.29034,
+        47.0888855
+      ],
+      "after_medians": [
+        46.3259115,
+        46.334815000000006
+      ],
+      "before_range": [
+        43.890398,
+        53.085532
+      ],
+      "J": 0.20145449999999698,
+      "limit": 57.29034,
+      "kind": "http",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/cold",
+      "metric": "http_cpu_seconds",
+      "before_medians": [
+        0.8608510329999999,
+        0.8525480540000001
+      ],
+      "after_medians": [
+        0.852671824,
+        0.85362513
+      ],
+      "before_range": [
+        0.8525480540000001,
+        0.8608510329999999
+      ],
+      "J": 0.008302978999999766,
+      "limit": 0.9469361363,
+      "kind": "cpu",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/cold",
+      "metric": "heap_bytes_quiescent",
+      "before_medians": [
+        6012517,
+        6000572
+      ],
+      "after_medians": [
+        6010673,
+        6011224
+      ],
+      "before_range": [
+        6000572,
+        6012517
+      ],
+      "J": 11945,
+      "limit": 8109669,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/cold",
+      "metric": "max_rss_kib",
+      "before_medians": [
+        145180,
+        145200
+      ],
+      "after_medians": [
+        146192,
+        145292
+      ],
+      "before_range": [
+        145180,
+        145200
+      ],
+      "J": 20,
+      "limit": 147248,
+      "kind": "kib",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/cold",
+      "metric": "startup_seconds",
+      "before_medians": [
+        0.6002553719999923,
+        0.6111204069993619
+      ],
+      "after_medians": [
+        0.5878012930006662,
+        0.5879931269992085
+      ],
+      "before_range": [
+        0.6002553719999923,
+        0.6111204069993619
+      ],
+      "J": 0.010865034999369527,
+      "limit": 0.6219854419987314,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "lifecycle/cold",
+      "metric": "shutdown_seconds",
+      "before_medians": [
+        1.9950767520003865,
+        1.995235218999369
+      ],
+      "after_medians": [
+        1.9953626199967402,
+        1.9950482140011445
+      ],
+      "before_range": [
+        1.9950767520003865,
+        1.995235218999369
+      ],
+      "J": 0.00015846699898247607,
+      "limit": 1.9953936859983514,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "cpu_seconds",
+      "before_medians": [
+        10.548706292999999,
+        10.582691284000013
+      ],
+      "after_medians": [
+        10.550812158500001,
+        10.595811640999997
+      ],
+      "before_range": [
+        10.246344177999994,
+        10.854070699000033
+      ],
+      "J": 0.03398499100001473,
+      "limit": 11.640960412400016,
+      "kind": "cpu",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "p95_ms",
+      "before_medians": [
+        1185.569419,
+        1187.6456429999998
+      ],
+      "after_medians": [
+        1207.825309,
+        1226.5588065
+      ],
+      "before_range": [
+        1058.827522,
+        1277.317981
+      ],
+      "J": 2.076223999999911,
+      "limit": 1197.6456429999998,
+      "kind": "http",
+      "passed": false
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "heap_bytes_after_gc",
+      "before_medians": [
+        72891899.0,
+        72893819.0
+      ],
+      "after_medians": [
+        72892345.0,
+        72891362.0
+      ],
+      "before_range": [
+        55629656,
+        73228702
+      ],
+      "J": 1920.0,
+      "limit": 74990971.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "sql_statements",
+      "before_medians": [
+        1000.0,
+        1000.0
+      ],
+      "after_medians": [
+        1000.0,
+        1000.0
+      ],
+      "before_range": [
+        1000,
+        1000
+      ],
+      "J": 1e-06,
+      "limit": 1000.000001,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "loop_lag_p99_ms",
+      "before_medians": [
+        164.73909600244951,
+        169.8645785018016
+      ],
+      "after_medians": [
+        167.22637350358127,
+        173.92660250152403
+      ],
+      "before_range": [
+        141.69420300095226,
+        211.728859001596
+      ],
+      "J": 5.125482499352074,
+      "limit": 216.85434150094807,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "memory.anon_bytes",
+      "before_medians": [
+        296325120.0,
+        295084032.0
+      ],
+      "after_medians": [
+        295415808.0,
+        294332416.0
+      ],
+      "before_range": [
+        219238400,
+        301629440
+      ],
+      "J": 1241088.0,
+      "limit": 298422272.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "memory.current_bytes",
+      "before_medians": [
+        337098752.0,
+        301166592.0
+      ],
+      "after_medians": [
+        301625344.0,
+        300384256.0
+      ],
+      "before_range": [
+        228663296,
+        342913024
+      ],
+      "J": 35932160.0,
+      "limit": 339195904.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "memory.peak_bytes",
+      "before_medians": [
+        337098752.0,
+        301166592.0
+      ],
+      "after_medians": [
+        301633536.0,
+        300517376.0
+      ],
+      "before_range": [
+        228663296,
+        342913024
+      ],
+      "J": 35932160.0,
+      "limit": 339195904.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "memory.file_bytes",
+      "before_medians": [
+        34115584.0,
+        1386496.0
+      ],
+      "after_medians": [
+        1404928.0,
+        1394688.0
+      ],
+      "before_range": [
+        1028096,
+        34471936
+      ],
+      "J": 32729088.0,
+      "limit": 67201024.0,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "memory.max_rss_kib",
+      "before_medians": [
+        322272.0,
+        321232.0
+      ],
+      "after_medians": [
+        321624.0,
+        320752.0
+      ],
+      "before_range": [
+        247892,
+        327520
+      ],
+      "J": 1040.0,
+      "limit": 324320.0,
+      "kind": "kib",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 8)",
+      "metric": "cpu_seconds",
+      "before_medians": [
+        1.1353141834999718,
+        1.131854088499999
+      ],
+      "after_medians": [
+        1.1693398585000097,
+        1.1803809989999934
+      ],
+      "before_range": [
+        0.9708533839999998,
+        1.1915435239999965
+      ],
+      "J": 0.003460094999972796,
+      "limit": 1.2488456018499692,
+      "kind": "cpu",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 8)",
+      "metric": "p95_ms",
+      "before_medians": [
+        168.409301,
+        174.06986799999999
+      ],
+      "after_medians": [
+        199.82161000000002,
+        183.8004525
+      ],
+      "before_range": [
+        90.770573,
+        224.48295
+      ],
+      "J": 5.660566999999986,
+      "limit": 184.06986799999999,
+      "kind": "http",
+      "passed": false
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 8)",
+      "metric": "heap_bytes_after_gc",
+      "before_medians": [
+        72876386.5,
+        72881205.0
+      ],
+      "after_medians": [
+        72875386.0,
+        72873587.5
+      ],
+      "before_range": [
+        21758396,
+        73208749
+      ],
+      "J": 4818.5,
+      "limit": 74978357.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 8)",
+      "metric": "sql_statements",
+      "before_medians": [
+        116.0,
+        113.5
+      ],
+      "after_medians": [
+        118.0,
+        118.0
+      ],
+      "before_range": [
+        100,
+        118
+      ],
+      "J": 2.5,
+      "limit": 120.5,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 8)",
+      "metric": "loop_lag_p99_ms",
+      "before_medians": [
+        20.07363450138655,
+        27.57783350352838
+      ],
+      "after_medians": [
+        32.050869001977844,
+        40.38095800206065
+      ],
+      "before_range": [
+        12.625400002434617,
+        48.099412000738084
+      ],
+      "J": 7.504199002141831,
+      "limit": 55.603611002879916,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 8)",
+      "metric": "memory.anon_bytes",
+      "before_medians": [
+        293906432.0,
+        293736448.0
+      ],
+      "after_medians": [
+        294295552.0,
+        293505024.0
+      ],
+      "before_range": [
+        150949888,
+        301502464
+      ],
+      "J": 169984.0,
+      "limit": 296003584.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 8)",
+      "metric": "memory.current_bytes",
+      "before_medians": [
+        334864384.0,
+        299737088.0
+      ],
+      "after_medians": [
+        300285952.0,
+        299448320.0
+      ],
+      "before_range": [
+        159854592,
+        342667264
+      ],
+      "J": 35127296.0,
+      "limit": 336961536.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 8)",
+      "metric": "memory.peak_bytes",
+      "before_medians": [
+        334870528.0,
+        299739136.0
+      ],
+      "after_medians": [
+        300382208.0,
+        299491328.0
+      ],
+      "before_range": [
+        159854592,
+        342872064
+      ],
+      "J": 35131392.0,
+      "limit": 336967680.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 8)",
+      "metric": "memory.file_bytes",
+      "before_medians": [
+        34099200.0,
+        1372160.0
+      ],
+      "after_medians": [
+        1388544.0,
+        1380352.0
+      ],
+      "before_range": [
+        1011712,
+        34459648
+      ],
+      "J": 32727040.0,
+      "limit": 67186688.0,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 8)",
+      "metric": "memory.max_rss_kib",
+      "before_medians": [
+        319968.0,
+        319888.0
+      ],
+      "after_medians": [
+        320600.0,
+        320048.0
+      ],
+      "before_range": [
+        180720,
+        327392
+      ],
+      "J": 80.0,
+      "limit": 322016.0,
+      "kind": "kib",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "cpu_seconds",
+      "before_medians": [
+        8.469833521000009,
+        8.559257074000001
+      ],
+      "after_medians": [
+        8.505640749500003,
+        8.558140247
+      ],
+      "before_range": [
+        8.278376258000002,
+        9.113476993000035
+      ],
+      "J": 0.0894235529999925,
+      "limit": 9.415182781400002,
+      "kind": "cpu",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "p95_ms",
+      "before_medians": [
+        93.204084,
+        93.374449
+      ],
+      "after_medians": [
+        93.7456265,
+        94.96426249999999
+      ],
+      "before_range": [
+        89.261964,
+        102.492437
+      ],
+      "J": 0.17036500000000387,
+      "limit": 103.374449,
+      "kind": "http",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "heap_bytes_after_gc",
+      "before_medians": [
+        72864632.5,
+        72866490.5
+      ],
+      "after_medians": [
+        72861826.0,
+        72867765.5
+      ],
+      "before_range": [
+        38690907,
+        73188145
+      ],
+      "J": 1858.0,
+      "limit": 74963642.5,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "sql_statements",
+      "before_medians": [
+        1000.0,
+        1000.0
+      ],
+      "after_medians": [
+        1000.0,
+        1000.0
+      ],
+      "before_range": [
+        1000,
+        1000
+      ],
+      "J": 1e-06,
+      "limit": 1000.000001,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "loop_lag_p99_ms",
+      "before_medians": [
+        59.41586399967491,
+        59.95587900360988
+      ],
+      "after_medians": [
+        58.617782500732574,
+        60.60260800040851
+      ],
+      "before_range": [
+        55.12423100299202,
+        63.38181200044346
+      ],
+      "J": 0.5400150039349683,
+      "limit": 63.92182700437843,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "memory.anon_bytes",
+      "before_medians": [
+        293935104.0,
+        293681152.0
+      ],
+      "after_medians": [
+        294262784.0,
+        293517312.0
+      ],
+      "before_range": [
+        179752960,
+        301408256
+      ],
+      "J": 253952.0,
+      "limit": 296032256.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "memory.current_bytes",
+      "before_medians": [
+        334493696.0,
+        299489280.0
+      ],
+      "after_medians": [
+        300077056.0,
+        299208704.0
+      ],
+      "before_range": [
+        187527168,
+        342405120
+      ],
+      "J": 35004416.0,
+      "limit": 336590848.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "memory.peak_bytes",
+      "before_medians": [
+        334874624.0,
+        299739136.0
+      ],
+      "after_medians": [
+        300400640.0,
+        299718656.0
+      ],
+      "before_range": [
+        191725568,
+        342872064
+      ],
+      "J": 35135488.0,
+      "limit": 336971776.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "memory.file_bytes",
+      "before_medians": [
+        34103296.0,
+        1376256.0
+      ],
+      "after_medians": [
+        1392640.0,
+        1382400.0
+      ],
+      "before_range": [
+        1015808,
+        34459648
+      ],
+      "J": 32727040.0,
+      "limit": 67186688.0,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "memory.max_rss_kib",
+      "before_medians": [
+        319968.0,
+        319888.0
+      ],
+      "after_medians": [
+        320600.0,
+        320048.0
+      ],
+      "before_range": [
+        211824,
+        327392
+      ],
+      "J": 80.0,
+      "limit": 322016.0,
+      "kind": "kib",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 1)",
+      "metric": "cpu_seconds",
+      "before_medians": [
+        1.0744181015000152,
+        1.0400744660000072
+      ],
+      "after_medians": [
+        1.060108049500002,
+        1.043803505999989
+      ],
+      "before_range": [
+        0.8808629160000001,
+        1.1034130109999865
+      ],
+      "J": 0.03434363550000796,
+      "limit": 1.1818599116500168,
+      "kind": "cpu",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 1)",
+      "metric": "p95_ms",
+      "before_medians": [
+        7.683942999999999,
+        7.5962914999999995
+      ],
+      "after_medians": [
+        7.750351,
+        8.425998499999999
+      ],
+      "before_range": [
+        7.183423,
+        8.846174
+      ],
+      "J": 0.08765149999999977,
+      "limit": 17.683943,
+      "kind": "http",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 1)",
+      "metric": "heap_bytes_after_gc",
+      "before_medians": [
+        72830127.5,
+        72835153.0
+      ],
+      "after_medians": [
+        72834575.5,
+        72829983.0
+      ],
+      "before_range": [
+        4576787,
+        73171609
+      ],
+      "J": 5025.5,
+      "limit": 74932305.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 1)",
+      "metric": "sql_statements",
+      "before_medians": [
+        118.0,
+        113.5
+      ],
+      "after_medians": [
+        118.0,
+        109.0
+      ],
+      "before_range": [
+        100,
+        119
+      ],
+      "J": 4.5,
+      "limit": 123.5,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 1)",
+      "metric": "loop_lag_p99_ms",
+      "before_medians": [
+        26.826877003259142,
+        18.0252215013752
+      ],
+      "after_medians": [
+        32.42395550114452,
+        6.637629501710762
+      ],
+      "before_range": [
+        4.951973998686299,
+        47.77854700296302
+      ],
+      "J": 8.801655501883943,
+      "limit": 56.580202504846966,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 1)",
+      "metric": "memory.anon_bytes",
+      "before_medians": [
+        293771264.0,
+        293283840.0
+      ],
+      "after_medians": [
+        294039552.0,
+        293427200.0
+      ],
+      "before_range": [
+        101724160,
+        301522944
+      ],
+      "J": 487424.0,
+      "limit": 295868416.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 1)",
+      "metric": "memory.current_bytes",
+      "before_medians": [
+        334305280.0,
+        299079680.0
+      ],
+      "after_medians": [
+        299923456.0,
+        299161600.0
+      ],
+      "before_range": [
+        107728896,
+        342482944
+      ],
+      "J": 35225600.0,
+      "limit": 336402432.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 1)",
+      "metric": "memory.peak_bytes",
+      "before_medians": [
+        334647296.0,
+        299288576.0
+      ],
+      "after_medians": [
+        300263424.0,
+        299429888.0
+      ],
+      "before_range": [
+        107728896,
+        342872064
+      ],
+      "J": 35358720.0,
+      "limit": 336744448.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 1)",
+      "metric": "memory.file_bytes",
+      "before_medians": [
+        34086912.0,
+        1359872.0
+      ],
+      "after_medians": [
+        1376256.0,
+        1368064.0
+      ],
+      "before_range": [
+        999424,
+        34447360
+      ],
+      "J": 32727040.0,
+      "limit": 67174400.0,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 1)",
+      "metric": "memory.max_rss_kib",
+      "before_medians": [
+        319776.0,
+        319568.0
+      ],
+      "after_medians": [
+        320536.0,
+        319856.0
+      ],
+      "before_range": [
+        132360,
+        327392
+      ],
+      "J": 208.0,
+      "limit": 321824.0,
+      "kind": "kib",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "cpu_seconds",
+      "before_medians": [
+        10.472416374999995,
+        10.382777003999983
+      ],
+      "after_medians": [
+        10.195186925499982,
+        10.26694271500001
+      ],
+      "before_range": [
+        9.981153786,
+        11.144187697999996
+      ],
+      "J": 0.08963937100001118,
+      "limit": 11.519658012499995,
+      "kind": "cpu",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "p95_ms",
+      "before_medians": [
+        576.6595159999999,
+        586.4782155
+      ],
+      "after_medians": [
+        582.0534514999999,
+        569.1388465
+      ],
+      "before_range": [
+        528.486494,
+        624.457884
+      ],
+      "J": 9.818699500000093,
+      "limit": 596.4782155,
+      "kind": "http",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "heap_bytes_after_gc",
+      "before_medians": [
+        72871900.5,
+        72879842.5
+      ],
+      "after_medians": [
+        72871199.5,
+        72883311.5
+      ],
+      "before_range": [
+        21787147,
+        73212856
+      ],
+      "J": 7942.0,
+      "limit": 74976994.5,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "sql_statements",
+      "before_medians": [
+        1000.0,
+        1000.0
+      ],
+      "after_medians": [
+        1000.0,
+        1000.0
+      ],
+      "before_range": [
+        1000,
+        1000
+      ],
+      "J": 1e-06,
+      "limit": 1000.000001,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "loop_lag_p99_ms",
+      "before_medians": [
+        92.05363900400698,
+        100.12037900378346
+      ],
+      "after_medians": [
+        95.30615850235336,
+        99.53990150279424
+      ],
+      "before_range": [
+        78.9490979987022,
+        116.73518200404942
+      ],
+      "J": 8.066739999776473,
+      "limit": 124.8019220038259,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "memory.anon_bytes",
+      "before_medians": [
+        293873664.0,
+        293470208.0
+      ],
+      "after_medians": [
+        294187008.0,
+        293470208.0
+      ],
+      "before_range": [
+        150188032,
+        301420544
+      ],
+      "J": 403456.0,
+      "limit": 295970816.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "memory.current_bytes",
+      "before_medians": [
+        334495744.0,
+        299487232.0
+      ],
+      "after_medians": [
+        300171264.0,
+        299304960.0
+      ],
+      "before_range": [
+        157786112,
+        342675456
+      ],
+      "J": 35008512.0,
+      "limit": 336592896.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "memory.peak_bytes",
+      "before_medians": [
+        334718976.0,
+        299501568.0
+      ],
+      "after_medians": [
+        300382208.0,
+        299474944.0
+      ],
+      "before_range": [
+        157786112,
+        342872064
+      ],
+      "J": 35217408.0,
+      "limit": 336816128.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "memory.file_bytes",
+      "before_medians": [
+        34091008.0,
+        1363968.0
+      ],
+      "after_medians": [
+        1380352.0,
+        1372160.0
+      ],
+      "before_range": [
+        1003520,
+        34451456
+      ],
+      "J": 32727040.0,
+      "limit": 67178496.0,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "memory.max_rss_kib",
+      "before_medians": [
+        319840.0,
+        319696.0
+      ],
+      "after_medians": [
+        320536.0,
+        319856.0
+      ],
+      "before_range": [
+        179440,
+        327392
+      ],
+      "J": 144.0,
+      "limit": 321888.0,
+      "kind": "kib",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 4)",
+      "metric": "cpu_seconds",
+      "before_medians": [
+        1.135337108999991,
+        1.158032849999998
+      ],
+      "after_medians": [
+        1.1484546845000025,
+        1.1688716369999952
+      ],
+      "before_range": [
+        0.9787511870000003,
+        1.2058388069999637
+      ],
+      "J": 0.02269574100000682,
+      "limit": 1.2738361349999978,
+      "kind": "cpu",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 4)",
+      "metric": "p95_ms",
+      "before_medians": [
+        96.0809955,
+        94.95517749999999
+      ],
+      "after_medians": [
+        98.697175,
+        87.5232135
+      ],
+      "before_range": [
+        44.047262,
+        111.827731
+      ],
+      "J": 1.1258180000000095,
+      "limit": 106.0809955,
+      "kind": "http",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 4)",
+      "metric": "heap_bytes_after_gc",
+      "before_medians": [
+        72886208.5,
+        72882328.0
+      ],
+      "after_medians": [
+        72879668.5,
+        72879432.5
+      ],
+      "before_range": [
+        38697872,
+        73207182
+      ],
+      "J": 3880.5,
+      "limit": 74983360.5,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 4)",
+      "metric": "sql_statements",
+      "before_medians": [
+        118.0,
+        118.0
+      ],
+      "after_medians": [
+        118.0,
+        118.0
+      ],
+      "before_range": [
+        100,
+        118
+      ],
+      "J": 1e-06,
+      "limit": 118.000001,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 4)",
+      "metric": "loop_lag_p99_ms",
+      "before_medians": [
+        30.047892501897877,
+        31.22056100073678
+      ],
+      "after_medians": [
+        30.016402000910603,
+        28.40614700289734
+      ],
+      "before_range": [
+        9.912451001582667,
+        39.20748700329568
+      ],
+      "J": 1.1726684988389025,
+      "limit": 40.380155502134585,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 4)",
+      "metric": "memory.anon_bytes",
+      "before_medians": [
+        293947392.0,
+        293681152.0
+      ],
+      "after_medians": [
+        294275072.0,
+        293523456.0
+      ],
+      "before_range": [
+        180518912,
+        301408256
+      ],
+      "J": 266240.0,
+      "limit": 296044544.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 4)",
+      "metric": "memory.current_bytes",
+      "before_medians": [
+        334624768.0,
+        299489280.0
+      ],
+      "after_medians": [
+        300238848.0,
+        299503616.0
+      ],
+      "before_range": [
+        188829696,
+        342405120
+      ],
+      "J": 35135488.0,
+      "limit": 336721920.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 4)",
+      "metric": "memory.peak_bytes",
+      "before_medians": [
+        334874624.0,
+        299739136.0
+      ],
+      "after_medians": [
+        300400640.0,
+        299718656.0
+      ],
+      "before_range": [
+        191725568,
+        342872064
+      ],
+      "J": 35135488.0,
+      "limit": 336971776.0,
+      "kind": "bytes",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 4)",
+      "metric": "memory.file_bytes",
+      "before_medians": [
+        34111488.0,
+        1384448.0
+      ],
+      "after_medians": [
+        1400832.0,
+        1392640.0
+      ],
+      "before_range": [
+        1024000,
+        34471936
+      ],
+      "J": 32727040.0,
+      "limit": 67198976.0,
+      "kind": "strict",
+      "passed": true
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 4)",
+      "metric": "memory.max_rss_kib",
+      "before_medians": [
+        319968.0,
+        319888.0
+      ],
+      "after_medians": [
+        320600.0,
+        320048.0
+      ],
+      "before_range": [
+        211824,
+        327392
+      ],
+      "J": 80.0,
+      "limit": 322016.0,
+      "kind": "kib",
+      "passed": true
+    }
+  ],
+  "failures": [
+    {
+      "scope": "policy-heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "p95_ms",
+      "before_medians": [
+        1185.569419,
+        1187.6456429999998
+      ],
+      "after_medians": [
+        1207.825309,
+        1226.5588065
+      ],
+      "before_range": [
+        1058.827522,
+        1277.317981
+      ],
+      "J": 2.076223999999911,
+      "limit": 1197.6456429999998,
+      "kind": "http",
+      "passed": false
+    },
+    {
+      "scope": "policy-heap/('same-result-key', 8)",
+      "metric": "p95_ms",
+      "before_medians": [
+        168.409301,
+        174.06986799999999
+      ],
+      "after_medians": [
+        199.82161000000002,
+        183.8004525
+      ],
+      "before_range": [
+        90.770573,
+        224.48295
+      ],
+      "J": 5.660566999999986,
+      "limit": 184.06986799999999,
+      "kind": "http",
+      "passed": false
+    }
+  ],
+  "short": {
+    "status": "Partial short scope assessment only; long/lifecycle/references still required",
+    "payloads_sql_identical": true,
+    "cells": [
+      {
+        "count": 20,
+        "kind": "same-result-key",
+        "concurrency": 1,
+        "before_cpu_medians": [
+          0.26638279899999984,
+          0.265072781
+        ],
+        "after_cpu_medians": [
+          0.268397357,
+          0.26209370500000007
+        ],
+        "cpu_percent_delta": 0.7562642961793431,
+        "p95_median_delta_ms": -0.1015060000000001,
+        "cpu_budget_pass": true,
+        "http_budget_pass": true
+      },
+      {
+        "count": 20,
+        "kind": "same-result-key",
+        "concurrency": 4,
+        "before_cpu_medians": [
+          0.32725399499999996,
+          0.32708420000000005
+        ],
+        "after_cpu_medians": [
+          0.3337019430000001,
+          0.33148004
+        ],
+        "cpu_percent_delta": 1.9703191094734063,
+        "p95_median_delta_ms": -0.4869380000000003,
+        "cpu_budget_pass": true,
+        "http_budget_pass": true
+      },
+      {
+        "count": 20,
+        "kind": "same-result-key",
+        "concurrency": 8,
+        "before_cpu_medians": [
+          0.3297897169999999,
+          0.3328315690000001
+        ],
+        "after_cpu_medians": [
+          0.33501629899999985,
+          0.3355688670000001
+        ],
+        "cpu_percent_delta": 0.8224273941994875,
+        "p95_median_delta_ms": 1.2479820000000004,
+        "cpu_budget_pass": true,
+        "http_budget_pass": true
+      },
+      {
+        "count": 20,
+        "kind": "unique-result-key-warm-metadata",
+        "concurrency": 1,
+        "before_cpu_medians": [
+          0.9784901160000001,
+          0.9678139539999999
+        ],
+        "after_cpu_medians": [
+          0.9728397310000001,
+          0.9709574350000003
+        ],
+        "cpu_percent_delta": -0.5774595887691136,
+        "p95_median_delta_ms": 0.055452999999999975,
+        "cpu_budget_pass": true,
+        "http_budget_pass": true
+      },
+      {
+        "count": 20,
+        "kind": "unique-result-key-warm-metadata",
+        "concurrency": 4,
+        "before_cpu_medians": [
+          1.3327103339999997,
+          1.3019817629999997
+        ],
+        "after_cpu_medians": [
+          1.2934710589999998,
+          1.305541717
+        ],
+        "cpu_percent_delta": -2.0385988092743057,
+        "p95_median_delta_ms": 0.5109689999999887,
+        "cpu_budget_pass": true,
+        "http_budget_pass": true
+      },
+      {
+        "count": 20,
+        "kind": "unique-result-key-warm-metadata",
+        "concurrency": 8,
+        "before_cpu_medians": [
+          1.3469553870000004,
+          1.338025398
+        ],
+        "after_cpu_medians": [
+          1.3396543159999998,
+          1.3347222529999998
+        ],
+        "cpu_percent_delta": -0.5420425257188222,
+        "p95_median_delta_ms": -5.11888399999998,
+        "cpu_budget_pass": true,
+        "http_budget_pass": true
+      },
+      {
+        "count": 100,
+        "kind": "same-result-key",
+        "concurrency": 1,
+        "before_cpu_medians": [
+          0.301792764,
+          0.29870113400000076
+        ],
+        "after_cpu_medians": [
+          0.30691161499999975,
+          0.29670559900000004
+        ],
+        "cpu_percent_delta": 1.6961476915993146,
+        "p95_median_delta_ms": -0.08270399999999967,
+        "cpu_budget_pass": true,
+        "http_budget_pass": true
+      },
+      {
+        "count": 100,
+        "kind": "same-result-key",
+        "concurrency": 4,
+        "before_cpu_medians": [
+          0.3631996710000003,
+          0.3886955950000006
+        ],
+        "after_cpu_medians": [
+          0.36483679599999963,
+          0.3651423550000006
+        ],
+        "cpu_percent_delta": -6.059559280572757,
+        "p95_median_delta_ms": 0.6472109999999986,
+        "cpu_budget_pass": true,
+        "http_budget_pass": true
+      },
+      {
+        "count": 100,
+        "kind": "same-result-key",
+        "concurrency": 8,
+        "before_cpu_medians": [
+          0.3669481249999995,
+          0.3601162430000002
+        ],
+        "after_cpu_medians": [
+          0.3722699939999998,
+          0.3596861560000004
+        ],
+        "cpu_percent_delta": 1.4503055438695345,
+        "p95_median_delta_ms": -0.23918099999999498,
+        "cpu_budget_pass": true,
+        "http_budget_pass": true
+      },
+      {
+        "count": 100,
+        "kind": "unique-result-key-warm-metadata",
+        "concurrency": 1,
+        "before_cpu_medians": [
+          2.2600054699999994,
+          2.2364755569999994
+        ],
+        "after_cpu_medians": [
+          2.283197919,
+          2.2393465269999995
+        ],
+        "cpu_percent_delta": 1.026212073725663,
+        "p95_median_delta_ms": -0.6908019999999979,
+        "cpu_budget_pass": true,
+        "http_budget_pass": true
+      },
+      {
+        "count": 100,
+        "kind": "unique-result-key-warm-metadata",
+        "concurrency": 4,
+        "before_cpu_medians": [
+          3.720226684,
+          3.63611987
+        ],
+        "after_cpu_medians": [
+          3.680192230000001,
+          3.600050416
+        ],
+        "cpu_percent_delta": -1.0761294243756603,
+        "p95_median_delta_ms": -8.627897999999988,
+        "cpu_budget_pass": true,
+        "http_budget_pass": true
+      },
+      {
+        "count": 100,
+        "kind": "unique-result-key-warm-metadata",
+        "concurrency": 8,
+        "before_cpu_medians": [
+          3.939632555000001,
+          3.8822579899999994
+        ],
+        "after_cpu_medians": [
+          3.841074195999999,
+          3.715255236999999
+        ],
+        "cpu_percent_delta": -2.5017145031689836,
+        "p95_median_delta_ms": -29.892267000000004,
+        "cpu_budget_pass": true,
+        "http_budget_pass": true
+      }
+    ]
+  },
+  "references": [
+    {
+      "name": "cr17a-drain-after-references-v1-A-ref-0.json",
+      "sha256": "80636842cc58cff4051789318bfa6d685d6d632a758cb5ea9c693cd0e83289fd"
+    },
+    {
+      "name": "cr17a-drain-after-references-v1-B-ref-0.json",
+      "sha256": "b19f14da86b560f6e699ef16186f24e5477e2c82ebd114291d7cf50525514d8b"
+    },
+    {
+      "name": "cr17a-drain-after-references-v1-C-ref-0.json",
+      "sha256": "77d3919f53f996f2c5cfe092020af4d0be16d2b6df2de681a95712483e3167a4"
+    },
+    {
+      "name": "cr17a-drain-after-references-v1-A-ref-1.json",
+      "sha256": "552c56638afcfa76cea8b141422c869078e27237b7ecca5f4ebf805fb4c3322e"
+    },
+    {
+      "name": "cr17a-drain-after-references-v1-B-ref-1.json",
+      "sha256": "9f569e1b1aafaf01e7e47cfedc1967436d090e4bfc85564b289963180d52ac19"
+    },
+    {
+      "name": "cr17a-drain-after-references-v1-C-ref-1.json",
+      "sha256": "39fcf42f750fd614f14b0d1456ffd346e9ba0357c126aea06a1dd15e5047c7f8"
+    },
+    {
+      "name": "cr17a-drain-after-references-v1-A-ref-2.json",
+      "sha256": "c084beddc3c322420eb0a217225e5c73ce6a95d9b1cb0bf98447af4ea48e23bd"
+    },
+    {
+      "name": "cr17a-drain-after-references-v1-B-ref-2.json",
+      "sha256": "8256ae0a6e5edc3c91c1aae0191eb53f12d6f5015754c0546c1e95a00973ab43"
+    },
+    {
+      "name": "cr17a-drain-after-references-v1-C-ref-2.json",
+      "sha256": "9b0c0bfa8aa12f4ea1b868630077a232026f1ffe5b375b90e153fc740577cf6e"
+    },
+    {
+      "name": "cr17a-drain-after-references-v1-A-ref-3.json",
+      "sha256": "78b447d665001bc16b56716a0b47cb0a4643e23ea8bbbc7c14be405a5358ee6c"
+    },
+    {
+      "name": "cr17a-drain-after-references-v1-B-ref-3.json",
+      "sha256": "f33907a8730ef60271e01b60e6f4e89a716ee7b89465a5dcbcfd9633c1a327fd"
+    },
+    {
+      "name": "cr17a-drain-after-references-v1-C-ref-3.json",
+      "sha256": "588e268377f2dba9b9dd84f6fb55dfbcb040fd17563c6eb346934bdb492ee607"
+    },
+    {
+      "name": "cr17a-drain-after-references-v1-A-ref-4.json",
+      "sha256": "bc785c539d26bbd97041bfae7c683084e17c4d5efb9fccb8f3d53957e3885f01"
+    },
+    {
+      "name": "cr17a-drain-after-references-v1-B-ref-4.json",
+      "sha256": "33faf805bc1865253e0be00bed69e9bd4f042cdb936b799b53c19a4ef4522fe3"
+    },
+    {
+      "name": "cr17a-drain-after-references-v1-C-ref-4.json",
+      "sha256": "5c93565c8d3265c2d7caa221f8ff4b6a006557f352c49fdb25924f332da6f002"
+    }
+  ],
+  "native_cases": [
+    "4-r0",
+    "4-r1",
+    "4-r2",
+    "4-r3",
+    "4-r4",
+    "15-r0",
+    "32-r0"
+  ]
+}

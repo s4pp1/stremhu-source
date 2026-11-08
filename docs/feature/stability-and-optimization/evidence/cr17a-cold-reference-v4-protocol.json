@@ -1,0 +1,14 @@
+{
+  "id": "cr17a-cold-reference-v4",
+  "registered_utc": "2026-11-05T17:00:32.067487+00:00",
+  "reason": "V2 unchanged-source SQL invariant failed even before; remaining94metric diagnostic found colduser0+26.391ms despite all normal/lifecycle/native/steadyheap gates passing. Preserve failures. Focused qualification has no budget change or application edit.",
+  "sampling": "Five rotatedABC references,10fresh processes/label/repeat, native public dependency scopes introspected. Separate from paired C cold qualification. All150samples included;old forced-function-scope A/B references excluded even if they complete.",
+  "acceptance": "Exact payload/order/count and coldSQL no increase for identical state. Per-user pooled run-median and pooled p95 cold wall effect<=+10ms;both cohort effects reported. CPU/fixedmemory still original budgets in retained long/normal gates,not redefined here. No blanket PASS from this subset.",
+  "resources": "Client2CPU6,7/1GiB,networknone,readonlyfrozenapp,tmpfs syntheticDB;all other local controlled workloads finished before start.",
+  "original_fixture_sha256": "100d33e953adf13175b0e594e014309554420b9f7626ee2da950c6ba295c6408",
+  "fixture_sha256": "6dcd3040a42307a299b028eed85e182f8dd94c323d81f00d27022dc1229cf8c2",
+  "source_manifest_sha256": {
+    "before": "bb785b7a147735b3d6289379cf8f42b20f9924976f3848488701719e2002dd73",
+    "after": "b22bfd0500a93277146ea341db7c5675aab8e2ab37e4fa112b92b98ecfda5742"
+  }
+}

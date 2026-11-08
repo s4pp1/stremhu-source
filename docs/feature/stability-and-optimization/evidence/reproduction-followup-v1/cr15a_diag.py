@@ -1,0 +1,40 @@
+"""Diagnostic only (not gate data): focused normal probe, before / v1-after / v2-after interleaved x3 on cpus 8,9 + 10."""
+import json, os, pathlib, secrets, subprocess, time
+r = pathlib.Path(__file__).parent
+fx = r / 'cr15a-diag-fixture'
+IMAGE = 'stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52'
+SRC = {'before': r / 'g02-post-cr17-v2-source/server/app', 'v1': r / 'cr15a-after-v1-source/server/app', 'v2': r / 'cr15a-after-v2-source/server/app'}
+def call(*a, **kw): return subprocess.run(['docker', '--context', 'desktop-linux', *a], **kw)
+env = os.environ.copy()
+env.update(HOST_IP=(pathlib.Path.cwd() / '.git/cr-test-host').read_text().strip(), SESSION_SECRET=secrets.token_urlsafe(48), STREMHU_LOAD_DOTENV='false',
+           TEST_BASE_URL='http://tracker.fixture.invalid:8080', PYTHONDONTWRITEBYTECODE='1')
+net = 'cr-cr15a-diag-obva7te6'
+call('network', 'create', '--internal', '--label', 'stremhu.task=obva7te6', net, capture_output=True, check=True)
+server = None
+out = r / 'cr15a-diag-output'
+out.mkdir(exist_ok=True)
+try:
+    server = call('run', '--detach', '--rm', '--name', net + '-server', '--network', net, '--network-alias', 'tracker.fixture.invalid', '--network-alias', 'cdn.other.invalid',
+                  '--read-only', '--cpus', '1', '--cpuset-cpus', '10', '--memory', '512m', '--tmpfs', '/tmp', '--mount', f'type=bind,source={fx},target=/fixture,readonly',
+                  '--entrypoint', 'python', IMAGE, '/fixture/server.py', capture_output=True, text=True, check=True).stdout.strip()
+    deadline = time.monotonic() + 45
+    while call('exec', server, 'python', '-c', "import json,urllib.request;assert json.load(urllib.request.urlopen('http://127.0.0.1:8080/fixture/ready',timeout=1))['ready']", capture_output=True).returncode:
+        if time.monotonic() > deadline: raise RuntimeError('not ready')
+        time.sleep(.1)
+    orders = [['before', 'v1', 'v2'], ['v2', 'before', 'v1'], ['v1', 'v2', 'before']]
+    for rep, order in enumerate(orders):
+        for side in order:
+            o = out / f'{side}-{rep}'
+            o.mkdir()
+            cmd = ['run', '--rm', '--network', net, '--read-only', '--cpus', '2', '--cpuset-cpus', '8,9', '--memory', '1g', '--tmpfs', '/tmp', '--tmpfs', '/app/data',
+                   '--mount', f'type=bind,source={fx},target=/fixture,readonly', '--mount', f'type=bind,source={o},target=/fixture-output',
+                   '--mount', f'type=bind,source={SRC[side]},target=/app/app,readonly']
+            for k in ['HOST_IP', 'SESSION_SECRET', 'STREMHU_LOAD_DOTENV', 'TEST_BASE_URL', 'PYTHONDONTWRITEBYTECODE']: cmd += ['--env', k]
+            cmd += ['--env', 'PYTHONPATH=/app', '--entrypoint', 'python', IMAGE, '/fixture/probe.py']
+            res = call(*cmd, env=env, capture_output=True, text=True, encoding='utf-8')
+            if res.returncode: print(side, rep, 'FAILED', res.stderr[-300:]); continue
+            d = json.loads(res.stdout)
+            print(side, rep, ' '.join(f"{x['kind'][:5]}c{x['concurrency']} p50={x['p50_ms']:.1f} cpu={x['cpu_seconds']:.3f}" for x in d['rows']), flush=True)
+finally:
+    if server: call('stop', '--time', '5', server, capture_output=True)
+    call('network', 'rm', net, capture_output=True)

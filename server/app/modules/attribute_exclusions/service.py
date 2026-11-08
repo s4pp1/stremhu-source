@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 
+from app.common.commit_actions import mark_stream_cache_dirty
 from app.modules.attribute_exclusions.models import AttributeExclusionModel
 from app.modules.attribute_exclusions.repository import AttributeExclusionsRepository
 from app.modules.attribute_exclusions.schemas.internal import (
@@ -22,6 +23,7 @@ class AttributeExclusionsService:
         self._ensure_not_exists(payload.attribute_id, payload.user_id)
 
         model = self.repository.create(payload)
+        mark_stream_cache_dirty(self.repository.db, payload.user_id)
         return model
 
     def find_list(
@@ -47,6 +49,7 @@ class AttributeExclusionsService:
     def delete(self, attribute_id: str, user_id: str | None) -> None:
         self._ensure_exists(attribute_id, user_id)
         self.repository.delete(attribute_id, user_id)
+        mark_stream_cache_dirty(self.repository.db, user_id)
 
     def _ensure_exists(
         self,

@@ -1,6 +1,7 @@
 import pytest
 
 from app.modules.indexer_accounts.models import IndexerAccountModel
+from app.modules.indexer_accounts.schemas import IndexerAccountRef, IndexerDefinitionRef
 from app.modules.indexer_definitions.models import IndexerDefinitionModel
 from app.modules.media_attributes.constants import MediaAttributeKey
 from app.modules.media_attributes.models import MediaAttributeModel
@@ -162,7 +163,7 @@ def test_stremio_stream_subtitle_badge():
 
     # Stream WITH Hungarian subtitle
     ts_with_sub = TorrentStream(
-        indexer_account=acc,
+        indexer_account=IndexerAccountRef.from_model(acc),
         torrent_id="12345",
         info_hash="hash1",
         torrent_name="Anime S01E01 1080p",
@@ -171,7 +172,7 @@ def test_stremio_stream_subtitle_badge():
         file_index=0,
         play_url="https://localhost:7070/play",
         seeders=10,
-        attributes=[jap_attr, idef],
+        attributes=[jap_attr, IndexerDefinitionRef.from_model(idef)],
         has_hungarian_sub=True,
     )
 
@@ -181,7 +182,7 @@ def test_stremio_stream_subtitle_badge():
 
     # Stream WITHOUT Hungarian subtitle
     ts_no_sub = TorrentStream(
-        indexer_account=acc,
+        indexer_account=IndexerAccountRef.from_model(acc),
         torrent_id="12345",
         info_hash="hash1",
         torrent_name="Anime S01E01 1080p",
@@ -190,7 +191,7 @@ def test_stremio_stream_subtitle_badge():
         file_index=0,
         play_url="https://localhost:7070/play",
         seeders=10,
-        attributes=[jap_attr, idef],
+        attributes=[jap_attr, IndexerDefinitionRef.from_model(idef)],
         has_hungarian_sub=False,
     )
 
@@ -219,7 +220,7 @@ async def test_enrich_torrent_streams_with_tech_info():
 
     # Torrent originally has only false ENG fallback from hdser category
     ts = TorrentStream(
-        indexer_account=acc,
+        indexer_account=IndexerAccountRef.from_model(acc),
         torrent_id="812207",
         info_hash="hash_fma",
         torrent_name="Fullmetal Alchemist Brotherhood 720p",
@@ -228,7 +229,7 @@ async def test_enrich_torrent_streams_with_tech_info():
         file_index=0,
         play_url="https://localhost:7070/play",
         seeders=50,
-        attributes=[eng_fallback, idef],
+        attributes=[eng_fallback, IndexerDefinitionRef.from_model(idef)],
         has_hungarian_sub=False,
     )
 
@@ -291,7 +292,7 @@ async def test_fast_path_hungarian_sub_regex():
 
     # Release name clearly has HunSub
     ts1 = TorrentStream(
-        indexer_account=acc,
+        indexer_account=IndexerAccountRef.from_model(acc),
         torrent_id="99901",
         info_hash="hash_hunsub",
         torrent_name="Shingeki.no.Kyojin.S01E01.HunSub.1080p",
@@ -300,13 +301,13 @@ async def test_fast_path_hungarian_sub_regex():
         file_index=0,
         play_url="https://localhost:7070/play",
         seeders=10,
-        attributes=[idef],
+        attributes=[IndexerDefinitionRef.from_model(idef)],
         has_hungarian_sub=False,
     )
 
     # File name has Sub.Hun
     ts2 = TorrentStream(
-        indexer_account=acc,
+        indexer_account=IndexerAccountRef.from_model(acc),
         torrent_id="99902",
         info_hash="hash_subhun",
         torrent_name="Anime.Pakk",
@@ -315,7 +316,7 @@ async def test_fast_path_hungarian_sub_regex():
         file_index=0,
         play_url="https://localhost:7070/play",
         seeders=10,
-        attributes=[idef],
+        attributes=[IndexerDefinitionRef.from_model(idef)],
         has_hungarian_sub=False,
     )
 

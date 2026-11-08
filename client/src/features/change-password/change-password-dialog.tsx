@@ -1,3 +1,5 @@
+import { useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import type { MouseEventHandler, SubmitEventHandler } from 'react'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -18,7 +20,7 @@ import type {
   UserUpdateRequest,
 } from '@/shared/lib/source/source-client'
 import { parseApiError } from '@/shared/lib/utils'
-import { useUpdateMe } from '@/shared/queries/me'
+import { getMe, useUpdateMe } from '@/shared/queries/me'
 import { useUserUpdate } from '@/shared/queries/users'
 
 import type { ChangePasswordDialog } from './change-password.types'
@@ -33,6 +35,10 @@ export function ChangePasswordDialog(
   const { user } = dialog.options
 
   const dialogsStore = useDialogsStore()
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
+  const isSelf =
+    !user || queryClient.getQueryData(getMe().queryKey)?.id === user.id
 
   const { mutateAsync: updateUser } = useUserUpdate()
   const { mutateAsync: updateMe } = useUpdateMe()
@@ -63,6 +69,7 @@ export function ChangePasswordDialog(
         await dialogConfig.mutate(value)
         toast.success(`Jelszó sikeresen módosítva!`)
         dialogsStore.closeDialog(dialog.id)
+        if (isSelf) await navigate({ to: '/login', replace: true })
       } catch (error) {
         const message = parseApiError(error)
         toast.error(message)

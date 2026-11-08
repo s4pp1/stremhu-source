@@ -3,6 +3,7 @@ import asyncio
 import httpx
 
 from app.common.database import db_session
+from app.common.log_safety import network_error_fields
 from app.common.logger import logger
 from app.config import config
 from app.modules.network.dependencies import create_network_service
@@ -53,7 +54,7 @@ async def verify_self_connection() -> None:
 
     except Exception:
         logger.warning(
-            f"⚠️  Az ön-ellenőrzés sikertelen ({host}). Nem biztos, hogy jó a HOST_IP beállítás."
+            "⚠️ Az ön-ellenőrzés sikertelen. Ellenőrizd a HOST_IP beállítást."
         )
 
 
@@ -64,8 +65,8 @@ async def run_network_ip_sync() -> None:
             network_service = create_network_service(db)
             await network_service.sync_ip()
         logger.info("✅ A DDNS IP szinkronizáció befejeződött.")
-    except Exception:
-        logger.exception("‼️ Hiba történt a DDNS IP szinkronizáció során.")
+    except Exception as error:
+        logger.error("operation=scheduled-ddns-sync %s", network_error_fields(error))
 
 
 async def run_check_ssl_certificate() -> None:
@@ -77,6 +78,5 @@ async def run_check_ssl_certificate() -> None:
         logger.info("✅ Az SSL tanúsítvány ellenőrzése befejeződött.")
     except Exception as e:
         logger.error(
-            f"‼️ Hiba történt az SSL tanúsítvány ellenőrzése során: {e}",
-            exc_info=e,
+            "operation=scheduled-ssl-check %s", network_error_fields(e),
         )

@@ -75,3 +75,28 @@ def test_validate_file_type():
     assert exc.value.status_code == 400
     assert "nem felirat" in exc.value.detail
 
+
+@pytest.mark.parametrize("header", ["bytes=²-", "bytes=١-", "bytes=０-9", "bytes=0-²", "bytes=" + "9" * 5000 + "-", "bytes=-" + "0" * 5000])
+def test_range_malformed_or_unsatisfiable_numbers_are_controlled(header):
+    with pytest.raises(HTTPException) as error:
+        parse_range_header(1000, header)
+    assert error.value.status_code == 416
+    assert error.value.headers == {"Content-Range": "bytes */1000"}
+
+
+@pytest.mark.parametrize("header,start,end", [("bytes=0-" + "9" * 5000, 0, 999), ("bytes=-" + "9" * 5000, 0, 999), ("bytes=" + "0" * 5000 + "10-99", 10, 99)])
+def test_long_meaningful_range_numbers_saturate(header, start, end):
+    result = parse_range_header(1000, header)
+    assert (result.start_byte, result.end_byte, result.content_length) == (start, end, end - start + 1)
+
+
+@pytest.mark.parametrize("size", [0, 1])
+def test_range_zero_and_one_byte_files(size):
+    if size == 0:
+        assert parse_range_header(size).content_length == 0
+        with pytest.raises(HTTPException) as error:
+            parse_range_header(size, "bytes=0-0")
+        assert error.value.status_code == 416
+    else:
+        assert parse_range_header(size, "bytes=-" + "9" * 5000).content_length == 1
+

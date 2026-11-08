@@ -8,10 +8,13 @@ from typing import Any
 import humanize
 from sqlalchemy.orm import Session
 
+from app.common.async_utils import owned_to_thread
+from app.common.log_safety import network_error_fields
 from app.common.logger import logger
 from app.common.schemas.internal import SeriesInfo
+from app.common.singleflight import SearchOverloadedError
 from app.common.torrent_info import TorrentInfo
-from app.modules.attributes.models import AttributeModel
+from app.modules.indexer_accounts.schemas import IndexerDefinitionRef
 from app.modules.indexer_definitions.service import IndexerDefinitionsService
 from app.modules.media_attributes.constants import MediaAttributeKey
 from app.modules.media_attributes.models import MediaAttributeModel
@@ -98,7 +101,7 @@ class TorrentStreamsService:
                     if isinstance(res, tuple):
                         torrent_sources, indexer_errors = res
                 except Exception as e:
-                    logger.debug(f"[TorrentStreamsService] Prefetch task hiba: {e}")
+                    logger.debug("operation=stream-prefetch %s", network_error_fields(e))
                     (
                         torrent_sources,
                         indexer_errors,
@@ -124,6 +127,12 @@ class TorrentStreamsService:
                 tasks.append(self._torrent_source_provider_service.find_by_imdb_id(i))
 
             results = await asyncio.gather(*tasks, return_exceptions=True)
+            # CR15/c: túlterhelés nem tűnhet el némán a több-azonosítós ágon.
+            overloaded = [res for res in results if isinstance(res, SearchOverloadedError)]
+            if overloaded and len(overloaded) == len(results):
+                raise overloaded[0]
+            if overloaded:
+                indexer_errors.append(str(overloaded[0]))
             seen_source_ids: set[tuple[str, str]] = set()
             for res in results:
                 if isinstance(res, tuple):
@@ -138,7 +147,7 @@ class TorrentStreamsService:
                             seen_source_ids.add(s_key)
                             torrent_sources.append(s)
 
-        app_url = await asyncio.to_thread(self._settings_service.get_app_url)
+        app_url = await owned_to_thread(self._settings_service.get_app_url)
         search_start_time = time.monotonic()
 
         torrent_streams: list[TorrentStream] = []
@@ -172,7 +181,7 @@ class TorrentStreamsService:
                     )
                 except Exception as e:
                     logger.warning(
-                        f"[TorrentStreamsService] Hiba történt a fallback cím lekérése közben ({imdb_id}): {e}"
+                        "operation=stream-fallback-title %s", network_error_fields(e)
                     )
                     actual_title = None
 
@@ -332,7 +341,7 @@ class TorrentStreamsService:
         if not torrent_source:
             return []
 
-        app_url = await asyncio.to_thread(self._settings_service.get_app_url)
+        app_url = await owned_to_thread(self._settings_service.get_app_url)
 
         streams = TorrentStream.from_torrent_id(
             indexer_torrent=torrent_source.indexer_torrent,
@@ -399,7 +408,7 @@ class TorrentStreamsService:
         except asyncio.TimeoutError:
             logger.debug("[TorrentStreamsService] Tech info dúsítás időtúllépés (1.5s).")
         except Exception as e:
-            logger.debug(f"[TorrentStreamsService] Tech info dúsítási hiba: {e}")
+            logger.debug("operation=stream-tech-enrichment %s", network_error_fields(e))
 
         return torrent_streams
 
@@ -437,7 +446,7 @@ class TorrentStreamsService:
                 self._apply_tech_info_to_stream(ts, meta)
         except Exception as e:
             logger.debug(
-                f"[TorrentStreamsService] Nem sikerült a torrent csoport ({cache_key}) dúsítása: {e}"
+                "operation=stream-group-enrichment %s", network_error_fields(e)
             )
 
     @staticmethod
@@ -500,8 +509,10 @@ class TorrentStreamsService:
         preference_multiple_map: dict[str, bool],
         preference_strict_exclusion_map: dict[str, bool],
     ) -> bool:
-        attributes_by_preference: dict[str, list[AttributeModel]] = {}
-        unassociated_attributes: list[AttributeModel] = []
+        attributes_by_preference: dict[
+            str, list[MediaAttributeModel | IndexerDefinitionRef]
+        ] = {}
+        unassociated_attributes: list[MediaAttributeModel | IndexerDefinitionRef] = []
 
         for attribute in torrent_stream.attributes:
             if attribute.preference_id is not None:

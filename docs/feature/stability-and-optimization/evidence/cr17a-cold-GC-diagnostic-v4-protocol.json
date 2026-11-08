@@ -1,0 +1,6 @@
+{
+  "id": "cr17a-cold-GC-diagnostic-v4",
+  "registered_utc": "2026-11-05T17:33:41.629827+00:00",
+  "scope": "V3 colduser0+29.5ms/user1-32.5ms distribution: investigate cause before any next change. Default GC enabled,callbacks observe generation/time per actual user call.5paired freshprocesses/source,2CPU6,7/1GiB,networknone,frozen sources unchanged. NO acceptance,budget relaxation or production GC change.",
+  "fixture_sha256": "c75b939e4536b23d1dbb62ba08125c904a7cbcb3df58f6be0f7ead64593685ef"
+}

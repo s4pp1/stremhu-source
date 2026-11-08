@@ -23,195 +23,226 @@
 </p>
 
 > [!IMPORTANT]
-> **Fork információk és köszönetnyilvánítás:**
-> Ez a repository a hivatalos **[StremHU Source](https://github.com/s4pp1/stremhu-source)** projekt forkja, melynek eredeti készítője és fejlesztője **[s4pp1](https://github.com/s4pp1)**.
-> - **Eredeti GitHub repository:** [https://github.com/s4pp1/stremhu-source](https://github.com/s4pp1/stremhu-source) (`8c99c7d` commit)
-> - **Hivatalos weboldal & dokumentáció:** [https://stremhu.app](https://stremhu.app)
-> - **Hivatalos Docker Hub image:** [s4pp1/stremhu-source:latest](https://hub.docker.com/r/s4pp1/stremhu-source)
-
-<p align="center">
-  A fork docker image-t megtalálhatod dockerHubon is: [levfero/stremhu-source:dev](https://hub.docker.com/r/levfero/stremhu-source)
-</p>
+> **Fork információk és köszönetnyilvánítás**
+> Ez a repository, a **`stremhu-source-VibeCodedEdition`**, a hivatalos **[StremHU Source](https://github.com/s4pp1/stremhu-source)** projekt forkja. Az eredeti szerzője és fejlesztője **[s4pp1](https://github.com/s4pp1)**; minden alapfunkció az ő munkája.
+> - **Viszonyítási alap (Upstream):** [`s4pp1/stremhu-source`](https://github.com/s4pp1/stremhu-source), `8c99c7d` commit. A dokumentumban: **`s4pp1/stremhu-source` (Upstream `@8c99c7d`)**.
+> - **Hivatalos weboldal és dokumentáció:** [https://stremhu.app](https://stremhu.app)
+> - **Hivatalos Docker image:** [s4pp1/stremhu-source:latest](https://hub.docker.com/r/s4pp1/stremhu-source)
+> - **A fork Docker image-e:** [levfero/stremhu-source:dev](https://hub.docker.com/r/levfero/stremhu-source)
 
 ---
 
-# 🚀 Újdonságok és Fejlesztések az Eredeti Upstream Verzióhoz (`s4pp1/stremhu-source`) Képest
+## Tartalom
 
-Ez a fork az eredeti upstream verzióra építve átfogó funkcionális bővítményeket, intelligens hang- és felirat-felismerési motort, több-trackeres találati deduplikációt, kulcs nélküli metaadat-feloldást, valamint egy **teljes körű stabilitási és aszinkron konkurencivédelmi architektúrát (M01–M18)** valósít meg.
+1. [Összehasonlító mátrix](#1-összehasonlító-mátrix)
+2. [Multi-ID routing és keresési lánc](#2-multi-id-routing-és-keresési-lánc)
+3. [Hangsáv, felirat és lejátszás (Relay)](#3-hangsáv-felirat-és-lejátszás-relay)
+4. [Stabilitási, konkurencia- és biztonsági hardening (CR01–CR19)](#4-stabilitási-konkurencia--és-biztonsági-hardening-cr01cr19)
+5. [Mérések](#5-mérések)
+6. [Fejlesztői ellenőrzés és dokumentáció](#6-fejlesztői-ellenőrzés-és-dokumentáció)
 
 ---
 
-## 📋 Áttekintő Összehasonlító Táblázat
+## 1. Összehasonlító mátrix
 
-| Terület / Funkció | Eredeti Upstream (`s4pp1/stremhu-source`) | Ez a Fork |
+### 1.1 Funkcionális bővítések
+
+| Terület | `s4pp1/stremhu-source` (Upstream `@8c99c7d`) | `stremhu-source-VibeCodedEdition` |
 | :--- | :--- | :--- |
-| **Külső Torrent Feliratok Streamingje** | ❌ Nem támogatott (csak beágyazott hangsáv/felirat) | ✅ **Teljes körű külső felirat kezelés** (`.srt`, `.vtt`, `.ass`, `.ssa`), valós idejű WebVTT konverzió, aktív lejátszás követés és választható kölcsönzés |
-| **Japán és Valós Hangsávok Felismerése** | ❌ Nem szerepelt; az animék 90%-át az nCore kategória tévesen `🇬🇧 Eng`-nek bélyegezte | ✅ **Intelligens Tech Info / MediaInfo elemző** (`tech_info_parser.py`): valós japán, angol és magyar sávok kinyerése NFO-ból, téves `ENG` fallback felülírása, `JPN`, `ja-jp`, `Dual-Audio` és `Multi-Audio` címkék |
-| **Magyar Felirat Jelölése a Találatokban** | ❌ Nincs felirat-állapot jelzés a stream kártyán | ✅ **`💬 🇭🇺 Felirat` badge:** MediaInfo Text/Subtitle sávok, feltöltői leírások és torrent `.srt`/`.ass` fájlok alapján azonnali kiemelés a stream kártyán |
-| **Fájlszintű Deduplikáció & Forráshelyesség** | ⚠️ Duplikált streamként jelent meg minden indexerről külön | ✅ **Kanonikus kulcs `(info_hash, file_index)`:** azonos swarmok összevonása, seeder-összegzés, multi-tracker badge (`🧲 nCore, HunTorrent`), garantáltan a letöltött forrást streamelő URL, **Web UI kapcsoló** |
-| **Hidegindítási Válaszidő (Cold Start)** | ⏱️ 3 753 – 3 946 ms | ⚡ **3 528 – 3 876 ms (akár -800 ms gyorsabb mint a korábbi master!)**, NFO-MediaInfo fast-path és nCore szemafor-hangolás |
-| **Meleg Lekérdezési Idő (Warm Cache)** | ⏱️ 2 500 – 4 600 ms (Átlag: **3 297 ms**) | ⚡ **2.9 ms (~1100-szoros gyorsulás)** memóriabeli `_stream_cache`-sel és generációs in-flight védelemmel |
-| **Singleflight Feladat-Megszakítás Védelem** | ⚠️ Egy kliens lekapcsolódása eldobta a többiek folyamatban lévő keresését | ✅ **`asyncio.shield` + waiters tracking:** a közös háttérkeresés független a kliens socket bontásától |
-| **Relay Darabolvasás & Életciklus Védelem** | ⚠️ Nincs read timeout; kapcsolatbontáskor beragadó pending olvasások | ✅ **`relay_read_timeout_seconds=15s`**, `relay_piece_timeout_seconds=120s`, `PieceReadAbortedError`, leálláskori és torrent-törléskori tiszta takarítás |
-| **Range Kérések & RFC 9110 Megfelelés** | ⚠️ Végpont levágási hiba, hibás 500-as válaszok érvénytelen Range esetén | ✅ **Teljes RFC 9110 megfelelés:** `Content-Range: bytes */N` 416-os státusznál, multipart elutasítás, overflow védelem |
-| **Minden Kérésre Érvényes Fájlvalidáció** | ⚠️ Csak új torrentnél ellenőrizte; relayben lévő torrentnél nem volt típusvizsgálat | ✅ **Univerzális validáció (`require_subtitle=True`):** sem új, sem gyorsítótárazott torrentnél nem szolgálható ki érvénytelen fájltípus |
-| **Adatbázis Session Határok & Állapotlekérés** | ⚠️ Minden stream-rendezésnél lefutott egy `SELECT * FROM torrents` teljes tábla scan | ✅ **Célzott állapotlekérés:** 0 db felesleges SQL query rendezéskor; torrent `file_progress()` memóriacache |
-| **Párhuzamos Torrentletöltés & SQLite Mentés** | ⚠️ Párhuzamos keresések duplán töltötték le a `.torrent` fájlokat; `IntegrityError` beszúráskor | ✅ **Torrent Download Singleflight** + atomi `sqlite_insert(...).on_conflict_do_nothing()` |
-| **Keresési Időkeret & Méltányos Találatfeldolgozás** | ⚠️ Végtelen fallback ciklusok lehetségesek; top 30 seeder vágás kiszorította a kisebb trackereket | ✅ **Monotonic 20s deadline** a fallback keresésekre; **Fair interleaving** (trackerenkénti váltakozó körforgás max 40 elemig) |
-| **Nuvio & Stremio 1:1 Feliratpárosítás** | ❌ Nincs támogatás | ✅ **Aktív lejátszás követése (`active_playback.py`):** mindig a kiválasztott torrenthez tartozó felirat jelenik meg, elkerülve a dupla torrent indítást |
-| **TMDB Stream ID (`tmdb:{id}`)** | ❌ Nem támogatott / Hiba | ✅ **Teljes támogatás** (Filmek & Sorozatok; kulcs nélküli Wikidata SPARQL és webes mentőöv) |
-| **TheTVDB (`tvdb:{id}`) & Kitsu / MAL** | ❌ Nincs támogatás | ✅ **Kulcs nélküli TVDB, Kitsu és MyAnimeList (`mal:`) feloldás** dinamikus leképezéssel és iker IMDb aliasokkal |
-| **Ténylegesen Letöltött Tartalom Kijelzése** | ⚠️ Fals "Letöltve" státusz az évadcsomagok még le nem töltött részeinél is | ✅ **Fájlszintű ellenőrzés (`file_progress`):** Csak a 100%-ban kész videófájlok kapnak `⚡ Letöltve` jelzést |
-| **Szöveges Keresés Trackereken** | ⚠️ Csak nCore támogatta; más oldalak üres listát adtak | ✅ **Összes hazai indexer támogatott** (`HunTorrent`, `Majomparádé`, `BitHUmen`, `iNSANE`) lapozásvédelemmel |
-| **IMDb Nélküli Műsorok (pl. Vetélkedők)** | ❌ 0 találat vagy nCore 500-as hiba (`imdb_id: false`) | ✅ **Többjelöltes másodlagos keresés** (ékezetmentesítés, névelő-eltávolítás, nCore sanitizer) |
-| **Stremio / Nuvio Megjelenés** | ⚠️ Felesleges `[StremHU]` prefix; nincs zászló | ✅ **Letisztult címkék**, nemzeti zászló emojik (`🇭🇺 Hun`, `🇬🇧 Eng`, `🇯🇵 Jap` stb.) |
-| **Extrák és Menük Szűrése** | ⚠️ Veszély: 2 GB-os BD menüvideót indíthatott valódi epizód helyett | ✅ **Intelligens szűrés:** `BD Menü`, `Extras`, `NCED` kizárása normál részeknél; Specials (0. évad) esetén engedélyezve |
-| **Stremio Katalógus Keresés** | ❌ Csak `t-<torrent_id>` formátumra adott választ (minden másra üres lista) | ✅ **Közvetlen trackeres szabadszavas keresés** filmekre és sorozatokra, automatikus epizódfelbontással és feltétel nélküli szűréssel |
-| **Kezdeti Pufferelés (ExoPlayer / Nuvio)** | ⚠️ 1 darabos indítás; nagy MKV Cues / MP4 moov esetén stall | ✅ **Kiterjesztett darab-prioritás:** `min(3, total_pieces // 2)` azonnali (`deadline = 0`) letöltés a fájl elejére és végére |
-| **Évadcsomag Gyorsítótárazás** | ⏱️ 180 másodperc (gyakori ismételt tracker terhelés) | ✅ **1800 másodperc (30 perc):** részek egymás utáni nézésekor 0 tracker kérés, **sub-3ms válaszidő** |
-| **Frontend Adaptív Lekérdezés** | ⚠️ Fix 1000 ms refetch háttérben futó ablakban is | ✅ **TanStack Query optimalizáció:** `refetchIntervalInBackground: false`, adaptív 1.5s (aktív letöltés) vs 5s (kímélő) |
-| **Docker Buildcache** | ⚠️ Kliens forrásváltozás mindig újrafuttatta az `npm ci`-t | ✅ **Rétegzett build:** `package.json` + `npm ci` külön rétegen; forráskód módosításakor ~4 másodperces rebuild |
+| **Stremio/Nuvio azonosítók** | IMDb (`tt…`) és saját torrent-azonosító | IMDb + iker-IMDb aliasok, `tmdb:`, `tvdb:`, `kitsu:`, `mal:`, `anime:` előtag, saját `stremhu-source:` azonosító fájlindexszel ([2. fejezet](#2-multi-id-routing-és-keresési-lánc)) |
+| **Azonosító-feloldás** | — | TMDb API (ha van kulcs), kulcs nélkül Wikidata SPARQL, TVMaze, Anime-Kitsu, Kitsu API, Cinemeta, végső esetben a TMDb weboldal |
+| **IMDb nélküli műsorok** | Nincs találat | Másodlagos címkeresés (ékezet- és névelő-mentes jelöltek), 20 s-os monoton határidővel |
+| **Katalóguskeresés** | Csak `t-<torrent_id>` | `t-<torrent_id>` és szabadszavas keresés a trackereken, sorozatszűréssel |
+| **Fájlszintű feloldás** | Legnagyobb videófájl | `StreamFileResolver` + `SeriesParser`: évad/epizód (abszolút és szezonális számozás), évadcsomagok, extrák és menük kiszűrése |
+| **Deduplikáció** | Indexerenként külön találat | `(info_hash, file_index)` kulcs, összesített seeder, több tracker jelölése, forráskonzisztens lejátszási URL (kikapcsolható) |
+| **Tracker-sorrend** | Seeder szerinti top-lista | Trackerenként váltakozó (fair) kiválasztás, legfeljebb 40 jelöltig |
+| **Hangsáv- és feliratjelölés** | Kategóriából becsült nyelv | Tech Info / MediaInfo elemző: valós `🇯🇵 Jap`, `🇬🇧 Eng`, `🇭🇺 Hun` sávok, téves `ENG` eltávolítása, `💬 🇭🇺 Felirat` jelölés |
+| **Külső feliratok** | — | `.srt`, `.vtt`, `.ass`, `.ssa` a torrentből; ASS/SSA → WebVTT, kooperatív (szeletelt) konverzióval |
+| **Aktív lejátszás követése** | — | A felirat a ténylegesen lejátszott torrenthez tartozik; nincs második torrentindítás a felirat miatt |
+| **Lejátszás indítása** | 1 darab prioritás | A fájl eleje és vége `min(3, darabszám/2)` darabbal azonnali prioritást kap (MKV Cues / MP4 moov) |
+| **Letöltöttség jelzése** | Torrentszinten | Fájlszintű `file_progress`; csak a kész videófájl kap `⚡ Letöltve` jelzést |
+| **Gyorsítótár** | Rövid tracker-cache | IMDb-keresés 1800 s, szöveges keresés 300 s TTL, generációs stream-cache; tech-info cache 3600 s |
+| **Webes felület** | Fix 1 s-os frissítés | Adaptív frissítés: 1,5 s aktív letöltésnél, 5 s egyébként, háttérben szünetel |
+
+### 1.2 Stabilitási és biztonsági munkacsomagok (CR01–CR19)
+
+A CR-azonosítók a [stabilitási terv](./docs/feature/stability-and-optimization/implementation-plan.md) tételei. Minden lezárt tételt előre rögzített mérési vagy funkcionális kapu igazol; a negatív eredmények is dokumentáltak.
+
+| CR | Terület | `stremhu-source-VibeCodedEdition` állapota |
+| :--- | :--- | :--- |
+| CR01 | Torrentenkénti kapcsolatkorlát | Egyetlen író tartja a tényleges limitet (drift 100/100 → 0/100); a felület „alapérték” megnevezést kapott (termékdöntés) |
+| CR02 | SQLite WAL / checkpoint | Méréssel lezárva: nincs változtatás (WAL-újrahasznosítás és p99 a kereten belül) |
+| CR03 | gzip a Stremio-válaszokon | Nem került be: lassú linken gyorsít, de a LAN-késleltetés és a szerver-CPU romlik |
+| CR04 | Torrentlista renderelés | A lista sora `React.memo` mögött: változatlan sor nem renderel újra a pollnál; a frissesség változatlan |
+| CR05 | `SESSION_SECRET` | Erős aláírókulcs plug & play módon: megadva legalább 32 karakter, megadás nélkül az első indulás generálja és az adatkötetben tárolja; a régi nyilvános alapérték soha nem használható; titok nem kerül hibaüzenetbe |
+| CR06 | TLS | Termékdöntés: a `LOCAL` mód Plug & Play tartalék marad; egyedi szerverazonosság `MANUAL` (saját tanúsítvány / reverse proxy) vagy `AUTO` (ACME) móddal |
+| CR07 | Naplózás | Titokmentes hálózati hibanaplózás (`log_safety`), szűkített accesslog |
+| CR08 | Pairing | Atomikus állapotgép, egyszeri/idempotens link, korlátos retry; hitelesítési rate-limiter |
+| CR09 | Aktív lejátszás | Hitelesítés az írás előtt; véges, TTL-es regiszter, takarítással |
+| CR10 | Range / numerikus bemenet | RFC 9110 Range és HEAD, szabályozott 416, túlcsordulás-védelem; hibás azonosító nem jut hálózatra |
+| CR11 | Singleflight / relogin | Megosztott relogin-task, a várakozó megszakítása nem állítja le a közös munkát |
+| CR12 | Stream-cache | Generációs `StreamCacheState`, compare-put, invalidálás commit után (stale 100/100 → 0/100) |
+| CR13 | Event loop | Aszinkron DNS monoton határidővel (a); korlátos `ResumeWriter` (b); kooperatív ASS→VTT (c) |
+| CR14 | Torrentlista | Skalár projekció BLOB-ok és lazy SQL nélkül |
+| CR15 | Indexerletöltés és keresés | Korlátos `.torrent` letöltés (48 MiB dekódolt törzs); hosthoz kötött, HTTPS-en `Secure` sütik; redirect törzsolvasás nélkül, csak a tracker domainjére; keresési terheléskorlát (12 egyidejű egyedi keresés, 15 s határidő, bájtkeret) |
+| CR16 | Session | `session_epoch` (jelszócsere után a régi sütik érvénytelenek), explicit Secure/Origin-szabály |
+| CR17 | Lifecycle és Session-élettartam | Rendezett leállítás; Session-mentes megosztott keresési eredmények; `shared_read_session()`; a policy-snapshot (CR17/b) félretéve |
+| CR18 | Bootstrap | Atomikus első admin létrehozás |
+| CR19 | Cache-fejlécek | `Cache-Control: no-store` az érzékeny válaszokon |
 
 ---
 
-## 🔍 Részletes Funkcióbemutatás
+## 2. Multi-ID routing és keresési lánc
 
-### 1. Intelligens Hangsáv és Magyar Felirat Felismerés (Tech Info / MediaInfo Motor)
-A nemzetközi anime kiadások (pl. SubsPlease, HorribleSubs, ReinForce, Erai-raws) 90%-ánál a torrent címében egyáltalán nincs nyelvi tag, mert a japán a natív nyelvük. A magyar trackereken nem létezik dedikált anime kategória, ezért az animék külföldi (`hdser`, `hd`) kategóriába kerülnek, ami miatt az upstream vakon `🇬🇧 Eng` címkét aggatott rájuk, miközben a Stremioban nem lehetett tudni, melyik kiadás tartalmaz magyar feliratot.
-
-- **Tech Info & MediaInfo Elemző Modul (`tech_info_parser.py`)**:
-  - Közvetlenül feldolgozza az nCore `ajax.php?action=nfo` (MediaInfo) és `action=torrent_drop` (lenyíló leírás) adatait.
-  - Szigorú szekció-elkülönítést alkalmaz: az angol és magyar MediaInfo fejléceket (`Audio` / `Hang` vs. `Text` / `Szöveg` / `Felirat`) egymástól függetlenül kezeli, így a feliratok nyelve **soha nem minősülhet hangsávnak** és fordítva.
-  - Kinyeri a feltöltői leírások fejléceit is (pl. `Hangsáv: Japán 2.0 FLAC`, `Feliratok: Angol, Magyar`).
-- **Valós Hangsávok és Téves `ENG` Fallback Tisztítása**:
-  - A japán hangsávval rendelkező animék megkapják a **`🇯🇵 Jap`** jelölést.
-  - Amennyiben a tartalom nem tartalmaz angol hangsávot, a rendszer **eltávolítja a téves `ENG` fallbacket**, így a japán animék nem tűnnek el az angol nyelvet kizáró felhasználóknál.
-  - **Dual-Audio támogatás**: Ha egy kiadás mind japán, mind angol szinkront tartalmaz, mindkét zászló megmarad: `🇯🇵 Jap, 🇬🇧 Eng`.
-  - **Kibővített Regex**: A `MediaAttributeKey.JAP` mintája cím-alapon is azonnal felismeri a szabványos `JPN`, `ja-jp`, `Dual-Audio`, `Multi-Audio` kulcsszavakat.
-- **Magyar Felirat Jelvény (`💬 🇭🇺 Felirat`) a Stream Kártyákon**:
-  - Ha a tartalom rendelkezik magyar felirattal (akár az MKV konténerbe ágyazva a MediaInfo szerint, akár a feltöltői leírás alapján, akár a torrentben lévő különálló `.srt`/`.ass` fájlként), a leírás 2. sorában kiemelten megjelenik a **`💬 🇭🇺 Felirat`** badge.
-  - Az idegen (angol, német stb.) feliratokat intelligensen szűri, elkerülve a felesleges zajt a felületen.
-- **Erőforrás-kímélő és Késleltetésmentes Architektúra**:
-  - **Fast-path Regex (`_HUN_SUB_REGEX`)**: A torrent- és fájlnévből 0 ms alatt azonosítja a `hunsub`, `sub.hun`, `magyar felirat` jelöléseket, azonnal beállítva a felirat badge-et.
-  - **Smart NFO-first**: Először kizárólag a kisméretű MediaInfo szöveget kéri le; ha abból már kiderül a hangsáv és a felirat, a leírás (`torrent_drop`) letöltését elhagyja (50%-os kérés-megtakarítás).
-  - **Torrentenkénti Csoportosítás**: A több fájlos torrentek fájljait egyetlen lekéréssel dúsítja, legfeljebb 5 különböző torrentre korlátozva az nCore egyidejű szemaforjához igazodva.
-  - **Memóriás LRU Gyorsítótár (`_TECH_INFO_CACHE`)**: 3600 másodperces TTL védi a technikai adatokat.
-
----
-
-### 2. Torrent Feliratok Kezelése és Valós Idejű WebVTT Streaming
-A hazai és anime torrent kiadások gyakran különálló fájlként tartalmazzák a feliratokat (`.srt`, `.ass`, `.ssa`, `.vtt`):
-
-- **Univerzális WebVTT Konverzió (`ass_to_vtt`)**:
-  - Az `.ass` és `.ssa` feliratokat a szerver valós időben, memóriában szabványos **WebVTT** formátumra alakítja.
-  - A webes lejátszók (Nuvio Web, Stremio Web) és az okostévék (LG webOS, Samsung Tizen) natívan nem támogatják az ASS formátumot; a konverter jóvoltából a feliratok minden kliensen hibátlanul jelennek meg.
-- **Aktív Lejátszás Követése (`active_playback.py`)**:
-  - A szerver regisztrálja a felhasználó által elindított videó-streamet (`wait_for_active_binge_group`), és kizárólag a valóban lejátszott torrent saját feliratát adja vissza. Ezzel elkerülhető, hogy a háttérben egy második torrent is elinduljon csak a felirat miatt (1 torrent = 1 seed).
-- **Felirat Hardening (M07)**:
-  - **Bájtteljesség ellenőrzés**: A szerver csak akkor cache-eli és konvertálja a feliratot, ha a letöltött bájtok száma pontosan megegyezik a forrásfájl méretével (`len == file.size`), kivédve a csonka feliratfájlok beragadását.
-  - **Memóriakorlát**: A felirat-gyorsítótár maximális mérete 32 MiB; túllépés esetén a legrégebbi elemek automatikusan törlődnek.
-  - **RFC 6266 / RFC 5987 kódolás**: Szabványos `filename*="utf-8''..."` fejlécek az ékezetes feliratfájlokhoz.
-
----
-
-### 3. Aszinkron Konkurenciavédelem és Singleflight (M01, M02, M10)
-Több egyidejű kliens vagy párhuzamos lekérdezés esetén az upstream architektúrában fellépő versenyhelyzeteket és szálhibákat robusztus védelmi rétegek hárítják el:
-
-- **Singleflight Megszakításvédelem (`common/singleflight.py`)**:
-  - Ha az "A" felhasználó megszakítja a kérését (pl. böngészőfül bezárása vagy seekelés), az `asyncio.shield` és a referenciaszámlált várakozói lista gondoskodik róla, hogy a megosztott háttérmunka (trackerkeresés vagy letöltés) ne szakadjon meg, így a "B" felhasználó azonnal és hibátlanul megkapja az eredményt.
-- **Relay Darabolvasás Határidők és Shutdown Biztonság (`relay/service.py`)**:
-  - Minden olvasási műveletet szigorú határidő (`relay_read_timeout_seconds=15.0`) véd. Ha egy peer nem válaszol, `PieceReadAbortedError` keletkezik az örök blokkolás helyett.
-  - Szerver leállításakor vagy torrent törlésekor a függőben lévő olvasási future-ök automatikusan és rendezetten feloldásra kerülnek.
-- **Torrentletöltés Singleflight & SQLite ON CONFLICT**:
-  - Azonos torrentfájlok egyidejű letöltése egyetlen hálózati kérésbe vonódik össze.
-  - Az adatbázisba történő kötegelt mentést atomi `sqlite_insert(...).on_conflict_do_nothing()` védi a párhuzamos tranzakciók okozta `IntegrityError` hibáktól.
-
----
-
-### 4. Fájlszintű Deduplikáció és Forráskonzisztencia (M04, M12)
-- **Kanonikus Kulcsképzés**:
-  - Erős azonossági kulcs: `(info_hash, file_index)`. Azonos torrenten belüli különböző epizódok (pl. S01E01 vs S01E02) soha nem mosódhatnak össze egyetlen streammé.
-  - Eltérő `info_hash` esetén a találatok önállóak maradnak, garantálva a swarmok integritását.
-- **Forráskonzisztencia**:
-  - Ha egy release már letöltött (`is_persisted_torrent`), a találat lejátszási URL-je (`play_url`), indexere és attribútumai garantáltan a letöltött forráshoz igazodnak.
-- **Zéró Felesleges Adatbázis-Lekérdezés (M12)**:
-  - A stream-rendezés során eltávolításra került a teljes `torrents` tábla felesleges beolvasása (`SELECT * FROM torrents`). A helyi letöltöttségi állapotot a szerver kizárólag a találatokban szereplő hash-ekre, memóriából és gyorsítótárazott `file_progress()` mutatókkal ellenőrzi.
-
----
-
-### 5. Kulcs Nélküli Multi-ID Feloldórendszer (`TvdbResolver`)
-- **TheMovieDatabase (`tmdb:`)**:
-  - Filmek (`tmdb:693134`) és sorozatok (`tmdb:1399:1:1`) automatikus feloldása Wikidata SPARQL lekérdezésekkel (`P4947` és `P4983`), hivatalos API kulcs nélkül.
-- **TheTVDB (`tvdb:`) & Kitsu / MyAnimeList**:
-  - `tvdb:121361:1:1`, `kitsu:12`, `mal:21` azonosítók dinamikus TVDB/IMDb leképezése.
-  - **Adaptációk szétválasztása (M06)**: Az eltérő adaptációk (pl. a 2003-as *Fullmetal Alchemist* és a 2009-es *Brotherhood*) szétválasztva, önálló IMDb kóddal keresődnek.
-  - **Műfaji megőrzés**: Az animációs jelölés a Cinemeta gyorsítótár kiszolgálásakor is stabilan megmarad.
-
----
-
-## 📊 Háromutas A/B/C Benchmark Eredmények
-
-Az alábbi mérések 100%-ban független, szekvenciális (fair), tiszta kötet-törléses (cold start) környezetben készültek a helyi Docker Desktop tesztkörnyezetben (`scripts/benchmark_local.py`), összevetve a három konténert:
-- **A: Eredeti Upstream** (`s4pp1/stremhu-source:latest`, `:7073`)
-- **B: Saját Fork Master/Main águnk** (`stremhu-source:repo-master`, `:7072`)
-- **C: Aktuálisan tesztelt Feature Branch** (`feature/audio-subtitle-detection`, `:7070` – M01–M18 teljes optimalizációval)
+A `/stremio/stream/{type}/{id}.json` kérés azonosítóját a `stremio/utils.py: parse_stream_id` bontja; a feloldást a `stremio/service.py` és a `stremio/tvdb_resolver.py`, a keresést a `torrent_streams/service.py` és a `torrent_source_provider/service.py` végzi.
 
 ```mermaid
-xychart-beta
-    title "Átlagos Válaszidők: Upstream (A) vs Fork Master (B) vs Optimalizált Branch (C) [ms]"
-    x-axis ["Hideg Indítás (Cold Start)", "Meleg Gyorsítótár (Warm Cache)"]
-    y-axis "Válaszidő (ms)" 0 --> 5000
-    bar [3754, 3298]
-    bar [4081, 3]
-    bar [3877, 3]
+flowchart TD
+    REQ["Stremio / Nuvio / Kodi kérés"] --> PARSE{"parse_stream_id"}
+    PARSE -->|"anime: előtag"| STRIP["előtag levágása"] --> PARSE
+    PARSE -->|"stremhu-source:indexer:torrent[:fájl]"| TOR["find_by_torrent_id"]
+    PARSE -->|"tt…[:évad:epizód]"| IMDB["IMDb azonosító"]
+    PARSE -->|"tmdb:…"| TMDB["resolve_tmdb<br/>TMDb API (kulccsal) → Wikidata P4947/P4983 → themoviedb.org lap"]
+    PARSE -->|"tvdb:…"| TVDB["resolve_tvdb<br/>TVMaze → Wikidata P4835/P12196 → TMDb API (kulccsal)"]
+    PARSE -->|"kitsu:…[:epizód]"| KITSU["resolve_kitsu<br/>Anime-Kitsu → Kitsu API + TVMaze"]
+    PARSE -->|"mal:…[:epizód]"| MAL["resolve_mal<br/>Kitsu mapping → resolve_kitsu; Wikidata P4086"]
+    TMDB & TVDB & KITSU & MAL -->|"IMDb vagy cím"| IMDB
+    IMDB --> PRE["háttérben induló keresés (prefetch)"]
+    IMDB --> EP["epizód-leképezés<br/>Anime-Kitsu + Cinemeta alternatív epizódok/évadok"]
+    IMDB --> ALIAS["iker-IMDb aliasok<br/>statikus + cache (0 ms)"]
+    PRE & EP & ALIAS --> FIND["find_by_imdb: azonosítónként közös (Singleflight) keresés"]
+    FIND -->|"0 találat"| FB["másodlagos címkeresés<br/>Cinemeta / feloldott cím, ékezet- és névelő-mentes jelöltek, ≤20 s"]
+    FIND -->|"0 találat, sorozat"| DYN["dinamikus Kitsu aliasok"] --> FIND
+    FIND --> FILE["StreamFileResolver + SeriesParser<br/>fájl, évad/epizód, extrák kizárása"]
+    FB --> FILE
+    FILE --> DEDUP["deduplikáció (info_hash, file_index)<br/>seederösszeg, több tracker"]
+    DEDUP --> SORT["preferenciák szerinti rendezés, limit"] --> RESP["Stremio-streamlista"]
 ```
 
-| Média / Lekérdezés | A Cold (Upstream) | B Cold (Fork Master) | C Cold (Feature Branch) | A Warm | B Warm | C Warm | Találatok (A vs B vs C)* | C Értéknövelt Kártya Információ |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Film: Eredet** (`tt1375666`) | 3946.1 ms | 4457.8 ms | **4267.3 ms** | 4690.6 ms | 3.3 ms | **2.7 ms** | 18 vs 16 vs 18 | 💬 4 Magyar Felirat |
-| **Film: Mátrix** (`tt0133093`) | 3995.8 ms | 3560.4 ms | **3533.5 ms** | 4096.6 ms | 2.9 ms | **3.0 ms** | 22 vs 20 vs 22 | 💬 2 Magyar Felirat |
-| **Film: Csillagok között** (`tt0816692`) | 4215.9 ms | 4612.5 ms | **4286.3 ms** | 2973.6 ms | 2.9 ms | **3.1 ms** | 27 vs 25 vs 27 | 💬 10 Magyar Felirat |
-| **Sorozat: Stranger Things S01E01** (`tt4574334:1:1`) | 4817.2 ms | 5035.8 ms | **5265.0 ms** | 3648.2 ms | 3.1 ms | **2.7 ms** | 12 vs 12 vs 12 | — |
-| **Sorozat: Breaking Bad S01E01** (`tt0903747:1:1`) | 4340.7 ms | 4340.6 ms | **3528.6 ms** | 3272.3 ms | 2.9 ms | **3.1 ms** | 11 vs 9 vs 10 | 💬 2 Magyar Felirat |
-| **Anime: Attack on Titan S01E01** (`tt2560140:1:1`) | 3684.2 ms | 4816.6 ms | **4338.1 ms** | 4054.5 ms | 2.9 ms | **2.7 ms** | 8 vs 6 vs 6 | 🇯🇵 3 Japán Hang, 💬 3 Felirat |
-| **Anime: Fullmetal Alchemist S01E01** (`tt1355642:1:1`) | 1430.8 ms | 1696.9 ms | **1724.4 ms** | 835.7 ms | 3.2 ms | **2.9 ms** | 5 vs 5 vs 5 | 🇯🇵 3 Japán Hang, 💬 2 Felirat |
-| **Anime: Death Note S01E01** (`tt0877057:1:1`) | 3597.8 ms | 4130.2 ms | **4069.8 ms** | 2809.3 ms | 2.9 ms | **2.8 ms** | 5 vs 4 vs 4 | 🇯🇵 2 Japán Hang, 💬 1 Felirat |
-| **ÁTLAG (MEAN)** | **3753.6 ms** | **4081.4 ms** | **3876.6 ms** | **3297.6 ms** | **3.0 ms** | **2.9 ms** | — | — |
+| Azonosító | Példa | Feloldás | Epizódkezelés |
+| :--- | :--- | :--- | :--- |
+| IMDb | `tt0903747:1:1` | közvetlen; iker-IMDb aliasok statikus listából, 0 találatnál dinamikusan Kitsun keresztül | Anime-Kitsu és Cinemeta alapján alternatív (abszolút ↔ szezonális) epizód- és évadszámok |
+| TMDb | `tmdb:1399:1:1` | TMDb API kulccsal; kulcs nélkül Wikidata SPARQL (P4947 film, P4983 sorozat), végül a TMDb weboldal IMDb-hivatkozása; IMDb hiányában a cím | `évad:epizód` |
+| TheTVDB | `tvdb:121361:1:1` | TVMaze → Wikidata (P4835 sorozat, P12196 film) → TMDb API (kulccsal) | `évad:epizód` |
+| Kitsu | `kitsu:12:5` | Anime-Kitsu meta (IMDb + évad/epizód), tartalékként Kitsu API cím + TVMaze | abszolút epizód → évad/epizód, alternatív számozás; az adaptációk külön IMDb-azonosítót kapnak |
+| MyAnimeList | `mal:21:5` | Kitsu mapping API → `resolve_kitsu`; tartalékként Wikidata P4086 | mint a Kitsu |
+| `anime:` előtag | `anime:kitsu:12:5` | az előtag levágása után a fenti szabályok | — |
+| Saját torrent | `stremhu-source:ncore:12345:3` | közvetlen torrent, opcionális fájlindex | — |
+| Katalógus | `t-12345`, szabad szöveg | `t-<torrent_id>` torrentkeresés; szabad szöveg: trackerkeresés, fair kiválasztás (≤40), `SeriesParser` szűrés | — |
 
-> [!NOTE]
-> **\* Találatok száma és Deduplikáció:**
-> - A Feature Branch a korábbi Master ághoz képest visszaállította az azonos swarmon belüli, de eltérő fájlindexű epizódok elérhetőségét (pl. Inception 16 -> 18, Mátrix 20 -> 22, Interstellar 25 -> 27).
-> - Animéknél a duplikált release-ek összevonása tiszta találati listát nyújt összeadott seederszámmal és pontos multi-tracker jelöléssel.
-
-### Eredmények Összegzése:
-1. **Cold Start Teljesítmény:** Az átlagos hideg válaszidő **3876.6 ms**, amivel a Feature Branch **több mint 200 ms-mal gyorsabb a Master águnknál** (4081.4 ms). A Breaking Bad esetén a válaszidő **4340 ms-ról 3528 ms-ra csökkent (-812 ms)**.
-2. **Warm Cache:** **~2.9 ms** válaszidő memóriából (szemben az Upstream **3297.6 ms**-ával).
-3. **100%-os Detekciós Pontosság:** Az animék és filmek valós hangsávjai és magyar feliratai azonnal, hibátlan badge-dzsel jelennek meg a lejátszókban.
+**Fájlszintű feloldás és deduplikáció**
+- **`StreamFileResolver`:** a torrent fájlfáján keresi az évad/epizód szerint illeszkedő videófájlt (évadmappák, abszolút számozás), és párosítja a hozzá tartozó feliratfájlokat. Normál résznél a `BD Menü`, `Extras`, `NCED` jellegű fájlokat kizárja, a 0. évadnál (Specials) engedi.
+- **`SeriesParser`:** `SxxExx`, évadlisták, tartományok és abszolút epizódszámok értelmezése a torrentnévből.
+- **Deduplikáció:** erős kulcs az `(info_hash, file_index)`; azonos hash különböző fájljai (például két epizód) sosem vonódnak össze. Hash nélkül a tisztított név és a méret adja a tartalék kulcsot. Az összevont találat seederszáma összegződik, a trackerek felsorolva jelennek meg; letöltött forrásnál a lejátszási URL a letöltött forrásra mutat.
+- **Fair interleaving:** szöveges keresésnél trackerenként seeder szerint rendezve, váltakozva választ, legfeljebb 40 jelöltig, hogy egy domináns tracker ne szorítsa ki a többit.
 
 ---
 
-## 🛠️ Fejlesztői és Tesztelési Parancsok
+## 3. Hangsáv, felirat és lejátszás (Relay)
 
-Minden kódmódosítás után a következő parancssorral futtatható a teljes linter, típusellenőrző és tesztcsomag:
+**Tech Info / MediaInfo elemző (`media_attributes/tech_info_parser.py`)**
+- Az nCore MediaInfo (`nfo`) és leírás (`torrent_drop`) adataiból külön kezeli a hang- és a feliratszekciót, így egy felirat nyelve sosem minősül hangsávnak.
+- Valós `🇯🇵 Jap`, `🇬🇧 Eng`, `🇭🇺 Hun` hangsávok; ha nincs angol hang, a kategóriából becsült téves `ENG` jelölés eltűnik. Dual-audio esetén mindkét zászló megmarad.
+- Magyar felirat (beágyazott, leírásban jelzett vagy külön `.srt`/`.ass` fájl) esetén `💬 🇭🇺 Felirat` jelölés.
+- Gyors útvonal: névalapú felirat-felismerés, először csak a MediaInfo lekérése, torrentenkénti csoportosítás; 3600 s-os cache.
+
+**Külső feliratok**
+- `.srt`, `.vtt`, `.ass`, `.ssa` a torrentből; az ASS/SSA szerveroldalon WebVTT-re alakul, mert a webes és tévés lejátszók az ASS-t nem kezelik.
+- **CR13/c:** a dekódolás (256 KiB-os szeletek, UTF-8-sig, hibánál cp1250) és a konverzió (~32 K karakteres, sorvégen vágott szeletek) között a szerver visszaadja a vezérlést az event loopnak; a kimenet bájtra azonos a korábbival. A gyorsítótár keret 32 MiB, csak teljes (bájtpontos) feliratfájl kerül bele.
+- **Aktív lejátszás (`stream/active_playback.py`, CR09):** a felirat a ténylegesen lejátszott torrenthez tartozik, így nem indul második torrent a felirat miatt. A regiszter hitelesítés után ír, véges és TTL-es.
+
+**Relay és lejátszás**
+- **Range/HEAD (CR10):** RFC 9110 szerinti `bytes=a-b`, `a-`, `-n` értelmezés; nem kielégíthető vagy többtartományos kérésre szabályozott `416` `Content-Range: bytes */N` fejléccel.
+- Olvasási határidő (`relay_read_timeout_seconds` = 15 s, `relay_piece_timeout_seconds` = 120 s); leállításkor és torrenttörléskor a függő olvasások rendezetten zárulnak.
+- **Natív leállítás (CR17/a):** a libtorrent riasztásai `set_alert_fd` socketpairen érkeznek; a lifespan rendezett sorrendben zár, egy hiba nem akasztja meg a többi takarítást.
+
+---
+
+## 4. Stabilitási, konkurencia- és biztonsági hardening (CR01–CR19)
+
+### Adatbázis és Session-élettartam (CR17, CR14, CR13/b)
+- **Session-mentes megosztott keresés (CR17/c–d):** a közös (Singleflight) keresés eredménye frozen hivatkozásokat és snapshotokat hordoz, ORM-objektumot nem, így a kérést indító Session lezárása után is olvasható. Ez szüntette meg a `DetachedInstanceError`-t.
+- **`shared_read_session()` (CR17/d, 22b):** egyhelyes olvasási kapu, a QueuePool nem telik meg párhuzamos keresésektől.
+- **Torrentlista (CR14):** explicit oszlopprojekció; a lista se BLOB-ot, se kérésenkénti lazy SQL-t nem tölt.
+- **Rendezett lifespan (CR17/a)** és **korlátos `ResumeWriter` (CR13/b):** a resume-adatok mentése bájt- és hash-korlátos, a függő és a folyamatban lévő írásokat együtt számolja, és leálláskor kiüríti.
+
+### Keresési és hálózati védelem (CR11, CR13/a, CR15)
+- **Singleflight (CR11):** a várakozó megszakítása nem szakítja meg a közös munkát; az adapter relogin megosztott taskban fut.
+- **Aszinkron DNS (CR13/a):** a TXT-ellenőrzés nem blokkolja az event loopot, a teljes várakozást monoton határidő korlátozza.
+- **Korlátos `.torrent` letöltés (CR15/a):** legfeljebb 48 MiB dekódolt törzs; a deklarált túl nagy hosszt olvasás előtt elutasítja, tömörítési bomba ellen a dekódolt bájtokat számolja. A Docker-image a glibc mmap/trim küszöbét rögzíti (32/64 MiB), így a felszabadított törzs memóriája a következő letöltésnél újrahasznosul.
+- **Süti-hatókör (CR15/b, 26a):** a mentett indexersütik csak a tracker hostjára kerülnek, HTTPS-nél `Secure` jelzéssel.
+- **Redirect és host (CR15/b, 26b):** a redirect törzse nem olvasódik be, legfeljebb 10 lépés, és minden lépés csak a tracker saját domainjére vagy aldomainjére mehet.
+- **Keresési terhelés (CR15/c, 27):** legfeljebb 12 egyidejű egyedi keresés (a 13. azonnali `503`), 15 s-os teljes határidő részleges eredménnyel, folyamatszintű függőbájt-keret (32 MiB), egyszerre egy, legfeljebb 16 MiB-os mentési köteg, és fájlszámra korlátos `TorrentInfo`-gyorsítótár.
+
+### Hitelesítés és HTTP-védelem (CR05, CR06, CR07, CR08, CR12, CR16, CR18, CR19)
+- **CR05:** a `SESSION_SECRET` megadása nem kötelező. Ha nincs megadva (vagy a régi nyilvános `stremhu-source` érték), az első indulás erős kulcsot generál, és `0600` joggal a `data/system/session_secret` fájlba menti (az adatkötetet meg kell tartani; a hely a `SESSION_SECRET_FILE` változóval állítható). Megadott, de 32 karakternél rövidebb kulccsal (a szóközöket nem számolva) az alkalmazás nem indul; csak olvasható vagy idegen tulajdonú adatkötetnél érthető hibaüzenettel áll le. **Frissítéskor:** ha korábban nem volt megadva `SESSION_SECRET` (a régi nyilvános értékkel futott), az első indulás után egyszer újra be kell jelentkezni, és a Stremio/Nuvio a stream-listát újrakéri, mert a nyilvános kulcs szándékosan cserélődik.
+- **CR07:** a hálózati hibák csak titokmentes összegzéssel naplózódnak (`common/log_safety.py`).
+- **CR08:** atomikus pairing-állapotgép és hitelesítési rate-limiter (`common/auth_rate_limit.py`).
+- **CR18:** atomikus bootstrap: pontosan egy első admin és session.
+- **CR16:** `session_epoch` (jelszócsere után a régi sütik érvénytelenek) és Origin-ellenőrzés (`common/session_origin.py`).
+- **CR12:** generációs `StreamCacheState` compare-put írással, invalidálás csak sikeres commit után.
+- **CR19:** `Cache-Control: no-store` az érzékeny végpontokon (`common/sensitive_responses.py`).
+- **CR06 – TLS-módok:** `LOCAL` (Plug & Play, közös tanúsítvány), `AUTO` (ACME), `MANUAL` (saját tanúsítvány vagy reverse proxy). A `LOCAL` mód termékdöntés alapján változatlan.
+
+---
+
+## 5. Mérések
+
+Minden szám a [`docs/feature/stability-and-optimization/evidence/`](./docs/feature/stability-and-optimization/evidence/) alatti, előre rögzített protokollú, helyi Docker-mérésből származik: szintetikus fixture, élő tracker nélkül, rögzített CPU/memória mellett, a megadott profilon. Az **A** az upstream (`s4pp1/stremhu-source` `@8c99c7d`) image, a **before** a fork adott változtatás előtti állapota, az **after** a `stremhu-source-VibeCodedEdition`. Ahol az upstreamben nincs megfelelő funkció, ott `N/A`.
+
+| Mérés (CR) | Profil | A (Upstream) | before | after (`VibeCodedEdition`) | Bizonyíték |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Torrentlista, 500 torrent, 8 párhuzamos (CR14) | warm p95, 5 indexer, 64 KiB BLOB-ok | 2 368 ms | 2 438 / 2 436 ms | **187 / 201 ms** | [cr14-list](./docs/feature/stability-and-optimization/evidence/cr14-list.json) |
+| ugyanez: SQL-lekérdezés / 100 kérés | | 51 000 | 51 000 | **200** | ugyanott |
+| ugyanez: anon memóriacsúcs | | — | 646,8 MiB | **137,8 MiB** | ugyanott |
+| Kodi/multi-kliens keresés (CR17/c) | megosztott keresés, zárt request-Session | N/A (fork-specifikus hibaút) | 276 HTTP 500 (`DetachedInstanceError`) | **12 280× HTTP 200, 0 hiba** | [cr17c-after-v2](./docs/feature/stability-and-optimization/evidence/cr17c-after-v2-assessment.json) |
+| Aszinkron DNS, 8 párhuzamos (CR13/a) | event-loop késés p99, 30 ms-os helyi lookup | 2 984,5 ms | 2 984,7 / 2 985,0 ms | **0,235 / 0,236 ms** | [cr13a-dns](./docs/feature/stability-and-optimization/evidence/cr13a-dns.json) |
+| Resume-író, 500 torrent (CR13/b) | event-loop késés p99, szintetikus IO/piece | — | 252,1 / 246,3 ms | **28,8 / 29,0 ms** | [cr13b-resume](./docs/feature/stability-and-optimization/evidence/cr13b-resume.json) |
+| ASS→VTT, 3 MB felirat (CR13/c) | event-loop stall p95 | N/A (nincs konverzió) | 45,6 / 45,7 ms | **2,6 / 2,8 ms** | [g13conv-v2](./docs/feature/stability-and-optimization/evidence/g13conv-v2-assessment.json) |
+| ASS→VTT, 8 MiB alatti felirat (CR13/c) | event-loop stall p95 | N/A | 125,7 / 127,2 ms | **3,9 / 3,9 ms** | ugyanott |
+| Torrentlista renderelés, 500 torrent, 1 változó sor (CR04) | 5 perces böngészős profil, production profiling build | — | 99 500 sorrender, 8 848–9 211 ms commit-idő | **199 sorrender, 121 ms** | [g04-candidate-v1](./docs/feature/stability-and-optimization/evidence/g04-candidate-v1-assessment.json) |
+| Óriás `.torrent` válasz: 64 MiB chunked és 128 MiB-ra dekódolódó gzip (CR15/a) | 1/4/8 párhuzamos, 1 GiB-os konténer | — | OOM (megerősítő futás) | **0 OOM; 1200 kérésből mind `too-large`, anon csúcs ≤ 294 MiB** | [cr15a-after-v6](./docs/feature/stability-and-optimization/evidence/cr15a-after-v6-assessment.json) |
+| Redirect-törzs letöltésenként (CR15/b, 26b) | 64 MiB-os redirect-válasz | — | 64,0 MiB beolvasva, idegen host követve | **≤ 3,6 MiB, idegen host 0 kérés** | [cr15b2-redirect-v6](./docs/feature/stability-and-optimization/evidence/cr15b2-redirect-v6-assessment.json) |
+| Nehéz forráskeresés, 4 / 12 egyidejű (CR15/c, 27) | nehéz stresszprofil, 1 GiB | — | OOM 5/10 és 10/10 | **OOM 0/10 és 0/10** | [cr15c-after-v4](./docs/feature/stability-and-optimization/evidence/cr15c-after-v4-assessment.json) |
+| Tipikus forráskeresés, 12 egyidejű (27) | p95 | — | 9 728 / 9 731 ms | **9 716 / 9 723 ms** (nincs romlás) | ugyanott |
+
+A „/” két független mérési sorozat mediánját választja el. A számok a megnevezett szintetikus profilra érvényesek; élő tracker- vagy hálózati gyorsulást nem állítanak.
+
+**Korábbi funkcionális/cache mérés (történeti kontextus):** a fork korábbi állapotában (a CR01–CR19 munka előtt) élő trackereken futtatott A/B/C összevetés a meleg gyorsítótárból kiszolgált streamválaszra ~3 ms-ot mért, az upstream ~3,3 s-os átlagához képest; a hideg indítás átlaga 3 754 ms (A) és 3 877 ms között volt. Ez nem ismételt, előre rögzített kapu, és élő trackerforgalmat használt, ezért csak tájékoztató jellegű.
+
+---
+
+## 6. Fejlesztői ellenőrzés és dokumentáció
+
+**Backend** (a repó gyökeréből, helyi, nem loopback tesztcímmel):
 
 ```powershell
-$env:HOST_IP="<HOST_IP>"; $env:PYTHONIOENCODING="utf-8"; cd server; .venv\Scripts\python -m ruff check .; .venv\Scripts\basedpyright.exe; .venv\Scripts\python -m pytest tests
-```
-- **Ruff:** `All checks passed!`
-- **Basedpyright:** `0 errors, 0 warnings, 0 notes`
-- **Pytest:** `256 passed, 64 snapshots passed in 2.86s`
-
-### Helyi Háromutas Docker Tesztkörnyezet és Benchmark:
-```powershell
-# Konténerek indítása tiszta adatbázissal
-docker compose -f docker-compose.local.yml down -v
-docker compose -f docker-compose.local.yml up -d
-
-# Háromutas A/B/C benchmark futtatása
-server\.venv\Scripts\python scripts\benchmark_local.py
+$env:HOST_IP = "<HOST_IP>"
+$env:PYTHONIOENCODING = "utf-8"
+Push-Location server
+.venv\Scripts\python.exe -m ruff check .
+.venv\Scripts\basedpyright.exe
+.venv\Scripts\python.exe -m pytest tests
+Pop-Location
 ```
 
-A részletes technikai specifikációk az [`AGENTS.md`](./AGENTS.md), a [`docs/feature/audio-subtitle-detection.md`](./docs/feature/audio-subtitle-detection.md), a [`docs/stremhu-implementation-plan.md`](./docs/stremhu-implementation-plan.md) és a [`docs/feature/implementation-progress.md`](./docs/feature/implementation-progress.md) dokumentumokban találhatók.
+Utolsó ellenőrzött eredmény: Ruff `All checks passed!`, basedpyright `0 errors, 0 warnings, 0 notes`, pytest **695 passed / 64 snapshot**.
+
+**Frontend** (a `client/` könyvtárban):
+
+```bash
+npx vitest run
+npm run lint
+npm run format
+npm run build
+```
+
+`--fix` és teljes repóformázás nélkül; utolsó ellenőrzött eredmény: vitest 2 tesztfájl / 11 teszt, lint, format és build sikeres.
+
+**Dokumentáció**
+- Belépési pont: [docs/README.md](./docs/README.md)
+- Téma- és forrásindex (AI-ágenseknek is): [docs/AI-INDEX.md](./docs/AI-INDEX.md)
+- Stabilitási terv és végrehajtási napló: [docs/feature/stability-and-optimization.md](./docs/feature/stability-and-optimization.md)
 
 ---
 

@@ -106,7 +106,12 @@ export function useUserUpdate() {
       const user = await usersUpdate(userId, payload)
       return user
     },
-    onSuccess: (updated) => {
+    onSuccess: (updated, { userId, payload }) => {
+      const me = queryClient.getQueryData(getMe().queryKey)
+      if (payload.password !== undefined && me?.id === userId) {
+        queryClient.clear()
+        return
+      }
       queryClient.invalidateQueries({ queryKey: getUsers.queryKey })
       queryClient.setQueryData(getMe().queryKey, (prev) => {
         if (!prev) return prev

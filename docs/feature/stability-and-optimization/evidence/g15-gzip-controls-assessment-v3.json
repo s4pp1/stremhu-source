@@ -1,0 +1,184 @@
+{
+  "status": "75fresh-process component attempts complete; full G15 OPEN",
+  "cases": 75,
+  "exit_codes": {
+    "137": 75
+  },
+  "oom_cases": 75,
+  "complete_measured_cells": 0,
+  "groups": {
+    "C/1": {
+      "attempts": 15,
+      "oom": 15,
+      "complete_cells": 0,
+      "actual_server_received_total_including_cold_warmup": 270,
+      "actual_server_received_range": [
+        18,
+        18
+      ]
+    },
+    "C/4": {
+      "attempts": 15,
+      "oom": 15,
+      "complete_cells": 0,
+      "actual_server_received_total_including_cold_warmup": 345,
+      "actual_server_received_range": [
+        23,
+        23
+      ]
+    },
+    "C/8": {
+      "attempts": 15,
+      "oom": 15,
+      "complete_cells": 0,
+      "actual_server_received_total_including_cold_warmup": 360,
+      "actual_server_received_range": [
+        18,
+        28
+      ]
+    },
+    "A/1": {
+      "attempts": 5,
+      "oom": 5,
+      "complete_cells": 0,
+      "actual_server_received_total_including_cold_warmup": 90,
+      "actual_server_received_range": [
+        18,
+        18
+      ]
+    },
+    "A/4": {
+      "attempts": 5,
+      "oom": 5,
+      "complete_cells": 0,
+      "actual_server_received_total_including_cold_warmup": 115,
+      "actual_server_received_range": [
+        23,
+        23
+      ]
+    },
+    "A/8": {
+      "attempts": 5,
+      "oom": 5,
+      "complete_cells": 0,
+      "actual_server_received_total_including_cold_warmup": 120,
+      "actual_server_received_range": [
+        18,
+        28
+      ]
+    },
+    "B/1": {
+      "attempts": 5,
+      "oom": 5,
+      "complete_cells": 0,
+      "actual_server_received_total_including_cold_warmup": 90,
+      "actual_server_received_range": [
+        18,
+        18
+      ]
+    },
+    "B/4": {
+      "attempts": 5,
+      "oom": 5,
+      "complete_cells": 0,
+      "actual_server_received_total_including_cold_warmup": 115,
+      "actual_server_received_range": [
+        23,
+        23
+      ]
+    },
+    "B/8": {
+      "attempts": 5,
+      "oom": 5,
+      "complete_cells": 0,
+      "actual_server_received_total_including_cold_warmup": 120,
+      "actual_server_received_range": [
+        18,
+        28
+      ]
+    }
+  },
+  "envelope": {
+    "encoded_bytes_per_full_gzip_body": 585706,
+    "decoded_bytes_per_full_gzip_body": 134217728,
+    "scope": "Exact private server fixture envelope per fullbody. This is not total transferred wirebytes for an OOM/incomplete response; receivedrequest counts are recorded separately. No production size policy."
+  },
+  "raw_sha256": {
+    "g15-gzip-reference-v3-C-a-0-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-a-0-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-a-0-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8",
+    "g15-gzip-reference-v3-C-a-1-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-a-1-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-a-1-c8-state.json": "4cc39b7d363525b212c60f25dd68b4dd47b3c523a7b654c51498cce9716605c8",
+    "g15-gzip-reference-v3-C-a-2-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-a-2-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-a-2-c8-state.json": "4cc39b7d363525b212c60f25dd68b4dd47b3c523a7b654c51498cce9716605c8",
+    "g15-gzip-reference-v3-C-a-3-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-a-3-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-a-3-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8",
+    "g15-gzip-reference-v3-C-a-4-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-a-4-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-a-4-c8-state.json": "4cc39b7d363525b212c60f25dd68b4dd47b3c523a7b654c51498cce9716605c8",
+    "g15-gzip-reference-v3-C-b-0-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-b-0-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-b-0-c8-state.json": "4cc39b7d363525b212c60f25dd68b4dd47b3c523a7b654c51498cce9716605c8",
+    "g15-gzip-reference-v3-C-b-1-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-b-1-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-b-1-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8",
+    "g15-gzip-reference-v3-C-b-2-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-b-2-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-b-2-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8",
+    "g15-gzip-reference-v3-C-b-3-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-b-3-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-b-3-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8",
+    "g15-gzip-reference-v3-C-b-4-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-b-4-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-b-4-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8",
+    "g15-gzip-reference-v3-A-ref-0-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-A-ref-0-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-A-ref-0-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8",
+    "g15-gzip-reference-v3-B-ref-0-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-B-ref-0-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-B-ref-0-c8-state.json": "4cc39b7d363525b212c60f25dd68b4dd47b3c523a7b654c51498cce9716605c8",
+    "g15-gzip-reference-v3-C-ref-0-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-ref-0-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-ref-0-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8",
+    "g15-gzip-reference-v3-B-ref-1-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-B-ref-1-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-B-ref-1-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8",
+    "g15-gzip-reference-v3-C-ref-1-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-ref-1-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-ref-1-c8-state.json": "4cc39b7d363525b212c60f25dd68b4dd47b3c523a7b654c51498cce9716605c8",
+    "g15-gzip-reference-v3-A-ref-1-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-A-ref-1-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-A-ref-1-c8-state.json": "4cc39b7d363525b212c60f25dd68b4dd47b3c523a7b654c51498cce9716605c8",
+    "g15-gzip-reference-v3-C-ref-2-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-ref-2-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-ref-2-c8-state.json": "4cc39b7d363525b212c60f25dd68b4dd47b3c523a7b654c51498cce9716605c8",
+    "g15-gzip-reference-v3-A-ref-2-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-A-ref-2-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-A-ref-2-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8",
+    "g15-gzip-reference-v3-B-ref-2-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-B-ref-2-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-B-ref-2-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8",
+    "g15-gzip-reference-v3-A-ref-3-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-A-ref-3-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-A-ref-3-c8-state.json": "4cc39b7d363525b212c60f25dd68b4dd47b3c523a7b654c51498cce9716605c8",
+    "g15-gzip-reference-v3-B-ref-3-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-B-ref-3-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-B-ref-3-c8-state.json": "4cc39b7d363525b212c60f25dd68b4dd47b3c523a7b654c51498cce9716605c8",
+    "g15-gzip-reference-v3-C-ref-3-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-ref-3-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-ref-3-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8",
+    "g15-gzip-reference-v3-B-ref-4-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-B-ref-4-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-B-ref-4-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8",
+    "g15-gzip-reference-v3-C-ref-4-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-C-ref-4-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-C-ref-4-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8",
+    "g15-gzip-reference-v3-A-ref-4-c1-state.json": "47e698c45b817f73e36d02230cd7dcc07d8d5b8da5fa88149a2cf67cf941818d",
+    "g15-gzip-reference-v3-A-ref-4-c4-state.json": "a324247ab6a8d3ae5bb9b34f44345842550d4ff6df26c314b8d3dc6c2d442adc",
+    "g15-gzip-reference-v3-A-ref-4-c8-state.json": "9ecff9cb65663594b9a6afd9225fd6cb81beb61b567e707e473cd28d1cbfb8a8"
+  },
+  "scope": "Invalid native128MiB decoded fixture,real IndexerClient and HTTPX decompression.2x5C cohorts then5rotatedABC,concurrency1/4/8,fresh1GiB process/case.100configured measuredrequests are NOT100actual/completed when OOM;server receivedcounts include cold/warmup and may include partial responses. No successlatency for failed cells,no nativevalid-size maximum,leak/completecausal assertion or productionlimit choice. Normal45000requests and native42MBcompatibility separate. GCenabled; one existing postwarmup GC outside timed samples,not perrequest."
+}

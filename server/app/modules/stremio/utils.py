@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status
 
 from app.common.schemas.internal import SeriesInfo
+from app.common.validators import validate_numeric_media_id
 from app.modules.stremio.constants import ADDON_APP_PREFIX_ID
 from app.modules.stremio.enums import StreamIdType
 from app.modules.stremio.schemas import (
@@ -14,6 +15,13 @@ from app.modules.stremio.schemas import (
     TorrentStreamId,
     TvdbStreamId,
 )
+
+
+def _numeric_media_id(value: str) -> str:
+    try:
+        return validate_numeric_media_id(value)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Érvénytelen numerikus médiaazonosító.") from None
 
 
 def parse_stream_id(value: str) -> StreamId:
@@ -47,7 +55,7 @@ def parse_stream_id(value: str) -> StreamId:
         torrent_id = parts[1]
         file_index: int | None = None
         if len(parts) > 2 and parts[2].isdigit():
-            file_index = int(parts[2])
+            file_index = int(_numeric_media_id(parts[2]))
 
         if not indexer_id or not torrent_id:
             raise HTTPException(
@@ -71,7 +79,7 @@ def parse_stream_id(value: str) -> StreamId:
             tvdb_val = value[4:]
 
         parts = tvdb_val.split(":")
-        tvdb_id = parts[0]
+        tvdb_id = _numeric_media_id(parts[0])
 
         if not tvdb_id:
             raise HTTPException(
@@ -115,7 +123,7 @@ def parse_stream_id(value: str) -> StreamId:
             kitsu_val = value[5:]
 
         parts = kitsu_val.split(":")
-        kitsu_id = parts[0]
+        kitsu_id = _numeric_media_id(parts[0])
 
         if not kitsu_id:
             raise HTTPException(
@@ -153,7 +161,7 @@ def parse_stream_id(value: str) -> StreamId:
             tmdb_val = value[4:]
 
         parts = tmdb_val.split(":")
-        tmdb_id = parts[0]
+        tmdb_id = _numeric_media_id(parts[0])
 
         if not tmdb_id:
             raise HTTPException(
@@ -197,7 +205,7 @@ def parse_stream_id(value: str) -> StreamId:
             mal_val = value[3:]
 
         parts = mal_val.split(":")
-        mal_id = parts[0]
+        mal_id = _numeric_media_id(parts[0])
 
         if not mal_id:
             raise HTTPException(

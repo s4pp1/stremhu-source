@@ -1,10 +1,48 @@
+---
+doc_id: "feature-search-filter-tmdb-tvdb"
+title: "Fejlesztői Dokumentáció: feature/search-filter-tmdb-tvdb"
+kind: "feature-reference"
+status: "historical-reference"
+audience: ["developer", "ai-agent"]
+tags: ["search", "filter", "tmdb", "tvdb", "dedup", "seeders", "fallback"]
+source_commit: null
+baseline: "8c99c7d"
+verification: "structure-only"
+structure_reviewed: "2026-11-03"
+related_docs: ["docs/feature/README.md", "docs/feature/anime-tvdb-kitsu-support.md"]
+source_paths: ["server/app/modules/torrent_streams/service.py", "server/app/modules/indexers/service.py", "server/app/modules/stremio/tvdb_resolver.py"]
+---
+
 # Fejlesztői Dokumentáció: `feature/search-filter-tmdb-tvdb`
+
+<!-- doc-nav:start -->
+**Navigáció:** [Dokumentáció](../README.md) · [AI-index](../AI-INDEX.md)
+
+> **Státusz:** Korábbi feature technikai referenciája. A tartalom és a mérések nem kaptak most új runtime-verifikációt; aktuális működéshez kövesd a forráskódot.
+
+**Kapcsolódó:** [README.md](README.md) · [anime-tvdb-kitsu-support.md](anime-tvdb-kitsu-support.md)
+
+<details>
+<summary>Fejezetek / közvetlen ugrás</summary>
+
+- [1. A Branch Célja és Motivációja](#doc-1-a-branch-celja-es-motivacioja)
+- [2. Módosított és Új Fájlok Áttekintése (Diff Mátrix s4pp1/stremhu-source vs feature/search-filter-tmdb-tvdb)](#doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix-s4pp1stremhu-source-vs-featuresearch-filter-tmdb-tvdb)
+- [3. Rendszerarchitektúra és Működési Folyamatábrák](#doc-3-rendszerarchitektura-es-mukodesi-folyamatabrak)
+- [4. Modulonkénti Részletes Működési Leírás és Invariánsok](#doc-4-modulonkenti-reszletes-mukodesi-leiras-es-invariansok)
+- [5. Teljesítménymérési Eredmények (A/B Benchmark a Saját Repo Master Ága ellen)](#doc-5-teljesitmenymeresi-eredmenyek-ab-benchmark-a-sajat-repo-master-aga-ellen)
+- [6. Verifikációs Parancsok](#doc-6-verifikacios-parancsok)
+
+</details>
+
+<!-- doc-nav:end -->
 
 > **Viszonyítási alap (Baseline):** Eredeti upstream [`s4pp1/stremhu-source`](https://github.com/s4pp1/stremhu-source) (`8c99c7d` commit).
 > Ez a dokumentum a `feature/search-filter-tmdb-tvdb` branch által bevezetett összes funkcionális, hibajavítási, Stremio/Nuvio best practice és teljesítménybeli változtatást részletesen rögzíti az eredeti `s4pp1/stremhu-source` állapothoz képest (beleértve a `main` ágból átvett anime feloldást, a több-trackeres keresési optimalizálásokat és a stream deduplikációt is).
 
 ---
 
+<!-- doc-anchor:doc-1-a-branch-celja-es-motivacioja -->
+<a id="doc-1-a-branch-celja-es-motivacioja"></a>
 ## 1. A Branch Célja és Motivációja
 
 Az eredeti `s4pp1/stremhu-source` a következő korlátokkal rendelkezett a TMDB alapú Stremio katalógusok, a több-trackeres szöveges keresés, a másodlagos epizód-feloldás és a stream megjelenítés terén:
@@ -21,6 +59,8 @@ Az eredeti `s4pp1/stremhu-source` a következő korlátokkal rendelkezett a TMDB
 
 ---
 
+<!-- doc-anchor:doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix-s4pp1stremhu-source-vs-featuresearch-filter-tmdb-tvdb -->
+<a id="doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix-s4pp1stremhu-source-vs-featuresearch-filter-tmdb-tvdb"></a>
 ## 2. Módosított és Új Fájlok Áttekintése (Diff Mátrix `s4pp1/stremhu-source` vs `feature/search-filter-tmdb-tvdb`)
 
 | Fájl elérési útja | Státusz | Változtatás összefoglalása |
@@ -54,8 +94,12 @@ Az eredeti `s4pp1/stremhu-source` a következő korlátokkal rendelkezett a TMDB
 
 ---
 
+<!-- doc-anchor:doc-3-rendszerarchitektura-es-mukodesi-folyamatabrak -->
+<a id="doc-3-rendszerarchitektura-es-mukodesi-folyamatabrak"></a>
 ## 3. Rendszerarchitektúra és Működési Folyamatábrák
 
+<!-- doc-anchor:doc-31-kulcs-nelkuli-tmdb-feloldasi-folyamat -->
+<a id="doc-31-kulcs-nelkuli-tmdb-feloldasi-folyamat"></a>
 ### 3.1. Kulcs Nélküli TMDB Feloldási Folyamat
 
 ```mermaid
@@ -76,6 +120,8 @@ flowchart TD
     WebScrapeCall -- "Sikertelen" --> NegativeCache["(None, None) visszaadása\n(Negatív gyorsítótár mérgezés nélkül)"]
 ```
 
+<!-- doc-anchor:doc-32-tobb-trackeres-stream-osszevonas-deduplication -->
+<a id="doc-32-tobb-trackeres-stream-osszevonas-deduplication"></a>
 ### 3.2. Több-Trackeres Stream Összevonás (Deduplication)
 
 ```mermaid
@@ -97,14 +143,20 @@ flowchart TD
 
 ---
 
+<!-- doc-anchor:doc-4-modulonkenti-reszletes-mukodesi-leiras-es-invariansok -->
+<a id="doc-4-modulonkenti-reszletes-mukodesi-leiras-es-invariansok"></a>
 ## 4. Modulonkénti Részletes Működési Leírás és Invariánsok
 
+<!-- doc-anchor:doc-41-tvdbresolver-serverappmodulesstremiotvdbresolverpy -->
+<a id="doc-41-tvdbresolver-serverappmodulesstremiotvdbresolverpy"></a>
 ### 4.1. `TvdbResolver` (`server/app/modules/stremio/tvdb_resolver.py`)
 - **Kulcs nélküli Wikidata SPARQL feloldás:** Filmekhez a `P4947`, sorozatokhoz a `P4983` TMDb azonosító tulajdonságot használja. Ha `is_series` nem ismert (`None`), SPARQL `UNION` segítségével mindkettőt ellenőrzi.
 - **Robot policy megfelelőség:** A Wikimedia User-Agent szabályzatának megfelelően: `"User-Agent": "StremHUSource/1.0 (https://github.com/s4pp1/stremhu-source; admin@stremhu.local) httpx/0.28.1"`.
 - **TMDB Web Scraping tartalék (Fallback 3):** Ha a Wikidata nem tartalmazza a tételt, a publikus `themoviedb.org/{tv|movie}/{id}` oldalt elemzi `"User-Agent": "curl/8.5.0"` fejléccel. A kinyert címeknél a `html.unescape` fut le.
 - **Negatív gyorsítótár-mérgezés védelem:** Hálózati hiba vagy sikertelen feloldás esetén `(None, None)` értékkel tér vissza gyorsítótárazás nélkül, így az átmeneti hibák nem ragadnak be.
 
+<!-- doc-anchor:doc-42-multi-tracker-stream-deduplikacio-es-egzakt-seeder-matematika-serverappmodulestorrentstreamsservicepy -->
+<a id="doc-42-multi-tracker-stream-deduplikacio-es-egzakt-seeder-matematika-serverappmodulestorrentstreamsservicepy"></a>
 ### 4.2. Multi-Tracker Stream Deduplikáció és Egzakt Seeder Matematika (`server/app/modules/torrent_streams/service.py`)
 - **Deduplikációs Kulcs:** Két stream azonos release-nek minősül, ha:
   1. Azonos a torrent swarm `info_hash` azonosítója (pl. mindkét oldalon ugyanaz a torrent fut), **VAGY**
@@ -120,6 +172,8 @@ flowchart TD
   - Kikapcsolt állapotban: a rendszer az eredeti viselkedést követve az összes trackerről külön streamként jeleníti meg a release-eket.
 - **Stream Lejátszás Stabilitása:** A lejátszási URL (`play_url`) mindig a legjobban rangsorolt (legmagasabb seederű, legmegbízhatóbb) elsődleges forrásból származik.
 
+<!-- doc-anchor:doc-43-stream-megjelenites-es-stremionuvio-best-practice-serverappmodulesstremioschemaspy -->
+<a id="doc-43-stream-megjelenites-es-stremionuvio-best-practice-serverappmodulesstremioschemaspy"></a>
 ### 4.3. Stream Megjelenítés és Stremio/Nuvio Best Practice (`server/app/modules/stremio/schemas.py`)
 - **Fájlszintű Letöltött Tartalom Kiemelése:**
   - Csak akkor jelenik meg a `⚡ Letöltve | ` jelzés és a `⚡ Helyben tárolva (Azonnali lejátszás)` banner, ha a Libtorrent szerint a **konkrét videófájl letöltöttsége elérte a 100%-ot** (`torrent_handle.file_progress()[file_index] >= file_size` vagy `status.is_seeding`). Sorozat-évadcsomagoknál így a még le nem töltött epizódoknál megszűnik a korábbi fals "Letöltve" státusz!
@@ -128,16 +182,22 @@ flowchart TD
 - **Megtévesztő Felirat Jelvény Mellőzése:** A modern release-ek (MKV/MP4 konténerek) a feliratokat beágyazva tartalmazzák. A külső feliratfájlok jelenlétére támaszkodó feliratjelvény félrevezető téves negatívokat okozott volna, ezért a feliratokat a lejátszó közvetlenül és a dedikált felirat-szolgáltatók biztosítják.
 - **Összevont Tracker Lista:** A forrás sorban valamennyi indexer fel van tüntetve: `🧲 nCore, HunTorrent, Majomparádé | 👥 661 | 💾 8.68 GiB`.
 
+<!-- doc-anchor:doc-44-relay-boundary-piece-buffer-kiterjesztes-serverappmodulesrelayentitiespy -->
+<a id="doc-44-relay-boundary-piece-buffer-kiterjesztes-serverappmodulesrelayentitiespy"></a>
 ### 4.4. Relay Boundary Piece Buffer Kiterjesztés (`server/app/modules/relay/entities.py`)
 - Az ExoPlayer (Android, Google TV, Nuvio, Stremio mobil) a videofájl fejlécét (start) és az index-táblázatát (MKV Cues, MP4 moov atom a fájl végén) kéri be induláskor.
 - A `_set_file_boundary_priorities` metódus korábban csak 1 darabot kért az elejéről és végéről azonnali prioritással (`deadline = 0`).
 - Az új implementáció dinamikusan `min(3, total_pieces // 2)` darabot rangsorol azonnalira mind a fájl elejéről, mind a fájl végéről, megakadályozva a pufferelési timeoutot és biztosítva az azonnali lejátszásindítást.
 
+<!-- doc-anchor:doc-45-evadcsomag-es-tracker-gyorsitotar-strategia-serverappmodulesindexersservicepy -->
+<a id="doc-45-evadcsomag-es-tracker-gyorsitotar-strategia-serverappmodulesindexersservicepy"></a>
 ### 4.5. Évadcsomag és Tracker Gyorsítótár Stratégia (`server/app/modules/indexers/service.py`)
 - Az IMDb alapú tracker lekérdezések gyorsítótár élettartama (`_IMDB_TRACKER_CACHE_TTL`) 180 másodpercről **1800 másodpercre (30 percre)** lett növelve.
 - Sorozatok egymást követő epizódjainak megtekintésekor a trackerek felé küldött hálózati kérések száma nullára csökken, mivel a szezonpakkok és epizódlisták a memóriából azonnal elérhetők.
 - A helyi adatbázisban tárolt `.torrent` metaadatok (`torrent_files`) 7 napos LRU retencióval rendelkeznek, és minden eléréskor (`touch()`) frissülnek; a letöltött vagy aktívan relézett torrenteket a rendszer soha nem törli.
 
+<!-- doc-anchor:doc-46-sorozatos-keresesi-sorrend-celzasa-es-hibrid-gyorskereses-serverappmodulestorrentstreamsservicepy -->
+<a id="doc-46-sorozatos-keresesi-sorrend-celzasa-es-hibrid-gyorskereses-serverappmodulestorrentstreamsservicepy"></a>
 ### 4.6. Sorozatos Keresési Sorrend Célzása és Hibrid Gyorskeresés (`server/app/modules/torrent_streams/service.py`)
 - A másodlagos név szerinti keresésnél (`_build_fallback_queries`), ha a kérés sorozatot jelöl (`series.season is not None`), a célzott évados lekérdezések (`{title} S{season:02d}`) után **közvetlenül a tiszta alapcím (`{title}`)** következik 2. jelöltként, és csak ezután jönnek a specifikusabb magyar évados (`1.evad`) vagy epizódos (`S01E01`) próbálkozások.
 - **Anime és klasszikus sorozatok 29× gyorsabb Cold Startja:** Ha egy sorozatot vagy animét (pl. *One Piece*) a trackereken nem évados bontásban, hanem egyetlen gyűjteményes vagy folyamatos csomagban töltenek fel, a rendszer már a 2. lekérdezésre azonnal megtalálja a forrást, megspórolva 3 felesleges tracker hálózati timeoutot (~24 másodpercet). Ez a cold start válaszidőt 39,9 másodpercről **1,34 másodpercre** csökkentette!
@@ -145,6 +205,8 @@ flowchart TD
 
 ---
 
+<!-- doc-anchor:doc-5-teljesitmenymeresi-eredmenyek-ab-benchmark-a-sajat-repo-master-aga-ellen -->
+<a id="doc-5-teljesitmenymeresi-eredmenyek-ab-benchmark-a-sajat-repo-master-aga-ellen"></a>
 ## 5. Teljesítménymérési Eredmények (A/B Benchmark a Saját Repo Master Ága ellen)
 
 A mérés a helyi Docker Desktop környezetben futott (`scripts/benchmark_local.py`), összevetve a saját tárolónk `master` ágából épített referencia konténert (`:7072`) az új, optimalizált branchünkkel (`:7070`):
@@ -167,6 +229,8 @@ A mérés a helyi Docker Desktop környezetben futott (`scripts/benchmark_local.
 
 ---
 
+<!-- doc-anchor:doc-6-verifikacios-parancsok -->
+<a id="doc-6-verifikacios-parancsok"></a>
 ## 6. Verifikációs Parancsok
 
 Minden módosítás előtt és után kötelezően futtatandó ellenőrző sor:

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 import time
 from pathlib import Path
 from typing import Annotated
@@ -16,8 +15,10 @@ from fastapi import (
 )
 from fastapi.responses import StreamingResponse
 
+from app.common.async_utils import owned_to_thread
 from app.common.database import isolated_db_session
 from app.common.keyed_lock import KeyedLock
+from app.common.log_safety import network_error_fields
 from app.common.logger import logger
 from app.common.schemas.internal import ImdbInfo
 from app.config import config
@@ -30,14 +31,21 @@ from app.modules.playback_histories.schemas.internal import (
 )
 from app.modules.playbacks.dependencies import create_playbacks_service
 from app.modules.relay.dependencies import get_relay_service
-from app.modules.stream.active_playback import record_active_playback
+from app.modules.stream.active_playback import (
+    record_active_playback,
+    remove_active_playback_if_matches,
+)
 from app.modules.stream.dependencies import (
     create_stream_service,
     get_parsed_stream_token,
 )
 from app.modules.stream.schemas import StreamToken
 from app.modules.stream.service import parse_range_header
-from app.modules.stream.utils.subtitles import ass_to_vtt
+from app.modules.stream.utils.subtitles import (
+    ass_to_vtt_cooperative,
+    decode_subtitle_text,
+    decode_subtitle_text_cooperative,
+)
 
 router = APIRouter(
     prefix="/{api_key}/stream",
@@ -62,12 +70,6 @@ async def stream(
     stream_token: Annotated[StreamToken, Depends(get_parsed_stream_token)],
     range_header: Annotated[str | None, Header(alias="Range")] = None,
 ) -> Response:
-    record_active_playback(
-        api_key=api_key,
-        indexer_id=stream_token.indexer_id,
-        torrent_id=stream_token.torrent_id,
-    )
-
     client_info = PlaybackHistoryClientInfo(
         user_agent=request.headers.get("user-agent"),
         ip=request.client.host if request.client else None,
@@ -75,7 +77,7 @@ async def stream(
 
     with isolated_db_session() as local_db:
         auth_service = create_auth_service(local_db)
-        user = await asyncio.to_thread(
+        user = await owned_to_thread(
             auth_service.verify_api_key,
             api_key=api_key,
         )
@@ -90,12 +92,21 @@ async def stream(
         )
         stream_service = create_stream_service(local_db)
 
-        parsed_range_header, file = await stream_service.prepare_for_stream(
-            range_header=range_header,
+        record_id = record_active_playback(
+            user_id=user.id,
             indexer_id=stream_token.indexer_id,
             torrent_id=stream_token.torrent_id,
-            file_index=stream_token.file_index,
         )
+        try:
+            parsed_range_header, file = await stream_service.prepare_for_stream(
+                range_header=range_header,
+                indexer_id=stream_token.indexer_id,
+                torrent_id=stream_token.torrent_id,
+                file_index=stream_token.file_index,
+            )
+        except BaseException:
+            remove_active_playback_if_matches(user.id, stream_token.indexer_id, stream_token.torrent_id, record_id)
+            raise
 
         imdb_info: ImdbInfo | None = None
         if stream_token.imdb_id is not None:
@@ -256,12 +267,8 @@ def _content_disposition(filename: str) -> str:
 
 
 def _decode_subtitle_text(raw_bytes: bytes) -> str:
-    """Explicit dekódolási szabály: UTF-8 (BOM-mal vagy anélkül), ha érvényes;
-    különben Windows-1250 (közép-európai, a magyar feliratok tipikus régi kódolása)."""
-    try:
-        return raw_bytes.decode("utf-8-sig")
-    except UnicodeDecodeError:
-        return raw_bytes.decode("cp1250", errors="replace")
+    """Explicit dekódolási szabály, lásd ``decode_subtitle_text``."""
+    return decode_subtitle_text(raw_bytes)
 
 
 async def _collect_subtitle_bytes(
@@ -302,6 +309,16 @@ def _subtitle_unavailable() -> Response:
     )
 
 
+def subtitle_response_headers(disp_name: str) -> dict[str, str]:
+    return {
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "no-store",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        "Content-Disposition": _content_disposition(disp_name),
+    }
+
+
 def _build_cached_subtitle_response(
     request_method: str,
     media_type: str,
@@ -312,13 +329,7 @@ def _build_cached_subtitle_response(
     stream_service=None,
 ) -> Response:
     _ = stream_service
-    headers = {
-        "Accept-Ranges": "bytes",
-        "Cache-Control": "public, max-age=86400",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "*",
-        "Content-Disposition": _content_disposition(disp_name),
-    }
+    headers = subtitle_response_headers(disp_name)
     total_size = len(content_bytes)
     if range_header is None or convert_to_vtt or total_size == 0:
         status_code = 200
@@ -381,7 +392,7 @@ async def stream_subtitle(
         with isolated_db_session() as local_db:
             # Cache-hit előtt is hitelesítünk: a közös fájlcache nem jogosultságcache.
             auth_service = create_auth_service(local_db)
-            user = await asyncio.to_thread(
+            user = await owned_to_thread(
                 auth_service.verify_api_key,
                 api_key=api_key,
             )
@@ -437,13 +448,7 @@ async def stream_subtitle(
             )
             disp_name = file.name
 
-        headers = {
-            "Accept-Ranges": "bytes",
-            "Cache-Control": "public, max-age=86400",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "*",
-            "Content-Disposition": _content_disposition(disp_name),
-        }
+        headers = subtitle_response_headers(disp_name)
 
         if convert_to_vtt:
             if file.size > config.subtitle_max_source_bytes:
@@ -467,13 +472,15 @@ async def stream_subtitle(
                     file, stream_token, user.id, request
                 )
             except Exception as e:
-                logger.warning(f"Felirat gyűjtése sikertelen (nincs cache-elés): {e!r}")
+                logger.warning("operation=subtitle-collect %s", network_error_fields(e))
                 return _subtitle_unavailable()
 
             try:
-                vtt_output = ass_to_vtt(_decode_subtitle_text(raw_bytes))
+                vtt_output = await ass_to_vtt_cooperative(
+                    await decode_subtitle_text_cooperative(raw_bytes)
+                )
             except Exception as e:
-                logger.warning(f"ASS->VTT konverzió sikertelen: {e!r}")
+                logger.warning("operation=subtitle-convert %s", network_error_fields(e))
                 return Response(
                     status_code=422,
                     content="A felirat nem konvertálható.",
@@ -521,7 +528,7 @@ async def stream_subtitle(
                     file, stream_token, user.id, request
                 )
             except Exception as e:
-                logger.warning(f"Felirat gyűjtése sikertelen (nincs cache-elés): {e!r}")
+                logger.warning("operation=subtitle-collect %s", network_error_fields(e))
                 return _subtitle_unavailable()
 
             if _put_cached_subtitle(final_key, media_type, disp_name, raw_bytes):

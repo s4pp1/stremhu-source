@@ -9,11 +9,13 @@ import pydash
 
 from app.common.torrent_info import TorrentFileInfo, TorrentInfo
 from app.modules.indexer_accounts.models import IndexerAccountModel
+from app.modules.indexer_accounts.schemas import IndexerAccountRef
 from app.modules.indexer_definitions.models import IndexerDefinitionModel
 from app.modules.indexers.schemas.internal import IndexerTorrent
 from app.modules.media_attributes.models import MediaAttributeModel
 from app.modules.media_attributes.seeds import DEFAULT_ATTRIBUTES
 from app.modules.torrent_files.models import TorrentFileModel
+from app.modules.torrent_files.schemas import TorrentFileSnapshot
 from app.modules.torrent_source_provider.schemas import TorrentSource
 
 
@@ -184,12 +186,24 @@ def create_torrent_source(
 
     return TorrentSource(
         indexer_torrent=IndexerTorrent(
-            indexer_account=account,
+            indexer_account=IndexerAccountRef.from_model(account),
             torrent_id=torrent_id,
             download_url=f"https://{indexer_id}.invalid/dl/{torrent_id}",
             imdb_id=imdb_id,
             seeders=seeders,
             media_attributes=get_attributes_by_ids(attribute_ids or []),
         ),
-        torrent_file=torrent_file,
+        torrent_file=TorrentFileSnapshot.from_model(torrent_file),
     )
+
+
+def make_account_ref(indexer_id: str, indexer_name: str | None = None) -> IndexerAccountRef:
+    definition = IndexerDefinitionModel(
+        id=indexer_id,
+        name=indexer_name or indexer_id,
+        url=f"https://{indexer_id}.invalid",
+        details_path="/details",
+    )
+    account = IndexerAccountModel(indexer_id=indexer_id, username="teszt", password="teszt")
+    account.indexer_definition = definition
+    return IndexerAccountRef.from_model(account)

@@ -15,7 +15,7 @@ def create_settings_service(db: Session) -> SettingsService:
 
 
 def get_settings_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> SettingsService:
     """FastAPI függőség-injektáló provider a SettingsService példányosításához."""
     return create_settings_service(db)

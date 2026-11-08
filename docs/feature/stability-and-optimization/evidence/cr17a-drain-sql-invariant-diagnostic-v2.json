@@ -1,0 +1,316 @@
+{
+  "status": "Original immutable assessor stopped at exact SQL invariance assertion; NOT PASS",
+  "rows": [
+    {
+      "label": "before",
+      "pair": 0,
+      "counts": {
+        "('same-result-key', 1)": {
+          "100": 4,
+          "118": 5,
+          "119": 1
+        },
+        "('unique-result-key-warm-metadata', 4)": {
+          "1000": 10
+        },
+        "('same-result-key', 8)": {
+          "100": 4,
+          "118": 5,
+          "116": 1
+        },
+        "('unique-result-key-warm-metadata', 1)": {
+          "1000": 10
+        },
+        "('same-result-key', 4)": {
+          "118": 7,
+          "109": 2,
+          "116": 1
+        },
+        "('unique-result-key-warm-metadata', 8)": {
+          "1000": 10
+        }
+      },
+      "raw_sha256": "2457af39e18b617516e7c26db6613728ff77a78d6a8cf71e2b0f84de2b89c6f8"
+    },
+    {
+      "label": "after",
+      "pair": 0,
+      "counts": {
+        "('same-result-key', 1)": {
+          "100": 3,
+          "118": 5,
+          "119": 1,
+          "109": 1
+        },
+        "('unique-result-key-warm-metadata', 4)": {
+          "1000": 10
+        },
+        "('same-result-key', 8)": {
+          "100": 3,
+          "118": 6,
+          "109": 1
+        },
+        "('unique-result-key-warm-metadata', 1)": {
+          "1000": 10
+        },
+        "('same-result-key', 4)": {
+          "118": 9,
+          "109": 1
+        },
+        "('unique-result-key-warm-metadata', 8)": {
+          "1000": 10
+        }
+      },
+      "raw_sha256": "8cffe7082c92dbf68424bf5b1c0fda5adb39bc532efc09848e9f02538e52754f"
+    },
+    {
+      "label": "before",
+      "pair": 1,
+      "counts": {
+        "('same-result-key', 1)": {
+          "100": 1,
+          "118": 3,
+          "109": 5,
+          "119": 1
+        },
+        "('unique-result-key-warm-metadata', 4)": {
+          "1000": 10
+        },
+        "('same-result-key', 8)": {
+          "100": 1,
+          "118": 7,
+          "109": 2
+        },
+        "('unique-result-key-warm-metadata', 1)": {
+          "1000": 10
+        },
+        "('same-result-key', 4)": {
+          "118": 7,
+          "109": 3
+        },
+        "('unique-result-key-warm-metadata', 8)": {
+          "1000": 10
+        }
+      },
+      "raw_sha256": "64d8225f5cccddf6c78634ff025ca391d8620295ddc520284bb07dc9efeed8c7"
+    },
+    {
+      "label": "after",
+      "pair": 1,
+      "counts": {
+        "('same-result-key', 1)": {
+          "100": 2,
+          "118": 5,
+          "119": 1,
+          "109": 2
+        },
+        "('unique-result-key-warm-metadata', 4)": {
+          "1000": 10
+        },
+        "('same-result-key', 8)": {
+          "100": 2,
+          "118": 7,
+          "109": 1
+        },
+        "('unique-result-key-warm-metadata', 1)": {
+          "1000": 10
+        },
+        "('same-result-key', 4)": {
+          "118": 8,
+          "109": 1,
+          "100": 1
+        },
+        "('unique-result-key-warm-metadata', 8)": {
+          "1000": 10
+        }
+      },
+      "raw_sha256": "d255031f900d63bed3ed4e9c1f147f52c2da0e4ab1b74f51d92d44ed3e0170d1"
+    },
+    {
+      "label": "before",
+      "pair": 2,
+      "counts": {
+        "('same-result-key', 1)": {
+          "100": 1,
+          "118": 3,
+          "109": 5,
+          "119": 1
+        },
+        "('unique-result-key-warm-metadata', 4)": {
+          "1000": 10
+        },
+        "('same-result-key', 8)": {
+          "100": 1,
+          "118": 7,
+          "109": 2
+        },
+        "('unique-result-key-warm-metadata', 1)": {
+          "1000": 10
+        },
+        "('same-result-key', 4)": {
+          "118": 7,
+          "109": 3
+        },
+        "('unique-result-key-warm-metadata', 8)": {
+          "1000": 10
+        }
+      },
+      "raw_sha256": "373d4dc117666f22b6a91dbcd309aa52dae1ed9d58e64dba7ecb9b61b5110a56"
+    },
+    {
+      "label": "after",
+      "pair": 2,
+      "counts": {
+        "('same-result-key', 1)": {
+          "100": 3,
+          "118": 5,
+          "119": 1,
+          "109": 1
+        },
+        "('unique-result-key-warm-metadata', 4)": {
+          "1000": 10
+        },
+        "('same-result-key', 8)": {
+          "100": 3,
+          "118": 6,
+          "109": 1
+        },
+        "('unique-result-key-warm-metadata', 1)": {
+          "1000": 10
+        },
+        "('same-result-key', 4)": {
+          "118": 6,
+          "109": 4
+        },
+        "('unique-result-key-warm-metadata', 8)": {
+          "1000": 10
+        }
+      },
+      "raw_sha256": "4c752c591685ea6abe664868ce2745e5364e25d7e82522db235fac2a2693a086"
+    },
+    {
+      "label": "before",
+      "pair": 3,
+      "counts": {
+        "('same-result-key', 1)": {
+          "100": 1,
+          "118": 4,
+          "109": 4,
+          "119": 1
+        },
+        "('unique-result-key-warm-metadata', 4)": {
+          "1000": 10
+        },
+        "('same-result-key', 8)": {
+          "100": 1,
+          "118": 6,
+          "109": 3
+        },
+        "('unique-result-key-warm-metadata', 1)": {
+          "1000": 10
+        },
+        "('same-result-key', 4)": {
+          "118": 7,
+          "109": 3
+        },
+        "('unique-result-key-warm-metadata', 8)": {
+          "1000": 10
+        }
+      },
+      "raw_sha256": "f2a7f4f187dad951c706a7af82ab8b3fe1b58e068e3f94395bcd78291137fd1b"
+    },
+    {
+      "label": "after",
+      "pair": 3,
+      "counts": {
+        "('same-result-key', 1)": {
+          "100": 1,
+          "118": 5,
+          "109": 3,
+          "119": 1
+        },
+        "('unique-result-key-warm-metadata', 4)": {
+          "1000": 10
+        },
+        "('same-result-key', 8)": {
+          "100": 1,
+          "118": 6,
+          "109": 3
+        },
+        "('unique-result-key-warm-metadata', 1)": {
+          "1000": 10
+        },
+        "('same-result-key', 4)": {
+          "118": 7,
+          "109": 3
+        },
+        "('unique-result-key-warm-metadata', 8)": {
+          "1000": 10
+        }
+      },
+      "raw_sha256": "17c79a062ab9f25150b36a91d22231a9dbce2332472fa34b3842f1f76c966e49"
+    },
+    {
+      "label": "before",
+      "pair": 4,
+      "counts": {
+        "('same-result-key', 1)": {
+          "100": 4,
+          "118": 5,
+          "119": 1
+        },
+        "('unique-result-key-warm-metadata', 4)": {
+          "1000": 10
+        },
+        "('same-result-key', 8)": {
+          "100": 4,
+          "118": 6
+        },
+        "('unique-result-key-warm-metadata', 1)": {
+          "1000": 10
+        },
+        "('same-result-key', 4)": {
+          "118": 9,
+          "109": 1
+        },
+        "('unique-result-key-warm-metadata', 8)": {
+          "1000": 10
+        }
+      },
+      "raw_sha256": "cc13a44c6dc973e1a783abe6ee2c1794c57e3968659299ae28198f5792dc8e1e"
+    },
+    {
+      "label": "after",
+      "pair": 4,
+      "counts": {
+        "('same-result-key', 1)": {
+          "100": 1,
+          "118": 5,
+          "109": 3,
+          "119": 1
+        },
+        "('unique-result-key-warm-metadata', 4)": {
+          "1000": 10
+        },
+        "('same-result-key', 8)": {
+          "100": 1,
+          "118": 7,
+          "109": 2
+        },
+        "('unique-result-key-warm-metadata', 1)": {
+          "1000": 10
+        },
+        "('same-result-key', 4)": {
+          "118": 6,
+          "109": 3,
+          "100": 1
+        },
+        "('unique-result-key-warm-metadata', 8)": {
+          "1000": 10
+        }
+      },
+      "raw_sha256": "beaa9d3d75b0ffd371029d6ea2d3bfafa5c39e537de2aa84d3d0ceb23c17265b"
+    }
+  ],
+  "assessor_sha256": "148e29edd9829c8d6a0cbc9d83a3a0c3d082bcf131e90cd9b92201bf323504d7"
+}

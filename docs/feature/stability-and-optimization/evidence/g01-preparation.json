@@ -1,0 +1,632 @@
+{
+  "status": "Functional native seed wiring PASS; full G01 policy/performance matrix NOT RUN",
+  "head": "d2f0d1e5446c26ca56cf611f91e9264aabf9e19b",
+  "source": "cr17a-after-v7-source,602pytest/64snapshot,Ruff/based0",
+  "smoke": {
+    "fixture": "g01-native-loopback-seed-wiring-v1",
+    "is_measurement": false,
+    "native_version": "2.1.1.0",
+    "stream_bytes": 65536,
+    "stream_sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+    "native_connections": 16,
+    "native_limit": 50,
+    "tracked_limit": 50,
+    "verified_first_piece": true,
+    "seed_handshakes": 16,
+    "seed_requests": 153,
+    "seed_bytes": 2506752,
+    "peak_seed_connections": 16,
+    "seed_errors": [],
+    "remaining_seed_tasks": 0,
+    "scope": "Synthetic zero bytes, actual native hash verification/Relay stream; networknone loopback seed only. No G01 policy or latency/memory result."
+  },
+  "fixture_hashes": {
+    "scripts/fixtures/local_bt_seed.py": "cb4d301accf047b721f918eafb5571478e7e6a4228eaeb8148382cf02f7883cb",
+    "scripts/probe_cr_seeder_wiring.py": "a57ad797e6388600fdb85635d82e389400117c8039c9417dd634dac36a15673f"
+  },
+  "resources": "PinnedC,2CPU affinity2,3/512MiB,networknone,read-only sources,tmpfs synthetic download; this tiny wiring run does not measure disk/RAM policy.",
+  "native_surface_source": "https://www.libtorrent.org/reference-Settings.html",
+  "test_only_settings": "Multiple loopback connections enabled for distinct synthetic peer IDs; plain fixture protocol, DHT/LSD/UPnP/NAT-PMP off. No tracker/announce/webseed or real host connection. No product settings/default changes.",
+  "open": [
+    "Full matrix global50/100/200,base10/20/50/80,stream0/1/4/8,piece256KiB/1MiB/4MiB,RAM512MiB/1GiB/2GiB",
+    "Noise, adequate repetitions and same-C controls, relevantABC",
+    "Hard-cap candidate only after legacy-policy measurements and product decision as required"
+  ],
+  "repository_fixture_whitespace_checkpoint": {
+    "path": "scripts/fixtures/local_bt_seed.py",
+    "tested_sha256": "cb4d301accf047b721f918eafb5571478e7e6a4228eaeb8148382cf02f7883cb",
+    "current_sha256": "8e0e62a2868589b6d5bc7acc3f2011914c8d0e7de00b2a79e577f9c8df02fbb1",
+    "change": "Removed only extra blank line at EOF for git diff --check; functional wiring evidence remains tied to original frozen fixture, no new test result claimed."
+  },
+  "focused_legacy_v2": {
+    "status": "Focused legacy baseline COMPLETE; fullG01 gate OPEN",
+    "source": "cr17a-drain-fix-v1-source; percase app hashes verified by controller; native Relay unchanged from accepted CR01a",
+    "cases": 20,
+    "verified_bytes": 5368709120,
+    "read_observations": 5120,
+    "raw_files": [
+      {
+        "name": "g01-focused-legacy-a-2-0-v2.json",
+        "sha256": "f2d586a0401ac1e70113561816fa01de3421afa5692bda6ea77d66eaf63feebb"
+      },
+      {
+        "name": "g01-focused-legacy-a-2-1-v2.json",
+        "sha256": "31ebca3f4f2a1ba610062fd1c048589d5337184d4414803875ceaa9768d7b524"
+      },
+      {
+        "name": "g01-focused-legacy-a-2-2-v2.json",
+        "sha256": "0b324230b8468e19df57fef715555e8a01e0fa2960afd89aa2caf77667654b6a"
+      },
+      {
+        "name": "g01-focused-legacy-a-2-3-v2.json",
+        "sha256": "910d3c8b50421ad6fe99bcaff19c9caa4984e7452f7d8cd84ea8d61ad481a201"
+      },
+      {
+        "name": "g01-focused-legacy-a-2-4-v2.json",
+        "sha256": "b722f0b149a388a8c34685890106b484f33c3e5eff83c87910cd0cd31416d75e"
+      },
+      {
+        "name": "g01-focused-legacy-a-50-0-v2.json",
+        "sha256": "7763e93de52cf78cbf727f4bfd86ecc2664961fbd63482d9425b366960c652e6"
+      },
+      {
+        "name": "g01-focused-legacy-a-50-1-v2.json",
+        "sha256": "dfd65d489c9004abacf4bc7d91380b1c44c1600953506e11dcca3df23d0424cc"
+      },
+      {
+        "name": "g01-focused-legacy-a-50-2-v2.json",
+        "sha256": "a427a8dffabca28d1a8aed1d7d8eaaf08472b8a086395a70e1802e9b8b4c5084"
+      },
+      {
+        "name": "g01-focused-legacy-a-50-3-v2.json",
+        "sha256": "8f15fbf1872d2907f17f3b1447c2fc56bdd12cfae4602b64fb8312c54a5d8a7e"
+      },
+      {
+        "name": "g01-focused-legacy-a-50-4-v2.json",
+        "sha256": "6102fb65ab89979bf930b8927addfb185c2d338ca8bef299633805a630b3c491"
+      },
+      {
+        "name": "g01-focused-legacy-b-2-0-v2.json",
+        "sha256": "bc24b25d47e03acd127aea5d07089ff6a3d01789380d8819b34d9bd029125be3"
+      },
+      {
+        "name": "g01-focused-legacy-b-2-1-v2.json",
+        "sha256": "2197e5018d06f4ee74cb8ae8c42df4a784d855d3efa9fd67c6a450b3e34729b7"
+      },
+      {
+        "name": "g01-focused-legacy-b-2-2-v2.json",
+        "sha256": "8bd64f0ab762adbb438a4b75aed8e18f1901e159e51afebc9e8a7fffd3d1912d"
+      },
+      {
+        "name": "g01-focused-legacy-b-2-3-v2.json",
+        "sha256": "13e74730f88bef9bc5a14bd5d7938c484b0c050881c726fe9385955d654a049e"
+      },
+      {
+        "name": "g01-focused-legacy-b-2-4-v2.json",
+        "sha256": "89c339b9ca178187a55f530f79f13cd15c8eebe79f60df108f9e9822005fbaa6"
+      },
+      {
+        "name": "g01-focused-legacy-b-50-0-v2.json",
+        "sha256": "b32db891228e3e1710bce7a78ef5861bfe8228ef9f041e0948e2513c75fe568b"
+      },
+      {
+        "name": "g01-focused-legacy-b-50-1-v2.json",
+        "sha256": "b41b311f04f4e129d7a321bf7809b2be1c93295385027d98be01153c7eb826a1"
+      },
+      {
+        "name": "g01-focused-legacy-b-50-2-v2.json",
+        "sha256": "9e0f047b86b8c237fadc9072c0017d120eabe480a03c29be9bae7a83d370b347"
+      },
+      {
+        "name": "g01-focused-legacy-b-50-3-v2.json",
+        "sha256": "ab01e60d9200e1471fdf3a181cbf36e4f5c828590701ead3a5bb443ece17331e"
+      },
+      {
+        "name": "g01-focused-legacy-b-50-4-v2.json",
+        "sha256": "48996e4fbda9790534ecea585a0e68b052ebf0e6f6ad75d8959a9a6b7d153ed1"
+      }
+    ],
+    "rows": [
+      {
+        "series": "a",
+        "delay_ms": 2,
+        "repetition": 0,
+        "wall_seconds": 14.591514963999998,
+        "cpu_seconds": 1.4119716500000001,
+        "startup_ms": [
+          5928.845751999972,
+          6232.935345999977,
+          6329.966017000004,
+          6044.9640670000235,
+          6200.907283999982,
+          5910.2166430000125,
+          6108.96349799998,
+          6223.108577999994
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 0,
+        "peak_peer_connections": 180,
+        "peak_anon_bytes": 239661056,
+        "peak_file_bytes": 269512704
+      },
+      {
+        "series": "a",
+        "delay_ms": 2,
+        "repetition": 1,
+        "wall_seconds": 14.67622871399999,
+        "cpu_seconds": 1.384077369,
+        "startup_ms": [
+          5136.55032500003,
+          6370.471583999972,
+          6052.889990999973,
+          6223.808360000021,
+          5829.64272700002,
+          5947.971438000024,
+          6174.759764999976,
+          6063.1522570000125
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 0,
+        "peak_peer_connections": 184,
+        "peak_anon_bytes": 248848384,
+        "peak_file_bytes": 268435456
+      },
+      {
+        "series": "a",
+        "delay_ms": 2,
+        "repetition": 2,
+        "wall_seconds": 14.59838295000003,
+        "cpu_seconds": 1.387166353,
+        "startup_ms": [
+          5148.29631699996,
+          6145.705397000029,
+          6292.619924999997,
+          5595.143554000004,
+          5709.527980999951,
+          6328.973796000014,
+          6134.166302999973,
+          5148.71118100001
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 1,
+        "peak_peer_connections": 185,
+        "peak_anon_bytes": 231673856,
+        "peak_file_bytes": 268435456
+      },
+      {
+        "series": "a",
+        "delay_ms": 2,
+        "repetition": 3,
+        "wall_seconds": 14.612612614,
+        "cpu_seconds": 1.380265932,
+        "startup_ms": [
+          6154.104443999984,
+          5133.040740000013,
+          5578.130319000024,
+          5923.132758999998,
+          5793.114301000003,
+          6265.517509999995,
+          6321.563142000003,
+          5783.30864100002
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 0,
+        "peak_peer_connections": 183,
+        "peak_anon_bytes": 257163264,
+        "peak_file_bytes": 268435456
+      },
+      {
+        "series": "a",
+        "delay_ms": 2,
+        "repetition": 4,
+        "wall_seconds": 14.602059252999993,
+        "cpu_seconds": 1.354287966,
+        "startup_ms": [
+          5783.091207000041,
+          5696.337518999997,
+          6143.962461000001,
+          6183.561759999975,
+          6249.296891999961,
+          6301.590010000041,
+          5787.389107999957,
+          6147.135686000012
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 0,
+        "peak_peer_connections": 184,
+        "peak_anon_bytes": 230731776,
+        "peak_file_bytes": 268435456
+      },
+      {
+        "series": "a",
+        "delay_ms": 50,
+        "repetition": 0,
+        "wall_seconds": 18.72046056900001,
+        "cpu_seconds": 1.5563782970000002,
+        "startup_ms": [
+          9658.740272999978,
+          9647.836515999985,
+          10434.979512000042,
+          8512.64910499998,
+          10445.492199,
+          8520.59863300002,
+          9597.989737999967,
+          9591.66970199999
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 20,
+        "peak_peer_connections": 196,
+        "peak_anon_bytes": 251441152,
+        "peak_file_bytes": 268435456
+      },
+      {
+        "series": "a",
+        "delay_ms": 50,
+        "repetition": 1,
+        "wall_seconds": 18.723956629999975,
+        "cpu_seconds": 1.5752062760000003,
+        "startup_ms": [
+          9655.638345999989,
+          9609.025255999995,
+          10449.163075,
+          7392.657376000045,
+          9601.582860000008,
+          10442.766269000003,
+          9349.39687900004,
+          8510.11485600003
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 28,
+        "peak_peer_connections": 196,
+        "peak_anon_bytes": 251215872,
+        "peak_file_bytes": 268439552
+      },
+      {
+        "series": "a",
+        "delay_ms": 50,
+        "repetition": 2,
+        "wall_seconds": 18.964142476000006,
+        "cpu_seconds": 1.5153504930000001,
+        "startup_ms": [
+          7401.982258000033,
+          9680.498384000031,
+          8516.806066999947,
+          9681.552524000039,
+          8145.657204000031,
+          8512.886703999982,
+          10680.267465000043,
+          9680.967361
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 48,
+        "peak_peer_connections": 196,
+        "peak_anon_bytes": 255823872,
+        "peak_file_bytes": 268435456
+      },
+      {
+        "series": "a",
+        "delay_ms": 50,
+        "repetition": 3,
+        "wall_seconds": 18.724045284,
+        "cpu_seconds": 1.542004259,
+        "startup_ms": [
+          9569.704077999973,
+          7387.249920000045,
+          10437.246779999952,
+          8541.749638,
+          9623.438967000027,
+          9574.373309999999,
+          10436.718750000011,
+          9573.875793000014
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 23,
+        "peak_peer_connections": 196,
+        "peak_anon_bytes": 255365120,
+        "peak_file_bytes": 268435456
+      },
+      {
+        "series": "a",
+        "delay_ms": 50,
+        "repetition": 4,
+        "wall_seconds": 17.8469974410001,
+        "cpu_seconds": 1.5009430739999998,
+        "startup_ms": [
+          9355.026039999984,
+          8096.183576000044,
+          8524.29259600001,
+          7402.4024179999515,
+          9575.52581799996,
+          7409.587507000083,
+          8524.835098999916,
+          9152.033786000062
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 67,
+        "peak_peer_connections": 196,
+        "peak_anon_bytes": 254906368,
+        "peak_file_bytes": 268439552
+      },
+      {
+        "series": "b",
+        "delay_ms": 2,
+        "repetition": 0,
+        "wall_seconds": 14.674566809999988,
+        "cpu_seconds": 1.386892647,
+        "startup_ms": [
+          6378.828975000033,
+          6009.918583000058,
+          6177.141697000025,
+          5701.565630000005,
+          6166.008791999957,
+          6104.9600460000875,
+          6155.395747000057,
+          6272.418923000032
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 0,
+        "peak_peer_connections": 182,
+        "peak_anon_bytes": 252141568,
+        "peak_file_bytes": 268439552
+      },
+      {
+        "series": "b",
+        "delay_ms": 2,
+        "repetition": 1,
+        "wall_seconds": 14.627835731000005,
+        "cpu_seconds": 1.362675404,
+        "startup_ms": [
+          6053.0540449999535,
+          5593.211199999928,
+          6362.5172560000465,
+          6207.334985999978,
+          6318.8167019999355,
+          5802.001966000034,
+          6024.371700000074,
+          6269.076234999943
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 0,
+        "peak_peer_connections": 183,
+        "peak_anon_bytes": 262512640,
+        "peak_file_bytes": 268439552
+      },
+      {
+        "series": "b",
+        "delay_ms": 2,
+        "repetition": 2,
+        "wall_seconds": 14.563213875999963,
+        "cpu_seconds": 1.378088925,
+        "startup_ms": [
+          6259.221830000001,
+          5702.843084999927,
+          5982.2974969999905,
+          5600.091628999962,
+          6089.902063000068,
+          6144.044895000093,
+          5179.378599000074,
+          6163.514918000033
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 1,
+        "peak_peer_connections": 182,
+        "peak_anon_bytes": 251478016,
+        "peak_file_bytes": 268435456
+      },
+      {
+        "series": "b",
+        "delay_ms": 2,
+        "repetition": 3,
+        "wall_seconds": 14.606844362999936,
+        "cpu_seconds": 1.376934984,
+        "startup_ms": [
+          5790.151779000098,
+          6125.963332999959,
+          6302.228689000003,
+          6022.107355999992,
+          5568.524062000051,
+          6022.654928000065,
+          6028.970151999943,
+          5798.894654999913
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 0,
+        "peak_peer_connections": 182,
+        "peak_anon_bytes": 266006528,
+        "peak_file_bytes": 268435456
+      },
+      {
+        "series": "b",
+        "delay_ms": 2,
+        "repetition": 4,
+        "wall_seconds": 14.714050878999956,
+        "cpu_seconds": 1.383456502,
+        "startup_ms": [
+          6047.817203000022,
+          6426.4569590000065,
+          6362.0308829999885,
+          5828.100544999984,
+          6169.966322999926,
+          6058.0061489999935,
+          6361.524024000005,
+          6122.638466000012
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 0,
+        "peak_peer_connections": 183,
+        "peak_anon_bytes": 242806784,
+        "peak_file_bytes": 268435456
+      },
+      {
+        "series": "b",
+        "delay_ms": 50,
+        "repetition": 0,
+        "wall_seconds": 18.988236794000045,
+        "cpu_seconds": 1.5398514699999999,
+        "startup_ms": [
+          7406.839798000078,
+          10591.716269000017,
+          9675.759007000011,
+          9356.939949999969,
+          9675.261318000026,
+          10698.898351000025,
+          7403.051780999931,
+          9674.735677999934
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 31,
+        "peak_peer_connections": 196,
+        "peak_anon_bytes": 262881280,
+        "peak_file_bytes": 268435456
+      },
+      {
+        "series": "b",
+        "delay_ms": 50,
+        "repetition": 1,
+        "wall_seconds": 18.71983596000007,
+        "cpu_seconds": 1.525417587,
+        "startup_ms": [
+          10443.028087000017,
+          9611.50368299991,
+          9668.77750900005,
+          8043.432626000026,
+          10451.626470000065,
+          9668.246218999911,
+          10451.139032000014,
+          10450.642863999974
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 7,
+        "peak_peer_connections": 196,
+        "peak_anon_bytes": 251273216,
+        "peak_file_bytes": 268439552
+      },
+      {
+        "series": "b",
+        "delay_ms": 50,
+        "repetition": 2,
+        "wall_seconds": 18.708681557999967,
+        "cpu_seconds": 1.507933873,
+        "startup_ms": [
+          9656.75665799995,
+          7387.011955000048,
+          9152.499870000043,
+          7395.524475000002,
+          9607.1528760001,
+          10444.788506000008,
+          10444.268526999964,
+          9651.489885999923
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 49,
+        "peak_peer_connections": 196,
+        "peak_anon_bytes": 252137472,
+        "peak_file_bytes": 268435456
+      },
+      {
+        "series": "b",
+        "delay_ms": 50,
+        "repetition": 3,
+        "wall_seconds": 18.71209041999998,
+        "cpu_seconds": 1.503370609,
+        "startup_ms": [
+          9364.382427999999,
+          9364.850655000055,
+          10443.664461000026,
+          10438.81283999997,
+          9666.335497999968,
+          9665.853019999986,
+          9629.02158700001,
+          10443.125109999983
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 12,
+        "peak_peer_connections": 196,
+        "peak_anon_bytes": 251265024,
+        "peak_file_bytes": 268439552
+      },
+      {
+        "series": "b",
+        "delay_ms": 50,
+        "repetition": 4,
+        "wall_seconds": 18.73481316599998,
+        "cpu_seconds": 1.52482636,
+        "startup_ms": [
+          10428.067164000026,
+          9569.511814000067,
+          10425.102261000007,
+          9570.011322999904,
+          9617.250868000043,
+          9568.97171300011,
+          7429.20128600008,
+          9656.382800000074
+        ],
+        "read_observations": 256,
+        "late_over_100ms": 25,
+        "peak_peer_connections": 196,
+        "peak_anon_bytes": 263852032,
+        "peak_file_bytes": 268439552
+      }
+    ],
+    "groups": [
+      {
+        "delay_ms": 2,
+        "wall_medians": [
+          14.602059252999993,
+          14.627835731000005
+        ],
+        "cpu_medians": [
+          1.384077369,
+          1.378088925
+        ],
+        "late_over_100ms_totals": [
+          1,
+          1
+        ],
+        "peak_peer_connections": 185
+      },
+      {
+        "delay_ms": 50,
+        "wall_medians": [
+          18.723956629999975,
+          18.71983596000007
+        ],
+        "cpu_medians": [
+          1.542004259,
+          1.52482636
+        ],
+        "late_over_100ms_totals": [
+          186,
+          124
+        ],
+        "peak_peer_connections": 196
+      }
+    ],
+    "scope": "Only global200/base10/8streams/4MiBpiece/1GiB and2/50ms seed delay. Cold startup separate; fixed4MiB/s consumer,100ms lateness is a fixture threshold, not actual player compatibility or an approved product SLO. No hardcap candidate run; no policy decision. No application limit changed. All labelled data volumes retained."
+  },
+  "focused_protocol_v2": {
+    "id": "g01-focused-legacy-before-v2",
+    "registered_utc": "2026-11-05T08:43:11.456869+00:00",
+    "status": "Baseline preparation only;not complete G01 matrix or product decision. V1 absent-directory free-space probe failed before any native case; fixed probe uses owned local volume. Source cleanup performance gate remains open.",
+    "source": "cr17a-drain-fix-v1-source;native Relay code identical to acceptedSource7",
+    "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+    "sampling": "Two unchangedC groups,5independent repeats each,peer delays2/50ms rotated within repeats.8native streams,global200/base10/legacyactive50,4MiBpieces,32MiB/file,4MiB/s paced consumer.Cold first piece separate;256verified native read observations/cell. No artificial native player/trust claim.",
+    "resources": "Client2CPU0,1/1GiB;private seed1CPU15/256MiB;new own labelled local Docker volume eachcase,reclaimable filecache.20cases bounded to5GiB synthetic payload;require>=16GiB VM free before starting. Volumes retained.",
+    "isolation": "Wait for both current cleanup long controls to end before disk-heavy baseline;no mandatory run shortened. Internal private network percase,no hostports/outbound/realtracker/credentials.",
+    "future_gate": "No hardcap candidate executed in this preparation. Full50/100/200 x10/20/50/80 x0/1/4/8 xpieces256KiB/1MiB/4MiB xRAM512MiB/1/2GiB remains required for a positiveG01 policy decision;focused data may only constrain later candidates.",
+    "fixture_hashes": {
+      "g01_paced_native_v1.py": "1620c169d653643bb290e7b0dd54b2c816e56137a06441d1840886ffdfad21e4",
+      "g01_seed_server_v1.py": "daa0dee2dd1e13788f2c1913093d5f6fda8f639a3743512c143094b1284f015a",
+      "g01-separated-seed-base-v1.py": "0f53af0b63c51322a807107388524cd1096f949f5c33c5e560791f24567b71f3"
+    }
+  },
+  "native_matrix_wiring_v4": {
+    "assessment": "g01-matrix-edge-wiring-assessment-v4.json",
+    "status": "Six native/Range edge wiring cases PASS; fullG01 OPEN",
+    "full_matrix_prepared_cases": 432,
+    "executed_edge_cases": 6,
+    "verified_paced_bytes": 738197504,
+    "warm_range_observations": 508,
+    "limit_policy_changed": false
+  }
+}

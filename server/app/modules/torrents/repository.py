@@ -1,11 +1,14 @@
 import datetime
 
-from sqlalchemy import func
+from sqlalchemy import and_, func, select
 from sqlalchemy.orm import Session
 
+from app.modules.indexer_accounts.models import IndexerAccountModel
+from app.modules.indexer_definitions.models import IndexerDefinitionModel
 from app.modules.playback_histories.models import PlaybackHistoryModel
+from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrents.models import TorrentModel
-from app.modules.torrents.schemas.internal import TorrentUpdate
+from app.modules.torrents.schemas.internal import TorrentListRecord, TorrentUpdate
 
 
 class TorrentRepository:
@@ -14,6 +17,30 @@ class TorrentRepository:
 
     def find(self) -> list[TorrentModel]:
         return self.db.query(TorrentModel).all()
+
+    def find_list_records(self) -> list[TorrentListRecord]:
+        statement = (
+            select(
+                TorrentModel.info_hash,
+                TorrentFileModel.info_hash,
+                TorrentModel.indexer_id,
+                TorrentModel.torrent_id,
+                TorrentModel.is_persisted,
+                TorrentModel.full_download,
+                TorrentModel.updated_at,
+                TorrentModel.created_at,
+                IndexerDefinitionModel.name,
+                IndexerDefinitionModel.url,
+                IndexerDefinitionModel.details_path,
+                IndexerDefinitionModel.requires_full_download,
+                IndexerDefinitionModel.supports_totp,
+            )
+            .select_from(TorrentModel)
+            .join(TorrentFileModel, and_(TorrentFileModel.indexer_id == TorrentModel.indexer_id, TorrentFileModel.torrent_id == TorrentModel.torrent_id))
+            .join(IndexerAccountModel, IndexerAccountModel.indexer_id == TorrentModel.indexer_id)
+            .join(IndexerDefinitionModel, IndexerDefinitionModel.id == IndexerAccountModel.indexer_id)
+        )
+        return [TorrentListRecord(*row) for row in self.db.execute(statement)]
 
     def find_by_id(self, indexer_id: str, torrent_id: str) -> TorrentModel | None:
         return (

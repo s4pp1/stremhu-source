@@ -1,0 +1,1227 @@
+{
+  "status": "Baseline collection COMPLETE10fullprofiles/160real5minute cells; G04 decision/candidate still OPEN",
+  "head": "d2f0d1e5446c26ca56cf611f91e9264aabf9e19b",
+  "scope": "Actual client route/row hooks, real QueryClient and synthetic intercepted trailing-slash torrent API, isolated production/profiling build; no app product change.",
+  "profile_image": "sha256:9a92ca614f3f89793af0ca05c944424d99d34b06a8b8cc6ef4d31ba2493e4e9b",
+  "browser_image": "sha256:948e3846c8caf6a61e29dffaa2f57b29e2373bbe06c3a79243ed53fb007ef644",
+  "fixture_files": {
+    "scripts/g04/entry.tsx": "1e42719193a6708acab95e92bb293c7f75fd4ce7a993e57307b9ba161cf8e5e8",
+    "scripts/g04/index.html": "1817f3fa9b723a7ba95aa120efbb878673c9b7aeb27c8e8118b98d1d0ac289b6",
+    "scripts/g04/probe.cjs": "2af58fb2315fb139ce0adb8b8f2e912752dadf0f628947328b9e43558c0ab90e",
+    "scripts/g04/server.cjs": "794b99d369f6f1dae941a0c1105c8028209304e8a86f075be00ee0cdf8b6d7bd",
+    "scripts/g04/vite.config.ts": "d04dbe73f15ab08decff31928d898b659bc0f078184adad8e50e0b8225cd1909"
+  },
+  "smoke": {
+    "fixture": "g04-fixture-smoke-not-measurement-v2",
+    "is_measurement": false,
+    "browser": "156.0.8078.80",
+    "heapMode": false,
+    "rows": [
+      {
+        "count": 20,
+        "pattern": "one",
+        "requests": 20,
+        "navigations": 0,
+        "elapsed_ms": 30019.318008000002,
+        "routeRenders": 22,
+        "rowRenders": {
+          "0000000000000000000000000000000000000001": 20,
+          "0000000000000000000000000000000000000002": 20,
+          "0000000000000000000000000000000000000003": 20,
+          "0000000000000000000000000000000000000004": 20,
+          "0000000000000000000000000000000000000005": 20,
+          "0000000000000000000000000000000000000006": 20,
+          "0000000000000000000000000000000000000007": 20,
+          "0000000000000000000000000000000000000008": 20,
+          "0000000000000000000000000000000000000009": 20,
+          "000000000000000000000000000000000000000a": 20,
+          "000000000000000000000000000000000000000b": 20,
+          "000000000000000000000000000000000000000c": 20,
+          "000000000000000000000000000000000000000d": 20,
+          "000000000000000000000000000000000000000e": 20,
+          "000000000000000000000000000000000000000f": 20,
+          "0000000000000000000000000000000000000010": 20,
+          "0000000000000000000000000000000000000011": 20,
+          "0000000000000000000000000000000000000012": 20,
+          "0000000000000000000000000000000000000013": 20,
+          "0000000000000000000000000000000000000014": 20
+        },
+        "commits": [
+          {
+            "phase": "mount",
+            "actualDuration": 4.599999999860302,
+            "commitTime": 76.19999999995343
+          },
+          {
+            "phase": "update",
+            "actualDuration": 22.100000000558794,
+            "commitTime": 376.80000000004657
+          },
+          {
+            "phase": "update",
+            "actualDuration": 1.099999999627471,
+            "commitTime": 382.69999999995343
+          },
+          {
+            "phase": "update",
+            "actualDuration": 6.699999999953434,
+            "commitTime": 1891.6999999999534
+          },
+          {
+            "phase": "update",
+            "actualDuration": 6.5,
+            "commitTime": 3395.100000000093
+          },
+          {
+            "phase": "update",
+            "actualDuration": 7.600000000325963,
+            "commitTime": 4899.300000000047
+          },
+          {
+            "phase": "update",
+            "actualDuration": 2.7000000001862645,
+            "commitTime": 6400
+          },
+          {
+            "phase": "update",
+            "actualDuration": 3.1000000000931323,
+            "commitTime": 7903.5
+          },
+          {
+            "phase": "update",
+            "actualDuration": 3.0999999998603016,
+            "commitTime": 9407.199999999953
+          },
+          {
+            "phase": "update",
+            "actualDuration": 4.000000000232831,
+            "commitTime": 10911.100000000093
+          },
+          {
+            "phase": "update",
+            "actualDuration": 2.4999999995343387,
+            "commitTime": 12413.800000000047
+          },
+          {
+            "phase": "update",
+            "actualDuration": 2.8999999999068677,
+            "commitTime": 13916.600000000093
+          },
+          {
+            "phase": "update",
+            "actualDuration": 2.599999999627471,
+            "commitTime": 15419.600000000093
+          },
+          {
+            "phase": "update",
+            "actualDuration": 3.0000000002328306,
+            "commitTime": 16923.399999999907
+          },
+          {
+            "phase": "update",
+            "actualDuration": 4.899999999906868,
+            "commitTime": 18428.5
+          },
+          {
+            "phase": "update",
+            "actualDuration": 3.800000000046566,
+            "commitTime": 19931.899999999907
+          },
+          {
+            "phase": "update",
+            "actualDuration": 3.3999999999068677,
+            "commitTime": 21433.300000000047
+          },
+          {
+            "phase": "update",
+            "actualDuration": 4.199999999953434,
+            "commitTime": 22936.199999999953
+          },
+          {
+            "phase": "update",
+            "actualDuration": 3.0000000002328306,
+            "commitTime": 24438.600000000093
+          },
+          {
+            "phase": "update",
+            "actualDuration": 5.599999999860302,
+            "commitTime": 25943.899999999907
+          },
+          {
+            "phase": "update",
+            "actualDuration": 3.300000000046566,
+            "commitTime": 27444.800000000047
+          },
+          {
+            "phase": "update",
+            "actualDuration": 2.3999999999068677,
+            "commitTime": 28948.199999999953
+          }
+        ],
+        "heap": [],
+        "errors": []
+      }
+    ]
+  },
+  "smoke_is_not_a_measurement": true,
+  "resource_isolation": "Only task-owned Docker --internal network, no host published ports, browser2CPU affinity12,13/2GiB and static server1CPU affinity14/512MiB. Network and server removed after probe.",
+  "retention_controls": "Profiler commit samples transferred outside measured browser heap before each GC sample; bounded row-counter identities are instrumentation. Heap profile lasts30min+15s and includes50 navigations plus real10min gcTime wait. No leak claim.",
+  "historical_fixture_failures": [
+    "BuildKit interpreted a raw sha256 image ID as a registry name; retried with verified local tag and pull=false.",
+    "First API intercept glob missed the actual trailing slash; query existed but errored. Fixed URL predicate and readiness now requires query success. Raw failures retained, excluded from measurements."
+  ],
+  "open": [
+    "Two unchanged C full5min/cell baseline profiles at0/20/100/500 andstable/one/all/stalled",
+    "Full30min+15s heap/50 navigation/GC traces and retainer analysis as needed",
+    "Relevant ABC and gate decision before any observer/memo optimization"
+  ],
+  "baseline_preparation": {
+    "state": "RUNNING, no completed gate inferred",
+    "protocol": {
+      "id": "g04-unmodified-production-profile-baseline-v1",
+      "status": "BASELINE PREPARATION, not a G04 optimization decision",
+      "head": "d2f0d1e5446c26ca56cf611f91e9264aabf9e19b",
+      "client_source": "Fixed isolated profiling image built from current client, no route/query/row optimization; actual production/profiling React entry with test counters",
+      "profile_image": "sha256:9a92ca614f3f89793af0ca05c944424d99d34b06a8b8cc6ef4d31ba2493e4e9b",
+      "browser_image": "sha256:948e3846c8caf6a61e29dffaa2f57b29e2373bbe06c3a79243ed53fb007ef644",
+      "fixture_hashes": {
+        "probe.cjs": "01f38b92ceb1a926e8c8d984b950c156bc3b97bb60ce1d4dea30b1939ddc5860",
+        "server.cjs": "794b99d369f6f1dae941a0c1105c8028209304e8a86f075be00ee0cdf8b6d7bd"
+      },
+      "sampling": "Two unchanged C groups, each5 independent repeats of the full16-cell profile. Each0/20/100/500 xstable/one/all/stalled cell lasts300real seconds after3 successful adaptive polls; no warmup/cold sample mixed into measured counters. Two distinct1815second heap series include50 real navigations and actual10min gcTime after final unmount. No shortening/virtual clock.",
+      "order": "a0,b0,heap-a,heap-b,a1,b1,a2,b2,a3,b3,a4,b4 sequential, fresh browser per run/context per cell. Total at least861minutes before warmup/overhead; controller persists independently of an interaction turn.",
+      "resource": "Local Docker Desktop internal task-owned network, no host ports; browser2CPU affinity12,13/2GiB, static server1CPU affinity14/512MiB; read-only image/source, task-labelled disposable output volume for heap snapshots; synthetic fixed API only.",
+      "metrics": "Cold loading/profiler separate; measured API arrival count/times, route and per-row render count, React actualDuration and commit count; per-cell cgroup CPU/anon/file/current/peak. HeapCDP samples afterGC, final query count and retained snapshot; profiler history removed from measured browser heap everyminute.",
+      "noise": "After five independent repeats per unchanged group, J=max(abs(group medians),counter resolution), full baseline ranges retained. Candidate only if measured observer/render cost justifies it; future acceptance needs beyond-J target benefit, unchanged freshness/background1.5/5second policy and payload, no new error, common side-effect gates.",
+      "limits": "No product frontend code change. ABC client profiles require comparable builds; image/runtime/backend list costs are not React optimization evidence. Two long heap runs cannot be replaced by a30second wiring smoke."
+    },
+    "controller_log": "g04-baseline-controller-v1.stdout"
+  },
+  "warmup_window_smoke_v4": {
+    "fixture": "g04-fixture-smoke-not-measurement-v3",
+    "is_measurement": false,
+    "browser": "156.0.8078.80",
+    "heapMode": false,
+    "rows": [
+      {
+        "count": 20,
+        "pattern": "one",
+        "requests": 19,
+        "cold": {
+          "wall_ms": 108.25644999999997,
+          "requests": 1,
+          "routeRenders": 3,
+          "rowRenders": {
+            "0000000000000000000000000000000000000001": 1,
+            "0000000000000000000000000000000000000002": 1,
+            "0000000000000000000000000000000000000003": 1,
+            "0000000000000000000000000000000000000004": 1,
+            "0000000000000000000000000000000000000005": 1,
+            "0000000000000000000000000000000000000006": 1,
+            "0000000000000000000000000000000000000007": 1,
+            "0000000000000000000000000000000000000008": 1,
+            "0000000000000000000000000000000000000009": 1,
+            "000000000000000000000000000000000000000a": 1
+          },
+          "commits": [
+            {
+              "phase": "mount",
+              "actualDuration": 5.600000000093132,
+              "commitTime": 80.5
+            }
+          ]
+        },
+        "warmupRequests": 3,
+        "request_times_ms": [
+          1472.0288110000001,
+          2975.665924,
+          4479.228424,
+          5983.230866000001,
+          7486.634051,
+          8989.846383,
+          10492.911173,
+          11996.045239,
+          13499.260406999998,
+          15002.629185999998,
+          16505.858744999998,
+          18009.325588,
+          19512.372463,
+          21015.842886,
+          22518.663051,
+          24021.693089,
+          25525.176402999998,
+          27028.460535,
+          28532.469042
+        ],
+        "navigations": 0,
+        "elapsed_ms": 30022.654698,
+        "routeRenders": 19,
+        "rowRenders": {
+          "0000000000000000000000000000000000000001": 19,
+          "0000000000000000000000000000000000000002": 19,
+          "0000000000000000000000000000000000000003": 19,
+          "0000000000000000000000000000000000000004": 19,
+          "0000000000000000000000000000000000000005": 19,
+          "0000000000000000000000000000000000000006": 19,
+          "0000000000000000000000000000000000000007": 19,
+          "0000000000000000000000000000000000000008": 19,
+          "0000000000000000000000000000000000000009": 19,
+          "000000000000000000000000000000000000000a": 19,
+          "000000000000000000000000000000000000000b": 19,
+          "000000000000000000000000000000000000000c": 19,
+          "000000000000000000000000000000000000000d": 19,
+          "000000000000000000000000000000000000000e": 19,
+          "000000000000000000000000000000000000000f": 19,
+          "0000000000000000000000000000000000000010": 19,
+          "0000000000000000000000000000000000000011": 19,
+          "0000000000000000000000000000000000000012": 19,
+          "0000000000000000000000000000000000000013": 19,
+          "0000000000000000000000000000000000000014": 19
+        },
+        "commits": [
+          {
+            "phase": "update",
+            "actualDuration": 5.2999999998137355,
+            "commitTime": 4901.700000000186
+          },
+          {
+            "phase": "update",
+            "actualDuration": 3.1000000005587935,
+            "commitTime": 6402.300000000279
+          },
+          {
+            "phase": "update",
+            "actualDuration": 2.8999999994412065,
+            "commitTime": 7906.600000000093
+          },
+          {
+            "phase": "update",
+            "actualDuration": 3.200000000651926,
+            "commitTime": 9412
+          },
+          {
+            "phase": "update",
+            "actualDuration": 3.5,
+            "commitTime": 10913.30000000028
+          },
+          {
+            "phase": "update",
+            "actualDuration": 2.900000000372529,
+            "commitTime": 12416.80000000028
+          },
+          {
+            "phase": "update",
+            "actualDuration": 2.6999999997206032,
+            "commitTime": 13919
+          },
+          {
+            "phase": "update",
+            "actualDuration": 5.099999999627471,
+            "commitTime": 15424.5
+          },
+          {
+            "phase": "update",
+            "actualDuration": 2.6999999997206032,
+            "commitTime": 16925.80000000028
+          },
+          {
+            "phase": "update",
+            "actualDuration": 4.900000000372529,
+            "commitTime": 18432.700000000186
+          },
+          {
+            "phase": "update",
+            "actualDuration": 3.8999999994412065,
+            "commitTime": 19933.399999999907
+          },
+          {
+            "phase": "update",
+            "actualDuration": 2.800000000745058,
+            "commitTime": 21435.80000000028
+          },
+          {
+            "phase": "update",
+            "actualDuration": 3.3999999999068677,
+            "commitTime": 22939.5
+          },
+          {
+            "phase": "update",
+            "actualDuration": 3.6000000000931323,
+            "commitTime": 24442.700000000186
+          },
+          {
+            "phase": "update",
+            "actualDuration": 5.899999999906868,
+            "commitTime": 25947.899999999907
+          },
+          {
+            "phase": "update",
+            "actualDuration": 2.5,
+            "commitTime": 27447.700000000186
+          },
+          {
+            "phase": "update",
+            "actualDuration": 2.7999999998137355,
+            "commitTime": 28951.700000000186
+          },
+          {
+            "phase": "update",
+            "actualDuration": 5.7999999998137355,
+            "commitTime": 30457.899999999907
+          },
+          {
+            "phase": "update",
+            "actualDuration": 3.8000000002793968,
+            "commitTime": 31960.399999999907
+          }
+        ],
+        "heap": [],
+        "errors": []
+      }
+    ]
+  },
+  "profile_runtime_versions": {
+    "node": "v24.22.2",
+    "react": "19.3.0",
+    "reactDom": "19.3.0",
+    "reactQuery": "5.104.2",
+    "router": "1.170.44",
+    "vite": "8.3.4"
+  },
+  "first_full_profile": {
+    "is_measurement": true,
+    "rows": [
+      {
+        "count": 0,
+        "pattern": "stable",
+        "requests": 60,
+        "elapsed_ms": 300263.87910200004,
+        "routeRenders": 0,
+        "errors": [],
+        "commits": 0,
+        "total_row_renders": 0,
+        "commit_actual_duration_p95_ms": null
+      },
+      {
+        "count": 0,
+        "pattern": "one",
+        "requests": 60,
+        "elapsed_ms": 300269.869174,
+        "routeRenders": 0,
+        "errors": [],
+        "commits": 0,
+        "total_row_renders": 0,
+        "commit_actual_duration_p95_ms": null
+      },
+      {
+        "count": 0,
+        "pattern": "all",
+        "requests": 60,
+        "elapsed_ms": 300258.45117300004,
+        "routeRenders": 0,
+        "errors": [],
+        "commits": 0,
+        "total_row_renders": 0,
+        "commit_actual_duration_p95_ms": null
+      },
+      {
+        "count": 0,
+        "pattern": "stalled",
+        "requests": 60,
+        "elapsed_ms": 300269.4259899999,
+        "routeRenders": 0,
+        "errors": [],
+        "commits": 0,
+        "total_row_renders": 0,
+        "commit_actual_duration_p95_ms": null
+      },
+      {
+        "count": 20,
+        "pattern": "stable",
+        "requests": 60,
+        "elapsed_ms": 300271.04394899984,
+        "routeRenders": 0,
+        "errors": [],
+        "commits": 0,
+        "total_row_renders": 0,
+        "commit_actual_duration_p95_ms": null
+      },
+      {
+        "count": 20,
+        "pattern": "one",
+        "requests": 199,
+        "elapsed_ms": 300229.4691309999,
+        "routeRenders": 199,
+        "errors": [],
+        "commits": 199,
+        "total_row_renders": 3980,
+        "commit_actual_duration_p95_ms": 4
+      },
+      {
+        "count": 20,
+        "pattern": "all",
+        "requests": 199,
+        "elapsed_ms": 300223.49329699995,
+        "routeRenders": 199,
+        "errors": [],
+        "commits": 199,
+        "total_row_renders": 3980,
+        "commit_actual_duration_p95_ms": 4.2000000001862645
+      },
+      {
+        "count": 20,
+        "pattern": "stalled",
+        "requests": 199,
+        "elapsed_ms": 300235.76927900035,
+        "routeRenders": 0,
+        "errors": [],
+        "commits": 0,
+        "total_row_renders": 0,
+        "commit_actual_duration_p95_ms": null
+      },
+      {
+        "count": 100,
+        "pattern": "stable",
+        "requests": 60,
+        "elapsed_ms": 300267.0676719998,
+        "routeRenders": 0,
+        "errors": [],
+        "commits": 0,
+        "total_row_renders": 0,
+        "commit_actual_duration_p95_ms": null
+      },
+      {
+        "count": 100,
+        "pattern": "one",
+        "requests": 199,
+        "elapsed_ms": 300222.7344109998,
+        "routeRenders": 199,
+        "errors": [],
+        "commits": 199,
+        "total_row_renders": 19900,
+        "commit_actual_duration_p95_ms": 13.299999999813735
+      },
+      {
+        "count": 100,
+        "pattern": "all",
+        "requests": 199,
+        "elapsed_ms": 300225.0221079998,
+        "routeRenders": 199,
+        "errors": [],
+        "commits": 199,
+        "total_row_renders": 19900,
+        "commit_actual_duration_p95_ms": 12.900000000372529
+      },
+      {
+        "count": 100,
+        "pattern": "stalled",
+        "requests": 199,
+        "elapsed_ms": 300220.0279069999,
+        "routeRenders": 0,
+        "errors": [],
+        "commits": 0,
+        "total_row_renders": 0,
+        "commit_actual_duration_p95_ms": null
+      },
+      {
+        "count": 500,
+        "pattern": "stable",
+        "requests": 59,
+        "elapsed_ms": 300318.0957249999,
+        "routeRenders": 0,
+        "errors": [],
+        "commits": 0,
+        "total_row_renders": 0,
+        "commit_actual_duration_p95_ms": null
+      },
+      {
+        "count": 500,
+        "pattern": "one",
+        "requests": 199,
+        "elapsed_ms": 300242.2068360001,
+        "routeRenders": 199,
+        "errors": [],
+        "commits": 199,
+        "total_row_renders": 99500,
+        "commit_actual_duration_p95_ms": 56.30000000167638
+      },
+      {
+        "count": 500,
+        "pattern": "all",
+        "requests": 199,
+        "elapsed_ms": 300225.505535,
+        "routeRenders": 199,
+        "errors": [],
+        "commits": 199,
+        "total_row_renders": 99500,
+        "commit_actual_duration_p95_ms": 56.10000000242144
+      },
+      {
+        "count": 500,
+        "pattern": "stalled",
+        "requests": 199,
+        "elapsed_ms": 300226.86510200053,
+        "routeRenders": 0,
+        "errors": [],
+        "commits": 0,
+        "total_row_renders": 0,
+        "commit_actual_duration_p95_ms": null
+      }
+    ],
+    "raw_file": "g04-before-a-0-v1.json",
+    "raw_sha256": "9f80a47a6490e9c41ad4f3c0bea47aa9ab393dfe5a3fc818411422d4336d2d2f",
+    "note": "Only first of ten full unchanged profiles. No noise-qualified optimization or heap decision yet."
+  },
+  "completed_long_heap_baselines": {
+    "a": {
+      "raw_sha256": "30d768926d59feb8345eb33423da521446f45f05d60eb744c872c8ec7196c494",
+      "elapsed_seconds": 1815.5543619339999,
+      "navigations": 50,
+      "errors": [],
+      "final_heap": {
+        "elapsed_ms": 1815243.799988,
+        "usedSize": 5079788,
+        "totalSize": 5574656,
+        "embedderHeapUsedSize": 1344456,
+        "backingStorageSize": 616265,
+        "queries": 0
+      },
+      "snapshot_sha256": "4f004c524b03b419bdce9975eed516f607503e2e94785d9890c5634d68604779"
+    },
+    "b": {
+      "raw_sha256": "54f65e9df6ed85f10dd2caf87ef852592c4dfb4b16a7376d9573aa1ac7ab76f6",
+      "elapsed_seconds": 1815.719251974,
+      "navigations": 50,
+      "errors": [],
+      "final_heap": {
+        "elapsed_ms": 1815437.744928,
+        "usedSize": 5085616,
+        "totalSize": 5836800,
+        "embedderHeapUsedSize": 1345544,
+        "backingStorageSize": 616265,
+        "queries": 0
+      },
+      "snapshot_sha256": "9c300f94cf1ad1ecbe9a2f391739985e4d10f8ade613e12d29e6483e0babfac4"
+    }
+  },
+  "full_dom_cold_supplement": {
+    "protocol": {
+      "id": "g04-full-dom-cold-addon-v1",
+      "status": "BASELINE PREPARATION, not a G04 optimization decision",
+      "head": "d2f0d1e5446c26ca56cf611f91e9264aabf9e19b",
+      "client_source": "Fixed isolated profiling image built from current client, no route/query/row optimization; actual production/profiling React entry with test counters",
+      "profile_image": "sha256:9a92ca614f3f89793af0ca05c944424d99d34b06a8b8cc6ef4d31ba2493e4e9b",
+      "browser_image": "sha256:948e3846c8caf6a61e29dffaa2f57b29e2373bbe06c3a79243ed53fb007ef644",
+      "fixture_hashes": {
+        "probe.cjs": "01f38b92ceb1a926e8c8d984b950c156bc3b97bb60ce1d4dea30b1939ddc5860",
+        "server.cjs": "794b99d369f6f1dae941a0c1105c8028209304e8a86f075be00ee0cdf8b6d7bd"
+      },
+      "sampling": "Two5-run unchangedC groups;16cold cells/run;fresh Chromium process/context eachcell. No replacement of mandatory long profiles.",
+      "order": "a0,b0,heap-a,heap-b,a1,b1,a2,b2,a3,b3,a4,b4 sequential, fresh browser per run/context per cell. Total at least861minutes before warmup/overhead; controller persists independently of an interaction turn.",
+      "resource": "Browser2CPU10,11/2GiB; existing isolated staticserverCPU14, separate from fullprofilebrowserCPU12,13",
+      "metrics": "Cold loading/profiler separate; measured API arrival count/times, route and per-row render count, React actualDuration and commit count; per-cell cgroup CPU/anon/file/current/peak. HeapCDP samples afterGC, final query count and retained snapshot; profiler history removed from measured browser heap everyminute.",
+      "noise": "After five independent repeats per unchanged group, J=max(abs(group medians),counter resolution), full baseline ranges retained. Candidate only if measured observer/render cost justifies it; future acceptance needs beyond-J target benefit, unchanged freshness/background1.5/5second policy and payload, no new error, common side-effect gates.",
+      "limits": "No product frontend code change. ABC client profiles require comparable builds; image/runtime/backend list costs are not React optimization evidence. Two long heap runs cannot be replaced by a30second wiring smoke.",
+      "registered_utc": "2026-11-04T17:47:24.332349+00:00",
+      "reason": "Original cold stops at QueryClient success, which can precede full React/DOM commit. Keep those results with narrower meaning; independently measure complete initial DOM before frontend changes.",
+      "fixture_sha256": "f4d61b9b2c37b9fd5d3abf68941768cacf0f996bc2b915d5740809648d0216a8"
+    },
+    "groups": {
+      "a": [
+        {
+          "count": 0,
+          "pattern": "stable",
+          "query_ready_median_ms": 92.527601,
+          "full_dom_ready_median_ms": 405.37490199999996,
+          "full_dom_ready_range_ms": [
+            399.71579799999995,
+            415.95678599999997
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 0,
+          "pattern": "one",
+          "query_ready_median_ms": 86.99841099999992,
+          "full_dom_ready_median_ms": 407.231411,
+          "full_dom_ready_range_ms": [
+            396.0714710000001,
+            409.96199
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 0,
+          "pattern": "all",
+          "query_ready_median_ms": 86.28071799999998,
+          "full_dom_ready_median_ms": 404.21656199999984,
+          "full_dom_ready_range_ms": [
+            392.5449430000001,
+            420.21963700000015
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 0,
+          "pattern": "stalled",
+          "query_ready_median_ms": 85.01474599999983,
+          "full_dom_ready_median_ms": 399.69769899999983,
+          "full_dom_ready_range_ms": [
+            392.348888,
+            403.4048610000002
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 20,
+          "pattern": "stable",
+          "query_ready_median_ms": 92.78595800000039,
+          "full_dom_ready_median_ms": 405.6202189999999,
+          "full_dom_ready_range_ms": [
+            394.71314600000005,
+            433.34483899999987
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 20,
+          "pattern": "one",
+          "query_ready_median_ms": 88.43760999999995,
+          "full_dom_ready_median_ms": 411.2408809999997,
+          "full_dom_ready_range_ms": [
+            396.524179,
+            418.4724719999999
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 20,
+          "pattern": "all",
+          "query_ready_median_ms": 90.59666399999969,
+          "full_dom_ready_median_ms": 409.6190689999994,
+          "full_dom_ready_range_ms": [
+            392.6493309999996,
+            419.48070000000007
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 20,
+          "pattern": "stalled",
+          "query_ready_median_ms": 95.46380500000032,
+          "full_dom_ready_median_ms": 407.70413800000006,
+          "full_dom_ready_range_ms": [
+            391.06111899999996,
+            424.37220199999956
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 100,
+          "pattern": "stable",
+          "query_ready_median_ms": 93.15543200000047,
+          "full_dom_ready_median_ms": 451.30369900000005,
+          "full_dom_ready_range_ms": [
+            443.5206449999996,
+            459.2417139999998
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 100,
+          "pattern": "one",
+          "query_ready_median_ms": 90.20367499999975,
+          "full_dom_ready_median_ms": 453.5367669999996,
+          "full_dom_ready_range_ms": [
+            439.08269500000006,
+            461.58276599999954
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 100,
+          "pattern": "all",
+          "query_ready_median_ms": 90.21858200000042,
+          "full_dom_ready_median_ms": 454.150173,
+          "full_dom_ready_range_ms": [
+            446.9087209999998,
+            457.2484119999999
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 100,
+          "pattern": "stalled",
+          "query_ready_median_ms": 90.25337899999977,
+          "full_dom_ready_median_ms": 442.34087700000055,
+          "full_dom_ready_range_ms": [
+            438.3613299999997,
+            449.66075
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 500,
+          "pattern": "stable",
+          "query_ready_median_ms": 89.87730900000042,
+          "full_dom_ready_median_ms": 593.270775,
+          "full_dom_ready_range_ms": [
+            579.705849,
+            645.8291300000001
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 500,
+          "pattern": "one",
+          "query_ready_median_ms": 89.84011700000065,
+          "full_dom_ready_median_ms": 596.2029850000008,
+          "full_dom_ready_range_ms": [
+            587.8255059999992,
+            611.2752019999998
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 500,
+          "pattern": "all",
+          "query_ready_median_ms": 91.4368710000017,
+          "full_dom_ready_median_ms": 601.8281230000011,
+          "full_dom_ready_range_ms": [
+            564.3898069999996,
+            605.0363619999989
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 500,
+          "pattern": "stalled",
+          "query_ready_median_ms": 92.51969400000053,
+          "full_dom_ready_median_ms": 612.9246610000009,
+          "full_dom_ready_range_ms": [
+            580.1041880000012,
+            647.1408089999986
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "b": [
+        {
+          "count": 0,
+          "pattern": "stable",
+          "query_ready_median_ms": 90.477307,
+          "full_dom_ready_median_ms": 403.41270599999996,
+          "full_dom_ready_range_ms": [
+            399.21041,
+            411.86357799999996
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 0,
+          "pattern": "one",
+          "query_ready_median_ms": 87.09910599999989,
+          "full_dom_ready_median_ms": 403.724245,
+          "full_dom_ready_range_ms": [
+            398.8198739999999,
+            411.008109
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 0,
+          "pattern": "all",
+          "query_ready_median_ms": 85.70949900000005,
+          "full_dom_ready_median_ms": 399.05302299999994,
+          "full_dom_ready_range_ms": [
+            389.9129479999999,
+            409.07715099999996
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 0,
+          "pattern": "stalled",
+          "query_ready_median_ms": 86.07609799999977,
+          "full_dom_ready_median_ms": 398.7541000000001,
+          "full_dom_ready_range_ms": [
+            384.8536580000002,
+            404.9110539999999
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 20,
+          "pattern": "stable",
+          "query_ready_median_ms": 91.32674300000008,
+          "full_dom_ready_median_ms": 407.638101,
+          "full_dom_ready_range_ms": [
+            406.10789799999975,
+            418.4904770000003
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 20,
+          "pattern": "one",
+          "query_ready_median_ms": 91.72156499999983,
+          "full_dom_ready_median_ms": 404.45343600000024,
+          "full_dom_ready_range_ms": [
+            394.13506199999983,
+            408.7579639999999
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 20,
+          "pattern": "all",
+          "query_ready_median_ms": 90.69302400000015,
+          "full_dom_ready_median_ms": 397.7220949999996,
+          "full_dom_ready_range_ms": [
+            393.72115299999996,
+            409.3672999999999
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 20,
+          "pattern": "stalled",
+          "query_ready_median_ms": 89.72839699999986,
+          "full_dom_ready_median_ms": 402.8372239999999,
+          "full_dom_ready_range_ms": [
+            396.8552729999992,
+            425.3028799999993
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 100,
+          "pattern": "stable",
+          "query_ready_median_ms": 95.24432999999954,
+          "full_dom_ready_median_ms": 446.2687420000002,
+          "full_dom_ready_range_ms": [
+            438.6213290000005,
+            457.01267000000007
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 100,
+          "pattern": "one",
+          "query_ready_median_ms": 89.31420500000058,
+          "full_dom_ready_median_ms": 446.4691439999997,
+          "full_dom_ready_range_ms": [
+            440.71318000000065,
+            452.76470599999993
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 100,
+          "pattern": "all",
+          "query_ready_median_ms": 89.18403899999976,
+          "full_dom_ready_median_ms": 438.6976829999994,
+          "full_dom_ready_range_ms": [
+            433.5834559999994,
+            453.7109929999997
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 100,
+          "pattern": "stalled",
+          "query_ready_median_ms": 89.54014800000004,
+          "full_dom_ready_median_ms": 446.8496359999999,
+          "full_dom_ready_range_ms": [
+            438.8969559999996,
+            451.6009720000002
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 500,
+          "pattern": "stable",
+          "query_ready_median_ms": 90.01845099999991,
+          "full_dom_ready_median_ms": 589.4330490000002,
+          "full_dom_ready_range_ms": [
+            572.6013849999999,
+            605.1786729999994
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 500,
+          "pattern": "one",
+          "query_ready_median_ms": 90.62539800000013,
+          "full_dom_ready_median_ms": 607.4982820000005,
+          "full_dom_ready_range_ms": [
+            586.3687479999999,
+            609.7270790000002
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 500,
+          "pattern": "all",
+          "query_ready_median_ms": 90.55081900000005,
+          "full_dom_ready_median_ms": 599.009125999999,
+          "full_dom_ready_range_ms": [
+            593.7461220000005,
+            609.7767839999997
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "count": 500,
+          "pattern": "stalled",
+          "query_ready_median_ms": 90.84455800000069,
+          "full_dom_ready_median_ms": 607.7930390000001,
+          "full_dom_ready_range_ms": [
+            586.4136629999994,
+            632.1782760000006
+          ],
+          "requests": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    "completed_runs": 10,
+    "completed_cells": 160,
+    "reason": "Original cold waits for QueryClient success, preceding complete DOM. Those data remain first-query-ready observations; supplemental fresh Chromium cold measurement waits for all rows DOM and two frames. Warm/heap baseline protocols unchanged.",
+    "raw_sha256": {
+      "g04-cold-before-a-0-v1.json": "ed3bf01c69bd1fcd65d3ef82647a22e87276a89376328def8876ddce1dc839f7",
+      "g04-cold-before-a-1-v1.json": "3a08388e2644e3412e268d3a3f3d728f41550e0170410a04135e963355cccf93",
+      "g04-cold-before-a-2-v1.json": "a5a80c76b358a62b7fae011af83bce6ad5642e831230dde87e69bd7edb156221",
+      "g04-cold-before-a-3-v1.json": "986a7d39b51e48837012a2299663395c5e1dd2bdbd783e44962696ed6a4fd411",
+      "g04-cold-before-a-4-v1.json": "70ce85de662ec15453b1eebd84734d8b9fbcde4f3715f3a108d29c0628d34317",
+      "g04-cold-before-b-0-v1.json": "6ec3e293d055755ccf4ad4cb85daa1564ba5e7632a9ab48df3f7853726b238ff",
+      "g04-cold-before-b-1-v1.json": "bc3d0249de160f19b7421bf5c97b8d718fe0702aa9c9f0c82dbee58133bee87b",
+      "g04-cold-before-b-2-v1.json": "ca40fa0f4baa83c24c74519b6ad772b256c3f66d881b97f9bb10d4b6983d62c4",
+      "g04-cold-before-b-3-v1.json": "4593233da0951021ae51bef8bd73b17534020cc5305f8f90583995394f983185",
+      "g04-cold-before-b-4-v1.json": "d24cc77a012b2b105b48846070053be5bffc4a11ed2153d4c4f54c19bd7df747"
+    }
+  },
+  "remaining_gate": "G04 decision remains open until two full five-run16cell/300real second groups finish and are interpreted. No product frontend optimization; no memory-leak claim from counters. Native G06 trust is separate.",
+  "recovery": {
+    "id": "g04-baseline-recovery-v2",
+    "status": "BASELINE PREPARATION, not a G04 optimization decision",
+    "head": "d2f0d1e5446c26ca56cf611f91e9264aabf9e19b",
+    "client_source": "Fixed isolated profiling image built from current client, no route/query/row optimization; actual production/profiling React entry with test counters",
+    "profile_image": "sha256:9a92ca614f3f89793af0ca05c944424d99d34b06a8b8cc6ef4d31ba2493e4e9b",
+    "browser_image": "sha256:948e3846c8caf6a61e29dffaa2f57b29e2373bbe06c3a79243ed53fb007ef644",
+    "fixture_hashes": {
+      "probe.cjs": "01f38b92ceb1a926e8c8d984b950c156bc3b97bb60ce1d4dea30b1939ddc5860",
+      "server.cjs": "794b99d369f6f1dae941a0c1105c8028209304e8a86f075be00ee0cdf8b6d7bd"
+    },
+    "sampling": "Two unchanged C groups, each5 independent repeats of the full16-cell profile. Each0/20/100/500 xstable/one/all/stalled cell lasts300real seconds after3 successful adaptive polls; no warmup/cold sample mixed into measured counters. Two distinct1815second heap series include50 real navigations and actual10min gcTime after final unmount. No shortening/virtual clock.",
+    "order": "a0,b0,heap-a,heap-b,a1,b1,a2,b2,a3,b3,a4,b4 sequential, fresh browser per run/context per cell. Total at least861minutes before warmup/overhead; controller persists independently of an interaction turn.",
+    "resource": "Local Docker Desktop internal task-owned network, no host ports; browser2CPU affinity12,13/2GiB, static server1CPU affinity14/512MiB; read-only image/source, task-labelled disposable output volume for heap snapshots; synthetic fixed API only.",
+    "metrics": "Cold loading/profiler separate; measured API arrival count/times, route and per-row render count, React actualDuration and commit count; per-cell cgroup CPU/anon/file/current/peak. HeapCDP samples afterGC, final query count and retained snapshot; profiler history removed from measured browser heap everyminute.",
+    "noise": "After five independent repeats per unchanged group, J=max(abs(group medians),counter resolution), full baseline ranges retained. Candidate only if measured observer/render cost justifies it; future acceptance needs beyond-J target benefit, unchanged freshness/background1.5/5second policy and payload, no new error, common side-effect gates.",
+    "limits": "No product frontend code change. ABC client profiles require comparable builds; image/runtime/backend list costs are not React optimization evidence. Two long heap runs cannot be replaced by a30second wiring smoke.",
+    "registered_utc": "2026-11-05T08:41:35.504674+00:00",
+    "recovery": "Docker Desktop shutdown interrupted a3 after cell-start; no complete a3 JSON exists. Six full profiles and two full heaps retained. Rerun all16x300second cells for a3/b3/a4/b4 using identical frozen fixture/image/source/resources. Interrupted raw v1 retained, not a sample."
+  },
+  "completed_profiles_before_restart": 6,
+  "interrupted_profile": "a3-v1; no complete JSON, raw retained; all16x300second cells repeated as a3-v2",
+  "reference_preparation": {
+    "A_commit": "8c99c7d5e1bb849be28892b66650b8a120c723d4",
+    "A_commit_source": "Pinned upstream image org.opencontainers.image.revision verified against local Git",
+    "B_commit": "2615596f7cd181454dc5ae3e1ec9e4d215e3b154",
+    "A_checks": "Original source npm lint failed on four pre-existing unnecessary type assertions. No --fix, build or measurement followed; raw retained. Pinned lock equality succeeded.",
+    "B_checks": "Not started after A check failure. Reference profiling remains open; no assumed A/B result."
+  },
+  "complete_baseline_summary": "g04-complete-baseline-summary-v1.json",
+  "complete_baseline_scope": "All completed original6profiles and recovered4profiles included. Interrupted original a3 omitted as incomplete,raw retained. Two unchanged5-runC cohorts; no frontend source change. A profiling lint failed preexisting; plan permits C two versions decisive when ABC not comparable."
+}

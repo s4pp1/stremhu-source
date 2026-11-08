@@ -1,0 +1,42 @@
+{
+ "id": "cr15b-origin-v4",
+ "previous": "cr15b-origin-v1 PASS (87dfeba), -v2 PASS (f90e752) and -v3 PASS (CR15a v3 tree); rerun because the landing tree changed (CR15a v5 read path, 7c01689)",
+ "registered_at_utc": "2026-11-08T06:36:57.716203+00:00",
+ "status": "Final packet 26a functional gate (v4, landing tree); registered before any run.",
+ "change": "Persisted name/value cookies restored as Secure (https) domain cookies of the indexer host instead of domain-less jar entries.",
+ "before": "frozen aaa9ee5 server/app",
+ "after": "frozen wip/cr15-chain-v5 0b60f76 server/app (CR15a v5 7c01689 included)",
+ "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+ "fixture": "Unchanged G15 verified fixture-TLS origin probe/server (g15-tls-origins-v1), fresh ephemeral fixture CA; adapter url = https://tracker.fixture.invalid:8443.",
+ "fixture_sha256": {
+  "server.py": "a1987f9f2c58ed39763ec37d78f8f0673a45081e8493022e36aab6d71c2b90c1",
+  "probe.py": "49f8be0f23493297489c35c2594c6972eb74d1dac9a803b667adbe6c762cfbf4",
+  "metadata_sizes.py": "ae4df3ab93935cd8961f7efd36b5d8bd125c57d1a7d56d3858a9f0e5c896ed4c"
+ },
+ "certificate_sha256": "5b089e41f42fb4e25c6abadd685d32a9d395d01823aaf6bb23fd85c178e3ff73",
+ "controller_sha256": "f8197b31f292e1e5cf22750395f1e27dedbe8d045488ee53663fab5040fdf2b4",
+ "runs": [
+  [
+   "before",
+   0
+  ],
+  [
+   "after",
+   0
+  ],
+  [
+   "after",
+   1
+  ]
+ ],
+ "targets": [
+  "relative",
+  "same-origin",
+  "other-port",
+  "subdomain",
+  "other-host",
+  "downgrade"
+ ],
+ "decision": "PASS iff every run returns 18 verified rows with the valid 82073-byte body; before reproduces persisted = [1,1,1,1,1,1]; both after runs give persisted = [1,1,1,0,0,0] (own host any port over https only; sibling host, foreign host and HTTP downgrade without cookie); fresh-host and fresh-wide rows identical to before. Otherwise FAIL.",
+ "note": "subdomain target here is the sibling host cdn.fixture.invalid, not a subdomain of the indexer host; functional, not a performance gate."
+}

@@ -1,9 +1,51 @@
+---
+doc_id: "upstreammrdescription"
+title: "🚀 Feat: Átfogó Anime, TVDB/Kitsu/MAL, Felirat Streaming, Multi-Tracker Deduplikáció és Teljesítmény-Optimalizáció"
+kind: "historical-report"
+status: "historical-claims"
+audience: ["developer", "ai-agent"]
+tags: ["upstream", "pull-request", "benchmark", "anime", "subtitles"]
+source_commit: null
+baseline: null
+verification: "structure-only"
+structure_reviewed: "2026-11-03"
+related_docs: ["docs/feature/README.md", "docs/feature/implementation-progress.md"]
+source_paths: []
+---
+
 # 🚀 Feat: Átfogó Anime, TVDB/Kitsu/MAL, Felirat Streaming, Multi-Tracker Deduplikáció és Teljesítmény-Optimalizáció
 
+<!-- doc-nav:start -->
+**Navigáció:** [Dokumentáció](README.md) · [AI-index](AI-INDEX.md)
+
+> **Státusz:** Történeti PR-/mérési állítások. A tesztszámok, százalékok és válaszidők nem az aktuális HEAD-re újraigazolt eredmények.
+
+**Kapcsolódó:** [README.md](feature/README.md) · [implementation-progress.md](feature/implementation-progress.md)
+
+<details>
+<summary>Fejezetek / közvetlen ugrás</summary>
+
+- [📌 Összefoglaló (Summary)](#doc-osszefoglalo-summary)
+- [📋 Összehasonlító Képességmátrix](#doc-osszehasonlito-kepessegmatrix)
+- [🔍 Részletes Funkcióbemutatás és Működési Elv](#doc-reszletes-funkciobemutatas-es-mukodesi-elv)
+- [📊 A/B Teljesítménymérési Eredmények (Benchmark)](#doc-ab-teljesitmenymeresi-eredmenyek-benchmark)
+- [💾 Adatbázis Migrációk és Visszafelé Kompatibilitás](#doc-adatbazis-migraciok-es-visszafele-kompatibilitas)
+- [🧪 Minőségellenőrzés és Tesztek](#doc-minosegellenorzes-es-tesztek)
+- [📦 Érintett Fájlok Áttekintése (Diff Stat)](#doc-erintett-fajlok-attekintese-diff-stat)
+- [✅ Ellenőrző Lista a Review-hoz (Reviewer Checklist)](#doc-ellenorzo-lista-a-review-hoz-reviewer-checklist)
+
+</details>
+
+<!-- doc-nav:end -->
+
+<!-- doc-anchor:doc-osszefoglalo-summary -->
+<a id="doc-osszefoglalo-summary"></a>
 ## 📌 Összefoglaló (Summary)
 
 Ez a Pull Request egy átfogó, production-ready funkció- és teljesítménybővítést vezet be a **StremHU Source** szerverbe. A fejlesztések célja a hazai torrent indexerekből (`nCore`, `HunTorrent`, `Majomparádé`, `BitHUmen`, `iNSANE`) származó streaming élmény tökéletesítése Stremio, Nuvio és Kodi klienseken, miközben **100%-ban megőrzi a visszafelé kompatibilitást**, nem igényel külső fizetős API kulcsokat, a gazdag funkcióbővítés mellett is **megőrzi és felülmúlja az upstream hidegindítási sebességét (3.8s átlagos válaszidő)**, a meleg lekérdezéseket pedig **~360-szoros gyorsulással, 3.2 ms alatt** szolgálja ki.
 
+<!-- doc-anchor:doc-fobb-ujdonsagok-egy-pillantasra -->
+<a id="doc-fobb-ujdonsagok-egy-pillantasra"></a>
 ### 🌟 Főbb Újdonságok Egy Pillantásra
 - **Külső torrent feliratok streamingje és valós idejű WebVTT konverziója** (`.srt`, `.ass`, `.ssa`, `.vtt`) aktív lejátszás-követéssel (`active_playback.py`, 1 torrent = 1 seed védelem).
 - **Intelligens több-trackeres találati deduplikáció** (azonos kiadások összevonása, pontos seeder-összeadás, multi-tracker badge, Web UI kapcsoló).
@@ -17,6 +59,8 @@ Ez a Pull Request egy átfogó, production-ready funkció- és teljesítménybő
 
 ---
 
+<!-- doc-anchor:doc-osszehasonlito-kepessegmatrix -->
+<a id="doc-osszehasonlito-kepessegmatrix"></a>
 ## 📋 Összehasonlító Képességmátrix
 
 | Funkció / Képesség | Upstream `main` (`8c99c7d`) | Ez a PR |
@@ -35,12 +79,18 @@ Ez a Pull Request egy átfogó, production-ready funkció- és teljesítménybő
 
 ---
 
+<!-- doc-anchor:doc-reszletes-funkciobemutatas-es-mukodesi-elv -->
+<a id="doc-reszletes-funkciobemutatas-es-mukodesi-elv"></a>
 ## 🔍 Részletes Funkcióbemutatás és Működési Elv
 
+<!-- doc-anchor:doc-1-kulso-torrent-feliratok-kezelese-es-valos-ideju-webvtt-streaming -->
+<a id="doc-1-kulso-torrent-feliratok-kezelese-es-valos-ideju-webvtt-streaming"></a>
 ### 1. Külső Torrent Feliratok Kezelése és Valós Idejű WebVTT Streaming
 
 A hazai és nemzetközi kiadások jelentős része nem beágyazva, hanem külső fájlként (`.srt`, `.ass`, `.ssa`, `.vtt`) tárolja a feliratokat.
 
+<!-- doc-anchor:doc-mukodesi-folyamat -->
+<a id="doc-mukodesi-folyamat"></a>
 #### Működési folyamat:
 1. **Univerzális WebVTT Konverzió (`ass_to_vtt`)**:
    - Az `.ass` és `.ssa` feliratfájlokat a szerver valós időben, memóriában szabványos WebVTT formátumra konvertálja.
@@ -92,10 +142,14 @@ sequenceDiagram
 
 ---
 
+<!-- doc-anchor:doc-2-hideginditasi-teljesitmeny-optimalizacio-smart-anime-gating -->
+<a id="doc-2-hideginditasi-teljesitmeny-optimalizacio-smart-anime-gating"></a>
 ### 2. Hidegindítási Teljesítmény-Optimalizáció (Smart Anime Gating)
 
 Az upstream verzióban és a korai anime-integrációkban a nem-anime (hollywoodi) filmek és sorozatok lekérésekor a rendszer minden alkalommal szinkron külső HTTP kérésekkel bombázta a Kitsu API-t és a Cinemeta szervereket iker-azonosítók után kutatva. Ez +700 – +1600 ms felesleges külső hálózati késleltetést okozott.
 
+<!-- doc-anchor:doc-a-megvalositott-optimalizaciok -->
+<a id="doc-a-megvalositott-optimalizaciok"></a>
 #### A megvalósított optimalizációk:
 1. **Intelligens Anime-Kapu (`allow_dynamic_search=False`)**:
    - A nem-anime tartalmaknál a rendszer azonnal a statikus memóriabeli szótárat (`_IMDB_ALIASES`) ellenőrzi.
@@ -109,10 +163,14 @@ Az upstream verzióban és a korai anime-integrációkban a nem-anime (hollywood
 
 ---
 
+<!-- doc-anchor:doc-3-tobb-trackeres-talalati-deduplikacio-es-intelligens-osszevonas -->
+<a id="doc-3-tobb-trackeres-talalati-deduplikacio-es-intelligens-osszevonas"></a>
 ### 3. Több-Trackeres Találati Deduplikáció és Intelligens Összevonás
 
 Több beállított indexer (pl. nCore + HunTorrent + Majomparádé) esetén ugyanaz a kiadás korábban 3 különálló streamként jelent meg a felhasználó előtt, széttöredezett seederszámmal.
 
+<!-- doc-anchor:doc-megvalositas -->
+<a id="doc-megvalositas"></a>
 #### Megvalósítás:
 1. **Deduplikációs Kulcs**:
    - Két stream egyetlen találattá olvad össze, ha megegyezik a torrent swarm `info_hash` azonosítója, **VAGY** megegyezik a videófájl normalizált neve és pontos bájt-mérete.
@@ -129,6 +187,8 @@ Több beállított indexer (pl. nCore + HunTorrent + Majomparádé) esetén ugya
 
 ---
 
+<!-- doc-anchor:doc-4-kulcs-nelkuli-zero-config-multi-id-feloldorendszer-tvdbresolver -->
+<a id="doc-4-kulcs-nelkuli-zero-config-multi-id-feloldorendszer-tvdbresolver"></a>
 ### 4. Kulcs Nélküli (Zero-Config) Multi-ID Feloldórendszer (`TvdbResolver`)
 
 - **TheMovieDatabase (`tmdb:`)**:
@@ -141,6 +201,8 @@ Több beállított indexer (pl. nCore + HunTorrent + Majomparádé) esetén ugya
   - Kitsu és MAL anime azonosítók automatikus leképezése IMDb-re.
   - **Iker IMDb Alias Táblázat (`_IMDB_ALIASES`)**: Automatikus párhuzamos keresés a megosztott IMDb azonosítójú animéknél (*Dragon Ball Z*, *Naruto*, *Bleach*, *Sailor Moon*, *Fullmetal Alchemist*, *Death Note* stb.).
 
+<!-- doc-anchor:doc-41-metaadat-es-id-feloldasi-dontesi-fa-melyik-api-t-mikor-hivja -->
+<a id="doc-41-metaadat-es-id-feloldasi-dontesi-fa-melyik-api-t-mikor-hivja"></a>
 #### 4.1. Metaadat és ID Feloldási Döntési Fa (Melyik API-t mikor hívja?)
 
 ```mermaid
@@ -180,6 +242,8 @@ flowchart TD
     CheckStaticAlias -- "Nem (Normál tartalom)" --> ReturnImdb
 ```
 
+<!-- doc-anchor:doc-42-keresesi-es-smart-gating-dontesi-fa-hogyan-jut-el-a-listazasig -->
+<a id="doc-42-keresesi-es-smart-gating-dontesi-fa-hogyan-jut-el-a-listazasig"></a>
 #### 4.2. Keresési és Smart Gating Döntési Fa (Hogyan jut el a listázásig?)
 
 ```mermaid
@@ -226,6 +290,8 @@ flowchart TD
 
 ---
 
+<!-- doc-anchor:doc-5-valos-letoltottseg-es-lejatszasi-elmeny-stremio-nuvio-best-practice -->
+<a id="doc-5-valos-letoltottseg-es-lejatszasi-elmeny-stremio-nuvio-best-practice"></a>
 ### 5. Valós Letöltöttség és Lejátszási Élmény (Stremio / Nuvio Best Practice)
 
 - **Fájlszintű Tényleges Letöltöttség (`file_progress`)**:
@@ -243,6 +309,8 @@ flowchart TD
 
 ---
 
+<!-- doc-anchor:doc-ab-teljesitmenymeresi-eredmenyek-benchmark -->
+<a id="doc-ab-teljesitmenymeresi-eredmenyek-benchmark"></a>
 ## 📊 A/B Teljesítménymérési Eredmények (Benchmark)
 
 A mérések 100%-ban független, szekvenciális, tiszta kötet-törléses (cold start) környezetben készültek a helyi Docker Desktop tesztkörnyezetben (`scripts/benchmark_local.py`), összehasonlítva a hivatalos upstream **`s4pp1/stremhu-source:latest`** (`:7072`) verziót az új, optimalizált ággal (`:7070`):
@@ -256,6 +324,8 @@ xychart-beta
     bar [3835, 3]
 ```
 
+<!-- doc-anchor:doc-reszletes-meresi-matrix-10-kulonbozo-media-tipus -->
+<a id="doc-reszletes-meresi-matrix-10-kulonbozo-media-tipus"></a>
 ### Részletes Mérési Mátrix (10 Különböző Média Típus)
 
 | Média Cím és Típus | Upstream Cold | Ez a PR (Cold) | Upstream Meleg | Ez a PR (Meleg) | Találatok (Upstream vs PR)* | Feliratok (PR) |
@@ -279,6 +349,8 @@ xychart-beta
 > - Ebben a PR-ban ezek egyetlen tisztább találattá olvadnak össze, **összeadott seederszámmal** és multi-tracker badge-dzsel (`🧲 nCore, HunTorrent | 👥 670`).
 > - Amennyiben a felhasználó a Web UI-ban kikapcsolja az összefésülést (`enable_stream_deduplication = False`), a találatok száma megegyezik az upstreamével (illetve ritka animéknél az iker-IMDb feloldás révén még több is).
 
+<!-- doc-anchor:doc-eredmenyek-osszegzese -->
+<a id="doc-eredmenyek-osszegzese"></a>
 ### Eredmények Összegzése:
 - **Hidegindítás (Cold start):** A PR átlagosan **3 835 ms** alatt válaszol, amivel a jóval gazdagabb funkciókészlet (külső felirat streaming, TheTVDB, Kitsu, MAL leképezés, multi-tracker deduplikáció) mellett is **gyorsabb, mint a jelenlegi upstream main (3 892 ms)** a Smart Anime Gatingnek köszönhetően.
 - **Meleg kiszolgálás (Warm cache):** **~360-szoros gyorsulás (3.2 ms vs 1 148 ms)** a memóriabeli gyorsítótárnak köszönhetően.
@@ -286,6 +358,8 @@ xychart-beta
 
 ---
 
+<!-- doc-anchor:doc-adatbazis-migraciok-es-visszafele-kompatibilitas -->
+<a id="doc-adatbazis-migraciok-es-visszafele-kompatibilitas"></a>
 ## 💾 Adatbázis Migrációk és Visszafelé Kompatibilitás
 
 A módosítások **100%-ban visszafelé kompatibilisek**, nem törölnek és nem módosítanak létező oszlopokat vagy táblákat.
@@ -300,6 +374,8 @@ Mindkét migráció SQLite kompatibilis `batch_alter_table` kontextusban fut le,
 
 ---
 
+<!-- doc-anchor:doc-minosegellenorzes-es-tesztek -->
+<a id="doc-minosegellenorzes-es-tesztek"></a>
 ## 🧪 Minőségellenőrzés és Tesztek
 
 A PR teljes körűen tesztelt, linter- és típusellenőrzött:
@@ -316,6 +392,8 @@ A PR teljes körűen tesztelt, linter- és típusellenőrzött:
 
 ---
 
+<!-- doc-anchor:doc-erintett-fajlok-attekintese-diff-stat -->
+<a id="doc-erintett-fajlok-attekintese-diff-stat"></a>
 ## 📦 Érintett Fájlok Áttekintése (Diff Stat)
 
 ```text
@@ -340,6 +418,8 @@ A PR teljes körűen tesztelt, linter- és típusellenőrzött:
 
 ---
 
+<!-- doc-anchor:doc-ellenorzo-lista-a-review-hoz-reviewer-checklist -->
+<a id="doc-ellenorzo-lista-a-review-hoz-reviewer-checklist"></a>
 ## ✅ Ellenőrző Lista a Review-hoz (Reviewer Checklist)
 
 - [x] A kód nem tör meg semmilyen meglévő StremHU vagy Torznab végpontot.
@@ -348,4 +428,3 @@ A PR teljes körűen tesztelt, linter- és típusellenőrzött:
 - [x] Az Alembic migrációk `server_default` értékekkel rendelkeznek, így a migráció azonnali és biztonságos.
 - [x] A Libtorrent szálkezelés és a memóriagyorsítótárak lejárata (TTL) nem okoz memóriaszivárgást.
 - [x] A kliens és a szerver automatizált tesztjei 100%-ban átmennek.
-

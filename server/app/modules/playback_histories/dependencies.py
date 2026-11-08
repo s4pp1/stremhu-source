@@ -14,6 +14,6 @@ def create_playback_histories_service(db: Session) -> PlaybackHistoriesService:
 
 
 def get_playback_histories_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> PlaybackHistoriesService:
     return create_playback_histories_service(db)

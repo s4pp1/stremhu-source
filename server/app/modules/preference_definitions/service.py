@@ -1,6 +1,7 @@
 import pydash
 from fastapi import HTTPException
 
+from app.common.commit_actions import mark_stream_cache_dirty
 from app.modules.attributes.service import AttributesService
 from app.modules.preference_definitions.models import PreferenceDefinitionModel
 from app.modules.preference_definitions.repository import PreferenceDefinitionRepository
@@ -19,11 +20,15 @@ class PreferenceDefinitionsService:
     def create(
         self,
         payload: PreferenceCreate,
+        *,
+        cache_user_id: str | None = None,
     ) -> PreferenceDefinitionModel:
 
         self._validate_attribute_ids(payload.preference_id, payload.attribute_ids)
 
-        return self._repository.create(payload)
+        model = self._repository.create(payload)
+        mark_stream_cache_dirty(self._repository.db, cache_user_id)
+        return model
 
     def find_by_id(
         self, preference_definition_id: str
@@ -44,6 +49,8 @@ class PreferenceDefinitionsService:
         self,
         preference_definition_id: str,
         payload: PreferenceUpdate,
+        *,
+        cache_user_id: str | None = None,
     ) -> PreferenceDefinitionModel:
         preference_definition = self.find_by_id(preference_definition_id)
         if not preference_definition:
@@ -57,14 +64,17 @@ class PreferenceDefinitionsService:
             payload.attribute_ids,
         )
 
-        return self._repository.update(
+        model = self._repository.update(
             preference_definition_id,
             payload.attribute_ids,
         )
+        mark_stream_cache_dirty(self._repository.db, cache_user_id)
+        return model
 
     def delete(self, preference_definition_id: str) -> None:
         preference_definition = self.get_by_id(preference_definition_id)
         self._repository.delete(preference_definition.id)
+        mark_stream_cache_dirty(self._repository.db)
 
     def remove_attribute_from_all(self, attribute_id: str) -> None:
         preference_definitions = self._repository.find_by_attribute_id(attribute_id)

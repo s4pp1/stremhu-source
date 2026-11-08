@@ -22,6 +22,6 @@ def create_indexer_accounts_service(db: Session) -> IndexerAccountsService:
 
 
 def get_indexer_accounts_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> IndexerAccountsService:
     return create_indexer_accounts_service(db)

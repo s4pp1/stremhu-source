@@ -1,0 +1,11 @@
+{
+  "id": "cr17b-after-long-v6",
+  "registered_utc": "2026-11-05T19:20:26.461345+00:00",
+  "source_C": "cr17b-after-v4-source",
+  "source_manifest_sha256": "685da44bf9836f4c7a38d2440e885dce219aa1d29631a5556500ad197dc2cdc4",
+  "fixture_sha256": "d4f03a59f1a8e83f23e7965491049019625cd9a4ca8e920ee5e7cef7f8a83ae2",
+  "sampling": "Two full1800second/60cycle runs",
+  "resources": "2CPU6,7/1GiB",
+  "environment": "Local desktop-linux npipe;networknone,ROsource,tmpfs disposableDB;no dotenv/real credentials",
+  "acceptance": "AcceptedcleanupSource2: freshpairedshortbefore andpreselected fullheapafter-runs0/1;alloldcontrolsretained. Common commit/push marker required. Exact payload/order/count; no SQL increase and approved HTTP+10ms/CPU+10%/fixedmemory+2MiB budgets. Keep strict controls/failures. No acceptance until two after series and all relevant baselines complete."
+}

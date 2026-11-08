@@ -1,5 +1,49 @@
+---
+doc_id: "stremhu-universal-setup-guide"
+title: "Egy StremHU-link mindenhová"
+kind: "operator-guide"
+status: "instructions-not-executed"
+audience: ["operator", "ai-agent"]
+tags: ["installation", "linux", "dns", "caddy", "adguard", "tailscale", "cloudflare", "troubleshooting"]
+source_commit: null
+baseline: null
+verification: "structure-only"
+structure_reviewed: "2026-11-03"
+related_docs: ["docs/README.md", "docs/fejlesztoi-dokumentacio.md"]
+source_paths: []
+---
+
 # Egy StremHU-link mindenhová
 
+<!-- doc-nav:start -->
+**Navigáció:** [Dokumentáció](README.md) · [AI-index](AI-INDEX.md)
+
+> **Státusz:** Linux/hálózati üzemeltetési útmutató. A parancsok nem futottak ebben a körben; a korábbi külső ellenőrzési dátum nem frissült.
+
+**Kapcsolódó:** [README.md](README.md) · [fejlesztoi-dokumentacio.md](fejlesztoi-dokumentacio.md)
+
+<details>
+<summary>Fejezetek / közvetlen ugrás</summary>
+
+- [Teljes otthoni útmutató: AdGuard Home + Caddy HTTPS + Tailscale + Cloudflare Tunnel](#doc-teljes-otthoni-utmutato-adguard-home-caddy-https-tailscale-cloudflare-tunnel)
+- [0. Előkészítés és biztonságos végrehajtási sorrend](#doc-0-elokeszites-es-biztonsagos-vegrehajtasi-sorrend)
+- [1. Miért kell három manifest helyett egy?](#doc-1-miert-kell-harom-manifest-helyett-egy)
+- [2. AdGuard Home: a helyi DNS agya](#doc-2-adguard-home-a-helyi-dns-agya)
+- [3. Caddy: megbízható HTTPS a közvetlen útvonalakon](#doc-3-caddy-megbizhato-https-a-kozvetlen-utvonalakon)
+- [4. A split-horizon DNS-szabályok](#doc-4-a-split-horizon-dns-szabalyok)
+- [5. Tailscale: távoli közvetlen elérés és globális DNS](#doc-5-tailscale-tavoli-kozvetlen-eleres-es-globalis-dns)
+- [6. Cloudflare Tunnel: a feltételes publikus útvonal](#doc-6-cloudflare-tunnel-a-felteteles-publikus-utvonal)
+- [7. Kliensek és valós életbeli hibaelhárítás](#doc-7-kliensek-es-valos-eletbeli-hibaelharitas)
+- [8. Végtesztek: bizonyítsd a tényleges adatútvonalat](#doc-8-vegtesztek-bizonyitsd-a-tenyleges-adatutvonalat)
+- [A. Mentés, visszaállítás és frissítés](#doc-a-mentes-visszaallitas-es-frissites)
+- [B. Tünet–ok–ellenőrzés gyorssegéd](#doc-b-tunetokellenorzes-gyorsseged)
+
+</details>
+
+<!-- doc-nav:end -->
+
+<!-- doc-anchor:doc-teljes-otthoni-utmutato-adguard-home-caddy-https-tailscale-cloudflare-tunnel -->
+<a id="doc-teljes-otthoni-utmutato-adguard-home-caddy-https-tailscale-cloudflare-tunnel"></a>
 ## Teljes otthoni útmutató: AdGuard Home + Caddy HTTPS + Tailscale + Cloudflare Tunnel
 
 **Célközönség:** már működő, Dockerben vagy CasaOS alatt futó StremHU Source mellé építkező otthoni felhasználók.  
@@ -10,6 +54,8 @@
 
 Az útmutató nem egyetlen szerver konfigurációjának bemásolható exportja. A lépéseket sorrendben, a saját címeiddel és a megadott tesztkapukkal végezd el. A meglévő StremHU adatbázisát, letöltéseit és image-ét a hálózati megoldás kedvéért nem kell lecserélni.
 
+<!-- doc-anchor:doc-tartalom -->
+<a id="doc-tartalom"></a>
 ### Tartalom
 
 - [0. Előkészítés és biztonságos végrehajtási sorrend](#0-előkészítés-és-biztonságos-végrehajtási-sorrend)
@@ -26,9 +72,13 @@ Az útmutató nem egyetlen szerver konfigurációjának bemásolható exportja. 
 
 ---
 
-# 0. Előkészítés és biztonságos végrehajtási sorrend
+<!-- doc-anchor:doc-0-elokeszites-es-biztonsagos-vegrehajtasi-sorrend -->
+<a id="doc-0-elokeszites-es-biztonsagos-vegrehajtasi-sorrend"></a>
+## 0. Előkészítés és biztonságos végrehajtási sorrend
 
-## 0.1. Írd össze a saját példahelyettesítőidet
+<!-- doc-anchor:doc-01-ird-ossze-a-sajat-peldahelyettesitoidet -->
+<a id="doc-01-ird-ossze-a-sajat-peldahelyettesitoidet"></a>
+### 0.1. Írd össze a saját példahelyettesítőidet
 
 | Fogalom | Ebben az útmutatóban | Mire cseréld? |
 |---|---|---|
@@ -57,7 +107,9 @@ Négy különböző hitelesítést ne keverj össze:
 
 Ne oszd meg a valódi manifest URL-t képernyőképen: a benne lévő kulcs hozzáférést adhat a szolgáltatásodhoz. A példa kulcs csak azt mutatja, hol lesz a sajátod.
 
-## 0.2. Az első előfeltétel: működő StremHU
+<!-- doc-anchor:doc-02-az-elso-elofeltetel-mukodo-stremhu -->
+<a id="doc-02-az-elso-elofeltetel-mukodo-stremhu"></a>
+### 0.2. Az első előfeltétel: működő StremHU
 
 Mielőtt DNS-t állítanál, a jelenlegi StremHU-n működjön a bejelentkezés és legalább egy valódi videó. Írd fel:
 
@@ -92,7 +144,9 @@ A változó értéke hostname, nem `https://` kezdetű URL. Ellenőrizd a saját
 
 > Ha az adott verzió eleve más URL-szerkezetet használ, a későbbi regexet az igazi route-okkal össze kell vetni. Egy másik forkból származó régi Python routerfájl bemásolása nem hálózati beállítás.
 
-## 0.3. Compose: két parancsnév, ugyanaz a feladat
+<!-- doc-anchor:doc-03-compose-ket-parancsnev-ugyanaz-a-feladat -->
+<a id="doc-03-compose-ket-parancsnev-ugyanaz-a-feladat"></a>
+### 0.3. Compose: két parancsnév, ugyanaz a feladat
 
 Újabb rendszeren `docker compose`, régebbi CasaOS-telepítésen `docker-compose` lehet elérhető. Ellenőrzés:
 
@@ -116,7 +170,9 @@ fi
 
 A minták szándékosan nem tartalmaznak felső szintű `name:` mezőt; a projektnevet `-p` adja meg. Ugyanannak az alkalmazásnak minden műveleténél ugyanazt a projektnevet használd (`media-dns`, `media-https`, illetve `media-tunnel`). `.env`-hez explicit `--env-file` szerepel, így nem a terminál aktuális könyvtárától függ a titkok beolvasása. [Docker Compose telepítési lehetőségek](https://docs.docker.com/compose/install/).
 
-## 0.4. Portleltár és a menedzsmentkapcsolat védelme
+<!-- doc-anchor:doc-04-portleltar-es-a-menedzsmentkapcsolat-vedelme -->
+<a id="doc-04-portleltar-es-a-menedzsmentkapcsolat-vedelme"></a>
+### 0.4. Portleltár és a menedzsmentkapcsolat védelme
 
 | Port | Szerep | Kinek kell elérnie? |
 |---|---|---|
@@ -140,7 +196,9 @@ sudo apt install ca-certificates curl dnsutils python3 jq tcpdump iproute2 opens
 
 A példák **nem** igényelnek a média HTTPS-eléréséhez routeres 80/443 porttovábbítást.
 
-## 0.5. Helyes sorrend: ne a család teljes DNS-ével kezdj
+<!-- doc-anchor:doc-05-helyes-sorrend-ne-a-csalad-teljes-dns-evel-kezdj -->
+<a id="doc-05-helyes-sorrend-ne-a-csalad-teljes-dns-evel-kezdj"></a>
+### 0.5. Helyes sorrend: ne a család teljes DNS-ével kezdj
 
 1. Mentsd a jelenlegi Compose-okat és adatokat.
 2. A Tailscale szerveroldali telepítésével szerezz stabil VPN-címet, **globális DNS-átállítás nélkül**; lásd az 5.1. pontot. Erre a címre a Caddy bind mintájában már szükség lesz.
@@ -155,9 +213,13 @@ A példák **nem** igényelnek a média HTTPS-eléréséhez routeres 80/443 port
 
 ---
 
-# 1. Miért kell három manifest helyett egy?
+<!-- doc-anchor:doc-1-miert-kell-harom-manifest-helyett-egy -->
+<a id="doc-1-miert-kell-harom-manifest-helyett-egy"></a>
+## 1. Miért kell három manifest helyett egy?
 
-## 1.1. Az alapprobléma
+<!-- doc-anchor:doc-11-az-alapproblema -->
+<a id="doc-11-az-alapproblema"></a>
+### 1.1. Az alapprobléma
 
 A manifest egy addon leíró JSON-ja: megmondja a kliensnek, milyen katalógusokat, metaadatokat és stream-erőforrásokat kérhet le. Nem maga a film, hanem a hozzá vezető szolgáltatási belépő.
 
@@ -190,7 +252,9 @@ https://stremio.pelda.hu/api/abc123_pelda_kulcs/stremio/manifest.json
 
 A manifestből kapott **videó- és felirat-URL-eknek is** ugyanerre a hostname-re kell mutatniuk. Ha egy stream JSON közvetlen külső IP-t vagy másik domaint ad, annak az útját ez a DNS-szabály nem vezérli.
 
-## 1.2. A három út egy rajzon
+<!-- doc-anchor:doc-12-a-harom-ut-egy-rajzon -->
+<a id="doc-12-a-harom-ut-egy-rajzon"></a>
+### 1.2. A három út egy rajzon
 
 ```mermaid
 flowchart TD
@@ -212,7 +276,9 @@ A DNS hétköznapi hasonlattal egy útbaigazító. Ugyanazt az üzletnevet kérd
 
 **Fontos pontosítás:** ez nem olyan algoritmus, amely stopperrel megméri a három utat, majd mindig a leggyorsabbat választja. A megfelelő DNS-környezet beállítása alapján kapod a kívánt közvetlen utat. Otthon bekapcsolt Tailscale DNS esetén a telefon a VPN-címet is kaphatja; ezt az 5.6. és a 7. fejezet kezeli.
 
-## 1.3. Mi történik egy lejátszás alatt?
+<!-- doc-anchor:doc-13-mi-tortenik-egy-lejatszas-alatt -->
+<a id="doc-13-mi-tortenik-egy-lejatszas-alatt"></a>
+### 1.3. Mi történik egy lejátszás alatt?
 
 ```mermaid
 sequenceDiagram
@@ -247,21 +313,29 @@ sequenceDiagram
 
 A videó nem a DNS-szerveren folyik át. A DNS csak címet ad; a médiabájtokat a HTTPS-kapcsolat viszi.
 
-## 1.4. A Cloudflare-ág feltétele
+<!-- doc-anchor:doc-14-a-cloudflare-ag-feltetele -->
+<a id="doc-14-a-cloudflare-ag-feltetele"></a>
+### 1.4. A Cloudflare-ág feltétele
 
 A publikus videoút technikai működése nem jelent korlátlan, ingyenes videós CDN-jogosultságot. A Cloudflare jelenlegi routing dokumentációja külön felhívja a figyelmet, hogy Free/Pro/Business csomagoknál videóhoz/nagy fájlokhoz megfelelő, külön erre szolgáló fizetős szolgáltatás szükséges lehet. **A publikus videós fallbacket csak a saját termékedre és felhasználásodra ellenőrzött feltételekkel használd.** Ha ezek nem teljesülnek, a távoli videózáshoz maradjon a Tailscale; a Tunnel ága nem tekinthető garantált videós megoldásnak. [Cloudflare routing és videós feltételek](https://developers.cloudflare.com/tunnel/concepts/routing/).
 
 ---
 
-# 2. AdGuard Home: a helyi DNS agya
+<!-- doc-anchor:doc-2-adguard-home-a-helyi-dns-agya -->
+<a id="doc-2-adguard-home-a-helyi-dns-agya"></a>
+## 2. AdGuard Home: a helyi DNS agya
 
-## 2.1. Mi ez, és miért kell?
+<!-- doc-anchor:doc-21-mi-ez-es-miert-kell -->
+<a id="doc-21-mi-ez-es-miert-kell"></a>
+### 2.1. Mi ez, és miért kell?
 
 Az AdGuard Home DNS-kérdéseket fogad és továbbít; helyi szabályokkal címet írhat át, reklám-/követő domaineket szűrhet, és a kérdező kliens IP-jét figyelembe veheti. Ebben az architektúrában a legfontosabb feladata a **klienshez igazodó címadás**.
 
 A telepítés önmagában még semmit nem változtat a tévéd feloldásán. A kliensnek ténylegesen az AdGuardot kell DNS-ként használnia. Ezért marad a router átállítása a tesztek utánra.
 
-## 2.2. Kritikus Docker-tanulság: ebben a receptben host networkinget használunk
+<!-- doc-anchor:doc-22-kritikus-docker-tanulsag-ebben-a-receptben-host-networkinget-hasznalunk -->
+<a id="doc-22-kritikus-docker-tanulsag-ebben-a-receptben-host-networkinget-hasznalunk"></a>
+### 2.2. Kritikus Docker-tanulság: ebben a receptben host networkinget használunk
 
 A bridge hálózatban a konténer egy külön, például `172.17.x.x` hálózatban él. A publikált portot elérő forgalom a hoston NAT-/proxy-szabályokon haladhat át. Egyes utak — különösen VPN és továbbítási szabályok kombinációja — a forrást a Docker gateway, például `172.17.0.1` címére fordíthatják.
 
@@ -281,7 +355,9 @@ Host networkinggel a DNS-socket közvetlenül a Linux host hálózatán hallgat.
 
 A `172.17.0.0/16` hozzáadása a LAN/VPN átírási szabályaihoz nem javítás: a kliens eredeti hálózati helyzete ettől nem áll helyre.
 
-## 2.3. Előbb a portütközéseket nézd meg
+<!-- doc-anchor:doc-23-elobb-a-portutkozeseket-nezd-meg -->
+<a id="doc-23-elobb-a-portutkozeseket-nezd-meg"></a>
+### 2.3. Előbb a portütközéseket nézd meg
 
 ```bash
 sudo ss -lntup '( sport = :53 or sport = :3000 or sport = :80 or sport = :443 )'
@@ -292,7 +368,9 @@ sudo ss -lntup '( sport = :53 or sport = :3000 or sport = :80 or sport = :443 )'
 - Az AdGuard webes felülete **3000** legyen, ne a varázslóban felajánlott 80.
 - Ebben a mintában az AdGuard saját HTTPS/DoH/DoT szolgáltatása és DHCP-szervere nincs bekapcsolva.
 
-### Ubuntu `systemd-resolved` esetén
+<!-- doc-anchor:doc-ubuntu-systemd-resolved-eseten -->
+<a id="doc-ubuntu-systemd-resolved-eseten"></a>
+#### Ubuntu `systemd-resolved` esetén
 
 Előbb olvasd ki:
 
@@ -321,7 +399,9 @@ sudo systemctl restart systemd-resolved
 
 Itt a publikus resolverek **ideiglenes bootstrapot** adnak, amíg az AdGuard nincs tesztelve; ez nem a kliensek végleges DHCP-beállítása. Ellenőrizd újra a portot és egy publikus név feloldását. Ne másold a `127.0.0.1` DNS-címet a rendszerbe úgy, hogy azon még semmi nem figyel.
 
-## 2.4. Könyvtár és image rögzítése
+<!-- doc-anchor:doc-24-konyvtar-es-image-rogzitese -->
+<a id="doc-24-konyvtar-es-image-rogzitese"></a>
+### 2.4. Könyvtár és image rögzítése
 
 A példa minden új szolgáltatást az `/opt/stremio-network` alá tesz; CasaOS is használhat bind mountot ide. Ne válassz olyan üres könyvtárat „adatlemeznek”, amely mögül a valós lemez lecsatolódhat.
 
@@ -334,7 +414,9 @@ sudo sh -c 'umask 077; docker image inspect adguard/adguardhome:latest --format 
 
 A `latest` itt a kiválasztott kiadás letöltésére szolgál. A `.env` a letöltött tartalom **digestjét** rögzíti; az indítás nem vált észrevétlenül másik kiadásra. Ez nem helyettesít image-eredet-/sérülékenységvizsgálatot vagy a későbbi tervezett frissítést.
 
-## 2.5. AdGuard Compose
+<!-- doc-anchor:doc-25-adguard-compose -->
+<a id="doc-25-adguard-compose"></a>
+### 2.5. AdGuard Compose
 
 A root tulajdonú fájlokat például `sudoedit /opt/stremio-network/adguard/docker-compose.yml` paranccsal szerkesztheted. A következő kódblokkot fájltartalomként mentsd, ne önálló shellparancsként futtasd.
 
@@ -364,7 +446,9 @@ sudo docker exec adguard-home /opt/adguardhome/AdGuardHome --version
 
 CasaOS importáláskor ellenőrizd, hogy a felület nem cserélte-e vissza bridge módra és nem adott-e hozzá portmappinget. A rejtett `.env` kezelését is ellenőrizd; ha a GUI nem tölti be, ezt az appot a fenti CLI-projekttel kezeld, ne hozz létre második példányt ugyanazokra a portokra.
 
-## 2.6. Első beállítás a böngészőben
+<!-- doc-anchor:doc-26-elso-beallitas-a-bongeszoben -->
+<a id="doc-26-elso-beallitas-a-bongeszoben"></a>
+### 2.6. Első beállítás a böngészőben
 
 1. LAN-ról `http://192.168.1.100:3000`, VPN-ről a tényleges VPN-cím és `:3000`.
 2. Webes admin cím: megfelelő privát interfész vagy az összes interfész; **port 3000**.
@@ -396,9 +480,13 @@ sudo ss -lntup '( sport = :53 or sport = :3000 )'
 
 ---
 
-# 3. Caddy: megbízható HTTPS a közvetlen útvonalakon
+<!-- doc-anchor:doc-3-caddy-megbizhato-https-a-kozvetlen-utvonalakon -->
+<a id="doc-3-caddy-megbizhato-https-a-kozvetlen-utvonalakon"></a>
+## 3. Caddy: megbízható HTTPS a közvetlen útvonalakon
 
-## 3.1. Miért kell második HTTPS-végpont?
+<!-- doc-anchor:doc-31-miert-kell-masodik-https-vegpont -->
+<a id="doc-31-miert-kell-masodik-https-vegpont"></a>
+### 3.1. Miért kell második HTTPS-végpont?
 
 A publikus kérés TLS-kapcsolata a Cloudflare edge-nél végződik. Amikor a DNS közvetlenül `192.168.1.100` vagy `100.80.1.50` címet ad, a Cloudflare egyáltalán nincs a kérés útjában. A szerveren kell olyan HTTPS-végpont, amely ugyanarra a **domainnévre** érvényes tanúsítványt mutat.
 
@@ -408,7 +496,9 @@ Sok addon-/webes kliensnél követelmény vagy kompatibilitási elvárás a megb
 
 A Caddy csak a helyi backenddel beszél egyszerű HTTP-n. A két pont közötti loopback kapcsolat nem utazik ki a LAN-ra; a kliens–Caddy kapcsolat HTTPS, VPN esetén ezen felül WireGuard is védi.
 
-## 3.2. DNS-01 a portnyitás helyett
+<!-- doc-anchor:doc-32-dns-01-a-portnyitas-helyett -->
+<a id="doc-32-dns-01-a-portnyitas-helyett"></a>
+### 3.2. DNS-01 a portnyitás helyett
 
 A hitelesítésszolgáltatónak azt kell bizonyítani, hogy rendelkezel a domain fölött.
 
@@ -434,7 +524,9 @@ sequenceDiagram
   C->>API: Saját challenge TXT takarítása
 ```
 
-## 3.3. DNS-token minimális jogokkal
+<!-- doc-anchor:doc-33-dns-token-minimalis-jogokkal -->
+<a id="doc-33-dns-token-minimalis-jogokkal"></a>
+### 3.3. DNS-token minimális jogokkal
 
 Cloudflare → profil → API Tokens → Create Custom Token:
 
@@ -447,7 +539,9 @@ Cloudflare → profil → API Tokens → Create Custom Token:
 
 Ez a token a TXT bizonyításhoz kell, nem a Tunnel indításához. [Cloudflare Caddy DNS-modul jogosultságai](https://github.com/caddy-dns/cloudflare).
 
-## 3.4. Megfelelő Caddy-image és védett `.env`
+<!-- doc-anchor:doc-34-megfelelo-caddy-image-es-vedett-env -->
+<a id="doc-34-megfelelo-caddy-image-es-vedett-env"></a>
+### 3.4. Megfelelő Caddy-image és védett `.env`
 
 A sima Caddy-image nem feltétlenül tartalmazza a Cloudflare DNS-modult. Egy nyilvános, dokumentált modulbuild például a `ghcr.io/caddybuilds/caddy-cloudflare`; egyedi image esetén a kiadóban is megbízol, nemcsak a Caddy projektben. Ellenőrizd a projektet, architektúrát és kiadást, majd rögzíts digestet. [A példában használt build dokumentációja](https://github.com/CaddyBuilds/caddy-cloudflare).
 
@@ -474,7 +568,9 @@ sudo bash -c '
 
 Ezt a hozzáfűzést egyszer végezd; tokenrotációnál a korábbi értéket védetten cseréld, ne gyűjts azonos nevű sorokat. A Docker-admin a konténer környezeti változóit láthatja. A `.env` elrejtése vagy Git-ignore-ja nem helyettesíti a 0600 jogosultságot és a titkosított backupot.
 
-### Opcionális, csak olvasási API-előellenőrzés
+<!-- doc-anchor:doc-opcionalis-csak-olvasasi-api-eloellenorzes -->
+<a id="doc-opcionalis-csak-olvasasi-api-eloellenorzes"></a>
+#### Opcionális, csak olvasási API-előellenőrzés
 
 A token saját `verify` végpontja az aktív állapotot ellenőrzi; ez **önmagában nem bizonyít DNS-írási jogosultságot**. Az alábbi próba az aktív tokent és a célzóna olvashatóságát vizsgálja úgy, hogy nem írja ki a tokent vagy az API teljes válaszát:
 
@@ -511,7 +607,9 @@ PY
 
 A DNS-írási jogosultságot a token Dashboardban látható scope-jával, majd a Caddy tényleges TXT-létrehozásával és sikeres tanúsítványigénylésével igazold. A próbához nem kell meglévő DNS-rekordot átírni vagy törölni. A fenti `.env` parser az itt létrehozott egyszerű, idézőjel nélküli tokenértékkel működik; más `.env` formátumhoz teljes értékű parser szükséges.
 
-## 3.5. Teljes Caddyfile
+<!-- doc-anchor:doc-35-teljes-caddyfile -->
+<a id="doc-35-teljes-caddyfile"></a>
+### 3.5. Teljes Caddyfile
 
 Mentsd `/opt/stremio-network/caddy/Caddyfile` néven, a **saját** címeiddel:
 
@@ -551,7 +649,9 @@ Mit miért állítunk?
 
 [Globális Caddy opciók](https://caddyserver.com/docs/caddyfile/options), [reverse proxy streaming viselkedése](https://caddyserver.com/docs/caddyfile/directives/reverse_proxy).
 
-## 3.6. Caddy Compose és indítás
+<!-- doc-anchor:doc-36-caddy-compose-es-inditas -->
+<a id="doc-36-caddy-compose-es-inditas"></a>
+### 3.6. Caddy Compose és indítás
 
 `/opt/stremio-network/caddy/docker-compose.yml`:
 
@@ -587,7 +687,9 @@ sudo docker logs stremio-caddy --tail 50
 
 Az igénylés pár másodperctől hosszabb időig tarthat. Sikerjelzés például `certificate obtained successfully`. A pontos logformátum kiadásonként eltérhet. Hibánál ne próbálkozz gyors, végtelen újraigényléssel: tokenjog, publikus TXT-terjedés, rendszeróra, CA-elérés és portütközés legyen ellenőrizve.
 
-## 3.7. Először DNS-átállítás nélkül tesztelj
+<!-- doc-anchor:doc-37-eloszor-dns-atallitas-nelkul-tesztelj -->
+<a id="doc-37-eloszor-dns-atallitas-nelkul-tesztelj"></a>
+### 3.7. Először DNS-átállítás nélkül tesztelj
 
 Egy kulcs nélküli gyökérkérés is mutatja, hogy a közvetlen TLS-kapcsolat felépül-e; az alkalmazás státusza ettől még verziófüggő:
 
@@ -613,15 +715,21 @@ A `--resolve` csak e curl-hívás DNS-válaszát helyettesíti, a hostname/SNI �
 
 **Tesztkapu:** érvényes TLS a valódi LAN/VPN címhez, működő manifest és tényleges Range-próba. Eddig még nem kellett a teljes háztartás DNS-ét megváltoztatni.
 
-# 4. A split-horizon DNS-szabályok
+<!-- doc-anchor:doc-4-a-split-horizon-dns-szabalyok -->
+<a id="doc-4-a-split-horizon-dns-szabalyok"></a>
+## 4. A split-horizon DNS-szabályok
 
-## 4.1. Ugyanaz a név, másik bejárat
+<!-- doc-anchor:doc-41-ugyanaz-a-nev-masik-bejarat -->
+<a id="doc-41-ugyanaz-a-nev-masik-bejarat"></a>
+### 4.1. Ugyanaz a név, másik bejárat
 
 Képzeld el, hogy egy épülethez három bejárat vezet. Az épület neve ugyanaz, de a portás a helyzetedhez illő címet mondja: a helyben tartózkodónak a belső bejáratot, a VPN-es vendégnek a védett folyosót, másnak a nyilvános recepciót. A DNS a portás: **nevet fordít címre; a kapcsolatot már a kliens hozza létre.**
 
 A split-horizon azt jelenti, hogy ugyanarra a DNS-névre különböző hálózati környezetekben eltérő választ adunk. Itt az AdGuard a **DNS-kérés forráscíme** alapján választ. Nem a TV földrajzi helyét és nem a leggyorsabb adatkapcsolatot méri.
 
-## 4.2. Előbb mentés és ütközésvizsgálat
+<!-- doc-anchor:doc-42-elobb-mentes-es-utkozesvizsgalat -->
+<a id="doc-42-elobb-mentes-es-utkozesvizsgalat"></a>
+### 4.2. Előbb mentés és ütközésvizsgálat
 
 Az AdGuard felületén:
 
@@ -633,7 +741,9 @@ Az AdGuard felületén:
 
 A teljes AdGuard `conf` könyvtárról konzisztens mentést készíts az A függelék szerint. A futó program YAML-ját ne szerkeszd kézzel: leállításkor felülírhatja. Kezdőként a webes szabályfelület a kiszámíthatóbb út.
 
-## 4.3. A négy szabály
+<!-- doc-anchor:doc-43-a-negy-szabaly -->
+<a id="doc-43-a-negy-szabaly"></a>
+### 4.3. A négy szabály
 
 **Filters → Custom filtering rules**, a meglévő tartalom végére:
 
@@ -663,7 +773,9 @@ A négy szabály nem érinti az `_acme-challenge.stremio.pelda.hu` TXT rekordot,
 
 **Határ:** ezek IPv4-forrású DNS-kérésekre vonatkoznak. Ha egy kliens IPv6-on kérdezi az AdGuardot, nem illeszkedik a két IPv4-tartományra. Ne találj ki hozzá általános `::/0` átírást: külön LAN IPv6-prefix és valódi mérés kell. Ugyanígy a saját külső DoH/DoT resolvert használó alkalmazás kikerülheti az AdGuardot. A router és a kliensek DNS-beállításai a rendszer részei.
 
-## 4.4. DNS-tesztek valódi forrásokból
+<!-- doc-anchor:doc-44-dns-tesztek-valodi-forrasokbol -->
+<a id="doc-44-dns-tesztek-valodi-forrasokbol"></a>
+### 4.4. DNS-tesztek valódi forrásokból
 
 Ezeket **egy otthoni PC-n**, annak LAN-címéről futtasd:
 
@@ -711,9 +823,13 @@ Egy DNS-válasz csak akkor tekinthető bizonyítottnak, ha a forrás, a kérdeze
 
 **Tesztkapu:** mindkét forrásból A + AAAA + HTTPS + SVCB rendben; UDP és TCP működik; a meglévő rewrite-ok változatlanok. Sikertelen próba esetén állítsd vissza a szabálymentést, és még ne állítsd át a háztartás DNS-ét.
 
-# 5. Tailscale: távoli közvetlen elérés és globális DNS
+<!-- doc-anchor:doc-5-tailscale-tavoli-kozvetlen-eleres-es-globalis-dns -->
+<a id="doc-5-tailscale-tavoli-kozvetlen-eleres-es-globalis-dns"></a>
+## 5. Tailscale: távoli közvetlen elérés és globális DNS
 
-## 5.1. Mi ez, és hogyan telepítsd?
+<!-- doc-anchor:doc-51-mi-ez-es-hogyan-telepitsd -->
+<a id="doc-51-mi-ez-es-hogyan-telepitsd"></a>
+### 5.1. Mi ez, és hogyan telepítsd?
 
 A Tailscale a gépeidet egy titkosított privát hálózatba, egy **tailnetbe** kapcsolja. Az adatcsatorna WireGuard-alapú. A szerver nem igényel nyilvános IPv4-címet vagy bejövő routeres portnyitást. A kapcsolat lehet közvetlen, kedvezőtlen NAT/tűzfal mellett pedig közvetített, például DERP-en keresztüli. A közvetítés is titkosított, de nagy videónál a sebesség korlátozó tényező lehet. [Kapcsolattípusok](https://tailscale.com/docs/reference/connection-types)
 
@@ -736,7 +852,9 @@ A szerveren az `--accept-dns=false` kezdetben megakadályozza, hogy a még el se
 
 A telefonra, PC-re és TV-re a platformhoz való hivatalos Tailscale-alkalmazást telepítsd; jelentkeztesd be ugyanabba a tailnetbe. Családi hozzáféréshez felhasználói megosztást és jogosultságokat használj, ne közösen közzétett bejelentkezési adatot.
 
-## 5.2. Először közvetlen IP-teszt, aztán DNS
+<!-- doc-anchor:doc-52-eloszor-kozvetlen-ip-teszt-aztan-dns -->
+<a id="doc-52-eloszor-kozvetlen-ip-teszt-aztan-dns"></a>
+### 5.2. Először közvetlen IP-teszt, aztán DNS
 
 A távoli laptopon:
 
@@ -753,7 +871,9 @@ A tailnet hozzáférési szabályainak engedniük kell az adott kliens → szerv
 
 Ez a szerver eléréséhez nem kíván exit node-ot. A teljes internetforgalom otthoni átvezetése és a DNS-kérések otthoni kiszolgálása két külön dolog.
 
-## 5.3. Miért globális AdGuard DNS ebben az architektúrában?
+<!-- doc-anchor:doc-53-miert-globalis-adguard-dns-ebben-az-architekturaban -->
+<a id="doc-53-miert-globalis-adguard-dns-ebben-az-architekturaban"></a>
+### 5.3. Miért globális AdGuard DNS ebben az architektúrában?
 
 A domainre korlátozott Split DNS csak a kiválasztott neveket küldené az AdGuardnak. Itt tudatosan **globális nameserverként** használjuk, mert így távol is:
 
@@ -765,7 +885,9 @@ Ez továbbra is split-horizon **válaszadás**: a Tailscale DNS-szabályozása g
 
 **Következmény:** ha a telefon ezt a globális DNS-t használja, és az otthoni DNS-szerver vagy annak VPN-elérése kiesik, az általános névfeloldás is sérülhet. A Cloudflare Tunnel ettől még működhet, de a kliens nem feltétlenül tudja feloldani. Ez nem automatikus DNS-failover. Az alkalmazás saját DoH-je pedig a szűrést is megkerülheti.
 
-## 5.4. Pontos Admin Console-lépések
+<!-- doc-anchor:doc-54-pontos-admin-console-lepesek -->
+<a id="doc-54-pontos-admin-console-lepesek"></a>
+### 5.4. Pontos Admin Console-lépések
 
 Előbb olvasd ki, mi van most beállítva; ne hozz létre második azonos bejegyzést:
 
@@ -791,7 +913,9 @@ dig stremio.pelda.hu A
 
 A `tailscale dns status` újabb klienseken érhető el; hiányában az operációs rendszer resolverállapota és a tényleges kérés a mérvadó. A `/etc/resolv.conf` fájlban látható `100.100.100.100` a Tailscale helyi DNS-proxyja lehet, nem bizonyítja önmagában, mely upstream szervert használja. A `dig @100.80.1.50 …` direkt teszt; a `getent` és az alapértelmezett `curl` a rendszerintegrációt vizsgálja.
 
-## 5.5. A `.lan` nevek: névfeloldás és elérés különválasztva
+<!-- doc-anchor:doc-55-a-lan-nevek-nevfeloldas-es-eleres-kulonvalasztva -->
+<a id="doc-55-a-lan-nevek-nevfeloldas-es-eleres-kulonvalasztva"></a>
+### 5.5. A `.lan` nevek: névfeloldás és elérés különválasztva
 
 Ha például a saját, már meglévő `ha.lan` rewrite `192.168.1.100` címet ad vissza, attól a távoli telefon még nem kap automatikusan útvonalat a LAN-ba. A névfeloldáson túl szükség van valamelyikre:
 
@@ -801,7 +925,9 @@ Ha például a saját, már meglévő `ha.lan` rewrite `192.168.1.100` címet ad
 
 A subnet routing külön hálózati változtatás: nem szükséges magához a StremHU megoldáshoz, mert itt a StremHU Tailscale-címet kap. Ne hirdess automatikusan teljes LAN-t, és ne változtass IP-forwardingot pusztán egy DNS-recept kedvéért. A `.lan` globális DNS-függőségét akkor is dokumentáld, ha az útvonal már korábban elkészült.
 
-## 5.6. Otthon aktív Tailscale: melyik IP győz?
+<!-- doc-anchor:doc-56-otthon-aktiv-tailscale-melyik-ip-gyoz -->
+<a id="doc-56-otthon-aktiv-tailscale-melyik-ip-gyoz"></a>
+### 5.6. Otthon aktív Tailscale: melyik IP győz?
 
 Ha az otthon ülő TV a globális Tailscale DNS-en keresztül kérdez, az AdGuard VPN-forrást lát, tehát `100.80.1.50` címet adhat. **A LAN fizikailag jelenléte nem írja felül automatikusan ezt a döntést.** A Tailscale kapcsolat akár közvetlen helyi UDP-adatúton is működhet, de az alkalmazás célcíme akkor is a VPN-cím.
 
@@ -814,9 +940,13 @@ A helyhez kötött TV-n egyszerű megoldás:
 
 Mozgó eszközön ez nem univerzális, egyszeri kapcsoló: otthon helyi DNS-t, távol pedig VPN-es DNS-t kell használnia. Választhatsz kézi profilt vagy külön ellenőrzött hálózatfüggő automatizálást. Otthoni DNS-preferenciáért ne kapcsold le a szerver távoli menedzsmentjét. A kliens saját VPN- és DNS-képességeit mindig ellenőrizd.
 
-# 6. Cloudflare Tunnel: a feltételes publikus útvonal
+<!-- doc-anchor:doc-6-cloudflare-tunnel-a-felteteles-publikus-utvonal -->
+<a id="doc-6-cloudflare-tunnel-a-felteteles-publikus-utvonal"></a>
+## 6. Cloudflare Tunnel: a feltételes publikus útvonal
 
-## 6.1. Mi ez, és miért nincs routeres porttovábbítás?
+<!-- doc-anchor:doc-61-mi-ez-es-miert-nincs-routeres-porttovabbitas -->
+<a id="doc-61-mi-ez-es-miert-nincs-routeres-porttovabbitas"></a>
+### 6.1. Mi ez, és miért nincs routeres porttovábbítás?
 
 A `cloudflared` a szerverről **kifelé** épít titkosított kapcsolatot a Cloudflare hálózatához. A publikus kliens a Cloudflare HTTPS-végpontjához kapcsolódik; az kérésként továbbítja az engedélyezett forgalmat az alagúton át a belső `7070`-es backendnek. CGNAT mögött is működhet.
 
@@ -824,7 +954,9 @@ Nincs szükség a routeren 80/443/7070 porttovábbításra. Ettől az alkalmazá
 
 **Szolgáltatási feltétel:** a Cloudflare aktuális szabályai szerint videó/nagy fájl továbbításához megfelelő szolgáltatás szükséges. A normál Free/Pro/Business webes csomagot ne kezeld korlátlan videós CDN-ként. Ha a használatod nincs lefedve, a publikus videófallback helyett Tailscale-t vagy megfelelő másik szolgáltatást válassz. Egy általános csomagváltásról ne feltételezd automatikusan, hogy feljogosít a videóforgalomra. [Cloudflare routing és használati korlátok](https://developers.cloudflare.com/tunnel/concepts/routing/)
 
-## 6.2. Tunnel létrehozása és connector indítása
+<!-- doc-anchor:doc-62-tunnel-letrehozasa-es-connector-inditasa -->
+<a id="doc-62-tunnel-letrehozasa-es-connector-inditasa"></a>
+### 6.2. Tunnel létrehozása és connector indítása
 
 Előfeltétel: saját domain és a zóna szabályosan működő Cloudflare DNS-kezelése. Egy meglévő domain nameserver-váltása önálló feladat: a meglévő levelezési, DNSSEC- és egyéb rekordokat előbb fel kell mérni. Ehhez a recepthez ne töröld a zóna korábbi rekordjait.
 
@@ -869,7 +1001,9 @@ dc --env-file /opt/stremio-network/cloudflared/.env -p media-tunnel \
 
 A token támogatott átadási módja a `TUNNEL_TOKEN` környezeti változó. [Connector futtatási paraméterei](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/configure-tunnels/run-parameters/)
 
-## 6.3. Published Application Route: pontos hostname, szűk Path
+<!-- doc-anchor:doc-63-published-application-route-pontos-hostname-szuk-path -->
+<a id="doc-63-published-application-route-pontos-hostname-szuk-path"></a>
+### 6.3. Published Application Route: pontos hostname, szűk Path
 
 A Tunnelhez hozz létre **Published application / Public hostname** útvonalat:
 
@@ -899,7 +1033,9 @@ Mentés előtt:
 5. Más hostname-ek és originok, például egy külön TV-s addon, maradjanak változatlanok.
 6. Olyan interaktív Access-bejelentkezést ne kapcsolj a médiaszolgáltatás elé, amelyet a Stremio/Nuvio kliens nem tud végrehajtani. A hozzáférési modellt előbb teszteld.
 
-## 6.4. Mit enged és mit tilt?
+<!-- doc-anchor:doc-64-mit-enged-es-mit-tilt -->
+<a id="doc-64-mit-enged-es-mit-tilt"></a>
+### 6.4. Mit enged és mit tilt?
 
 | Rész | Megengedett példa | Miért kell? |
 |---|---|---|
@@ -919,7 +1055,9 @@ Ezek nem illeszkednek: `/`, `/admin`, `/configure`, `/api/auth/login`, `/api/use
 
 **A regex nem API-kulcsellenőrzés.** A `[^/]+` alak bármilyen nem üres szegmenst elfogad; a kulcs érvényességét és a token jogosultságát a StremHU-nak kell ellenőriznie. A regex az útvonal szerkezetét korlátozza, nem teljes webalkalmazás-tűzfal és nem audit minden URL-normalizálási lehetőségre. Verzióváltás után a visszaadott URL-eket újra ellenőrizni kell.
 
-## 6.5. A 27 tesztesetes ellenőrzés
+<!-- doc-anchor:doc-65-a-27-tesztesetes-ellenorzes -->
+<a id="doc-65-a-27-tesztesetes-ellenorzes"></a>
+### 6.5. A 27 tesztesetes ellenőrzés
 
 Az alábbi **13 engedélyezett + 14 tiltott**, teljesen szintetikus eset reprodukálható regressziós minta. A Python-próba az itt használt közös regex-részhalmazt ellenőrzi; a valódi Cloudflare-beállítást és az alkalmazás HTTP-válaszát nem helyettesíti.
 
@@ -962,15 +1100,21 @@ print(f'{len(allowed) + len(blocked)}/27 teszt sikeres')
 
 A Go-motorral való helyi ellenőrzéshez ugyanezeket a sorokat a Go `regexp.MatchString` függvényével is lefuttathatod. Ez a konkrét minta Go-szintaxissal is összeegyeztethető; a 27 eset azonban nem kimerítő biztonsági bizonyítás. A 8. fejezetben a tényleges publikus felirat- és tiltási tesztek következnek.
 
-## 6.6. Miért a Dashboardban szerkesztünk?
+<!-- doc-anchor:doc-66-miert-a-dashboardban-szerkesztunk -->
+<a id="doc-66-miert-a-dashboardban-szerkesztunk"></a>
+### 6.6. Miért a Dashboardban szerkesztünk?
 
 A Cloudflare távolról kezelt Tunnel konfigurációs API-ja teljes konfigurációfrissítést kínál. Ne feltételezz önálló, egyetlen Path mezőt módosító PATCH műveletet, és ne küldj kézzel összerakott teljes konfigurációt egy route kedvéért. Elveszhet a sorrend, más addon vagy az origin speciális beállítása. [Konfigurációfrissítő API](https://developers.cloudflare.com/api/resources/zero_trust/subresources/tunnels/subresources/cloudflared/subresources/configurations/methods/update/)
 
 A kezdőbarát eljárás itt a célzott Dashboard-szerkesztés, előtte mentéssel, utána HTTP-tesztekkel. A Caddy zónaszintű DNS-tokenjének ettől nem kell Tunnel-szerkesztési jogosultságot adni.
 
-# 7. Kliensek és valós életbeli hibaelhárítás
+<!-- doc-anchor:doc-7-kliensek-es-valos-eletbeli-hibaelharitas -->
+<a id="doc-7-kliensek-es-valos-eletbeli-hibaelharitas"></a>
+## 7. Kliensek és valós életbeli hibaelhárítás
 
-## 7.1. Egyetlen addon telepítése
+<!-- doc-anchor:doc-71-egyetlen-addon-telepitese -->
+<a id="doc-71-egyetlen-addon-telepitese"></a>
+### 7.1. Egyetlen addon telepítése
 
 Az összes lejátszón ugyanaz a HTTPS manifest legyen:
 
@@ -984,7 +1128,9 @@ Stremio/Nuvio esetén az alkalmazás verziójának megfelelő **Add addon / Inst
 
 A lejátszó támogatása, a videókodek, a hangsáv és a feliratformátum külön kérdés: a helyes DNS és a 206 válasz nem garantálja például egy adott TV hardveres kodektámogatását.
 
-## 7.2. Android TV / Xiaomi Box: „Unable to resolve host”
+<!-- doc-anchor:doc-72-android-tv-xiaomi-box-unable-to-resolve-host -->
+<a id="doc-72-android-tv-xiaomi-box-unable-to-resolve-host"></a>
+### 7.2. Android TV / Xiaomi Box: „Unable to resolve host”
 
 **Jellegzetes tünet:** a Tailscale bekapcsolásakor a Nuvio/Stremio minden addonra ezt vagy hasonló hibát jelez:
 
@@ -994,13 +1140,17 @@ Unable to resolve host: No address associated with hostname
 
 Ha minden szolgáltatás névfeloldása sérül, ne azonnal a StremHU manifestet vagy a Tunnel-regexet módosítsd. Először a rendszer DNS-ét vizsgáld.
 
-### Mi történhet a háttérben?
+<!-- doc-anchor:doc-mi-tortenhet-a-hatterben -->
+<a id="doc-mi-tortenhet-a-hatterben"></a>
+#### Mi történhet a háttérben?
 
 Az Android **Privát DNS / Private DNS** funkciója titkosított DNS-over-TLS kapcsolatot használhat, tipikusan TCP 853-on. Szigorúan megadott külső szolgáltató esetén a rendszer ehhez ragaszkodhat. Ha a resolver a VPN aktív útvonalain/tűzfalán át nem érhető el, vagy az Android és a VPN DNS-kezelése összeakad, időtúllépés és általános feloldási hiba következhet.
 
 Ez **lehetséges ok, nem minden Android TV kötelező működése**. A külső DoT teljesen jól is működhet VPN mellett. Más ok lehet a tailnet jogosultsági szabálya, az elérhetetlen otthoni DNS, hibás óra/TLS vagy egy alkalmazás saját resolvere. Az Android dokumentációja is megköveteli, hogy a beállított privát DNS VPN-en belül és kívül is elérhető legyen. [Android Private DNS követelmények](https://developer.android.com/reference/android/app/admin/DevicePolicyManager)
 
-### Ellenőrzött javítási sorrend
+<!-- doc-anchor:doc-ellenorzott-javitasi-sorrend -->
+<a id="doc-ellenorzott-javitasi-sorrend"></a>
+#### Ellenőrzött javítási sorrend
 
 1. Egy másik Tailscale-kliensről vizsgáld meg: működik-e az AdGuard `100.80.1.50:53` elérése UDP-n és TCP-n?
 2. A TV-n **Beállítások → Hálózat / Internet → Privát DNS** környékén jegyezd fel a jelenlegi módot és szolgáltatót.
@@ -1030,7 +1180,9 @@ adb shell settings delete global private_dns_mode
 
 Az ADB-t ne tedd nyilvánosan elérhetővé. Diagnosztika után a fejlesztői/hálózati hibakeresést kapcsold ki, ha nincs rá szükséged. A gyártói Android-változatok miatt minden módosítást olvass vissza.
 
-## 7.3. Router DHCP: miért nincs másodlagos nyilvános DNS?
+<!-- doc-anchor:doc-73-router-dhcp-miert-nincs-masodlagos-nyilvanos-dns -->
+<a id="doc-73-router-dhcp-miert-nincs-masodlagos-nyilvanos-dns"></a>
+### 7.3. Router DHCP: miért nincs másodlagos nyilvános DNS?
 
 A router LAN/DHCP oldalán a klienseknek kiosztott DNS legyen:
 
@@ -1055,7 +1207,9 @@ Lépések:
 
 Az AdGuard kiesése ekkor hálózati szintű DNS-kiesést okozhat. Valódi magas rendelkezésre álláshoz második, **azonos helyi szabályokat ismerő** DNS kell; egy tetszőleges nyilvános DNS nem egyenértékű tartalék.
 
-## 7.4. Cache, IPv6, DoH, DERP és más korlátok
+<!-- doc-anchor:doc-74-cache-ipv6-doh-derp-es-mas-korlatok -->
+<a id="doc-74-cache-ipv6-doh-derp-es-mas-korlatok"></a>
+### 7.4. Cache, IPv6, DoH, DERP és más korlátok
 
 | Jelenség | Következmény | Érdemi ellenőrzés |
 |---|---|---|
@@ -1071,9 +1225,13 @@ Az AdGuard kiesése ekkor hálózati szintű DNS-kiesést okozhat. Valódi magas
 
 Linuxon a `resolvectl flush-caches` csak a systemd-resolved cache-ét üríti, nem a TV alkalmazásáét. Windowsnál `ipconfig /flushdns` használható. Android TV-n a hálózati újracsatlakozás és az alkalmazás újranyitása segíthet; a gyári visszaállítás nem első DNS-hibaelhárítási lépés.
 
-# 8. Végtesztek: bizonyítsd a tényleges adatútvonalat
+<!-- doc-anchor:doc-8-vegtesztek-bizonyitsd-a-tenyleges-adatutvonalat -->
+<a id="doc-8-vegtesztek-bizonyitsd-a-tenyleges-adatutvonalat"></a>
+## 8. Végtesztek: bizonyítsd a tényleges adatútvonalat
 
-## 8.1. Három külön profil, három külön bizonyíték
+<!-- doc-anchor:doc-81-harom-kulon-profil-harom-kulon-bizonyitek -->
+<a id="doc-81-harom-kulon-profil-harom-kulon-bizonyitek"></a>
+### 8.1. Három külön profil, három külön bizonyíték
 
 | Tesztprofil | DNS-környezet | Várt cél | Szükséges bizonyíték |
 |---|---|---|---|
@@ -1085,7 +1243,9 @@ Ezek **nem előre megígért eredmények**, hanem a saját telepítésed elfogad
 
 A teszteket előbb manifesttel, majd ugyanazzal a **ténylegesen elérhető médiafájllal** futtasd. Ne egy lejárt/letöltetlen streamtoken hibáját minősítsd proxyhibának.
 
-## 8.2. Privát tesztmunkakönyvtár és URL-bevitel
+<!-- doc-anchor:doc-82-privat-tesztmunkakonyvtar-es-url-bevitel -->
+<a id="doc-82-privat-tesztmunkakonyvtar-es-url-bevitel"></a>
+### 8.2. Privát tesztmunkakönyvtár és URL-bevitel
 
 A válasz JSON-okban kulcs és aláírt token lehet. A következő Bash munkamenet saját, védett ideiglenes mappát használ. Ne oszd meg a nyers fájlokat.
 
@@ -1129,7 +1289,9 @@ curl --noproxy '*' --max-time 20 -sS -o /dev/null \
 
 A további éles tesztekhez a fenti rejtett bevitelű változót használd.
 
-## 8.3. Manifest, catalog, meta, stream JSON
+<!-- doc-anchor:doc-83-manifest-catalog-meta-stream-json -->
+<a id="doc-83-manifest-catalog-meta-stream-json"></a>
+### 8.3. Manifest, catalog, meta, stream JSON
 
 Normál rendszer-DNS-sel, `--resolve` nélkül:
 
@@ -1179,7 +1341,9 @@ jq -e '.streams | type == "array"' "$TEST_DIR/stream.json" >/dev/null
 
 Catalognál a `.metas` lista, metánál a `.meta` objektum, streamnél a `.streams` lista a fontos. A **HTTP 200 üres katalógussal csak az endpoint elérhetőségét** bizonyítja. A tartalomteszthez válassz elérhető filmet/epizódot, és jegyezd fel, volt-e nem üres találat.
 
-## 8.4. A stream URL valóban ugyanarra a hostname-re mutat?
+<!-- doc-anchor:doc-84-a-stream-url-valoban-ugyanarra-a-hostname-re-mutat -->
+<a id="doc-84-a-stream-url-valoban-ugyanarra-a-hostname-re-mutat"></a>
+### 8.4. A stream URL valóban ugyanarra a hostname-re mutat?
 
 A split-horizon csak a célzott hostname-re hat. Ha a stream JSON IP-címet, másik domaint, `http://` címet vagy külső szolgáltatót ad vissza, az eltérő adatútvonalat jelenthet.
 
@@ -1214,7 +1378,9 @@ Ez nem feltétlenül a filmhez legjobb stream: szükség esetén válassz másik
 
 **Átirányítások:** az első Range-próbában szándékosan nincs `-L`. Ha 301/302/307/308 érkezik, a `Location` fejlécben lévő célhostot és sémát ellenőrizd privátban. A fejléc maga tokent tartalmazhat. Más hostname/IP felé történő redirectet ne minősíts univerzális útvonaltesztnek. Csak ellenőrzött cél esetén kövesd; minden ugrás új adatútnak számít.
 
-## 8.5. Valódi HTTP Range/206 és pontos bájtszám
+<!-- doc-anchor:doc-85-valodi-http-range206-es-pontos-bajtszam -->
+<a id="doc-85-valodi-http-range206-es-pontos-bajtszam"></a>
+### 8.5. Valódi HTTP Range/206 és pontos bájtszám
 
 ```bash
 fetch_url "$STREAM_URL" \
@@ -1264,7 +1430,9 @@ openssl s_client -connect 192.168.1.100:443 -servername stremio.pelda.hu \
 
 Az OpenSSL-dátumriport kiegészítő ellenőrzés; a pipeline utolsó parancsának sikerét ne keverd a teljes TLS-lánc ellenőrzésével. A tényleges curl-teszt sikeres kilépése és TLS-ellenőrzése maradjon kötelező.
 
-## 8.6. Felirat: JSON és tényleges SRT/VTT
+<!-- doc-anchor:doc-86-felirat-json-es-tenyleges-srtvtt -->
+<a id="doc-86-felirat-json-es-tenyleges-srtvtt"></a>
+### 8.6. Felirat: JSON és tényleges SRT/VTT
 
 1. Egy feliratos film/epizód tényleges Stremio felirat-JSON végpontját kérd le.
 2. Ellenőrizd a HTTP 200 és `.subtitles` lista meglétét.
@@ -1313,7 +1481,9 @@ sha256sum "$TEST_DIR/subtitle.raw" "$TEST_DIR/subtitle-named.raw"
 
 Elfogadás: 200, nem üres valódi szöveges felirat, helyes időzítések, helyes peer/TLS. Ugyanazon fájlt kiszolgáló két URL esetén azonos hash várható. Az SRT jellemző időzítése `00:00:01,000 --> 00:00:03,000`, a VTT-é `00:00:01.000 --> 00:00:03.000`, VTT-nél gyakran `WEBVTT` fejléc is van. Egy HTML hibafelület HTTP 200-zal nem feliratsiker. A TV-n a magyar karaktereket és az időzítést is nézd meg.
 
-## 8.7. Publikus teszt saját belső DNS megkerülésével
+<!-- doc-anchor:doc-87-publikus-teszt-sajat-belso-dns-megkerulesevel -->
+<a id="doc-87-publikus-teszt-sajat-belso-dns-megkerulesevel"></a>
+### 8.7. Publikus teszt saját belső DNS megkerülésével
 
 A legegyszerűbb egy **külön telefon mobilneten, kikapcsolt kliens-VPN-nel**. Ez ne az egyetlen távoli menedzsmentcsatornád legyen. Az otthoni router és a szerver DNS-ét emiatt nem kell módosítani.
 
@@ -1330,7 +1500,9 @@ Ehhez DoH-t támogató curl és elérhető publikus DoH endpoint kell. A numerik
 
 Minden mérési sorban legyen peer IP. Ellenőrizd, hogy az a [Cloudflare közzétett IP-tartományainak](https://www.cloudflare.com/ips/) egyikébe esik. A válaszban a `server: cloudflare` és a `CF-Ray` kiegészítő bizonyíték. **Egy fejléc önmagában nem bizonyít útvonalat**; a publikus feloldás + peer IP + IP-tartomány + edge fejlécek együtt adják az érdemi bizonyítékot.
 
-## 8.8. Publikus tiltási és másik addon regressziós teszt
+<!-- doc-anchor:doc-88-publikus-tiltasi-es-masik-addon-regresszios-teszt -->
+<a id="doc-88-publikus-tiltasi-es-masik-addon-regresszios-teszt"></a>
+### 8.8. Publikus tiltási és másik addon regressziós teszt
 
 A publikus DNS-profil maradjon aktív. A tiltandó URL-ek nem tartalmaznak kulcsot:
 
@@ -1364,7 +1536,9 @@ Visszatérés a normál rendszer-DNS-hez ugyanebben a Bash munkamenetben:
 DNS_ARGS=()
 ```
 
-## 8.9. Szerveroldali útvonalbizonyítás
+<!-- doc-anchor:doc-89-szerveroldali-utvonalbizonyitas -->
+<a id="doc-89-szerveroldali-utvonalbizonyitas"></a>
+### 8.9. Szerveroldali útvonalbizonyítás
 
 **Aktív lejátszás közben** a szerveren:
 
@@ -1423,7 +1597,9 @@ unset MANIFEST_URL CATALOG_URL META_URL STREAM_JSON_URL STREAM_URL
 unset SUBTITLE_JSON_URL SUBTITLE_URL SUBTITLE_NAMED_URL OTHER_MANIFEST_URL
 ```
 
-## 8.10. Android TV / Nuvio / Stremio kézi elfogadási lista
+<!-- doc-anchor:doc-810-android-tv-nuvio-stremio-kezi-elfogadasi-lista -->
+<a id="doc-810-android-tv-nuvio-stremio-kezi-elfogadasi-lista"></a>
+### 8.10. Android TV / Nuvio / Stremio kézi elfogadási lista
 
 Mindhárom kliensalkalmazásnál külön jegyezd fel a verziót. Ugyanazt az egy manifestet használd.
 
@@ -1440,7 +1616,9 @@ Mindhárom kliensalkalmazásnál külön jegyezd fel a verziót. Ugyanazt az egy
 - [ ] Minden más addon névfeloldása is működik a TV-n.
 - [ ] A publikus admin/config tiltás és az esetleges másik addon regressziója rendben.
 
-### Kitölthető eredménylap
+<!-- doc-anchor:doc-kitoltheto-eredmenylap -->
+<a id="doc-kitoltheto-eredmenylap"></a>
+#### Kitölthető eredménylap
 
 | Funkció | LAN | Távoli Tailscale | Publikus Cloudflare |
 |---|---|---|---|
@@ -1457,9 +1635,13 @@ Mindhárom kliensalkalmazásnál külön jegyezd fel a verziót. Ugyanazt az egy
 
 Minden cella legyen **sikeres**, **sikertelen**, **nem tesztelt** vagy **nem alkalmazható**, rövid bizonyítékkal. Az útmutató nem tartalmaz más felhasználó rendszeréből átemelt, a te telepítésedre érvényesnek látszó teszteredményt.
 
-# A. Mentés, visszaállítás és frissítés
+<!-- doc-anchor:doc-a-mentes-visszaallitas-es-frissites -->
+<a id="doc-a-mentes-visszaallitas-es-frissites"></a>
+## A. Mentés, visszaállítás és frissítés
 
-## A.1. Mit kell megőrizni?
+<!-- doc-anchor:doc-a1-mit-kell-megorizni -->
+<a id="doc-a1-mit-kell-megorizni"></a>
+### A.1. Mit kell megőrizni?
 
 | Összetevő | Mentendő | Miért fontos? |
 |---|---|---|
@@ -1475,7 +1657,9 @@ A mentés legyen titkosított, másik eszközön is megőrzött és visszaállí
 
 Futó SQLite adatbázist ne egyszerű fájlmásolással ments a WAL-társak figyelmen kívül hagyásával: alkalmazásoldali exportot, SQLite online backupot vagy szabályos rövid leállítást használj. Egy konzisztenciaellenőrzés és egy külön gépes visszaállítási próba más-más dolgot bizonyít.
 
-## A.2. Konkrét AdGuard konfigurációmentés
+<!-- doc-anchor:doc-a2-konkret-adguard-konfiguraciomentes -->
+<a id="doc-a2-konkret-adguard-konfiguraciomentes"></a>
+### A.2. Konkrét AdGuard konfigurációmentés
 
 A következő eljárás az **itt bemutatott**, `/opt/stremio-network/adguard` elrendezéshez készült. Már meglévő CasaOS-adatkönyvtárnál a tényleges volume-okat használd, és ne hozz létre második AdGuardot. A mentés rövid DNS-kieséssel jár: lehetőleg még a teljes háztartás átállítása előtt vagy helyi karbantartáskor végezd.
 
@@ -1495,7 +1679,9 @@ dig @192.168.1.100 stremio.pelda.hu A
 
 Minden lépés kilépési állapotát ellenőrizd. Ha a másolás sikertelen, akkor is indítsd vissza az AdGuardot a változatlan konfigurációjával. A konfiguráció YAML-érvényességét a telepített verzió saját `AdGuardHome --check-config` funkciójával is ellenőrizheted; a pontos kapcsolókat előbb az adott image `--help` kimenetéből vedd. Titkos YAML-t ne tölts fel online ellenőrzőhöz.
 
-## A.3. Automatikus biztosíték kockázatos DNS-szabályteszthez
+<!-- doc-anchor:doc-a3-automatikus-biztositek-kockazatos-dns-szabalyteszthez -->
+<a id="doc-a3-automatikus-biztositek-kockazatos-dns-szabalyteszthez"></a>
+### A.3. Automatikus biztosíték kockázatos DNS-szabályteszthez
 
 Ha már ez a háztartás DNS-e, ne csak az SSH-kapcsolat túlélésére alapozz. Legyen helyi konzol vagy más működő elérés. Egy systemd-s Ubuntu gépen a következő példa **10 perc múlva visszaállítja a mentett AdGuard `conf` könyvtárat**, hacsak a sikeres tesztek után nem állítod le a timert.
 
@@ -1542,7 +1728,9 @@ sudo journalctl -u stremio-dns-rollback.service --no-pager -n 20
 
 A timer legyen `inactive` (ennek ellenőrzése szándékosan nem nulla kilépési kódot adhat); ellenőrizd, hogy közben nem indult-e el a rollback service. Már elindult visszaállítást ne szakíts félbe. Kritikus hibánál a scriptet a timer helyett kézzel is elindíthatod, **egyszer**, miután meggyőződtél róla, hogy nem fut párhuzamos visszaállítás.
 
-## A.4. Visszaállítási sorrend hiba esetén
+<!-- doc-anchor:doc-a4-visszaallitasi-sorrend-hiba-eseten -->
+<a id="doc-a4-visszaallitasi-sorrend-hiba-eseten"></a>
+### A.4. Visszaállítási sorrend hiba esetén
 
 | Hiba | Első visszaállítás | Amit ne tegyél |
 |---|---|---|
@@ -1557,7 +1745,9 @@ A DNS rollback után a cache-ek és nyitott kapcsolatok miatt késhet a láthat�
 
 Ha a 2. fejezetben a systemd-resolved stubot módosítottad és az AdGuard telepítését teljesen visszavonod, a korábbi, mentett resolverállapothoz térj vissza. Előbb legyen működő másik DNS; az 53-as porton ne indíts egymással ütköző szolgáltatásokat. A korábbi `/etc/resolv.conf` symlink/fájl típusát is őrizd meg, ne csak a szövegét.
 
-## A.5. Frissítési stratégia
+<!-- doc-anchor:doc-a5-frissitesi-strategia -->
+<a id="doc-a5-frissitesi-strategia"></a>
+### A.5. Frissítési stratégia
 
 A digestre rögzített image ismételhető telepítést ad, de **nem frissül magától**. Időnként:
 
@@ -1570,7 +1760,9 @@ A digestre rögzített image ismételhető telepítést ad, de **nem frissül ma
 
 A DNS API-token lejárata vagy visszavonása nem feltétlenül állítja le azonnal a HTTPS-t: a már kiadott tanúsítvány a lejáratáig élhet. A későbbi megújítás viszont elbukhat. Figyeld a megújítási hibákat és a lejáratot, ne csak a konténer `Up` állapotát.
 
-# B. Tünet–ok–ellenőrzés gyorssegéd
+<!-- doc-anchor:doc-b-tunetokellenorzes-gyorsseged -->
+<a id="doc-b-tunetokellenorzes-gyorsseged"></a>
+## B. Tünet–ok–ellenőrzés gyorssegéd
 
 | Tünet | Lehetséges ok | Következő érdemi lépés |
 |---|---|---|
@@ -1595,7 +1787,9 @@ A DNS API-token lejárata vagy visszavonása nem feltétlenül állítja le azon
 | VPN-en akadozó nagy film | DERP/relay, feltöltési korlát, bitráta vagy kliensdekódolás | Aktív peer kapcsolattípus és lejátszóadatok; ne a DNS-t tekintsd sebességmérőnek |
 | Hálózatváltás után régi út marad | Cache/nyitott socket | Új névfeloldás és új kapcsolat; nincs automatikus stream-handover |
 
-## B.1. Megosztható hibajegy minimális tartalma
+<!-- doc-anchor:doc-b1-megoszthato-hibajegy-minimalis-tartalma -->
+<a id="doc-b1-megoszthato-hibajegy-minimalis-tartalma"></a>
+### B.1. Megosztható hibajegy minimális tartalma
 
 Oszd meg a programverziókat, az érintett tesztprofilt, az A/AAAA/HTTPS/SVCB státuszát, a HTTP-kódot, a Range kezdő/végpontját, a fogadott bájtszámot és hogy a peer **LAN / Tailscale / Cloudflare** tartományba esett-e. A nyers IP-ket, saját domaint, felhasználói azonosítókat, teljes URL-t, kulcsot, `Location` fejlécet és tokent anonimizáld. Ne mellékeld a `.env` fájlt vagy a Docker teljes környezeti dumpját.
 

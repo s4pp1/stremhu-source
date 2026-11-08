@@ -161,10 +161,11 @@ export function OtherPreferences() {
           <CardHeader>
             <CardTitle>Katalógus keresés</CardTitle>
             <CardDescription>
-              A Stremio és Nuvio közvetlen keresőmezőjének kiszolgálása az nCore
-              torrent-katalógusából. Kikapcsolva az addon nem jelenik meg a
-              Discover/Keresés katalógusok listájában, csak stream forrásként
-              működik.
+              A Stremio és Nuvio közvetlen keresőmezőjének kiszolgálása a
+              trackerek torrent-katalógusából. A változás azonnal érvényes, az
+              addont nem kell újratelepíteni. Kikapcsolva a szerver nem ad
+              katalógustalálatot és nem terheli a trackereket; a StremHU
+              keresési sora a kliensben üresen megjelenhet.
             </CardDescription>
           </CardHeader>
           <CardContent>

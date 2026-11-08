@@ -1,0 +1,22 @@
+{
+ "id": "cr15b2-after-v4",
+ "registered_at_utc": "2026-11-07T23:42:30.391115+00:00",
+ "status": "Final packet 26b normal-workload gate; registered before any measured run (only a 4-request smoke of each side ran).",
+ "change": "get_bounded follows redirects itself via the public Response.next_request (relative Location, cookie/header rules unchanged), closes each redirect body unread, keeps history, max 10 hops. Per-hop origin allowlist not part of this change.",
+ "before": "frozen wip/cr15-chain-v3 ecafdeb server/app (CR15a v3 + 26a; cr15b-after-v3-source manifest)",
+ "after": "frozen wip/cr15-chain-v3 a4b9229 server/app (cr15b2-after-v4-source manifest; strict host policy)",
+ "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+ "fixture_sha256": {
+  "expected.json": "53a55d2bc4b2aec110bce050d54ecdbdbe743d18054e5cd1a6cd5f547121c3cc",
+  "metadata_sizes.py": "ae4df3ab93935cd8961f7efd36b5d8bd125c57d1a7d56d3858a9f0e5c896ed4c",
+  "probe.py": "01a3887fe8bcf527677749b5c3c004e8ca6cb0fa1fe5a4072ce36bb970bb9f10",
+  "server.py": "6272a2a03bc2446d3413470712f0ef58371abbe46a8ae0550633bd1fc126d55f"
+ },
+ "controller_sha256": "18514babcc2018a4a0fa4b40f073b1372bbb2f1873c387cd258c02f2d8d3a743",
+ "assessor_sha256": "25c00a459e5b7e5fbc7f44cbab392d1db9056eb5b77f524ee77e4eb2caaec84c",
+ "workload": "G15 normal-transport v2 probe with only the cdn-redirect kind removed, unchanged private tracker fixture (small, many-files, large-valid 21.5 MB, login-redirect with one relogin, 4 s drip; cdn-redirect excluded because it leaves the tracker domain, see cr15b2-redirect-v4) x concurrency 1/4/8 x 100 requests, cold and warmup separate.",
+ "sampling": "Two series x five before/after pairs, pair order alternating (ABBA).",
+ "resources": "client 2 CPU on 2,3 / 1 GiB; private HTTP server 1 CPU on 4 / 512 MiB; internal network, no outbound, no real credentials.",
+ "concurrency_note": "Runs after the 26b v3 gate on cpus 2-4; CR15a v3 gate (8-10), G04 (12-14) and the packet 27 v2 gate (0,1,6) on disjoint cpusets.",
+ "decision": "Plan 2.3 safety/correctness rule. PASS iff all 20 normal runs complete with the probe checks (hash, relogin count, cookie/outbound boundary) and no (kind, concurrency) metric among p50/p95, CPU seconds, anon after and per-cell anon peak shows repeatable degradation (both series medians > before max + J). Otherwise FAIL; missing runs INVALID. The redirect-body effect itself is the separate functional gate cr15b2-redirect-v4."
+}

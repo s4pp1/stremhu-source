@@ -1,0 +1,3197 @@
+{
+ "diagnostic_only": true,
+ "results": [
+  {
+   "variant": "before-cfg",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40103936,
+   "anon_peak": 40988672,
+   "p50_ms": 1.69969,
+   "cpu_seconds": 0.10813157400000001,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42414080,
+   "anon_peak": 41738240,
+   "p50_ms": 6.376892,
+   "cpu_seconds": 0.10556282800000005,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 42627072,
+   "anon_peak": 42414080,
+   "p50_ms": 16.380187,
+   "cpu_seconds": 0.13150302700000005,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 61202432,
+   "anon_peak": 76193792,
+   "p50_ms": 2.80635,
+   "cpu_seconds": 0.28136256599999987,
+   "retention": {
+    "immediate": {
+     "cg_anon": 61202432,
+     "rss_anon": 61202432,
+     "heap_in_use": 29836672,
+     "heap_free": 4254336,
+     "heap_arena": 34091008,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     6,
+     0
+    ],
+    "slept": {
+     "cg_anon": 61202432,
+     "rss_anon": 61202432,
+     "heap_in_use": 29836672,
+     "heap_free": 4254336,
+     "heap_arena": 34091008,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 494,
+     "large_bytes_referents": 14,
+     "large_bytes_total": 19079522,
+     "top_types": [
+      [
+       "tuple",
+       144
+      ],
+      [
+       "list",
+       56
+      ],
+      [
+       "Headers",
+       28
+      ],
+      [
+       "dict",
+       28
+      ],
+      [
+       "Request",
+       28
+      ],
+      [
+       "URL",
+       28
+      ],
+      [
+       "Event",
+       28
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       14
+      ],
+      [
+       "PoolByteStream",
+       14
+      ],
+      [
+       "AsyncResponseStream",
+       14
+      ],
+      [
+       "Response",
+       14
+      ],
+      [
+       "BoundAsyncStream",
+       14
+      ],
+      [
+       "IdentityDecoder",
+       14
+      ],
+      [
+       "ParseResult",
+       14
+      ],
+      [
+       "ByteStream",
+       14
+      ],
+      [
+       "AsyncPoolRequest",
+       14
+      ],
+      [
+       "AsyncEvent",
+       14
+      ],
+      [
+       "deque",
+       14
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 42254336,
+     "rss_anon": 42254336,
+     "heap_in_use": 10752224,
+     "heap_free": 4259616,
+     "heap_arena": 15011840,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 78364672,
+   "anon_peak": 86523904,
+   "p50_ms": 12.591083,
+   "cpu_seconds": 0.28394571,
+   "retention": {
+    "immediate": {
+     "cg_anon": 78364672,
+     "rss_anon": 78364672,
+     "heap_in_use": 42118704,
+     "heap_free": 9077200,
+     "heap_arena": 51195904,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 78364672,
+     "rss_anon": 78364672,
+     "heap_in_use": 42118704,
+     "heap_free": 9077200,
+     "heap_arena": 51195904,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 673,
+     "large_bytes_referents": 23,
+     "large_bytes_total": 31344929,
+     "top_types": [
+      [
+       "tuple",
+       98
+      ],
+      [
+       "list",
+       92
+      ],
+      [
+       "Request",
+       46
+      ],
+      [
+       "URL",
+       46
+      ],
+      [
+       "dict",
+       46
+      ],
+      [
+       "Headers",
+       46
+      ],
+      [
+       "Event",
+       46
+      ],
+      [
+       "ParseResult",
+       23
+      ],
+      [
+       "ByteStream",
+       23
+      ],
+      [
+       "AsyncPoolRequest",
+       23
+      ],
+      [
+       "AsyncEvent",
+       23
+      ],
+      [
+       "deque",
+       23
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       23
+      ],
+      [
+       "PoolByteStream",
+       23
+      ],
+      [
+       "AsyncResponseStream",
+       23
+      ],
+      [
+       "Response",
+       23
+      ],
+      [
+       "BoundAsyncStream",
+       23
+      ],
+      [
+       "IdentityDecoder",
+       23
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 42311680,
+     "rss_anon": 42311680,
+     "heap_in_use": 10763584,
+     "heap_free": 4248256,
+     "heap_arena": 15011840,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 103800832,
+   "anon_peak": 87433216,
+   "p50_ms": 25.399252,
+   "cpu_seconds": 0.27294555,
+   "retention": {
+    "immediate": {
+     "cg_anon": 103800832,
+     "rss_anon": 103800832,
+     "heap_in_use": 68036080,
+     "heap_free": 8624656,
+     "heap_arena": 76660736,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 103800832,
+     "rss_anon": 103800832,
+     "heap_in_use": 68036080,
+     "heap_free": 8624656,
+     "heap_arena": 76660736,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 1306,
+     "large_bytes_referents": 42,
+     "large_bytes_total": 57238566,
+     "top_types": [
+      [
+       "tuple",
+       256
+      ],
+      [
+       "list",
+       168
+      ],
+      [
+       "Request",
+       84
+      ],
+      [
+       "URL",
+       84
+      ],
+      [
+       "dict",
+       84
+      ],
+      [
+       "Headers",
+       84
+      ],
+      [
+       "Event",
+       84
+      ],
+      [
+       "ParseResult",
+       42
+      ],
+      [
+       "ByteStream",
+       42
+      ],
+      [
+       "AsyncPoolRequest",
+       42
+      ],
+      [
+       "AsyncEvent",
+       42
+      ],
+      [
+       "deque",
+       42
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       42
+      ],
+      [
+       "PoolByteStream",
+       42
+      ],
+      [
+       "AsyncResponseStream",
+       42
+      ],
+      [
+       "Response",
+       42
+      ],
+      [
+       "BoundAsyncStream",
+       42
+      ],
+      [
+       "IdentityDecoder",
+       42
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 42418176,
+     "rss_anon": 42418176,
+     "heap_in_use": 10776192,
+     "heap_free": 4370816,
+     "heap_arena": 15147008,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40636416,
+   "anon_peak": 41123840,
+   "p50_ms": 1.679899,
+   "cpu_seconds": 0.10610687899999999,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 41783296,
+   "anon_peak": 41803776,
+   "p50_ms": 6.31862,
+   "cpu_seconds": 0.10481856699999997,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 41975808,
+   "anon_peak": 42340352,
+   "p50_ms": 16.789169,
+   "cpu_seconds": 0.13031730500000005,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 66367488,
+   "anon_peak": 71819264,
+   "p50_ms": 2.685565,
+   "cpu_seconds": 0.26755062900000004,
+   "retention": {
+    "immediate": {
+     "cg_anon": 66367488,
+     "rss_anon": 66367488,
+     "heap_in_use": 35297648,
+     "heap_free": 3929744,
+     "heap_arena": 39227392,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     6,
+     0
+    ],
+    "slept": {
+     "cg_anon": 66367488,
+     "rss_anon": 66367488,
+     "heap_in_use": 35297648,
+     "heap_free": 3929744,
+     "heap_arena": 39227392,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 664,
+     "large_bytes_referents": 18,
+     "large_bytes_total": 24530814,
+     "top_types": [
+      [
+       "tuple",
+       196
+      ],
+      [
+       "list",
+       72
+      ],
+      [
+       "Request",
+       36
+      ],
+      [
+       "URL",
+       36
+      ],
+      [
+       "dict",
+       36
+      ],
+      [
+       "Headers",
+       36
+      ],
+      [
+       "Event",
+       36
+      ],
+      [
+       "ParseResult",
+       18
+      ],
+      [
+       "ByteStream",
+       18
+      ],
+      [
+       "AsyncPoolRequest",
+       18
+      ],
+      [
+       "AsyncEvent",
+       18
+      ],
+      [
+       "deque",
+       18
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       18
+      ],
+      [
+       "PoolByteStream",
+       18
+      ],
+      [
+       "AsyncResponseStream",
+       18
+      ],
+      [
+       "Response",
+       18
+      ],
+      [
+       "BoundAsyncStream",
+       18
+      ],
+      [
+       "_CappedStream",
+       18
+      ],
+      [
+       "IdentityDecoder",
+       18
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 41902080,
+     "rss_anon": 41902080,
+     "heap_in_use": 10758944,
+     "heap_free": 3871968,
+     "heap_arena": 14630912,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 89608192,
+   "anon_peak": 80240640,
+   "p50_ms": 12.544819,
+   "cpu_seconds": 0.27313671699999986,
+   "retention": {
+    "immediate": {
+     "cg_anon": 89608192,
+     "rss_anon": 89608192,
+     "heap_in_use": 54401344,
+     "heap_free": 8050368,
+     "heap_arena": 62451712,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 89608192,
+     "rss_anon": 89608192,
+     "heap_in_use": 54401344,
+     "heap_free": 8050368,
+     "heap_arena": 62451712,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 1032,
+     "large_bytes_referents": 32,
+     "large_bytes_total": 43610336,
+     "top_types": [
+      [
+       "tuple",
+       200
+      ],
+      [
+       "list",
+       128
+      ],
+      [
+       "Request",
+       64
+      ],
+      [
+       "URL",
+       64
+      ],
+      [
+       "dict",
+       64
+      ],
+      [
+       "Headers",
+       64
+      ],
+      [
+       "Event",
+       64
+      ],
+      [
+       "ParseResult",
+       32
+      ],
+      [
+       "ByteStream",
+       32
+      ],
+      [
+       "AsyncPoolRequest",
+       32
+      ],
+      [
+       "AsyncEvent",
+       32
+      ],
+      [
+       "deque",
+       32
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       32
+      ],
+      [
+       "PoolByteStream",
+       32
+      ],
+      [
+       "AsyncResponseStream",
+       32
+      ],
+      [
+       "Response",
+       32
+      ],
+      [
+       "BoundAsyncStream",
+       32
+      ],
+      [
+       "_CappedStream",
+       32
+      ],
+      [
+       "IdentityDecoder",
+       32
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 41259008,
+     "rss_anon": 41259008,
+     "heap_in_use": 10775552,
+     "heap_free": 3195904,
+     "heap_arena": 13971456,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 99528704,
+   "anon_peak": 86704128,
+   "p50_ms": 25.953281,
+   "cpu_seconds": 0.284250431,
+   "retention": {
+    "immediate": {
+     "cg_anon": 99528704,
+     "rss_anon": 99528704,
+     "heap_in_use": 62586176,
+     "heap_free": 9708224,
+     "heap_arena": 72294400,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 99528704,
+     "rss_anon": 99528704,
+     "heap_in_use": 62586176,
+     "heap_free": 9708224,
+     "heap_arena": 72294400,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 1206,
+     "large_bytes_referents": 38,
+     "large_bytes_total": 51787274,
+     "top_types": [
+      [
+       "tuple",
+       218
+      ],
+      [
+       "list",
+       152
+      ],
+      [
+       "Headers",
+       76
+      ],
+      [
+       "dict",
+       76
+      ],
+      [
+       "Request",
+       76
+      ],
+      [
+       "URL",
+       76
+      ],
+      [
+       "Event",
+       76
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       38
+      ],
+      [
+       "PoolByteStream",
+       38
+      ],
+      [
+       "AsyncResponseStream",
+       38
+      ],
+      [
+       "Response",
+       38
+      ],
+      [
+       "BoundAsyncStream",
+       38
+      ],
+      [
+       "_CappedStream",
+       38
+      ],
+      [
+       "IdentityDecoder",
+       38
+      ],
+      [
+       "ParseResult",
+       38
+      ],
+      [
+       "ByteStream",
+       38
+      ],
+      [
+       "AsyncPoolRequest",
+       38
+      ],
+      [
+       "AsyncEvent",
+       38
+      ],
+      [
+       "deque",
+       38
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 41144320,
+     "rss_anon": 41144320,
+     "heap_in_use": 10779936,
+     "heap_free": 2999008,
+     "heap_arena": 13778944,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40116224,
+   "anon_peak": 40894464,
+   "p50_ms": 1.718802,
+   "cpu_seconds": 0.11111534999999995,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42500096,
+   "anon_peak": 41566208,
+   "p50_ms": 6.545365,
+   "cpu_seconds": 0.11101328499999996,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 42807296,
+   "anon_peak": 42799104,
+   "p50_ms": 17.502781,
+   "cpu_seconds": 0.13158623299999994,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 64241664,
+   "anon_peak": 68329472,
+   "p50_ms": 2.710829,
+   "cpu_seconds": 0.2738961769999999,
+   "retention": {
+    "immediate": {
+     "cg_anon": 64241664,
+     "rss_anon": 64241664,
+     "heap_in_use": 32570512,
+     "heap_free": 4551536,
+     "heap_arena": 37122048,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     6,
+     0
+    ],
+    "slept": {
+     "cg_anon": 64241664,
+     "rss_anon": 64241664,
+     "heap_in_use": 32570512,
+     "heap_free": 4551536,
+     "heap_arena": 37122048,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 612,
+     "large_bytes_referents": 16,
+     "large_bytes_total": 21805168,
+     "top_types": [
+      [
+       "tuple",
+       196
+      ],
+      [
+       "list",
+       64
+      ],
+      [
+       "Request",
+       32
+      ],
+      [
+       "URL",
+       32
+      ],
+      [
+       "dict",
+       32
+      ],
+      [
+       "Headers",
+       32
+      ],
+      [
+       "Event",
+       32
+      ],
+      [
+       "ParseResult",
+       16
+      ],
+      [
+       "ByteStream",
+       16
+      ],
+      [
+       "AsyncPoolRequest",
+       16
+      ],
+      [
+       "AsyncEvent",
+       16
+      ],
+      [
+       "deque",
+       16
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       16
+      ],
+      [
+       "PoolByteStream",
+       16
+      ],
+      [
+       "AsyncResponseStream",
+       16
+      ],
+      [
+       "Response",
+       16
+      ],
+      [
+       "BoundAsyncStream",
+       16
+      ],
+      [
+       "_CappedStream",
+       16
+      ],
+      [
+       "IdentityDecoder",
+       16
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 42565632,
+     "rss_anon": 42565632,
+     "heap_in_use": 10760240,
+     "heap_free": 4554704,
+     "heap_arena": 15314944,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 75644928,
+   "anon_peak": 77369344,
+   "p50_ms": 12.405737,
+   "cpu_seconds": 0.2723818040000001,
+   "retention": {
+    "immediate": {
+     "cg_anon": 75644928,
+     "rss_anon": 75644928,
+     "heap_in_use": 40765168,
+     "heap_free": 7715088,
+     "heap_arena": 48480256,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 75644928,
+     "rss_anon": 75644928,
+     "heap_in_use": 40765168,
+     "heap_free": 7715088,
+     "heap_arena": 48480256,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 670,
+     "large_bytes_referents": 22,
+     "large_bytes_total": 29982106,
+     "top_types": [
+      [
+       "tuple",
+       98
+      ],
+      [
+       "list",
+       88
+      ],
+      [
+       "Request",
+       44
+      ],
+      [
+       "URL",
+       44
+      ],
+      [
+       "dict",
+       44
+      ],
+      [
+       "Headers",
+       44
+      ],
+      [
+       "Event",
+       44
+      ],
+      [
+       "ParseResult",
+       22
+      ],
+      [
+       "ByteStream",
+       22
+      ],
+      [
+       "AsyncPoolRequest",
+       22
+      ],
+      [
+       "AsyncEvent",
+       22
+      ],
+      [
+       "deque",
+       22
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       22
+      ],
+      [
+       "PoolByteStream",
+       22
+      ],
+      [
+       "AsyncResponseStream",
+       22
+      ],
+      [
+       "Response",
+       22
+      ],
+      [
+       "BoundAsyncStream",
+       22
+      ],
+      [
+       "_CappedStream",
+       22
+      ],
+      [
+       "IdentityDecoder",
+       22
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 42610688,
+     "rss_anon": 42610688,
+     "heap_in_use": 10773424,
+     "heap_free": 4541520,
+     "heap_arena": 15314944,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 104570880,
+   "anon_peak": 87212032,
+   "p50_ms": 25.976952,
+   "cpu_seconds": 0.28351638999999995,
+   "retention": {
+    "immediate": {
+     "cg_anon": 104570880,
+     "rss_anon": 104570880,
+     "heap_in_use": 68042032,
+     "heap_free": 9396944,
+     "heap_arena": 77438976,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 104570880,
+     "rss_anon": 104570880,
+     "heap_in_use": 68042032,
+     "heap_free": 9396944,
+     "heap_arena": 77438976,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 1358,
+     "large_bytes_referents": 42,
+     "large_bytes_total": 57238566,
+     "top_types": [
+      [
+       "tuple",
+       266
+      ],
+      [
+       "list",
+       168
+      ],
+      [
+       "Request",
+       84
+      ],
+      [
+       "URL",
+       84
+      ],
+      [
+       "dict",
+       84
+      ],
+      [
+       "Headers",
+       84
+      ],
+      [
+       "Event",
+       84
+      ],
+      [
+       "ParseResult",
+       42
+      ],
+      [
+       "ByteStream",
+       42
+      ],
+      [
+       "AsyncPoolRequest",
+       42
+      ],
+      [
+       "AsyncEvent",
+       42
+      ],
+      [
+       "deque",
+       42
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       42
+      ],
+      [
+       "PoolByteStream",
+       42
+      ],
+      [
+       "AsyncResponseStream",
+       42
+      ],
+      [
+       "Response",
+       42
+      ],
+      [
+       "BoundAsyncStream",
+       42
+      ],
+      [
+       "_CappedStream",
+       42
+      ],
+      [
+       "IdentityDecoder",
+       42
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 42708992,
+     "rss_anon": 42708992,
+     "heap_in_use": 10782704,
+     "heap_free": 4663312,
+     "heap_arena": 15446016,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40243200,
+   "anon_peak": 41054208,
+   "p50_ms": 1.715017,
+   "cpu_seconds": 0.10966420999999998,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42090496,
+   "anon_peak": 41725952,
+   "p50_ms": 6.351922,
+   "cpu_seconds": 0.10712368400000005,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 42631168,
+   "anon_peak": 42205184,
+   "p50_ms": 17.102992,
+   "cpu_seconds": 0.13255457400000004,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 53899264,
+   "anon_peak": 77135872,
+   "p50_ms": 2.718799,
+   "cpu_seconds": 0.26721743200000003,
+   "retention": {
+    "immediate": {
+     "cg_anon": 53899264,
+     "rss_anon": 53899264,
+     "heap_in_use": 23018656,
+     "heap_free": 3752800,
+     "heap_arena": 26771456,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     6,
+     0
+    ],
+    "slept": {
+     "cg_anon": 53899264,
+     "rss_anon": 53899264,
+     "heap_in_use": 23018656,
+     "heap_free": 3752800,
+     "heap_arena": 26771456,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 313,
+     "large_bytes_referents": 9,
+     "large_bytes_total": 12265407,
+     "top_types": [
+      [
+       "tuple",
+       88
+      ],
+      [
+       "list",
+       36
+      ],
+      [
+       "Headers",
+       18
+      ],
+      [
+       "dict",
+       18
+      ],
+      [
+       "Request",
+       18
+      ],
+      [
+       "URL",
+       18
+      ],
+      [
+       "Event",
+       18
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       9
+      ],
+      [
+       "PoolByteStream",
+       9
+      ],
+      [
+       "AsyncResponseStream",
+       9
+      ],
+      [
+       "Response",
+       9
+      ],
+      [
+       "BoundAsyncStream",
+       9
+      ],
+      [
+       "IdentityDecoder",
+       9
+      ],
+      [
+       "ParseResult",
+       9
+      ],
+      [
+       "ByteStream",
+       9
+      ],
+      [
+       "AsyncPoolRequest",
+       9
+      ],
+      [
+       "AsyncEvent",
+       9
+      ],
+      [
+       "deque",
+       9
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 41111552,
+     "rss_anon": 41111552,
+     "heap_in_use": 10751248,
+     "heap_free": 3101424,
+     "heap_arena": 13852672,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 73797632,
+   "anon_peak": 88260608,
+   "p50_ms": 12.671336,
+   "cpu_seconds": 0.27565289999999987,
+   "retention": {
+    "immediate": {
+     "cg_anon": 73797632,
+     "rss_anon": 73797632,
+     "heap_in_use": 39393200,
+     "heap_free": 7211088,
+     "heap_arena": 46604288,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 73797632,
+     "rss_anon": 73797632,
+     "heap_in_use": 39393200,
+     "heap_free": 7211088,
+     "heap_arena": 46604288,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 585,
+     "large_bytes_referents": 21,
+     "large_bytes_total": 28619283,
+     "top_types": [
+      [
+       "list",
+       84
+      ],
+      [
+       "tuple",
+       60
+      ],
+      [
+       "Headers",
+       42
+      ],
+      [
+       "dict",
+       42
+      ],
+      [
+       "Request",
+       42
+      ],
+      [
+       "URL",
+       42
+      ],
+      [
+       "Event",
+       42
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       21
+      ],
+      [
+       "PoolByteStream",
+       21
+      ],
+      [
+       "AsyncResponseStream",
+       21
+      ],
+      [
+       "Response",
+       21
+      ],
+      [
+       "BoundAsyncStream",
+       21
+      ],
+      [
+       "IdentityDecoder",
+       21
+      ],
+      [
+       "ParseResult",
+       21
+      ],
+      [
+       "ByteStream",
+       21
+      ],
+      [
+       "AsyncPoolRequest",
+       21
+      ],
+      [
+       "AsyncEvent",
+       21
+      ],
+      [
+       "deque",
+       21
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 41177088,
+     "rss_anon": 41177088,
+     "heap_in_use": 10763792,
+     "heap_free": 3088880,
+     "heap_arena": 13852672,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 97923072,
+   "anon_peak": 88621056,
+   "p50_ms": 25.11632,
+   "cpu_seconds": 0.27385859700000004,
+   "retention": {
+    "immediate": {
+     "cg_anon": 97923072,
+     "rss_anon": 97923072,
+     "heap_in_use": 61217216,
+     "heap_free": 9557568,
+     "heap_arena": 70774784,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 97923072,
+     "rss_anon": 97923072,
+     "heap_in_use": 61217216,
+     "heap_free": 9557568,
+     "heap_arena": 70774784,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 1135,
+     "large_bytes_referents": 37,
+     "large_bytes_total": 50424451,
+     "top_types": [
+      [
+       "tuple",
+       210
+      ],
+      [
+       "list",
+       148
+      ],
+      [
+       "Request",
+       74
+      ],
+      [
+       "URL",
+       74
+      ],
+      [
+       "dict",
+       74
+      ],
+      [
+       "Headers",
+       74
+      ],
+      [
+       "Event",
+       74
+      ],
+      [
+       "ParseResult",
+       37
+      ],
+      [
+       "ByteStream",
+       37
+      ],
+      [
+       "AsyncPoolRequest",
+       37
+      ],
+      [
+       "AsyncEvent",
+       37
+      ],
+      [
+       "deque",
+       37
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       37
+      ],
+      [
+       "PoolByteStream",
+       37
+      ],
+      [
+       "AsyncResponseStream",
+       37
+      ],
+      [
+       "Response",
+       37
+      ],
+      [
+       "BoundAsyncStream",
+       37
+      ],
+      [
+       "IdentityDecoder",
+       37
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 41267200,
+     "rss_anon": 41267200,
+     "heap_in_use": 10774912,
+     "heap_free": 3212928,
+     "heap_arena": 13987840,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40046592,
+   "anon_peak": 40861696,
+   "p50_ms": 1.744215,
+   "cpu_seconds": 0.11040628699999999,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42442752,
+   "anon_peak": 42045440,
+   "p50_ms": 6.608104,
+   "cpu_seconds": 0.11245587700000004,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 42799104,
+   "anon_peak": 42442752,
+   "p50_ms": 15.8156,
+   "cpu_seconds": 0.13078819900000005,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 55562240,
+   "anon_peak": 78729216,
+   "p50_ms": 2.711519,
+   "cpu_seconds": 0.26302346099999996,
+   "retention": {
+    "immediate": {
+     "cg_anon": 55562240,
+     "rss_anon": 55562240,
+     "heap_in_use": 24381440,
+     "heap_free": 4065280,
+     "heap_arena": 28446720,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     6,
+     0
+    ],
+    "slept": {
+     "cg_anon": 55562240,
+     "rss_anon": 55562240,
+     "heap_in_use": 24381440,
+     "heap_free": 4065280,
+     "heap_arena": 28446720,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 338,
+     "large_bytes_referents": 10,
+     "large_bytes_total": 13628230,
+     "top_types": [
+      [
+       "tuple",
+       88
+      ],
+      [
+       "list",
+       40
+      ],
+      [
+       "Headers",
+       20
+      ],
+      [
+       "dict",
+       20
+      ],
+      [
+       "Request",
+       20
+      ],
+      [
+       "URL",
+       20
+      ],
+      [
+       "Event",
+       20
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       10
+      ],
+      [
+       "PoolByteStream",
+       10
+      ],
+      [
+       "AsyncResponseStream",
+       10
+      ],
+      [
+       "Response",
+       10
+      ],
+      [
+       "BoundAsyncStream",
+       10
+      ],
+      [
+       "IdentityDecoder",
+       10
+      ],
+      [
+       "ParseResult",
+       10
+      ],
+      [
+       "ByteStream",
+       10
+      ],
+      [
+       "AsyncPoolRequest",
+       10
+      ],
+      [
+       "AsyncEvent",
+       10
+      ],
+      [
+       "deque",
+       10
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 41930752,
+     "rss_anon": 41930752,
+     "heap_in_use": 10750624,
+     "heap_free": 3933536,
+     "heap_arena": 14684160,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 74702848,
+   "anon_peak": 88780800,
+   "p50_ms": 12.77654,
+   "cpu_seconds": 0.274959924,
+   "retention": {
+    "immediate": {
+     "cg_anon": 74702848,
+     "rss_anon": 74702848,
+     "heap_in_use": 39392096,
+     "heap_free": 8129696,
+     "heap_arena": 47521792,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 74702848,
+     "rss_anon": 74702848,
+     "heap_in_use": 39392096,
+     "heap_free": 8129696,
+     "heap_arena": 47521792,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 585,
+     "large_bytes_referents": 21,
+     "large_bytes_total": 28619283,
+     "top_types": [
+      [
+       "list",
+       84
+      ],
+      [
+       "tuple",
+       60
+      ],
+      [
+       "Headers",
+       42
+      ],
+      [
+       "dict",
+       42
+      ],
+      [
+       "Request",
+       42
+      ],
+      [
+       "URL",
+       42
+      ],
+      [
+       "Event",
+       42
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       21
+      ],
+      [
+       "PoolByteStream",
+       21
+      ],
+      [
+       "AsyncResponseStream",
+       21
+      ],
+      [
+       "Response",
+       21
+      ],
+      [
+       "BoundAsyncStream",
+       21
+      ],
+      [
+       "IdentityDecoder",
+       21
+      ],
+      [
+       "ParseResult",
+       21
+      ],
+      [
+       "ByteStream",
+       21
+      ],
+      [
+       "AsyncPoolRequest",
+       21
+      ],
+      [
+       "AsyncEvent",
+       21
+      ],
+      [
+       "deque",
+       21
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 41996288,
+     "rss_anon": 41996288,
+     "heap_in_use": 10762688,
+     "heap_free": 3921472,
+     "heap_arena": 14684160,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 95506432,
+   "anon_peak": 87166976,
+   "p50_ms": 25.451215,
+   "cpu_seconds": 0.2757317960000001,
+   "retention": {
+    "immediate": {
+     "cg_anon": 95506432,
+     "rss_anon": 95506432,
+     "heap_in_use": 58491424,
+     "heap_free": 9899488,
+     "heap_arena": 68390912,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 95506432,
+     "rss_anon": 95506432,
+     "heap_in_use": 58491424,
+     "heap_free": 9899488,
+     "heap_arena": 68390912,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 1071,
+     "large_bytes_referents": 35,
+     "large_bytes_total": 47698805,
+     "top_types": [
+      [
+       "tuple",
+       196
+      ],
+      [
+       "list",
+       140
+      ],
+      [
+       "Request",
+       70
+      ],
+      [
+       "URL",
+       70
+      ],
+      [
+       "dict",
+       70
+      ],
+      [
+       "Headers",
+       70
+      ],
+      [
+       "Event",
+       70
+      ],
+      [
+       "ParseResult",
+       35
+      ],
+      [
+       "ByteStream",
+       35
+      ],
+      [
+       "AsyncPoolRequest",
+       35
+      ],
+      [
+       "AsyncEvent",
+       35
+      ],
+      [
+       "deque",
+       35
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       35
+      ],
+      [
+       "PoolByteStream",
+       35
+      ],
+      [
+       "AsyncResponseStream",
+       35
+      ],
+      [
+       "Response",
+       35
+      ],
+      [
+       "BoundAsyncStream",
+       35
+      ],
+      [
+       "IdentityDecoder",
+       35
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 42065920,
+     "rss_anon": 42065920,
+     "heap_in_use": 10775376,
+     "heap_free": 4043952,
+     "heap_arena": 14819328,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40550400,
+   "anon_peak": 40996864,
+   "p50_ms": 1.702942,
+   "cpu_seconds": 0.10789073399999999,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42860544,
+   "anon_peak": 41508864,
+   "p50_ms": 6.655242,
+   "cpu_seconds": 0.11170335600000003,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 42373120,
+   "anon_peak": 42373120,
+   "p50_ms": 17.248913,
+   "cpu_seconds": 0.133244802,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 66498560,
+   "anon_peak": 73310208,
+   "p50_ms": 2.733309,
+   "cpu_seconds": 0.26483923900000006,
+   "retention": {
+    "immediate": {
+     "cg_anon": 66498560,
+     "rss_anon": 66498560,
+     "heap_in_use": 35297664,
+     "heap_free": 4081280,
+     "heap_arena": 39378944,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     6,
+     0
+    ],
+    "slept": {
+     "cg_anon": 66498560,
+     "rss_anon": 66498560,
+     "heap_in_use": 35297664,
+     "heap_free": 4081280,
+     "heap_arena": 39378944,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 664,
+     "large_bytes_referents": 18,
+     "large_bytes_total": 24530814,
+     "top_types": [
+      [
+       "tuple",
+       196
+      ],
+      [
+       "list",
+       72
+      ],
+      [
+       "Request",
+       36
+      ],
+      [
+       "URL",
+       36
+      ],
+      [
+       "dict",
+       36
+      ],
+      [
+       "Headers",
+       36
+      ],
+      [
+       "Event",
+       36
+      ],
+      [
+       "ParseResult",
+       18
+      ],
+      [
+       "ByteStream",
+       18
+      ],
+      [
+       "AsyncPoolRequest",
+       18
+      ],
+      [
+       "AsyncEvent",
+       18
+      ],
+      [
+       "deque",
+       18
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       18
+      ],
+      [
+       "PoolByteStream",
+       18
+      ],
+      [
+       "AsyncResponseStream",
+       18
+      ],
+      [
+       "Response",
+       18
+      ],
+      [
+       "BoundAsyncStream",
+       18
+      ],
+      [
+       "_CappedStream",
+       18
+      ],
+      [
+       "IdentityDecoder",
+       18
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 42094592,
+     "rss_anon": 42094592,
+     "heap_in_use": 10760576,
+     "heap_free": 4083328,
+     "heap_arena": 14843904,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 70688768,
+   "anon_peak": 84291584,
+   "p50_ms": 12.98542,
+   "cpu_seconds": 0.285049707,
+   "retention": {
+    "immediate": {
+     "cg_anon": 70688768,
+     "rss_anon": 70688768,
+     "heap_in_use": 36673600,
+     "heap_free": 6850496,
+     "heap_arena": 43524096,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 70688768,
+     "rss_anon": 70688768,
+     "heap_in_use": 36673600,
+     "heap_free": 6850496,
+     "heap_arena": 43524096,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 550,
+     "large_bytes_referents": 19,
+     "large_bytes_total": 25893637,
+     "top_types": [
+      [
+       "list",
+       76
+      ],
+      [
+       "tuple",
+       56
+      ],
+      [
+       "Request",
+       38
+      ],
+      [
+       "URL",
+       38
+      ],
+      [
+       "dict",
+       38
+      ],
+      [
+       "Headers",
+       38
+      ],
+      [
+       "Event",
+       38
+      ],
+      [
+       "ParseResult",
+       19
+      ],
+      [
+       "ByteStream",
+       19
+      ],
+      [
+       "AsyncPoolRequest",
+       19
+      ],
+      [
+       "AsyncEvent",
+       19
+      ],
+      [
+       "deque",
+       19
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       19
+      ],
+      [
+       "PoolByteStream",
+       19
+      ],
+      [
+       "AsyncResponseStream",
+       19
+      ],
+      [
+       "Response",
+       19
+      ],
+      [
+       "BoundAsyncStream",
+       19
+      ],
+      [
+       "_CappedStream",
+       19
+      ],
+      [
+       "IdentityDecoder",
+       19
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 42139648,
+     "rss_anon": 42139648,
+     "heap_in_use": 10771568,
+     "heap_free": 4072336,
+     "heap_arena": 14843904,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 102002688,
+   "anon_peak": 85827584,
+   "p50_ms": 25.750055,
+   "cpu_seconds": 0.279579354,
+   "retention": {
+    "immediate": {
+     "cg_anon": 102002688,
+     "rss_anon": 102002688,
+     "heap_in_use": 65317312,
+     "heap_free": 9614912,
+     "heap_arena": 74932224,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 102002688,
+     "rss_anon": 102002688,
+     "heap_in_use": 65317312,
+     "heap_free": 9614912,
+     "heap_arena": 74932224,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 1306,
+     "large_bytes_referents": 40,
+     "large_bytes_total": 54512920,
+     "top_types": [
+      [
+       "tuple",
+       266
+      ],
+      [
+       "list",
+       160
+      ],
+      [
+       "Request",
+       80
+      ],
+      [
+       "URL",
+       80
+      ],
+      [
+       "dict",
+       80
+      ],
+      [
+       "Headers",
+       80
+      ],
+      [
+       "Event",
+       80
+      ],
+      [
+       "ParseResult",
+       40
+      ],
+      [
+       "ByteStream",
+       40
+      ],
+      [
+       "AsyncPoolRequest",
+       40
+      ],
+      [
+       "AsyncEvent",
+       40
+      ],
+      [
+       "deque",
+       40
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       40
+      ],
+      [
+       "PoolByteStream",
+       40
+      ],
+      [
+       "AsyncResponseStream",
+       40
+      ],
+      [
+       "Response",
+       40
+      ],
+      [
+       "BoundAsyncStream",
+       40
+      ],
+      [
+       "_CappedStream",
+       40
+      ],
+      [
+       "IdentityDecoder",
+       40
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 42180608,
+     "rss_anon": 42180608,
+     "heap_in_use": 10784224,
+     "heap_free": 4194848,
+     "heap_arena": 14979072,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 3,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40271872,
+   "anon_peak": 40820736,
+   "p50_ms": 1.744184,
+   "cpu_seconds": 0.11119264000000001,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 3,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42098688,
+   "anon_peak": 41644032,
+   "p50_ms": 6.560752,
+   "cpu_seconds": 0.10988977999999999,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 3,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 42369024,
+   "anon_peak": 42315776,
+   "p50_ms": 17.845415,
+   "cpu_seconds": 0.13745077699999997,
+   "retention": null
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 3,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 66166784,
+   "anon_peak": 71749632,
+   "p50_ms": 2.777871,
+   "cpu_seconds": 0.26961051,
+   "retention": {
+    "immediate": {
+     "cg_anon": 66166784,
+     "rss_anon": 66166784,
+     "heap_in_use": 35297680,
+     "heap_free": 3753584,
+     "heap_arena": 39051264,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     6,
+     0
+    ],
+    "slept": {
+     "cg_anon": 66166784,
+     "rss_anon": 66166784,
+     "heap_in_use": 35297680,
+     "heap_free": 3753584,
+     "heap_arena": 39051264,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 664,
+     "large_bytes_referents": 18,
+     "large_bytes_total": 24530814,
+     "top_types": [
+      [
+       "tuple",
+       196
+      ],
+      [
+       "list",
+       72
+      ],
+      [
+       "Request",
+       36
+      ],
+      [
+       "URL",
+       36
+      ],
+      [
+       "dict",
+       36
+      ],
+      [
+       "Headers",
+       36
+      ],
+      [
+       "Event",
+       36
+      ],
+      [
+       "ParseResult",
+       18
+      ],
+      [
+       "ByteStream",
+       18
+      ],
+      [
+       "AsyncPoolRequest",
+       18
+      ],
+      [
+       "AsyncEvent",
+       18
+      ],
+      [
+       "deque",
+       18
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       18
+      ],
+      [
+       "PoolByteStream",
+       18
+      ],
+      [
+       "AsyncResponseStream",
+       18
+      ],
+      [
+       "Response",
+       18
+      ],
+      [
+       "BoundAsyncStream",
+       18
+      ],
+      [
+       "_CappedStream",
+       18
+      ],
+      [
+       "IdentityDecoder",
+       18
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 41177088,
+     "rss_anon": 41177088,
+     "heap_in_use": 10760592,
+     "heap_free": 3169904,
+     "heap_arena": 13930496,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 3,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 71753728,
+   "anon_peak": 84209664,
+   "p50_ms": 12.84936,
+   "cpu_seconds": 0.28154315900000015,
+   "retention": {
+    "immediate": {
+     "cg_anon": 71753728,
+     "rss_anon": 71753728,
+     "heap_in_use": 36674832,
+     "heap_free": 7914224,
+     "heap_arena": 44589056,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 71753728,
+     "rss_anon": 71753728,
+     "heap_in_use": 36674832,
+     "heap_free": 7914224,
+     "heap_arena": 44589056,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 554,
+     "large_bytes_referents": 19,
+     "large_bytes_total": 25893637,
+     "top_types": [
+      [
+       "list",
+       76
+      ],
+      [
+       "tuple",
+       60
+      ],
+      [
+       "Headers",
+       38
+      ],
+      [
+       "dict",
+       38
+      ],
+      [
+       "Request",
+       38
+      ],
+      [
+       "URL",
+       38
+      ],
+      [
+       "Event",
+       38
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       19
+      ],
+      [
+       "PoolByteStream",
+       19
+      ],
+      [
+       "AsyncResponseStream",
+       19
+      ],
+      [
+       "Response",
+       19
+      ],
+      [
+       "BoundAsyncStream",
+       19
+      ],
+      [
+       "_CappedStream",
+       19
+      ],
+      [
+       "IdentityDecoder",
+       19
+      ],
+      [
+       "ParseResult",
+       19
+      ],
+      [
+       "ByteStream",
+       19
+      ],
+      [
+       "AsyncPoolRequest",
+       19
+      ],
+      [
+       "AsyncEvent",
+       19
+      ],
+      [
+       "deque",
+       19
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 41213952,
+     "rss_anon": 41213952,
+     "heap_in_use": 10772240,
+     "heap_free": 3145968,
+     "heap_arena": 13918208,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "after-cfg",
+   "rep": 3,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 100880384,
+   "anon_peak": 87474176,
+   "p50_ms": 25.501981,
+   "cpu_seconds": 0.2777993970000001,
+   "retention": {
+    "immediate": {
+     "cg_anon": 100880384,
+     "rss_anon": 100880384,
+     "heap_in_use": 63951136,
+     "heap_free": 9813728,
+     "heap_arena": 73764864,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 100880384,
+     "rss_anon": 100880384,
+     "heap_in_use": 63951136,
+     "heap_free": 9813728,
+     "heap_arena": 73764864,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 1246,
+     "large_bytes_referents": 39,
+     "large_bytes_total": 53150097,
+     "top_types": [
+      [
+       "tuple",
+       232
+      ],
+      [
+       "list",
+       156
+      ],
+      [
+       "Request",
+       78
+      ],
+      [
+       "URL",
+       78
+      ],
+      [
+       "dict",
+       78
+      ],
+      [
+       "Headers",
+       78
+      ],
+      [
+       "Event",
+       78
+      ],
+      [
+       "ParseResult",
+       39
+      ],
+      [
+       "ByteStream",
+       39
+      ],
+      [
+       "AsyncPoolRequest",
+       39
+      ],
+      [
+       "AsyncEvent",
+       39
+      ],
+      [
+       "deque",
+       39
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       39
+      ],
+      [
+       "PoolByteStream",
+       39
+      ],
+      [
+       "AsyncResponseStream",
+       39
+      ],
+      [
+       "Response",
+       39
+      ],
+      [
+       "BoundAsyncStream",
+       39
+      ],
+      [
+       "_CappedStream",
+       39
+      ],
+      [
+       "IdentityDecoder",
+       39
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 41299968,
+     "rss_anon": 41299968,
+     "heap_in_use": 10781472,
+     "heap_free": 3271904,
+     "heap_arena": 14053376,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 3,
+   "kind": "small",
+   "concurrency": 1,
+   "anon_after": 40206336,
+   "anon_peak": 41033728,
+   "p50_ms": 1.716706,
+   "cpu_seconds": 0.10929971999999999,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 3,
+   "kind": "small",
+   "concurrency": 4,
+   "anon_after": 42344448,
+   "anon_peak": 41742336,
+   "p50_ms": 6.524117,
+   "cpu_seconds": 0.110187394,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 3,
+   "kind": "small",
+   "concurrency": 8,
+   "anon_after": 42876928,
+   "anon_peak": 42520576,
+   "p50_ms": 17.455734,
+   "cpu_seconds": 0.13280591399999997,
+   "retention": null
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 3,
+   "kind": "many-files",
+   "concurrency": 1,
+   "anon_after": 62169088,
+   "anon_peak": 71708672,
+   "p50_ms": 2.665817,
+   "cpu_seconds": 0.2601277999999999,
+   "retention": {
+    "immediate": {
+     "cg_anon": 62169088,
+     "rss_anon": 62169088,
+     "heap_in_use": 31198864,
+     "heap_free": 3838320,
+     "heap_arena": 35037184,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     6,
+     0
+    ],
+    "slept": {
+     "cg_anon": 62169088,
+     "rss_anon": 62169088,
+     "heap_in_use": 31198864,
+     "heap_free": 3838320,
+     "heap_arena": 35037184,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 529,
+     "large_bytes_referents": 15,
+     "large_bytes_total": 20442345,
+     "top_types": [
+      [
+       "tuple",
+       154
+      ],
+      [
+       "list",
+       60
+      ],
+      [
+       "Request",
+       30
+      ],
+      [
+       "URL",
+       30
+      ],
+      [
+       "dict",
+       30
+      ],
+      [
+       "Headers",
+       30
+      ],
+      [
+       "Event",
+       30
+      ],
+      [
+       "ParseResult",
+       15
+      ],
+      [
+       "ByteStream",
+       15
+      ],
+      [
+       "AsyncPoolRequest",
+       15
+      ],
+      [
+       "AsyncEvent",
+       15
+      ],
+      [
+       "deque",
+       15
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       15
+      ],
+      [
+       "PoolByteStream",
+       15
+      ],
+      [
+       "AsyncResponseStream",
+       15
+      ],
+      [
+       "Response",
+       15
+      ],
+      [
+       "BoundAsyncStream",
+       15
+      ],
+      [
+       "IdentityDecoder",
+       15
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 41857024,
+     "rss_anon": 41857024,
+     "heap_in_use": 10750992,
+     "heap_free": 3843056,
+     "heap_arena": 14594048,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 3,
+   "kind": "many-files",
+   "concurrency": 4,
+   "anon_after": 74944512,
+   "anon_peak": 88489984,
+   "p50_ms": 13.010469,
+   "cpu_seconds": 0.28216965400000005,
+   "retention": {
+    "immediate": {
+     "cg_anon": 74944512,
+     "rss_anon": 74944512,
+     "heap_in_use": 40755136,
+     "heap_free": 7008320,
+     "heap_arena": 47763456,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 74944512,
+     "rss_anon": 74944512,
+     "heap_in_use": 40755136,
+     "heap_free": 7008320,
+     "heap_arena": 47763456,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 614,
+     "large_bytes_referents": 22,
+     "large_bytes_total": 29982106,
+     "top_types": [
+      [
+       "list",
+       88
+      ],
+      [
+       "tuple",
+       64
+      ],
+      [
+       "Headers",
+       44
+      ],
+      [
+       "dict",
+       44
+      ],
+      [
+       "Request",
+       44
+      ],
+      [
+       "URL",
+       44
+      ],
+      [
+       "Event",
+       44
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       22
+      ],
+      [
+       "PoolByteStream",
+       22
+      ],
+      [
+       "AsyncResponseStream",
+       22
+      ],
+      [
+       "Response",
+       22
+      ],
+      [
+       "BoundAsyncStream",
+       22
+      ],
+      [
+       "IdentityDecoder",
+       22
+      ],
+      [
+       "ParseResult",
+       22
+      ],
+      [
+       "ByteStream",
+       22
+      ],
+      [
+       "AsyncPoolRequest",
+       22
+      ],
+      [
+       "AsyncEvent",
+       22
+      ],
+      [
+       "deque",
+       22
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 41578496,
+     "rss_anon": 41578496,
+     "heap_in_use": 10762320,
+     "heap_free": 3504048,
+     "heap_arena": 14266368,
+     "mmapped": 1363968
+    }
+   }
+  },
+  {
+   "variant": "before-cfg",
+   "rep": 3,
+   "kind": "many-files",
+   "concurrency": 8,
+   "anon_after": 100298752,
+   "anon_peak": 88170496,
+   "p50_ms": 25.726899,
+   "cpu_seconds": 0.27980308,
+   "retention": {
+    "immediate": {
+     "cg_anon": 100298752,
+     "rss_anon": 100298752,
+     "heap_in_use": 63945888,
+     "heap_free": 9212768,
+     "heap_arena": 73158656,
+     "mmapped": 1363968
+    },
+    "gc_count_immediate": [
+     6,
+     7,
+     0
+    ],
+    "slept": {
+     "cg_anon": 100298752,
+     "rss_anon": 100298752,
+     "heap_in_use": 63945888,
+     "heap_free": 9212768,
+     "heap_arena": 73158656,
+     "mmapped": 1363968
+    },
+    "cycles": {
+     "collected": 1207,
+     "large_bytes_referents": 39,
+     "large_bytes_total": 53150097,
+     "top_types": [
+      [
+       "tuple",
+       232
+      ],
+      [
+       "list",
+       156
+      ],
+      [
+       "Headers",
+       78
+      ],
+      [
+       "dict",
+       78
+      ],
+      [
+       "Request",
+       78
+      ],
+      [
+       "URL",
+       78
+      ],
+      [
+       "Event",
+       78
+      ],
+      [
+       "HTTP11ConnectionByteStream",
+       39
+      ],
+      [
+       "PoolByteStream",
+       39
+      ],
+      [
+       "AsyncResponseStream",
+       39
+      ],
+      [
+       "Response",
+       39
+      ],
+      [
+       "BoundAsyncStream",
+       39
+      ],
+      [
+       "IdentityDecoder",
+       39
+      ],
+      [
+       "ParseResult",
+       39
+      ],
+      [
+       "ByteStream",
+       39
+      ],
+      [
+       "AsyncPoolRequest",
+       39
+      ],
+      [
+       "AsyncEvent",
+       39
+      ],
+      [
+       "deque",
+       39
+      ]
+     ]
+    },
+    "collected": {
+     "cg_anon": 41672704,
+     "rss_anon": 41672704,
+     "heap_in_use": 10776224,
+     "heap_free": 3625312,
+     "heap_arena": 14401536,
+     "mmapped": 1363968
+    }
+   }
+  }
+ ]
+}

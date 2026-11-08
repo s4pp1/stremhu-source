@@ -1,7 +1,41 @@
+---
+doc_id: "feature-implementation-progress"
+title: "Implementációs állapot – 2026-10-30 (M01 – M18 lezárva)"
+kind: "historical-report"
+status: "historical-results"
+audience: ["developer", "ai-agent"]
+tags: ["M01-M18", "progress", "benchmark", "tests", "2026-10-30"]
+source_commit: null
+baseline: null
+verification: "structure-only"
+structure_reviewed: "2026-11-03"
+related_docs: ["docs/feature/stability-and-optimization/archive/m01-m18-implementation-plan.md", "docs/feature/stability-and-optimization/README.md"]
+source_paths: []
+---
+
 # Implementációs állapot – 2026-10-30 (M01 – M18 lezárva)
 
-A stabilitási és teljesítményjavítási terv ([`docs/stremhu-implementation-plan.md`](../stremhu-implementation-plan.md)) valamennyi modulja implementálásra került és éles adatos háromutas A/B/C benchmarkkal validálva lett.
+<!-- doc-nav:start -->
+**Navigáció:** [Dokumentáció](../README.md) · [AI-index](../AI-INDEX.md)
 
+> **Státusz:** Dátumhoz kötött M01–M18 állapot- és mérési beszámoló. Nem a CR01–CR19 készültsége és nem friss tesztjegyzőkönyv; az újabb audit korlátai is figyelembe veendők.
+
+**Kapcsolódó:** [m01-m18-implementation-plan.md](stability-and-optimization/archive/m01-m18-implementation-plan.md) · [README.md](stability-and-optimization/README.md)
+
+<details>
+<summary>Fejezetek / közvetlen ugrás</summary>
+
+- [Elkészült fejlesztési és stabilitási modulok](#doc-elkeszult-fejlesztesi-es-stabilitasi-modulok)
+- [Ellenőrzési Eredmények](#doc-ellenorzesi-eredmenyek)
+
+</details>
+
+<!-- doc-nav:end -->
+
+A stabilitási és teljesítményjavítási terv ([`docs/feature/stability-and-optimization/archive/m01-m18-implementation-plan.md`](stability-and-optimization/archive/m01-m18-implementation-plan.md)) valamennyi modulja implementálásra került és éles adatos háromutas A/B/C benchmarkkal validálva lett.
+
+<!-- doc-anchor:doc-elkeszult-fejlesztesi-es-stabilitasi-modulok -->
+<a id="doc-elkeszult-fejlesztesi-es-stabilitasi-modulok"></a>
 ## Elkészült fejlesztési és stabilitási modulok
 
 - **M01 (Singleflight feladat-megszakítás védelem):** `common/singleflight.py` létrehozva `asyncio.shield` + waiters tracking logikával. Integrálva a provider és Stremio service-ekbe. Új tesztcsomag: `test_singleflight.py` (6 teszt).
@@ -22,6 +56,8 @@ A stabilitási és teljesítményjavítási terv ([`docs/stremhu-implementation-
 - **M17 (Docker buildcache):** `package.json` + `npm ci` külön rétegen a klienshez.
 - **M18 (A/B/C benchmark):** Háromutas mérési infrastruktúra (`benchmark_local.py`).
 
+<!-- doc-anchor:doc-ellenorzesi-eredmenyek -->
+<a id="doc-ellenorzesi-eredmenyek"></a>
 ## Ellenőrzési Eredmények
 
 - **Ruff linter:** 0 hiba (`All checks passed!`).

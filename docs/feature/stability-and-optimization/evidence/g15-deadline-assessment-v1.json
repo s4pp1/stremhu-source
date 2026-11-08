@@ -1,0 +1,36 @@
+{
+  "status": "12 functional slow/cancel observations complete; total G15 OPEN",
+  "results": {
+    "A": {
+      "elapsed_seconds": 25.01190283699998,
+      "sha256": "cda6f6b2d9a99334db337d299c9fdab113836b8f71cc18f494e89ca2b3088d5d",
+      "cases": [
+        "read-timeout-is-not-total-deadline",
+        "caller-cancel",
+        "external-timeout",
+        "queued-waiter-cancel"
+      ]
+    },
+    "B": {
+      "elapsed_seconds": 25.012418786000126,
+      "sha256": "fb49450aeb7f01c062fb2c43b7fcd7c35638323b0acbfb2ab01636f9d3a1a173",
+      "cases": [
+        "read-timeout-is-not-total-deadline",
+        "caller-cancel",
+        "external-timeout",
+        "queued-waiter-cancel"
+      ]
+    },
+    "C": {
+      "elapsed_seconds": 25.012545958999908,
+      "sha256": "41c91914e28feee2b4628f5a44de9eaa34f846a164aec7bb96cc490eb9bb121d",
+      "cases": [
+        "read-timeout-is-not-total-deadline",
+        "caller-cancel",
+        "external-timeout",
+        "queued-waiter-cancel"
+      ]
+    }
+  },
+  "interpretation": "All pinned A/B/C complete25s drip despite20s per-read timeout. Caller cancellation and external timeout close the response before fullbody; subsequent native-valid request succeeds with semaphore1. Queued waiter cancellation tested independently. No production total deadline selected; per-read timeout is not a total deadline. Three functional observations, not repeated quantitative performance acceptance."
+}

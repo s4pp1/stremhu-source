@@ -1,5 +1,6 @@
 from pydantic import TypeAdapter
 
+from app.common.commit_actions import mark_stream_cache_dirty
 from app.config import config
 from app.modules.settings.enums import NetworkModeEnum, SettingsKeyEnum
 from app.modules.settings.repository import SettingsRepository
@@ -31,6 +32,7 @@ class SettingsService:
         updated_data = system_settings.model_copy(update=data).model_dump()
 
         self._settings_repository.save(SettingsKeyEnum.SYSTEM, updated_data)
+        mark_stream_cache_dirty(self._settings_repository.db)
 
         return SystemSettings.model_validate(updated_data)
 
@@ -83,6 +85,7 @@ class SettingsService:
                 detail="A hálózati beállításokat környezeti változó vezérli, így nem módosíthatóak.",
             )
         self._settings_repository.save(SettingsKeyEnum.NETWORK, payload.model_dump())
+        mark_stream_cache_dirty(self._settings_repository.db)
         return payload
 
     def find_network(self) -> NetworkSettings | None:

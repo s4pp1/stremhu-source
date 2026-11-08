@@ -1,0 +1,30 @@
+{
+ "id": "g02-post-cr17-control-v2",
+ "registered_at_utc": "2026-11-07T13:54:53.087872+00:00",
+ "status": "Final G02 post-CR17 C control and decision rule; registered before any post-CR17 run",
+ "source": "git archive of feature/stability-and-optimization aaa9ee5 server/app (tree e18855a1, equal to measured 22b); includes CR17 21b and 22+22b",
+ "source_scope_note": "Fixture uses app.common.database Base, torrent_files repository/models/schemas and indexer models. Versus the C baseline source only additions differ (shared_read_session, TorrentFileSnapshot); engine/PRAGMA setup and touch/insert path unchanged. Static note, not a result.",
+ "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+ "fixture_sha256": "ab3417d830b8b27c0d37e55c80f5f593064fccfd8ddf5bce71105848859ac628",
+ "controller_sha256": "d1c4254870d9f85def2232d1bd7554c175ccc1f5834faecfd40721bf02cb5942",
+ "assessor_sha256": "f0a3e030819786a462a831d650d783937e85b451b0f3eb49e80a63100a60009a",
+ "summarizer_sha256": "59a6418f492f4cae9930f4a8fdee36efe2192c5f2369505bdd2de6dfa5a388e3",
+ "runs": [
+  "p1",
+  "p2"
+ ],
+ "cpuset": "0,1",
+ "resources": "Same as v1 C/A/B: 2 CPU affinity 0,1, 1 GiB, local Docker Desktop npipe, network none, read-only source, disposable task-labelled local volume per run.",
+ "references": {
+  "C_a": "g02-before-a-v1.json",
+  "C_b": "g02-before-b-v1.json",
+  "A": "g02-full-reference-A-v1.json",
+  "B": "g02-full-reference-B-v1.json"
+ },
+ "correctness": "Per run: is_measurement, >=3600 s, 9 cells each >=400 s, zero errors, final pool checkouts 0, final checkpoint after all readers closed busy=0 and log==checkpointed. Any failure => INVALID (stop, report; no decision).",
+ "ordinary_path_rules": "Cells short/1,4,8 and select-await/1,4,8. WAL reuse: wal_header_epochs >= max(2, floor(min(C_a,C_b)/2)). Commit and transaction p99 <= max(C_a,C_b)+|C_a-C_b| per cell. Ordinary-cell WAL high-water <= max ordinary high-water of C_a, C_b, A, B.",
+ "decision": "NO_CHANGE if correctness holds and no ordinary rule fails in both runs for the same cell/metric: CR02 closes with measurement, no production PRAGMA/checkpoint change. PASSIVE_CANDIDATE if some ordinary rule fails in both runs (repeatable backlog/commit spike/storage): a separate CR02 candidate package is proposed; nothing is changed by this gate. Single-run failures are reported as noise.",
+ "explicit_snapshot": "explicit-snapshot cells are a stress control: WAL growth while a snapshot is held is reported, not judged; release is covered by the final-checkpoint correctness rule.",
+ "validation_before_registration": "Assessor applied to existing references (C_a,C_b as posts) => NO_CHANGE; (A,B as posts) => NO_CHANGE with one single-run noise row.",
+ "limits": "No storage SLO exists; the bound is the observed reference envelope. No speed claim. Diagnostic PASSIVE run is not a control."
+}

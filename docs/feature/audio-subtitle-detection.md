@@ -1,4 +1,40 @@
+---
+doc_id: "feature-audio-subtitle-detection"
+title: "Fejlesztői és AI Agent Dokumentáció: feature/audio-subtitle-detection"
+kind: "feature-reference"
+status: "historical-reference"
+audience: ["developer", "ai-agent"]
+tags: ["audio", "subtitle", "japanese", "hungarian", "nfo", "mediainfo", "tech-info"]
+source_commit: null
+baseline: "8c99c7d"
+verification: "structure-only"
+structure_reviewed: "2026-11-03"
+related_docs: ["docs/feature/README.md", "docs/feature/torrent-subtitles.md"]
+source_paths: ["server/app/modules/media_attributes/tech_info_parser.py", "server/app/modules/torrent_streams/service.py"]
+---
+
 # Fejlesztői és AI Agent Dokumentáció: `feature/audio-subtitle-detection`
+
+<!-- doc-nav:start -->
+**Navigáció:** [Dokumentáció](../README.md) · [AI-index](../AI-INDEX.md)
+
+> **Státusz:** Korábbi feature technikai referenciája. A tartalom és a mérések nem kaptak most új runtime-verifikációt; aktuális működéshez kövesd a forráskódot.
+
+**Kapcsolódó:** [README.md](README.md) · [torrent-subtitles.md](torrent-subtitles.md)
+
+<details>
+<summary>Fejezetek / közvetlen ugrás</summary>
+
+- [1. A Branch Célja és Motivációja](#doc-1-a-branch-celja-es-motivacioja)
+- [2. Módosított és Új Fájlok Áttekintése (Diff Mátrix)](#doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix)
+- [3. Architektúra és Folyamatábrák](#doc-3-architektura-es-folyamatabrak)
+- [4. Modulonkénti Részletes Működési Leírás és Kritikus Invariánsok](#doc-4-modulonkenti-reszletes-mukodesi-leiras-es-kritikus-invariansok)
+- [5. Teljesítménymérési (Benchmark) és Tesztelési Referencia](#doc-5-teljesitmenymeresi-benchmark-es-tesztelesi-referencia)
+- [6. Stabilitási és Teljesítményjavítási Csomag (M01 – M18)](#doc-6-stabilitasi-es-teljesitmenyjavitasi-csomag-m01-m18)
+
+</details>
+
+<!-- doc-nav:end -->
 
 > [!IMPORTANT]
 > **Viszonyítási alap (Baseline):**
@@ -6,8 +42,12 @@
 
 ---
 
+<!-- doc-anchor:doc-1-a-branch-celja-es-motivacioja -->
+<a id="doc-1-a-branch-celja-es-motivacioja"></a>
 ## 1. A Branch Célja és Motivációja
 
+<!-- doc-anchor:doc-11-upstream-es-korabbi-hianyossagok -->
+<a id="doc-11-upstream-es-korabbi-hianyossagok"></a>
 ### 1.1. Upstream és Korábbi Hiányosságok
 1. **Japán hangsáv téves felismerése és anime eltűnés:**
    - A korábbi regex kizárólag a `\b(jap(?:[-_. ]?dub)?|japanese|japán)\b` mintákat kereste a torrent- és fájlnevekben. Nem ismerte fel a nemzetközi anime release-eknél szabványos `JPN`, `ja-jp`, `Dual-Audio`, `Multi-Audio` megjelöléseket.
@@ -21,6 +61,8 @@
    - Különösen japán és idegen nyelvű filmeknél/animéknél kritikus információ a magyar felirat megléte.
    - A felhasználók számára az angol vagy egyéb idegen feliratok nem relevánsak, kizárólag a **magyar felirat** megléte határozza meg a választást.
 
+<!-- doc-anchor:doc-12-a-megoldas -->
+<a id="doc-12-a-megoldas"></a>
 ### 1.2. A Megoldás
 - **Tech Info & MediaInfo Integráció:** Kihasználjuk az nCore szerverén közvetlenül elérhető Tech Info (MediaInfo) és leírás adatokat (`ajax.php?action=nfo` és `ajax.php?action=torrent_drop`).
 - **Valós hangsávok precíz azonosítása:** A MediaInfo `Audio #... Language` mezőiből és a leírás `Hangsáv: ...` fejlécéből kinyerjük a tényleges hangsávokat (`jap`, `hun`, `eng`), felülírva a téves tracker-kategória fallbacket.
@@ -29,6 +71,8 @@
 
 ---
 
+<!-- doc-anchor:doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix -->
+<a id="doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix"></a>
 ## 2. Módosított és Új Fájlok Áttekintése (Diff Mátrix)
 
 | Modul / Fájl | Státusz | Változtatás összefoglalása |
@@ -45,8 +89,12 @@
 
 ---
 
+<!-- doc-anchor:doc-3-architektura-es-folyamatabrak -->
+<a id="doc-3-architektura-es-folyamatabrak"></a>
 ## 3. Architektúra és Folyamatábrák
 
+<!-- doc-anchor:doc-31-tech-info-dusitas-es-keresesi-szekvencia -->
+<a id="doc-31-tech-info-dusitas-es-keresesi-szekvencia"></a>
 ### 3.1. Tech Info Dúsítás és Keresési Szekvencia
 
 ```mermaid
@@ -88,6 +136,8 @@ sequenceDiagram
     StremioService-->>Player: streams JSON válasz
 ```
 
+<!-- doc-anchor:doc-32-mediainfo-es-leiras-elemzesi-dontesi-folyamat -->
+<a id="doc-32-mediainfo-es-leiras-elemzesi-dontesi-folyamat"></a>
 ### 3.2. MediaInfo és Leírás Elemzési Döntési Folyamat
 
 ```mermaid
@@ -122,8 +172,12 @@ flowchart TD
 
 ---
 
+<!-- doc-anchor:doc-4-modulonkenti-reszletes-mukodesi-leiras-es-kritikus-invariansok -->
+<a id="doc-4-modulonkenti-reszletes-mukodesi-leiras-es-kritikus-invariansok"></a>
 ## 4. Modulonkénti Részletes Működési Leírás és Kritikus Invariánsok
 
+<!-- doc-anchor:doc-41-techinfoparserpy-kritikus-szekcio-elkulonites -->
+<a id="doc-41-techinfoparserpy-kritikus-szekcio-elkulonites"></a>
 ### 4.1. `tech_info_parser.py` (Kritikus Szekció-Elkülönítés)
 - **A MediaInfo szekciók szigorú elválasztása:**
   - A MediaInfo kimenetekben a `Language : Hungarian` szöveg megjelenhet `Audio #1` alatt (magyar szinkron), vagy `Text #1` alatt (magyar felirat).
@@ -136,6 +190,8 @@ flowchart TD
   - Az nCore `ajax.php?action=torrent_drop` leírásában lévő `<span ...>Hangsáv</span>:` és `<span ...>Feliratok</span>:` sorokat HTML-tisztítás után regex-szel elemzi.
   - Ha a leírás tartalmazza pl. a `Feliratok: Angol, Magyar` sort, a `has_hungarian_sub` értéke `True` lesz még akkor is, ha az NFO fájlban az MKV MediaInfoja nem tartalmazott beágyazott feliratot.
 
+<!-- doc-anchor:doc-42-torrentstreamsservicepy-intelligens-attributum-dusitas -->
+<a id="doc-42-torrentstreamsservicepy-intelligens-attributum-dusitas"></a>
 ### 4.2. `torrent_streams/service.py` (Intelligens Attribútum Dúsítás)
 - **Téves tracker fallback intelligens törlése:**
   - Ha a Tech Info szerint a tartalom rendelkezik japán hangsávval (`"jap" in meta.audio_languages`), beillesztjük a `MediaAttributeKey.JAP` modellt a stream attribútumai közé.
@@ -151,6 +207,8 @@ flowchart TD
   - A párhuzamos hívásokra 2.0 másodperces szigorú timeout vonatkozik (`asyncio.wait_for`). Időtúllépés vagy tracker-hiba esetén a kérés nem áll le, hanem biztonságosan a név-alapú adatokkal halad tovább.
   - Keresésenként legfeljebb az első 15 leginkább releváns találatra fut le a dúsítás, megóvva az nCore szerverét a túlterheléstől.
 
+<!-- doc-anchor:doc-43-stremioschemaspy-kartya-megjelenites -->
+<a id="doc-43-stremioschemaspy-kartya-megjelenites"></a>
 ### 4.3. `stremio/schemas.py` (Kártya Megjelenítés)
 - A Stremio stream kártya leírásának 2. sorában (`description_second_line`):
   - Ha `torrent_stream.has_hungarian_sub` igaz: megjelenik a **`💬 🇭🇺 Felirat`** jelölő.
@@ -166,8 +224,12 @@ flowchart TD
 
 ---
 
+<!-- doc-anchor:doc-5-teljesitmenymeresi-benchmark-es-tesztelesi-referencia -->
+<a id="doc-5-teljesitmenymeresi-benchmark-es-tesztelesi-referencia"></a>
 ## 5. Teljesítménymérési (Benchmark) és Tesztelési Referencia
 
+<!-- doc-anchor:doc-51-unit-es-integracios-tesztek -->
+<a id="doc-51-unit-es-integracios-tesztek"></a>
 ### 5.1. Unit és Integrációs Tesztek
 A `server/tests/test_audio_subtitle_detection.py` tesztcsomag lefedte az összes funkciót:
 1. `test_tech_info_parser_english_mediainfo`: Angol nyelvű MediaInfo és leírás kombinációjának tesztelése (Japán + Angol audio, Magyar felirat a leírásból).
@@ -187,6 +249,8 @@ $env:HOST_IP="<HOST_IP>"; $env:PYTHONIOENCODING="utf-8"; cd server; .venv\Script
 - `basedpyright`: **0 errors, 0 warnings, 0 notes**
 - `pytest`: **231 passed, 0 failed in 2.50s**
 
+<!-- doc-anchor:doc-52-elo-docker-desktop-teszt-eles-tracker-adatokkal -->
+<a id="doc-52-elo-docker-desktop-teszt-eles-tracker-adatokkal"></a>
 ### 5.2. Élő Docker Desktop Teszt Éles Tracker Adatokkal
 A helyi Docker tesztkonténeren (`https://<LOCAL_IP_DNS>:7070`) végrehajtott valós lekérdezések eredménye:
 
@@ -204,12 +268,14 @@ A helyi Docker tesztkonténeren (`https://<LOCAL_IP_DNS>:7070`) végrehajtott va
      - **`🇬🇧 Eng, 🇯🇵 Jap | 💬 🇭🇺 Felirat | 🎵 FLAC | 💿 Blu-ray`** (pontosan megegyezik az nCore NFO-val és a CoolTeam Anime leírásával).
    - `01.mkv` (magyar szinkronos): **`🇭🇺 Hun | 🔊 5.1 | 💿 BDRip`**.
 
+<!-- doc-anchor:doc-53-haromutas-abc-teljesitmeny-osszehasonlitas-benchmark-m01-m18-optimalizalas-utan -->
+<a id="doc-53-haromutas-abc-teljesitmeny-osszehasonlitas-benchmark-m01-m18-optimalizalas-utan"></a>
 ### 5.3. Háromutas A/B/C Teljesítmény-összehasonlítás (Benchmark – M01-M18 Optimalizálás Után)
 
 A tesztkörnyezetben elvégzett független, szekvenciális A/B/C mérés az alábbi 3 környezetet hasonlította össze:
 - **A (Upstream Base):** s4pp1/stremhu-source:latest (:7073)
 - **B (Fork Master):** stremhu-source:repo-master (:7072)
-- **C (Feature Branch):** eature/audio-subtitle-detection (:7070 – M01–M18 teljes optimalizációs csomaggal)
+- **C (Feature Branch):** feature/audio-subtitle-detection (:7070 – M01–M18 teljes optimalizációs csomaggal)
 
 | Média / Lekérdezés | A Cold (Upstream) | B Cold (Fork Master) | C Cold (Feature Branch) | A Warm | B Warm | C Warm | Találatok (A vs B vs C) | C Értéknövelt Kártya Információ |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -223,6 +289,8 @@ A tesztkörnyezetben elvégzett független, szekvenciális A/B/C mérés az alá
 | **Anime: Death Note S01E01** (	t0877057:1:1) | 3597.8 ms | 4130.2 ms | **4069.8 ms** | 2809.3 ms | 2.9 ms | **2.8 ms** | 5 vs 4 vs 4 | 🇯🇵 2 Japán Hang, 💬 1 Felirat |
 | **ÁTLAG (MEAN)** | **3753.6 ms** | **4081.4 ms** | **3876.6 ms** | **3297.6 ms** | **3.0 ms** | **2.9 ms** | — | — |
 
+<!-- doc-anchor:doc-ertekeles-es-konkluzio -->
+<a id="doc-ertekeles-es-konkluzio"></a>
 #### Értékelés és Konklúzió:
 1. **Hideg lekérdezés (Cold Start gyorsulás):**
    - A Feature Branch (C) átlagos cold start ideje **3876.6 ms**, amivel **több mint 200 ms-mal gyorsabb a Fork Masterünknél (B: 4081.4 ms)**.
@@ -237,37 +305,33 @@ A tesztkörnyezetben elvégzett független, szekvenciális A/B/C mérés az alá
 
 ---
 
+<!-- doc-anchor:doc-6-stabilitasi-es-teljesitmenyjavitasi-csomag-m01-m18 -->
+<a id="doc-6-stabilitasi-es-teljesitmenyjavitasi-csomag-m01-m18"></a>
 ## 6. Stabilitási és Teljesítményjavítási Csomag (M01 – M18)
 
 | Modul | Leírás és Invariánsok | Érintett Fájlok |
 | :--- | :--- | :--- |
-| **M01** | Singleflight feladat-megszakítás védelem (syncio.shield + waiters tracking). Egyetlen várakozó kliens lekapcsolódása nem szakítja meg a közös háttérkeresést. | common/singleflight.py, stremio/service.py, 	orrent_source_provider/service.py |
+| **M01** | Singleflight feladat-megszakítás védelem (asyncio.shield + waiters tracking). Egyetlen várakozó kliens lekapcsolódása nem szakítja meg a közös háttérkeresést. | common/singleflight.py, stremio/service.py, 	orrent_source_provider/service.py |
 | **M02** | Relay darabolvasások határideje és lezárása (PieceReadAbortedError, graceful shutdown és lezáratlan request cleanup). | config.py, 
 elay/service.py, main.py |
 | **M03** | Katalógus szűrés feltétel nélküli érvényesítése: üres szűrési eredmény sem állítja vissza a tiltott típusokat. | stremio/catalogs_service.py |
-| **M04** | Fájlszintű deduplikáció (info_hash, file_index) kulccsal. Eltérő hash esetén nincs összevonás; forráskonzisztencia: a letöltött forrás URL-je és attribútumai érvényesülnek. | 	orrent_streams/service.py |
+| **M04** | Fájlszintű deduplikáció (info_hash, file_index) kulccsal. Eltérő hash esetén nincs összevonás; forráskonzisztencia: a letöltött forrás URL-je és attribútumai érvényesülnek. | torrent_streams/service.py |
 | **M05** | Cache kulcsok, generációk és invalidálás. In-flight generációellenőrzés (régi keresés nem írhat felül beállításváltás után). | stremio/service.py, indexers/service.py |
 | **M06** | TVDB resolver: FMA/Brotherhood téves alias megszüntetése; is_animation megőrzése Cinemeta cache-hit esetén is. | stremio/tvdb_resolver.py |
 | **M07** | Felirat streamelés edzés: adatbájt-teljesség ellenőrzés (len == file.size), 32MB cache memória korlát, RFC 6266 fejléc, referenciaszámlált KeyedLock. | stream/router.py, 
 elay/entities.py |
-| **M08** | Monotonic időkeret (deadline = 20s) a másodlagos keresési ciklusban; timeout esetén nem futunk végtelen fallbackbe. | 	orrent_streams/service.py |
+| **M08** | Monotonic időkeret (deadline = 20s) a másodlagos keresési ciklusban; timeout esetén nem futunk végtelen fallbackbe. | torrent_streams/service.py |
 | **M09** | Méltányos jelöltfeldolgozás (fair interleaving) a merev top 30 seeder vágás helyett trackerenkénti körforgással (max 40 elemig). | 	orrent_source_provider/service.py |
 | **M10** | Torrentletöltés Singleflight (indexer_id:torrent_id), és atomi ON CONFLICT DO NOTHING beszúrás SQLite-ban. | 	orrent_source_provider/service.py, 	orrent_files/repository.py, 	orrent_files/isolated_service.py |
-| **M11** | Range RFC 9110 teljes támogatás (Content-Range: bytes */N 416-os kódnál, overflow védelem) és minden kérésre érvényes fájlvalidáció (
-equire_subtitle=True). | stream/service.py |
-| **M12** | Célzott állapotlekérés _sort_torrent_streams-ben felesleges teljes táblalekérdezés (get_torrents) nélkül; torrent ile_progress() gyorsítótár. | 	orrent_streams/service.py |
-| **M13** | Relay prioritások: dinamikus kapcsolatlimit (max(torrent_connections_limit, 50)) aktív stream esetén, szálbiztos másolatok. | 
-elay/entities.py, 
-elay/service.py |
-| **M14** | Tech Info dúsítás gyorsító regex (hunsub, sub.hun), torrentenkénti csoportosítás, nCore szemaforhoz (5) igazítás, felesleges 	orrent_drop hívás elhagyása ha az NFO már tartalmaz MediaInfo-t. | 	orrent_streams/service.py, 
-core.py |
+| **M11** | Range RFC 9110 teljes támogatás (Content-Range: bytes */N 416-os kódnál, overflow védelem) és minden kérésre érvényes fájlvalidáció (require_subtitle=True). | stream/service.py |
+| **M12** | Célzott állapotlekérés _sort_torrent_streams-ben felesleges teljes táblalekérdezés (get_torrents) nélkül; torrent file_progress() gyorsítótár. | torrent_streams/service.py |
+| **M13** | Relay prioritások: dinamikus kapcsolatlimit (max(torrent_connections_limit, 50)) aktív stream esetén, szálbiztos másolatok. | relay/entities.py, relay/service.py |
+| **M14** | Tech Info dúsítás gyorsító regex (hunsub, sub.hun), torrentenkénti csoportosítás, nCore szemaforhoz (5) igazítás, felesleges torrent_drop hívás elhagyása ha az NFO már tartalmaz MediaInfo-t. | torrent_streams/service.py, ncore.py |
 | **M16** | Session cookie lejárati időpont 30 nap másodpercben megadva. | main.py |
-| **M17** | Docker buildcache optimalizálás (package.json + 
-pm ci külön rétegen). | Dockerfile |
-| **M18** | Háromutas A/B/C benchmark infrastruktúra (enchmark_local.py). | scripts/benchmark_local.py |
+| **M17** | Docker buildcache optimalizálás (package.json + npm ci külön rétegen). | Dockerfile |
+| **M18** | Háromutas A/B/C benchmark infrastruktúra (benchmark_local.py). | scripts/benchmark_local.py |
 
 **Validáció:**
-- 
-uff check .: 0 hiba.
-- asedpyright: 0 hiba, 0 figyelmeztetés.
+- ruff check .: 0 hiba.
+- basedpyright: 0 hiba, 0 figyelmeztetés.
 - pytest tests: **256 passed** (0 failed).

@@ -1,0 +1,994 @@
+{
+  "status": "Two unchanged5-run full baseline cohorts COMPLETE; G04 decision still OPEN",
+  "rows": [
+    {
+      "count": 0,
+      "pattern": "stable",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            60,
+            60
+          ],
+          "J": 0,
+          "range": [
+            60,
+            60
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "count": 0,
+      "pattern": "one",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            60,
+            60
+          ],
+          "J": 0,
+          "range": [
+            60,
+            60
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "count": 0,
+      "pattern": "all",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            60,
+            60
+          ],
+          "J": 0,
+          "range": [
+            60,
+            60
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "count": 0,
+      "pattern": "stalled",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            60,
+            60
+          ],
+          "J": 0,
+          "range": [
+            60,
+            60
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "count": 20,
+      "pattern": "stable",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            60,
+            60
+          ],
+          "J": 0,
+          "range": [
+            60,
+            60
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "count": 20,
+      "pattern": "one",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            3980,
+            3980
+          ],
+          "J": 0,
+          "range": [
+            3980,
+            3980
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            550.5999999530613,
+            545.5999999903142
+          ],
+          "J": 4.999999962747097,
+          "range": [
+            532.3000000491738,
+            567.2000000048429
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        }
+      }
+    },
+    {
+      "count": 20,
+      "pattern": "all",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            3980,
+            3980
+          ],
+          "J": 0,
+          "range": [
+            3980,
+            3980
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            572.6000000759959,
+            570.3000000864267
+          ],
+          "J": 2.299999989569187,
+          "range": [
+            541.9000000320375,
+            580.0999999847263
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        }
+      }
+    },
+    {
+      "count": 20,
+      "pattern": "stalled",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "count": 100,
+      "pattern": "stable",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            60,
+            60
+          ],
+          "J": 0,
+          "range": [
+            60,
+            60
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "count": 100,
+      "pattern": "one",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            19900,
+            19900
+          ],
+          "J": 0,
+          "range": [
+            19900,
+            19900
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            1978.4000000059605,
+            1976.6000000135973
+          ],
+          "J": 1.7999999923631549,
+          "range": [
+            1904.1000000005588,
+            2032.1000001318753
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        }
+      }
+    },
+    {
+      "count": 100,
+      "pattern": "all",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            19900,
+            19900
+          ],
+          "J": 0,
+          "range": [
+            19900,
+            19900
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            1996.3000000286847,
+            1988.2999999849126
+          ],
+          "J": 8.000000043772161,
+          "range": [
+            1915.1999999815598,
+            2070.100000033155
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        }
+      }
+    },
+    {
+      "count": 100,
+      "pattern": "stalled",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "count": 500,
+      "pattern": "stable",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            59,
+            59
+          ],
+          "J": 0,
+          "range": [
+            59,
+            59
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "count": 500,
+      "pattern": "one",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            99500,
+            99500
+          ],
+          "J": 0,
+          "range": [
+            99500,
+            99500
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            8982.099999643862,
+            8900.400000017136
+          ],
+          "J": 81.69999962672591,
+          "range": [
+            8847.60000007227,
+            9211.400000102818
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        }
+      }
+    },
+    {
+      "count": 500,
+      "pattern": "all",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            99500,
+            99500
+          ],
+          "J": 0,
+          "range": [
+            99500,
+            99500
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            9080.899999972433,
+            9148.799999952316
+          ],
+          "J": 67.89999997988343,
+          "range": [
+            8947.39999999106,
+            10548.799999754876
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        }
+      }
+    },
+    {
+      "count": 500,
+      "pattern": "stalled",
+      "metrics": {
+        "requests": {
+          "cohort_medians": [
+            199,
+            199
+          ],
+          "J": 0,
+          "range": [
+            199,
+            199
+          ]
+        },
+        "route_renders": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "row_render_calls": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_actual_ms": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        },
+        "react_commits": {
+          "cohort_medians": [
+            0,
+            0
+          ],
+          "J": 0,
+          "range": [
+            0,
+            0
+          ]
+        }
+      }
+    }
+  ],
+  "raw_sha256": {
+    "g04-before-a-0-v1.json": "9f80a47a6490e9c41ad4f3c0bea47aa9ab393dfe5a3fc818411422d4336d2d2f",
+    "g04-before-a-1-v1.json": "d021b1921d9de865a6276ef2c0eac5ce2463cdbcf797d14078fa27422349d0b1",
+    "g04-before-a-2-v1.json": "2cfe05d19b7a8d1399b99f3605cbb7cedabd145b288ff89ec4d40b165a217ed3",
+    "g04-before-a-3-v2.json": "6492d36b6fac1155d462c656d42a91bf4e65980e65912f45e18363dc18cb3453",
+    "g04-before-a-4-v2.json": "77d499a9f41a46461dee39232b260a208d11e467d50b743067bde1236f35b555",
+    "g04-before-b-0-v1.json": "db2b80216459f388a8d986b6a9b0b92cec2e1de386e9d3e7901fb58a58e9faa4",
+    "g04-before-b-1-v1.json": "518be85634f5c7f8a809a1474c24ec3ec22907d9fd4821742af318cf19ea594c",
+    "g04-before-b-2-v1.json": "989977ea5679c70c4547c57d60aa1efabfd618a340388e6be4db99926583809e",
+    "g04-before-b-3-v2.json": "80c0011e3b8518cb37353765327191f341b03c36b88cb8d8bbf18882725809c5",
+    "g04-before-b-4-v2.json": "3b059d626f533d89ed112d9d47f4c72d4e3e3118456b491ba9ff94596f740dd1"
+  },
+  "scope": "10complete profiles x16cells x300real seconds, warmup excluded. Interrupted a3-v1 retained separately, not a sample. Heap and coldDOM supplements separate. No frontend source change; table29 and candidate comparison still required. A reference profiling build unavailable due preexisting lint; plan permits C two versions decisive when ABC not comparable."
+}

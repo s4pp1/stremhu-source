@@ -1,0 +1,1842 @@
+{
+  "status": "Normal18cell baseline COMPLETE45000measuredrequests; giant failures and functionalTLS/cancel observations retained; wholeG15 OPEN",
+  "head": "d2f0d1e5446c26ca56cf611f91e9264aabf9e19b",
+  "source": "cr17a-after-v7-source,pinned native2.1.1.0,602pytest/64snapshot,Ruff/based0",
+  "native_metadata": {
+    "fixture": "g15-native-torrent-metadata-size-wiring-v1",
+    "is_measurement": false,
+    "native_version": "2.1.1.0",
+    "rows": [
+      {
+        "logical_payload_bytes": 1073741824,
+        "piece_size": 262144,
+        "files": 1,
+        "piece_count": 4096,
+        "metadata_bytes": 82073,
+        "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+        "native_state": "accepted"
+      },
+      {
+        "logical_payload_bytes": 17179869184,
+        "piece_size": 1048576,
+        "files": 100,
+        "piece_count": 16384,
+        "metadata_bytes": 332982,
+        "sha256": "01f322bdcd6fcee228bf2cfab11f3faadbe0aac09dc792ca1bf054da1feafa5d",
+        "native_state": "accepted"
+      },
+      {
+        "logical_payload_bytes": 274877906944,
+        "piece_size": 4194304,
+        "files": 1000,
+        "piece_count": 65536,
+        "metadata_bytes": 1362823,
+        "sha256": "632578595ac0f4d7135fab08ff7404f020fce5a75bf00aae00504efe6da0d6f2",
+        "native_state": "accepted"
+      },
+      {
+        "logical_payload_bytes": 1099511627776,
+        "piece_size": 1048576,
+        "files": 10000,
+        "piece_count": 1048576,
+        "metadata_bytes": 21491624,
+        "sha256": "ae5774d062b7f70d672820517597925641689e0a27f6a51f4a561acc4d88b9ee",
+        "native_state": "accepted"
+      },
+      {
+        "logical_payload_bytes": 1099511627776,
+        "piece_size": 4194304,
+        "files": 50000,
+        "piece_count": 262144,
+        "metadata_bytes": 7792983,
+        "sha256": "f79161b9bfa90dc6f674747500661854820b985c56891a0d3d71fc88fb2dfd77",
+        "native_state": "accepted"
+      },
+      {
+        "logical_payload_bytes": 1099511627776,
+        "piece_size": 262144,
+        "files": 10000,
+        "piece_count": 4194304,
+        "metadata_bytes": 84406183,
+        "sha256": "6272def2f47e45293177b33558abbd154b39f320452613f55b80e0ae65cf8781",
+        "native_state": "rejected",
+        "exception_kind": "RuntimeError"
+      }
+    ],
+    "payload_verified": false,
+    "scope": "Synthetic deterministic metadata, actual native parsing only; no HTTP/origin/auth/admission test or production size-policy decision."
+  },
+  "real_http_wiring": {
+    "fixture": "g15-real-http-auth-decoding-wiring-v1",
+    "is_measurement": false,
+    "rows": [
+      {
+        "kind": "small",
+        "decoded_bytes": 82073,
+        "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+        "native_state": "accepted",
+        "wall_seconds": 0.005539413999940734
+      },
+      {
+        "kind": "many-files",
+        "decoded_bytes": 1362823,
+        "sha256": "632578595ac0f4d7135fab08ff7404f020fce5a75bf00aae00504efe6da0d6f2",
+        "native_state": "accepted",
+        "wall_seconds": 0.008666290000292065
+      },
+      {
+        "kind": "large-valid",
+        "decoded_bytes": 21491624,
+        "sha256": "ae5774d062b7f70d672820517597925641689e0a27f6a51f4a561acc4d88b9ee",
+        "native_state": "accepted",
+        "wall_seconds": 0.0830510530004176
+      },
+      {
+        "kind": "login-redirect",
+        "decoded_bytes": 82073,
+        "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+        "native_state": "accepted",
+        "wall_seconds": 0.08949507600027573
+      },
+      {
+        "kind": "cdn-redirect",
+        "decoded_bytes": 82073,
+        "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+        "native_state": "accepted",
+        "wall_seconds": 0.003009618999385566
+      },
+      {
+        "kind": "chunked-large",
+        "decoded_bytes": 67108864,
+        "sha256": "e20a69eca39368572e90b9135738a613838f954987a0b44b6220889c171cbb76",
+        "native_state": "rejected",
+        "wall_seconds": 0.21347571699971013
+      },
+      {
+        "kind": "gzip-large",
+        "decoded_bytes": 134217728,
+        "sha256": "8fb4c93e9cdd636cfe06929df7ec7cc521fe3fd3affdfe81fc13d8fcb737d26a",
+        "native_state": "rejected",
+        "wall_seconds": 0.312376533999668
+      },
+      {
+        "kind": "drip",
+        "decoded_bytes": 40960,
+        "sha256": "672f5349216f25c12860319716042fc0d86695debb77e7b144d26f7ca4bc7286",
+        "native_state": "rejected",
+        "wall_seconds": 4.008803003000139
+      }
+    ],
+    "login_calls": 1,
+    "max_concurrent": 1,
+    "server_counts": {
+      "small": 2,
+      "many-files": 1,
+      "large-valid": 1,
+      "login-redirect": 2,
+      "login-required": 1,
+      "login": 1,
+      "cdn-redirect": 1,
+      "chunked-large": 1,
+      "gzip-large": 1,
+      "drip": 1
+    },
+    "external_http_blocked": 0,
+    "scope": "Private local HTTP tracker/CDN, actual IndexerClient and relogin, native parsing. Single wiring pass;4s drip is not an overall-deadline gate. No size/origin/admission policy selected."
+  },
+  "fixture_hashes": {
+    "scripts/probe_cr_torrent_metadata_sizes.py": "ae4df3ab93935cd8961f7efd36b5d8bd125c57d1a7d56d3858a9f0e5c896ed4c",
+    "scripts/fixtures/g15_http_server.py": "6272a2a03bc2446d3413470712f0ef58371abbe46a8ae0550633bd1fc126d55f",
+    "scripts/probe_cr_download_wiring.py": "37f8b39ecab4f282cbf6ba4e183dc84901895a1f70f69d055042c0e8b512ecfb"
+  },
+  "resource": "Private internal Docker network,no publishedports; client2CPU4,5/1GiB,serverCPU15/512MiB; sourcesRO,tmpfs synthetic appdata. Only synthetic credentials/cookies, no real tracker/profile.",
+  "interpretation": "Native accepts21491624B metadata (1TiB logical payload/10000files), so an arbitrary8MiB default would reject this accepted synthetic profile. This is not proof of actual tracker size distribution or permission to select a prodlimit. No code/default/origin policy changed.",
+  "open": [
+    "Full repeated encoded/decoded bytes, peakmemory/task/burst/perstage timing Cbaseline/ABC and after-ownership control",
+    "Longer drip/deadline/cancellation and reference origin/admission contracts",
+    "Representative-normal size/origin decision before download limits; current4s drip and single passes are wiring only"
+  ],
+  "transport_baseline_protocol": {
+    "id": "g15-download-transport-before-v1",
+    "registered_utc": "2026-11-05T08:58:45.443590+00:00",
+    "scope": "Independent G15 baseline preparation allowed by plan6; transport functions only,no size/origin/deadline/admission policy change. Current C frozen cleanup-v2. A/B native adapter APIs checked by smoke before any numeric result.",
+    "sampling": "Distinct4request/cell A/B/C smoke;then two5-run unchanged C cohorts,100requests/cell x8body kinds xconcurrency1/4/8;5rotatedABC references. Cold andone warmup separate. Include all completed runs;failed/OOM cells never timing samples.",
+    "resources": "Client2CPU2,3/1GiB;privateHTTPserver1CPU4/512MiB;internalDocker network,no hostports/outbound/realcredentials;row artifacts on owned bind output;memory sampler bounded100recent snapshots plus permetric peak/count.",
+    "source_C": "cr17a-drain-fix-v2-source,328Python checked604/64;actual download modules unchanged from Source7;provider retention is separate G15c/CR17 work",
+    "images": {
+      "A": "s4pp1/stremhu-source@sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+      "B": "stremhu-source@sha256:6ca708d99b8698e6cf116a6183c283922ebd2e53940c366a93a421b4ca974a38",
+      "C": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52"
+    },
+    "fixture_sha256": {
+      "expected.json": "53a55d2bc4b2aec110bce050d54ecdbdbe743d18054e5cd1a6cd5f547121c3cc",
+      "metadata_sizes.py": "ae4df3ab93935cd8961f7efd36b5d8bd125c57d1a7d56d3858a9f0e5c896ed4c",
+      "probe.py": "7de6042a2b4bcc5365eccccc8a19c0f5e48494a4c72702b90cfae41d1717566b",
+      "server.py": "6272a2a03bc2446d3413470712f0ef58371abbe46a8ae0550633bd1fc126d55f"
+    },
+    "source_B_app_sha256": {
+      "api.py": "c0899fdbf023085e304bbd2fcfa8117cb9a34a14a2c7927aea922224216b066b",
+      "config.py": "c91de4819c74021189fac70a15c796b74d0ab23a4939f2a6f98f9182a8ff0ba2",
+      "exceptions.py": "fd3512977cadbdc4efb5e9debc905e5ee1cc6d5e00fc26c64e4d02cc9c382193",
+      "main.py": "f7ee02dd8cff297424552ab7df649891cdd9446d27cf9be06a896d319819dfbe",
+      "run.py": "ebcf7a8f52608d7a462401319414e123b9c48d6cc19f9273f813778c70212369",
+      "scheduler.py": "87fd68fc663d97a5c8c8df4008df209576acb481739a36faa2ed326a05ee7121",
+      "sync.py": "6534e41abe171240de122e776800177f7023e91bc0e305739d7658b0e741abf0",
+      "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "boot/network.py": "549e431a20ca66cc77529a5a97890968dfd782ab3cf1ab323b04c9e4ffadafc8",
+      "boot/schemas.py": "3bbf16e94657ee3bcdf61ab5e73d492152ff587c754cd13b756d7efdc5377d6b",
+      "boot/settings.py": "6c8af44726d61f560f86f7fd21bac429bb50d395bdd8154c0c990e06e50b45b4",
+      "boot/setup.py": "925dc1555843681928d9ae5aaa2f97d5e22b52a271530f10afe47d00a6cc2e8f",
+      "common/async_utils.py": "73b54a45dc9c3407565cf1f025ccd711e23160a3fc20d4e161656785b3a1ec0d",
+      "common/constants.py": "3308422fc95793b2137a3e1aa8ea3339c5c7120a52e1321cf32a2f9c37d745ea",
+      "common/database.py": "64d54f070b9a65e57127714842270727da0687c87e65f37a9a46d74f7e325def",
+      "common/keyed_lock.py": "429ddcf9e1bf59d0ec3398276ee35ef2adb5033be2f4d7ca7e27c58cb9d666f6",
+      "common/logger.py": "95453a7437dce953a6b91b1d74f7897770dac7f5f3e9f070d275df0c0047acfd",
+      "common/singleflight.py": "fe77be0b6ebcf213b5b2eb23bc7675fcebb563585fd653919947c69a3a0b6453",
+      "common/spa_static_files.py": "c7602c653e5585b06407796de69233aaf903eb321d481eb9a4d9ca20b1307992",
+      "common/torrent_info.py": "fbdbad16203495436f88e84c328c4a2a180cf5de848f0820c754319cfd340821",
+      "common/validators.py": "b11971da2eaa864905ee539f4de63b5b89ec52b69da459ccd1af0b8761f92e80",
+      "common/schemas/api.py": "34f10b0e1f373399e9c39d611084b562f4ba7572f3b501fc7aea5c56320ba2df",
+      "common/schemas/internal.py": "74dd4da33f4d58ef6418a1a57cf3a3a5c5ad4639226ca64f9583809b3bbb9e4e",
+      "common/schemas/pagination.py": "0493faac530a8802d5b30f8f01d52e532f8a60d44a2706007cf914137f079c8b",
+      "common/schemas/__init__.py": "8226c7ad4c28e46120c3b120f567dcc5a2702697f89e5d19f6d5c0dcd0ba5d1a",
+      "modules/attributes/dependencies.py": "c6d8957f8e8c1e68b5c0666535de4fe64ef2128382ec3ed5c481c91d6fb35579",
+      "modules/attributes/models.py": "8aabe8d0a99f661a197544d136beafc6eccb2deaa9932be91c0da68a15f42973",
+      "modules/attributes/repository.py": "8dc8f41344841d57b3ba9c3137675d7190bc5ace7c40380e2ee58f53b9ac2e22",
+      "modules/attributes/router.py": "cb03d15b943c17054fcfaf607363895da251fe6ba51c930b7c437c4251a34e3c",
+      "modules/attributes/service.py": "63f4625252501fe458992a18dc74c9479104d211b5c651a35841933a6a8e6491",
+      "modules/attributes/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/attribute_exclusions/dependencies.py": "4d1581c70fc256fac2f11ed0161a4ce678da885a7a3bf3f6379db031a1590bf8",
+      "modules/attribute_exclusions/models.py": "7c5e67d1481ee5cf98b821aa24c0443a7f389c568e29b92ea09cb139b456d374",
+      "modules/attribute_exclusions/repository.py": "560abd8c7926ece72d19ed99ce2f30a595b114c1e55a2620407ad0ade677f15b",
+      "modules/attribute_exclusions/service.py": "82d1a32ea5e70653394ea0c272a31e68b446ef2d012e114f2b5c6d8bd7e3720a",
+      "modules/auth/dependencies.py": "95eb31637a48cf6ab700ffcbd8f880a77df123472ceb4e68659380c72ddeca4a",
+      "modules/auth/router.py": "54d3df2e5ee813f9a191ecddce053daf54b21ae65c664987b5725ef74acef26b",
+      "modules/auth/service.py": "9aac689ed950e4d09f7185233f955dc041a7ba477fb15693549c441a406a0656",
+      "modules/indexers/background_tasks.py": "7d4b31f463d80ed09d3e8f505c3872a8eb5aec42f21850959169c24ac08f21b3",
+      "modules/indexers/dependencies.py": "833e3551e7e8b8c0c60936bdc5d5e4a88cc2998522f1cab002dec2c73daf9957",
+      "modules/indexers/router.py": "bee1b101a2f0883859b63c343448d2bf3efb78ea3b9f9e07edd8b1ac100e2c55",
+      "modules/indexers/service.py": "4ab8de3bd7845cd4dc9ab4ef8bce2e872d4206984263e14bc64672861415d676",
+      "modules/indexer_accounts/dependencies.py": "5a6d8cd61da08f55a7d61a0343d1a79b13f489dd1ed015eda39b484bb88957da",
+      "modules/indexer_accounts/models.py": "d16fdac9c0d345117d7fde09e93780805d0529b6e0378a41c0c31ec20baa32f0",
+      "modules/indexer_accounts/repository.py": "c8679ba2b6f26c6d5eb35b3b08ffcdd9f8c0831c317d6519cf717e1c64449e87",
+      "modules/indexer_accounts/schemas.py": "a61869c21afceb7f4f469952b171a2533d3f2cc8e7dda952b6ca783c8f19c4ef",
+      "modules/indexer_accounts/service.py": "7eaba5cd3d6cb31447b47a8f85bed345f67b00005779b8a64217d709655d454b",
+      "modules/indexer_definitions/base_indexer_definition.py": "7f248274c6a46359f9e7a0b8949beb70c1cf3f1829488f7ab8e14d9af62d4485",
+      "modules/indexer_definitions/dependencies.py": "85c9faa3f85fbe7fa53310b587a9f7e2afc38004b061c52d2f0b16891df8360a",
+      "modules/indexer_definitions/exceptions.py": "655b03f2ca363e4d50140c27b2e993f57aef588add8ff0d19d553aa8a3dc213a",
+      "modules/indexer_definitions/models.py": "f8a64b80216b092fbeadc7eeaeea4451ffc840e3fde9fa6027ccdb8c724c1407",
+      "modules/indexer_definitions/protocols.py": "01db305e514138c2545daa6d6146973b7ee969ae9ba1e0d3bc81bc72e80d4e9d",
+      "modules/indexer_definitions/service.py": "9db1359fb48a8768f7113d677ff21db7c12bd72c92bea34c965f9dfbbb0b6c8b",
+      "modules/kodi/dependencies.py": "5a66fe3e8e7634a82e49c56ec553e8af553dc6388d6693a39f5ad93006bab615",
+      "modules/kodi/router.py": "fe1025bad6cfe6f7651bb5a092ade3260154969498f818740dec21b4e2a5656e",
+      "modules/kodi/service.py": "0944dd0e429b03630cfb6e4e32cb05bccd5b4d8f7a311eb5938b7e84388155f2",
+      "modules/me/router.py": "935dd040817b2080261eae8cc3adcba1548392bb0abc50a7140ab2765bfdf50e",
+      "modules/me/__init__.py": "8af708b4bc55a4701c4ff8fb3a4a3a28b315eb9f511e7c4d04ffb2a05bb2eea0",
+      "modules/media_attributes/constants.py": "c3764f171584fb107cf13a28cd0a5f668c4980debb63d1864c9b43fa23e6e2af",
+      "modules/media_attributes/dependencies.py": "77a91b0d905e5edf986437a39c889d5db0d62f1628a5e2131f872cf686bb62c4",
+      "modules/media_attributes/models.py": "edf3946183d6fbe64217a134a0c9b839046b05e9cffe40a7f925446d8d3712da",
+      "modules/media_attributes/parser.py": "86c75482f42b007a00fe0142dee4fdab383e655d33b5d83fd54dd963b8ece3bd",
+      "modules/media_attributes/repository.py": "7eecb7cd36b183fdedab2f14990ce25f1958df04435fc88f46bb25d9f4474f7c",
+      "modules/media_attributes/seeds.py": "fe311f88dc46d5c7421dbe64cf2bd70f654a69fc45539198652524739f0ba12d",
+      "modules/media_attributes/service.py": "479ce1442da008a4c671017e1435fe4ded714824fdf43fc99ef8d39579d2de12",
+      "modules/media_attributes/tech_info_parser.py": "65a108b35018917ca4248df2d397e9c2057ef68aa0874c37adf1bd6429853f1e",
+      "modules/media_attributes/utils.py": "3466c2aff26a82c9d0b201111ff0554fd3c30217685f26b886848e6d70106212",
+      "modules/media_attributes/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/monitoring/router.py": "42c918a8633c6044c3885df112a3d6a6a0eeb4d0ddf79dcf5eaf2e95eaa44d14",
+      "modules/monitoring/schemas.py": "295016e60298f02a0cb00d9d890e693654c96a06b3748e7313eeac51578adfd7",
+      "modules/monitoring/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/network/background_tasks.py": "a9e0808977371cd4ce4fda6e8abcbbdd82595c7875ba5c7b736a70c50d418944",
+      "modules/network/dependencies.py": "115aec92f35a19bad02e1692906aa15d6857fe932b291f564907b04c00e2f23c",
+      "modules/network/router.py": "531cb519f444b12ff00c0dbfae0e3003ecf00ff22d0c1eed8c2da6775b800620",
+      "modules/network/service.py": "c6337d67c872b3103ed0e99740baffe30befb2b215f3e2ffc37820781d564a19",
+      "modules/pairings/background_tasks.py": "abfd671b240c5144bc11a263715188ca22f52cba79560cd94d721f9c680c6344",
+      "modules/pairings/dependencies.py": "0119ab68e38df823101f607c8b53ec4a1bb505cc5f9314c4ce36fe1b6b426942",
+      "modules/pairings/enums.py": "aa0fa33d03e98b287fdfb21477dbcacd80de36e155a03d330de8cd449eb41f53",
+      "modules/pairings/models.py": "a737a971c2f3dfaaecc0f343e4274df77b0ec4da93e2ee323db7def5e63096d4",
+      "modules/pairings/repository.py": "ec429250df7fca7cc1e3c042dff74ead2cf15a9e3bde2281b0b1e308d821bcfc",
+      "modules/pairings/router.py": "8fae8644d7ceb1222a2434568938cfa955083f746f88273a3942d78501946435",
+      "modules/pairings/service.py": "675470f5a298362b93e1db847ba9c9a3eac353ca30be00d8fad65f83663e3d1f",
+      "modules/pairings/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "modules/playbacks/dependencies.py": "72bf6519cc2b83f3ea3ce797bd0ae7d6fb57c3f6032ec35aa35dc2df4f1f7b2e",
+      "modules/playbacks/router.py": "805911dd9f62f489692c08530b30c8c9c4f168df789bd06911a5744734bdbc41",
+      "modules/playbacks/service.py": "219c4df9c1970312c5b0df0a54b1c8a79639d1ad5ccc3e06b5a77a0995c1f78b",
+      "modules/playbacks/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "modules/playback_histories/dependencies.py": "460b2cb515b5f23d1ea6ea8632096b9b83502c5b6a3b31c824dbe789c7dcfcda",
+      "modules/playback_histories/models.py": "8235b95ac5ea35846b4f9f8a91c50ca68a1382ac7dc28c3b9793479649df99a8",
+      "modules/playback_histories/repository.py": "aa9617bcb87f71a27dc48721663d7a725f99b16dae278144f5b1da54d101e387",
+      "modules/playback_histories/service.py": "9905cd1f584b1a7900a38400e17a1fb712037336ac81ae2f06a1690e55b873de",
+      "modules/playback_histories/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "modules/preferences/constants.py": "e816da3d441fd646bb5e956d38c53f2e8b11ec1f0a4c87ed07a1bac50afb765f",
+      "modules/preferences/dependencies.py": "bffadf969f004706e9bfd57b28c138e0d2fbdf7482fef6144d48d21acf192747",
+      "modules/preferences/models.py": "eb5c61f9ac8cfd632a6e29486ee10884883789f6c8c8b3b4dbc19596e3ad8c24",
+      "modules/preferences/repository.py": "87ea2e779c6b3a683873f223acc65c9986c5f792f119c16f2a3df19eec166c72",
+      "modules/preferences/router.py": "05fa881553a48ef0d17bf929cf614ce9a68beff27eb91eccf028edc1a65b0726",
+      "modules/preferences/seeds.py": "0c5c3812fbae46ba052f4ac42cf858ac31207e9716c38c576bdd789b72e92d37",
+      "modules/preferences/service.py": "bf6942f92bd11c6d0f0de05331d16214ca6d1122da5b64e2505a90fbc83c0e17",
+      "modules/preference_definitions/dependencies.py": "19916a00243cb5e11ad339939cb875be13c83d8b477fab1ced8509f63dbfc9ea",
+      "modules/preference_definitions/models.py": "503ce229aa3a4a434334732878f413081196e69a5e29d489e641528ac027e2d4",
+      "modules/preference_definitions/repository.py": "ca7657f7f7719f172647d5d91a3ec6cf1b7f6b7039a5708ea820863142b70b13",
+      "modules/preference_definitions/service.py": "0954f2ca4fbb996aca890410fcd0058ac6bf00574f4005e120fba0555b6127fe",
+      "modules/relay/background_tasks.py": "f065dda21ef619f094f7cb2454433f7d4ec100c6aff6ce022daee865985eba95",
+      "modules/relay/dependencies.py": "679ac1aa9a4c5aa22afbc84b9eb6045d30584e95ae8644cc444cf86cb3136926",
+      "modules/relay/entities.py": "68acf082a3a896acf00352d681a16cfee15fc5df1f7120ffcb2be1e18c01c9a7",
+      "modules/relay/schemas.py": "db99c060f81ed70248097f62d50759ebbdee098054fa01d11e209933df14fff7",
+      "modules/relay/service.py": "983af50c3213a75359503d8935625cd1b2bd8bb166eabaf6d647ee0babd5ed0b",
+      "modules/relay_settings/dependencies.py": "0ceb2e808a033d0f8e79630f2226ce80cd86774b2d299268c7fecb391e545823",
+      "modules/relay_settings/router.py": "8162898647e26a0412320629d0a0728d8e9ba0818781a8393ccfa11e65a9b4e6",
+      "modules/relay_settings/service.py": "04ee9d3251a61552c591aeead69e3cd278c502fc8388bf3caf5fac7224b62058",
+      "modules/roles/constants.py": "8a1ac010b4679aff6e78af70c039db9b57ec4023f6b435404483d2eb5979534f",
+      "modules/roles/dependencies.py": "ceed3c6e2db71478499443d01e875f3d50f912f3293a43718a91e0b5ee82dd1e",
+      "modules/roles/models.py": "6a73a9facad38fdbeeb4d923789b7e4dc5a14b823bdb9489cddb9736f7e7534e",
+      "modules/roles/repository.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/roles/seeds.py": "b3bb2c6c19eda9e6e22943d57c58cc1e70b78b9c4b0cd54cbc685fd7ec20d320",
+      "modules/roles/service.py": "cafc3a08310b97b80c553b5cf8a150446d6882f3c75ca158b441b4414051011a",
+      "modules/settings/dependencies.py": "46b6ce5f4cda6c4fe014abe63df8938bbada9a401edebc5f5003b171aa947b18",
+      "modules/settings/enums.py": "661351f6d64f99ff1ea240a5da88992b5785bb2b22fff41a99f83cd1eaef5d39",
+      "modules/settings/models.py": "b49651265b7fe88533bdd80752c72405b26f774545d746567ef292546da9fd79",
+      "modules/settings/repository.py": "1fb08edb5a99606019c1d81cabbb5d3112b8d61cf466cd0d888e80b2b31051a0",
+      "modules/settings/service.py": "86434700d2c5bbaea5b003c2f7be16988aaa1a22d475f5e719ff8a99856861fa",
+      "modules/stream/active_playback.py": "e2226850817f3f0410e559b233d321dc873313f2abfbb7ea28330eb9764f2fa6",
+      "modules/stream/dependencies.py": "1a5f16480cd9dbd7b332357e92cd234fb3d4a184c9c1cd042f96fc4039d26861",
+      "modules/stream/router.py": "00e9aa1119ecc6cfc838aa5decca96d1c8df78560b4ec18ac824137eaf4dd9e1",
+      "modules/stream/schemas.py": "6175f7c1c35e036c3565b2aebfbb028185b326d34f5232879e3a7e3c52bd6638",
+      "modules/stream/service.py": "2d36fb4d331109476d008c9c3f346205ed54780ac5347ddc4d6abf797be231aa",
+      "modules/stremio/catalogs_service.py": "cab36d826d21e6dc60b00c586e4f5c151f5d5b7610f7597a9b701e95db01bb87",
+      "modules/stremio/constants.py": "c321986d29574066bf3bd50419a98cdb760b30220242b097f2cc22fd1146c4d1",
+      "modules/stremio/dependencies.py": "81d1882ce81db8335081c5fb0a18d4438d4521ff8b719db090a01417732d5972",
+      "modules/stremio/enums.py": "71b7c42517c1c3af9bbae0ac36ebb598cb57b98518ba96a2e5800f5613947fe7",
+      "modules/stremio/router.py": "bdd30a116bc9fc4181c0ca609eaa1972cb301c3d472861f8914ac5edda5b84f4",
+      "modules/stremio/schemas.py": "19c9013a2f5ff23d0b77da5d13ec03ff9430d2a216a0ab48e53b585f8c1ad2ef",
+      "modules/stremio/service.py": "c9d99636f478e1015fa5774cfd8ac5a2d74d0b093d4ad2dc5384e46d19b5289c",
+      "modules/stremio/tvdb_resolver.py": "2dadae5841ec589dc016365a703316a877503e8cefecec28613258e4dca955d3",
+      "modules/stremio/utils.py": "67e80f435f047aecf5c8d01162d5f2463e2569b1a2cd310cdd02aaeb51489bf9",
+      "modules/stremio/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/system/dependencies.py": "213335fddc69b5c5d81326e859f21333aeeb8d0bf9a4bf30d8824ce5b5d301d3",
+      "modules/system/router.py": "4dc87af003468309fdcfdab752bcb42d6d5c00d68bced4aaec887f31455ec27c",
+      "modules/system/service.py": "7088afa28fc20d7c14b500f44e3a7e96dc320c03f60bce3a846bb4d615424c55",
+      "modules/system/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/system_preference_definitions/dependencies.py": "fc5dd2a11691065aa7c84c7ed734a3cd8abc1c85516b5552c872a45432a8a33b",
+      "modules/system_preference_definitions/models.py": "b8489f90763bd7f977c68228cbd34bd8bfbf02e6e6bebb9e6830bb8a2986a431",
+      "modules/system_preference_definitions/repository.py": "10b8310e7684f2dc4d10890d31c182ba577493d2942cb5a1fbe3ba39955d7cef",
+      "modules/system_preference_definitions/service.py": "6c3a90f1f79e3dacd412ec537e18ff6c8c7d3b2e8f6a5cfb823bfeb8426e8962",
+      "modules/torrents/background_tasks.py": "00a0a86e37b1058d41931b075430e16a6114f6c1216af42d3473e750752cee2e",
+      "modules/torrents/dependencies.py": "71fb24e44503864e2c4ac025bfa468c767094a10dd7874d46edd01e069e2e6f4",
+      "modules/torrents/models.py": "042043d0ffee3943754f6194cf69a240c7347713868d43b432e7de1dfbf80a33",
+      "modules/torrents/repository.py": "adcb77aa882b0b712a66d477ac8a7338b67bd2552d7a27488f2a244ace9fac56",
+      "modules/torrents/router.py": "542deee559758aa49e7071c9b55aadf85761ad6a0d704764f7518ac136facb34",
+      "modules/torrents/service.py": "989d3e11da8191f9e4274a1e7b514b8700fc564558b23d41b054c968883b310e",
+      "modules/torrent_files/background_tasks.py": "35feb9b6fcd5dd8b55f5e96ade610a99b4093bdc9162b4a8b1ebd89b79b8048f",
+      "modules/torrent_files/dependencies.py": "2fca88f7c5ae2dcdcfa0ffb5df0c9278be67db5e3daa6750c5b3d39f95275204",
+      "modules/torrent_files/exceptions.py": "88d1f970b38d775cab79327c5a7f47385461c5e831afb09bb30e28729fe34dc0",
+      "modules/torrent_files/isolated_service.py": "9fa95004245f3700e178844783da23c48ca2511f3f399a1e8b581b8183ca03dc",
+      "modules/torrent_files/models.py": "74d0f548d706e78bbd48f595a0202a596f60249fe92ca549a5b2de858f306d9f",
+      "modules/torrent_files/repository.py": "4560524d5a981fc6503ec77efce8d67f192f9bcfca01f432ec6e1089b2c814df",
+      "modules/torrent_files/schemas.py": "07efd6126bc6d5112e0dcb8733a12a7829312bc1845995ccc5beea5c45453d2b",
+      "modules/torrent_files/service.py": "97f1b7e137293b5fc5561388e89c504a3fbdb4a258ab7bb796f9129955726b44",
+      "modules/torrent_source_provider/dependencies.py": "9329f1364b98aac510e8e5648463d3eaebd41070180cbb8fd76f4811271cad27",
+      "modules/torrent_source_provider/schemas.py": "223d1a5b44ba73177a5f417fbbe52c3e923971abb93b36b64b6714cb133a4ab6",
+      "modules/torrent_source_provider/service.py": "953291e1d4dcce99a785cf9e74c3353eeb12f17a8b6a0e652e7123343c786642",
+      "modules/torrent_streams/dependencies.py": "6673ee9e3b68bcee7e8e2fd9c261959f575792d608d92e6795d68db7a2f44378",
+      "modules/torrent_streams/schemas.py": "9fbeb9fe8436fc1756ba8d2ad8929e7e513b52cb9a38972861f45ce04b5b3b3d",
+      "modules/torrent_streams/service.py": "8f3e15d8f2fd3608ed4629fdddd12f6f032638601d795feb4c2be7aa3c9b2806",
+      "modules/torrent_streams/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/torznab/constants.py": "bc49322aca83834ee0d8f4b7e89f180cfd902942c355fbfec361f365a8b494ee",
+      "modules/torznab/dependencies.py": "331a46f528e7dbece97d965f8f0a1ff6438ed1fb96978b32a37b7015c021204e",
+      "modules/torznab/enums.py": "913fc5a43cc794a3134820a7f4fe7945721b3565e2f6ce3a8f33691c8529af69",
+      "modules/torznab/exceptions.py": "20307076628a730f98ba8356cefb399e81588f054347eb099eb98ffac19bc3f8",
+      "modules/torznab/items.py": "4dbb214b27883cc0afee4bc8218175a02e36149d93c328abd0158d6851b6a22f",
+      "modules/torznab/query.py": "dd5622ae18b5b35b5c785e19b00bbdac0be88cbd525eb5748a18612088edab6c",
+      "modules/torznab/router.py": "d4944b158972ce1aefd6b631402d2943f05e46793d1eecd3743ad7a532acb23a",
+      "modules/torznab/service.py": "5239b4e9f585c75d1ab029fe018b09c51739da9563877854562ab66d09c0eb2e",
+      "modules/torznab/utils.py": "8c8dbecb765d0fc4858fd8c56c065838ef6e395c2f9452e6d02b64a11544820f",
+      "modules/torznab/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/users/dependencies.py": "169e07ad1cfab1e117ea268ad53e656df3ea13eec23188d6a2290b6fbd72e85e",
+      "modules/users/models.py": "a8762fef3ae062db27a3e0f28abd4e4ccf6690c9f89f0a18567f403795ae09a7",
+      "modules/users/repository.py": "a321d31c80eaeea5a37786a673094b5ddb7eac7a80bd0e3621887e7b68baa824",
+      "modules/users/router.py": "6a3fb9d35088aa8e29379409c749d46eec9237b32da6ba371ab6c25a0217487b",
+      "modules/users/service.py": "3b57532ee0773c04a07807f8de55fd69b644ac023fac22d187ed6bb55f203029",
+      "modules/user_preference_definitions/dependencies.py": "5e0dd50dfcf05e01f43d95325962cfd4a472ee5a3a54b5dd1fb6d19652363cb8",
+      "modules/user_preference_definitions/models.py": "37d513f25186132e7d5546db2b4fa79cad46bc7712c360647a4b0d76ab994f08",
+      "modules/user_preference_definitions/repository.py": "07ae7674342d3ee1b3646b47f1d46e9d87dd54a2da5baa4e690f28282903ce4b",
+      "modules/user_preference_definitions/service.py": "e19df39a01ffbae53531793e279784dd8b4cae8a0e1f56b26ef7ddefa54c610c",
+      "modules/attributes/schemas/api.py": "99ce2946fa7b1590214b2cca7b51f42f35a5e58a5d7b4aea196bc2712a4cd51b",
+      "modules/attributes/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/attribute_exclusions/schemas/api.py": "e103b5d3644c03f43e337f27ba033d3fb3809dbb8f0279818a45bf5a9a41e318",
+      "modules/attribute_exclusions/schemas/internal.py": "7793e44c0007e5d4313e5d3d826c85936d989e2d129d89042fc9dc6419041162",
+      "modules/attribute_exclusions/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/auth/schemas/api.py": "0cd92a2c6c7dd9258c16eed58a3cbbf6080cbb80755127c81b608520a93b7bf0",
+      "modules/auth/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/indexers/schemas/api.py": "aaf2722eb356e2bd617baf359bc4fa7ac63ff594b6b8b5369ac3f0b0fbc6b619",
+      "modules/indexers/schemas/internal.py": "ce3be7260ec0bdccd8ce1bf7ae365425905c876b60bb4a65683efca6c2465229",
+      "modules/indexers/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/indexer_definitions/integrations/bithumen.py": "3d88aac2d7a31dcb139d71234dc9e467bd7eaa07414c28420a572611a0f654cc",
+      "modules/indexer_definitions/integrations/filelist.py": "3d941090210a7b231334e70cf5d62351a4967f4f6dcc58136b90972ad89ad105",
+      "modules/indexer_definitions/integrations/huntorrent.py": "6c3fdcc4fff2c27510678ec5d7cf829a631e4ded99626b8ace4f527350afe97b",
+      "modules/indexer_definitions/integrations/insane.py": "846b921f8cf1602b294d83982a868a4d38cf5af1e1f36034ecbb15e4dbaf73ab",
+      "modules/indexer_definitions/integrations/iptorrents.py": "99a6f330fe5552e5b96d6a1553c9b9dc6257cdc5d64bcc23a3327ed072f5c284",
+      "modules/indexer_definitions/integrations/majomparade.py": "d7470180222929332b9df9eb32c721357ecfe9bf7b6f90fec9dca9392c1648bf",
+      "modules/indexer_definitions/integrations/ncore.py": "252ab95da9e87d4b2b2c92ab5bfc721c5e1cb194d4a598797c7a9cb0aa2f552a",
+      "modules/indexer_definitions/integrations/__init__.py": "ec14fee6216996ed31c2e65524db5448d7b2bcca28607dc9b46220f193f62b9b",
+      "modules/indexer_definitions/schemas/api.py": "5a5cfbcf249f3448799a02b3a75bab976e0df8103ac805ada00d93bc77054ed0",
+      "modules/indexer_definitions/schemas/internal.py": "1199f6694232a8115d60c1638c7b329622c9f95eabc9dce0625410781bc9b7a7",
+      "modules/indexer_definitions/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/kodi/schemas/api.py": "30902a1ebed659d840b963594fcc1874bca46b44af8184a8459ecb72691a1a09",
+      "modules/me/schemas/api.py": "318a1cb9f210949cc4a339d1658dc419ee4b21245b3bdce1d49f2c5dd25a6b1a",
+      "modules/me/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/media_attributes/schemas/internal.py": "4217102e22b8a891949608026a08b97b7dcf8aafe2c8ba38eccbefb5918241fc",
+      "modules/network/ddns/base.py": "e6e8a3553d9d1d8fe851db5cb8c598b24fbd929c077900e8e332e5c1018b3991",
+      "modules/network/ddns/dependencies.py": "335cb25b6218a263b29521c8ddb98fc91354090187564c381b66ad05f544bfe3",
+      "modules/network/ddns/service.py": "3051f471745fc3fb552157747735cdae96cf7ca7ca26ee35701b31aad8b270cd",
+      "modules/network/ddns/__init__.py": "b7f29a6e50c52a343ca3be5c33975b326b0387df713d088dd254e4ebf7c3a079",
+      "modules/network/schemas/api.py": "65aa16db30b81764d317333824d5151138b492df62cd63e5847d28800d732823",
+      "modules/network/schemas/internal.py": "60cd713eeb30c491b262b3ac82b2389dc26ea0980bcd17a562994ff11a3bf224",
+      "modules/network/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/network/ssl/dependencies.py": "7008b6c7011d1435c918b12379cc8c9ad79570ce3fd62ac207ab4c4882c480c7",
+      "modules/network/ssl/schemas.py": "5392074323630504ed5963fbdf18b49d6f83cb50e348cf21934a48bbaf98c4f8",
+      "modules/network/ssl/service.py": "549da68ca47364eeacb4e905264b3f3916e78c3a276f3f3b95bce4ccb749b95c",
+      "modules/network/ssl/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/network/ddns/providers/duckdns.py": "dae18dd092571bf13d084d2c51d6156aee856adb48c8213536667ef9a58525f8",
+      "modules/network/ddns/providers/myaddr.py": "f106209763973961a4bda9e8f480021d7fbd6b863289275bf3e1addaff2405a8",
+      "modules/network/ddns/providers/__init__.py": "4bbfe08ad47f9105e05d4045de2963fdbf3cb1f71d8239a05f3aa23120820028",
+      "modules/network/ddns/schemas/api.py": "8d4270d6486d00f876a7aa8a3c2a55a34ffcce69be5f731eed854423a01a47e9",
+      "modules/network/ddns/schemas/internal.py": "cafb9b7c95cf0a90b961d9aab48cc769ff595099a9106b017f6e37ade9b1d619",
+      "modules/network/ddns/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/pairings/schemas/api.py": "c67616496d33069ea5cc1a61b09733f06f9104dafea014fc418271e30a7f6399",
+      "modules/pairings/schemas/internal.py": "972f2b5a35fbc107c8b5422f7eb11ec606ceebff161bb8654cb196c4a0037398",
+      "modules/pairings/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/playbacks/schemas/api.py": "440bdcfbc0cdaacc2b911ca3112179967d9174bb30a0aa5762acc80514527001",
+      "modules/playbacks/schemas/internal.py": "dc1167c558aa46153995bfb8a7bdc057e5af100d2af2a0f4ca4ab96ce4575053",
+      "modules/playbacks/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/playback_histories/schemas/api.py": "6901516ef80f7a29d1b726611feba2d772498303f70fa7343032b93332ddff18",
+      "modules/playback_histories/schemas/internal.py": "d19ff016f524601f532fb2024597b0134a31c5732a916985fa7e22e56dd0aa40",
+      "modules/preferences/schemas/api.py": "9d2a0b6b607da41f99024e6663f5ca27d0d7038c4b0260ad08d4913baf4f8b81",
+      "modules/preferences/schemas/internal.py": "1e116a6c37b76957f4866d1651d83676aad562afe76aedeb729264827673d98e",
+      "modules/preferences/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/roles/schemas/api.py": "0175d0c3a9f7a8fb72da8a624951f53b0842af31bb5d9465dbee6cf1702f7185",
+      "modules/roles/schemas/internal.py": "ac4dbe7acfb1096d9ed8d8982f4f9d91e1f1df5cb97acbc1e358f1e80f8ff858",
+      "modules/roles/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/settings/schemas/api.py": "45cc9ac403d85997abc68d718957b8f350b8654abf68e852274a73bd12ed25a9",
+      "modules/settings/schemas/internal.py": "c26dd289d2c2bab4600e2333616799d8d8b6b76ca84d5d30f48f7e87b5203dd9",
+      "modules/settings/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/stream/utils/stream_token.py": "715c78f6d7a699ab587e5a845d718d16c09b76d4ef0e033e92fa7d6f83128c42",
+      "modules/stream/utils/subtitles.py": "712a12a5f34e925bd0b45fa77277d273ebf75f4798074e1f7fefdcae811fd2fc",
+      "modules/system/schemas/api.py": "07b7be16929c94d3782ab3e4a0032f4a06e54ab12b531436592f85eb1ac4df15",
+      "modules/system/schemas/internal.py": "45e75c4658fea83876514d96c29c60e3997172c4aea1db3111cb994e1d93bb43",
+      "modules/torrents/schemas/api.py": "0976b065beca5e306ca6f1b883e76af5f702961076fd97e25fba2ee462a416c5",
+      "modules/torrents/schemas/internal.py": "a3a56a61cdaf6f76da0d5d2e9796f0f3933a246058451b66f7331677a50cc592",
+      "modules/torrents/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/torrent_streams/utils/resolver_helpers.py": "b931305eab97abe57274d7c9c1a20fd0a48f1299453b66612671c1384e428faf",
+      "modules/torrent_streams/utils/series_parser.py": "042871d4446296f5b6e521e120e605e37aaa3605f9127341beb4eaec7f473072",
+      "modules/torrent_streams/utils/stream_file_resolver.py": "4de3de551540293a8e9ca0761df44fd5b0f732a8c8185c5ba0856ad862e93373",
+      "modules/torznab/schemas/xml.py": "5ad91a3b13440736ebd74987f92f53e09ebdbc537259f90d63051f3291497ef6",
+      "modules/torznab/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/users/schemas/api.py": "2a96704de651af44afc631cd39b9639fdd2baa4baf76b2156027a8cc41cdd09e",
+      "modules/users/schemas/internal.py": "676f52250655e77ff522290abdbc08c354be229802337b81b6f4958fa0cd3541",
+      "modules/users/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "transport_baseline_smokes": {
+    "A": {
+      "passed": true,
+      "rows": 8,
+      "requests_per_cell": 4,
+      "scope": "Actual IndexerClient semaphore/auth/relogin/redirect/decoded body. No native parse overhead in timed call. PrivateHTTP only;TLS origin,admission,overall-deadline,cancellation and provider result-retention gates remain separate. No production policy selected."
+    },
+    "B": {
+      "passed": true,
+      "rows": 8,
+      "requests_per_cell": 4,
+      "scope": "Actual IndexerClient semaphore/auth/relogin/redirect/decoded body. No native parse overhead in timed call. PrivateHTTP only;TLS origin,admission,overall-deadline,cancellation and provider result-retention gates remain separate. No production policy selected."
+    },
+    "C": {
+      "passed": true,
+      "rows": 8,
+      "requests_per_cell": 4,
+      "scope": "Actual IndexerClient semaphore/auth/relogin/redirect/decoded body. No native parse overhead in timed call. PrivateHTTP only;TLS origin,admission,overall-deadline,cancellation and provider result-retention gates remain separate. No production policy selected."
+    }
+  },
+  "transport_first_full_failure": {
+    "status": "Incomplete full transport cohort; controlled C OOM observed",
+    "state": {
+      "exit_code": 137,
+      "oom_killed": true,
+      "completed_rows": 19
+    },
+    "failed_cell": {
+      "kind": "chunked-large",
+      "decoded_bytes": 67108864,
+      "concurrency": 4,
+      "client_memory_limit_bytes": 1073741824,
+      "adapter_max_concurrent": 5
+    },
+    "completed_cell_summaries": [
+      {
+        "kind": "small",
+        "concurrency": 1,
+        "requests": 100,
+        "p95_ms": 1.929392,
+        "memory_peaks": {
+          "anon_bytes": 39661568,
+          "file_bytes": 0,
+          "current_bytes": 43184128,
+          "peak_bytes": 43417600,
+          "max_rss_kib": 62488
+        }
+      },
+      {
+        "kind": "small",
+        "concurrency": 4,
+        "requests": 100,
+        "p95_ms": 9.312531,
+        "memory_peaks": {
+          "anon_bytes": 40714240,
+          "file_bytes": 0,
+          "current_bytes": 43982848,
+          "peak_bytes": 44593152,
+          "max_rss_kib": 63812
+        }
+      },
+      {
+        "kind": "small",
+        "concurrency": 8,
+        "requests": 100,
+        "p95_ms": 21.450929,
+        "memory_peaks": {
+          "anon_bytes": 40898560,
+          "file_bytes": 0,
+          "current_bytes": 44916736,
+          "peak_bytes": 45273088,
+          "max_rss_kib": 63836
+        }
+      },
+      {
+        "kind": "many-files",
+        "concurrency": 1,
+        "requests": 100,
+        "p95_ms": 3.078346,
+        "memory_peaks": {
+          "anon_bytes": 71864320,
+          "file_bytes": 0,
+          "current_bytes": 75808768,
+          "peak_bytes": 81502208,
+          "max_rss_kib": 99108
+        }
+      },
+      {
+        "kind": "many-files",
+        "concurrency": 4,
+        "requests": 100,
+        "p95_ms": 12.945594,
+        "memory_peaks": {
+          "anon_bytes": 81092608,
+          "file_bytes": 0,
+          "current_bytes": 88752128,
+          "peak_bytes": 91156480,
+          "max_rss_kib": 105356
+        }
+      },
+      {
+        "kind": "many-files",
+        "concurrency": 8,
+        "requests": 100,
+        "p95_ms": 26.711359,
+        "memory_peaks": {
+          "anon_bytes": 88670208,
+          "file_bytes": 0,
+          "current_bytes": 95154176,
+          "peak_bytes": 104390656,
+          "max_rss_kib": 119440
+        }
+      },
+      {
+        "kind": "large-valid",
+        "concurrency": 1,
+        "requests": 100,
+        "p95_ms": 30.843803,
+        "memory_peaks": {
+          "anon_bytes": 603451392,
+          "file_bytes": 0,
+          "current_bytes": 613330944,
+          "peak_bytes": 634908672,
+          "max_rss_kib": 633812
+        }
+      },
+      {
+        "kind": "large-valid",
+        "concurrency": 4,
+        "requests": 100,
+        "p95_ms": 148.370392,
+        "memory_peaks": {
+          "anon_bytes": 851914752,
+          "file_bytes": 0,
+          "current_bytes": 863330304,
+          "peak_bytes": 892096512,
+          "max_rss_kib": 876512
+        }
+      },
+      {
+        "kind": "large-valid",
+        "concurrency": 8,
+        "requests": 100,
+        "p95_ms": 324.567003,
+        "memory_peaks": {
+          "anon_bytes": 945930240,
+          "file_bytes": 0,
+          "current_bytes": 952303616,
+          "peak_bytes": 954728448,
+          "max_rss_kib": 947332
+        }
+      },
+      {
+        "kind": "login-redirect",
+        "concurrency": 1,
+        "requests": 100,
+        "p95_ms": 1.871339,
+        "memory_peaks": {
+          "anon_bytes": 86818816,
+          "file_bytes": 0,
+          "current_bytes": 92393472,
+          "peak_bytes": 973467648,
+          "max_rss_kib": 968472
+        }
+      },
+      {
+        "kind": "login-redirect",
+        "concurrency": 4,
+        "requests": 100,
+        "p95_ms": 8.441207,
+        "memory_peaks": {
+          "anon_bytes": 86847488,
+          "file_bytes": 0,
+          "current_bytes": 91770880,
+          "peak_bytes": 973467648,
+          "max_rss_kib": 968472
+        }
+      },
+      {
+        "kind": "login-redirect",
+        "concurrency": 8,
+        "requests": 100,
+        "p95_ms": 21.730042,
+        "memory_peaks": {
+          "anon_bytes": 86859776,
+          "file_bytes": 0,
+          "current_bytes": 91680768,
+          "peak_bytes": 973467648,
+          "max_rss_kib": 968472
+        }
+      },
+      {
+        "kind": "cdn-redirect",
+        "concurrency": 1,
+        "requests": 100,
+        "p95_ms": 3.440449,
+        "memory_peaks": {
+          "anon_bytes": 86880256,
+          "file_bytes": 0,
+          "current_bytes": 91619328,
+          "peak_bytes": 973467648,
+          "max_rss_kib": 968472
+        }
+      },
+      {
+        "kind": "cdn-redirect",
+        "concurrency": 4,
+        "requests": 100,
+        "p95_ms": 14.516163,
+        "memory_peaks": {
+          "anon_bytes": 86962176,
+          "file_bytes": 0,
+          "current_bytes": 91496448,
+          "peak_bytes": 973467648,
+          "max_rss_kib": 968472
+        }
+      },
+      {
+        "kind": "cdn-redirect",
+        "concurrency": 8,
+        "requests": 100,
+        "p95_ms": 29.471555,
+        "memory_peaks": {
+          "anon_bytes": 87080960,
+          "file_bytes": 0,
+          "current_bytes": 92012544,
+          "peak_bytes": 973467648,
+          "max_rss_kib": 968472
+        }
+      },
+      {
+        "kind": "drip",
+        "concurrency": 1,
+        "requests": 100,
+        "p95_ms": 4008.075956,
+        "memory_peaks": {
+          "anon_bytes": 87101440,
+          "file_bytes": 0,
+          "current_bytes": 92164096,
+          "peak_bytes": 973467648,
+          "max_rss_kib": 968472
+        }
+      },
+      {
+        "kind": "drip",
+        "concurrency": 4,
+        "requests": 100,
+        "p95_ms": 4010.327796,
+        "memory_peaks": {
+          "anon_bytes": 86171648,
+          "file_bytes": 0,
+          "current_bytes": 89464832,
+          "peak_bytes": 973467648,
+          "max_rss_kib": 968472
+        }
+      },
+      {
+        "kind": "drip",
+        "concurrency": 8,
+        "requests": 100,
+        "p95_ms": 8015.356026,
+        "memory_peaks": {
+          "anon_bytes": 86204416,
+          "file_bytes": 0,
+          "current_bytes": 89927680,
+          "peak_bytes": 973467648,
+          "max_rss_kib": 968472
+        }
+      },
+      {
+        "kind": "chunked-large",
+        "concurrency": 1,
+        "requests": 100,
+        "p95_ms": 294.137927,
+        "memory_peaks": {
+          "anon_bytes": 1069965312,
+          "file_bytes": 0,
+          "current_bytes": 1074147328,
+          "peak_bytes": 1076998144,
+          "max_rss_kib": 1068792
+        }
+      }
+    ],
+    "raw_sha256": {
+      "g15-download-before-v1-C-a-0-state.json": "8dc907618f183820a258330cec9f39ee80fce1cb39e52c0b28f12c427013ea97",
+      "g15-download-before-v1-C-a-0.stderr": "8efc7a033f422cbe058bf38621ea3da4d6c60540ef89862e81616af6b6a75a46"
+    },
+    "completed_rows_sha256": "57ba049f7b5862dfa001d35d6f41d65298d718670f14c93c4e6ae8463cd5069b",
+    "scope": "Actual IndexerClient on synthetic privateHTTP workload. One incomplete run is not repeated evidence, fullmatrix,selected sizepolicy or a memory-leak claim. Completed1900request cells preserved; no later controls falsely reported.",
+    "next": "Reproduce giant-body memory pressure separately with response/allocation diagnostics, then resume valid-body controls under an explicitly new protocol. HTTPS/origin/admission/provider retention remain separate."
+  },
+  "response_collectibility_diagnostic": {
+    "status": "Five collectibility diagnostics completed",
+    "rows": [
+      {
+        "repetition": 0,
+        "retained_before": 2,
+        "retained_decoded_bytes_before": 134217728,
+        "retained_after": 0,
+        "referrer_types": [
+          "BoundAsyncStream"
+        ],
+        "anon_before_gc": 215457792,
+        "anon_after_gc": 81231872,
+        "raw_sha256": "c3963715ec27cacb6b8b92d20495775d118447796538995ec50897bc8d980f56"
+      },
+      {
+        "repetition": 1,
+        "retained_before": 2,
+        "retained_decoded_bytes_before": 134217728,
+        "retained_after": 0,
+        "referrer_types": [
+          "BoundAsyncStream"
+        ],
+        "anon_before_gc": 216281088,
+        "anon_after_gc": 82055168,
+        "raw_sha256": "5a6d85cee900e30d1f024f2a889018b05af0e4df5e90ca4f97137900b824fb89"
+      },
+      {
+        "repetition": 2,
+        "retained_before": 2,
+        "retained_decoded_bytes_before": 134217728,
+        "retained_after": 0,
+        "referrer_types": [
+          "BoundAsyncStream"
+        ],
+        "anon_before_gc": 215457792,
+        "anon_after_gc": 81231872,
+        "raw_sha256": "b30599c6673a71872e9b0f8c44d1245a2c5f0fe9c0b6849f35b218df7b84d5b3"
+      },
+      {
+        "repetition": 3,
+        "retained_before": 2,
+        "retained_decoded_bytes_before": 134217728,
+        "retained_after": 0,
+        "referrer_types": [
+          "BoundAsyncStream"
+        ],
+        "anon_before_gc": 215465984,
+        "anon_after_gc": 81240064,
+        "raw_sha256": "4de36ad6ac282a21bb97f0262e36b540376fa8fba30bc7fe6cedd67bb3c5fdb2"
+      },
+      {
+        "repetition": 4,
+        "retained_before": 2,
+        "retained_decoded_bytes_before": 134217728,
+        "retained_after": 0,
+        "referrer_types": [
+          "BoundAsyncStream"
+        ],
+        "anon_before_gc": 216190976,
+        "anon_after_gc": 81965056,
+        "raw_sha256": "aaed912c1b830a63bbc1fe004969b9d79cf0c4b9f9bafece551cab390d1961ee"
+      }
+    ],
+    "scope": "Default GC remained enabled; final explicit GC is an intervention. Weak references and public content length only,referrer class names without payload/URLs. Collectible response retention is observed where before>0;this is not a leak or a quantified causal attribution of every OOM.",
+    "source_observation": "Installed HTTPX0.28.1 BoundAsyncStream holds Response while Response.stream holds BoundAsyncStream. Static source plus weakref/GC result are consistent with temporary cyclic retention,not proof of permanent leakage.",
+    "production_change": "None;do not add perrequestgc.collect or infer a sizepolicy from this diagnostic."
+  },
+  "giant_reference_and_native_boundary": {
+    "scope": "Preparation only;no production cap or complete G15 acceptance",
+    "giant_reference": {
+      "cases": 15,
+      "oom_cases": 15,
+      "outcomes": [
+        {
+          "label": "A",
+          "repetition": 0,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        },
+        {
+          "label": "B",
+          "repetition": 0,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        },
+        {
+          "label": "C",
+          "repetition": 0,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        },
+        {
+          "label": "A",
+          "repetition": 1,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        },
+        {
+          "label": "B",
+          "repetition": 1,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        },
+        {
+          "label": "C",
+          "repetition": 1,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        },
+        {
+          "label": "A",
+          "repetition": 2,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        },
+        {
+          "label": "B",
+          "repetition": 2,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        },
+        {
+          "label": "C",
+          "repetition": 2,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        },
+        {
+          "label": "A",
+          "repetition": 3,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        },
+        {
+          "label": "B",
+          "repetition": 3,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        },
+        {
+          "label": "C",
+          "repetition": 3,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        },
+        {
+          "label": "A",
+          "repetition": 4,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        },
+        {
+          "label": "B",
+          "repetition": 4,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        },
+        {
+          "label": "C",
+          "repetition": 4,
+          "exit_code": 137,
+          "oom_killed": true,
+          "completed_rows": 0,
+          "raw_sha256": "4fb594d8f05e8531ec2fb74252a988f9f872656dc88af59a0a09813142b7881b"
+        }
+      ],
+      "meaning": "100requests attempted/cell,4concurrent64MiB chunked bodies,1GiB client. Failed cases are not successful timing samples. Five separate prior C reproductions also OOM; original full24-cell cohort remains incomplete."
+    },
+    "native_boundary": {
+      "runtime": {
+        "A": {
+          "native_version": "2.1.1.0",
+          "python_version": "3.12.15"
+        },
+        "B": {
+          "native_version": "2.1.1.0",
+          "python_version": "3.12.16"
+        },
+        "C": {
+          "native_version": "2.1.1.0",
+          "python_version": "3.12.16"
+        }
+      },
+      "rows": [
+        {
+          "piece_count": 1048576,
+          "files": 10000,
+          "piece_bytes": 1048576,
+          "metadata_bytes": 21491624,
+          "sha256": "ae5774d062b7f70d672820517597925641689e0a27f6a51f4a561acc4d88b9ee",
+          "accepted": true,
+          "native_pieces": 1048576,
+          "native_files": 10000
+        },
+        {
+          "piece_count": 2097151,
+          "files": 1,
+          "piece_bytes": 1048576,
+          "metadata_bytes": 41943180,
+          "sha256": "c54e767bb93958111bc3b80cd8cefe27a15a82454e9db4ea55024c303e264319",
+          "accepted": true,
+          "native_pieces": 2097151,
+          "native_files": 1
+        },
+        {
+          "piece_count": 2097152,
+          "files": 1,
+          "piece_bytes": 1048576,
+          "metadata_bytes": 41943200,
+          "sha256": "0ab3d4261029fbf3d46f5f6bbbae28cc4bcb069fa5c5d902da1f851c6960b375",
+          "accepted": true,
+          "native_pieces": 2097152,
+          "native_files": 1
+        },
+        {
+          "piece_count": 2097153,
+          "files": 1,
+          "piece_bytes": 1048576,
+          "metadata_bytes": 41943220,
+          "sha256": "5a96194be8b9f6542e7bea0547c1f762ece693d6274d1ed62ff96e69da02c782",
+          "accepted": false,
+          "error_kind": "RuntimeError",
+          "reason": "too-many-pieces",
+          "message_sha256": "9ebe1372933d6148c7c40fb03ac22b093416171e03c49d0dd646ab4bb4f1ae09"
+        },
+        {
+          "piece_count": 3145728,
+          "files": 1,
+          "piece_bytes": 1048576,
+          "metadata_bytes": 62914720,
+          "sha256": "bd6a87fe6171ce14c0799d23f76bf7a9d30489d6910e7b8095dc0ddcf30724ca",
+          "accepted": false,
+          "error_kind": "RuntimeError",
+          "reason": "too-many-pieces",
+          "message_sha256": "9ebe1372933d6148c7c40fb03ac22b093416171e03c49d0dd646ab4bb4f1ae09"
+        },
+        {
+          "piece_count": 4194304,
+          "files": 1,
+          "piece_bytes": 1048576,
+          "metadata_bytes": 83886240,
+          "sha256": "d499af3a20f5a7274e23a8074b875416855e9968ab430f945e95cc6b6445ef4a",
+          "accepted": false,
+          "error_kind": "RuntimeError",
+          "reason": "too-many-pieces",
+          "message_sha256": "9ebe1372933d6148c7c40fb03ac22b093416171e03c49d0dd646ab4bb4f1ae09"
+        }
+      ],
+      "largest_accepted_sample_bytes": 41943200,
+      "meaning": "Same six sample hashes/acceptance across A/B/C. This is not a universal native maximum or selected download limit."
+    }
+  },
+  "normal_transport_protocol_v2": {
+    "id": "g15-normal-transport-before-v2",
+    "registered_utc": "2026-11-05T09:57:19.607427+00:00",
+    "scope": "G15 split-protocol preparation after preserved fullmatrixOOM: six normal body kinds here; giant chunked/gzip remain separately incomplete/reproduced. No size/origin/deadline/admission policy change or claim that this is the whole G15 gate. Current C frozen cleanup-v2. A/B native adapter APIs checked by smoke before any numeric result.",
+    "sampling": "Distinct4request/cell A/B/C smoke;then two5-run unchanged C cohorts,100requests/cell x6normal body kinds xconcurrency1/4/8;5rotatedABC references. Cold andone warmup separate. Include all completed runs;failed/OOM cells never timing samples.",
+    "resources": "Client2CPU2,3/1GiB;privateHTTPserver1CPU4/512MiB;internalDocker network,no hostports/outbound/realcredentials;row artifacts on owned bind output;memory sampler bounded100recent snapshots plus permetric peak/count.",
+    "source_C": "cr17a-drain-fix-v2-source,328Python checked604/64;actual download modules unchanged from Source7;provider retention is separate G15c/CR17 work",
+    "images": {
+      "A": "s4pp1/stremhu-source@sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+      "B": "stremhu-source@sha256:6ca708d99b8698e6cf116a6183c283922ebd2e53940c366a93a421b4ca974a38",
+      "C": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52"
+    },
+    "fixture_sha256": {
+      "expected.json": "53a55d2bc4b2aec110bce050d54ecdbdbe743d18054e5cd1a6cd5f547121c3cc",
+      "metadata_sizes.py": "ae4df3ab93935cd8961f7efd36b5d8bd125c57d1a7d56d3858a9f0e5c896ed4c",
+      "probe.py": "f5834ff71e2f720975b5a123e0e01e86a1e24912a1d8f2a56e7dcb7be7b9e023",
+      "server.py": "6272a2a03bc2446d3413470712f0ef58371abbe46a8ae0550633bd1fc126d55f"
+    },
+    "source_B_app_sha256": {
+      "api.py": "c0899fdbf023085e304bbd2fcfa8117cb9a34a14a2c7927aea922224216b066b",
+      "config.py": "c91de4819c74021189fac70a15c796b74d0ab23a4939f2a6f98f9182a8ff0ba2",
+      "exceptions.py": "fd3512977cadbdc4efb5e9debc905e5ee1cc6d5e00fc26c64e4d02cc9c382193",
+      "main.py": "f7ee02dd8cff297424552ab7df649891cdd9446d27cf9be06a896d319819dfbe",
+      "run.py": "ebcf7a8f52608d7a462401319414e123b9c48d6cc19f9273f813778c70212369",
+      "scheduler.py": "87fd68fc663d97a5c8c8df4008df209576acb481739a36faa2ed326a05ee7121",
+      "sync.py": "6534e41abe171240de122e776800177f7023e91bc0e305739d7658b0e741abf0",
+      "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "boot/network.py": "549e431a20ca66cc77529a5a97890968dfd782ab3cf1ab323b04c9e4ffadafc8",
+      "boot/schemas.py": "3bbf16e94657ee3bcdf61ab5e73d492152ff587c754cd13b756d7efdc5377d6b",
+      "boot/settings.py": "6c8af44726d61f560f86f7fd21bac429bb50d395bdd8154c0c990e06e50b45b4",
+      "boot/setup.py": "925dc1555843681928d9ae5aaa2f97d5e22b52a271530f10afe47d00a6cc2e8f",
+      "common/async_utils.py": "73b54a45dc9c3407565cf1f025ccd711e23160a3fc20d4e161656785b3a1ec0d",
+      "common/constants.py": "3308422fc95793b2137a3e1aa8ea3339c5c7120a52e1321cf32a2f9c37d745ea",
+      "common/database.py": "64d54f070b9a65e57127714842270727da0687c87e65f37a9a46d74f7e325def",
+      "common/keyed_lock.py": "429ddcf9e1bf59d0ec3398276ee35ef2adb5033be2f4d7ca7e27c58cb9d666f6",
+      "common/logger.py": "95453a7437dce953a6b91b1d74f7897770dac7f5f3e9f070d275df0c0047acfd",
+      "common/singleflight.py": "fe77be0b6ebcf213b5b2eb23bc7675fcebb563585fd653919947c69a3a0b6453",
+      "common/spa_static_files.py": "c7602c653e5585b06407796de69233aaf903eb321d481eb9a4d9ca20b1307992",
+      "common/torrent_info.py": "fbdbad16203495436f88e84c328c4a2a180cf5de848f0820c754319cfd340821",
+      "common/validators.py": "b11971da2eaa864905ee539f4de63b5b89ec52b69da459ccd1af0b8761f92e80",
+      "common/schemas/api.py": "34f10b0e1f373399e9c39d611084b562f4ba7572f3b501fc7aea5c56320ba2df",
+      "common/schemas/internal.py": "74dd4da33f4d58ef6418a1a57cf3a3a5c5ad4639226ca64f9583809b3bbb9e4e",
+      "common/schemas/pagination.py": "0493faac530a8802d5b30f8f01d52e532f8a60d44a2706007cf914137f079c8b",
+      "common/schemas/__init__.py": "8226c7ad4c28e46120c3b120f567dcc5a2702697f89e5d19f6d5c0dcd0ba5d1a",
+      "modules/attributes/dependencies.py": "c6d8957f8e8c1e68b5c0666535de4fe64ef2128382ec3ed5c481c91d6fb35579",
+      "modules/attributes/models.py": "8aabe8d0a99f661a197544d136beafc6eccb2deaa9932be91c0da68a15f42973",
+      "modules/attributes/repository.py": "8dc8f41344841d57b3ba9c3137675d7190bc5ace7c40380e2ee58f53b9ac2e22",
+      "modules/attributes/router.py": "cb03d15b943c17054fcfaf607363895da251fe6ba51c930b7c437c4251a34e3c",
+      "modules/attributes/service.py": "63f4625252501fe458992a18dc74c9479104d211b5c651a35841933a6a8e6491",
+      "modules/attributes/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/attribute_exclusions/dependencies.py": "4d1581c70fc256fac2f11ed0161a4ce678da885a7a3bf3f6379db031a1590bf8",
+      "modules/attribute_exclusions/models.py": "7c5e67d1481ee5cf98b821aa24c0443a7f389c568e29b92ea09cb139b456d374",
+      "modules/attribute_exclusions/repository.py": "560abd8c7926ece72d19ed99ce2f30a595b114c1e55a2620407ad0ade677f15b",
+      "modules/attribute_exclusions/service.py": "82d1a32ea5e70653394ea0c272a31e68b446ef2d012e114f2b5c6d8bd7e3720a",
+      "modules/auth/dependencies.py": "95eb31637a48cf6ab700ffcbd8f880a77df123472ceb4e68659380c72ddeca4a",
+      "modules/auth/router.py": "54d3df2e5ee813f9a191ecddce053daf54b21ae65c664987b5725ef74acef26b",
+      "modules/auth/service.py": "9aac689ed950e4d09f7185233f955dc041a7ba477fb15693549c441a406a0656",
+      "modules/indexers/background_tasks.py": "7d4b31f463d80ed09d3e8f505c3872a8eb5aec42f21850959169c24ac08f21b3",
+      "modules/indexers/dependencies.py": "833e3551e7e8b8c0c60936bdc5d5e4a88cc2998522f1cab002dec2c73daf9957",
+      "modules/indexers/router.py": "bee1b101a2f0883859b63c343448d2bf3efb78ea3b9f9e07edd8b1ac100e2c55",
+      "modules/indexers/service.py": "4ab8de3bd7845cd4dc9ab4ef8bce2e872d4206984263e14bc64672861415d676",
+      "modules/indexer_accounts/dependencies.py": "5a6d8cd61da08f55a7d61a0343d1a79b13f489dd1ed015eda39b484bb88957da",
+      "modules/indexer_accounts/models.py": "d16fdac9c0d345117d7fde09e93780805d0529b6e0378a41c0c31ec20baa32f0",
+      "modules/indexer_accounts/repository.py": "c8679ba2b6f26c6d5eb35b3b08ffcdd9f8c0831c317d6519cf717e1c64449e87",
+      "modules/indexer_accounts/schemas.py": "a61869c21afceb7f4f469952b171a2533d3f2cc8e7dda952b6ca783c8f19c4ef",
+      "modules/indexer_accounts/service.py": "7eaba5cd3d6cb31447b47a8f85bed345f67b00005779b8a64217d709655d454b",
+      "modules/indexer_definitions/base_indexer_definition.py": "7f248274c6a46359f9e7a0b8949beb70c1cf3f1829488f7ab8e14d9af62d4485",
+      "modules/indexer_definitions/dependencies.py": "85c9faa3f85fbe7fa53310b587a9f7e2afc38004b061c52d2f0b16891df8360a",
+      "modules/indexer_definitions/exceptions.py": "655b03f2ca363e4d50140c27b2e993f57aef588add8ff0d19d553aa8a3dc213a",
+      "modules/indexer_definitions/models.py": "f8a64b80216b092fbeadc7eeaeea4451ffc840e3fde9fa6027ccdb8c724c1407",
+      "modules/indexer_definitions/protocols.py": "01db305e514138c2545daa6d6146973b7ee969ae9ba1e0d3bc81bc72e80d4e9d",
+      "modules/indexer_definitions/service.py": "9db1359fb48a8768f7113d677ff21db7c12bd72c92bea34c965f9dfbbb0b6c8b",
+      "modules/kodi/dependencies.py": "5a66fe3e8e7634a82e49c56ec553e8af553dc6388d6693a39f5ad93006bab615",
+      "modules/kodi/router.py": "fe1025bad6cfe6f7651bb5a092ade3260154969498f818740dec21b4e2a5656e",
+      "modules/kodi/service.py": "0944dd0e429b03630cfb6e4e32cb05bccd5b4d8f7a311eb5938b7e84388155f2",
+      "modules/me/router.py": "935dd040817b2080261eae8cc3adcba1548392bb0abc50a7140ab2765bfdf50e",
+      "modules/me/__init__.py": "8af708b4bc55a4701c4ff8fb3a4a3a28b315eb9f511e7c4d04ffb2a05bb2eea0",
+      "modules/media_attributes/constants.py": "c3764f171584fb107cf13a28cd0a5f668c4980debb63d1864c9b43fa23e6e2af",
+      "modules/media_attributes/dependencies.py": "77a91b0d905e5edf986437a39c889d5db0d62f1628a5e2131f872cf686bb62c4",
+      "modules/media_attributes/models.py": "edf3946183d6fbe64217a134a0c9b839046b05e9cffe40a7f925446d8d3712da",
+      "modules/media_attributes/parser.py": "86c75482f42b007a00fe0142dee4fdab383e655d33b5d83fd54dd963b8ece3bd",
+      "modules/media_attributes/repository.py": "7eecb7cd36b183fdedab2f14990ce25f1958df04435fc88f46bb25d9f4474f7c",
+      "modules/media_attributes/seeds.py": "fe311f88dc46d5c7421dbe64cf2bd70f654a69fc45539198652524739f0ba12d",
+      "modules/media_attributes/service.py": "479ce1442da008a4c671017e1435fe4ded714824fdf43fc99ef8d39579d2de12",
+      "modules/media_attributes/tech_info_parser.py": "65a108b35018917ca4248df2d397e9c2057ef68aa0874c37adf1bd6429853f1e",
+      "modules/media_attributes/utils.py": "3466c2aff26a82c9d0b201111ff0554fd3c30217685f26b886848e6d70106212",
+      "modules/media_attributes/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/monitoring/router.py": "42c918a8633c6044c3885df112a3d6a6a0eeb4d0ddf79dcf5eaf2e95eaa44d14",
+      "modules/monitoring/schemas.py": "295016e60298f02a0cb00d9d890e693654c96a06b3748e7313eeac51578adfd7",
+      "modules/monitoring/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/network/background_tasks.py": "a9e0808977371cd4ce4fda6e8abcbbdd82595c7875ba5c7b736a70c50d418944",
+      "modules/network/dependencies.py": "115aec92f35a19bad02e1692906aa15d6857fe932b291f564907b04c00e2f23c",
+      "modules/network/router.py": "531cb519f444b12ff00c0dbfae0e3003ecf00ff22d0c1eed8c2da6775b800620",
+      "modules/network/service.py": "c6337d67c872b3103ed0e99740baffe30befb2b215f3e2ffc37820781d564a19",
+      "modules/pairings/background_tasks.py": "abfd671b240c5144bc11a263715188ca22f52cba79560cd94d721f9c680c6344",
+      "modules/pairings/dependencies.py": "0119ab68e38df823101f607c8b53ec4a1bb505cc5f9314c4ce36fe1b6b426942",
+      "modules/pairings/enums.py": "aa0fa33d03e98b287fdfb21477dbcacd80de36e155a03d330de8cd449eb41f53",
+      "modules/pairings/models.py": "a737a971c2f3dfaaecc0f343e4274df77b0ec4da93e2ee323db7def5e63096d4",
+      "modules/pairings/repository.py": "ec429250df7fca7cc1e3c042dff74ead2cf15a9e3bde2281b0b1e308d821bcfc",
+      "modules/pairings/router.py": "8fae8644d7ceb1222a2434568938cfa955083f746f88273a3942d78501946435",
+      "modules/pairings/service.py": "675470f5a298362b93e1db847ba9c9a3eac353ca30be00d8fad65f83663e3d1f",
+      "modules/pairings/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "modules/playbacks/dependencies.py": "72bf6519cc2b83f3ea3ce797bd0ae7d6fb57c3f6032ec35aa35dc2df4f1f7b2e",
+      "modules/playbacks/router.py": "805911dd9f62f489692c08530b30c8c9c4f168df789bd06911a5744734bdbc41",
+      "modules/playbacks/service.py": "219c4df9c1970312c5b0df0a54b1c8a79639d1ad5ccc3e06b5a77a0995c1f78b",
+      "modules/playbacks/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "modules/playback_histories/dependencies.py": "460b2cb515b5f23d1ea6ea8632096b9b83502c5b6a3b31c824dbe789c7dcfcda",
+      "modules/playback_histories/models.py": "8235b95ac5ea35846b4f9f8a91c50ca68a1382ac7dc28c3b9793479649df99a8",
+      "modules/playback_histories/repository.py": "aa9617bcb87f71a27dc48721663d7a725f99b16dae278144f5b1da54d101e387",
+      "modules/playback_histories/service.py": "9905cd1f584b1a7900a38400e17a1fb712037336ac81ae2f06a1690e55b873de",
+      "modules/playback_histories/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "modules/preferences/constants.py": "e816da3d441fd646bb5e956d38c53f2e8b11ec1f0a4c87ed07a1bac50afb765f",
+      "modules/preferences/dependencies.py": "bffadf969f004706e9bfd57b28c138e0d2fbdf7482fef6144d48d21acf192747",
+      "modules/preferences/models.py": "eb5c61f9ac8cfd632a6e29486ee10884883789f6c8c8b3b4dbc19596e3ad8c24",
+      "modules/preferences/repository.py": "87ea2e779c6b3a683873f223acc65c9986c5f792f119c16f2a3df19eec166c72",
+      "modules/preferences/router.py": "05fa881553a48ef0d17bf929cf614ce9a68beff27eb91eccf028edc1a65b0726",
+      "modules/preferences/seeds.py": "0c5c3812fbae46ba052f4ac42cf858ac31207e9716c38c576bdd789b72e92d37",
+      "modules/preferences/service.py": "bf6942f92bd11c6d0f0de05331d16214ca6d1122da5b64e2505a90fbc83c0e17",
+      "modules/preference_definitions/dependencies.py": "19916a00243cb5e11ad339939cb875be13c83d8b477fab1ced8509f63dbfc9ea",
+      "modules/preference_definitions/models.py": "503ce229aa3a4a434334732878f413081196e69a5e29d489e641528ac027e2d4",
+      "modules/preference_definitions/repository.py": "ca7657f7f7719f172647d5d91a3ec6cf1b7f6b7039a5708ea820863142b70b13",
+      "modules/preference_definitions/service.py": "0954f2ca4fbb996aca890410fcd0058ac6bf00574f4005e120fba0555b6127fe",
+      "modules/relay/background_tasks.py": "f065dda21ef619f094f7cb2454433f7d4ec100c6aff6ce022daee865985eba95",
+      "modules/relay/dependencies.py": "679ac1aa9a4c5aa22afbc84b9eb6045d30584e95ae8644cc444cf86cb3136926",
+      "modules/relay/entities.py": "68acf082a3a896acf00352d681a16cfee15fc5df1f7120ffcb2be1e18c01c9a7",
+      "modules/relay/schemas.py": "db99c060f81ed70248097f62d50759ebbdee098054fa01d11e209933df14fff7",
+      "modules/relay/service.py": "983af50c3213a75359503d8935625cd1b2bd8bb166eabaf6d647ee0babd5ed0b",
+      "modules/relay_settings/dependencies.py": "0ceb2e808a033d0f8e79630f2226ce80cd86774b2d299268c7fecb391e545823",
+      "modules/relay_settings/router.py": "8162898647e26a0412320629d0a0728d8e9ba0818781a8393ccfa11e65a9b4e6",
+      "modules/relay_settings/service.py": "04ee9d3251a61552c591aeead69e3cd278c502fc8388bf3caf5fac7224b62058",
+      "modules/roles/constants.py": "8a1ac010b4679aff6e78af70c039db9b57ec4023f6b435404483d2eb5979534f",
+      "modules/roles/dependencies.py": "ceed3c6e2db71478499443d01e875f3d50f912f3293a43718a91e0b5ee82dd1e",
+      "modules/roles/models.py": "6a73a9facad38fdbeeb4d923789b7e4dc5a14b823bdb9489cddb9736f7e7534e",
+      "modules/roles/repository.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/roles/seeds.py": "b3bb2c6c19eda9e6e22943d57c58cc1e70b78b9c4b0cd54cbc685fd7ec20d320",
+      "modules/roles/service.py": "cafc3a08310b97b80c553b5cf8a150446d6882f3c75ca158b441b4414051011a",
+      "modules/settings/dependencies.py": "46b6ce5f4cda6c4fe014abe63df8938bbada9a401edebc5f5003b171aa947b18",
+      "modules/settings/enums.py": "661351f6d64f99ff1ea240a5da88992b5785bb2b22fff41a99f83cd1eaef5d39",
+      "modules/settings/models.py": "b49651265b7fe88533bdd80752c72405b26f774545d746567ef292546da9fd79",
+      "modules/settings/repository.py": "1fb08edb5a99606019c1d81cabbb5d3112b8d61cf466cd0d888e80b2b31051a0",
+      "modules/settings/service.py": "86434700d2c5bbaea5b003c2f7be16988aaa1a22d475f5e719ff8a99856861fa",
+      "modules/stream/active_playback.py": "e2226850817f3f0410e559b233d321dc873313f2abfbb7ea28330eb9764f2fa6",
+      "modules/stream/dependencies.py": "1a5f16480cd9dbd7b332357e92cd234fb3d4a184c9c1cd042f96fc4039d26861",
+      "modules/stream/router.py": "00e9aa1119ecc6cfc838aa5decca96d1c8df78560b4ec18ac824137eaf4dd9e1",
+      "modules/stream/schemas.py": "6175f7c1c35e036c3565b2aebfbb028185b326d34f5232879e3a7e3c52bd6638",
+      "modules/stream/service.py": "2d36fb4d331109476d008c9c3f346205ed54780ac5347ddc4d6abf797be231aa",
+      "modules/stremio/catalogs_service.py": "cab36d826d21e6dc60b00c586e4f5c151f5d5b7610f7597a9b701e95db01bb87",
+      "modules/stremio/constants.py": "c321986d29574066bf3bd50419a98cdb760b30220242b097f2cc22fd1146c4d1",
+      "modules/stremio/dependencies.py": "81d1882ce81db8335081c5fb0a18d4438d4521ff8b719db090a01417732d5972",
+      "modules/stremio/enums.py": "71b7c42517c1c3af9bbae0ac36ebb598cb57b98518ba96a2e5800f5613947fe7",
+      "modules/stremio/router.py": "bdd30a116bc9fc4181c0ca609eaa1972cb301c3d472861f8914ac5edda5b84f4",
+      "modules/stremio/schemas.py": "19c9013a2f5ff23d0b77da5d13ec03ff9430d2a216a0ab48e53b585f8c1ad2ef",
+      "modules/stremio/service.py": "c9d99636f478e1015fa5774cfd8ac5a2d74d0b093d4ad2dc5384e46d19b5289c",
+      "modules/stremio/tvdb_resolver.py": "2dadae5841ec589dc016365a703316a877503e8cefecec28613258e4dca955d3",
+      "modules/stremio/utils.py": "67e80f435f047aecf5c8d01162d5f2463e2569b1a2cd310cdd02aaeb51489bf9",
+      "modules/stremio/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/system/dependencies.py": "213335fddc69b5c5d81326e859f21333aeeb8d0bf9a4bf30d8824ce5b5d301d3",
+      "modules/system/router.py": "4dc87af003468309fdcfdab752bcb42d6d5c00d68bced4aaec887f31455ec27c",
+      "modules/system/service.py": "7088afa28fc20d7c14b500f44e3a7e96dc320c03f60bce3a846bb4d615424c55",
+      "modules/system/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/system_preference_definitions/dependencies.py": "fc5dd2a11691065aa7c84c7ed734a3cd8abc1c85516b5552c872a45432a8a33b",
+      "modules/system_preference_definitions/models.py": "b8489f90763bd7f977c68228cbd34bd8bfbf02e6e6bebb9e6830bb8a2986a431",
+      "modules/system_preference_definitions/repository.py": "10b8310e7684f2dc4d10890d31c182ba577493d2942cb5a1fbe3ba39955d7cef",
+      "modules/system_preference_definitions/service.py": "6c3a90f1f79e3dacd412ec537e18ff6c8c7d3b2e8f6a5cfb823bfeb8426e8962",
+      "modules/torrents/background_tasks.py": "00a0a86e37b1058d41931b075430e16a6114f6c1216af42d3473e750752cee2e",
+      "modules/torrents/dependencies.py": "71fb24e44503864e2c4ac025bfa468c767094a10dd7874d46edd01e069e2e6f4",
+      "modules/torrents/models.py": "042043d0ffee3943754f6194cf69a240c7347713868d43b432e7de1dfbf80a33",
+      "modules/torrents/repository.py": "adcb77aa882b0b712a66d477ac8a7338b67bd2552d7a27488f2a244ace9fac56",
+      "modules/torrents/router.py": "542deee559758aa49e7071c9b55aadf85761ad6a0d704764f7518ac136facb34",
+      "modules/torrents/service.py": "989d3e11da8191f9e4274a1e7b514b8700fc564558b23d41b054c968883b310e",
+      "modules/torrent_files/background_tasks.py": "35feb9b6fcd5dd8b55f5e96ade610a99b4093bdc9162b4a8b1ebd89b79b8048f",
+      "modules/torrent_files/dependencies.py": "2fca88f7c5ae2dcdcfa0ffb5df0c9278be67db5e3daa6750c5b3d39f95275204",
+      "modules/torrent_files/exceptions.py": "88d1f970b38d775cab79327c5a7f47385461c5e831afb09bb30e28729fe34dc0",
+      "modules/torrent_files/isolated_service.py": "9fa95004245f3700e178844783da23c48ca2511f3f399a1e8b581b8183ca03dc",
+      "modules/torrent_files/models.py": "74d0f548d706e78bbd48f595a0202a596f60249fe92ca549a5b2de858f306d9f",
+      "modules/torrent_files/repository.py": "4560524d5a981fc6503ec77efce8d67f192f9bcfca01f432ec6e1089b2c814df",
+      "modules/torrent_files/schemas.py": "07efd6126bc6d5112e0dcb8733a12a7829312bc1845995ccc5beea5c45453d2b",
+      "modules/torrent_files/service.py": "97f1b7e137293b5fc5561388e89c504a3fbdb4a258ab7bb796f9129955726b44",
+      "modules/torrent_source_provider/dependencies.py": "9329f1364b98aac510e8e5648463d3eaebd41070180cbb8fd76f4811271cad27",
+      "modules/torrent_source_provider/schemas.py": "223d1a5b44ba73177a5f417fbbe52c3e923971abb93b36b64b6714cb133a4ab6",
+      "modules/torrent_source_provider/service.py": "953291e1d4dcce99a785cf9e74c3353eeb12f17a8b6a0e652e7123343c786642",
+      "modules/torrent_streams/dependencies.py": "6673ee9e3b68bcee7e8e2fd9c261959f575792d608d92e6795d68db7a2f44378",
+      "modules/torrent_streams/schemas.py": "9fbeb9fe8436fc1756ba8d2ad8929e7e513b52cb9a38972861f45ce04b5b3b3d",
+      "modules/torrent_streams/service.py": "8f3e15d8f2fd3608ed4629fdddd12f6f032638601d795feb4c2be7aa3c9b2806",
+      "modules/torrent_streams/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/torznab/constants.py": "bc49322aca83834ee0d8f4b7e89f180cfd902942c355fbfec361f365a8b494ee",
+      "modules/torznab/dependencies.py": "331a46f528e7dbece97d965f8f0a1ff6438ed1fb96978b32a37b7015c021204e",
+      "modules/torznab/enums.py": "913fc5a43cc794a3134820a7f4fe7945721b3565e2f6ce3a8f33691c8529af69",
+      "modules/torznab/exceptions.py": "20307076628a730f98ba8356cefb399e81588f054347eb099eb98ffac19bc3f8",
+      "modules/torznab/items.py": "4dbb214b27883cc0afee4bc8218175a02e36149d93c328abd0158d6851b6a22f",
+      "modules/torznab/query.py": "dd5622ae18b5b35b5c785e19b00bbdac0be88cbd525eb5748a18612088edab6c",
+      "modules/torznab/router.py": "d4944b158972ce1aefd6b631402d2943f05e46793d1eecd3743ad7a532acb23a",
+      "modules/torznab/service.py": "5239b4e9f585c75d1ab029fe018b09c51739da9563877854562ab66d09c0eb2e",
+      "modules/torznab/utils.py": "8c8dbecb765d0fc4858fd8c56c065838ef6e395c2f9452e6d02b64a11544820f",
+      "modules/torznab/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/users/dependencies.py": "169e07ad1cfab1e117ea268ad53e656df3ea13eec23188d6a2290b6fbd72e85e",
+      "modules/users/models.py": "a8762fef3ae062db27a3e0f28abd4e4ccf6690c9f89f0a18567f403795ae09a7",
+      "modules/users/repository.py": "a321d31c80eaeea5a37786a673094b5ddb7eac7a80bd0e3621887e7b68baa824",
+      "modules/users/router.py": "6a3fb9d35088aa8e29379409c749d46eec9237b32da6ba371ab6c25a0217487b",
+      "modules/users/service.py": "3b57532ee0773c04a07807f8de55fd69b644ac023fac22d187ed6bb55f203029",
+      "modules/user_preference_definitions/dependencies.py": "5e0dd50dfcf05e01f43d95325962cfd4a472ee5a3a54b5dd1fb6d19652363cb8",
+      "modules/user_preference_definitions/models.py": "37d513f25186132e7d5546db2b4fa79cad46bc7712c360647a4b0d76ab994f08",
+      "modules/user_preference_definitions/repository.py": "07ae7674342d3ee1b3646b47f1d46e9d87dd54a2da5baa4e690f28282903ce4b",
+      "modules/user_preference_definitions/service.py": "e19df39a01ffbae53531793e279784dd8b4cae8a0e1f56b26ef7ddefa54c610c",
+      "modules/attributes/schemas/api.py": "99ce2946fa7b1590214b2cca7b51f42f35a5e58a5d7b4aea196bc2712a4cd51b",
+      "modules/attributes/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/attribute_exclusions/schemas/api.py": "e103b5d3644c03f43e337f27ba033d3fb3809dbb8f0279818a45bf5a9a41e318",
+      "modules/attribute_exclusions/schemas/internal.py": "7793e44c0007e5d4313e5d3d826c85936d989e2d129d89042fc9dc6419041162",
+      "modules/attribute_exclusions/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/auth/schemas/api.py": "0cd92a2c6c7dd9258c16eed58a3cbbf6080cbb80755127c81b608520a93b7bf0",
+      "modules/auth/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/indexers/schemas/api.py": "aaf2722eb356e2bd617baf359bc4fa7ac63ff594b6b8b5369ac3f0b0fbc6b619",
+      "modules/indexers/schemas/internal.py": "ce3be7260ec0bdccd8ce1bf7ae365425905c876b60bb4a65683efca6c2465229",
+      "modules/indexers/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/indexer_definitions/integrations/bithumen.py": "3d88aac2d7a31dcb139d71234dc9e467bd7eaa07414c28420a572611a0f654cc",
+      "modules/indexer_definitions/integrations/filelist.py": "3d941090210a7b231334e70cf5d62351a4967f4f6dcc58136b90972ad89ad105",
+      "modules/indexer_definitions/integrations/huntorrent.py": "6c3fdcc4fff2c27510678ec5d7cf829a631e4ded99626b8ace4f527350afe97b",
+      "modules/indexer_definitions/integrations/insane.py": "846b921f8cf1602b294d83982a868a4d38cf5af1e1f36034ecbb15e4dbaf73ab",
+      "modules/indexer_definitions/integrations/iptorrents.py": "99a6f330fe5552e5b96d6a1553c9b9dc6257cdc5d64bcc23a3327ed072f5c284",
+      "modules/indexer_definitions/integrations/majomparade.py": "d7470180222929332b9df9eb32c721357ecfe9bf7b6f90fec9dca9392c1648bf",
+      "modules/indexer_definitions/integrations/ncore.py": "252ab95da9e87d4b2b2c92ab5bfc721c5e1cb194d4a598797c7a9cb0aa2f552a",
+      "modules/indexer_definitions/integrations/__init__.py": "ec14fee6216996ed31c2e65524db5448d7b2bcca28607dc9b46220f193f62b9b",
+      "modules/indexer_definitions/schemas/api.py": "5a5cfbcf249f3448799a02b3a75bab976e0df8103ac805ada00d93bc77054ed0",
+      "modules/indexer_definitions/schemas/internal.py": "1199f6694232a8115d60c1638c7b329622c9f95eabc9dce0625410781bc9b7a7",
+      "modules/indexer_definitions/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/kodi/schemas/api.py": "30902a1ebed659d840b963594fcc1874bca46b44af8184a8459ecb72691a1a09",
+      "modules/me/schemas/api.py": "318a1cb9f210949cc4a339d1658dc419ee4b21245b3bdce1d49f2c5dd25a6b1a",
+      "modules/me/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/media_attributes/schemas/internal.py": "4217102e22b8a891949608026a08b97b7dcf8aafe2c8ba38eccbefb5918241fc",
+      "modules/network/ddns/base.py": "e6e8a3553d9d1d8fe851db5cb8c598b24fbd929c077900e8e332e5c1018b3991",
+      "modules/network/ddns/dependencies.py": "335cb25b6218a263b29521c8ddb98fc91354090187564c381b66ad05f544bfe3",
+      "modules/network/ddns/service.py": "3051f471745fc3fb552157747735cdae96cf7ca7ca26ee35701b31aad8b270cd",
+      "modules/network/ddns/__init__.py": "b7f29a6e50c52a343ca3be5c33975b326b0387df713d088dd254e4ebf7c3a079",
+      "modules/network/schemas/api.py": "65aa16db30b81764d317333824d5151138b492df62cd63e5847d28800d732823",
+      "modules/network/schemas/internal.py": "60cd713eeb30c491b262b3ac82b2389dc26ea0980bcd17a562994ff11a3bf224",
+      "modules/network/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/network/ssl/dependencies.py": "7008b6c7011d1435c918b12379cc8c9ad79570ce3fd62ac207ab4c4882c480c7",
+      "modules/network/ssl/schemas.py": "5392074323630504ed5963fbdf18b49d6f83cb50e348cf21934a48bbaf98c4f8",
+      "modules/network/ssl/service.py": "549da68ca47364eeacb4e905264b3f3916e78c3a276f3f3b95bce4ccb749b95c",
+      "modules/network/ssl/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/network/ddns/providers/duckdns.py": "dae18dd092571bf13d084d2c51d6156aee856adb48c8213536667ef9a58525f8",
+      "modules/network/ddns/providers/myaddr.py": "f106209763973961a4bda9e8f480021d7fbd6b863289275bf3e1addaff2405a8",
+      "modules/network/ddns/providers/__init__.py": "4bbfe08ad47f9105e05d4045de2963fdbf3cb1f71d8239a05f3aa23120820028",
+      "modules/network/ddns/schemas/api.py": "8d4270d6486d00f876a7aa8a3c2a55a34ffcce69be5f731eed854423a01a47e9",
+      "modules/network/ddns/schemas/internal.py": "cafb9b7c95cf0a90b961d9aab48cc769ff595099a9106b017f6e37ade9b1d619",
+      "modules/network/ddns/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/pairings/schemas/api.py": "c67616496d33069ea5cc1a61b09733f06f9104dafea014fc418271e30a7f6399",
+      "modules/pairings/schemas/internal.py": "972f2b5a35fbc107c8b5422f7eb11ec606ceebff161bb8654cb196c4a0037398",
+      "modules/pairings/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/playbacks/schemas/api.py": "440bdcfbc0cdaacc2b911ca3112179967d9174bb30a0aa5762acc80514527001",
+      "modules/playbacks/schemas/internal.py": "dc1167c558aa46153995bfb8a7bdc057e5af100d2af2a0f4ca4ab96ce4575053",
+      "modules/playbacks/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/playback_histories/schemas/api.py": "6901516ef80f7a29d1b726611feba2d772498303f70fa7343032b93332ddff18",
+      "modules/playback_histories/schemas/internal.py": "d19ff016f524601f532fb2024597b0134a31c5732a916985fa7e22e56dd0aa40",
+      "modules/preferences/schemas/api.py": "9d2a0b6b607da41f99024e6663f5ca27d0d7038c4b0260ad08d4913baf4f8b81",
+      "modules/preferences/schemas/internal.py": "1e116a6c37b76957f4866d1651d83676aad562afe76aedeb729264827673d98e",
+      "modules/preferences/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/roles/schemas/api.py": "0175d0c3a9f7a8fb72da8a624951f53b0842af31bb5d9465dbee6cf1702f7185",
+      "modules/roles/schemas/internal.py": "ac4dbe7acfb1096d9ed8d8982f4f9d91e1f1df5cb97acbc1e358f1e80f8ff858",
+      "modules/roles/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/settings/schemas/api.py": "45cc9ac403d85997abc68d718957b8f350b8654abf68e852274a73bd12ed25a9",
+      "modules/settings/schemas/internal.py": "c26dd289d2c2bab4600e2333616799d8d8b6b76ca84d5d30f48f7e87b5203dd9",
+      "modules/settings/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/stream/utils/stream_token.py": "715c78f6d7a699ab587e5a845d718d16c09b76d4ef0e033e92fa7d6f83128c42",
+      "modules/stream/utils/subtitles.py": "712a12a5f34e925bd0b45fa77277d273ebf75f4798074e1f7fefdcae811fd2fc",
+      "modules/system/schemas/api.py": "07b7be16929c94d3782ab3e4a0032f4a06e54ab12b531436592f85eb1ac4df15",
+      "modules/system/schemas/internal.py": "45e75c4658fea83876514d96c29c60e3997172c4aea1db3111cb994e1d93bb43",
+      "modules/torrents/schemas/api.py": "0976b065beca5e306ca6f1b883e76af5f702961076fd97e25fba2ee462a416c5",
+      "modules/torrents/schemas/internal.py": "a3a56a61cdaf6f76da0d5d2e9796f0f3933a246058451b66f7331677a50cc592",
+      "modules/torrents/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/torrent_streams/utils/resolver_helpers.py": "b931305eab97abe57274d7c9c1a20fd0a48f1299453b66612671c1384e428faf",
+      "modules/torrent_streams/utils/series_parser.py": "042871d4446296f5b6e521e120e605e37aaa3605f9127341beb4eaec7f473072",
+      "modules/torrent_streams/utils/stream_file_resolver.py": "4de3de551540293a8e9ca0761df44fd5b0f732a8c8185c5ba0856ad862e93373",
+      "modules/torznab/schemas/xml.py": "5ad91a3b13440736ebd74987f92f53e09ebdbc537259f90d63051f3291497ef6",
+      "modules/torznab/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "modules/users/schemas/api.py": "2a96704de651af44afc631cd39b9639fdd2baa4baf76b2156027a8cc41cdd09e",
+      "modules/users/schemas/internal.py": "676f52250655e77ff522290abdbc08c354be229802337b81b6f4958fa0cd3541",
+      "modules/users/schemas/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "valid_boundary_transport": {
+    "status": "Compatibility controls collected;timing qualificationOPEN;wholeG15 gateOPEN",
+    "cases": 75,
+    "measured_requests": 7500,
+    "cold_warmup_requests": 150,
+    "body_bytes": 41943200,
+    "oom_cases": 0,
+    "raw_files": [
+      {
+        "name": "g15-valid-boundary-v1-C-a-0-c1.json",
+        "sha256": "d5395a93ccc2a4249f5fca32445ff3ecfc5fe1d3bac12a76b8a5022b2be483fe"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-a-0-c4.json",
+        "sha256": "bdefd38b171b10e5cee330125debb8855367df6c33641f3177b2c9e2e61af533"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-a-0-c8.json",
+        "sha256": "3f26020d5f363576e25c33f075d83b386f66b2da6e994c85460cc13f21f76532"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-a-1-c1.json",
+        "sha256": "3e53476452b515c0b671c131e0197c076e45a3cdf800849d00d0a37ba3f1ba79"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-a-1-c4.json",
+        "sha256": "557fd2b037cb2ed80d687a89f8a707e25dcf3aefd5e33d9352399553b88f0e7c"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-a-1-c8.json",
+        "sha256": "f45920312779ab54df0fdda64ca1d5f2277f0685a5d414286762d74aa07b83f7"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-a-2-c1.json",
+        "sha256": "54ad6ba494524cefe673c8d89c1b96f3d9ea0adf61a5a74a93053365b98bdcd3"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-a-2-c4.json",
+        "sha256": "4e78f4333b10c791569dc5efd7c88506e415cd6c64dc927d0356e520b80d1fce"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-a-2-c8.json",
+        "sha256": "b108d310ff6a09712d4df8e0bb9123ae57a2852b6c017aa2770d811ec1f74949"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-a-3-c1.json",
+        "sha256": "57830136801b0152cd96867f1886996d149ef047ed3f9f180a810329abdaf74a"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-a-3-c4.json",
+        "sha256": "3eb9b3315a31452af7f23498de2d37d1ce690dc5af7cd8ec4269ce6d7c44b6d6"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-a-3-c8.json",
+        "sha256": "1345d433d16166960975fa2645ea2d5aa3fba84eccb89a791a8483f8badea417"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-a-4-c1.json",
+        "sha256": "89a105451b462441e79cf7e7587f6fe0f999a0cc32091419912926d1d0875720"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-a-4-c4.json",
+        "sha256": "b90235fe38cce1e5677aa4a411178f26f08d2da48a9919bf0e066a3985ede6d3"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-a-4-c8.json",
+        "sha256": "2b1d7a4872894048cc540751b94b7763f2f773550880d288b855e99717108770"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-0-c1.json",
+        "sha256": "9c5975d3af6f5cd40618a6a7ad8084ada9d327cf5c7115b243ad2b0b28c0c7f0"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-0-c4.json",
+        "sha256": "04c3b19da95ca59635799104d5a6dca0c9df709c85dff4e0d0e4a53f7be79103"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-0-c8.json",
+        "sha256": "6d0d6a4aacdcca0eb526374fc93d6082bd3a06ce0b3f9c44eb75d022d64509e2"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-1-c1.json",
+        "sha256": "0d537a213a7523cf688d5756ef264cf0c0748d6f4a5296240ffac0393b82954c"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-1-c4.json",
+        "sha256": "4f1ddb8c66d4740805f827aad74d031da6e4daaf2fd6ad74a80af27fc0a2d2bd"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-1-c8.json",
+        "sha256": "1e151f733fcb2c2bfe36fd0b3f6bb8731571148c1320724f61fdd008b4a759b2"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-2-c1.json",
+        "sha256": "7c6e88f60efc10bdc051f2f9c2b3009fb87b2bf44ddf098cc1a5e671c27a9d06"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-2-c4.json",
+        "sha256": "149ae1fdbd850e3b6a4165207195979514742bc55c6ff4414ab3b9b9bef0aba9"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-2-c8.json",
+        "sha256": "01b76538b979bcac61df50701973c488cc2246f3f99de87071807f7bb6bf5020"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-3-c1.json",
+        "sha256": "ceec6823d869dcb7c3586745d9c999140ed6baca2fe33985c8cf2b6bf04b2290"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-3-c4.json",
+        "sha256": "1c0b85dd806e80970708a36d5196843b60b12e20aac5fc8750095a125117e4ab"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-3-c8.json",
+        "sha256": "95fdcb7c93139f5f210b6589bc1af621675632d658630d4b2c22d2ed66935c3e"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-4-c1.json",
+        "sha256": "cee57f81bace7bb0f10f37c915e3013ba94382d96b8946da96a9c9ea9383690e"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-4-c4.json",
+        "sha256": "f0e1e2a824a6468123a17b65a7c774bbad520255b409efcd3b39e868641fc131"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-b-4-c8.json",
+        "sha256": "b0fd7f781bf6b07d7031b90e33c8cce8e12dbc02214fbf421b18389b77ffe47a"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-0-c1.json",
+        "sha256": "08d9316320b79bf9d3e5ca07cf787e37f38db532d5a18ca0d73a284e024b0340"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-0-c4.json",
+        "sha256": "b6bbf2c84858732a3727f9457f0e06725f196af48bc13ba16d2d9ecb84ca6857"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-0-c8.json",
+        "sha256": "0059516f4d7d3fcfd226e21c2b3a08b5a0e0e7ea944e09916aa802351775c4dd"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-0-c1.json",
+        "sha256": "df8a4dbabbab1bc4a608e77068b30c5a9e2fc08edef01aa61b5c91e6178e301f"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-0-c4.json",
+        "sha256": "80c859cd3e838edbcfd38a217adb322e5e9ef65058176ec39932d2d02e9d7887"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-0-c8.json",
+        "sha256": "b9ab1ff7536908f54f04d37bae72c2a109b9808d3bd722f683c442067008a6ce"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-0-c1.json",
+        "sha256": "a6732ff3db2d51abb3e5359461a823f4801b425d7a4488e081ebc63bb2123b4b"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-0-c4.json",
+        "sha256": "a5fef2338ef7a4d32baf688308c8ef00ce8119f0416acf593bd4b9b6fe704978"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-0-c8.json",
+        "sha256": "c9163557e7b9d6d3cbb86a1c0932518bfff9e47b843819a5a8386d6e8d86441d"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-1-c1.json",
+        "sha256": "fcb6fd972903c62723870240f1831aeeee8d807aba121234b07e07975537e687"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-1-c4.json",
+        "sha256": "65f9cf1db5ff3648df07eb5222e2901b7cf6bcd6897b834eb95034c8e63d21a4"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-1-c8.json",
+        "sha256": "1c6af08ef574b785c69795e4a54e7f0c17ae7ce4e01355cf63dcedb10d5c8fc6"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-1-c1.json",
+        "sha256": "f5e4822aae6272a059c1ffae75948a7c1e75acdb8e433771a77a19cdbf064b3c"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-1-c4.json",
+        "sha256": "dceb441146830da3feb05e004e8e4a9979307f957ad3c7162246164f601afa69"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-1-c8.json",
+        "sha256": "eb2a116512b04cebb8e3403ee9b4160b469dfcb8ee0684437d3d0053a606776a"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-1-c1.json",
+        "sha256": "872c5a544b9211f889ef7cddc63c0da1c85e209a5e1586ec40a501ba28f56f5c"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-1-c4.json",
+        "sha256": "da8db6543fb13ec812aee5ae7b83ccb66dfff94d0685ab9262ab4caca63a1e6e"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-1-c8.json",
+        "sha256": "e861d844cb1682877664be75dfa10a0f428d712c31c69a77ecd750f737cc354f"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-2-c1.json",
+        "sha256": "2220db8f76b0d052f83acb04c6169e4300d4184bc6ec8e47e8f063f64e46cc7c"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-2-c4.json",
+        "sha256": "11b902890aa6a402dae8ab676768bb2512f18c0e39074051f2239ad61dbbf993"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-2-c8.json",
+        "sha256": "1d7bf7e9041d6f403bff9c8f448761a1a949709491c779187683849fadad316e"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-2-c1.json",
+        "sha256": "66cf234bda0d46b5b3df62ec8e5ec73010991e560894d165dbaf92fc0af23417"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-2-c4.json",
+        "sha256": "75c84567f420c279fc9732f6e9500cc11cab70dce3a389d102d5e134d55e06e9"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-2-c8.json",
+        "sha256": "e0b27cbbbaad452a8a0c33ad4b36156d8f56b25341c284b55b2e74296cb31f4a"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-2-c1.json",
+        "sha256": "e8f3e909f62ed026d934ac6751470370a5d723ccc7ff58cc7c5883b26488a44d"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-2-c4.json",
+        "sha256": "e2c3fcf60b9836fee35f05fd596f0fb0f8a172aafe8ebe9837b811c2a2de3f1d"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-2-c8.json",
+        "sha256": "fea24fe60e6f8c568ba12de48a895d2dafcb9fa272e9a772c33314210d4ffa34"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-3-c1.json",
+        "sha256": "870f734a88448d178eafaee77dff9ef395f720e4a3f6d1c3d2ff2a924fa75934"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-3-c4.json",
+        "sha256": "9de1cd209ec7d695e78b146ac391c2b2cbb5a69edb39b65840d6cb666533638e"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-3-c8.json",
+        "sha256": "5df53f51873664b51e4fd9c6d465b6ef25b847c830eeaba77a0717903fb75de1"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-3-c1.json",
+        "sha256": "de6f9bb54efae36295781bcf0a4cf05ceda167cc69655c14a46b13ce9ad5af75"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-3-c4.json",
+        "sha256": "f6c9ae7de4e504bd8b8a923bfd98991b19fe3535eee157f7197b40f639a52aed"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-3-c8.json",
+        "sha256": "5a40fa6a9a3ce54b50c6ed023d2981fbdbd5c38b1b4e8162456aa1077320aa22"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-3-c1.json",
+        "sha256": "30d056523c82573ed3a59f1b65c93853dd091e4a62885b1beb3f95dbfddafd00"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-3-c4.json",
+        "sha256": "f89b506a7e31c29ca863f7c66f0fe683be488a17ed094ee8916254d147b189fd"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-3-c8.json",
+        "sha256": "b3ad0306c4040e81351c76b877c587eecf15538d739a8efa50f5cb14ed035f3d"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-4-c1.json",
+        "sha256": "c9d1f1143f466c4030a29953fa3043484ec743928a3b0eba8fdd67b07cacdc61"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-4-c4.json",
+        "sha256": "81b5dade4a82e06fd4be33129f84f407e030307427a01913bb5cc37562f3aaad"
+      },
+      {
+        "name": "g15-valid-boundary-v1-A-ref-4-c8.json",
+        "sha256": "d9bf1b2a7ae226837ea2712b5990dd6f5dc18506ca1ce7bf1eab70ec4cf17ae4"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-4-c1.json",
+        "sha256": "80a2b269ce4aae38eae824c1b5b45b570135685b21ebd7d0454cc082d0f0da6c"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-4-c4.json",
+        "sha256": "7f22f348e4e4a6ee92edded03e0a35ef4ea4f916b4c924eb9d3386d6ad49d51a"
+      },
+      {
+        "name": "g15-valid-boundary-v1-B-ref-4-c8.json",
+        "sha256": "f4e687bc71b3893a45fe0040a319775e507a17e2af3b3a3f9ad8d317cf7a38be"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-4-c1.json",
+        "sha256": "56e72b5a4b3ea7077f37e6adbe59376b454ebdb1ae00bbea9cffb820f50fa08a"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-4-c4.json",
+        "sha256": "ba549f2a3863810a3eebce2914a1e0459e19533abfeb61f1c722bc10a33379da"
+      },
+      {
+        "name": "g15-valid-boundary-v1-C-ref-4-c8.json",
+        "sha256": "7ad9843aa5dc0e7809b02e509f5f6c0275aa3962cdc3f60a05aa567828853f08"
+      }
+    ],
+    "C_noise": [
+      {
+        "concurrency": 1,
+        "metrics": {
+          "p95_ms": {
+            "cohort_medians": [
+              145.237117,
+              145.646043
+            ],
+            "J": 0.4089259999999797,
+            "range": [
+              142.489331,
+              181.43459
+            ]
+          },
+          "cpu_seconds": {
+            "cohort_medians": [
+              9.153970908,
+              8.797092542
+            ],
+            "J": 0.3568783660000001,
+            "range": [
+              8.595490452,
+              9.323674437
+            ]
+          }
+        }
+      },
+      {
+        "concurrency": 4,
+        "metrics": {
+          "p95_ms": {
+            "cohort_medians": [
+              1125.072683,
+              907.403376
+            ],
+            "J": 217.66930700000012,
+            "range": [
+              742.749539,
+              1169.493519
+            ]
+          },
+          "cpu_seconds": {
+            "cohort_medians": [
+              9.524344815000001,
+              9.569264299
+            ],
+            "J": 0.04491948399999934,
+            "range": [
+              9.402269806,
+              10.219858615000001
+            ]
+          }
+        }
+      },
+      {
+        "concurrency": 8,
+        "metrics": {
+          "p95_ms": {
+            "cohort_medians": [
+              1850.369053,
+              1812.385559
+            ],
+            "J": 37.98349399999984,
+            "range": [
+              1255.367498,
+              2177.666668
+            ]
+          },
+          "cpu_seconds": {
+            "cohort_medians": [
+              10.027372291,
+              10.495595147
+            ],
+            "J": 0.4682228559999988,
+            "range": [
+              9.691022685,
+              10.762700398
+            ]
+          }
+        }
+      }
+    ],
+    "scope": "Each concurrency1/4/8 in fresh process,100requests;two5-run Ccohorts and5rotatedABC references. Same separately native-validated hash.1GiB client,2CPU0,1;privateHTTP. Does not select cap,origin,deadline,admission or prove universal native maximum.",
+    "timing_qualification": {
+      "status": "Compatibility outcome verified; quantitative latency baseline remains OPEN",
+      "reason": "At concurrency4,unchanged C cohort p95 medians1125.073/907.403ms differ by217.669ms;raw range742.750..1169.494ms. Do not claim a precise latency effect or completed timing gate from this noisy context. DefaultGC/body-retention phase and environment effects need separation;no attribution assumed.",
+      "scope": "All75cases and7500complete requests remain retained,content correct,noOOM. No discarded completed run or silent budget relaxation."
+    }
+  },
+  "valid_boundary_protocol": {
+    "id": "g15-valid-boundary-before-v1",
+    "registered_utc": "2026-11-05T10:07:40.065846+00:00",
+    "scope": "Independent G15 metadata compatibility/transport preparation. Body41943200B accepted by default native codec inA/B/C. No body cap or G15 acceptance selected.",
+    "sampling": "Each concurrency1/4/8 has its own fresh process,configured100 measuredrequests plus cold/warmup. Two5-run unchanged C cohorts and5rotatedABC references. OOM before completion is a failed outcome,not100 completedrequests or successful latency. Server received request deltas recorded.",
+    "resource": "Client2CPU0,1/1GiB;privateHTTP server1CPU15/512MiB;internal network,no hostports/outbound/realdata; independent of ongoing CPU2,3 normal-body cohort.",
+    "images": {
+      "A": "s4pp1/stremhu-source@sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+      "B": "stremhu-source@sha256:6ca708d99b8698e6cf116a6183c283922ebd2e53940c366a93a421b4ca974a38",
+      "C": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52"
+    },
+    "fixture_sha256": {
+      "expected.json": "b5b7146a97ece66ce083323de76b56c8c7bc5a44916a9c7ebf8d30be2efbac21",
+      "metadata_sizes.py": "ae4df3ab93935cd8961f7efd36b5d8bd125c57d1a7d56d3858a9f0e5c896ed4c",
+      "probe.py": "7c7a984bfe771c748af29ef6dbb0cb659c2e0834863087a612b0fc46c414df74",
+      "server.py": "136abcffa5ec5d61e0594f88ad381759d981b42f545f99f57e172abb07faed75"
+    }
+  },
+  "persisted_cookie_observation": {
+    "status": "Persisted-cookie origin behavior reproduced in synthetic A/B/C",
+    "reports": {
+      "A": {
+        "fixture": "g15-synthetic-persisted-cookie-origin-v1",
+        "is_measurement": false,
+        "loaded_cookie_count": 1,
+        "domainless_cookie_count": 1,
+        "foreign_cookie_present_count": 1,
+        "body_bytes": 82073,
+        "scope": "Actual adapter constructor restored synthetic storage cookies;replacement fixture client preserves that jar. PrivateHTTP/CDN redirect only,onefunctional observation. Values/headers/credentials never leave process. This extends fresh-cookie wiring;not a selected originpolicy or publicSSRF claim.",
+        "image": "s4pp1/stremhu-source@sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+        "label": "A",
+        "raw_sha256": "333387e334e2e036630706fa4458ddb7655cb7f473c801161884c44587637fd2"
+      },
+      "B": {
+        "fixture": "g15-synthetic-persisted-cookie-origin-v1",
+        "is_measurement": false,
+        "loaded_cookie_count": 1,
+        "domainless_cookie_count": 1,
+        "foreign_cookie_present_count": 1,
+        "body_bytes": 82073,
+        "scope": "Actual adapter constructor restored synthetic storage cookies;replacement fixture client preserves that jar. PrivateHTTP/CDN redirect only,onefunctional observation. Values/headers/credentials never leave process. This extends fresh-cookie wiring;not a selected originpolicy or publicSSRF claim.",
+        "image": "stremhu-source@sha256:6ca708d99b8698e6cf116a6183c283922ebd2e53940c366a93a421b4ca974a38",
+        "label": "B",
+        "raw_sha256": "e4259dc8a3f1ec9ca2eb8f600c29d73278e7575c752e311aa4720c32a2b6f0e3"
+      },
+      "C": {
+        "fixture": "g15-synthetic-persisted-cookie-origin-v1",
+        "is_measurement": false,
+        "loaded_cookie_count": 1,
+        "domainless_cookie_count": 1,
+        "foreign_cookie_present_count": 1,
+        "body_bytes": 82073,
+        "scope": "Actual adapter constructor restored synthetic storage cookies;replacement fixture client preserves that jar. PrivateHTTP/CDN redirect only,onefunctional observation. Values/headers/credentials never leave process. This extends fresh-cookie wiring;not a selected originpolicy or publicSSRF claim.",
+        "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+        "label": "C",
+        "raw_sha256": "788ee34fca6f5f8fbc13cf16e2985b0f8221048e161bccc1803840608fa0ca43"
+      }
+    },
+    "scope": "One functional observation perimage,actual constructor load with synthetic credentialstorage. No real credentials,rawCookieheader,value or outboundrequest. Earlier fresh-cookieCDN test remains valid only forfresh scopedcookies. This does not provepublicSSRF orselect aproductionallowlist.",
+    "fixture_sha256": {
+      "g15_persisted_cookie_probe_v1.py": "e0ca4acceacfd55540ebcbfd16ed8ef554f2a112de9403f76b2c9f9c579f7cde",
+      "run_g15_persisted_cookies_v1.py": "2cf60449b547910596a589abb933a14606098cd30c6e5be1e492894850d75010"
+    }
+  },
+  "verified_fixture_tls_origin_observations": {
+    "assessment": "g15-tls-origins-assessment-v1.json",
+    "status": "54 functional fixture observations complete; full G15 OPEN",
+    "cookie_present_by_mode": {
+      "fresh-host": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "fresh-wide": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "persisted": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "targets": [
+      "relative",
+      "same-origin",
+      "other-port",
+      "subdomain",
+      "other-host",
+      "downgrade"
+    ],
+    "raw_sha256": {
+      "g15-tls-origins-v1-A.json": "3afaeded178d8c050051a3dd1ebc38b46e21f492d1e0e53ed3445446c2d00926",
+      "g15-tls-origins-v1-B.json": "d5ed0d00f2e9e178f96a5601c282dcc1ddcf2a8fe86cfc5cbd61474cafdd41a8",
+      "g15-tls-origins-v1-C.json": "06b1ae4670bb0cb756b858b22e96984d4cac3bcecc5c303b910c4b5436d14f5c"
+    },
+    "scope": "Actual adapter constructor and IndexerClient, tiny native-valid body, verified ephemeral fixture TLS, no system/native trust changes. Only synthetic cookie presence counts. No production allowlist/default choice, no public SSRF or speed claim. Not G06."
+  },
+  "slow_body_and_cancellation_observations": {
+    "status": "12 functional slow/cancel observations complete; total G15 OPEN",
+    "results": {
+      "A": {
+        "elapsed_seconds": 25.01190283699998,
+        "sha256": "cda6f6b2d9a99334db337d299c9fdab113836b8f71cc18f494e89ca2b3088d5d",
+        "cases": [
+          "read-timeout-is-not-total-deadline",
+          "caller-cancel",
+          "external-timeout",
+          "queued-waiter-cancel"
+        ]
+      },
+      "B": {
+        "elapsed_seconds": 25.012418786000126,
+        "sha256": "fb49450aeb7f01c062fb2c43b7fcd7c35638323b0acbfb2ab01636f9d3a1a173",
+        "cases": [
+          "read-timeout-is-not-total-deadline",
+          "caller-cancel",
+          "external-timeout",
+          "queued-waiter-cancel"
+        ]
+      },
+      "C": {
+        "elapsed_seconds": 25.012545958999908,
+        "sha256": "41c91914e28feee2b4628f5a44de9eaa34f846a164aec7bb96cc490eb9bb121d",
+        "cases": [
+          "read-timeout-is-not-total-deadline",
+          "caller-cancel",
+          "external-timeout",
+          "queued-waiter-cancel"
+        ]
+      }
+    },
+    "interpretation": "All pinned A/B/C complete25s drip despite20s per-read timeout. Caller cancellation and external timeout close the response before fullbody; subsequent native-valid request succeeds with semaphore1. Queued waiter cancellation tested independently. No production total deadline selected; per-read timeout is not a total deadline. Three functional observations, not repeated quantitative performance acceptance."
+  },
+  "normal_complete_baseline_summary": "g15-normal-complete-baseline-summary-v2.json",
+  "gzip_component_v3": {
+    "assessment": "g15-gzip-controls-assessment-v3.json",
+    "attempts": 75,
+    "oom_cases": 75,
+    "complete_cells": 0,
+    "scope": "Invalid native128MiB decoded fixture,real IndexerClient and HTTPX decompression.2x5C cohorts then5rotatedABC,concurrency1/4/8,fresh1GiB process/case.100configured measuredrequests are NOT100actual/completed when OOM;server receivedcounts include cold/warmup and may include partial responses. No successlatency for failed cells,no nativevalid-size maximum,leak/completecausal assertion or productionlimit choice. Normal45000requests and native42MBcompatibility separate. GCenabled; one existing postwarmup GC outside timed samples,not perrequest."
+  }
+}

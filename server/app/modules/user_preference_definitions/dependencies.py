@@ -31,6 +31,6 @@ def create_user_preference_definitions_service(
 
 
 def get_user_preference_definitions_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> UserPreferenceDefinitionsService:
     return create_user_preference_definitions_service(db)
