@@ -4,6 +4,7 @@ import { Separator } from '@/shared/components/ui/separator'
 
 import { Indexers } from './-features/indexers'
 import { KeepSeeding } from './-features/keep-seeding'
+import { NcoreRss } from './-features/ncore-rss'
 import { NetworkAccessInfo } from './-features/network-access-info'
 import { Restart } from './-features/restart'
 import { TorrentFilesCache } from './-features/torrent-files-cache'
@@ -16,6 +17,7 @@ function SystemRoute() {
   return (
     <div className="grid gap-8">
       <Indexers />
+      <NcoreRss />
       <Separator />
       <div className="columns-1 md:columns-2 gap-4">
         <div className="break-inside-avoid mb-4">

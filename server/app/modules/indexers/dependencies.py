@@ -7,6 +7,7 @@ from app.common.database import get_db
 from app.modules.indexer_accounts.dependencies import create_indexer_accounts_service
 from app.modules.indexer_definitions.dependencies import get_indexer_definitions_service
 from app.modules.indexers.service import IndexersService
+from app.modules.ncore_rss.repository import NcoreRssRepository
 from app.modules.settings.dependencies import create_settings_service
 from app.modules.torrents.dependencies import create_torrents_service
 
@@ -22,6 +23,7 @@ def create_indexers_service(db: Session) -> IndexersService:
         indexer_definitions_service=indexer_definitions_service,
         torrents_service=torrents_service,
         settings_service=settings_service,
+        ncore_rss_repository=NcoreRssRepository(db),
     )
 
 

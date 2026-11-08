@@ -22,6 +22,8 @@ from app.modules.indexers.schemas.internal import (
     IndexerTorrent,
 )
 from app.modules.media_attributes.utils import resolve_attribute_ids
+from app.modules.ncore_rss.models import NcoreRssItemModel
+from app.modules.ncore_rss.repository import NcoreRssRepository
 from app.modules.settings.schemas.internal import SystemSettings
 from app.modules.settings.service import SettingsService
 from app.modules.torrents.schemas.internal import TorrentUpdate
@@ -35,11 +37,13 @@ class IndexersService:
         indexer_accounts_service: IndexerAccountsService,
         torrents_service: TorrentsService,
         settings_service: SettingsService,
+        ncore_rss_repository: NcoreRssRepository | None = None,
     ):
         self._indexer_definitions_service = indexer_definitions_service
         self._indexer_accounts_service = indexer_accounts_service
         self._torrents_service = torrents_service
         self._settings_service = settings_service
+        self._ncore_rss_repository = ncore_rss_repository
 
     async def login(
         self,
@@ -204,6 +208,24 @@ class IndexersService:
             elif result is not None:
                 indexer_torrents.append(result)
 
+        rss_item = (
+            self._ncore_rss_repository.find_by_torrent_id(torrent_id)
+            if self._ncore_rss_repository
+            else None
+        )
+        ncore_account = await asyncio.to_thread(
+            self._indexer_accounts_service.find_by_id, "ncore"
+        )
+        if rss_item and (rss_item.manual_download_url or rss_item.download_url) and ncore_account:
+            if not any(
+                item.indexer_account.indexer_id == "ncore"
+                and item.torrent_id == torrent_id
+                for item in indexer_torrents
+            ):
+                indexer_torrents.append(
+                    self._map_ncore_rss_item(ncore_account, rss_item)
+                )
+
         return indexer_torrents, errors
 
     async def get_torrent_by_torrent_id(
@@ -211,6 +233,14 @@ class IndexersService:
         indexer_id: str,
         torrent_id: str,
     ) -> IndexerTorrent:
+        if indexer_id == "ncore" and self._ncore_rss_repository:
+            rss_item = self._ncore_rss_repository.find_by_torrent_id(torrent_id)
+            if rss_item and (rss_item.manual_download_url or rss_item.download_url):
+                indexer_account = await asyncio.to_thread(
+                    self._indexer_accounts_service.get_by_id, indexer_id
+                )
+                return self._map_ncore_rss_item(indexer_account, rss_item)
+
         indexer_account = await asyncio.to_thread(
             self._indexer_accounts_service.get_by_id, indexer_id
         )
@@ -298,7 +328,41 @@ class IndexersService:
             else:
                 indexer_torrents.extend(result)
 
+        ncore_account = await asyncio.to_thread(
+            self._indexer_accounts_service.find_by_id, "ncore"
+        )
+        if ncore_account and self._ncore_rss_repository:
+            known_ids = {
+                (item.indexer_account.indexer_id, item.torrent_id)
+                for item in indexer_torrents
+            }
+            for rss_item in self._ncore_rss_repository.find_by_imdb_id(imdb_id):
+                if not (rss_item.manual_download_url or rss_item.download_url):
+                    continue
+                key = ("ncore", rss_item.torrent_id)
+                if key not in known_ids:
+                    indexer_torrents.append(
+                        self._map_ncore_rss_item(ncore_account, rss_item)
+                    )
+                    known_ids.add(key)
+
         return indexer_torrents, errors
+
+    def _map_ncore_rss_item(
+        self,
+        indexer_account: IndexerAccountModel,
+        rss_item: NcoreRssItemModel,
+    ) -> IndexerTorrent:
+        download_url = rss_item.manual_download_url or rss_item.download_url
+        assert download_url is not None
+        return IndexerTorrent(
+            indexer_account=indexer_account,
+            torrent_id=rss_item.torrent_id,
+            download_url=download_url,
+            imdb_id=rss_item.manual_imdb_id or rss_item.detected_imdb_id,
+            seeders=rss_item.seeders or 0,
+            media_attributes=[],
+        )
 
     async def download_torrent(
         self,
