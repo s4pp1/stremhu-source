@@ -39,7 +39,10 @@ def fingerprint(engine):
 
 def test_additive_epoch_upgrade_backup_downgrade_and_reupgrade(epoch_migration, tmp_path):
     engine, config, location = epoch_migration
-    assert ScriptDirectory.from_config(config).get_heads() == [NEW]
+    # The history stays linear and contains the epoch revision; later additive revisions may follow it.
+    script = ScriptDirectory.from_config(config)
+    assert len(script.get_heads()) == 1
+    assert NEW in {revision.revision for revision in script.walk_revisions()}
     command.upgrade(config, OLD)
     with engine.begin() as connection:
         connection.execute(text("INSERT INTO roles (id,name) VALUES ('user','Fixture')"))

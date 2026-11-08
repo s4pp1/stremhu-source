@@ -20,6 +20,7 @@ import { assertExists, parseApiError } from '@/shared/lib/utils'
 import { getMe, useUpdateMe } from '@/shared/queries/me'
 import {
   enableCatalogSearchSchema,
+  enableDownloadedMarkerSchema,
   enableSmartFilterSchema,
   enableStreamDeduplicationSchema,
   smartFilterGroupingPreferenceIdSchema,
@@ -34,6 +35,7 @@ export const validatorSchema = z.object({
   smartFilterGroupingPreferenceId: smartFilterGroupingPreferenceIdSchema,
   smartFilterLimit: smartFilterLimitSchema,
   enableCatalogSearch: enableCatalogSearchSchema,
+  enableDownloadedMarker: enableDownloadedMarkerSchema,
 })
 
 export function OtherPreferences() {
@@ -52,6 +54,7 @@ export function OtherPreferences() {
       smartFilterGroupingPreferenceId: me.smartFilterGroupingPreferenceId,
       smartFilterLimit: me.smartFilterLimit,
       enableCatalogSearch: me.enableCatalogSearch,
+      enableDownloadedMarker: me.enableDownloadedMarker,
     },
     validators: {
       onChange: validatorSchema,
@@ -151,6 +154,35 @@ export function OtherPreferences() {
                     onCheckedChange={field.handleChange}
                   />
                   <span>Több-trackeres találatok összevonása</span>
+                </Label>
+              )}
+            </form.Field>
+          </CardContent>
+        </Card>
+
+        <Card className="break-inside-avoid mb-4">
+          <CardHeader>
+            <CardTitle>Letöltött találatok</CardTitle>
+            <CardDescription>
+              A már helyben letöltött fájlok „⚡ Letöltve” jelölést kapnak, és a
+              találati lista elejére kerülnek. Évadcsomagnál csak a ténylegesen
+              kész epizódok. Kikapcsolva a lista csak a preferenciáid szerint
+              rendeződik.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form.Field name="enableDownloadedMarker">
+              {(field) => (
+                <Label
+                  htmlFor={field.name}
+                  className="flex items-center gap-3 cursor-pointer"
+                >
+                  <Switch
+                    id={field.name}
+                    checked={field.state.value}
+                    onCheckedChange={field.handleChange}
+                  />
+                  <span>Letöltött találatok jelölése és előresorolása</span>
                 </Label>
               )}
             </form.Field>

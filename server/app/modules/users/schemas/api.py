@@ -44,4 +44,5 @@ class UserResponse(BaseModel):
     smart_filter_limit: int
     enable_fallback_subtitles: bool = False
     enable_catalog_search: bool = True
+    enable_downloaded_marker: bool
     max_concurrent_streams: int | None

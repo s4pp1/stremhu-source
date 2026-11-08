@@ -30,6 +30,10 @@ from app.modules.torrent_files.schemas import TorrentFileSnapshot
 if TYPE_CHECKING:
     from app.modules.torrent_streams.schemas import TorrentStream
 
+# A helyben már letöltött fájl jelölése a stream nevében és leírásában
+DOWNLOADED_MARKER = "⚡ Letöltve"
+DOWNLOADED_BANNER = "⚡ Helyben tárolva (Azonnali lejátszás)"
+
 # ──────────────────────────────────────────────
 # Manifest schemas
 # ──────────────────────────────────────────────
@@ -168,8 +172,13 @@ class StremioStream(BaseModel):
     behavior_hints: BehaviorHints | None = None
 
     @classmethod
-    def from_id_torrent_stream(cls, torrent_stream: TorrentStream) -> StremioStream:
+    def from_id_torrent_stream(
+        cls,
+        torrent_stream: TorrentStream,
+        show_downloaded_marker: bool = True,
+    ) -> StremioStream:
         file_size = f"💾 {humanize.naturalsize(torrent_stream.file_size, binary=True, format='%.2f')}"
+        is_marked = show_downloaded_marker and torrent_stream.is_persisted_torrent
 
         stremio_subtitles = (
             [
@@ -186,8 +195,15 @@ class StremioStream(BaseModel):
         )
 
         return cls(
-            name=file_size,
-            description=f"📁 {torrent_stream.file_name}",
+            name=" | ".join(compact([DOWNLOADED_MARKER if is_marked else None, file_size])),
+            description="\n".join(
+                compact(
+                    [
+                        DOWNLOADED_BANNER if is_marked else None,
+                        f"📁 {torrent_stream.file_name}",
+                    ]
+                )
+            ),
             url=torrent_stream.play_url,
             subtitles=stremio_subtitles,
             behavior_hints=BehaviorHints(
@@ -208,8 +224,10 @@ class StremioStream(BaseModel):
         cls,
         torrent_stream: TorrentStream,
         is_series: bool = False,
+        show_downloaded_marker: bool = True,
     ) -> StremioStream:
         file_size = f"💾 {humanize.naturalsize(torrent_stream.file_size, binary=True, format='%.2f')}"
+        is_marked = show_downloaded_marker and torrent_stream.is_persisted_torrent
         effective_seeders = (
             torrent_stream.combined_seeders
             if torrent_stream.combined_seeders is not None
@@ -297,21 +315,14 @@ class StremioStream(BaseModel):
             )
         )
 
-        readable_is_persisted: str | None = None
-
-        if torrent_stream.is_persisted_torrent:
-            readable_is_persisted = "⚡ Letöltve"
+        readable_is_persisted = DOWNLOADED_MARKER if is_marked else None
 
         name = " | ".join(
             compact(
                 [readable_is_persisted, readable_resolutions, readable_video_qualities]
             )
         )
-        persisted_banner = (
-            "⚡ Helyben tárolva (Azonnali lejátszás)"
-            if torrent_stream.is_persisted_torrent
-            else None
-        )
+        persisted_banner = DOWNLOADED_BANNER if is_marked else None
         file_name_line = f"📁 {torrent_stream.file_name}" if is_series else None
         description = "\n".join(
             compact(

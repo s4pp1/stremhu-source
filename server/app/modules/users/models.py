@@ -107,6 +107,13 @@ class UserModel(Base):
         server_default=sa.text("1"),
     )
 
+    # A helyben már letöltött fájlok „⚡ Letöltve” jelölése és a lista elejére sorolása
+    enable_downloaded_marker: Mapped[bool] = mapped_column(
+        sa.Boolean,
+        default=True,
+        server_default=sa.text("1"),
+    )
+
     max_concurrent_streams: Mapped[int | None] = mapped_column(
         sa.Integer,
         default=None,

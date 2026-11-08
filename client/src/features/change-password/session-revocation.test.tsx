@@ -42,6 +42,7 @@ const me: UserResponse = {
   smartFilterLimit: 1,
   enableFallbackSubtitles: false,
   enableCatalogSearch: true,
+  enableDownloadedMarker: true,
   maxConcurrentStreams: null,
 }
 

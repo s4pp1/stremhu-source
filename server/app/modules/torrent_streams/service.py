@@ -350,7 +350,10 @@ class TorrentStreamsService:
             user=user,
             file_index=file_index,
         )
-        return await self._enrich_torrent_streams_with_tech_info(streams)
+        streams = await self._enrich_torrent_streams_with_tech_info(streams)
+        # A katalógusból megnyitott torrent fájllistája is a tényleges letöltött állapotot mutassa
+        self._mark_persisted_torrent_streams(streams)
+        return streams
 
     async def _enrich_torrent_streams_with_tech_info(
         self,
@@ -582,14 +585,15 @@ class TorrentStreamsService:
 
         return filtered_torrent_streams
 
-    def _sort_torrent_streams(
+    def _mark_persisted_torrent_streams(
         self,
         torrent_streams: list[TorrentStream],
-        user: UserModel,
-    ) -> list[TorrentStream]:
-        if not torrent_streams:
-            return []
+    ) -> None:
+        """Beállítja az is_persisted_torrent jelzőt a relay tényleges, fájlszintű állapota szerint.
 
+        Egy fájl akkor számít letöltöttnek, ha a torrent seedel, vagy ha a fájl
+        file_progress értéke eléri a méretét (évadcsomagnál csak a kész epizódok).
+        """
         # M12: Célzott állapotlekérés felesleges teljes táblalekérdezés (get_torrents) helyett.
         # file_progress_cache memóriában tárolja a torrent állapotot a több fájlos találatokhoz.
         file_progress_cache: dict[str, tuple[bool, list[int]]] = {}
@@ -637,6 +641,19 @@ class TorrentStreamsService:
                 except Exception:
                     stream.is_persisted_torrent = False
 
+    def _sort_torrent_streams(
+        self,
+        torrent_streams: list[TorrentStream],
+        user: UserModel,
+    ) -> list[TorrentStream]:
+        if not torrent_streams:
+            return []
+
+        self._mark_persisted_torrent_streams(torrent_streams)
+        # Kikapcsolt „Letöltve” preferenciánál a letöltött találat nem kerül előre:
+        # a lista csak a felhasználói preferenciák és a seederek szerint rendeződik.
+        prioritize_downloaded = bool(getattr(user, "enable_downloaded_marker", True))
+
         sorted_preferences = sorted(
             user.preference_definitions, key=lambda preference: preference.order
         )
@@ -657,7 +674,9 @@ class TorrentStreamsService:
             )
 
         def sort_key(stream: TorrentStream):
-            relay_rank = 0 if stream.is_persisted_torrent else 1
+            relay_rank = (
+                0 if prioritize_downloaded and stream.is_persisted_torrent else 1
+            )
             pref_ranks: list[int] = []
             for pref_id, rank_map, fallback in preference_rank_maps:
                 best_rank = fallback

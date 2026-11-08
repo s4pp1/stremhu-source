@@ -28,3 +28,5 @@ class MeUpdateRequest(BaseModel):
     enable_fallback_subtitles: bool | None = None
 
     enable_catalog_search: bool | None = None
+
+    enable_downloaded_marker: bool | None = None

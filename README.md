@@ -60,7 +60,7 @@
 | **Külső feliratok** | — | `.srt`, `.vtt`, `.ass`, `.ssa` a torrentből; ASS/SSA → WebVTT, kooperatív (szeletelt) konverzióval |
 | **Aktív lejátszás követése** | — | A felirat a ténylegesen lejátszott torrenthez tartozik; nincs második torrentindítás a felirat miatt |
 | **Lejátszás indítása** | 1 darab prioritás | A fájl eleje és vége `min(3, darabszám/2)` darabbal azonnali prioritást kap (MKV Cues / MP4 moov) |
-| **Letöltöttség jelzése** | Torrentszinten | Fájlszintű `file_progress`; csak a kész videófájl kap `⚡ Letöltve` jelzést |
+| **Letöltöttség jelzése** | Torrentszinten | Fájlszintű `file_progress`; csak a kész videófájl kap `⚡ Letöltve` jelzést, a katalógusból megnyitott torrent fájllistájában is; a jelölés és az előresorolás a Preferenciák között kikapcsolható |
 | **Gyorsítótár** | Rövid tracker-cache | IMDb-keresés 1800 s, szöveges keresés 300 s TTL, generációs stream-cache; tech-info cache 3600 s |
 | **Webes felület** | Fix 1 s-os frissítés | Adaptív frissítés: 1,5 s aktív letöltésnél, 5 s egyébként, háttérben szünetel |
 
