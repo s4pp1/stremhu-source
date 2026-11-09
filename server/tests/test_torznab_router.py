@@ -18,6 +18,7 @@ APP_URL = "https://stremhu.local"
 
 class FakeUser:
     id = "user-id"
+    api_key = API_KEY
 
 
 class FakeAuthService:
@@ -38,6 +39,16 @@ class FakeSettingsService:
         return APP_URL
 
 
+class FakeIsolatedTorrentFilesService:
+    def find_by_id(self, indexer_id: str, torrent_id: str):
+        _ = (indexer_id, torrent_id)
+
+        return None
+
+    def touch(self, identifiers) -> None:
+        _ = identifiers
+
+
 class FakeTorrentSourceProviderService:
     async def find_by_imdb_id(self, imdb_id: str):
         _ = imdb_id
@@ -55,6 +66,7 @@ def client() -> Iterator[TestClient]:
     app.dependency_overrides[get_torznab_service] = lambda: TorznabService(
         settings_service=FakeSettingsService(),  # type: ignore[arg-type]
         torrent_source_provider_service=FakeTorrentSourceProviderService(),  # type: ignore[arg-type]
+        isolated_torrent_files_service=FakeIsolatedTorrentFilesService(),  # type: ignore[arg-type]
     )
 
     yield TestClient(app)
@@ -121,9 +133,3 @@ def test_authentication_is_checked_before_the_query(client: TestClient):
     response = client.get("/api/torznab/api?t=details")
 
     assert error_code(response.text) == 100
-
-
-def test_api_key_is_not_published_in_the_feed(client: TestClient):
-    response = client.get(f"/api/torznab/api?t=movie&imdbid=tt9999999&apikey={API_KEY}")
-
-    assert API_KEY not in response.text

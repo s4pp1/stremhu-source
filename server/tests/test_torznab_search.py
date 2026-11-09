@@ -21,6 +21,7 @@ IMDB_ID = "tt9999999"
 
 class FakeUser:
     id = "user-id"
+    api_key = API_KEY
 
 
 class FakeAuthService:
@@ -36,6 +37,16 @@ class FakeAuthService:
 class FakeSettingsService:
     def get_app_url(self) -> str:
         return APP_URL
+
+
+class FakeIsolatedTorrentFilesService:
+    def find_by_id(self, indexer_id: str, torrent_id: str):
+        _ = (indexer_id, torrent_id)
+
+        return None
+
+    def touch(self, identifiers) -> None:
+        _ = identifiers
 
 
 class FakeTorrentSourceProviderService:
@@ -57,6 +68,7 @@ def create_client(sources: list[TorrentSource]) -> Iterator[TestClient]:
     app.dependency_overrides[get_torznab_service] = lambda: TorznabService(
         settings_service=FakeSettingsService(),  # type: ignore[arg-type]
         torrent_source_provider_service=FakeTorrentSourceProviderService(sources),  # type: ignore[arg-type]
+        isolated_torrent_files_service=FakeIsolatedTorrentFilesService(),  # type: ignore[arg-type]
     )
 
     yield TestClient(app)

@@ -7,6 +7,7 @@ import {
 import { KodiIntegration } from './kodi-integration'
 import { NuvioIntegration } from './nuvio-integration'
 import { StremioIntegration } from './stremio-integration'
+import { TorznabIntegration } from './torznab-integration'
 
 export function Integration() {
   return (
@@ -26,6 +27,9 @@ export function Integration() {
         </div>
         <div className="break-inside-avoid mb-4">
           <KodiIntegration />
+        </div>
+        <div className="break-inside-avoid mb-4">
+          <TorznabIntegration />
         </div>
       </div>
     </div>

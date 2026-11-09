@@ -28,6 +28,8 @@ XML_MEDIA_TYPE = "application/xml; charset=utf-8"
 
 TORRENT_MEDIA_TYPE = "application/x-bittorrent"
 
+DOWNLOAD_PATH_TEMPLATE = "/api/{api_key}/torznab/download/{token}"
+
 INDEXER_PRIVACY = "private"
 
 

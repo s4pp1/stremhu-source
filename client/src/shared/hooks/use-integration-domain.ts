@@ -32,5 +32,6 @@ export function useIntegrationDomain(props: UseIntegrationDomainProps) {
   return {
     stremio,
     nuvioUrl: `${systemStatus.appUrl}/api/${apiKey}/stremio/manifest.json`,
+    torznabUrl: `${systemStatus.appUrl}/api/torznab`,
   }
 }
