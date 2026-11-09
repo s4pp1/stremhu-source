@@ -6,6 +6,7 @@ from server.common.logger import logger
 from server.modules.indexer_accounts.service import IndexerAccountsService
 from server.modules.indexer_definitions.service import IndexerDefinitionsService
 from server.modules.relay.service import RelayService
+from server.modules.settings.service import SettingsService
 from server.modules.torrent_files.models import TorrentFileModel
 from server.modules.torrent_files.service import TorrentFilesService
 from server.modules.torrents.models import TorrentModel
@@ -21,12 +22,14 @@ class TorrentsService:
         indexer_accounts_service: IndexerAccountsService,
         indexer_definitions_service: IndexerDefinitionsService,
         relay_service: RelayService,
+        settings_service: SettingsService,
     ):
         self._torrent_repository = torrent_repository
         self._torrent_files_service = torrent_files_service
         self._indexer_accounts_service = indexer_accounts_service
         self._indexer_definitions_service = indexer_definitions_service
         self._relay_service = relay_service
+        self._settings_service = settings_service
 
     def create_from_torrent_file(
         self,
@@ -41,9 +44,11 @@ class TorrentsService:
         torrent = self._torrent_repository.create(torrent_model)
 
         priority = self._get_priority(torrent)
+        system_settings = self._settings_service.get_system()
 
         relay_torrent = self._relay_service.add_torrent(
             torrent_bytes=torrent.torrent_file.torrent_bytes,
+            save_path=system_settings.downloads_dir,
             priority=priority,
         )
 
@@ -180,12 +185,14 @@ class TorrentsService:
 
     def restore_torrents(self) -> None:
         torrents = self._torrent_repository.find()
+        system_settings = self._settings_service.get_system()
 
         for torrent in torrents:
             try:
                 priority = self._get_priority(torrent)
                 self._relay_service.add_torrent(
                     torrent_bytes=torrent.torrent_file.torrent_bytes,
+                    save_path=system_settings.downloads_dir,
                     priority=priority,
                     resume_bytes=torrent.resume_bytes,
                 )

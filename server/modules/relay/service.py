@@ -1,5 +1,6 @@
 import asyncio
 from collections.abc import Callable
+from pathlib import Path
 
 import libtorrent as libtorrent
 from fastapi import HTTPException
@@ -216,10 +217,20 @@ class RelayService:
     def add_torrent(
         self,
         torrent_bytes: bytes,
+        save_path: Path,
         priority: int = 0,
         resume_bytes: bytes | None = None,
     ) -> RelayTorrent:
-        save_path = str(config.downloads_dir.absolute())
+        resolved_save_path = str(save_path.resolve())
+
+        try:
+            save_path.mkdir(parents=True, exist_ok=True)
+        except Exception as e:
+            logger.warning(
+                "Nem sikerült létrehozni a letöltési mappát (%s): %s",
+                resolved_save_path,
+                e,
+            )
 
         try:
             torrent_info = libtorrent.torrent_info(torrent_bytes)
@@ -234,7 +245,7 @@ class RelayService:
             params = libtorrent.add_torrent_params()
 
         params.ti = torrent_info
-        params.save_path = save_path
+        params.save_path = resolved_save_path
         params.storage_mode = libtorrent.storage_mode_t.storage_mode_sparse
 
         torrent_handle = self._libtorrent_session.add_torrent(params)

@@ -80,9 +80,11 @@ class Config(BaseSettings):
     @classmethod
     def set_test_defaults(cls, data: object) -> object:
         if is_running_tests() and isinstance(data, dict):
-            data.setdefault("system_dir", Path("/tmp/stremhu_test"))
+            sys_dir = data.get("system_dir")
+            if sys_dir is None or sys_dir in ["./data", Path("./data")]:
+                data["system_dir"] = Path("/tmp/stremhu_test")
             data.setdefault("client_path", Path("client/dist"))
-            if "default_downloads_dir" not in data and "downloads_dir" not in data:
+            if "downloads_dir" not in data and "default_downloads_dir" not in data:
                 data.setdefault(
                     "default_downloads_dir", Path("/tmp/stremhu_test/downloads")
                 )
@@ -94,6 +96,20 @@ class Config(BaseSettings):
             raise ValueError(
                 "A `DEFAULT_DOWNLOADS_DIR` vagy a `DOWNLOADS_DIR` megadása kötelező!"
             )
+
+        if self.downloads_dir is not None and not self.downloads_dir.is_absolute():
+            raise ValueError(
+                "A `DOWNLOADS_DIR` elérési útnak abszolút útvonalnak kell lennie!"
+            )
+
+        if (
+            self.default_downloads_dir is not None
+            and not self.default_downloads_dir.is_absolute()
+        ):
+            raise ValueError(
+                "A `DEFAULT_DOWNLOADS_DIR` elérési útnak abszolút útvonalnak kell lennie!"
+            )
+
         return self
 
     @model_validator(mode="after")
@@ -131,7 +147,7 @@ class Config(BaseSettings):
 
 
 try:
-    config = Config()
+    config = Config()  # pyright: ignore[reportCallIssue]
 except ValidationError as e:
     console = Console()
     console.print(

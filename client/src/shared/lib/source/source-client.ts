@@ -25,6 +25,17 @@ export interface BehaviorHints {
   videoSize?: number | null
 }
 
+export interface DirectoryEntry {
+  name: string
+  path: string
+}
+
+export interface BrowseDirectoriesResponse {
+  currentPath: string
+  parentPath: string | null
+  directories: DirectoryEntry[]
+}
+
 export type ContentType = (typeof ContentType)[keyof typeof ContentType]
 
 export const ContentType = {
@@ -33,6 +44,15 @@ export const ContentType = {
   channel: 'channel',
   tv: 'tv',
 } as const
+
+export interface CreateDirectoryRequest {
+  parentPath: string
+  name: string
+}
+
+export interface CreateDirectoryResponse {
+  path: string
+}
 
 export interface DDNSProviderResponse {
   id: string
@@ -549,6 +569,10 @@ export interface UserUpdateRequest {
   smartFilterGroupingPreferenceId?: string | null
   smartFilterLimit?: number | null
   maxConcurrentStreams?: number | null
+}
+
+export type FilesystemBrowseDirectoriesParams = {
+  path?: string | null
 }
 
 export type KodiFindStreamsParams = {
@@ -1308,6 +1332,41 @@ export const systemRestart = (
 }
 
 /**
+ * @summary Browse Directories
+ */
+export const filesystemBrowseDirectories = (
+  params?: FilesystemBrowseDirectoriesParams,
+  options?: SecondParameter<
+    typeof sourceClientInstance<BrowseDirectoriesResponse>
+  >,
+) => {
+  return sourceClientInstance<BrowseDirectoriesResponse>(
+    { url: `/api/filesystem/directories`, method: 'GET', params },
+    options,
+  )
+}
+
+/**
+ * @summary Create Directory
+ */
+export const filesystemCreateDirectory = (
+  createDirectoryRequest: CreateDirectoryRequest,
+  options?: SecondParameter<
+    typeof sourceClientInstance<CreateDirectoryResponse>
+  >,
+) => {
+  return sourceClientInstance<CreateDirectoryResponse>(
+    {
+      url: `/api/filesystem/directories`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: createDirectoryRequest,
+    },
+    options,
+  )
+}
+
+/**
  * @summary Get Settings
  */
 export const relayGetSettings = (
@@ -1891,6 +1950,12 @@ export type SystemIndexersCleanupResult = NonNullable<
 >
 export type SystemRestartResult = NonNullable<
   Awaited<ReturnType<typeof systemRestart>>
+>
+export type FilesystemBrowseDirectoriesResult = NonNullable<
+  Awaited<ReturnType<typeof filesystemBrowseDirectories>>
+>
+export type FilesystemCreateDirectoryResult = NonNullable<
+  Awaited<ReturnType<typeof filesystemCreateDirectory>>
 >
 export type RelayGetSettingsResult = NonNullable<
   Awaited<ReturnType<typeof relayGetSettings>>

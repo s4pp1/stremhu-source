@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from server.config import show_internal_routes
 from server.modules.attributes.router import router as attributes_router
 from server.modules.auth.router import router as auth_router
+from server.modules.filesystem.router import router as filesystem_router
 from server.modules.indexers.router import router as indexers_router
 from server.modules.kodi.router import router as kodi_router
 from server.modules.me.router import router as me_router
@@ -46,6 +47,10 @@ api_router.include_router(
 )
 api_router.include_router(
     system_router,
+    include_in_schema=show_internal_routes(),
+)
+api_router.include_router(
+    filesystem_router,
     include_in_schema=show_internal_routes(),
 )
 api_router.include_router(relay_settings_router)

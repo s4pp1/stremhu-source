@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from server.config import config
 from server.modules.settings.enums import NetworkConnectionEnum, NetworkModeEnum
@@ -49,12 +49,30 @@ class SystemSettings(BaseModel):
     cache_retention_seconds: int = 14 * 24 * 60 * 60
     downloads_dir: Path
 
+    @field_validator("downloads_dir")
+    @classmethod
+    def validate_downloads_dir_is_absolute(cls, value: Path) -> Path:
+        if not value.is_absolute():
+            raise ValueError(
+                "A letöltési mappának abszolút elérési útvonalnak kell lennie!"
+            )
+        return value
+
 
 class SystemSettingsUpdate(BaseModel):
     hit_and_run: bool | None = None
     keep_seed_seconds: int | None = None
     cache_retention_seconds: int | None = None
     downloads_dir: Path | None = None
+
+    @field_validator("downloads_dir")
+    @classmethod
+    def validate_downloads_dir_is_absolute(cls, value: Path | None) -> Path | None:
+        if value is not None and not value.is_absolute():
+            raise ValueError(
+                "A letöltési mappának abszolút elérési útvonalnak kell lennie!"
+            )
+        return value
 
 
 class RelaySettings(BaseModel):

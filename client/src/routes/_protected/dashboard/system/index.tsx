@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Separator } from '@/shared/components/ui/separator'
 
+import { DownloadsDir } from './-features/downloads-dir'
 import { Indexers } from './-features/indexers'
 import { KeepSeeding } from './-features/keep-seeding'
 import { NetworkAccessInfo } from './-features/network-access-info'
@@ -20,6 +21,9 @@ function SystemRoute() {
       <div className="columns-1 md:columns-2 gap-4">
         <div className="break-inside-avoid mb-4">
           <NetworkAccessInfo />
+        </div>
+        <div className="break-inside-avoid mb-4">
+          <DownloadsDir />
         </div>
         <div className="break-inside-avoid mb-4">
           <TorrentFilesCache />

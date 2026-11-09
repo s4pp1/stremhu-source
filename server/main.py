@@ -8,14 +8,12 @@ from setproctitle import setproctitle
 
 from server.boot.bootstrap import bootstrap_app
 from server.boot.schemas import BootNetworkConfig
-from server.common.logger import setup_logger
 from server.config import config
 from server.modules.settings.enums import NetworkModeEnum
 
 
 def run() -> None:
     setproctitle("StremHU Server")
-    setup_logger()
     boot_config = bootstrap_app()
 
     console = Console()

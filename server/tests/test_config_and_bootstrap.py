@@ -7,7 +7,10 @@ from server.modules.settings.dependencies import create_settings_service
 from server.modules.settings.schemas.internal import SystemSettingsUpdate
 
 
-def test_system_settings_downloads_dir(tmp_path: Path):
+def test_system_settings_downloads_dir(tmp_path: Path, monkeypatch):
+    from server.config import config
+
+    monkeypatch.setattr(config, "downloads_dir", None)
     with db_session() as db:
         service = create_settings_service(db)
         custom_dir = str(tmp_path / "custom_downloads")
@@ -248,3 +251,83 @@ def test_system_settings_response_path_serialization():
     assert status_resp.downloads_dir == Path("/Users/test/Downloads")
     dumped_status = status_resp.model_dump(mode="json", by_alias=True)
     assert dumped_status["downloadsDir"] == "/Users/test/Downloads"
+
+
+def test_ensure_default_settings_preserves_user_downloads_dir(monkeypatch):
+    from server.boot.settings import ensure_default_settings
+    from server.config import config
+    from server.modules.settings.enums import SettingsKeyEnum
+    from server.modules.settings.models import SettingModel
+
+    monkeypatch.setattr(config, "downloads_dir", None)
+    monkeypatch.setattr(config, "default_downloads_dir", Path("/tmp/default_downloads"))
+
+    with db_session() as db:
+        db.query(SettingModel).filter(
+            SettingModel.key == SettingsKeyEnum.SYSTEM.value
+        ).delete()
+        db.commit()
+
+    ensure_default_settings()
+
+    with db_session() as db:
+        service = create_settings_service(db)
+        # 1. Alapértelmezett beállítás inicializálása
+        system_settings = service.get_system()
+        assert system_settings.downloads_dir == Path("/tmp/default_downloads")
+
+        # 2. Felhasználó módosítja a UI-on keresztül
+        service.save_system(
+            SystemSettingsUpdate(downloads_dir=Path("/tmp/custom_downloads"))
+        )
+        assert service.get_system().downloads_dir == Path("/tmp/custom_downloads")
+
+    # 3. Kiszolgáló újraindul, lefut az ensure_default_settings
+    ensure_default_settings()
+
+    with db_session() as db:
+        service = create_settings_service(db)
+        # 4. A felhasználó által megadott mappa megmarad az adatbázisban
+        assert service.get_system().downloads_dir == Path("/tmp/custom_downloads")
+
+
+def test_torrents_service_add_torrent_receives_save_path_from_settings(tmp_path: Path):
+    from unittest.mock import MagicMock
+
+    from server.modules.settings.schemas.internal import SystemSettings
+    from server.modules.torrents.service import TorrentsService
+
+    mock_repo = MagicMock()
+    mock_files = MagicMock()
+    mock_acc = MagicMock()
+    mock_def = MagicMock()
+    mock_relay = MagicMock()
+    mock_settings = MagicMock()
+
+    custom_dir = tmp_path / "downloads"
+    mock_settings.get_system.return_value = SystemSettings(downloads_dir=custom_dir)
+
+    service = TorrentsService(
+        torrent_repository=mock_repo,
+        torrent_files_service=mock_files,
+        indexer_accounts_service=mock_acc,
+        indexer_definitions_service=mock_def,
+        relay_service=mock_relay,
+        settings_service=mock_settings,
+    )
+
+    mock_torrent = MagicMock()
+    mock_torrent.torrent_file.torrent_bytes = b"bytes"
+    mock_torrent.info_hash = "hash123"
+    mock_torrent.resume_bytes = None
+    mock_torrent.full_download = True
+    mock_repo.find.return_value = [mock_torrent]
+
+    service.restore_torrents()
+
+    mock_relay.add_torrent.assert_called_once_with(
+        torrent_bytes=b"bytes",
+        save_path=custom_dir,
+        priority=1,
+        resume_bytes=None,
+    )

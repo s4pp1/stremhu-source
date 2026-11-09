@@ -17,6 +17,8 @@ class IgnoreHypercornDisconnectErrorFilter(logging.Filter):
                 and "Too little data for declared Content-Length" in str(exc_value)
             ):
                 return False
+        if "Too little data for declared Content-Length" in str(record.msg):
+            return False
         return True
 
 
@@ -26,12 +28,14 @@ def setup_logger():
     terminal_width = shutil.get_terminal_size(fallback=(120, 50)).columns
     console = Console(width=terminal_width)
 
+    hypercorn_filter = IgnoreHypercornDisconnectErrorFilter()
+
     handler = RichHandler(
         rich_tracebacks=True,
         show_path=True,
         console=console,
     )
-    handler.addFilter(IgnoreHypercornDisconnectErrorFilter())
+    handler.addFilter(hypercorn_filter)
 
     logging.basicConfig(
         level=logging.WARNING if is_prod else logging.INFO,
@@ -41,5 +45,9 @@ def setup_logger():
         force=True,
     )
 
+    logging.getLogger("hypercorn.error").addFilter(hypercorn_filter)
+
+
+setup_logger()
 
 logger = logging.getLogger(__name__)

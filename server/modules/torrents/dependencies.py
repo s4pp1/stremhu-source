@@ -9,6 +9,7 @@ from server.modules.indexer_definitions.dependencies import (
     get_indexer_definitions_service,
 )
 from server.modules.relay.dependencies import get_relay_service
+from server.modules.settings.dependencies import create_settings_service
 from server.modules.torrent_files.dependencies import create_torrent_files_service
 from server.modules.torrents.repository import TorrentRepository
 from server.modules.torrents.service import TorrentsService
@@ -22,6 +23,7 @@ def create_torrents_service(
     torrent_files_service = create_torrent_files_service(db)
     indexer_accounts_service = create_indexer_accounts_service(db)
     indexer_definitions_service = get_indexer_definitions_service()
+    settings_service = create_settings_service(db)
 
     return TorrentsService(
         torrent_repository=torrent_repository,
@@ -29,6 +31,7 @@ def create_torrents_service(
         torrent_files_service=torrent_files_service,
         indexer_accounts_service=indexer_accounts_service,
         indexer_definitions_service=indexer_definitions_service,
+        settings_service=settings_service,
     )
 
 
