@@ -19,6 +19,14 @@ class PlaybacksService:
         active_streams = self._relay_service.get_active_streams()
         streams_by_playback = {stream.playback_id: stream for stream in active_streams}
 
+        # Egy lejátszáshoz több párhuzamos kérés is tartozhat (pl. tekerésnél),
+        # a lejátszás sebessége ezek összege.
+        speed_by_playback: dict[str, int] = {}
+        for stream in active_streams:
+            speed_by_playback[stream.playback_id] = (
+                speed_by_playback.get(stream.playback_id, 0) + stream.speed
+            )
+
         active_playbacks: list[Playback] = []
 
         for playback_id, stream in streams_by_playback.items():
@@ -31,6 +39,7 @@ class PlaybacksService:
                 Playback(
                     playback_history_model=history,
                     stream=stream,
+                    speed=speed_by_playback[playback_id],
                 )
             )
 
