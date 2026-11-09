@@ -5,6 +5,7 @@ from app.modules.network.background_tasks import (
     run_check_ssl_certificate,
     run_network_ip_sync,
 )
+from app.modules.ncore_rss.background_tasks import run_ncore_rss_sync
 from app.modules.pairings.background_tasks import run_expired_pairings_cleanup
 from app.modules.torrent_files.background_tasks import (
     run_torrent_files_retention_cleanup,
@@ -43,6 +44,15 @@ def setup_scheduler() -> AsyncIOScheduler:
         hour="*",
         minute=0,
         id="expired_pairings_cleanup",
+        replace_existing=True,
+    )
+
+    # nCore RSS frissítése 15 percenként
+    scheduler.add_job(
+        run_ncore_rss_sync,
+        trigger="interval",
+        minutes=15,
+        id="ncore_rss_sync",
         replace_existing=True,
     )
 

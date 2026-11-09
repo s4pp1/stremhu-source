@@ -113,6 +113,42 @@ export interface IndexerUpdateRequest {
   keepSeedSeconds?: number | null
 }
 
+export interface NcoreRssFeedUpdate {
+  feedUrl: string
+}
+
+export interface NcoreRssItemUpdate {
+  imdbId?: string | null
+  downloadUrl?: string | null
+}
+
+export interface NcoreRssManualItemCreate {
+  imdbId: string
+  downloadUrl: string
+  title: string
+}
+
+export interface NcoreRssItemResponse {
+  torrentId: string
+  title: string
+  sourceUrl: string | null
+  downloadUrl: string | null
+  detectedImdbId: string | null
+  manualImdbId: string | null
+  imdbId: string | null
+  seeders: number | null
+  isManual: boolean
+  lastSeenAt: string
+}
+
+export interface NcoreRssStatusResponse {
+  ncoreConnected: boolean
+  configured: boolean
+  lastSyncedAt: string | null
+  totalItems: number
+  unresolvedItems: number
+}
+
 export interface KodiImdbStreamResponse {
   torrentName: string
   fileName: string
@@ -1664,6 +1700,109 @@ export const indexersGetDefinitionList = (
 ) => {
   return sourceClientInstance<IndexerDefinitionResponse[]>(
     { url: `/api/indexers/definitions`, method: 'GET' },
+    options,
+  )
+}
+
+/**
+ * @summary Get nCore RSS status
+ */
+export const ncoreRssGetStatus = (
+  options?: SecondParameter<typeof sourceClientInstance<NcoreRssStatusResponse>>,
+) => {
+  return sourceClientInstance<NcoreRssStatusResponse>(
+    { url: `/api/indexers/ncore/rss/`, method: 'GET' },
+    options,
+  )
+}
+
+/**
+ * @summary Get nCore RSS entries
+ */
+export const ncoreRssGetItems = (
+  options?: SecondParameter<typeof sourceClientInstance<NcoreRssItemResponse[]>>,
+) => {
+  return sourceClientInstance<NcoreRssItemResponse[]>(
+    { url: `/api/indexers/ncore/rss/items`, method: 'GET' },
+    options,
+  )
+}
+
+/**
+ * @summary Configure nCore RSS feed
+ */
+export const ncoreRssConfigureFeed = (
+  payload: NcoreRssFeedUpdate,
+  options?: SecondParameter<typeof sourceClientInstance<NcoreRssStatusResponse>>,
+) => {
+  return sourceClientInstance<NcoreRssStatusResponse>(
+    {
+      url: `/api/indexers/ncore/rss/feed`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: payload,
+    },
+    options,
+  )
+}
+
+/**
+ * @summary Clear nCore RSS feed
+ */
+export const ncoreRssClearFeed = (
+  options?: SecondParameter<typeof sourceClientInstance<NcoreRssStatusResponse>>,
+) => {
+  return sourceClientInstance<NcoreRssStatusResponse>(
+    { url: `/api/indexers/ncore/rss/feed`, method: 'DELETE' },
+    options,
+  )
+}
+
+/**
+ * @summary Sync nCore RSS feed now
+ */
+export const ncoreRssSync = (
+  options?: SecondParameter<typeof sourceClientInstance<NcoreRssStatusResponse>>,
+) => {
+  return sourceClientInstance<NcoreRssStatusResponse>(
+    { url: `/api/indexers/ncore/rss/sync`, method: 'POST' },
+    options,
+  )
+}
+
+/**
+ * @summary Add a manual nCore torrent mapping
+ */
+export const ncoreRssAddManualItem = (
+  payload: NcoreRssManualItemCreate,
+  options?: SecondParameter<typeof sourceClientInstance<NcoreRssItemResponse>>,
+) => {
+  return sourceClientInstance<NcoreRssItemResponse>(
+    {
+      url: `/api/indexers/ncore/rss/items`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: payload,
+    },
+    options,
+  )
+}
+
+/**
+ * @summary Update an RSS item IMDb mapping or download link
+ */
+export const ncoreRssUpdateItem = (
+  torrentId: string,
+  payload: NcoreRssItemUpdate,
+  options?: SecondParameter<typeof sourceClientInstance<NcoreRssItemResponse>>,
+) => {
+  return sourceClientInstance<NcoreRssItemResponse>(
+    {
+      url: `/api/indexers/ncore/rss/items/${torrentId}`,
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      data: payload,
+    },
     options,
   )
 }

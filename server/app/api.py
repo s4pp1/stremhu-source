@@ -7,6 +7,7 @@ from app.modules.indexers.router import router as indexers_router
 from app.modules.kodi.router import router as kodi_router
 from app.modules.me.router import router as me_router
 from app.modules.monitoring.router import router as monitoring_router
+from app.modules.ncore_rss.router import router as ncore_rss_router
 from app.modules.network.router import router as network_router
 from app.modules.pairings.router import router as pairings_router
 from app.modules.playbacks.router import router as playbacks_router
@@ -31,6 +32,7 @@ api_router.include_router(
     include_in_schema=show_internal_routes(),
 )
 api_router.include_router(monitoring_router)
+api_router.include_router(ncore_rss_router)
 api_router.include_router(
     auth_router,
     include_in_schema=show_internal_routes(),

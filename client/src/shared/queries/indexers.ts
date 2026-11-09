@@ -16,6 +16,7 @@ import {
   indexersUpdate,
 } from '../lib/source/source-client'
 import { getMePreferences } from './me'
+import { getNcoreRssStatus } from './ncore-rss'
 import { getPreferences } from './preferences'
 import { getUsers } from './users'
 
@@ -42,7 +43,11 @@ export function useIndexerLogin() {
       await indexersLogin(payload)
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: getIndexers.queryKey })
+      await Promise.all(
+        [getIndexers.queryKey, getNcoreRssStatus.queryKey].map((queryKey) =>
+          queryClient.invalidateQueries({ queryKey }),
+        ),
+      )
     },
   })
 }
@@ -75,6 +80,7 @@ export function useIndexerDelete() {
       await Promise.all(
         [
           getIndexers.queryKey,
+          getNcoreRssStatus.queryKey,
           getMePreferences().queryKey,
           getPreferences.queryKey,
           getUsers.queryKey,
