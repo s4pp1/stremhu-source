@@ -99,6 +99,7 @@ class RelayService:
 
         self._piece_fetch_tasks: dict[tuple[str, int], asyncio.Task[bytes]] = {}
         self._pending_piece_reads: dict[tuple[str, int], asyncio.Future[bytes]] = {}
+        self._piece_fetch_waiters: dict[tuple[str, int], int] = {}
 
         # Event hooks for resume data management (Observer Pattern)
         self.on_save_resume: list[Callable[[str, bytes], None]] = []
@@ -211,7 +212,22 @@ class RelayService:
             )
             self._piece_fetch_tasks[request_key] = task
 
-        return await asyncio.shield(task)
+        self._piece_fetch_waiters[request_key] = (
+            self._piece_fetch_waiters.get(request_key, 0) + 1
+        )
+        try:
+            return await asyncio.shield(task)
+        finally:
+            waiters = self._piece_fetch_waiters[request_key] - 1
+            if waiters > 0:
+                self._piece_fetch_waiters[request_key] = waiters
+            else:
+                self._piece_fetch_waiters.pop(request_key, None)
+                # Ha már senki sem vár a darabra, ne maradjon árva háttértask.
+                if not task.done():
+                    if self._piece_fetch_tasks.get(request_key) is task:
+                        self._piece_fetch_tasks.pop(request_key, None)
+                    task.cancel()
 
     async def _fetch_piece_with_retry(
         self,
@@ -244,12 +260,16 @@ class RelayService:
         future: asyncio.Future[bytes] = self._loop.create_future()
         self._pending_piece_reads[request_key] = future
 
+        read_requested = False
+
         try:
             while True:
                 # Ha a torrentet közben törölték, a have_piece kivételt dob,
-                # így a várakozó nem ragad be örökre.
-                if torrent_handle.have_piece(piece_index):
+                # így a várakozó nem ragad be örökre. Az olvasást csak egyszer
+                # kérjük, hogy lassú lemeznél ne halmozzunk újabb olvasásokat.
+                if not read_requested and torrent_handle.have_piece(piece_index):
                     torrent_handle.read_piece(piece_index)
+                    read_requested = True
 
                 # A piece_finished_alert elveszhet (pl. megtelt alert sor), ezért
                 # nem várunk rá korlátlanul: időnként újra ellenőrizzük a darabot.

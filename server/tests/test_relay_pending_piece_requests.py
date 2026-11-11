@@ -13,7 +13,7 @@ KEY = (INFO_HASH, PIECE_INDEX)
 
 
 class FakeHandle:
-    """Minimális torrent_handle: a darab megvan, a read_piece csak számolja a hívásokat."""
+    """Minimális torrent_handle: a read_piece csak számolja a hívásokat."""
 
     def __init__(self, have: bool = True) -> None:
         self.read_calls = 0
@@ -41,6 +41,7 @@ def make_service(loop: asyncio.AbstractEventLoop) -> RelayService:
     service._loop = loop
     service._piece_fetch_tasks = {}
     service._pending_piece_reads = {}
+    service._piece_fetch_waiters = {}
     return service
 
 
@@ -193,6 +194,31 @@ def test_fetch_cancelled_after_alert_does_not_raise_invalid_state():
     asyncio.run(scenario())
 
 
+def test_fetch_task_is_cancelled_when_last_waiter_leaves():
+    """Ha az utolsó várakozó is bont, a háttértask nem marad árván futva."""
+
+    async def scenario() -> None:
+        service = make_service(asyncio.get_running_loop())
+        handle = cast(libtorrent.torrent_handle, FakeHandle(have=False))
+
+        waiter = asyncio.create_task(service.get_piece_data(handle, PIECE_INDEX))
+        while KEY not in service._pending_piece_reads:
+            await asyncio.sleep(0)
+        fetch_task = service._piece_fetch_tasks[KEY]
+
+        waiter.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await waiter
+        await asyncio.sleep(0)
+
+        assert fetch_task.cancelled()
+        assert service._piece_fetch_tasks == {}
+        assert service._pending_piece_reads == {}
+        assert service._piece_fetch_waiters == {}
+
+    asyncio.run(scenario())
+
+
 def test_lost_piece_finished_alert_is_recovered_by_recheck(monkeypatch):
     """Ha a darab letöltődik, de a piece_finished_alert elveszik, a kérés nem lóg
     örökké: az időszakos újraellenőrzés elindítja az olvasást."""
@@ -210,8 +236,12 @@ def test_lost_piece_finished_alert_is_recovered_by_recheck(monkeypatch):
 
         # A darab megérkezett, de erről nem jött alert
         fake_handle.have = True
-        while fake_handle.read_calls == 0:
-            await asyncio.sleep(0.005)
+
+        async def wait_for_read() -> None:
+            while fake_handle.read_calls == 0:
+                await asyncio.sleep(0.005)
+
+        await asyncio.wait_for(wait_for_read(), 1)
 
         await deliver_read_piece(service, b"recovered")
         assert await asyncio.wait_for(request, 1) == b"recovered"
