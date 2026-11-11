@@ -13,6 +13,12 @@ class NetworkModeEnum(str, Enum):
     MANUAL = "manual"
 
 
+class RelayEncryptionEnum(str, Enum):
+    ENABLED = "enabled"
+    FORCED = "forced"
+    DISABLED = "disabled"
+
+
 class NetworkConnectionEnum(str, Enum):
     LOCAL = "local"
     PUBLIC = "public"

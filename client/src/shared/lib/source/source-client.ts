@@ -451,6 +451,15 @@ export interface RegisterRequest {
   password: string
 }
 
+export type RelayEncryptionEnum =
+  (typeof RelayEncryptionEnum)[keyof typeof RelayEncryptionEnum]
+
+export const RelayEncryptionEnum = {
+  enabled: 'enabled',
+  forced: 'forced',
+  disabled: 'disabled',
+} as const
+
 export interface RelaySettingsResponse {
   port: number
   downloadLimit: number
@@ -458,6 +467,8 @@ export interface RelaySettingsResponse {
   connectionsLimit: number
   torrentConnectionsLimit: number
   enableUpnpAndNatpmp: boolean
+  encryption: RelayEncryptionEnum
+  enableUtp: boolean
 }
 
 export interface RelaySettingsUpdateRequest {
@@ -467,6 +478,8 @@ export interface RelaySettingsUpdateRequest {
   connectionsLimit?: number | null
   torrentConnectionsLimit?: number | null
   enableUpnpAndNatpmp?: boolean | null
+  encryption?: RelayEncryptionEnum | null
+  enableUtp?: boolean | null
 }
 
 export interface StremioCatalogResponse {

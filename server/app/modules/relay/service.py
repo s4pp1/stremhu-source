@@ -17,6 +17,38 @@ from app.modules.relay.schemas import (
     RelaySettingsUpdate,
     RelayTorrent,
 )
+from app.modules.settings.enums import RelayEncryptionEnum
+
+
+def encryption_settings(mode: RelayEncryptionEnum) -> "libtorrent.settings_pack":
+    """A BitTorrent protokoll-titkosítás (MSE/PE) libtorrent beállításai.
+
+    - enabled: a titkosított és a titkosítatlan kapcsolat is engedélyezett (libtorrent alapértelmezés)
+    - forced: csak titkosított kapcsolat jöhet létre, a kézfogás után is RC4 titkosítással
+    - disabled: a titkosítás ki van kapcsolva
+    """
+    if mode == RelayEncryptionEnum.FORCED:
+        return {
+            "out_enc_policy": libtorrent.enc_policy.forced,
+            "in_enc_policy": libtorrent.enc_policy.forced,
+            "allowed_enc_level": libtorrent.enc_level.rc4,
+            "prefer_rc4": True,
+        }
+
+    if mode == RelayEncryptionEnum.DISABLED:
+        return {
+            "out_enc_policy": libtorrent.enc_policy.disabled,
+            "in_enc_policy": libtorrent.enc_policy.disabled,
+            "allowed_enc_level": libtorrent.enc_level.both,
+            "prefer_rc4": False,
+        }
+
+    return {
+        "out_enc_policy": libtorrent.enc_policy.enabled,
+        "in_enc_policy": libtorrent.enc_policy.enabled,
+        "allowed_enc_level": libtorrent.enc_level.both,
+        "prefer_rc4": False,
+    }
 
 
 class PieceReadAbortedError(Exception):
@@ -184,6 +216,13 @@ class RelayService:
                 self._torrent_connections_limit = payload.torrent_connections_limit
                 for torrent in list(self._torrents.values()):
                     self.apply_torrent_connection_policy(torrent)
+
+        if payload.encryption is not None:
+            apply_settings.update(encryption_settings(payload.encryption))
+
+        if payload.enable_utp is not None:
+            apply_settings["enable_outgoing_utp"] = payload.enable_utp
+            apply_settings["enable_incoming_utp"] = payload.enable_utp
 
         if payload.port is not None:
             apply_settings["listen_interfaces"] = (

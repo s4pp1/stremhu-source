@@ -4,7 +4,11 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
 
-from app.modules.settings.enums import NetworkConnectionEnum, NetworkModeEnum
+from app.modules.settings.enums import (
+    NetworkConnectionEnum,
+    NetworkModeEnum,
+    RelayEncryptionEnum,
+)
 from app.modules.settings.schemas.internal import (
     NetworkManualSettings,
     RelaySettingsUpdate,
@@ -42,6 +46,8 @@ class RelaySettingsResponse(BaseModel):
     connections_limit: int
     torrent_connections_limit: int
     enable_upnp_and_natpmp: bool
+    encryption: RelayEncryptionEnum
+    enable_utp: bool
 
 
 class RelaySettingsUpdateRequest(RelaySettingsUpdate):

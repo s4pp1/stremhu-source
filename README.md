@@ -26,6 +26,7 @@
 > **Fork információk és köszönetnyilvánítás**
 > Ez a repository, a **`stremhu-source-VibeCodedEdition`**, a hivatalos **[StremHU Source](https://github.com/s4pp1/stremhu-source)** projekt forkja. Az eredeti szerzője és fejlesztője **[s4pp1](https://github.com/s4pp1)**; minden alapfunkció az ő munkája.
 > - **Viszonyítási alap (Upstream):** [`s4pp1/stremhu-source`](https://github.com/s4pp1/stremhu-source), `8c99c7d` commit. A dokumentumban: **`s4pp1/stremhu-source` (Upstream `@8c99c7d`)**.
+> - **Upstream-szinkron:** a fork az upstream `f3ffff3`-ig (2026-11-09) érkezett változásait is tartalmazza: protokoll-titkosítás és uTP kapcsoló a relay-beállításokban (#292), csomagfrissítések (FastAPI 0.162, pydantic 2.14, SQLAlchemy 2.1.8, kliensoldali csomagok). Az összehasonlítás és a mérések viszonyítási alapja `@8c99c7d` marad.
 > - **Hivatalos weboldal és dokumentáció:** [https://stremhu.app](https://stremhu.app)
 > - **Hivatalos Docker image:** [s4pp1/stremhu-source:latest](https://hub.docker.com/r/s4pp1/stremhu-source)
 > - **A fork Docker image-e:** [levfero/stremhu-source:dev](https://hub.docker.com/r/levfero/stremhu-source)
@@ -257,7 +258,7 @@ Push-Location server
 Pop-Location
 ```
 
-Utolsó ellenőrzött eredmény: Ruff `All checks passed!`, basedpyright `0 errors, 0 warnings, 0 notes`, pytest **835 passed / 64 snapshot**.
+Utolsó ellenőrzött eredmény: Ruff `All checks passed!`, basedpyright `0 errors, 0 warnings, 0 notes`, pytest **842 passed / 64 snapshot**.
 
 **Frontend** (a `client/` könyvtárban):
 
@@ -268,7 +269,7 @@ npm run format
 npm run build
 ```
 
-`--fix` és teljes repóformázás nélkül; utolsó ellenőrzött eredmény: vitest 2 tesztfájl / 11 teszt, lint, format és build sikeres.
+`--fix` és teljes repóformázás nélkül; utolsó ellenőrzött eredmény: vitest 3 tesztfájl / 13 teszt, lint, format és build sikeres.
 
 **Dokumentáció**
 - Belépési pont: [docs/README.md](./docs/README.md)

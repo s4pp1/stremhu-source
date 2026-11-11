@@ -3,7 +3,11 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, Field
 
 from app.config import config
-from app.modules.settings.enums import NetworkConnectionEnum, NetworkModeEnum
+from app.modules.settings.enums import (
+    NetworkConnectionEnum,
+    NetworkModeEnum,
+    RelayEncryptionEnum,
+)
 
 
 class NetworkLocalSettings(BaseModel):
@@ -61,6 +65,8 @@ class RelaySettings(BaseModel):
     connections_limit: int = 200
     torrent_connections_limit: int = 20
     enable_upnp_and_natpmp: bool = False
+    encryption: RelayEncryptionEnum = RelayEncryptionEnum.ENABLED
+    enable_utp: bool = True
 
 
 class RelaySettingsUpdate(BaseModel):
@@ -70,3 +76,5 @@ class RelaySettingsUpdate(BaseModel):
     connections_limit: int | None = None
     torrent_connections_limit: int | None = None
     enable_upnp_and_natpmp: bool | None = None
+    encryption: RelayEncryptionEnum | None = None
+    enable_utp: bool | None = None
