@@ -7,7 +7,7 @@ from rich.panel import Panel
 
 from app.boot.network import ensure_network_settings
 from app.boot.settings import ensure_default_settings
-from app.boot.setup import run_migrations, setup_directories
+from app.boot.setup import exit_if_legacy_data, run_migrations, setup_directories
 from app.common.logger import setup_logger
 from app.config import NodeEnv, config
 from app.modules.settings.enums import NetworkModeEnum
@@ -70,5 +70,6 @@ def start_server():
 
 if __name__ == "__main__":
     setup_directories()
+    exit_if_legacy_data()
     run_migrations()
     start_server()

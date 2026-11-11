@@ -1,0 +1,173 @@
+# Legacy data migration: what the migrator knows about each old (NestJS) release.
+#
+# Everything version-specific lives here, so supporting another release means
+# editing this file, not the code. To try a modified copy without rebuilding
+# the image, mount it and pass `--config /path/to/versions.toml`.
+# tests/test_legacy_migration_*.py check this file against the app.
+#
+# Facts below were taken from the upstream git tags and release notes of
+# https://github.com/s4pp1/stremhu-source.
+
+schema = 1
+
+[target]
+# The migration writes through this app's own models and alembic migrations;
+# this is the release the mappings below were last verified against.
+verified_against = "0.25.4"
+
+
+# --------------------------------------------------------------------------- #
+# Folder layouts inside the old /app/data
+# --------------------------------------------------------------------------- #
+
+[layouts.root]
+description = "database/, torrents/ and resumes/ directly in /app/data"
+database = "database/app.db"
+torrents = "torrents"
+resumes = "resumes"
+downloads = "downloads"
+
+[layouts.system]
+description = "database/, torrents/ and resumes/ under /app/data/system (v0.20.0 and later)"
+database = "system/database/app.db"
+torrents = "system/torrents"
+resumes = "system/resumes"
+downloads = "downloads"
+
+
+# --------------------------------------------------------------------------- #
+# Supported source releases, detected by the last applied TypeORM migration
+# --------------------------------------------------------------------------- #
+
+[[versions]]
+releases = "v0.17.0 – v0.18.6"
+last_migration = "DeleteImdbFromTorrent1771760591061"
+layout = "root"
+resume_data = false
+trackers = ["ncore", "bithumen", "majomparade", "insane"]
+notes = [
+  "This release kept no libtorrent resume data, so the new version hash-checks each migrated torrent's files the first time it is played.",
+]
+warnings = [
+  "v0.17.x and v0.18.x have the same database, so they cannot be told apart. If this install was v0.17.x, its addon URL was /api/<token>/manifest.json (v0.18.0 changed it to /api/<token>/stremio/manifest.json), so re-install the addon for each user. v0.18.x installs keep their addon URLs.",
+]
+
+[[versions]]
+releases = "v0.19.0 – v0.19.1"
+last_migration = "UploadRemoveFromTorrents1774800518975"
+layout = "root"
+resume_data = true
+trackers = ["ncore", "bithumen", "majomparade", "insane"]
+
+[[versions]]
+releases = "v0.20.0 – v0.21.1"
+last_migration = "DevicePairing1775940623860"
+layout = "system"
+resume_data = true
+trackers = ["ncore", "bithumen", "majomparade", "insane"]
+
+[[versions]]
+releases = "v0.22.0"
+last_migration = "FilelistTracker1776000000000"
+layout = "system"
+resume_data = true
+trackers = ["ncore", "bithumen", "majomparade", "insane", "filelist"]
+
+
+# Older databases are recognised only to give a clear refusal.
+[unsupported]
+message = "Releases before v0.17.0 used a different addon URL and are not supported. Upgrade the old install to v0.18.x first (let it start once so it upgrades its own database), then run the migrator."
+
+
+# --------------------------------------------------------------------------- #
+# Preferences: old category -> new category, old value -> new attribute ids
+# A list keeps its position (and expands in place); [] means "no equivalent".
+# --------------------------------------------------------------------------- #
+
+[preferences]
+tracker = "site"
+language = "language"
+resolution = "resolution"
+video-quality = "video-quality"
+source = "source"
+audio-quality = "audio-quality"
+audio-spatial = "audio-spatial"
+
+[values.site]
+ncore = ["ncore"]
+bithumen = ["bithumen"]
+majomparade = ["majomparade"]
+insane = ["insane"]
+filelist = ["filelist"]
+
+[values.language]
+hu = ["hun"]
+en = ["eng"]
+
+[values.resolution]
+2160p = ["2160p"]
+1080p = ["1080p"]
+720p = ["720p"]
+576p = ["576p"]
+540p = ["540p"]
+480p = ["480p"]
+
+[values.video-quality]
+dolby-vision = ["dolby-vision"]
+"hdr10+" = ["hdr10p"]
+hdr10 = ["hdr10"]
+hlg = ["hlg"]
+sdr = ["sdr"]
+
+[values.source]
+disc-remux = ["remux"]
+# old "disc-rip" matched .bluray. / .bdrip. / .dvdrip. (UHD discs were tagged .bluray. too)
+disc-rip = ["uhd", "bluray", "bdrip", "dvd-rip"]
+web-dl = ["web-dl"]
+web-rip = ["web-rip"]
+broadcast = ["hdtv"]
+theatrical = ["cam"]
+unknown = []
+
+[values.audio-quality]
+truehd = ["truehd"]
+dts-hd-ma = ["dts-hd-ma"]
+ddp = ["eac3"]
+dts = ["dts"]
+dd = ["ac3"]
+aac = ["aac"]
+unknown = []
+
+[values.audio-spatial]
+dolby-atmos = ["dolby-atmos"]
+dts-x = ["dts-x"]
+
+
+# --------------------------------------------------------------------------- #
+# Settings rows ("app" and "torrent") -> new "system" and "relay" settings
+# default = the old app's own default, used when a key was never saved
+# --------------------------------------------------------------------------- #
+
+[settings.system]
+hitAndRun = { to = "hit_and_run", default = true }
+keepSeedSeconds = { to = "keep_seed_seconds", default = 0 }
+cacheRetentionSeconds = { to = "cache_retention_seconds", default = 1209600 }
+
+[settings.relay]
+port = { to = "port", default = 6881 }
+downloadLimit = { to = "download_limit", default = 0 }
+uploadLimit = { to = "upload_limit", default = 0 }
+connectionsLimit = { to = "connections_limit", default = 200 }
+torrentConnectionsLimit = { to = "torrent_connections_limit", default = 20 }
+enableUpnpAndNatpmp = { to = "enable_upnp_and_natpmp", default = false }
+
+[settings.dropped]
+instanceId = "no equivalent in the new version"
+catalogToken = "the new version has no StremHU Catalog integration (the value is kept in this report and the dump)"
+
+# Turned into container settings advice (HOST_IP / REVERSE_PROXY_DOMAIN)
+[settings.network]
+local_ip_key = "enebledlocalIp"
+address_key = "address"
+old_https_port = 3443
+new_port = 7070

@@ -37,6 +37,9 @@ class Config(BaseSettings):
 
     port: int = 7070
 
+    # Az adatkönyvtár felülírása (pl. a régi verziókból migráló eszköz próbafuttatásához).
+    data_dir: Path | None = None
+
     @property
     def libtorrent_port(self) -> int:
         return 6881
@@ -47,7 +50,7 @@ class Config(BaseSettings):
 
     @property
     def base_data_dir(self) -> Path:
-        return self.root_dir / "data"
+        return self.data_dir or self.root_dir / "data"
 
     @property
     def openapi_dir(self) -> Path:

@@ -25,3 +25,14 @@
 > [!NOTE]
 >
 > A StremHU Source egy szabadidős projekt! Hibajelentéseket és fejlesztési ötleteket szívesen fogadunk kulturáltan a StremHU Discord szerverén!
+
+## Frissítés v0.22.x-ről vagy régebbről
+
+A régi (v0.17–v0.22) verziók adatai (felhasználók, API kulcsok, indexer fiókok, preferenciák, torrentek) a beépített migrációs eszközzel átvihetők, így az addon URL-ek is megmaradnak:
+
+```sh
+docker compose run --rm stremhu-source python -m app.legacy_migration --dry-run   # próba
+docker compose run --rm stremhu-source python -m app.legacy_migration             # migrálás
+```
+
+Részletek / Details (HU + EN): [docs/legacy-migration.md](docs/legacy-migration.md)
