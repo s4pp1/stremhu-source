@@ -1,7 +1,12 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 
+from app.common.auth_rate_limit import (
+    admit_pair_init,
+    admit_pair_status,
+    admit_pair_verify,
+)
 from app.common.schemas.api import SuccessResponse
 from app.config import show_internal_routes
 from app.modules.auth.dependencies import SessionGuard
@@ -22,9 +27,11 @@ router = APIRouter(prefix="/auth/pair", tags=["Pairing"])
     response_model=PairInitResponse,
 )
 def init(
+    request: Request,
     pairings_service: Annotated[PairingsService, Depends(get_pairings_service)],
 ):
     """Új eszközpárosítási folyamat kezdeményezése."""
+    admit_pair_init(request)
     result = pairings_service.generate_pairing_codes()
     return result
 
@@ -38,6 +45,7 @@ def status(
     pairings_service: Annotated[PairingsService, Depends(get_pairings_service)],
 ):
     """Eszköz párosítási státuszának lekérdezése."""
+    admit_pair_status(device_code)
     result = pairings_service.poll_pairing_status(device_code)
     return result
 
@@ -53,5 +61,6 @@ def verify(
     pairings_service: Annotated[PairingsService, Depends(get_pairings_service)],
 ):
     """4 jegyű párosító kód jóváhagyása a bejelentkezett felhasználó által."""
+    admit_pair_verify(current_user.id)
     result = pairings_service.authorize_pairing_code(payload.user_code, current_user)
     return result

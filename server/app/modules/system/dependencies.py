@@ -23,6 +23,6 @@ def create_system_service(db: Session) -> SystemService:
 
 
 def get_system_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> SystemService:
     return create_system_service(db)

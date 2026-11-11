@@ -1,0 +1,167 @@
+{
+ "status": "PASS",
+ "problems": [],
+ "checks": {
+  "giant_subdomain_success_same_hash": true,
+  "subdomain_used": true,
+  "before_reads_redirect_bodies": true,
+  "before_follows_foreign": true,
+  "after_does_not_read": true,
+  "after_blocks_foreign": true,
+  "no_outbound": true
+ },
+ "summary": {
+  "before-0": [
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 64.0,
+    "anon_peak_delta_mib": 757.51171875
+   },
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 4,
+    "redirect_mib_per_request": 64.0,
+    "anon_peak_delta_mib": 226.09375
+   },
+   {
+    "case": "subdomain",
+    "successes": 10,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 10,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0
+   },
+   {
+    "case": "foreign",
+    "successes": 10,
+    "final_by_host": {
+     "cdn.other.invalid": 10,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0
+   }
+  ],
+  "after-0": [
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.60625,
+    "anon_peak_delta_mib": 1.1875
+   },
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 4,
+    "redirect_mib_per_request": 3.840625,
+    "anon_peak_delta_mib": 4.2890625
+   },
+   {
+    "case": "subdomain",
+    "successes": 10,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 10,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0
+   },
+   {
+    "case": "foreign",
+    "successes": 0,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0
+   }
+  ],
+  "after-1": [
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.575,
+    "anon_peak_delta_mib": 1.25
+   },
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 4,
+    "redirect_mib_per_request": 3.34375,
+    "anon_peak_delta_mib": 3.98828125
+   },
+   {
+    "case": "subdomain",
+    "successes": 10,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 10,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0
+   },
+   {
+    "case": "foreign",
+    "successes": 0,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.3515625
+   }
+  ]
+ },
+ "protocol_sha256": "7157071d66b8f4497d98b9b3eef0766ba86da607e9c63b7480e387b155fd2e4a",
+ "assessor_sha256": "23b5695ae32f90e62feab4da0d24f2840631a9c745c76005aa2e448cb90895e4"
+}

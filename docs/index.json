@@ -1,0 +1,2751 @@
+{
+  "schema_version": 1,
+  "title": "StremHU documentation catalog",
+  "structure_reviewed": "2026-11-03",
+  "review_context_head": "d9554c4324b432dd023307c9bf29e0aab4da3747",
+  "verification": "static documentation structure and source-path existence; no application tests",
+  "entry_points": {
+    "human": "docs/README.md",
+    "agent": "docs/AI-INDEX.md",
+    "features": "docs/feature/README.md"
+  },
+  "documents": [
+    {
+      "path": "docs/AI-INDEX.md",
+      "doc_id": "ai-index",
+      "title": "AI téma- és forrásindex",
+      "kind": "navigation",
+      "status": "navigation",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "ai-agent",
+        "retrieval",
+        "CR01-CR19",
+        "source-map"
+      ],
+      "source_commit": null,
+      "baseline": null,
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/README.md",
+        "docs/index.json",
+        "docs/feature/stability-and-optimization/README.md"
+      ],
+      "source_paths": [],
+      "sections": [
+        {
+          "title": "Minimális olvasási sorrend",
+          "anchor": "doc-minimalis-olvasasi-sorrend",
+          "level": 2
+        },
+        {
+          "title": "Feladat és keresőszavak",
+          "anchor": "doc-feladat-es-keresoszavak",
+          "level": 2
+        },
+        {
+          "title": "CR01–CR19 közvetlen navigáció",
+          "anchor": "doc-cr01cr19-kozvetlen-navigacio",
+          "level": 2
+        },
+        {
+          "title": "Fogalmak és ütköző történeti állítások",
+          "anchor": "doc-fogalmak-es-utkozo-torteneti-allitasok",
+          "level": 2
+        },
+        {
+          "title": "Célzott keresési példák",
+          "anchor": "doc-celzott-keresesi-peldak",
+          "level": 2
+        },
+        {
+          "title": "Gépi katalógus és frissítési szabály",
+          "anchor": "doc-gepi-katalogus-es-frissitesi-szabaly",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/anime-tvdb-kitsu-support.md",
+      "doc_id": "feature-anime-tvdb-kitsu-support",
+      "title": "Fejlesztői és AI Agent Dokumentáció: feature/anime-tvdb-kitsu-support",
+      "kind": "feature-reference",
+      "status": "historical-reference",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "anime",
+        "tvdb",
+        "kitsu",
+        "mal",
+        "imdb",
+        "episode",
+        "alias",
+        "resolver"
+      ],
+      "source_commit": null,
+      "baseline": "8c99c7d",
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/feature/README.md",
+        "docs/feature/search-filter-tmdb-tvdb.md"
+      ],
+      "source_paths": [
+        "server/app/modules/stremio/tvdb_resolver.py",
+        "server/app/modules/stremio/utils.py",
+        "server/app/modules/torrent_streams/utils/stream_file_resolver.py",
+        "server/app/modules/torrent_streams/utils/series_parser.py"
+      ],
+      "sections": [
+        {
+          "title": "1. A Branch Célja és Motivációja",
+          "anchor": "doc-1-a-branch-celja-es-motivacioja",
+          "level": 2
+        },
+        {
+          "title": "2. Módosított és Új Fájlok Áttekintése (Diff Mátrix s4pp1/stremhu-source óta)",
+          "anchor": "doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix-s4pp1stremhu-source-ota",
+          "level": 2
+        },
+        {
+          "title": "3. Architektúra és Megvalósítás Ábrázolása",
+          "anchor": "doc-3-architektura-es-megvalositas-abrazolasa",
+          "level": 2
+        },
+        {
+          "title": "3.1. Komponens- és Gyorsítótár-architektúra",
+          "anchor": "doc-31-komponens-es-gyorsitotar-architektura",
+          "level": 3
+        },
+        {
+          "title": "3.2. End-to-End Szekvenciadiagram (Párhuzamos Cold Start és Epizódváltás)",
+          "anchor": "doc-32-end-to-end-szekvenciadiagram-parhuzamos-cold-start-es-epizodvaltas",
+          "level": 3
+        },
+        {
+          "title": "3.3. A StreamFileResolver és SeriesParser Döntési Folyamata",
+          "anchor": "doc-33-a-streamfileresolver-es-seriesparser-dontesi-folyamata",
+          "level": 3
+        },
+        {
+          "title": "4. Részletes Működési Leírás Modulonként (AI Agent Referencia)",
+          "anchor": "doc-4-reszletes-mukodesi-leiras-modulonkent-ai-agent-referencia",
+          "level": 2
+        },
+        {
+          "title": "4.1. Stream ID Elemzés és Sémák (stremio/utils.py, stremio/schemas.py, common/schemas/internal.py)",
+          "anchor": "doc-41-stream-id-elemzes-es-semak-stremioutilspy-stremioschemaspy-commonschemasinternalpy",
+          "level": 3
+        },
+        {
+          "title": "4.2. Metaadat és Számozás Feloldó (server/app/modules/stremio/tvdb_resolver.py)",
+          "anchor": "doc-42-metaadat-es-szamozas-feloldo-serverappmodulesstremiotvdbresolverpy",
+          "level": 3
+        },
+        {
+          "title": "4.3. Intelligens Fájlnév-elemző és Fájlfeloldó (series_parser.py & stream_file_resolver.py)",
+          "anchor": "doc-43-intelligens-fajlnev-elemzo-es-fajlfeloldo-seriesparserpy-streamfileresolverpy",
+          "level": 3
+        },
+        {
+          "title": "4.4. Másodlagos Cím Alapú Keresés és Iker-IMDb Egyesítés (torrent_streams/service.py)",
+          "anchor": "doc-44-masodlagos-cim-alapu-kereses-es-iker-imdb-egyesites-torrentstreamsservicepy",
+          "level": 3
+        },
+        {
+          "title": "5. A 4 Teljesítmény-optimalizálás Technikai Részletei",
+          "anchor": "doc-5-a-4-teljesitmeny-optimalizalas-technikai-reszletei",
+          "level": 2
+        },
+        {
+          "title": "1. Optimalizáció: Párhuzamos Tracker Prefetch és Okos Alias Kihagyás (Cold Start)",
+          "anchor": "doc-1-optimalizacio-parhuzamos-tracker-prefetch-es-okos-alias-kihagyas-cold-start",
+          "level": 3
+        },
+        {
+          "title": "2. Optimalizáció: Session-biztos Memória-gyorsítótárak (Epizódváltás / Binge-Watching)",
+          "anchor": "doc-2-optimalizacio-session-biztos-memoria-gyorsitotarak-epizodvaltas-binge-watching",
+          "level": 3
+        },
+        {
+          "title": "3. Optimalizáció: Kötegelt (Batch) SQLite .torrent Mentés (create_many)",
+          "anchor": "doc-3-optimalizacio-kotegelt-batch-sqlite-torrent-mentes-createmany",
+          "level": 3
+        },
+        {
+          "title": "4. Optimalizáció: Agresszívebb libtorrent Piece-Deadline Ütemezés",
+          "anchor": "doc-4-optimalizacio-agresszivebb-libtorrent-piece-deadline-utemezes",
+          "level": 3
+        },
+        {
+          "title": "6. Mérési Eredmények (Benchmark: Upstream s4pp1/stremhu-source vs. feature/anime-tvdb-kitsu-support)",
+          "anchor": "doc-6-meresi-eredmenyek-benchmark-upstream-s4pp1stremhu-source-vs-featureanime-tvdb-kitsu-support",
+          "level": 2
+        },
+        {
+          "title": "7. Tesztelési Útmutató Fejlesztőknek és AI Ágenseknek",
+          "anchor": "doc-7-tesztelesi-utmutato-fejlesztoknek-es-ai-agenseknek",
+          "level": 2
+        },
+        {
+          "title": "Fontos teszt-invariánsok (server/tests/test_tvdb_streams.py):",
+          "anchor": "doc-fontos-teszt-invariansok-serverteststesttvdbstreamspy",
+          "level": 3
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/audio-subtitle-detection.md",
+      "doc_id": "feature-audio-subtitle-detection",
+      "title": "Fejlesztői és AI Agent Dokumentáció: feature/audio-subtitle-detection",
+      "kind": "feature-reference",
+      "status": "historical-reference",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "audio",
+        "subtitle",
+        "japanese",
+        "hungarian",
+        "nfo",
+        "mediainfo",
+        "tech-info"
+      ],
+      "source_commit": null,
+      "baseline": "8c99c7d",
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/feature/README.md",
+        "docs/feature/torrent-subtitles.md"
+      ],
+      "source_paths": [
+        "server/app/modules/media_attributes/tech_info_parser.py",
+        "server/app/modules/torrent_streams/service.py"
+      ],
+      "sections": [
+        {
+          "title": "1. A Branch Célja és Motivációja",
+          "anchor": "doc-1-a-branch-celja-es-motivacioja",
+          "level": 2
+        },
+        {
+          "title": "1.1. Upstream és Korábbi Hiányosságok",
+          "anchor": "doc-11-upstream-es-korabbi-hianyossagok",
+          "level": 3
+        },
+        {
+          "title": "1.2. A Megoldás",
+          "anchor": "doc-12-a-megoldas",
+          "level": 3
+        },
+        {
+          "title": "2. Módosított és Új Fájlok Áttekintése (Diff Mátrix)",
+          "anchor": "doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix",
+          "level": 2
+        },
+        {
+          "title": "3. Architektúra és Folyamatábrák",
+          "anchor": "doc-3-architektura-es-folyamatabrak",
+          "level": 2
+        },
+        {
+          "title": "3.1. Tech Info Dúsítás és Keresési Szekvencia",
+          "anchor": "doc-31-tech-info-dusitas-es-keresesi-szekvencia",
+          "level": 3
+        },
+        {
+          "title": "3.2. MediaInfo és Leírás Elemzési Döntési Folyamat",
+          "anchor": "doc-32-mediainfo-es-leiras-elemzesi-dontesi-folyamat",
+          "level": 3
+        },
+        {
+          "title": "4. Modulonkénti Részletes Működési Leírás és Kritikus Invariánsok",
+          "anchor": "doc-4-modulonkenti-reszletes-mukodesi-leiras-es-kritikus-invariansok",
+          "level": 2
+        },
+        {
+          "title": "4.1. tech_info_parser.py (Kritikus Szekció-Elkülönítés)",
+          "anchor": "doc-41-techinfoparserpy-kritikus-szekcio-elkulonites",
+          "level": 3
+        },
+        {
+          "title": "4.2. torrent_streams/service.py (Intelligens Attribútum Dúsítás)",
+          "anchor": "doc-42-torrentstreamsservicepy-intelligens-attributum-dusitas",
+          "level": 3
+        },
+        {
+          "title": "4.3. stremio/schemas.py (Kártya Megjelenítés)",
+          "anchor": "doc-43-stremioschemaspy-kartya-megjelenites",
+          "level": 3
+        },
+        {
+          "title": "5. Teljesítménymérési (Benchmark) és Tesztelési Referencia",
+          "anchor": "doc-5-teljesitmenymeresi-benchmark-es-tesztelesi-referencia",
+          "level": 2
+        },
+        {
+          "title": "5.1. Unit és Integrációs Tesztek",
+          "anchor": "doc-51-unit-es-integracios-tesztek",
+          "level": 3
+        },
+        {
+          "title": "5.2. Élő Docker Desktop Teszt Éles Tracker Adatokkal",
+          "anchor": "doc-52-elo-docker-desktop-teszt-eles-tracker-adatokkal",
+          "level": 3
+        },
+        {
+          "title": "5.3. Háromutas A/B/C Teljesítmény-összehasonlítás (Benchmark – M01-M18 Optimalizálás Után)",
+          "anchor": "doc-53-haromutas-abc-teljesitmeny-osszehasonlitas-benchmark-m01-m18-optimalizalas-utan",
+          "level": 3
+        },
+        {
+          "title": "6. Stabilitási és Teljesítményjavítási Csomag (M01 – M18)",
+          "anchor": "doc-6-stabilitasi-es-teljesitmenyjavitasi-csomag-m01-m18",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/implementation-progress.md",
+      "doc_id": "feature-implementation-progress",
+      "title": "Implementációs állapot – 2026-10-30 (M01 – M18 lezárva)",
+      "kind": "historical-report",
+      "status": "historical-results",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "M01-M18",
+        "progress",
+        "benchmark",
+        "tests",
+        "2026-10-30"
+      ],
+      "source_commit": null,
+      "baseline": null,
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/feature/stability-and-optimization/archive/m01-m18-implementation-plan.md",
+        "docs/feature/stability-and-optimization/README.md"
+      ],
+      "source_paths": [],
+      "sections": [
+        {
+          "title": "Elkészült fejlesztési és stabilitási modulok",
+          "anchor": "doc-elkeszult-fejlesztesi-es-stabilitasi-modulok",
+          "level": 2
+        },
+        {
+          "title": "Ellenőrzési Eredmények",
+          "anchor": "doc-ellenorzesi-eredmenyek",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/README.md",
+      "doc_id": "feature-readme",
+      "title": "Feature-katalógus",
+      "kind": "navigation",
+      "status": "navigation",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "feature",
+        "catalog",
+        "reference"
+      ],
+      "source_commit": null,
+      "baseline": null,
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/AI-INDEX.md",
+        "docs/templates/feature.md"
+      ],
+      "source_paths": [],
+      "sections": [
+        {
+          "title": "Funkciók és kanonikus dokumentumok",
+          "anchor": "doc-funkciok-es-kanonikus-dokumentumok",
+          "level": 2
+        },
+        {
+          "title": "Történeti munkák és azonosítók",
+          "anchor": "doc-torteneti-munkak-es-azonositok",
+          "level": 2
+        },
+        {
+          "title": "Új feature dokumentálása",
+          "anchor": "doc-uj-feature-dokumentalasa",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/search-filter-tmdb-tvdb.md",
+      "doc_id": "feature-search-filter-tmdb-tvdb",
+      "title": "Fejlesztői Dokumentáció: feature/search-filter-tmdb-tvdb",
+      "kind": "feature-reference",
+      "status": "historical-reference",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "search",
+        "filter",
+        "tmdb",
+        "tvdb",
+        "dedup",
+        "seeders",
+        "fallback"
+      ],
+      "source_commit": null,
+      "baseline": "8c99c7d",
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/feature/README.md",
+        "docs/feature/anime-tvdb-kitsu-support.md"
+      ],
+      "source_paths": [
+        "server/app/modules/torrent_streams/service.py",
+        "server/app/modules/indexers/service.py",
+        "server/app/modules/stremio/tvdb_resolver.py"
+      ],
+      "sections": [
+        {
+          "title": "1. A Branch Célja és Motivációja",
+          "anchor": "doc-1-a-branch-celja-es-motivacioja",
+          "level": 2
+        },
+        {
+          "title": "2. Módosított és Új Fájlok Áttekintése (Diff Mátrix s4pp1/stremhu-source vs feature/search-filter-tmdb-tvdb)",
+          "anchor": "doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix-s4pp1stremhu-source-vs-featuresearch-filter-tmdb-tvdb",
+          "level": 2
+        },
+        {
+          "title": "3. Rendszerarchitektúra és Működési Folyamatábrák",
+          "anchor": "doc-3-rendszerarchitektura-es-mukodesi-folyamatabrak",
+          "level": 2
+        },
+        {
+          "title": "3.1. Kulcs Nélküli TMDB Feloldási Folyamat",
+          "anchor": "doc-31-kulcs-nelkuli-tmdb-feloldasi-folyamat",
+          "level": 3
+        },
+        {
+          "title": "3.2. Több-Trackeres Stream Összevonás (Deduplication)",
+          "anchor": "doc-32-tobb-trackeres-stream-osszevonas-deduplication",
+          "level": 3
+        },
+        {
+          "title": "4. Modulonkénti Részletes Működési Leírás és Invariánsok",
+          "anchor": "doc-4-modulonkenti-reszletes-mukodesi-leiras-es-invariansok",
+          "level": 2
+        },
+        {
+          "title": "4.1. TvdbResolver (server/app/modules/stremio/tvdb_resolver.py)",
+          "anchor": "doc-41-tvdbresolver-serverappmodulesstremiotvdbresolverpy",
+          "level": 3
+        },
+        {
+          "title": "4.2. Multi-Tracker Stream Deduplikáció és Egzakt Seeder Matematika (server/app/modules/torrent_streams/service.py)",
+          "anchor": "doc-42-multi-tracker-stream-deduplikacio-es-egzakt-seeder-matematika-serverappmodulestorrentstreamsservicepy",
+          "level": 3
+        },
+        {
+          "title": "4.3. Stream Megjelenítés és Stremio/Nuvio Best Practice (server/app/modules/stremio/schemas.py)",
+          "anchor": "doc-43-stream-megjelenites-es-stremionuvio-best-practice-serverappmodulesstremioschemaspy",
+          "level": 3
+        },
+        {
+          "title": "4.4. Relay Boundary Piece Buffer Kiterjesztés (server/app/modules/relay/entities.py)",
+          "anchor": "doc-44-relay-boundary-piece-buffer-kiterjesztes-serverappmodulesrelayentitiespy",
+          "level": 3
+        },
+        {
+          "title": "4.5. Évadcsomag és Tracker Gyorsítótár Stratégia (server/app/modules/indexers/service.py)",
+          "anchor": "doc-45-evadcsomag-es-tracker-gyorsitotar-strategia-serverappmodulesindexersservicepy",
+          "level": 3
+        },
+        {
+          "title": "4.6. Sorozatos Keresési Sorrend Célzása és Hibrid Gyorskeresés (server/app/modules/torrent_streams/service.py)",
+          "anchor": "doc-46-sorozatos-keresesi-sorrend-celzasa-es-hibrid-gyorskereses-serverappmodulestorrentstreamsservicepy",
+          "level": 3
+        },
+        {
+          "title": "5. Teljesítménymérési Eredmények (A/B Benchmark a Saját Repo Master Ága ellen)",
+          "anchor": "doc-5-teljesitmenymeresi-eredmenyek-ab-benchmark-a-sajat-repo-master-aga-ellen",
+          "level": 2
+        },
+        {
+          "title": "6. Verifikációs Parancsok",
+          "anchor": "doc-6-verifikacios-parancsok",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/stability-and-optimization/archive/m01-m18-implementation-plan.md",
+      "doc_id": "archive-m01-m18-implementation-plan",
+      "title": "Archív M01–M18 implementációs terv (2026-10-30)",
+      "kind": "implementation-plan",
+      "status": "archived",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "archive",
+        "M01-M18",
+        "historical-plan",
+        "2026-10-30"
+      ],
+      "source_commit": "7cda09c9b333e2caf8c90c6d289fa39f719cc99e",
+      "baseline": null,
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/feature/stability-and-optimization/archive/README.md",
+        "docs/feature/implementation-progress.md",
+        "docs/feature/stability-and-optimization/implementation-plan.md"
+      ],
+      "source_paths": [],
+      "superseded_by": "docs/feature/stability-and-optimization/implementation-plan.md",
+      "archive_reason": "A korábbi M01–M18 tervezési állapot megőrzése; nem aktuális végrehajtási terv.",
+      "sections": [
+        {
+          "title": "0. Státusz, hatókör és végrehajtási szabályok",
+          "anchor": "doc-0-statusz-hatokor-es-vegrehajtasi-szabalyok",
+          "level": 2
+        },
+        {
+          "title": "Bizonyítottsági jelölések",
+          "anchor": "doc-bizonyitottsagi-jelolesek",
+          "level": 3
+        },
+        {
+          "title": "Kötelező helyi védelem",
+          "anchor": "doc-kotelezo-helyi-vedelem",
+          "level": 3
+        },
+        {
+          "title": "1. Rendszertérkép és fogalmak",
+          "anchor": "doc-1-rendszerterkep-es-fogalmak",
+          "level": 2
+        },
+        {
+          "title": "2. Feladatlista és függőségek",
+          "anchor": "doc-2-feladatlista-es-fuggosegek",
+          "level": 2
+        },
+        {
+          "title": "3. M01 – Közös keresési taskok megszakításbiztonsága",
+          "anchor": "doc-3-m01-kozos-keresesi-taskok-megszakitasbiztonsaga",
+          "level": 2
+        },
+        {
+          "title": "Probléma és reprodukció",
+          "anchor": "doc-problema-es-reprodukcio",
+          "level": 3
+        },
+        {
+          "title": "Implementációs lépések",
+          "anchor": "doc-implementacios-lepesek",
+          "level": 3
+        },
+        {
+          "title": "Elfogadás",
+          "anchor": "doc-elfogadas",
+          "level": 3
+        },
+        {
+          "title": "4. M02 – Relay darabolvasások véges életciklusa",
+          "anchor": "doc-4-m02-relay-darabolvasasok-veges-eletciklusa",
+          "level": 2
+        },
+        {
+          "title": "Probléma",
+          "anchor": "doc-problema",
+          "level": 3
+        },
+        {
+          "title": "Megoldás",
+          "anchor": "doc-megoldas",
+          "level": 3
+        },
+        {
+          "title": "Elfogadás",
+          "anchor": "doc-elfogadas-1",
+          "level": 3
+        },
+        {
+          "title": "5. M03 – Katalógus médiatípus-szűrése",
+          "anchor": "doc-5-m03-katalogus-mediatipus-szurese",
+          "level": 2
+        },
+        {
+          "title": "6. M04 – Deduplikáció és lejátszási forrás következetessége",
+          "anchor": "doc-6-m04-deduplikacio-es-lejatszasi-forras-kovetkezetessege",
+          "level": 2
+        },
+        {
+          "title": "Pontosítás a korábbi elemzéshez",
+          "anchor": "doc-pontositas-a-korabbi-elemzeshez",
+          "level": 3
+        },
+        {
+          "title": "Megoldás",
+          "anchor": "doc-megoldas-1",
+          "level": 3
+        },
+        {
+          "title": "7. M05 – Cache-kulcsok és invalidálás",
+          "anchor": "doc-7-m05-cache-kulcsok-es-invalidalas",
+          "level": 2
+        },
+        {
+          "title": "Implementáció",
+          "anchor": "doc-implementacio",
+          "level": 3
+        },
+        {
+          "title": "8. M06 – Animealiasok és epizódmetaadat-cache",
+          "anchor": "doc-8-m06-animealiasok-es-epizodmetaadat-cache",
+          "level": 2
+        },
+        {
+          "title": "A. Eltérő adaptációk összemosása",
+          "anchor": "doc-a-eltero-adaptaciok-osszemosasa",
+          "level": 3
+        },
+        {
+          "title": "B. Cache-hit elveszíti a műfaji információt",
+          "anchor": "doc-b-cache-hit-elvesziti-a-mufaji-informaciot",
+          "level": 3
+        },
+        {
+          "title": "9. M07 – Teljes felirat, memóriakeret és lockélettartam",
+          "anchor": "doc-9-m07-teljes-felirat-memoriakeret-es-lockelettartam",
+          "level": 2
+        },
+        {
+          "title": "Problémák",
+          "anchor": "doc-problemak",
+          "level": 3
+        },
+        {
+          "title": "Lépések",
+          "anchor": "doc-lepesek",
+          "level": 3
+        },
+        {
+          "title": "10. M08 – Teljes keresési idő- és munkakeret",
+          "anchor": "doc-10-m08-teljes-keresesi-ido-es-munkakeret",
+          "level": 2
+        },
+        {
+          "title": "Lépések",
+          "anchor": "doc-lepesek-1",
+          "level": 3
+        },
+        {
+          "title": "11. M09 – Fokozatos jelöltfeldolgozás a globális top 30 helyett",
+          "anchor": "doc-11-m09-fokozatos-jeloltfeldolgozas-a-globalis-top-30-helyett",
+          "level": 2
+        },
+        {
+          "title": "Lépések",
+          "anchor": "doc-lepesek-2",
+          "level": 3
+        },
+        {
+          "title": "12. M10 – Torrentenkénti összevonás és ütközéstűrő mentés",
+          "anchor": "doc-12-m10-torrentenkenti-osszevonas-es-utkozesturo-mentes",
+          "level": 2
+        },
+        {
+          "title": "Lépések",
+          "anchor": "doc-lepesek-3",
+          "level": 3
+        },
+        {
+          "title": "13. M11 – Range-feldolgozás és fájltípus-validáció",
+          "anchor": "doc-13-m11-range-feldolgozas-es-fajltipus-validacio",
+          "level": 2
+        },
+        {
+          "title": "Range",
+          "anchor": "doc-range",
+          "level": 3
+        },
+        {
+          "title": "Fájlvalidáció",
+          "anchor": "doc-fajlvalidacio",
+          "level": 3
+        },
+        {
+          "title": "14. M12 – Sessionhatárok és célzott állapotlekérések",
+          "anchor": "doc-14-m12-sessionhatarok-es-celzott-allapotlekeresek",
+          "level": 2
+        },
+        {
+          "title": "Probléma",
+          "anchor": "doc-problema-1",
+          "level": 3
+        },
+        {
+          "title": "Lépések",
+          "anchor": "doc-lepesek-4",
+          "level": 3
+        },
+        {
+          "title": "15. M13 – Relay prioritáskezelés és konfiguráció",
+          "anchor": "doc-15-m13-relay-prioritaskezeles-es-konfiguracio",
+          "level": 2
+        },
+        {
+          "title": "Problémák",
+          "anchor": "doc-problemak-1",
+          "level": 3
+        },
+        {
+          "title": "Lépések",
+          "anchor": "doc-lepesek-5",
+          "level": 3
+        },
+        {
+          "title": "16. M14 – Technikaiadat-dúsítás célzása",
+          "anchor": "doc-16-m14-technikaiadat-dusitas-celzasa",
+          "level": 2
+        },
+        {
+          "title": "Lépések",
+          "anchor": "doc-lepesek-6",
+          "level": 3
+        },
+        {
+          "title": "17. M15 – Frontend frissítési költség",
+          "anchor": "doc-17-m15-frontend-frissitesi-koltseg",
+          "level": 2
+        },
+        {
+          "title": "18. M16 – Session cookie lejárati egység",
+          "anchor": "doc-18-m16-session-cookie-lejarati-egyseg",
+          "level": 2
+        },
+        {
+          "title": "19. M17 – Docker buildcache",
+          "anchor": "doc-19-m17-docker-buildcache",
+          "level": 2
+        },
+        {
+          "title": "20. M18 – Megfigyelhetőség, tesztelés és A/B/C mérés",
+          "anchor": "doc-20-m18-megfigyelhetoseg-teszteles-es-abc-meres",
+          "level": 2
+        },
+        {
+          "title": "20.1 Mérési minimum",
+          "anchor": "doc-201-meresi-minimum",
+          "level": 3
+        },
+        {
+          "title": "20.2 Célzott regressziós mátrix",
+          "anchor": "doc-202-celzott-regresszios-matrix",
+          "level": 3
+        },
+        {
+          "title": "20.3 Kötelező ellenőrzések implementáció után",
+          "anchor": "doc-203-kotelezo-ellenorzesek-implementacio-utan",
+          "level": 3
+        },
+        {
+          "title": "20.4 Három referencia és torzítások",
+          "anchor": "doc-204-harom-referencia-es-torzitasok",
+          "level": 3
+        },
+        {
+          "title": "20.5 Eredményjegyzőkönyv sablon",
+          "anchor": "doc-205-eredmenyjegyzokonyv-sablon",
+          "level": 3
+        },
+        {
+          "title": "21. Dokumentáció, kiadás és készre jelentés",
+          "anchor": "doc-21-dokumentacio-kiadas-es-keszre-jelentes",
+          "level": 2
+        },
+        {
+          "title": "22. Másik AI-nak átadható indítóutasítás",
+          "anchor": "doc-22-masik-ai-nak-atadhato-inditoutasitas",
+          "level": 2
+        },
+        {
+          "title": "23. A terv felülvizsgálatakor beépített pontosítások",
+          "anchor": "doc-23-a-terv-felulvizsgalatakor-beepitett-pontositasok",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/stability-and-optimization/archive/README.md",
+      "doc_id": "archive-m01-m18-index",
+      "title": "Archívum — M01–M18",
+      "kind": "navigation",
+      "status": "archive-index",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "archive",
+        "M01-M18",
+        "historical-plan"
+      ],
+      "source_commit": null,
+      "baseline": null,
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/feature/stability-and-optimization/archive/m01-m18-implementation-plan.md",
+        "docs/feature/implementation-progress.md",
+        "docs/feature/stability-and-optimization/implementation-plan.md"
+      ],
+      "source_paths": [],
+      "sections": [
+        {
+          "title": "Miért maradt meg?",
+          "anchor": "doc-miert-maradt-meg",
+          "level": 2
+        },
+        {
+          "title": "Dokumentumok",
+          "anchor": "doc-dokumentumok",
+          "level": 2
+        },
+        {
+          "title": "Olvasási szabály",
+          "anchor": "doc-olvasasi-szabaly",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/stability-and-optimization/audit.md",
+      "doc_id": "feature-stability-and-optimization-audit",
+      "title": "StremHU Source — független Cloud Review",
+      "kind": "audit",
+      "status": "snapshot-audit",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "CR01-CR19",
+        "security",
+        "performance",
+        "static-review",
+        "hypothesis"
+      ],
+      "source_commit": "2615596f7cd181454dc5ae3e1ec9e4d215e3b154",
+      "baseline": null,
+      "verification": "historical-audit-scope; structure-only-update",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/feature/stability-and-optimization/README.md",
+        "docs/feature/stability-and-optimization/implementation-plan.md"
+      ],
+      "source_paths": [],
+      "sections": [
+        {
+          "title": "1. Határok és azonosítás",
+          "anchor": "doc-1-hatarok-es-azonositas",
+          "level": 2
+        },
+        {
+          "title": "Verzióalap",
+          "anchor": "doc-verzioalap",
+          "level": 3
+        },
+        {
+          "title": "2. Az öt vizsgálati terület összefoglalása",
+          "anchor": "doc-2-az-ot-vizsgalati-terulet-osszefoglalasa",
+          "level": 2
+        },
+        {
+          "title": "3. Bizonyítási láncok és javaslatok",
+          "anchor": "doc-3-bizonyitasi-lancok-es-javaslatok",
+          "level": 2
+        },
+        {
+          "title": "3.1. Indexer HTTP: nem találtam indokolt pooling-változtatást",
+          "anchor": "doc-31-indexer-http-nem-talaltam-indokolt-pooling-valtoztatast",
+          "level": 3
+        },
+        {
+          "title": "CR01 — A torrentenkénti kapcsolati keret legyen egyértelmű és következetes",
+          "anchor": "cr01",
+          "level": 3
+        },
+        {
+          "title": "CR02 — WAL-mérés és tranzakcióhatárok ellenőrzése checkpoint bevezetése előtt",
+          "anchor": "cr02",
+          "level": 3
+        },
+        {
+          "title": "CR03 — Stremio JSON-tömörítési kísérlet, feltételes bevezetéssel",
+          "anchor": "cr03",
+          "level": 3
+        },
+        {
+          "title": "CR04 — A torrentlista feliratkozásainak szűkítése; memoizálás csak profil alapján",
+          "anchor": "cr04",
+          "level": 3
+        },
+        {
+          "title": "4. Végrehajtható mérési és profiling terv — nem futtatva",
+          "anchor": "doc-4-vegrehajthato-meresi-es-profiling-terv-nem-futtatva",
+          "level": 2
+        },
+        {
+          "title": "Közös környezet és módszer",
+          "anchor": "doc-kozos-kornyezet-es-modszer",
+          "level": 3
+        },
+        {
+          "title": "M1 — TCP reuse",
+          "anchor": "doc-m1-tcp-reuse",
+          "level": 3
+        },
+        {
+          "title": "M2 — Relay kis RAM-on és CR01",
+          "anchor": "doc-m2-relay-kis-ram-on-es-cr01",
+          "level": 3
+        },
+        {
+          "title": "M3 — GZip",
+          "anchor": "doc-m3-gzip",
+          "level": 3
+        },
+        {
+          "title": "M4 — WAL és CR02",
+          "anchor": "doc-m4-wal-es-cr02",
+          "level": 3
+        },
+        {
+          "title": "M5 — React poll, render és heap",
+          "anchor": "doc-m5-react-poll-render-es-heap",
+          "level": 3
+        },
+        {
+          "title": "5. Lefedettségi ellenőrzés és a második kör bizonyítékai",
+          "anchor": "doc-5-lefedettsegi-ellenorzes-es-a-masodik-kor-bizonyitekai",
+          "level": 2
+        },
+        {
+          "title": "Ténylegesen lefuttatott izolált próbák",
+          "anchor": "doc-tenylegesen-lefuttatott-izolalt-probak",
+          "level": 3
+        },
+        {
+          "title": "6. Kiegészítő javaslatok és hibafaktorok",
+          "anchor": "doc-6-kiegeszito-javaslatok-es-hibafaktorok",
+          "level": 2
+        },
+        {
+          "title": "CR05 — Ismert alapértelmezett aláírókulcs megszüntetése",
+          "anchor": "cr05",
+          "level": 3
+        },
+        {
+          "title": "CR06 — Helyi HTTPS egyedi privát kulccsal",
+          "anchor": "cr06",
+          "level": 3
+        },
+        {
+          "title": "CR07 — Hitelesítő adatok maszkolása a naplókban",
+          "anchor": "cr07",
+          "level": 3
+        },
+        {
+          "title": "CR08 — Login/pairing munkakeret és egyszeri párosítási állapotgép",
+          "anchor": "cr08",
+          "level": 3
+        },
+        {
+          "title": "CR09 — Lejátszásregiszter csak auth után, globális korláttal",
+          "anchor": "cr09",
+          "level": 3
+        },
+        {
+          "title": "CR10 — Range és külső azonosítók határolt validálása",
+          "anchor": "cr10",
+          "level": 3
+        },
+        {
+          "title": "CR11 — Megszakításbiztos közös indexer-újrabejelentkezés",
+          "anchor": "cr11",
+          "level": 3
+        },
+        {
+          "title": "CR12 — Streamcache-invalidálás bekötése a valódi módosítási utakra",
+          "anchor": "cr12",
+          "level": 3
+        },
+        {
+          "title": "CR13 — Szinkron DB- és DNS-munka leválasztása az event loopról",
+          "anchor": "cr13",
+          "level": 3
+        },
+        {
+          "title": "CR14 — Torrentlista SQL- és BLOB-költségének csökkentése",
+          "anchor": "cr14",
+          "level": 3
+        },
+        {
+          "title": "CR15 — Külső válaszok méretkerete, URL-bizalmi határ és globális munkakeret",
+          "anchor": "cr15",
+          "level": 3
+        },
+        {
+          "title": "CR16 — Session-visszavonás és explicit böngészővédelmi szerződés",
+          "anchor": "cr16",
+          "level": 3
+        },
+        {
+          "title": "CR17 — Megosztott taskok saját DB-élettartama és rendezett shutdown",
+          "anchor": "cr17",
+          "level": 3
+        },
+        {
+          "title": "CR18 — Az első admin létrehozásának atomikussága",
+          "anchor": "cr18",
+          "level": 3
+        },
+        {
+          "title": "CR19 — Auth-védett HTTP-válaszok cache-policyja",
+          "anchor": "cr19",
+          "level": 3
+        },
+        {
+          "title": "7. Kiegészítő biztonsági és regressziós tesztterv — nem futtatva",
+          "anchor": "doc-7-kiegeszito-biztonsagi-es-regresszios-tesztterv-nem-futtatva",
+          "level": 2
+        },
+        {
+          "title": "8. Biztonsági kontrollok és a megmaradó lefedettségi határok",
+          "anchor": "doc-8-biztonsagi-kontrollok-es-a-megmarado-lefedettsegi-hatarok",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/stability-and-optimization/implementation-plan.md",
+      "doc_id": "feature-stability-and-optimization-implementation-plan",
+      "title": "StremHU Source — kódszintű implementációs terv",
+      "kind": "implementation-plan",
+      "status": "planning-only",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "CR01-CR19",
+        "gates",
+        "work-packages",
+        "tests",
+        "rollback"
+      ],
+      "source_commit": "2615596f7cd181454dc5ae3e1ec9e4d215e3b154",
+      "baseline": null,
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/feature/stability-and-optimization/README.md",
+        "docs/feature/stability-and-optimization/audit.md"
+      ],
+      "source_paths": [],
+      "sections": [
+        {
+          "title": "0. Bemenet, állapot, használati szabály",
+          "anchor": "doc-0-bemenet-allapot-hasznalati-szabaly",
+          "level": 2
+        },
+        {
+          "title": "Rövid belépési térkép új fejlesztőnek",
+          "anchor": "doc-rovid-belepesi-terkep-uj-fejlesztonek",
+          "level": 3
+        },
+        {
+          "title": "1. Az audit előzetes, kritikus értékelése",
+          "anchor": "doc-1-az-audit-elozetes-kritikus-ertekelese",
+          "level": 2
+        },
+        {
+          "title": "2. Minden munkacsomag közös végrehajtási szerződése",
+          "anchor": "doc-2-minden-munkacsomag-kozos-vegrehajtasi-szerzodese",
+          "level": 2
+        },
+        {
+          "title": "2.1. G0 — Előfeltételek, csak későbbi implementációkor",
+          "anchor": "doc-21-g0-elofeltetelek-csak-kesobbi-implementaciokor",
+          "level": 3
+        },
+        {
+          "title": "2.2. Ellenőrzési sorrend az AGENTS szerint",
+          "anchor": "doc-22-ellenorzesi-sorrend-az-agents-szerint",
+          "level": 3
+        },
+        {
+          "title": "2.3. Közös benchmarkprotokoll és regressziós kapu",
+          "anchor": "doc-23-kozos-benchmarkprotokoll-es-regresszios-kapu",
+          "level": 3
+        },
+        {
+          "title": "3. Hitelesítés, TLS, bemenet és HTTP-policy",
+          "anchor": "doc-3-hitelesites-tls-bemenet-es-http-policy",
+          "level": 2
+        },
+        {
+          "title": "CR05 — Konfigurációs aláírókulcs fail-fast",
+          "anchor": "cr05",
+          "level": 3
+        },
+        {
+          "title": "CR06 — TLS-kompatibilitási kapu, majd egyedi LOCAL kulcs",
+          "anchor": "cr06",
+          "level": 3
+        },
+        {
+          "title": "CR07 — Biztonságos naplózási szerződés",
+          "anchor": "cr07",
+          "level": 3
+        },
+        {
+          "title": "CR19 — Auth-válasz és felirat HTTP-cache policy",
+          "anchor": "cr19",
+          "level": 3
+        },
+        {
+          "title": "CR10 — Bemenetek, helyes számtartomány-kezeléssel",
+          "anchor": "cr10",
+          "level": 3
+        },
+        {
+          "title": "CR08 — Párosítási állapotgép és korlátos auth-terhelés",
+          "anchor": "cr08",
+          "level": 3
+        },
+        {
+          "title": "CR18 — Egyszeri bootstrap atomikus foglalással",
+          "anchor": "cr18",
+          "level": 3
+        },
+        {
+          "title": "CR16 — Session-epoch és ellenőrzött böngészőpolicy",
+          "anchor": "cr16",
+          "level": 3
+        },
+        {
+          "title": "4. Relay, cache és feladat-élettartam",
+          "anchor": "doc-4-relay-cache-es-feladat-elettartam",
+          "level": 2
+        },
+        {
+          "title": "CR11 — A relogin használja a már működő megosztott taskot",
+          "anchor": "cr11",
+          "level": 3
+        },
+        {
+          "title": "CR09 — Autholt active-playback regiszter",
+          "anchor": "cr09",
+          "level": 3
+        },
+        {
+          "title": "CR12 — Commit utáni, szálbiztos cache-invalidálás",
+          "anchor": "cr12",
+          "level": 3
+        },
+        {
+          "title": "CR13 — Nem blokkoló resume-író és DNS",
+          "anchor": "cr13",
+          "level": 3
+        },
+        {
+          "title": "CR17 — Rendezett shutdown; DB-ownership refaktor csak G17 után",
+          "anchor": "cr17",
+          "level": 3
+        },
+        {
+          "title": "CR01 — Következetes kapcsolati limit; policyváltozás G01 után",
+          "anchor": "cr01",
+          "level": 3
+        },
+        {
+          "title": "5. Adatforgalom és mérési kapus optimalizálások",
+          "anchor": "doc-5-adatforgalom-es-meresi-kapus-optimalizalasok",
+          "level": 2
+        },
+        {
+          "title": "CR14 — Külön torrentlistaprojekció",
+          "anchor": "cr14",
+          "level": 3
+        },
+        {
+          "title": "CR02 — WAL mérés és kizárólag indokolt checkpoint",
+          "anchor": "cr02",
+          "level": 3
+        },
+        {
+          "title": "CR03 — GZip: először hálózati és CPU-kísérlet",
+          "anchor": "cr03",
+          "level": 3
+        },
+        {
+          "title": "CR04 — Frontend observer/render profil, célzott beavatkozás",
+          "anchor": "cr04",
+          "level": 3
+        },
+        {
+          "title": "CR15 — Válaszméret, origin és admission policy G15 után",
+          "anchor": "cr15",
+          "level": 3
+        },
+        {
+          "title": "6. Prioritási, függőségi és munkacsomag-tábla",
+          "anchor": "doc-6-prioritasi-fuggosegi-es-munkacsomag-tabla",
+          "level": 2
+        },
+        {
+          "title": "Csomagonkénti készültség általános minimuma",
+          "anchor": "doc-csomagonkenti-keszultseg-altalanos-minimuma",
+          "level": 3
+        },
+        {
+          "title": "7. Nyitott kérdések és döntési pontok",
+          "anchor": "doc-7-nyitott-kerdesek-es-dontesi-pontok",
+          "level": 2
+        },
+        {
+          "title": "8. Végrehajtási ellenőrzőlista",
+          "anchor": "doc-8-vegrehajtasi-ellenorzolista",
+          "level": 2
+        },
+        {
+          "title": "A terv átadása — ennek a feladatnak a vége",
+          "anchor": "doc-a-terv-atadasa-ennek-a-feladatnak-a-vege",
+          "level": 3
+        },
+        {
+          "title": "Csak későbbi, külön engedélyezett végrehajtáskor",
+          "anchor": "doc-csak-kesobbi-kulon-engedelyezett-vegrehajtaskor",
+          "level": 3
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/stability-and-optimization/cr17cd-plan.md",
+      "doc_id": "feature-stability-and-optimization-cr17cd-plan",
+      "title": "CR17/c–d — provider/file ownership terv (21–22. csomag)",
+      "kind": "implementation-plan",
+      "status": "implemented",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "CR17",
+        "CR17/c",
+        "CR17/d",
+        "ownership",
+        "DetachedInstanceError",
+        "DTO"
+      ],
+      "source_commit": "050cb33718353d16cbeeaca6ca41a0d9d7d45d6d",
+      "baseline": "050cb337; packet 20 SourceV4 set aside on archive/cr17b-policy-snapshot-v4 (a099da5)",
+      "verification": "21a reproduction failed deterministically on 050cb33; 21b: Ruff 0, basedpyright 0, 607 pytest / 64 snapshot; cr17c-after-v1 FAIL (1/316), superseding cr17c-after-v2 PASS 316/316, committed d1da34c; 22: runtime gate cr17d-after-v1 FAIL (35/316, memory only; resumed once after a power outage by a preregistered amendment); pool diagnostic v1: QueuePool saturation 15 vs 10-11; 22b (shared_read_session gate): cr17e-after-v1 PASS 316/316; 22+22b committed f7cdb1a: Ruff 0, basedpyright 0, 611 pytest / 64 snapshot, ownership trace 4/4",
+      "structure_reviewed": "2026-11-07",
+      "related_docs": [
+        "docs/feature/stability-and-optimization/implementation-plan.md",
+        "docs/feature/stability-and-optimization.md"
+      ],
+      "source_paths": [
+        "server/app/modules/torrent_source_provider/",
+        "server/app/modules/torrent_files/",
+        "server/app/modules/indexers/",
+        "server/app/modules/torrent_streams/",
+        "server/app/modules/stremio/",
+        "server/app/modules/kodi/",
+        "server/app/modules/torznab/",
+        "server/app/common/database.py"
+      ],
+      "sections": [
+        {
+          "title": "Cél és hatókör",
+          "anchor": "doc-cel-es-hatokor",
+          "level": 2
+        },
+        {
+          "title": "Bizonyíték és hibamechanizmus",
+          "anchor": "doc-bizonyitek",
+          "level": 2
+        },
+        {
+          "title": "Célarchitektúra",
+          "anchor": "doc-cel-architektura",
+          "level": 2
+        },
+        {
+          "title": "Csomagbontás",
+          "anchor": "doc-csomagbontas",
+          "level": 2
+        },
+        {
+          "title": "Függőség a 20. csomagtól",
+          "anchor": "doc-fuggoseg-a-20-csomagtol",
+          "level": 2
+        },
+        {
+          "title": "Teszt- és mérési kapu",
+          "anchor": "doc-teszt-es-meresi-kapu",
+          "level": 2
+        },
+        {
+          "title": "Kritikus invariánsok",
+          "anchor": "doc-invariansok",
+          "level": 2
+        },
+        {
+          "title": "Rollback",
+          "anchor": "doc-rollback",
+          "level": 2
+        },
+        {
+          "title": "Nyitott kérdések",
+          "anchor": "doc-nyitott-kerdesek",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/stability-and-optimization/README.md",
+      "doc_id": "feature-stability-and-optimization-readme",
+      "title": "Stabilitás és optimalizálás — auditmunkacsomag",
+      "kind": "navigation",
+      "status": "implementation-in-progress",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "CR01-CR19",
+        "audit",
+        "implementation-plan",
+        "evidence"
+      ],
+      "source_commit": "2615596f7cd181454dc5ae3e1ec9e4d215e3b154",
+      "baseline": null,
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/feature/stability-and-optimization/audit.md",
+        "docs/feature/stability-and-optimization/implementation-plan.md",
+        "docs/feature/stability-and-optimization.md"
+      ],
+      "source_paths": [],
+      "sections": [
+        {
+          "title": "Olvasási sorrend és állapot",
+          "anchor": "doc-olvasasi-sorrend-es-allapot",
+          "level": 2
+        },
+        {
+          "title": "Az audit és a terv szerepe",
+          "anchor": "doc-az-audit-es-a-terv-szerepe",
+          "level": 2
+        },
+        {
+          "title": "Végrehajtás",
+          "anchor": "doc-vegrehajtas",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/stability-and-optimization.md",
+      "doc_id": "feature-stability-and-optimization",
+      "title": "Stabilitás és optimalizálás — branch-összefoglaló",
+      "kind": "feature-overview",
+      "status": "implementation-in-progress",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "CR01-CR19",
+        "hardening",
+        "stability",
+        "optimization"
+      ],
+      "source_commit": "050cb33718353d16cbeeaca6ca41a0d9d7d45d6d",
+      "baseline": "s4pp1/stremhu-source@8c99c7d (feature origin); main@2615596f (PR); pinned A/B/C + frozen C snapshots (measurement)",
+      "verification": "source + checked isolated snapshots; execution record below",
+      "structure_reviewed": "2026-11-04",
+      "related_docs": [
+        "docs/feature/stability-and-optimization/README.md",
+        "docs/AI-INDEX.md"
+      ],
+      "source_paths": [
+        "server/app/config.py",
+        "server/app/run.py",
+        "server/app/main.py",
+        "server/app/scheduler.py",
+        "server/app/common/",
+        "server/app/modules/auth/",
+        "server/app/modules/me/",
+        "server/app/modules/pairings/",
+        "server/app/modules/stream/",
+        "server/app/modules/stremio/",
+        "server/app/modules/users/",
+        "server/app/modules/relay/",
+        "server/app/modules/torrents/",
+        "server/app/modules/network/",
+        "server/app/modules/torrent_streams/",
+        "server/app/modules/torznab/",
+        "server/app/modules/indexer_definitions/",
+        "server/alembic/",
+        "server/tests/",
+        "client/src/shared/queries/",
+        "client/src/features/change-password/",
+        "scripts/",
+        "server/app/modules/indexers/",
+        "server/app/modules/torrent_files/",
+        "server/app/modules/torrent_source_provider/"
+      ],
+      "sections": [
+        {
+          "title": "Cél és tényleges státusz",
+          "anchor": "doc-cel-es-tenyleges-statusz",
+          "level": 2
+        },
+        {
+          "title": "Kanonikus dokumentumok",
+          "anchor": "doc-kanonikus-dokumentumok",
+          "level": 2
+        },
+        {
+          "title": "Lényeges döntések, amelyeket nem szabad leegyszerűsíteni",
+          "anchor": "doc-lenyeges-dontesek-amelyeket-nem-szabad-leegyszerusiteni",
+          "level": 2
+        },
+        {
+          "title": "Végrehajtás és ellenőrzés",
+          "anchor": "doc-vegrehajtas-es-ellenorzes",
+          "level": 2
+        },
+        {
+          "title": "Végrehajtási állapot",
+          "anchor": "execution-status",
+          "level": 2
+        },
+        {
+          "title": "Funkcióeredet és változtatási mátrix",
+          "anchor": "implementation-origin",
+          "level": 2
+        },
+        {
+          "title": "G17 ownership-döntés",
+          "anchor": "execution-g17",
+          "level": 3
+        },
+        {
+          "title": "Commit-ellenőrzési checkpoint",
+          "anchor": "checkpoint-through-19",
+          "level": 3
+        },
+        {
+          "title": "CR17/b saját baseline",
+          "anchor": "execution-cr17b-baseline",
+          "level": 3
+        },
+        {
+          "title": "CR17/a drain-kiegészítés",
+          "anchor": "execution-cr17a-drain-followup",
+          "level": 3
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/stream-performance/README.md",
+      "doc_id": "feature-stream-performance-readme",
+      "title": "Streamgyorsítás — munkacsomag",
+      "kind": "navigation",
+      "status": "navigation",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "SP01-SP09",
+        "performance",
+        "implementation-plan",
+        "evidence"
+      ],
+      "source_commit": "0515d989c764bb4103d6f7286d703b98ec859ce6",
+      "baseline": null,
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-11",
+      "related_docs": [
+        "docs/feature/stream-performance/implementation-plan.md",
+        "docs/feature/stream-performance.md"
+      ],
+      "source_paths": [],
+      "sections": [
+        {
+          "title": "Olvasási sorrend és állapot",
+          "anchor": "doc-olvasasi-sorrend-es-allapot",
+          "level": 2
+        },
+        {
+          "title": "A terv szerepe",
+          "anchor": "doc-a-terv-szerepe",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/stream-performance/implementation-plan.md",
+      "doc_id": "feature-stream-performance-implementation-plan",
+      "title": "Streamgyorsítás — kódszintű implementációs terv",
+      "kind": "implementation-plan",
+      "status": "planning-only",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "SP01-SP09",
+        "performance",
+        "gates",
+        "work-packages",
+        "tests",
+        "rollback"
+      ],
+      "source_commit": "0515d989c764bb4103d6f7286d703b98ec859ce6",
+      "baseline": "s4pp1/stremhu-source@8c99c7d (feature origin); main@0515d98 (PR); pinned A/B/C + C legacy/candidate toggle (measurement)",
+      "verification": "static source reading at source_commit; no tests, benchmarks or Docker runs",
+      "structure_reviewed": "2026-11-08",
+      "related_docs": [
+        "docs/feature/stream-performance/README.md",
+        "docs/feature/stream-performance.md",
+        "docs/feature/stability-and-optimization/implementation-plan.md"
+      ],
+      "source_paths": [
+        "server/app/modules/relay/",
+        "server/app/modules/stream/",
+        "server/app/modules/indexers/search.py",
+        "server/app/modules/torrent_source_provider/service.py",
+        "server/app/modules/torrent_streams/service.py",
+        "server/app/modules/indexer_definitions/integrations/ncore.py",
+        "server/app/modules/stremio/service.py",
+        "server/app/config.py",
+        "scripts/fixtures/local_bt_seed.py"
+      ],
+      "sections": [
+        {
+          "title": "0. Bemenet, állapot, használati szabály",
+          "anchor": "doc-0-bemenet-allapot-hasznalati-szabaly",
+          "level": 2
+        },
+        {
+          "title": "Rövid belépési térkép",
+          "anchor": "doc-rovid-belepesi-terkep",
+          "level": 3
+        },
+        {
+          "title": "1. Kiinduló megállapítások és értékelés",
+          "anchor": "doc-1-kiindulo-megallapitasok-es-ertekeles",
+          "level": 2
+        },
+        {
+          "title": "2. Közös végrehajtási szerződés",
+          "anchor": "doc-2-kozos-vegrehajtasi-szerzodes",
+          "level": 2
+        },
+        {
+          "title": "2.1. G0 — Előfeltételek",
+          "anchor": "doc-21-g0-elofeltetelek",
+          "level": 3
+        },
+        {
+          "title": "2.2. Ellenőrzési sorrend az AGENTS szerint",
+          "anchor": "doc-22-ellenorzesi-sorrend-az-agents-szerint",
+          "level": 3
+        },
+        {
+          "title": "2.3. Mérőeszközök",
+          "anchor": "doc-23-meroeszkozok",
+          "level": 3
+        },
+        {
+          "title": "2.4. Közös mérési protokoll és kapu",
+          "anchor": "doc-24-kozos-meresi-protokoll-es-kapu",
+          "level": 3
+        },
+        {
+          "title": "2.5. Konfiguráció és visszaállítás",
+          "anchor": "doc-25-konfiguracio-es-visszaallitas",
+          "level": 3
+        },
+        {
+          "title": "3. Lejátszás: relay és streamválasz",
+          "anchor": "doc-3-lejatszas-relay-es-streamvalasz",
+          "level": 2
+        },
+        {
+          "title": "SP01 — Előtöltési ablak és prioritáspolitika lejátszás közben",
+          "anchor": "sp01",
+          "level": 3
+        },
+        {
+          "title": "SP02 — Indulási darabsorrend",
+          "anchor": "sp02",
+          "level": 3
+        },
+        {
+          "title": "SP03 — Lejátszási előzmény a válasz előtt",
+          "anchor": "sp03",
+          "level": 3
+        },
+        {
+          "title": "SP04 — Darabolvasás átfedése a küldéssel",
+          "anchor": "sp04",
+          "level": 3
+        },
+        {
+          "title": "SP10 — Beragadó peerek indulási büntetése",
+          "anchor": "sp10",
+          "level": 3
+        },
+        {
+          "title": "SP09 — `Connection: close` minden streamválaszon",
+          "anchor": "sp09",
+          "level": 3
+        },
+        {
+          "title": "4. Találatlista: keresés",
+          "anchor": "doc-4-talalatlista-kereses",
+          "level": 2
+        },
+        {
+          "title": "SP05 — Tracker-egészség és rövidzár",
+          "anchor": "sp05",
+          "level": 3
+        },
+        {
+          "title": "SP06 — Tech Info a kritikus úton",
+          "anchor": "sp06",
+          "level": 3
+        },
+        {
+          "title": "SP07 — Lejárt trackercache: régi találat azonnal, frissítés a háttérben",
+          "anchor": "sp07",
+          "level": 3
+        },
+        {
+          "title": "SP08 — A név szerinti tartalékkeresés soros lánca",
+          "anchor": "sp08",
+          "level": 3
+        },
+        {
+          "title": "Meleg út profilja (GSP-W, nem tétel)",
+          "anchor": "doc-meleg-ut-profilja-gsp-w-nem-tetel",
+          "level": 3
+        },
+        {
+          "title": "5. Munkacsomag-tábla",
+          "anchor": "doc-5-munkacsomag-tabla",
+          "level": 2
+        },
+        {
+          "title": "Csomagonkénti készültség minimuma",
+          "anchor": "doc-csomagonkenti-keszultseg-minimuma",
+          "level": 3
+        },
+        {
+          "title": "6. Kockázatok",
+          "anchor": "doc-6-kockazatok",
+          "level": 2
+        },
+        {
+          "title": "7. Nyitott kérdések és döntési pontok",
+          "anchor": "doc-7-nyitott-kerdesek-es-dontesi-pontok",
+          "level": 2
+        },
+        {
+          "title": "8. Végrehajtási ellenőrzőlista",
+          "anchor": "doc-8-vegrehajtasi-ellenorzolista",
+          "level": 2
+        },
+        {
+          "title": "A terv átadása — ennek a feladatnak a vége",
+          "anchor": "doc-a-terv-atadasa-ennek-a-feladatnak-a-vege",
+          "level": 3
+        },
+        {
+          "title": "Csak későbbi, külön engedélyezett végrehajtáskor",
+          "anchor": "doc-csak-kesobbi-kulon-engedelyezett-vegrehajtaskor",
+          "level": 3
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/stream-performance.md",
+      "doc_id": "feature-stream-performance",
+      "title": "Streamgyorsítás — branch-összefoglaló",
+      "kind": "feature-overview",
+      "status": "implemented",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "SP01-SP09",
+        "performance",
+        "relay",
+        "search",
+        "playback"
+      ],
+      "source_commit": "8157b515c81b9409054379e4c831cf568becab4a",
+      "baseline": "s4pp1/stremhu-source@8c99c7d (feature origin); main@0515d98 (PR)",
+      "verification": "source at source_commit; pre-registered gates on local Docker (synthetic swarm and trackers); user's manual client test; execution record below",
+      "structure_reviewed": "2026-11-11",
+      "related_docs": [
+        "docs/feature/stream-performance/README.md",
+        "docs/feature/stream-performance/implementation-plan.md",
+        "docs/AI-INDEX.md"
+      ],
+      "source_paths": [
+        "server/app/modules/relay/",
+        "server/app/modules/stream/",
+        "server/app/modules/indexers/search.py",
+        "server/app/modules/torrent_source_provider/service.py",
+        "server/app/modules/torrent_streams/service.py",
+        "server/app/modules/indexer_definitions/integrations/ncore.py",
+        "server/app/modules/stremio/service.py",
+        "server/app/config.py",
+        "scripts/fixtures/local_bt_seed.py"
+      ],
+      "sections": [
+        {
+          "title": "Cél és tényleges státusz",
+          "anchor": "doc-cel-es-tenyleges-statusz",
+          "level": 2
+        },
+        {
+          "title": "Kanonikus dokumentumok",
+          "anchor": "doc-kanonikus-dokumentumok",
+          "level": 2
+        },
+        {
+          "title": "Upstream-diffmátrix (tervezett)",
+          "anchor": "doc-upstream-diffmatrix-tervezett",
+          "level": 2
+        },
+        {
+          "title": "Érintett modulok és kritikus invariánsok",
+          "anchor": "doc-erintett-modulok-es-kritikus-invariansok",
+          "level": 2
+        },
+        {
+          "title": "Végrehajtási állapot",
+          "anchor": "execution-status",
+          "level": 2
+        },
+        {
+          "title": "UX/SLO-keret (felhasználói döntés, 2026-11-09)",
+          "anchor": "doc-ux-slo-keret",
+          "level": 2
+        },
+        {
+          "title": "Korlátok",
+          "anchor": "doc-korlatok",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/stremio-catalog-search.md",
+      "doc_id": "feature-stremio-catalog-search",
+      "title": "Fejlesztői Dokumentáció: feature/stremio-catalog-search",
+      "kind": "feature-reference",
+      "status": "historical-reference",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "stremio",
+        "catalog",
+        "meta",
+        "movie",
+        "series",
+        "search"
+      ],
+      "source_commit": null,
+      "baseline": "8c99c7d",
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/feature/README.md",
+        "docs/feature/search-filter-tmdb-tvdb.md"
+      ],
+      "source_paths": [
+        "server/app/modules/stremio/catalogs_service.py",
+        "server/app/modules/torrent_source_provider/service.py"
+      ],
+      "sections": [
+        {
+          "title": "1. A Branch Célja és Motivációja",
+          "anchor": "doc-1-a-branch-celja-es-motivacioja",
+          "level": 2
+        },
+        {
+          "title": "A megoldott fejlesztések:",
+          "anchor": "doc-a-megoldott-fejlesztesek",
+          "level": 3
+        },
+        {
+          "title": "2. Módosított és Új Fájlok Áttekintése (Diff Mátrix s4pp1/stremhu-source vs feature/stremio-catalog-search)",
+          "anchor": "doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix-s4pp1stremhu-source-vs-featurestremio-catalog-search",
+          "level": 2
+        },
+        {
+          "title": "3. Architektúra és Működési Folyamatábrák",
+          "anchor": "doc-3-architektura-es-mukodesi-folyamatabrak",
+          "level": 2
+        },
+        {
+          "title": "3.1. Kategória-Célzott Katalógus Keresés és Borítókép Generálás",
+          "anchor": "doc-31-kategoria-celzott-katalogus-kereses-es-boritokep-generalas",
+          "level": 3
+        },
+        {
+          "title": "4. Tesztelési és Ellenőrzési Referencia",
+          "anchor": "doc-4-tesztelesi-es-ellenorzesi-referencia",
+          "level": 2
+        },
+        {
+          "title": "4.1. Unit Tesztek és Linter Eredmények",
+          "anchor": "doc-41-unit-tesztek-es-linter-eredmenyek",
+          "level": 3
+        },
+        {
+          "title": "4.2. Élő Docker Desktop Verifikáció (stremhu-local-test)",
+          "anchor": "doc-42-elo-docker-desktop-verifikacio-stremhu-local-test",
+          "level": 3
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/torrent-subtitles.md",
+      "doc_id": "feature-torrent-subtitles",
+      "title": "Fejlesztői és AI Agent Dokumentáció: feature/torrent-subtitles",
+      "kind": "feature-reference",
+      "status": "historical-reference",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "subtitle",
+        "srt",
+        "ass",
+        "ssa",
+        "vtt",
+        "active-playback",
+        "range",
+        "fallback"
+      ],
+      "source_commit": null,
+      "baseline": "8c99c7d",
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/feature/README.md",
+        "docs/feature/audio-subtitle-detection.md"
+      ],
+      "source_paths": [
+        "server/app/modules/stream/router.py",
+        "server/app/modules/stream/utils/subtitles.py",
+        "server/app/modules/stream/active_playback.py"
+      ],
+      "sections": [
+        {
+          "title": "1. A Branch Célja és Motivációja",
+          "anchor": "doc-1-a-branch-celja-es-motivacioja",
+          "level": 2
+        },
+        {
+          "title": "2. Módosított és Új Fájlok Áttekintése (Diff Mátrix)",
+          "anchor": "doc-2-modositott-es-uj-fajlok-attekintese-diff-matrix",
+          "level": 2
+        },
+        {
+          "title": "3. Architektúra és Folyamatábrák",
+          "anchor": "doc-3-architektura-es-folyamatabrak",
+          "level": 2
+        },
+        {
+          "title": "3.1. Felirat-feloldás, Aktív Lejátszás Követés és Fallback Döntési Folyamat",
+          "anchor": "doc-31-felirat-feloldas-aktiv-lejatszas-kovetes-es-fallback-dontesi-folyamat",
+          "level": 3
+        },
+        {
+          "title": "3.2. Videó Indítás, Felirat Piece-Prefetch (500 ms) és Memória-Cache Szekvencia",
+          "anchor": "doc-32-video-inditas-felirat-piece-prefetch-500-ms-es-memoria-cache-szekvencia",
+          "level": 3
+        },
+        {
+          "title": "4. Modulonkénti Részletes Működés és Kritikus Invariánsok",
+          "anchor": "doc-4-modulonkenti-reszletes-mukodes-es-kritikus-invariansok",
+          "level": 2
+        },
+        {
+          "title": "5. Hidegindítási és Keresési Teljesítmény-Optimalizációk (Smart Anime Gating & Lazy Dynamic Alias)",
+          "anchor": "doc-5-hideginditasi-es-keresesi-teljesitmeny-optimalizaciok-smart-anime-gating-lazy-dynamic-alias",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/fejlesztoi-dokumentacio.md",
+      "doc_id": "fejlesztoi-dokumentacio",
+      "title": "Fejlesztői belépési pont",
+      "kind": "developer-guide",
+      "status": "source-paths-reviewed",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "development",
+        "windows",
+        "python",
+        "node",
+        "testing"
+      ],
+      "source_commit": "d9554c4324b432dd023307c9bf29e0aab4da3747",
+      "baseline": null,
+      "verification": "source-paths-and-package-scripts; no-runtime-tests",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/README.md",
+        "docs/AI-INDEX.md"
+      ],
+      "source_paths": [
+        "server/app/config.py",
+        "server/app/run.py",
+        "server/requirements.txt",
+        "server/pyproject.toml",
+        "client/package.json",
+        "Dockerfile"
+      ],
+      "sections": [
+        {
+          "title": "Előfeltételek és olvasási sorrend",
+          "anchor": "doc-elofeltetelek-es-olvasasi-sorrend",
+          "level": 2
+        },
+        {
+          "title": "Környezet és függőségek",
+          "anchor": "doc-kornyezet-es-fuggosegek",
+          "level": 2
+        },
+        {
+          "title": "Opcionális környezetkezelők",
+          "anchor": "doc-opcionalis-kornyezetkezelok",
+          "level": 3
+        },
+        {
+          "title": "Ellenőrzési sorrend",
+          "anchor": "doc-ellenorzesi-sorrend",
+          "level": 2
+        },
+        {
+          "title": "Docker, integráció és teljesítmény",
+          "anchor": "doc-docker-integracio-es-teljesitmeny",
+          "level": 2
+        },
+        {
+          "title": "Átadás",
+          "anchor": "doc-atadas",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/README.md",
+      "doc_id": "readme",
+      "title": "Dokumentáció — StremHU Source",
+      "kind": "navigation",
+      "status": "navigation",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "documentation",
+        "index",
+        "status",
+        "evidence"
+      ],
+      "source_commit": null,
+      "baseline": null,
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/AI-INDEX.md",
+        "docs/feature/README.md",
+        "docs/index.json"
+      ],
+      "source_paths": [],
+      "sections": [
+        {
+          "title": "Hol kezdjem?",
+          "anchor": "doc-hol-kezdjem",
+          "level": 2
+        },
+        {
+          "title": "Könyvtárszerkezet és szerepek",
+          "anchor": "doc-konyvtarszerkezet-es-szerepek",
+          "level": 2
+        },
+        {
+          "title": "Melyik állítás milyen bizonyíték?",
+          "anchor": "doc-melyik-allitas-milyen-bizonyitek",
+          "level": 2
+        },
+        {
+          "title": "Dokumentum karbantartása",
+          "anchor": "doc-dokumentum-karbantartasa",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/STREMHU-UNIVERSAL-SETUP-GUIDE.md",
+      "doc_id": "stremhu-universal-setup-guide",
+      "title": "Egy StremHU-link mindenhová",
+      "kind": "operator-guide",
+      "status": "instructions-not-executed",
+      "audience": [
+        "operator",
+        "ai-agent"
+      ],
+      "tags": [
+        "installation",
+        "linux",
+        "dns",
+        "caddy",
+        "adguard",
+        "tailscale",
+        "cloudflare",
+        "troubleshooting"
+      ],
+      "source_commit": null,
+      "baseline": null,
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/README.md",
+        "docs/fejlesztoi-dokumentacio.md"
+      ],
+      "source_paths": [],
+      "sections": [
+        {
+          "title": "Teljes otthoni útmutató: AdGuard Home + Caddy HTTPS + Tailscale + Cloudflare Tunnel",
+          "anchor": "doc-teljes-otthoni-utmutato-adguard-home-caddy-https-tailscale-cloudflare-tunnel",
+          "level": 2
+        },
+        {
+          "title": "Tartalom",
+          "anchor": "doc-tartalom",
+          "level": 3
+        },
+        {
+          "title": "0. Előkészítés és biztonságos végrehajtási sorrend",
+          "anchor": "doc-0-elokeszites-es-biztonsagos-vegrehajtasi-sorrend",
+          "level": 2
+        },
+        {
+          "title": "0.1. Írd össze a saját példahelyettesítőidet",
+          "anchor": "doc-01-ird-ossze-a-sajat-peldahelyettesitoidet",
+          "level": 3
+        },
+        {
+          "title": "0.2. Az első előfeltétel: működő StremHU",
+          "anchor": "doc-02-az-elso-elofeltetel-mukodo-stremhu",
+          "level": 3
+        },
+        {
+          "title": "0.3. Compose: két parancsnév, ugyanaz a feladat",
+          "anchor": "doc-03-compose-ket-parancsnev-ugyanaz-a-feladat",
+          "level": 3
+        },
+        {
+          "title": "0.4. Portleltár és a menedzsmentkapcsolat védelme",
+          "anchor": "doc-04-portleltar-es-a-menedzsmentkapcsolat-vedelme",
+          "level": 3
+        },
+        {
+          "title": "0.5. Helyes sorrend: ne a család teljes DNS-ével kezdj",
+          "anchor": "doc-05-helyes-sorrend-ne-a-csalad-teljes-dns-evel-kezdj",
+          "level": 3
+        },
+        {
+          "title": "1. Miért kell három manifest helyett egy?",
+          "anchor": "doc-1-miert-kell-harom-manifest-helyett-egy",
+          "level": 2
+        },
+        {
+          "title": "1.1. Az alapprobléma",
+          "anchor": "doc-11-az-alapproblema",
+          "level": 3
+        },
+        {
+          "title": "1.2. A három út egy rajzon",
+          "anchor": "doc-12-a-harom-ut-egy-rajzon",
+          "level": 3
+        },
+        {
+          "title": "1.3. Mi történik egy lejátszás alatt?",
+          "anchor": "doc-13-mi-tortenik-egy-lejatszas-alatt",
+          "level": 3
+        },
+        {
+          "title": "1.4. A Cloudflare-ág feltétele",
+          "anchor": "doc-14-a-cloudflare-ag-feltetele",
+          "level": 3
+        },
+        {
+          "title": "2. AdGuard Home: a helyi DNS agya",
+          "anchor": "doc-2-adguard-home-a-helyi-dns-agya",
+          "level": 2
+        },
+        {
+          "title": "2.1. Mi ez, és miért kell?",
+          "anchor": "doc-21-mi-ez-es-miert-kell",
+          "level": 3
+        },
+        {
+          "title": "2.2. Kritikus Docker-tanulság: ebben a receptben host networkinget használunk",
+          "anchor": "doc-22-kritikus-docker-tanulsag-ebben-a-receptben-host-networkinget-hasznalunk",
+          "level": 3
+        },
+        {
+          "title": "2.3. Előbb a portütközéseket nézd meg",
+          "anchor": "doc-23-elobb-a-portutkozeseket-nezd-meg",
+          "level": 3
+        },
+        {
+          "title": "2.4. Könyvtár és image rögzítése",
+          "anchor": "doc-24-konyvtar-es-image-rogzitese",
+          "level": 3
+        },
+        {
+          "title": "2.5. AdGuard Compose",
+          "anchor": "doc-25-adguard-compose",
+          "level": 3
+        },
+        {
+          "title": "2.6. Első beállítás a böngészőben",
+          "anchor": "doc-26-elso-beallitas-a-bongeszoben",
+          "level": 3
+        },
+        {
+          "title": "3. Caddy: megbízható HTTPS a közvetlen útvonalakon",
+          "anchor": "doc-3-caddy-megbizhato-https-a-kozvetlen-utvonalakon",
+          "level": 2
+        },
+        {
+          "title": "3.1. Miért kell második HTTPS-végpont?",
+          "anchor": "doc-31-miert-kell-masodik-https-vegpont",
+          "level": 3
+        },
+        {
+          "title": "3.2. DNS-01 a portnyitás helyett",
+          "anchor": "doc-32-dns-01-a-portnyitas-helyett",
+          "level": 3
+        },
+        {
+          "title": "3.3. DNS-token minimális jogokkal",
+          "anchor": "doc-33-dns-token-minimalis-jogokkal",
+          "level": 3
+        },
+        {
+          "title": "3.4. Megfelelő Caddy-image és védett .env",
+          "anchor": "doc-34-megfelelo-caddy-image-es-vedett-env",
+          "level": 3
+        },
+        {
+          "title": "3.5. Teljes Caddyfile",
+          "anchor": "doc-35-teljes-caddyfile",
+          "level": 3
+        },
+        {
+          "title": "3.6. Caddy Compose és indítás",
+          "anchor": "doc-36-caddy-compose-es-inditas",
+          "level": 3
+        },
+        {
+          "title": "3.7. Először DNS-átállítás nélkül tesztelj",
+          "anchor": "doc-37-eloszor-dns-atallitas-nelkul-tesztelj",
+          "level": 3
+        },
+        {
+          "title": "4. A split-horizon DNS-szabályok",
+          "anchor": "doc-4-a-split-horizon-dns-szabalyok",
+          "level": 2
+        },
+        {
+          "title": "4.1. Ugyanaz a név, másik bejárat",
+          "anchor": "doc-41-ugyanaz-a-nev-masik-bejarat",
+          "level": 3
+        },
+        {
+          "title": "4.2. Előbb mentés és ütközésvizsgálat",
+          "anchor": "doc-42-elobb-mentes-es-utkozesvizsgalat",
+          "level": 3
+        },
+        {
+          "title": "4.3. A négy szabály",
+          "anchor": "doc-43-a-negy-szabaly",
+          "level": 3
+        },
+        {
+          "title": "4.4. DNS-tesztek valódi forrásokból",
+          "anchor": "doc-44-dns-tesztek-valodi-forrasokbol",
+          "level": 3
+        },
+        {
+          "title": "5. Tailscale: távoli közvetlen elérés és globális DNS",
+          "anchor": "doc-5-tailscale-tavoli-kozvetlen-eleres-es-globalis-dns",
+          "level": 2
+        },
+        {
+          "title": "5.1. Mi ez, és hogyan telepítsd?",
+          "anchor": "doc-51-mi-ez-es-hogyan-telepitsd",
+          "level": 3
+        },
+        {
+          "title": "5.2. Először közvetlen IP-teszt, aztán DNS",
+          "anchor": "doc-52-eloszor-kozvetlen-ip-teszt-aztan-dns",
+          "level": 3
+        },
+        {
+          "title": "5.3. Miért globális AdGuard DNS ebben az architektúrában?",
+          "anchor": "doc-53-miert-globalis-adguard-dns-ebben-az-architekturaban",
+          "level": 3
+        },
+        {
+          "title": "5.4. Pontos Admin Console-lépések",
+          "anchor": "doc-54-pontos-admin-console-lepesek",
+          "level": 3
+        },
+        {
+          "title": "5.5. A .lan nevek: névfeloldás és elérés különválasztva",
+          "anchor": "doc-55-a-lan-nevek-nevfeloldas-es-eleres-kulonvalasztva",
+          "level": 3
+        },
+        {
+          "title": "5.6. Otthon aktív Tailscale: melyik IP győz?",
+          "anchor": "doc-56-otthon-aktiv-tailscale-melyik-ip-gyoz",
+          "level": 3
+        },
+        {
+          "title": "6. Cloudflare Tunnel: a feltételes publikus útvonal",
+          "anchor": "doc-6-cloudflare-tunnel-a-felteteles-publikus-utvonal",
+          "level": 2
+        },
+        {
+          "title": "6.1. Mi ez, és miért nincs routeres porttovábbítás?",
+          "anchor": "doc-61-mi-ez-es-miert-nincs-routeres-porttovabbitas",
+          "level": 3
+        },
+        {
+          "title": "6.2. Tunnel létrehozása és connector indítása",
+          "anchor": "doc-62-tunnel-letrehozasa-es-connector-inditasa",
+          "level": 3
+        },
+        {
+          "title": "6.3. Published Application Route: pontos hostname, szűk Path",
+          "anchor": "doc-63-published-application-route-pontos-hostname-szuk-path",
+          "level": 3
+        },
+        {
+          "title": "6.4. Mit enged és mit tilt?",
+          "anchor": "doc-64-mit-enged-es-mit-tilt",
+          "level": 3
+        },
+        {
+          "title": "6.5. A 27 tesztesetes ellenőrzés",
+          "anchor": "doc-65-a-27-tesztesetes-ellenorzes",
+          "level": 3
+        },
+        {
+          "title": "6.6. Miért a Dashboardban szerkesztünk?",
+          "anchor": "doc-66-miert-a-dashboardban-szerkesztunk",
+          "level": 3
+        },
+        {
+          "title": "7. Kliensek és valós életbeli hibaelhárítás",
+          "anchor": "doc-7-kliensek-es-valos-eletbeli-hibaelharitas",
+          "level": 2
+        },
+        {
+          "title": "7.1. Egyetlen addon telepítése",
+          "anchor": "doc-71-egyetlen-addon-telepitese",
+          "level": 3
+        },
+        {
+          "title": "7.2. Android TV / Xiaomi Box: „Unable to resolve host”",
+          "anchor": "doc-72-android-tv-xiaomi-box-unable-to-resolve-host",
+          "level": 3
+        },
+        {
+          "title": "7.3. Router DHCP: miért nincs másodlagos nyilvános DNS?",
+          "anchor": "doc-73-router-dhcp-miert-nincs-masodlagos-nyilvanos-dns",
+          "level": 3
+        },
+        {
+          "title": "7.4. Cache, IPv6, DoH, DERP és más korlátok",
+          "anchor": "doc-74-cache-ipv6-doh-derp-es-mas-korlatok",
+          "level": 3
+        },
+        {
+          "title": "8. Végtesztek: bizonyítsd a tényleges adatútvonalat",
+          "anchor": "doc-8-vegtesztek-bizonyitsd-a-tenyleges-adatutvonalat",
+          "level": 2
+        },
+        {
+          "title": "8.1. Három külön profil, három külön bizonyíték",
+          "anchor": "doc-81-harom-kulon-profil-harom-kulon-bizonyitek",
+          "level": 3
+        },
+        {
+          "title": "8.2. Privát tesztmunkakönyvtár és URL-bevitel",
+          "anchor": "doc-82-privat-tesztmunkakonyvtar-es-url-bevitel",
+          "level": 3
+        },
+        {
+          "title": "8.3. Manifest, catalog, meta, stream JSON",
+          "anchor": "doc-83-manifest-catalog-meta-stream-json",
+          "level": 3
+        },
+        {
+          "title": "8.4. A stream URL valóban ugyanarra a hostname-re mutat?",
+          "anchor": "doc-84-a-stream-url-valoban-ugyanarra-a-hostname-re-mutat",
+          "level": 3
+        },
+        {
+          "title": "8.5. Valódi HTTP Range/206 és pontos bájtszám",
+          "anchor": "doc-85-valodi-http-range206-es-pontos-bajtszam",
+          "level": 3
+        },
+        {
+          "title": "8.6. Felirat: JSON és tényleges SRT/VTT",
+          "anchor": "doc-86-felirat-json-es-tenyleges-srtvtt",
+          "level": 3
+        },
+        {
+          "title": "8.7. Publikus teszt saját belső DNS megkerülésével",
+          "anchor": "doc-87-publikus-teszt-sajat-belso-dns-megkerulesevel",
+          "level": 3
+        },
+        {
+          "title": "8.8. Publikus tiltási és másik addon regressziós teszt",
+          "anchor": "doc-88-publikus-tiltasi-es-masik-addon-regresszios-teszt",
+          "level": 3
+        },
+        {
+          "title": "8.9. Szerveroldali útvonalbizonyítás",
+          "anchor": "doc-89-szerveroldali-utvonalbizonyitas",
+          "level": 3
+        },
+        {
+          "title": "8.10. Android TV / Nuvio / Stremio kézi elfogadási lista",
+          "anchor": "doc-810-android-tv-nuvio-stremio-kezi-elfogadasi-lista",
+          "level": 3
+        },
+        {
+          "title": "A. Mentés, visszaállítás és frissítés",
+          "anchor": "doc-a-mentes-visszaallitas-es-frissites",
+          "level": 2
+        },
+        {
+          "title": "A.1. Mit kell megőrizni?",
+          "anchor": "doc-a1-mit-kell-megorizni",
+          "level": 3
+        },
+        {
+          "title": "A.2. Konkrét AdGuard konfigurációmentés",
+          "anchor": "doc-a2-konkret-adguard-konfiguraciomentes",
+          "level": 3
+        },
+        {
+          "title": "A.3. Automatikus biztosíték kockázatos DNS-szabályteszthez",
+          "anchor": "doc-a3-automatikus-biztositek-kockazatos-dns-szabalyteszthez",
+          "level": 3
+        },
+        {
+          "title": "A.4. Visszaállítási sorrend hiba esetén",
+          "anchor": "doc-a4-visszaallitasi-sorrend-hiba-eseten",
+          "level": 3
+        },
+        {
+          "title": "A.5. Frissítési stratégia",
+          "anchor": "doc-a5-frissitesi-strategia",
+          "level": 3
+        },
+        {
+          "title": "B. Tünet–ok–ellenőrzés gyorssegéd",
+          "anchor": "doc-b-tunetokellenorzes-gyorsseged",
+          "level": 2
+        },
+        {
+          "title": "B.1. Megosztható hibajegy minimális tartalma",
+          "anchor": "doc-b1-megoszthato-hibajegy-minimalis-tartalma",
+          "level": 3
+        }
+      ]
+    },
+    {
+      "path": "docs/templates/feature.md",
+      "doc_id": "templates-feature",
+      "title": "Feature-dokumentum sablon",
+      "kind": "template",
+      "status": "template",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "template",
+        "feature",
+        "evidence",
+        "documentation"
+      ],
+      "source_commit": null,
+      "baseline": null,
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/README.md",
+        "docs/feature/README.md"
+      ],
+      "source_paths": [],
+      "sections": [
+        {
+          "title": "Dokumentumfejléc",
+          "anchor": "doc-dokumentumfejlec",
+          "level": 2
+        },
+        {
+          "title": "1. Cél, hatókör, nem célok",
+          "anchor": "doc-1-cel-hatokor-nem-celok",
+          "level": 2
+        },
+        {
+          "title": "2. Jelenlegi működés és bizonyíték",
+          "anchor": "doc-2-jelenlegi-mukodes-es-bizonyitek",
+          "level": 2
+        },
+        {
+          "title": "3. Változtatás és invariánsok",
+          "anchor": "doc-3-valtoztatas-es-invariansok",
+          "level": 2
+        },
+        {
+          "title": "4. Erőforrások, hibautak, kompatibilitás",
+          "anchor": "doc-4-eroforrasok-hibautak-kompatibilitas",
+          "level": 2
+        },
+        {
+          "title": "5. Ellenőrzés és mérési kapuk",
+          "anchor": "doc-5-ellenorzes-es-meresi-kapuk",
+          "level": 2
+        },
+        {
+          "title": "6. Kockázat, visszaállítás, nyitott kérdések",
+          "anchor": "doc-6-kockazat-visszaallitas-nyitott-kerdesek",
+          "level": 2
+        },
+        {
+          "title": "7. Kapcsolódó leírások",
+          "anchor": "doc-7-kapcsolodo-leirasok",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/UPSTREAM_MR_DESCRIPTION.md",
+      "doc_id": "upstreammrdescription",
+      "title": "🚀 Feat: Átfogó Anime, TVDB/Kitsu/MAL, Felirat Streaming, Multi-Tracker Deduplikáció és Teljesítmény-Optimalizáció",
+      "kind": "historical-report",
+      "status": "historical-claims",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "upstream",
+        "pull-request",
+        "benchmark",
+        "anime",
+        "subtitles"
+      ],
+      "source_commit": null,
+      "baseline": null,
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-03",
+      "related_docs": [
+        "docs/feature/README.md",
+        "docs/feature/implementation-progress.md"
+      ],
+      "source_paths": [],
+      "sections": [
+        {
+          "title": "📌 Összefoglaló (Summary)",
+          "anchor": "doc-osszefoglalo-summary",
+          "level": 2
+        },
+        {
+          "title": "🌟 Főbb Újdonságok Egy Pillantásra",
+          "anchor": "doc-fobb-ujdonsagok-egy-pillantasra",
+          "level": 3
+        },
+        {
+          "title": "📋 Összehasonlító Képességmátrix",
+          "anchor": "doc-osszehasonlito-kepessegmatrix",
+          "level": 2
+        },
+        {
+          "title": "🔍 Részletes Funkcióbemutatás és Működési Elv",
+          "anchor": "doc-reszletes-funkciobemutatas-es-mukodesi-elv",
+          "level": 2
+        },
+        {
+          "title": "1. Külső Torrent Feliratok Kezelése és Valós Idejű WebVTT Streaming",
+          "anchor": "doc-1-kulso-torrent-feliratok-kezelese-es-valos-ideju-webvtt-streaming",
+          "level": 3
+        },
+        {
+          "title": "2. Hidegindítási Teljesítmény-Optimalizáció (Smart Anime Gating)",
+          "anchor": "doc-2-hideginditasi-teljesitmeny-optimalizacio-smart-anime-gating",
+          "level": 3
+        },
+        {
+          "title": "3. Több-Trackeres Találati Deduplikáció és Intelligens Összevonás",
+          "anchor": "doc-3-tobb-trackeres-talalati-deduplikacio-es-intelligens-osszevonas",
+          "level": 3
+        },
+        {
+          "title": "4. Kulcs Nélküli (Zero-Config) Multi-ID Feloldórendszer (TvdbResolver)",
+          "anchor": "doc-4-kulcs-nelkuli-zero-config-multi-id-feloldorendszer-tvdbresolver",
+          "level": 3
+        },
+        {
+          "title": "5. Valós Letöltöttség és Lejátszási Élmény (Stremio / Nuvio Best Practice)",
+          "anchor": "doc-5-valos-letoltottseg-es-lejatszasi-elmeny-stremio-nuvio-best-practice",
+          "level": 3
+        },
+        {
+          "title": "📊 A/B Teljesítménymérési Eredmények (Benchmark)",
+          "anchor": "doc-ab-teljesitmenymeresi-eredmenyek-benchmark",
+          "level": 2
+        },
+        {
+          "title": "Részletes Mérési Mátrix (10 Különböző Média Típus)",
+          "anchor": "doc-reszletes-meresi-matrix-10-kulonbozo-media-tipus",
+          "level": 3
+        },
+        {
+          "title": "Eredmények Összegzése:",
+          "anchor": "doc-eredmenyek-osszegzese",
+          "level": 3
+        },
+        {
+          "title": "💾 Adatbázis Migrációk és Visszafelé Kompatibilitás",
+          "anchor": "doc-adatbazis-migraciok-es-visszafele-kompatibilitas",
+          "level": 2
+        },
+        {
+          "title": "🧪 Minőségellenőrzés és Tesztek",
+          "anchor": "doc-minosegellenorzes-es-tesztek",
+          "level": 2
+        },
+        {
+          "title": "📦 Érintett Fájlok Áttekintése (Diff Stat)",
+          "anchor": "doc-erintett-fajlok-attekintese-diff-stat",
+          "level": 2
+        },
+        {
+          "title": "✅ Ellenőrző Lista a Review-hoz (Reviewer Checklist)",
+          "anchor": "doc-ellenorzo-lista-a-review-hoz-reviewer-checklist",
+          "level": 2
+        }
+      ]
+    }
+  ],
+  "audit_items": [
+    {
+      "id": "CR01",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr01",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr01",
+      "title": "Következetes kapcsolati limit; policyváltozás G01 után",
+      "primary_source_path": "server/app/modules/relay/service.py"
+    },
+    {
+      "id": "CR02",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr02",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr02",
+      "title": "WAL mérés és kizárólag indokolt checkpoint",
+      "primary_source_path": "server/app/common/database.py"
+    },
+    {
+      "id": "CR03",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr03",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr03",
+      "title": "GZip: először hálózati és CPU-kísérlet",
+      "primary_source_path": "server/app/main.py"
+    },
+    {
+      "id": "CR04",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr04",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr04",
+      "title": "Frontend observer/render profil, célzott beavatkozás",
+      "primary_source_path": "client/src/shared/queries/torrents.ts"
+    },
+    {
+      "id": "CR05",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr05",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr05",
+      "title": "Konfigurációs aláírókulcs fail-fast",
+      "primary_source_path": "server/app/config.py"
+    },
+    {
+      "id": "CR06",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr06",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr06",
+      "title": "TLS-kompatibilitási kapu, majd egyedi LOCAL kulcs",
+      "primary_source_path": "server/app/modules/network/ssl/service.py"
+    },
+    {
+      "id": "CR07",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr07",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr07",
+      "title": "Biztonságos naplózási szerződés",
+      "primary_source_path": "server/app/common/logger.py"
+    },
+    {
+      "id": "CR08",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr08",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr08",
+      "title": "Párosítási állapotgép és korlátos auth-terhelés",
+      "primary_source_path": "server/app/modules/pairings/service.py"
+    },
+    {
+      "id": "CR09",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr09",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr09",
+      "title": "Autholt active-playback regiszter",
+      "primary_source_path": "server/app/modules/stream/active_playback.py"
+    },
+    {
+      "id": "CR10",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr10",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr10",
+      "title": "Bemenetek, helyes számtartomány-kezeléssel",
+      "primary_source_path": "server/app/modules/stream/service.py"
+    },
+    {
+      "id": "CR11",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr11",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr11",
+      "title": "A relogin használja a már működő megosztott taskot",
+      "primary_source_path": "server/app/modules/indexer_definitions/base_indexer_definition.py"
+    },
+    {
+      "id": "CR12",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr12",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr12",
+      "title": "Commit utáni, szálbiztos cache-invalidálás",
+      "primary_source_path": "server/app/modules/stremio/service.py"
+    },
+    {
+      "id": "CR13",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr13",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr13",
+      "title": "Nem blokkoló resume-író és DNS",
+      "primary_source_path": "server/app/modules/torrents/background_tasks.py"
+    },
+    {
+      "id": "CR14",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr14",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr14",
+      "title": "Külön torrentlistaprojekció",
+      "primary_source_path": "server/app/modules/torrents/repository.py"
+    },
+    {
+      "id": "CR15",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr15",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr15",
+      "title": "Válaszméret, origin és admission policy G15 után",
+      "primary_source_path": "server/app/modules/torrent_source_provider/service.py"
+    },
+    {
+      "id": "CR16",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr16",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr16",
+      "title": "Session-epoch és ellenőrzött böngészőpolicy",
+      "primary_source_path": "server/app/modules/auth/dependencies.py"
+    },
+    {
+      "id": "CR17",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr17",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr17",
+      "title": "Rendezett shutdown; DB-ownership refaktor csak G17 után",
+      "primary_source_path": "server/app/common/singleflight.py"
+    },
+    {
+      "id": "CR18",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr18",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr18",
+      "title": "Egyszeri bootstrap atomikus foglalással",
+      "primary_source_path": "server/app/modules/auth/router.py"
+    },
+    {
+      "id": "CR19",
+      "audit": "docs/feature/stability-and-optimization/audit.md#cr19",
+      "plan": "docs/feature/stability-and-optimization/implementation-plan.md#cr19",
+      "title": "Auth-válasz és felirat HTTP-cache policy",
+      "primary_source_path": "server/app/modules/stream/router.py"
+    }
+  ]
+}

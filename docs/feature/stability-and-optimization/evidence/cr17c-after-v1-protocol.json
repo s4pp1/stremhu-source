@@ -1,0 +1,29 @@
+{
+  "id": "cr17c-after-v1",
+  "registered_utc": "2026-11-06T14:55:30.877130+00:00",
+  "baseline_commit": "050cb33718353d16cbeeaca6ca41a0d9d7d45d6d",
+  "before_source": "cr17a-drain-fix-v2-source (byte-identical, EOL-normalized, to 050cb337 server/app: 268 files)",
+  "before_manifest_sha256": "b22bfd0500a93277146ea341db7c5675aab8e2ab37e4fa112b92b98ecfda5742",
+  "candidate_source": "cr17c-after-v1-source",
+  "candidate_manifest_sha256": "8ad38ecb0a2932f933aff8b0cfe9548d7d106c0322c85fddc37948f196424385",
+  "scope": "Packet21b (CR17/c): shared provider results carry Session-free frozen IndexerAccountRef/IndexerDefinitionRef/TorrentFileSnapshot. Packet20 set aside by user decision. Singleflight factory/session ownership is packet22 and out of scope.",
+  "fixtures_note": "cr17c fixtures = cr17b policy v2 / reference v4 / direct v1 / kodi v3 plus one adapter: on sources exposing IndexerAccountRef the synthetic indexer stub returns refs built once at setup (no account SQL, like the unchanged before path); Source2/A/B take the old path. Because the fixture hash changed, all before data is fresh; old Source2 runs are context only. Pre-registration functional smoke (8 runs, scratch outputs) only checked exit/rows/no external HTTP.",
+  "sampling": "Serial. smoke(after,before) -> short 2x5 paired before/after (AB/BA alternating) + 5 rotated ABC references (reference fixture) -> direct 2x5 paired + 5 rotated ABC -> kodi 2x5 paired + 5 rotated ABC -> long: 3 contemporaneous full1800s/60cycle pairs, order after,before / before,after / after,before. 12 cells x 100 requests per short run. Cold and warmup separate. Every attempt retained; failures recorded, never rerun or replaced.",
+  "acceptance": "PASS only if every gate check passes. Ownership (primary): C Kodi series 0 DetachedInstanceError, only HTTP 200, all 10 runs complete; C direct series all 10 runs complete (fixture aborts on any non-200). Functional: C smoke/short/direct/kodi/long complete, no external HTTP, identical normalized payload/order/count per cell (Kodi on error-free rows), long quiescence/pool0/background0. Timing/resources (V6 thresholds unchanged): short and direct cohort medians, heap run medians each <= HTTP p95 max(before medians)+10ms, CPU max*1.10, memory max+2MiB (RSS +2048KiB), SQL <= max before value; strict metrics (cold wall, loop lag, file bytes) <= max(before values)+J, J=max-min of before group medians. Heap before = the 3 fresh Source2 runs, after = the 3 C runs, every after run median within limit. Observations, not gates: Kodi timing, A/B/C reference timing, A failures (expected preexisting DetachedInstanceError), contemporaneous paired heap p95 differences, gen2 cold phases, heap trend. Any failure stays open; no threshold change or waiver after results.",
+  "resources": "Local desktop-linux npipe, network none, read-only frozen app mount, tmpfs disposable synthetic DB, no dotenv/real credentials. short/direct/kodi/references CPU8,9; long CPU6,7; 2 CPU/1GiB each; strictly serial; no other Docker benchmark during this protocol.",
+  "images": {
+    "A": "s4pp1/stremhu-source@sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+    "B": "stremhu-source@sha256:6ca708d99b8698e6cf116a6183c283922ebd2e53940c366a93a421b4ca974a38",
+    "C": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52"
+  },
+  "fixture_sha256": {
+    "cr17c-policy-fixture-v1.py": "0a752b7cf55907670efbd0de0f7928fd62a67b436006925782d51d3815cf5ec8",
+    "cr17c-policy-reference-fixture-v1.py": "e95cdf01e078d1f20902c3451baaec1eff6219e973ebce084488b36dade42d4f",
+    "cr17c-policy-direct-fixture-v1.py": "432121a1700e1f0db5674bb28a3386beee93121655ba64e8a5f651c3252b0226",
+    "cr17c-kodi-ownership-observation-v1.py": "c30f92d79906ac3c0804ec93e0de030398c7d550f2edf79166c8ccba7a3aa459"
+  },
+  "controller_sha256": "808b550d0027ef41eb874abd062c5f864a2d9722b9e7b7028b1f0de645e2f295",
+  "assessor": "assess_cr17c_after_v1.py",
+  "assessor_sha256": "55f28e4d7d265b3fb40c197bafa06ef990dbaeba95b6b98601f3c9f924ffb2a4",
+  "assessor_note": "Assessor written and dry-run on synthetic copies (smoke outputs + V7 long files) before registration; real results not yet existing."
+}

@@ -1,5 +1,6 @@
 import re
 from collections import defaultdict
+from functools import lru_cache
 from typing import TypeAlias
 
 from app.modules.media_attributes.models import MediaAttributeModel
@@ -26,6 +27,11 @@ for attribute in DEFAULT_ATTRIBUTES:
     else:
         _FALLBACKS[attribute.preference_id] = attribute
 
+_ALL_PREF_IDS: list[str | None] = list(_GROUPED_ATTRIBUTES.keys())
+for _pref_id in _FALLBACKS.keys():
+    if _pref_id not in _ALL_PREF_IDS:
+        _ALL_PREF_IDS.append(_pref_id)
+
 
 def normalize_torrent_name(name: str) -> str:
     return name.replace("_", " ")
@@ -44,12 +50,7 @@ def parse_torrent_name(
         for attr in external_fallbacks:
             external_fallback_map[attr.preference_id] = attr
 
-    all_pref_ids = list(_GROUPED_ATTRIBUTES.keys())
-    for pref_id in _FALLBACKS.keys():
-        if pref_id not in all_pref_ids:
-            all_pref_ids.append(pref_id)
-
-    for pref_id in all_pref_ids:
+    for pref_id in _ALL_PREF_IDS:
         category_matched = False
         is_multiple = _PREFERENCE_MULTIPLE_MAP.get(pref_id, False) if pref_id else True
 
@@ -70,14 +71,11 @@ def parse_torrent_name(
     return matched_attributes
 
 
+@lru_cache(maxsize=4096)
 def clean_torrent_name(name: str) -> str:
     name_cleaned = normalize_torrent_name(name)
-    all_pref_ids = list(_GROUPED_ATTRIBUTES.keys())
-    for pref_id in _FALLBACKS.keys():
-        if pref_id not in all_pref_ids:
-            all_pref_ids.append(pref_id)
 
-    for pref_id in all_pref_ids:
+    for pref_id in _ALL_PREF_IDS:
         for pattern, _ in _GROUPED_ATTRIBUTES.get(pref_id, []):
             name_cleaned = pattern.sub(" ", name_cleaned)
 

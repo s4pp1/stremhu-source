@@ -3,6 +3,7 @@ import { toast } from 'sonner'
 import * as z from 'zod'
 
 import { SmartFilterSettings } from '@/features/smart-filter/smart-filter-settings'
+import { SubtitleSettingsCard } from '@/features/subtitle-settings/subtitle-settings'
 import {
   Card,
   CardContent,
@@ -12,12 +13,16 @@ import {
 } from '@/shared/components/ui/card'
 import { Label } from '@/shared/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group'
+import { Switch } from '@/shared/components/ui/switch'
 import { SEED_OPTIONS } from '@/shared/constants'
 import { useAppForm } from '@/shared/contexts/form-context'
 import { assertExists, parseApiError } from '@/shared/lib/utils'
 import { getMe, useUpdateMe } from '@/shared/queries/me'
 import {
+  enableCatalogSearchSchema,
+  enableDownloadedMarkerSchema,
   enableSmartFilterSchema,
+  enableStreamDeduplicationSchema,
   smartFilterGroupingPreferenceIdSchema,
   smartFilterLimitSchema,
   torrentSeedSchema,
@@ -26,8 +31,11 @@ import {
 export const validatorSchema = z.object({
   torrentSeed: torrentSeedSchema,
   enableSmartFilter: enableSmartFilterSchema,
+  enableStreamDeduplication: enableStreamDeduplicationSchema,
   smartFilterGroupingPreferenceId: smartFilterGroupingPreferenceIdSchema,
   smartFilterLimit: smartFilterLimitSchema,
+  enableCatalogSearch: enableCatalogSearchSchema,
+  enableDownloadedMarker: enableDownloadedMarkerSchema,
 })
 
 export function OtherPreferences() {
@@ -42,8 +50,11 @@ export function OtherPreferences() {
     defaultValues: {
       torrentSeed: me.torrentSeed,
       enableSmartFilter: me.enableSmartFilter,
+      enableStreamDeduplication: me.enableStreamDeduplication,
       smartFilterGroupingPreferenceId: me.smartFilterGroupingPreferenceId,
       smartFilterLimit: me.smartFilterLimit,
+      enableCatalogSearch: me.enableCatalogSearch,
+      enableDownloadedMarker: me.enableDownloadedMarker,
     },
     validators: {
       onChange: validatorSchema,
@@ -121,6 +132,93 @@ export function OtherPreferences() {
           </CardContent>
         </Card>
 
+        <Card className="break-inside-avoid mb-4">
+          <CardHeader>
+            <CardTitle>Találatok összevonása</CardTitle>
+            <CardDescription>
+              Több tracker (pl. nCore, HunTorrent, Majomparádé) azonos tartalmú
+              release-einek intelligens összevonása egyetlen találattá,
+              összesített seederekkel.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form.Field name="enableStreamDeduplication">
+              {(field) => (
+                <Label
+                  htmlFor={field.name}
+                  className="flex items-center gap-3 cursor-pointer"
+                >
+                  <Switch
+                    id={field.name}
+                    checked={field.state.value}
+                    onCheckedChange={field.handleChange}
+                  />
+                  <span>Több-trackeres találatok összevonása</span>
+                </Label>
+              )}
+            </form.Field>
+          </CardContent>
+        </Card>
+
+        <Card className="break-inside-avoid mb-4">
+          <CardHeader>
+            <CardTitle>Letöltött találatok</CardTitle>
+            <CardDescription>
+              A már helyben letöltött fájlok „⚡ Letöltve” jelölést kapnak, és a
+              találati lista elejére kerülnek. Évadcsomagnál csak a ténylegesen
+              kész epizódok. Kikapcsolva a lista csak a preferenciáid szerint
+              rendeződik.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form.Field name="enableDownloadedMarker">
+              {(field) => (
+                <Label
+                  htmlFor={field.name}
+                  className="flex items-center gap-3 cursor-pointer"
+                >
+                  <Switch
+                    id={field.name}
+                    checked={field.state.value}
+                    onCheckedChange={field.handleChange}
+                  />
+                  <span>Letöltött találatok jelölése és előresorolása</span>
+                </Label>
+              )}
+            </form.Field>
+          </CardContent>
+        </Card>
+
+        <Card className="break-inside-avoid mb-4">
+          <CardHeader>
+            <CardTitle>Katalógus keresés</CardTitle>
+            <CardDescription>
+              A Stremio és Nuvio közvetlen keresőmezőjének kiszolgálása a
+              trackerek torrent-katalógusából. A változás azonnal érvényes, az
+              addont nem kell újratelepíteni. Kikapcsolva a szerver nem ad
+              katalógustalálatot és nem terheli a trackereket; a StremHU
+              keresési sora a kliensben üresen megjelenhet.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form.Field name="enableCatalogSearch">
+              {(field) => (
+                <Label
+                  htmlFor={field.name}
+                  className="flex items-center gap-3 cursor-pointer"
+                >
+                  <Switch
+                    id={field.name}
+                    checked={field.state.value}
+                    onCheckedChange={field.handleChange}
+                  />
+                  <span>Közvetlen Stremio katalógus-keresés engedélyezése</span>
+                </Label>
+              )}
+            </form.Field>
+          </CardContent>
+        </Card>
+
         <SmartFilterSettings
           form={form}
           fields={{
@@ -129,6 +227,8 @@ export function OtherPreferences() {
             smartFilterGroupingPreferenceId: 'smartFilterGroupingPreferenceId',
           }}
         />
+
+        <SubtitleSettingsCard />
       </div>
     </div>
   )

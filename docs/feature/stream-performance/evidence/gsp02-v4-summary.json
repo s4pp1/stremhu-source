@@ -1,0 +1,8699 @@
+{
+ "protocol": "gsp02-v4",
+ "runs": 360,
+ "failed_runs": 0,
+ "cells": {
+  "fast/16MiB/30Mbit/series0": {
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 8.958,
+     "p95": 9.048,
+     "min": 8.85,
+     "max": 9.048
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.438,
+     "p95": 7.452,
+     "min": 7.29,
+     "max": 7.452
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 4.215,
+     "p95": 4.222,
+     "min": 2.061,
+     "max": 4.222
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 13.237,
+     "p95": 13.336,
+     "min": 10.978,
+     "max": 13.336
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 3.37,
+     "p95": 3.97,
+     "min": 3.32,
+     "max": 3.97
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 13.78,
+     "p95": 20.82,
+     "min": 12.98,
+     "max": 20.82
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 5,
+     "median": 19.757,
+     "p95": 21.51,
+     "min": 18.751,
+     "max": 21.51
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.379,
+     "p95": 3.778,
+     "min": 2.908,
+     "max": 3.778
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.409,
+     "p95": 3.81,
+     "min": 2.958,
+     "max": 3.81
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 321847296.0,
+     "p95": 339394560.0,
+     "min": 221331456.0,
+     "max": 339394560.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.2,
+     "p95": 6.9,
+     "min": 5.6,
+     "max": 6.9
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 461.4,
+     "p95": 474.2,
+     "min": 419.6,
+     "max": 474.2
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 8.95,
+     "p95": 9.017,
+     "min": 7.968,
+     "max": 9.017
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.426,
+     "p95": 7.462,
+     "min": 7.407,
+     "max": 7.462
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.05,
+     "p95": 0.075,
+     "min": 0.039,
+     "max": 0.075
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 9.075,
+     "p95": 9.075,
+     "min": 8.075,
+     "max": 9.075
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 3.67,
+     "p95": 3.67,
+     "min": 3.62,
+     "max": 3.67
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 8.01,
+     "p95": 8.41,
+     "min": 7.91,
+     "max": 8.41
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.284,
+     "p95": 3.78,
+     "min": 2.071,
+     "max": 3.78
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.309,
+     "p95": 3.81,
+     "min": 2.106,
+     "max": 3.81
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 177979392.0,
+     "p95": 197115904.0,
+     "min": 137134080.0,
+     "max": 197115904.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.4,
+     "p95": 6.9,
+     "min": 5.6,
+     "max": 6.9
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 424.6,
+     "p95": 443.3,
+     "min": 372.2,
+     "max": 443.3
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 9.018,
+     "p95": 9.032,
+     "min": 5.751,
+     "max": 9.032
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.433,
+     "p95": 7.437,
+     "min": 4.236,
+     "max": 7.437
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.042,
+     "p95": 0.053,
+     "min": 0.03,
+     "max": 0.053
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 9.075,
+     "p95": 9.178,
+     "min": 5.818,
+     "max": 9.178
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 3.67,
+     "p95": 3.72,
+     "min": 3.47,
+     "max": 3.72
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 8.01,
+     "p95": 9.91,
+     "min": 7.96,
+     "max": 9.91
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.847,
+     "p95": 4.061,
+     "min": 2.082,
+     "max": 4.061
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.861,
+     "p95": 4.113,
+     "min": 2.106,
+     "max": 4.113
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 194920448.0,
+     "p95": 255098880.0,
+     "min": 141066240.0,
+     "max": 255098880.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.3,
+     "p95": 8.0,
+     "min": 6.0,
+     "max": 8.0
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 439.6,
+     "p95": 473.0,
+     "min": 397.4,
+     "max": 473.0
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "fast/16MiB/30Mbit/series1": {
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 8.919,
+     "p95": 9.013,
+     "min": 5.71,
+     "max": 9.013
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.42,
+     "p95": 7.438,
+     "min": 4.232,
+     "max": 7.438
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.056,
+     "p95": 0.08,
+     "min": 0.052,
+     "max": 0.08
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 9.024,
+     "p95": 9.125,
+     "min": 5.818,
+     "max": 9.125
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 3.67,
+     "p95": 3.72,
+     "min": 3.52,
+     "max": 3.72
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 8.06,
+     "p95": 11.73,
+     "min": 7.61,
+     "max": 11.73
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.87,
+     "p95": 4.376,
+     "min": 3.348,
+     "max": 4.376
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.91,
+     "p95": 4.412,
+     "min": 3.359,
+     "max": 4.412
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 233799680.0,
+     "p95": 278577152.0,
+     "min": 169377792.0,
+     "max": 278577152.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.3,
+     "p95": 7.7,
+     "min": 6.2,
+     "max": 7.7
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 418.9,
+     "p95": 423.3,
+     "min": 399.6,
+     "max": 423.3
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 8.933,
+     "p95": 9.058,
+     "min": 8.798,
+     "max": 9.058
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.422,
+     "p95": 7.458,
+     "min": 7.298,
+     "max": 7.458
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 4.212,
+     "p95": 4.229,
+     "min": 2.047,
+     "max": 4.229
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 13.186,
+     "p95": 13.335,
+     "min": 10.879,
+     "max": 13.335
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 3.87,
+     "p95": 7.04,
+     "min": 3.37,
+     "max": 7.04
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 13.78,
+     "p95": 17.15,
+     "min": 12.73,
+     "max": 17.15
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 5,
+     "median": 21.362,
+     "p95": 21.61,
+     "min": 18.101,
+     "max": 21.61
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.411,
+     "p95": 3.728,
+     "min": 2.351,
+     "max": 3.728
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.459,
+     "p95": 3.761,
+     "min": 2.407,
+     "max": 3.761
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 292962304.0,
+     "p95": 357646336.0,
+     "min": 190152704.0,
+     "max": 357646336.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.1,
+     "p95": 6.7,
+     "min": 5.6,
+     "max": 6.7
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 417.7,
+     "p95": 444.4,
+     "min": 369.7,
+     "max": 444.4
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 8.98,
+     "p95": 9.048,
+     "min": 8.905,
+     "max": 9.048
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.438,
+     "p95": 7.441,
+     "min": 7.293,
+     "max": 7.441
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.048,
+     "p95": 0.054,
+     "min": 0.043,
+     "max": 0.054
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 9.075,
+     "p95": 9.126,
+     "min": 9.024,
+     "max": 9.126
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 3.67,
+     "p95": 4.32,
+     "min": 3.67,
+     "max": 4.32
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 7.96,
+     "p95": 13.73,
+     "min": 7.61,
+     "max": 13.73
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 1,
+     "median": 16.799,
+     "p95": 16.799,
+     "min": 16.799,
+     "max": 16.799
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 4.087,
+     "p95": 4.416,
+     "min": 3.12,
+     "max": 4.416
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 4.111,
+     "p95": 4.463,
+     "min": 3.159,
+     "max": 4.463
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 204587008.0,
+     "p95": 240943104.0,
+     "min": 177520640.0,
+     "max": 240943104.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.3,
+     "p95": 6.9,
+     "min": 5.7,
+     "max": 6.9
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 428.7,
+     "p95": 437.0,
+     "min": 401.8,
+     "max": 437.0
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "fast/16MiB/60Mbit/series0": {
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 8.961,
+     "p95": 9.025,
+     "min": 8.931,
+     "max": 9.025
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.433,
+     "p95": 7.436,
+     "min": 7.432,
+     "max": 7.436
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 4.202,
+     "p95": 4.291,
+     "min": 4.185,
+     "max": 4.291
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 13.236,
+     "p95": 13.287,
+     "min": 13.186,
+     "max": 13.287
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.08,
+     "p95": 1.77,
+     "min": 1.08,
+     "max": 1.77
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 4.48,
+     "p95": 4.77,
+     "min": 4.22,
+     "max": 4.77
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.279,
+     "p95": 4.103,
+     "min": 2.125,
+     "max": 4.103
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.31,
+     "p95": 4.161,
+     "min": 2.156,
+     "max": 4.161
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 286900224.0,
+     "p95": 306003968.0,
+     "min": 178847744.0,
+     "max": 306003968.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.5,
+     "p95": 7.0,
+     "min": 5.5,
+     "max": 7.0
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 414.6,
+     "p95": 450.1,
+     "min": 401.4,
+     "max": 450.1
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 9.009,
+     "p95": 9.108,
+     "min": 8.919,
+     "max": 9.108
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.442,
+     "p95": 7.467,
+     "min": 7.417,
+     "max": 7.467
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.053,
+     "p95": 1.914,
+     "min": 0.042,
+     "max": 1.914
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 9.177,
+     "p95": 10.93,
+     "min": 9.024,
+     "max": 10.93
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.502,
+     "min": 0.0,
+     "max": 0.502
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 0.73,
+     "p95": 0.84,
+     "min": 0.73,
+     "max": 0.84
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.03,
+     "p95": 5.89,
+     "min": 2.0,
+     "max": 5.89
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.585,
+     "p95": 3.835,
+     "min": 3.266,
+     "max": 3.835
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.61,
+     "p95": 3.86,
+     "min": 3.309,
+     "max": 3.86
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 191856640.0,
+     "p95": 212598784.0,
+     "min": 123813888.0,
+     "max": 212598784.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.7,
+     "p95": 6.3,
+     "min": 5.4,
+     "max": 6.3
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 411.1,
+     "p95": 425.4,
+     "min": 388.5,
+     "max": 425.4
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 8.941,
+     "p95": 9.008,
+     "min": 5.753,
+     "max": 9.008
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.44,
+     "p95": 7.458,
+     "min": 4.221,
+     "max": 7.458
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.047,
+     "p95": 0.054,
+     "min": 0.031,
+     "max": 0.054
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 9.026,
+     "p95": 9.125,
+     "min": 5.867,
+     "max": 9.125
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 2.0,
+     "min": 0.0,
+     "max": 2.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.803,
+     "min": 0.0,
+     "max": 0.803
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 0.71,
+     "p95": 1.18,
+     "min": 0.48,
+     "max": 1.18
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.04,
+     "p95": 3.08,
+     "min": 1.99,
+     "max": 3.08
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 4.158,
+     "p95": 4.539,
+     "min": 3.8,
+     "max": 4.539
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 4.213,
+     "p95": 4.563,
+     "min": 3.862,
+     "max": 4.563
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 233963520.0,
+     "p95": 271876096.0,
+     "min": 141328384.0,
+     "max": 271876096.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.4,
+     "p95": 7.2,
+     "min": 5.9,
+     "max": 7.2
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 437.6,
+     "p95": 447.1,
+     "min": 402.4,
+     "max": 447.1
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "fast/16MiB/60Mbit/series1": {
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 8.986,
+     "p95": 9.033,
+     "min": 5.739,
+     "max": 9.033
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.432,
+     "p95": 7.461,
+     "min": 4.241,
+     "max": 7.461
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.052,
+     "p95": 0.079,
+     "min": 0.026,
+     "max": 0.079
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 9.076,
+     "p95": 9.175,
+     "min": 5.868,
+     "max": 9.175
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 0.73,
+     "p95": 1.21,
+     "min": 0.69,
+     "max": 1.21
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.0,
+     "p95": 3.1,
+     "min": 1.98,
+     "max": 3.1
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 2.385,
+     "p95": 3.768,
+     "min": 2.071,
+     "max": 3.768
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.407,
+     "p95": 3.811,
+     "min": 2.106,
+     "max": 3.811
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 152829952.0,
+     "p95": 251789312.0,
+     "min": 126730240.0,
+     "max": 251789312.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.4,
+     "p95": 7.1,
+     "min": 5.8,
+     "max": 7.1
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 408.6,
+     "p95": 421.1,
+     "min": 397.6,
+     "max": 421.1
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 8.915,
+     "p95": 9.042,
+     "min": 7.695,
+     "max": 9.042
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.416,
+     "p95": 7.445,
+     "min": 6.135,
+     "max": 7.445
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 4.201,
+     "p95": 4.284,
+     "min": 1.592,
+     "max": 4.284
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 13.186,
+     "p95": 13.286,
+     "min": 9.327,
+     "max": 13.286
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.13,
+     "p95": 1.64,
+     "min": 1.08,
+     "max": 1.64
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 4.48,
+     "p95": 4.54,
+     "min": 4.13,
+     "max": 4.54
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.259,
+     "p95": 3.262,
+     "min": 2.797,
+     "max": 3.262
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.309,
+     "p95": 3.31,
+     "min": 2.858,
+     "max": 3.31
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 267812864.0,
+     "p95": 268632064.0,
+     "min": 170262528.0,
+     "max": 268632064.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.2,
+     "p95": 7.8,
+     "min": 5.9,
+     "max": 7.8
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 407.5,
+     "p95": 417.0,
+     "min": 397.6,
+     "max": 417.0
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 9.031,
+     "p95": 9.036,
+     "min": 8.992,
+     "max": 9.036
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.447,
+     "p95": 7.453,
+     "min": 7.437,
+     "max": 7.453
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.047,
+     "p95": 0.053,
+     "min": 0.033,
+     "max": 0.053
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 9.125,
+     "p95": 9.126,
+     "min": 9.075,
+     "max": 9.126
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 2.0,
+     "min": 0.0,
+     "max": 2.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.854,
+     "min": 0.0,
+     "max": 0.854
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 0.76,
+     "p95": 0.88,
+     "min": 0.48,
+     "max": 0.88
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.05,
+     "p95": 2.22,
+     "min": 2.03,
+     "max": 2.22
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.852,
+     "p95": 4.517,
+     "min": 3.473,
+     "max": 4.517
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.911,
+     "p95": 4.563,
+     "min": 3.509,
+     "max": 4.563
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 214482944.0,
+     "p95": 267878400.0,
+     "min": 202817536.0,
+     "max": 267878400.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.0,
+     "p95": 7.8,
+     "min": 5.4,
+     "max": 7.8
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 437.4,
+     "p95": 470.2,
+     "min": 394.4,
+     "max": 470.2
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "fast/16MiB/8Mbit/series0": {
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 9.017,
+     "p95": 9.019,
+     "min": 7.651,
+     "max": 9.019
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.439,
+     "p95": 7.454,
+     "min": 6.133,
+     "max": 7.454
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 4.234,
+     "p95": 4.252,
+     "min": 1.592,
+     "max": 4.252
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 13.285,
+     "p95": 13.286,
+     "min": 9.277,
+     "max": 13.286
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 15.62,
+     "p95": 16.13,
+     "min": 15.62,
+     "max": 16.13
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 29.97,
+     "p95": 29.98,
+     "min": 29.97,
+     "max": 29.98
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 5,
+     "median": 15.441,
+     "p95": 15.492,
+     "min": 10.932,
+     "max": 15.492
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.422,
+     "p95": 3.553,
+     "min": 2.342,
+     "max": 3.553
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.46,
+     "p95": 3.559,
+     "min": 2.357,
+     "max": 3.559
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 440909824.0,
+     "p95": 473137152.0,
+     "min": 437075968.0,
+     "max": 473137152.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.6,
+     "p95": 6.6,
+     "min": 5.2,
+     "max": 6.6
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 441.4,
+     "p95": 444.3,
+     "min": 408.1,
+     "max": 444.3
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 8.926,
+     "p95": 9.032,
+     "min": 5.771,
+     "max": 9.032
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.431,
+     "p95": 7.452,
+     "min": 4.251,
+     "max": 7.452
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.042,
+     "p95": 0.056,
+     "min": 0.036,
+     "max": 0.056
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 9.024,
+     "p95": 9.126,
+     "min": 5.866,
+     "max": 9.126
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 15.88,
+     "p95": 16.03,
+     "min": 15.17,
+     "max": 16.03
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 29.97,
+     "p95": 29.97,
+     "min": 29.97,
+     "max": 29.97
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 5,
+     "median": 10.93,
+     "p95": 11.681,
+     "min": 7.922,
+     "max": 11.681
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.701,
+     "p95": 5.101,
+     "min": 3.389,
+     "max": 5.101
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.71,
+     "p95": 5.114,
+     "min": 3.409,
+     "max": 5.114
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 417595392.0,
+     "p95": 475119616.0,
+     "min": 372162560.0,
+     "max": 475119616.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.5,
+     "p95": 8.2,
+     "min": 5.7,
+     "max": 8.2
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 451.4,
+     "p95": 468.5,
+     "min": 430.6,
+     "max": 468.5
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 8.981,
+     "p95": 9.093,
+     "min": 8.923,
+     "max": 9.093
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.443,
+     "p95": 7.472,
+     "min": 7.43,
+     "max": 7.472
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.043,
+     "p95": 0.056,
+     "min": 0.035,
+     "max": 0.056
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 9.075,
+     "p95": 9.226,
+     "min": 9.023,
+     "max": 9.226
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 15.93,
+     "p95": 15.98,
+     "min": 15.87,
+     "max": 15.98
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 29.97,
+     "p95": 29.97,
+     "min": 29.97,
+     "max": 29.97
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 5,
+     "median": 10.98,
+     "p95": 11.031,
+     "min": 10.881,
+     "max": 11.031
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 4.965,
+     "p95": 5.083,
+     "min": 2.137,
+     "max": 5.083
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 5.013,
+     "p95": 5.113,
+     "min": 2.157,
+     "max": 5.113
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 370671616.0,
+     "p95": 371458048.0,
+     "min": 348700672.0,
+     "max": 371458048.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.5,
+     "p95": 5.6,
+     "min": 5.0,
+     "max": 5.6
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 433.0,
+     "p95": 437.5,
+     "min": 420.9,
+     "max": 437.5
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "fast/16MiB/8Mbit/series1": {
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 8.82,
+     "p95": 8.984,
+     "min": 7.945,
+     "max": 8.984
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.43,
+     "p95": 7.441,
+     "min": 7.284,
+     "max": 7.441
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.052,
+     "p95": 0.061,
+     "min": 0.045,
+     "max": 0.061
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 8.924,
+     "p95": 9.075,
+     "min": 8.021,
+     "max": 9.075
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 15.98,
+     "p95": 16.53,
+     "min": 15.87,
+     "max": 16.53
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 29.97,
+     "p95": 29.98,
+     "min": 29.97,
+     "max": 29.98
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 5,
+     "median": 10.178,
+     "p95": 10.93,
+     "min": 9.927,
+     "max": 10.93
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 4.706,
+     "p95": 5.027,
+     "min": 3.17,
+     "max": 5.027
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 4.713,
+     "p95": 5.065,
+     "min": 3.209,
+     "max": 5.065
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 370262016.0,
+     "p95": 415580160.0,
+     "min": 357351424.0,
+     "max": 415580160.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.9,
+     "p95": 6.2,
+     "min": 5.3,
+     "max": 6.2
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 438.5,
+     "p95": 461.1,
+     "min": 394.8,
+     "max": 461.1
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 8.955,
+     "p95": 9.06,
+     "min": 6.888,
+     "max": 9.06
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.42,
+     "p95": 7.44,
+     "min": 5.436,
+     "max": 7.44
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 4.241,
+     "p95": 4.277,
+     "min": 0.169,
+     "max": 4.277
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 13.284,
+     "p95": 13.335,
+     "min": 7.222,
+     "max": 13.335
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 15.67,
+     "p95": 16.43,
+     "min": 15.62,
+     "max": 16.43
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 29.97,
+     "p95": 29.98,
+     "min": 29.97,
+     "max": 29.98
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 5,
+     "median": 15.39,
+     "p95": 15.491,
+     "min": 8.626,
+     "max": 15.491
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.429,
+     "p95": 3.718,
+     "min": 2.11,
+     "max": 3.718
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.459,
+     "p95": 3.761,
+     "min": 2.156,
+     "max": 3.761
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 455737344.0,
+     "p95": 543571968.0,
+     "min": 435945472.0,
+     "max": 543571968.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.2,
+     "p95": 7.3,
+     "min": 5.1,
+     "max": 7.3
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 419.4,
+     "p95": 449.6,
+     "min": 412.7,
+     "max": 449.6
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 9.024,
+     "p95": 9.046,
+     "min": 8.824,
+     "max": 9.046
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.428,
+     "p95": 7.452,
+     "min": 7.275,
+     "max": 7.452
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.047,
+     "p95": 0.056,
+     "min": 0.029,
+     "max": 0.056
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 9.124,
+     "p95": 9.176,
+     "min": 8.926,
+     "max": 9.176
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 15.98,
+     "p95": 16.58,
+     "min": 15.92,
+     "max": 16.58
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 29.97,
+     "p95": 29.98,
+     "min": 29.97,
+     "max": 29.98
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 5,
+     "median": 10.98,
+     "p95": 11.03,
+     "min": 10.13,
+     "max": 11.03
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.357,
+     "p95": 5.078,
+     "min": 3.147,
+     "max": 5.078
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.41,
+     "p95": 5.115,
+     "min": 3.159,
+     "max": 5.115
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 401244160.0,
+     "p95": 415662080.0,
+     "min": 372883456.0,
+     "max": 415662080.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.9,
+     "p95": 6.6,
+     "min": 5.5,
+     "max": 6.6
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 447.6,
+     "p95": 470.2,
+     "min": 418.2,
+     "max": 470.2
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "fast/1MiB/30Mbit/series0": {
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 2.472,
+     "p95": 2.652,
+     "min": 2.133,
+     "max": 2.652
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 1.057,
+     "p95": 1.061,
+     "min": 0.532,
+     "max": 1.061
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.015,
+     "p95": 0.017,
+     "min": 0.014,
+     "max": 0.017
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 4.418,
+     "p95": 5.019,
+     "min": 3.313,
+     "max": 5.019
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 2.62,
+     "p95": 3.34,
+     "min": 1.93,
+     "max": 3.34
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 6.21,
+     "p95": 9.79,
+     "min": 5.22,
+     "max": 9.79
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 0.782,
+     "p95": 0.795,
+     "min": 0.265,
+     "max": 0.795
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.104,
+     "p95": 1.104,
+     "min": 1.054,
+     "max": 1.104
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 15450112.0,
+     "p95": 19726336.0,
+     "min": 15237120.0,
+     "max": 19726336.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.4,
+     "p95": 7.5,
+     "min": 6.3,
+     "max": 7.5
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 256.1,
+     "p95": 284.8,
+     "min": 251.0,
+     "max": 284.8
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 2.133,
+     "p95": 2.158,
+     "min": 1.952,
+     "max": 2.158
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 0.533,
+     "p95": 0.577,
+     "min": 0.531,
+     "max": 0.577
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.015,
+     "p95": 0.015,
+     "min": 0.014,
+     "max": 0.015
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 4.016,
+     "p95": 4.018,
+     "min": 3.816,
+     "max": 4.018
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.99,
+     "p95": 2.04,
+     "min": 1.87,
+     "max": 2.04
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 6.72,
+     "p95": 7.41,
+     "min": 4.65,
+     "max": 7.41
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 0.524,
+     "p95": 0.527,
+     "min": 0.265,
+     "max": 0.527
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.054,
+     "p95": 1.106,
+     "min": 1.054,
+     "max": 1.106
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 18841600.0,
+     "p95": 20299776.0,
+     "min": 15499264.0,
+     "max": 20299776.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.0,
+     "p95": 6.3,
+     "min": 5.7,
+     "max": 6.3
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 253.9,
+     "p95": 260.0,
+     "min": 252.4,
+     "max": 260.0
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 2.007,
+     "p95": 2.22,
+     "min": 1.808,
+     "max": 2.22
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 0.532,
+     "p95": 0.802,
+     "min": 0.27,
+     "max": 0.802
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.014,
+     "p95": 0.016,
+     "min": 0.014,
+     "max": 0.016
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 3.817,
+     "p95": 3.919,
+     "min": 3.112,
+     "max": 3.919
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 2.1,
+     "p95": 3.81,
+     "min": 1.94,
+     "max": 3.81
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 4.79,
+     "p95": 10.2,
+     "min": 4.56,
+     "max": 10.2
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 0.522,
+     "p95": 0.531,
+     "min": 0.267,
+     "max": 0.531
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.105,
+     "p95": 1.106,
+     "min": 1.053,
+     "max": 1.106
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 13434880.0,
+     "p95": 17481728.0,
+     "min": 12959744.0,
+     "max": 17481728.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.1,
+     "p95": 7.8,
+     "min": 5.9,
+     "max": 7.8
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 255.3,
+     "p95": 260.0,
+     "min": 248.6,
+     "max": 260.0
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "fast/1MiB/30Mbit/series1": {
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 2.059,
+     "p95": 2.121,
+     "min": 2.043,
+     "max": 2.121
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 0.532,
+     "p95": 0.533,
+     "min": 0.53,
+     "max": 0.533
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.015,
+     "p95": 0.016,
+     "min": 0.014,
+     "max": 0.016
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 3.915,
+     "p95": 3.967,
+     "min": 3.913,
+     "max": 3.967
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.96,
+     "p95": 2.14,
+     "min": 1.82,
+     "max": 2.14
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 4.72,
+     "p95": 7.05,
+     "min": 4.56,
+     "max": 7.05
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 0.782,
+     "p95": 1.053,
+     "min": 0.268,
+     "max": 1.053
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.055,
+     "p95": 1.104,
+     "min": 1.055,
+     "max": 1.104
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 13434880.0,
+     "p95": 17547264.0,
+     "min": 13090816.0,
+     "max": 17547264.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.9,
+     "p95": 6.2,
+     "min": 5.5,
+     "max": 6.2
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 251.0,
+     "p95": 255.1,
+     "min": 250.4,
+     "max": 255.1
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 2.542,
+     "p95": 2.621,
+     "min": 1.895,
+     "max": 2.621
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 1.056,
+     "p95": 1.098,
+     "min": 0.359,
+     "max": 1.098
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.015,
+     "p95": 0.015,
+     "min": 0.014,
+     "max": 0.015
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 4.468,
+     "p95": 4.921,
+     "min": 3.014,
+     "max": 4.921
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 2.73,
+     "p95": 4.86,
+     "min": 2.09,
+     "max": 4.86
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 6.23,
+     "p95": 14.58,
+     "min": 5.07,
+     "max": 14.58
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 1,
+     "median": 12.803,
+     "p95": 12.803,
+     "min": 12.803,
+     "max": 12.803
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 0.521,
+     "p95": 0.781,
+     "min": 0.253,
+     "max": 0.781
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.054,
+     "p95": 1.105,
+     "min": 0.553,
+     "max": 1.105
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 16039936.0,
+     "p95": 24281088.0,
+     "min": 15482880.0,
+     "max": 24281088.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.5,
+     "p95": 8.3,
+     "min": 6.1,
+     "max": 8.3
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 253.1,
+     "p95": 257.6,
+     "min": 250.3,
+     "max": 257.6
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 2.068,
+     "p95": 2.103,
+     "min": 2.014,
+     "max": 2.103
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 0.533,
+     "p95": 0.54,
+     "min": 0.531,
+     "max": 0.54
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.015,
+     "p95": 0.016,
+     "min": 0.014,
+     "max": 0.016
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 3.916,
+     "p95": 3.966,
+     "min": 3.866,
+     "max": 3.966
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.97,
+     "p95": 2.09,
+     "min": 1.91,
+     "max": 2.09
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 4.61,
+     "p95": 7.28,
+     "min": 4.55,
+     "max": 7.28
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 0.792,
+     "p95": 1.026,
+     "min": 0.257,
+     "max": 1.026
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.054,
+     "p95": 1.055,
+     "min": 0.803,
+     "max": 1.055
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 15515648.0,
+     "p95": 17055744.0,
+     "min": 13221888.0,
+     "max": 17055744.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.6,
+     "p95": 6.1,
+     "min": 5.4,
+     "max": 6.1
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 253.4,
+     "p95": 260.7,
+     "min": 249.4,
+     "max": 260.7
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "fast/4MiB/30Mbit/series0": {
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 5.731,
+     "p95": 6.606,
+     "min": 3.663,
+     "max": 6.606
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 4.209,
+     "p95": 5.043,
+     "min": 2.136,
+     "max": 5.043
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.018,
+     "p95": 0.224,
+     "min": 0.016,
+     "max": 0.224
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 6.818,
+     "p95": 7.922,
+     "min": 4.214,
+     "max": 7.922
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.8,
+     "p95": 3.57,
+     "min": 1.69,
+     "max": 3.57
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 7.24,
+     "p95": 14.2,
+     "min": 7.13,
+     "max": 14.2
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 1,
+     "median": 17.362,
+     "p95": 17.362,
+     "min": 17.362,
+     "max": 17.362
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.054,
+     "p95": 2.023,
+     "min": 0.675,
+     "max": 2.023
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.104,
+     "p95": 2.057,
+     "min": 0.702,
+     "max": 2.057
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 58556416.0,
+     "p95": 64946176.0,
+     "min": 54820864.0,
+     "max": 64946176.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.5,
+     "p95": 6.7,
+     "min": 5.0,
+     "max": 6.7
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 380.7,
+     "p95": 394.0,
+     "min": 368.8,
+     "max": 394.0
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 3.646,
+     "p95": 3.69,
+     "min": 3.622,
+     "max": 3.69
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 2.11,
+     "p95": 2.143,
+     "min": 2.106,
+     "max": 2.143
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.018,
+     "p95": 0.02,
+     "min": 0.017,
+     "max": 0.02
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 4.716,
+     "p95": 4.767,
+     "min": 4.715,
+     "max": 4.767
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.61,
+     "p95": 1.65,
+     "min": 1.28,
+     "max": 1.65
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 3.9,
+     "p95": 3.9,
+     "min": 3.85,
+     "max": 3.9
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.11,
+     "p95": 2.063,
+     "min": 1.044,
+     "max": 2.063
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.154,
+     "p95": 2.106,
+     "min": 1.054,
+     "max": 2.106
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 52903936.0,
+     "p95": 61685760.0,
+     "min": 45072384.0,
+     "max": 61685760.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.5,
+     "p95": 5.7,
+     "min": 5.2,
+     "max": 5.7
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 368.8,
+     "p95": 369.8,
+     "min": 338.5,
+     "max": 369.8
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 3.629,
+     "p95": 3.689,
+     "min": 2.64,
+     "max": 3.689
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 2.115,
+     "p95": 2.148,
+     "min": 2.109,
+     "max": 2.148
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.018,
+     "p95": 0.023,
+     "min": 0.017,
+     "max": 0.023
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 4.714,
+     "p95": 4.765,
+     "min": 3.711,
+     "max": 4.765
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.59,
+     "p95": 1.64,
+     "min": 1.53,
+     "max": 1.64
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 6.27,
+     "p95": 6.32,
+     "min": 3.9,
+     "max": 6.32
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 2.051,
+     "p95": 2.068,
+     "min": 1.089,
+     "max": 2.068
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.105,
+     "p95": 2.107,
+     "min": 1.104,
+     "max": 2.107
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 46710784.0,
+     "p95": 49627136.0,
+     "min": 44236800.0,
+     "max": 49627136.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.0,
+     "p95": 6.8,
+     "min": 4.9,
+     "max": 6.8
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 383.9,
+     "p95": 396.9,
+     "min": 361.7,
+     "max": 396.9
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "fast/4MiB/30Mbit/series1": {
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 3.632,
+     "p95": 3.647,
+     "min": 2.662,
+     "max": 3.647
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 2.114,
+     "p95": 2.137,
+     "min": 1.085,
+     "max": 2.137
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.018,
+     "p95": 0.019,
+     "min": 0.016,
+     "max": 0.019
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 4.713,
+     "p95": 4.715,
+     "min": 3.211,
+     "max": 4.715
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.64,
+     "p95": 2.97,
+     "min": 1.54,
+     "max": 2.97
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 4.76,
+     "p95": 6.72,
+     "min": 3.9,
+     "max": 6.72
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.11,
+     "p95": 2.067,
+     "min": 1.043,
+     "max": 2.067
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.155,
+     "p95": 2.107,
+     "min": 1.054,
+     "max": 2.107
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 55246848.0,
+     "p95": 58966016.0,
+     "min": 42893312.0,
+     "max": 58966016.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.6,
+     "p95": 6.2,
+     "min": 5.3,
+     "max": 6.2
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 379.0,
+     "p95": 400.5,
+     "min": 358.9,
+     "max": 400.5
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 5.752,
+     "p95": 5.874,
+     "min": 4.144,
+     "max": 5.874
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 4.208,
+     "p95": 4.24,
+     "min": 2.634,
+     "max": 4.24
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.018,
+     "p95": 0.019,
+     "min": 0.017,
+     "max": 0.019
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 6.819,
+     "p95": 6.97,
+     "min": 4.216,
+     "max": 6.97
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.85,
+     "p95": 3.07,
+     "min": 1.69,
+     "max": 3.07
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 7.19,
+     "p95": 8.31,
+     "min": 7.14,
+     "max": 8.31
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.927,
+     "p95": 2.052,
+     "min": 1.041,
+     "max": 2.052
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.957,
+     "p95": 2.106,
+     "min": 1.054,
+     "max": 2.106
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 59523072.0,
+     "p95": 65306624.0,
+     "min": 50429952.0,
+     "max": 65306624.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.4,
+     "p95": 6.5,
+     "min": 5.1,
+     "max": 6.5
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 394.4,
+     "p95": 411.7,
+     "min": 371.3,
+     "max": 411.7
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 3.598,
+     "p95": 3.67,
+     "min": 2.568,
+     "max": 3.67
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 2.109,
+     "p95": 2.148,
+     "min": 1.061,
+     "max": 2.148
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.017,
+     "p95": 0.018,
+     "min": 0.017,
+     "max": 0.018
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 4.664,
+     "p95": 4.765,
+     "min": 3.109,
+     "max": 4.765
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.62,
+     "p95": 2.97,
+     "min": 1.54,
+     "max": 2.97
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 3.9,
+     "p95": 6.4,
+     "min": 3.85,
+     "max": 6.4
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.057,
+     "p95": 2.095,
+     "min": 1.037,
+     "max": 2.095
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.103,
+     "p95": 2.106,
+     "min": 1.054,
+     "max": 2.106
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 45613056.0,
+     "p95": 49233920.0,
+     "min": 38944768.0,
+     "max": 49233920.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.4,
+     "p95": 5.7,
+     "min": 5.0,
+     "max": 5.7
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 362.1,
+     "p95": 378.8,
+     "min": 356.9,
+     "max": 378.8
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "fast/4MiB/60Mbit/series0": {
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 5.812,
+     "p95": 5.985,
+     "min": 3.691,
+     "max": 5.985
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 4.209,
+     "p95": 4.251,
+     "min": 2.145,
+     "max": 4.251
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.019,
+     "p95": 0.025,
+     "min": 0.018,
+     "max": 0.025
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 8.777,
+     "p95": 9.278,
+     "min": 5.265,
+     "max": 9.278
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 2.49,
+     "p95": 3.27,
+     "min": 1.69,
+     "max": 3.27
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 3.7,
+     "p95": 6.01,
+     "min": 3.21,
+     "max": 6.01
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.045,
+     "p95": 2.042,
+     "min": 1.034,
+     "max": 2.042
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.056,
+     "p95": 2.105,
+     "min": 1.053,
+     "max": 2.105
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 59162624.0,
+     "p95": 75808768.0,
+     "min": 58327040.0,
+     "max": 75808768.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.7,
+     "p95": 7.4,
+     "min": 5.4,
+     "max": 7.4
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 395.0,
+     "p95": 419.1,
+     "min": 385.4,
+     "max": 419.1
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 3.647,
+     "p95": 3.731,
+     "min": 3.611,
+     "max": 3.731
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 2.118,
+     "p95": 2.167,
+     "min": 2.108,
+     "max": 2.167
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.018,
+     "p95": 0.023,
+     "min": 0.018,
+     "max": 0.023
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 6.822,
+     "p95": 6.871,
+     "min": 6.772,
+     "max": 6.871
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.29,
+     "p95": 1.43,
+     "min": 1.23,
+     "max": 1.43
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 1.98,
+     "p95": 3.87,
+     "min": 1.88,
+     "max": 3.87
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.059,
+     "p95": 2.063,
+     "min": 0.646,
+     "max": 2.063
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.107,
+     "p95": 2.158,
+     "min": 1.806,
+     "max": 2.158
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 49250304.0,
+     "p95": 54181888.0,
+     "min": 48431104.0,
+     "max": 54181888.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.5,
+     "p95": 6.0,
+     "min": 5.1,
+     "max": 6.0
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 387.5,
+     "p95": 419.6,
+     "min": 356.6,
+     "max": 419.6
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 3.688,
+     "p95": 4.772,
+     "min": 3.664,
+     "max": 4.772
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 2.146,
+     "p95": 3.162,
+     "min": 2.111,
+     "max": 3.162
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.019,
+     "p95": 0.021,
+     "min": 0.017,
+     "max": 0.021
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 6.872,
+     "p95": 6.922,
+     "min": 6.82,
+     "max": 6.922
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.24,
+     "p95": 1.54,
+     "min": 1.19,
+     "max": 1.54
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.04,
+     "p95": 3.54,
+     "min": 1.84,
+     "max": 3.54
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.912,
+     "p95": 2.053,
+     "min": 1.052,
+     "max": 2.053
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.106,
+     "p95": 2.106,
+     "min": 1.104,
+     "max": 2.106
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 49446912.0,
+     "p95": 57016320.0,
+     "min": 47136768.0,
+     "max": 57016320.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.4,
+     "p95": 5.9,
+     "min": 5.1,
+     "max": 5.9
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 385.8,
+     "p95": 400.9,
+     "min": 354.9,
+     "max": 400.9
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "fast/4MiB/60Mbit/series1": {
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 3.675,
+     "p95": 3.684,
+     "min": 2.61,
+     "max": 3.684
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 2.111,
+     "p95": 2.139,
+     "min": 1.098,
+     "max": 2.139
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.019,
+     "p95": 0.021,
+     "min": 0.016,
+     "max": 0.021
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 6.822,
+     "p95": 6.873,
+     "min": 4.214,
+     "max": 6.873
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.29,
+     "p95": 1.84,
+     "min": 1.09,
+     "max": 1.84
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 1.92,
+     "p95": 2.53,
+     "min": 1.86,
+     "max": 2.53
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.06,
+     "p95": 2.066,
+     "min": 1.039,
+     "max": 2.066
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.106,
+     "p95": 2.106,
+     "min": 1.154,
+     "max": 2.106
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 58851328.0,
+     "p95": 65093632.0,
+     "min": 52461568.0,
+     "max": 65093632.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.8,
+     "p95": 6.0,
+     "min": 5.4,
+     "max": 6.0
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 379.6,
+     "p95": 396.8,
+     "min": 366.6,
+     "max": 396.8
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 5.779,
+     "p95": 6.551,
+     "min": 5.685,
+     "max": 6.551
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 4.208,
+     "p95": 5.019,
+     "min": 4.204,
+     "max": 5.019
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.018,
+     "p95": 0.018,
+     "min": 0.017,
+     "max": 0.018
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 8.729,
+     "p95": 9.077,
+     "min": 8.676,
+     "max": 9.077
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 2.24,
+     "p95": 3.52,
+     "min": 2.1,
+     "max": 3.52
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 3.21,
+     "p95": 6.2,
+     "min": 3.2,
+     "max": 6.2
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.745,
+     "p95": 2.066,
+     "min": 1.036,
+     "max": 2.066
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.056,
+     "p95": 2.107,
+     "min": 1.706,
+     "max": 2.107
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 56541184.0,
+     "p95": 69320704.0,
+     "min": 52576256.0,
+     "max": 69320704.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.6,
+     "p95": 6.4,
+     "min": 5.1,
+     "max": 6.4
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 404.7,
+     "p95": 414.4,
+     "min": 391.3,
+     "max": 414.4
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 3.678,
+     "p95": 4.715,
+     "min": 2.649,
+     "max": 4.715
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 2.132,
+     "p95": 3.16,
+     "min": 2.109,
+     "max": 3.16
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.018,
+     "p95": 0.018,
+     "min": 0.017,
+     "max": 0.018
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 6.823,
+     "p95": 6.922,
+     "min": 5.819,
+     "max": 6.922
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.21,
+     "p95": 1.26,
+     "min": 1.04,
+     "max": 1.26
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 1.87,
+     "p95": 2.02,
+     "min": 1.83,
+     "max": 2.02
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.622,
+     "p95": 2.065,
+     "min": 1.047,
+     "max": 2.065
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.106,
+     "p95": 2.108,
+     "min": 1.655,
+     "max": 2.108
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 49102848.0,
+     "p95": 52150272.0,
+     "min": 45531136.0,
+     "max": 52150272.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.3,
+     "p95": 6.1,
+     "min": 5.1,
+     "max": 6.1
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 381.7,
+     "p95": 403.1,
+     "min": 369.7,
+     "max": 403.1
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "fast/4MiB/8Mbit/series0": {
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 5.759,
+     "p95": 5.775,
+     "min": 3.012,
+     "max": 5.775
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 4.237,
+     "p95": 4.258,
+     "min": 1.43,
+     "max": 4.258
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.019,
+     "p95": 0.021,
+     "min": 0.019,
+     "max": 0.021
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 5.816,
+     "p95": 5.867,
+     "min": 3.109,
+     "max": 5.867
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 6.43,
+     "p95": 14.82,
+     "min": 6.38,
+     "max": 14.82
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 28.64,
+     "p95": 29.97,
+     "min": 25.35,
+     "max": 29.97
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 5,
+     "median": 10.332,
+     "p95": 11.382,
+     "min": 6.221,
+     "max": 11.382
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.599,
+     "p95": 3.165,
+     "min": 1.077,
+     "max": 3.165
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.604,
+     "p95": 3.209,
+     "min": 1.104,
+     "max": 3.209
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 217546752.0,
+     "p95": 298631168.0,
+     "min": 196722688.0,
+     "max": 298631168.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.5,
+     "p95": 7.5,
+     "min": 5.1,
+     "max": 7.5
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 370.8,
+     "p95": 376.0,
+     "min": 345.3,
+     "max": 376.0
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 3.633,
+     "p95": 3.674,
+     "min": 2.682,
+     "max": 3.674
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 2.108,
+     "p95": 2.146,
+     "min": 1.06,
+     "max": 2.146
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.019,
+     "p95": 0.021,
+     "min": 0.018,
+     "max": 0.021
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 3.711,
+     "p95": 3.761,
+     "min": 2.758,
+     "max": 3.761
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 6.38,
+     "p95": 11.13,
+     "min": 6.38,
+     "max": 11.13
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 19.9,
+     "p95": 29.96,
+     "min": 16.56,
+     "max": 29.96
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 5,
+     "median": 9.38,
+     "p95": 9.429,
+     "min": 6.37,
+     "max": 9.429
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 2.237,
+     "p95": 2.802,
+     "min": 1.136,
+     "max": 2.802
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.258,
+     "p95": 2.808,
+     "min": 1.154,
+     "max": 2.808
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 180158464.0,
+     "p95": 275611648.0,
+     "min": 148209664.0,
+     "max": 275611648.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.4,
+     "p95": 6.1,
+     "min": 5.1,
+     "max": 6.1
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 361.0,
+     "p95": 367.2,
+     "min": 345.0,
+     "max": 367.2
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 3.641,
+     "p95": 3.684,
+     "min": 3.55,
+     "max": 3.684
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 2.117,
+     "p95": 2.163,
+     "min": 2.107,
+     "max": 2.163
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.018,
+     "p95": 0.02,
+     "min": 0.017,
+     "max": 0.02
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 3.71,
+     "p95": 3.763,
+     "min": 3.613,
+     "max": 3.763
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 6.38,
+     "p95": 6.43,
+     "min": 6.38,
+     "max": 6.43
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 19.9,
+     "p95": 20.2,
+     "min": 16.51,
+     "max": 20.2
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 5,
+     "median": 9.332,
+     "p95": 9.431,
+     "min": 9.079,
+     "max": 9.431
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.215,
+     "p95": 2.119,
+     "min": 1.103,
+     "max": 2.119
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.255,
+     "p95": 2.156,
+     "min": 1.154,
+     "max": 2.156
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 154648576.0,
+     "p95": 215842816.0,
+     "min": 148946944.0,
+     "max": 215842816.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.2,
+     "p95": 5.6,
+     "min": 4.8,
+     "max": 5.6
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 359.0,
+     "p95": 380.0,
+     "min": 329.0,
+     "max": 380.0
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "fast/4MiB/8Mbit/series1": {
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 3.647,
+     "p95": 3.738,
+     "min": 3.562,
+     "max": 3.738
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 2.112,
+     "p95": 2.158,
+     "min": 2.107,
+     "max": 2.158
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.018,
+     "p95": 0.02,
+     "min": 0.017,
+     "max": 0.02
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 3.711,
+     "p95": 3.811,
+     "min": 3.661,
+     "max": 3.811
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 6.38,
+     "p95": 6.48,
+     "min": 6.38,
+     "max": 6.48
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 16.61,
+     "p95": 20.15,
+     "min": 16.51,
+     "max": 20.15
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 5,
+     "median": 9.378,
+     "p95": 9.432,
+     "min": 9.128,
+     "max": 9.432
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 2.086,
+     "p95": 2.435,
+     "min": 1.062,
+     "max": 2.435
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.108,
+     "p95": 2.457,
+     "min": 1.104,
+     "max": 2.457
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 160137216.0,
+     "p95": 241057792.0,
+     "min": 140165120.0,
+     "max": 241057792.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.3,
+     "p95": 6.5,
+     "min": 4.9,
+     "max": 6.5
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 343.7,
+     "p95": 361.0,
+     "min": 328.0,
+     "max": 361.0
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 5.719,
+     "p95": 5.743,
+     "min": 3.582,
+     "max": 5.743
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 4.228,
+     "p95": 4.236,
+     "min": 2.111,
+     "max": 4.236
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.018,
+     "p95": 0.018,
+     "min": 0.016,
+     "max": 0.018
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 5.815,
+     "p95": 5.816,
+     "min": 3.664,
+     "max": 5.816
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 6.43,
+     "p95": 11.13,
+     "min": 6.38,
+     "max": 11.13
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 28.64,
+     "p95": 29.96,
+     "min": 28.64,
+     "max": 29.96
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 5,
+     "median": 10.279,
+     "p95": 10.282,
+     "min": 7.277,
+     "max": 10.282
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 2.252,
+     "p95": 2.75,
+     "min": 2.141,
+     "max": 2.75
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.256,
+     "p95": 2.759,
+     "min": 2.156,
+     "max": 2.759
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 275906560.0,
+     "p95": 305840128.0,
+     "min": 217415680.0,
+     "max": 305840128.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 6.6,
+     "p95": 7.8,
+     "min": 5.9,
+     "max": 7.8
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 365.3,
+     "p95": 377.4,
+     "min": 345.6,
+     "max": 377.4
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 3.671,
+     "p95": 4.711,
+     "min": 3.635,
+     "max": 4.711
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 2.135,
+     "p95": 3.166,
+     "min": 2.109,
+     "max": 3.166
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.018,
+     "p95": 0.019,
+     "min": 0.016,
+     "max": 0.019
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 3.761,
+     "p95": 4.765,
+     "min": 3.711,
+     "max": 4.765
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 6.38,
+     "p95": 10.58,
+     "min": 6.38,
+     "max": 10.58
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 19.94,
+     "p95": 29.95,
+     "min": 16.56,
+     "max": 29.95
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 5,
+     "median": 9.43,
+     "p95": 9.433,
+     "min": 9.38,
+     "max": 9.433
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.255,
+     "p95": 2.099,
+     "min": 1.056,
+     "max": 2.099
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.303,
+     "p95": 2.107,
+     "min": 1.103,
+     "max": 2.107
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 159875072.0,
+     "p95": 184893440.0,
+     "min": 140771328.0,
+     "max": 184893440.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 5.0,
+     "p95": 5.9,
+     "min": 4.7,
+     "max": 5.9
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 357.5,
+     "p95": 366.4,
+     "min": 342.7,
+     "max": 366.4
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "mixed/16MiB/30Mbit/series0": {
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 10.744,
+     "p95": 25.092,
+     "min": 9.445,
+     "max": 25.092
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 9.211,
+     "p95": 23.494,
+     "min": 7.896,
+     "max": 23.494
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 1.993,
+     "p95": 5.215,
+     "min": 0.044,
+     "max": 5.215
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 16.043,
+     "p95": 27.123,
+     "min": 10.78,
+     "max": 27.123
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 7.371,
+     "min": 0.0,
+     "max": 7.371
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.68,
+     "p95": 7.99,
+     "min": 1.01,
+     "max": 7.99
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 4.19,
+     "p95": 12.93,
+     "min": 3.82,
+     "max": 12.93
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 4.844,
+     "p95": 14.249,
+     "min": 2.799,
+     "max": 14.249
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 4.862,
+     "p95": 14.287,
+     "min": 2.807,
+     "max": 14.287
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 187580416.0,
+     "p95": 204636160.0,
+     "min": 160497664.0,
+     "max": 204636160.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 3.3,
+     "p95": 3.6,
+     "min": 2.7,
+     "max": 3.6
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 393.2,
+     "p95": 519.2,
+     "min": 375.0,
+     "max": 519.2
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 10.716,
+     "p95": 25.079,
+     "min": 9.441,
+     "max": 25.079
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 9.212,
+     "p95": 23.477,
+     "min": 7.923,
+     "max": 23.477
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 1.217,
+     "p95": 1.282,
+     "min": 0.033,
+     "max": 1.282
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 11.982,
+     "p95": 25.171,
+     "min": 10.729,
+     "max": 25.171
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 2.0,
+     "min": 0.0,
+     "max": 2.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 8.674,
+     "min": 0.0,
+     "max": 8.674
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 3.28,
+     "p95": 11.92,
+     "min": 0.46,
+     "max": 11.92
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 5.9,
+     "p95": 15.69,
+     "min": 2.47,
+     "max": 15.69
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 5.99,
+     "p95": 13.953,
+     "min": 3.064,
+     "max": 13.953
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 6.017,
+     "p95": 13.985,
+     "min": 3.109,
+     "max": 13.985
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 4.362,
+     "min": 0.0,
+     "max": 4.362
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 149340160.0,
+     "p95": 233963520.0,
+     "min": 89243648.0,
+     "max": 233963520.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 3.2,
+     "p95": 4.1,
+     "min": 2.7,
+     "max": 4.1
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 437.2,
+     "p95": 497.9,
+     "min": 400.7,
+     "max": 497.9
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 12.403,
+     "p95": 25.536,
+     "min": 9.469,
+     "max": 25.536
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 10.847,
+     "p95": 24.032,
+     "min": 7.905,
+     "max": 24.032
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 1.226,
+     "p95": 9.387,
+     "min": 0.037,
+     "max": 9.387
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 16.796,
+     "p95": 34.995,
+     "min": 10.727,
+     "max": 34.995
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 10.127,
+     "min": 0.0,
+     "max": 10.127
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 3.27,
+     "p95": 21.87,
+     "min": 0.97,
+     "max": 21.87
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 5.84,
+     "p95": 29.95,
+     "min": 3.38,
+     "max": 29.95
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 1,
+     "median": 37.603,
+     "p95": 37.603,
+     "min": 37.603,
+     "max": 37.603
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 7.607,
+     "p95": 13.929,
+     "min": 3.756,
+     "max": 13.929
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 7.621,
+     "p95": 13.937,
+     "min": 3.811,
+     "max": 13.937
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 5.865,
+     "min": 0.0,
+     "max": 5.865
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 151617536.0,
+     "p95": 189644800.0,
+     "min": 116736000.0,
+     "max": 189644800.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 3.1,
+     "p95": 3.2,
+     "min": 2.6,
+     "max": 3.2
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 443.6,
+     "p95": 509.9,
+     "min": 400.9,
+     "max": 509.9
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "mixed/16MiB/30Mbit/series1": {
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 12.401,
+     "p95": 25.045,
+     "min": 9.38,
+     "max": 25.045
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 10.806,
+     "p95": 23.528,
+     "min": 7.874,
+     "max": 23.528
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 5.225,
+     "p95": 11.587,
+     "min": 0.059,
+     "max": 11.587
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 18.999,
+     "p95": 25.163,
+     "min": 10.679,
+     "max": 25.163
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 2.105,
+     "min": 0.0,
+     "max": 2.105
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 3.47,
+     "p95": 8.4,
+     "min": 0.98,
+     "max": 8.4
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 12.73,
+     "p95": 16.95,
+     "min": 3.77,
+     "max": 16.95
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 5.745,
+     "p95": 6.221,
+     "min": 5.254,
+     "max": 6.221
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 5.765,
+     "p95": 6.266,
+     "min": 5.263,
+     "max": 6.266
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 6.917,
+     "min": 0.0,
+     "max": 6.917
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 188907520.0,
+     "p95": 196526080.0,
+     "min": 110919680.0,
+     "max": 196526080.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 3.1,
+     "p95": 3.6,
+     "min": 2.4,
+     "max": 3.6
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 431.7,
+     "p95": 497.9,
+     "min": 410.4,
+     "max": 497.9
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 10.696,
+     "p95": 20.806,
+     "min": 9.466,
+     "max": 20.806
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 9.171,
+     "p95": 19.242,
+     "min": 7.906,
+     "max": 19.242
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 3.146,
+     "p95": 5.158,
+     "min": 0.053,
+     "max": 5.158
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 12.684,
+     "p95": 20.953,
+     "min": 12.484,
+     "max": 20.953
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.32,
+     "p95": 7.85,
+     "min": 1.27,
+     "max": 7.85
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 3.27,
+     "p95": 13.99,
+     "min": 3.23,
+     "max": 13.99
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 6.309,
+     "p95": 7.635,
+     "min": 5.185,
+     "max": 7.635
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 6.316,
+     "p95": 7.671,
+     "min": 5.213,
+     "max": 7.671
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 223510528.0,
+     "p95": 250773504.0,
+     "min": 132366336.0,
+     "max": 250773504.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 3.1,
+     "p95": 3.6,
+     "min": 2.9,
+     "max": 3.6
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 402.1,
+     "p95": 463.2,
+     "min": 385.3,
+     "max": 463.2
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 12.4,
+     "p95": 25.186,
+     "min": 9.467,
+     "max": 25.186
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 10.81,
+     "p95": 23.553,
+     "min": 7.902,
+     "max": 23.553
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 4.34,
+     "p95": 19.317,
+     "min": 0.067,
+     "max": 19.317
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 25.314,
+     "p95": 31.735,
+     "min": 10.731,
+     "max": 31.735
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 8.4,
+     "p95": 24.04,
+     "min": 3.27,
+     "max": 24.04
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 13.98,
+     "p95": 28.46,
+     "min": 5.6,
+     "max": 28.46
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 1,
+     "median": 34.594,
+     "p95": 34.594,
+     "min": 34.594,
+     "max": 34.594
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 5.598,
+     "p95": 23.241,
+     "min": 3.015,
+     "max": 23.241
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 5.615,
+     "p95": 23.259,
+     "min": 3.059,
+     "max": 23.259
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 5.915,
+     "min": 0.0,
+     "max": 5.915
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 163414016.0,
+     "p95": 234012672.0,
+     "min": 131973120.0,
+     "max": 234012672.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 3.1,
+     "p95": 3.2,
+     "min": 2.9,
+     "max": 3.2
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 402.4,
+     "p95": 551.4,
+     "min": 366.7,
+     "max": 551.4
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "mixed/4MiB/30Mbit/series0": {
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 14.661,
+     "p95": 20.322,
+     "min": 6.964,
+     "max": 20.322
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 13.134,
+     "p95": 18.757,
+     "min": 5.411,
+     "max": 18.757
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.198,
+     "p95": 2.007,
+     "min": 0.014,
+     "max": 2.007
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 17.396,
+     "p95": 20.404,
+     "min": 8.577,
+     "max": 20.404
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 2.0,
+     "min": 0.0,
+     "max": 2.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.853,
+     "min": 0.0,
+     "max": 0.853
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.78,
+     "p95": 3.28,
+     "min": 0.48,
+     "max": 3.28
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 5.04,
+     "p95": 6.52,
+     "min": 1.78,
+     "max": 6.52
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 2.563,
+     "p95": 2.774,
+     "min": 1.546,
+     "max": 2.774
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.608,
+     "p95": 2.81,
+     "min": 1.556,
+     "max": 2.81
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.05,
+     "min": 0.0,
+     "max": 0.05
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 56868864.0,
+     "p95": 65519616.0,
+     "min": 48070656.0,
+     "max": 65519616.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.7,
+     "p95": 3.4,
+     "min": 2.5,
+     "max": 3.4
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 356.5,
+     "p95": 372.1,
+     "min": 329.9,
+     "max": 372.1
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 8.834,
+     "p95": 18.75,
+     "min": 4.34,
+     "max": 18.75
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 7.4,
+     "p95": 17.261,
+     "min": 2.849,
+     "max": 17.261
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.032,
+     "p95": 2.409,
+     "min": 0.018,
+     "max": 2.409
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 10.783,
+     "p95": 18.804,
+     "min": 5.767,
+     "max": 18.804
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 2.0,
+     "min": 0.0,
+     "max": 2.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.202,
+     "min": 0.0,
+     "max": 0.202
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.29,
+     "p95": 6.69,
+     "min": 0.47,
+     "max": 6.69
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.86,
+     "p95": 10.21,
+     "min": 2.0,
+     "max": 10.21
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 2.737,
+     "p95": 2.761,
+     "min": 2.236,
+     "max": 2.761
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.758,
+     "p95": 2.808,
+     "min": 2.257,
+     "max": 2.808
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 50102272.0,
+     "p95": 65716224.0,
+     "min": 42434560.0,
+     "max": 65716224.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 3.0,
+     "p95": 3.4,
+     "min": 2.1,
+     "max": 3.4
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 339.3,
+     "p95": 399.9,
+     "min": 313.7,
+     "max": 399.9
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 11.024,
+     "p95": 14.616,
+     "min": 4.443,
+     "max": 14.616
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 9.308,
+     "p95": 13.108,
+     "min": 2.852,
+     "max": 13.108
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 1.772,
+     "p95": 5.908,
+     "min": 0.018,
+     "max": 5.908
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 16.949,
+     "p95": 20.707,
+     "min": 5.869,
+     "max": 20.707
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 2.28,
+     "p95": 3.17,
+     "min": 0.58,
+     "max": 3.17
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 3.59,
+     "p95": 7.04,
+     "min": 1.13,
+     "max": 7.04
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 2.814,
+     "p95": 3.217,
+     "min": 1.398,
+     "max": 3.217
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.857,
+     "p95": 3.259,
+     "min": 1.455,
+     "max": 3.259
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 2.0,
+     "min": 0.0,
+     "max": 2.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.755,
+     "min": 0.0,
+     "max": 1.755
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 49954816.0,
+     "p95": 53329920.0,
+     "min": 48234496.0,
+     "max": 53329920.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.7,
+     "p95": 3.4,
+     "min": 2.3,
+     "max": 3.4
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 345.3,
+     "p95": 377.3,
+     "min": 323.6,
+     "max": 377.3
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "mixed/4MiB/30Mbit/series1": {
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 4.364,
+     "p95": 10.893,
+     "min": 3.96,
+     "max": 10.893
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 2.854,
+     "p95": 9.381,
+     "min": 2.431,
+     "max": 9.381
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.022,
+     "p95": 1.604,
+     "min": 0.018,
+     "max": 1.604
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 5.766,
+     "p95": 16.645,
+     "min": 5.166,
+     "max": 16.645
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 3.0,
+     "min": 0.0,
+     "max": 3.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.856,
+     "min": 0.0,
+     "max": 1.856
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 0.61,
+     "p95": 2.46,
+     "min": 0.32,
+     "max": 2.46
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 3.13,
+     "p95": 3.4,
+     "min": 1.1,
+     "max": 3.4
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 2.792,
+     "p95": 3.42,
+     "min": 1.447,
+     "max": 3.42
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.808,
+     "p95": 3.46,
+     "min": 1.454,
+     "max": 3.46
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 3.81,
+     "min": 0.0,
+     "max": 3.81
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 49364992.0,
+     "p95": 52019200.0,
+     "min": 38912000.0,
+     "max": 52019200.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 3.2,
+     "p95": 3.3,
+     "min": 2.2,
+     "max": 3.3
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 334.9,
+     "p95": 341.5,
+     "min": 305.4,
+     "max": 341.5
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 6.962,
+     "p95": 20.535,
+     "min": 6.383,
+     "max": 20.535
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 5.413,
+     "p95": 18.942,
+     "min": 4.833,
+     "max": 18.942
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.151,
+     "p95": 0.19,
+     "min": 0.015,
+     "max": 0.19
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 8.573,
+     "p95": 20.603,
+     "min": 8.375,
+     "max": 20.603
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.705,
+     "min": 0.0,
+     "max": 1.705
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 0.98,
+     "p95": 2.47,
+     "min": 0.81,
+     "max": 2.47
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.33,
+     "p95": 4.32,
+     "min": 1.48,
+     "max": 4.32
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.402,
+     "p95": 3.059,
+     "min": 1.323,
+     "max": 3.059
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.455,
+     "p95": 3.109,
+     "min": 1.355,
+     "max": 3.109
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.401,
+     "min": 0.0,
+     "max": 0.401
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 57491456.0,
+     "p95": 64749568.0,
+     "min": 50315264.0,
+     "max": 64749568.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.9,
+     "p95": 3.2,
+     "min": 2.5,
+     "max": 3.2
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 331.0,
+     "p95": 359.7,
+     "min": 287.6,
+     "max": 359.7
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 9.716,
+     "p95": 13.669,
+     "min": 4.243,
+     "max": 13.669
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 8.144,
+     "p95": 12.082,
+     "min": 2.807,
+     "max": 12.082
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.018,
+     "p95": 2.273,
+     "min": 0.014,
+     "max": 2.273
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 10.881,
+     "p95": 15.994,
+     "min": 5.666,
+     "max": 15.994
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.404,
+     "min": 0.0,
+     "max": 1.404
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.25,
+     "p95": 4.9,
+     "min": 0.59,
+     "max": 4.9
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 3.77,
+     "p95": 6.38,
+     "min": 1.38,
+     "max": 6.38
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 2.788,
+     "p95": 3.092,
+     "min": 2.387,
+     "max": 3.092
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.807,
+     "p95": 3.109,
+     "min": 2.407,
+     "max": 3.109
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 55508992.0,
+     "p95": 94339072.0,
+     "min": 51052544.0,
+     "max": 94339072.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 3.0,
+     "p95": 3.1,
+     "min": 2.6,
+     "max": 3.1
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 352.9,
+     "p95": 381.7,
+     "min": 321.8,
+     "max": 381.7
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "thin/16MiB/30Mbit/series0": {
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 10.186,
+     "p95": 10.38,
+     "min": 8.336,
+     "max": 10.38
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 8.717,
+     "p95": 8.834,
+     "min": 6.826,
+     "max": 8.834
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 4.139,
+     "p95": 5.0,
+     "min": 2.782,
+     "max": 5.0
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 14.389,
+     "p95": 15.291,
+     "min": 11.184,
+     "max": 15.291
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 1.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.852,
+     "p95": 1.053,
+     "min": 0.0,
+     "max": 1.053
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 0.83,
+     "p95": 3.28,
+     "min": 0.71,
+     "max": 3.28
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.83,
+     "p95": 5.34,
+     "min": 2.68,
+     "max": 5.34
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 6.781,
+     "p95": 8.957,
+     "min": 6.759,
+     "max": 8.957
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 6.819,
+     "p95": 8.973,
+     "min": 6.767,
+     "max": 8.973
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 88588288.0,
+     "p95": 120569856.0,
+     "min": 87769088.0,
+     "max": 120569856.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.5,
+     "p95": 2.8,
+     "min": 2.1,
+     "max": 2.8
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 381.7,
+     "p95": 390.5,
+     "min": 376.8,
+     "max": 390.5
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 2.0,
+     "min": 0.0,
+     "max": 2.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 10.199,
+     "p95": 10.299,
+     "min": 9.281,
+     "max": 10.299
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 8.592,
+     "p95": 8.774,
+     "min": 8.575,
+     "max": 8.774
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 1.008,
+     "p95": 4.145,
+     "min": 0.977,
+     "max": 4.145
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 11.28,
+     "p95": 14.488,
+     "min": 10.33,
+     "max": 14.488
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 2.18,
+     "p95": 2.22,
+     "min": 1.72,
+     "max": 2.22
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 3.93,
+     "p95": 7.76,
+     "min": 3.65,
+     "max": 7.76
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 8.143,
+     "p95": 9.594,
+     "min": 3.436,
+     "max": 9.594
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 8.172,
+     "p95": 9.625,
+     "min": 3.459,
+     "max": 9.625
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 70844416.0,
+     "p95": 86786048.0,
+     "min": 53837824.0,
+     "max": 86786048.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.6,
+     "p95": 2.9,
+     "min": 2.3,
+     "max": 2.9
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 379.3,
+     "p95": 400.8,
+     "min": 349.6,
+     "max": 400.8
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 10.242,
+     "p95": 10.344,
+     "min": 10.161,
+     "max": 10.344
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 8.661,
+     "p95": 8.769,
+     "min": 8.61,
+     "max": 8.769
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.989,
+     "p95": 0.999,
+     "min": 0.958,
+     "max": 0.999
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 11.28,
+     "p95": 11.382,
+     "min": 11.18,
+     "max": 11.382
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.82,
+     "p95": 2.18,
+     "min": 1.42,
+     "max": 2.18
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 3.7,
+     "p95": 3.98,
+     "min": 3.53,
+     "max": 3.98
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 7.317,
+     "p95": 9.566,
+     "min": 3.417,
+     "max": 9.566
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 7.372,
+     "p95": 9.574,
+     "min": 3.46,
+     "max": 9.574
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 54001664.0,
+     "p95": 86228992.0,
+     "min": 53100544.0,
+     "max": 86228992.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.7,
+     "p95": 2.7,
+     "min": 2.5,
+     "max": 2.7
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 365.2,
+     "p95": 413.7,
+     "min": 349.5,
+     "max": 413.7
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "thin/16MiB/30Mbit/series1": {
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 10.246,
+     "p95": 10.309,
+     "min": 10.177,
+     "max": 10.309
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 8.637,
+     "p95": 8.772,
+     "min": 8.591,
+     "max": 8.772
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 1.004,
+     "p95": 1.077,
+     "min": 0.95,
+     "max": 1.077
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 11.281,
+     "p95": 11.431,
+     "min": 11.179,
+     "max": 11.431
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.77,
+     "p95": 1.87,
+     "min": 1.52,
+     "max": 1.87
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 3.67,
+     "p95": 3.75,
+     "min": 3.58,
+     "max": 3.75
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 8.144,
+     "p95": 8.938,
+     "min": 6.776,
+     "max": 8.938
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 8.171,
+     "p95": 8.972,
+     "min": 6.817,
+     "max": 8.972
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 71270400.0,
+     "p95": 86147072.0,
+     "min": 53936128.0,
+     "max": 86147072.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.6,
+     "p95": 2.7,
+     "min": 2.3,
+     "max": 2.7
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 367.0,
+     "p95": 373.0,
+     "min": 365.4,
+     "max": 373.0
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 10.167,
+     "p95": 10.46,
+     "min": 10.078,
+     "max": 10.46
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 8.641,
+     "p95": 8.773,
+     "min": 8.561,
+     "max": 8.773
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 4.103,
+     "p95": 4.254,
+     "min": 4.023,
+     "max": 4.254
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 14.437,
+     "p95": 14.64,
+     "min": 14.188,
+     "max": 14.64
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 1.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.953,
+     "p95": 1.153,
+     "min": 0.0,
+     "max": 1.153
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 0.86,
+     "p95": 1.77,
+     "min": 0.82,
+     "max": 1.77
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.87,
+     "p95": 3.67,
+     "min": 2.82,
+     "max": 3.67
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 8.745,
+     "p95": 8.914,
+     "min": 6.822,
+     "max": 8.914
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 8.772,
+     "p95": 8.923,
+     "min": 6.869,
+     "max": 8.923
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 120553472.0,
+     "p95": 120586240.0,
+     "min": 87883776.0,
+     "max": 120586240.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.8,
+     "p95": 3.0,
+     "min": 2.6,
+     "max": 3.0
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 380.4,
+     "p95": 399.7,
+     "min": 371.2,
+     "max": 399.7
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 10.186,
+     "p95": 10.325,
+     "min": 10.109,
+     "max": 10.325
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 8.674,
+     "p95": 8.758,
+     "min": 8.6,
+     "max": 8.758
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.996,
+     "p95": 1.031,
+     "min": 0.935,
+     "max": 1.031
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 11.23,
+     "p95": 11.432,
+     "min": 11.132,
+     "max": 11.432
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 2.12,
+     "p95": 2.22,
+     "min": 1.42,
+     "max": 2.22
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 3.89,
+     "p95": 3.93,
+     "min": 3.53,
+     "max": 3.93
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 8.145,
+     "p95": 8.942,
+     "min": 3.417,
+     "max": 8.942
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 8.171,
+     "p95": 8.973,
+     "min": 3.459,
+     "max": 8.973
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 71761920.0,
+     "p95": 87064576.0,
+     "min": 54149120.0,
+     "max": 87064576.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.7,
+     "p95": 2.8,
+     "min": 2.4,
+     "max": 2.8
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 364.4,
+     "p95": 374.9,
+     "min": 349.0,
+     "max": 374.9
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "thin/1MiB/30Mbit/series0": {
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 3.338,
+     "p95": 3.496,
+     "min": 3.247,
+     "max": 3.496
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 1.777,
+     "p95": 1.825,
+     "min": 1.765,
+     "max": 1.825
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.015,
+     "p95": 0.016,
+     "min": 0.015,
+     "max": 0.016
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 6.321,
+     "p95": 6.475,
+     "min": 6.271,
+     "max": 6.475
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.91,
+     "p95": 1.96,
+     "min": 1.84,
+     "max": 1.96
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.92,
+     "p95": 2.99,
+     "min": 2.75,
+     "max": 2.99
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.285,
+     "p95": 1.71,
+     "min": 0.445,
+     "max": 1.71
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.706,
+     "p95": 1.756,
+     "min": 1.705,
+     "max": 1.756
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 15728640.0,
+     "p95": 19529728.0,
+     "min": 14696448.0,
+     "max": 19529728.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 3.3,
+     "p95": 3.4,
+     "min": 3.0,
+     "max": 3.4
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 246.7,
+     "p95": 248.5,
+     "min": 242.9,
+     "max": 248.5
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 2.501,
+     "p95": 2.742,
+     "min": 2.472,
+     "max": 2.742
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 0.945,
+     "p95": 0.98,
+     "min": 0.927,
+     "max": 0.98
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.015,
+     "p95": 0.016,
+     "min": 0.015,
+     "max": 0.016
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 5.472,
+     "p95": 5.722,
+     "min": 5.467,
+     "max": 5.722
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.43,
+     "p95": 1.6,
+     "min": 1.32,
+     "max": 1.6
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.44,
+     "p95": 2.48,
+     "min": 2.4,
+     "max": 2.48
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.281,
+     "p95": 1.708,
+     "min": 0.454,
+     "max": 1.708
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.755,
+     "p95": 1.757,
+     "min": 1.705,
+     "max": 1.757
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 12091392.0,
+     "p95": 14467072.0,
+     "min": 10043392.0,
+     "max": 14467072.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 3.0,
+     "p95": 3.2,
+     "min": 2.9,
+     "max": 3.2
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 246.6,
+     "p95": 250.4,
+     "min": 243.0,
+     "max": 250.4
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 2.514,
+     "p95": 2.567,
+     "min": 2.448,
+     "max": 2.567
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 0.968,
+     "p95": 0.985,
+     "min": 0.931,
+     "max": 0.985
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.015,
+     "p95": 0.016,
+     "min": 0.015,
+     "max": 0.016
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 5.518,
+     "p95": 5.568,
+     "min": 5.422,
+     "max": 5.568
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.55,
+     "p95": 1.72,
+     "min": 1.38,
+     "max": 1.72
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.42,
+     "p95": 2.49,
+     "min": 2.24,
+     "max": 2.49
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.282,
+     "p95": 1.711,
+     "min": 0.456,
+     "max": 1.711
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.756,
+     "p95": 1.757,
+     "min": 1.705,
+     "max": 1.757
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 11616256.0,
+     "p95": 16269312.0,
+     "min": 10141696.0,
+     "max": 16269312.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 3.2,
+     "p95": 3.3,
+     "min": 2.8,
+     "max": 3.3
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 245.2,
+     "p95": 250.2,
+     "min": 239.5,
+     "max": 250.2
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "thin/1MiB/30Mbit/series1": {
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 2.489,
+     "p95": 2.524,
+     "min": 1.455,
+     "max": 2.524
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 0.938,
+     "p95": 0.94,
+     "min": 0.925,
+     "max": 0.94
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.015,
+     "p95": 0.016,
+     "min": 0.015,
+     "max": 0.016
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 5.469,
+     "p95": 5.523,
+     "min": 4.466,
+     "max": 5.523
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.47,
+     "p95": 1.78,
+     "min": 1.33,
+     "max": 1.78
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.41,
+     "p95": 2.5,
+     "min": 2.37,
+     "max": 2.5
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.702,
+     "p95": 1.707,
+     "min": 0.449,
+     "max": 1.707
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.756,
+     "p95": 1.757,
+     "min": 1.755,
+     "max": 1.757
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 11223040.0,
+     "p95": 13697024.0,
+     "min": 10420224.0,
+     "max": 13697024.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.9,
+     "p95": 3.0,
+     "min": 2.9,
+     "max": 3.0
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 245.0,
+     "p95": 246.0,
+     "min": 242.5,
+     "max": 246.0
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 3.343,
+     "p95": 3.371,
+     "min": 3.286,
+     "max": 3.371
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 1.772,
+     "p95": 1.818,
+     "min": 1.765,
+     "max": 1.818
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.015,
+     "p95": 0.016,
+     "min": 0.015,
+     "max": 0.016
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 6.321,
+     "p95": 6.373,
+     "min": 6.271,
+     "max": 6.373
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.89,
+     "p95": 1.91,
+     "min": 1.83,
+     "max": 1.91
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.91,
+     "p95": 2.99,
+     "min": 2.67,
+     "max": 2.99
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 0.883,
+     "p95": 1.686,
+     "min": 0.45,
+     "max": 1.686
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.756,
+     "p95": 1.757,
+     "min": 1.705,
+     "max": 1.757
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.703,
+     "min": 0.0,
+     "max": 0.703
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 18284544.0,
+     "p95": 18792448.0,
+     "min": 16236544.0,
+     "max": 18792448.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 3.1,
+     "p95": 3.1,
+     "min": 2.8,
+     "max": 3.1
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 245.3,
+     "p95": 248.8,
+     "min": 244.0,
+     "max": 248.8
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 2.44,
+     "p95": 2.516,
+     "min": 2.403,
+     "max": 2.516
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 0.939,
+     "p95": 0.944,
+     "min": 0.927,
+     "max": 0.944
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.016,
+     "p95": 0.017,
+     "min": 0.015,
+     "max": 0.017
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 5.421,
+     "p95": 5.472,
+     "min": 5.368,
+     "max": 5.472
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.33,
+     "p95": 1.41,
+     "min": 1.28,
+     "max": 1.41
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.35,
+     "p95": 2.41,
+     "min": 2.26,
+     "max": 2.41
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.288,
+     "p95": 1.714,
+     "min": 0.448,
+     "max": 1.714
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.756,
+     "p95": 1.757,
+     "min": 1.755,
+     "max": 1.757
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 11829248.0,
+     "p95": 14106624.0,
+     "min": 10092544.0,
+     "max": 14106624.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.9,
+     "p95": 3.1,
+     "min": 2.8,
+     "max": 3.1
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 246.4,
+     "p95": 248.9,
+     "min": 244.6,
+     "max": 248.9
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "thin/4MiB/30Mbit/series0": {
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 7.155,
+     "p95": 7.238,
+     "min": 7.123,
+     "max": 7.238
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 5.599,
+     "p95": 5.614,
+     "min": 5.57,
+     "max": 5.614
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 1.191,
+     "p95": 1.237,
+     "min": 1.185,
+     "max": 1.237
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 10.029,
+     "p95": 10.132,
+     "min": 9.176,
+     "max": 10.132
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 3.1,
+     "p95": 3.1,
+     "min": 2.14,
+     "max": 3.1
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 4.76,
+     "p95": 5.37,
+     "min": 3.19,
+     "max": 5.37
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.71,
+     "p95": 3.467,
+     "min": 1.701,
+     "max": 3.467
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.756,
+     "p95": 3.509,
+     "min": 1.755,
+     "max": 3.509
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.351,
+     "min": 0.0,
+     "max": 0.351
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 36175872.0,
+     "p95": 39501824.0,
+     "min": 33554432.0,
+     "max": 39501824.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.8,
+     "p95": 3.0,
+     "min": 2.7,
+     "max": 3.0
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 301.0,
+     "p95": 315.5,
+     "min": 294.5,
+     "max": 315.5
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 5.032,
+     "p95": 5.065,
+     "min": 4.971,
+     "max": 5.065
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 3.49,
+     "p95": 3.508,
+     "min": 3.451,
+     "max": 3.508
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.019,
+     "p95": 0.019,
+     "min": 0.017,
+     "max": 0.019
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 6.72,
+     "p95": 6.768,
+     "min": 6.67,
+     "max": 6.768
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.3,
+     "p95": 1.3,
+     "min": 0.93,
+     "max": 1.3
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.48,
+     "p95": 2.88,
+     "min": 2.08,
+     "max": 2.88
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 1.707,
+     "p95": 4.414,
+     "min": 1.703,
+     "max": 4.414
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 1.756,
+     "p95": 4.463,
+     "min": 1.755,
+     "max": 4.463
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.955,
+     "min": 0.0,
+     "max": 1.955
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 30932992.0,
+     "p95": 37584896.0,
+     "min": 24100864.0,
+     "max": 37584896.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.6,
+     "p95": 2.8,
+     "min": 2.4,
+     "max": 2.8
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 309.8,
+     "p95": 327.6,
+     "min": 286.4,
+     "max": 327.6
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 5.085,
+     "p95": 5.146,
+     "min": 4.958,
+     "max": 5.146
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 3.464,
+     "p95": 3.514,
+     "min": 3.454,
+     "max": 3.514
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.019,
+     "p95": 0.02,
+     "min": 0.018,
+     "max": 0.02
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 6.768,
+     "p95": 6.871,
+     "min": 6.668,
+     "max": 6.871
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.05,
+     "p95": 1.13,
+     "min": 0.85,
+     "max": 1.13
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.09,
+     "p95": 2.19,
+     "min": 1.95,
+     "max": 2.19
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.757,
+     "p95": 4.173,
+     "min": 2.175,
+     "max": 4.173
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.81,
+     "p95": 4.212,
+     "min": 2.207,
+     "max": 4.212
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.201,
+     "min": 0.0,
+     "max": 0.201
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 29949952.0,
+     "p95": 32096256.0,
+     "min": 23756800.0,
+     "max": 32096256.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.6,
+     "p95": 2.7,
+     "min": 2.4,
+     "max": 2.7
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 308.7,
+     "p95": 313.2,
+     "min": 303.1,
+     "max": 313.2
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  },
+  "thin/4MiB/30Mbit/series1": {
+   "C4": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 5.022,
+     "p95": 5.079,
+     "min": 4.015,
+     "max": 5.079
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 3.494,
+     "p95": 3.503,
+     "min": 3.46,
+     "max": 3.503
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.02,
+     "p95": 0.021,
+     "min": 0.019,
+     "max": 0.021
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 6.719,
+     "p95": 6.772,
+     "min": 5.717,
+     "max": 6.772
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 1.05,
+     "p95": 1.15,
+     "min": 0.88,
+     "max": 1.15
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.13,
+     "p95": 2.19,
+     "min": 1.81,
+     "max": 2.19
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 2.93,
+     "p95": 4.181,
+     "min": 1.71,
+     "max": 4.181
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.959,
+     "p95": 4.213,
+     "min": 1.755,
+     "max": 4.213
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.051,
+     "min": 0.0,
+     "max": 0.051
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 29753344.0,
+     "p95": 31948800.0,
+     "min": 25346048.0,
+     "max": 31948800.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.7,
+     "p95": 2.9,
+     "min": 2.6,
+     "max": 2.9
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 295.3,
+     "p95": 304.3,
+     "min": 277.8,
+     "max": 304.3
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C0": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 7.159,
+     "p95": 7.222,
+     "min": 7.118,
+     "max": 7.222
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 5.613,
+     "p95": 5.627,
+     "min": 5.61,
+     "max": 5.627
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 1.155,
+     "p95": 1.197,
+     "min": 1.145,
+     "max": 1.197
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 9.577,
+     "p95": 9.977,
+     "min": 9.477,
+     "max": 9.977
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 2.8,
+     "p95": 3.22,
+     "min": 1.94,
+     "max": 3.22
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 4.05,
+     "p95": 4.46,
+     "min": 4.0,
+     "max": 4.46
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 3.456,
+     "p95": 3.86,
+     "min": 1.711,
+     "max": 3.86
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 3.51,
+     "p95": 3.911,
+     "min": 1.755,
+     "max": 3.911
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 33734656.0,
+     "p95": 36339712.0,
+     "min": 33308672.0,
+     "max": 36339712.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.8,
+     "p95": 2.8,
+     "min": 2.6,
+     "max": 2.8
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 304.5,
+     "p95": 309.7,
+     "min": 286.8,
+     "max": 309.7
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   },
+   "C2": {
+    "runs": 5,
+    "failed": 0,
+    "start.ttfb_s": {
+     "n": 5,
+     "median": 4.979,
+     "p95": 5.047,
+     "min": 4.962,
+     "max": 5.047
+    },
+    "ttfb_after_first_handshake_s": {
+     "n": 5,
+     "median": 3.462,
+     "p95": 3.499,
+     "min": 3.446,
+     "max": 3.499
+    },
+    "start.tail_probe_s": {
+     "n": 5,
+     "median": 0.019,
+     "p95": 0.021,
+     "min": 0.018,
+     "max": 0.021
+    },
+    "start.time_to_start_s": {
+     "n": 5,
+     "median": 6.67,
+     "p95": 6.77,
+     "min": 6.669,
+     "max": 6.77
+    },
+    "start.stalls": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.stall_s": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    },
+    "start.buffer_s_p10": {
+     "n": 5,
+     "median": 0.94,
+     "p95": 1.3,
+     "min": 0.93,
+     "max": 1.3
+    },
+    "start.buffer_s_median": {
+     "n": 5,
+     "median": 2.08,
+     "p95": 2.92,
+     "min": 2.03,
+     "max": 2.92
+    },
+    "start.time_to_full_buffer_s": {
+     "n": 0
+    },
+    "seek.ttfb_s": {
+     "n": 5,
+     "median": 2.892,
+     "p95": 4.475,
+     "min": 1.713,
+     "max": 4.475
+    },
+    "seek.resume_s": {
+     "n": 5,
+     "median": 2.909,
+     "p95": 4.512,
+     "min": 1.755,
+     "max": 4.512
+    },
+    "seek.stalls": {
+     "n": 5,
+     "median": 1.0,
+     "p95": 1.0,
+     "min": 0.0,
+     "max": 1.0
+    },
+    "seek.stall_s": {
+     "n": 5,
+     "median": 0.05,
+     "p95": 0.452,
+     "min": 0.0,
+     "max": 0.452
+    },
+    "unused_downloaded_bytes": {
+     "n": 5,
+     "median": 33816576.0,
+     "p95": 48349184.0,
+     "min": 24281088.0,
+     "max": 48349184.0
+    },
+    "app_stats.cpu_pct_mean": {
+     "n": 5,
+     "median": 2.6,
+     "p95": 2.6,
+     "min": 2.4,
+     "max": 2.6
+    },
+    "app_stats.mem_mib_max": {
+     "n": 5,
+     "median": 311.1,
+     "p95": 315.0,
+     "min": 293.3,
+     "max": 315.0
+    },
+    "app_log.tracebacks": {
+     "n": 5,
+     "median": 0.0,
+     "p95": 0.0,
+     "min": 0.0,
+     "max": 0.0
+    }
+   }
+  }
+ }
+}

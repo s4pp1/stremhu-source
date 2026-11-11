@@ -1,0 +1,6 @@
+{
+  "id": "cr17a-drain-v2-assessor-registration",
+  "registered_utc": "2026-11-05T09:09:13.587062+00:00",
+  "assessor_sha256": "148e29edd9829c8d6a0cbc9d83a3a0c3d082bcf131e90cd9b92201bf323504d7",
+  "scope": "Evaluates all preregistered five long pairs,two lifecycle,normalHTTP,cold,rotatedABC andseven native cases. No post-outcome script edits or budget adjustments; failures remain failures."
+}

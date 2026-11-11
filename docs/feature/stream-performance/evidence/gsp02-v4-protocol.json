@@ -1,0 +1,267 @@
+{
+ "id": "gsp02-v4",
+ "registered_at_utc": "2026-11-09T17:26:26.979774+00:00",
+ "status": "Gate GSP02 fourth version, registered before any measured run. Designed WITH knowledge of gsp02-v1..v3 (all FAIL, kept) and of the seek diagnosis: post-seek resume is bimodal, so the v2/v3 rule (median per 5-run series, noise from two C0 medians) under-estimated the noise. This version keeps 'no regression' but tests pooled means with a bootstrap and Holm correction. A tool check of this rule on the v3 data is NOT a decision; only this version's fresh runs decide.",
+ "item": "SP02: C0 = legacy/legacy, C2 = edges start + upstream deadlines, C4 = edges start alone; each against C0.",
+ "supersedes": "gsp02-v3, gsp02-v2, gsp02-v1 (all FAIL, kept)",
+ "source": {
+  "commit": "edb1588310e31412fb24387a150cb415b3cf517d",
+  "server_app_manifest_sha256": "2ff14fab7a423cbd284d1c9a5cd8b10b4c635b8339b6685dad8d9ef27c1cad75",
+  "server_app_files": 269,
+  "manifest_method": "sha256 over 'path:git-blob-id' lines of git ls-tree -r HEAD server/app",
+  "candidate_contents": "main 0515d98 + SP05/a + SP06/a + switched SP01/SP02 code incl. edges, upstream, focus and startfocus policies (c3d6035), defaults legacy; SP03 not included."
+ },
+ "images": {
+  "image_ids": {
+   "C0": "sha256:138c89746cf740216142d2dfe3224038326c4199e2cc47d01f7295386b5190d1",
+   "C2": "sha256:138c89746cf740216142d2dfe3224038326c4199e2cc47d01f7295386b5190d1",
+   "C4": "sha256:138c89746cf740216142d2dfe3224038326c4199e2cc47d01f7295386b5190d1"
+  }
+ },
+ "metrics": [
+  "start.ttfb_s",
+  "ttfb_after_first_handshake_s",
+  "start.tail_probe_s",
+  "start.time_to_start_s",
+  "start.stalls",
+  "start.stall_s",
+  "start.buffer_s_p10",
+  "start.buffer_s_median",
+  "start.time_to_full_buffer_s",
+  "seek.ttfb_s",
+  "seek.resume_s",
+  "seek.stalls",
+  "seek.stall_s",
+  "unused_downloaded_bytes",
+  "app_stats.cpu_pct_mean",
+  "app_stats.mem_mib_max",
+  "app_log.tracebacks",
+  "failed"
+ ],
+ "harness_sha256": {
+  "scripts/benchmark_sp_playback_controller.py": "51138e429707b98c7002f1682b10d087c9846c9111f3d23367aae92179aa129b",
+  "scripts/benchmark_sp_playback.py": "06a97427c914e61dc280f2efffcd6c60311305fd8f167ecaf1833a656e7c3df6",
+  "scripts/sp_app_fixture.py": "be5c4157ffc0a3984597524f577349fcfb08db6f7b610e824f927c848bbc97e2",
+  "scripts/sp_seed_service.py": "b670ba1ff04e889dd8e49cc3781f2dc0a3cf7cbe10de785a59309b977127d3ce",
+  "scripts/fixtures/local_bt_seed.py": "f89cb48ef0ad3337e07eea697a57fcce16e4e45e2008bcc5e01d18e03cf123b5",
+  "scripts/fixtures/local_tracker.py": "fb538616f86e0b36ec3ae6d46cc031a9aaf4ff81b3ab738ef7baab50ddb32050",
+  "scripts/fixtures/synthetic_torrent.py": "49d3640d7c9e105094ddccde829e5a301219089988f4a480fa7cd3363193e87c",
+  "scripts/summarize_sp_playback.py": "03860f8a5737120f5e8a83c895c2ae7c2fbfb48f17aaefa68379e48a635764e2",
+  "scripts/decide_sp_gate_bootstrap.py": "9ef537562edddcb3e7812f89b4ed7fbabc9d7c999a691b7897fda9cbd7c8a55b"
+ },
+ "plan_sha256": "2952470de91bf9fa3c18bcbf05179dc97d18d7134da62a7d37f94afd3f4eb788",
+ "plan": {
+  "tool_image": "stremhu-source:sp-base-9984678",
+  "images": {
+   "C0": "stremhu-source:sp-cand-c3d6035",
+   "C2": "stremhu-source:sp-cand-c3d6035",
+   "C4": "stremhu-source:sp-cand-c3d6035"
+  },
+  "app_env": {
+   "C0": {
+    "RELAY_START_POLICY": "legacy",
+    "RELAY_READAHEAD_POLICY": "legacy"
+   },
+   "C2": {
+    "RELAY_START_POLICY": "edges",
+    "RELAY_READAHEAD_POLICY": "upstream"
+   },
+   "C4": {
+    "RELAY_START_POLICY": "edges",
+    "RELAY_READAHEAD_POLICY": "legacy"
+   }
+  },
+  "series": [
+   {
+    "labels": [
+     "C0",
+     "C2",
+     "C4"
+    ],
+    "reps": 5
+   },
+   {
+    "labels": [
+     "C0",
+     "C2",
+     "C4"
+    ],
+    "reps": 5
+   }
+  ],
+  "reps": 10,
+  "total_size": 1073741824,
+  "client_args": [
+   "--play-s",
+   "10",
+   "--seek-play-s",
+   "8",
+   "--start-buffer-s",
+   "2",
+   "--rebuffer-s",
+   "1",
+   "--max-buffer-s",
+   "30"
+  ],
+  "cells": [
+   {
+    "profile": "fast",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "fast",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "fast",
+    "piece_size": 16777216,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "thin",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "thin",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "thin",
+    "piece_size": 16777216,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "fast",
+    "piece_size": 4194304,
+    "bitrate_mbit": 8
+   },
+   {
+    "profile": "fast",
+    "piece_size": 4194304,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "fast",
+    "piece_size": 16777216,
+    "bitrate_mbit": 8
+   },
+   {
+    "profile": "fast",
+    "piece_size": 16777216,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 16777216,
+    "bitrate_mbit": 30
+   }
+  ],
+  "profiles": {
+   "fast": {
+    "peers": 8,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 4000000,
+      "latency_s": 0.02,
+      "jitter_s": 0.01
+     }
+    ]
+   },
+   "mixed": {
+    "peers": 8,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "stall": true
+     },
+     {
+      "stall": true
+     }
+    ]
+   },
+   "thin": {
+    "peers": 2,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 2500000,
+      "latency_s": 0.06,
+      "jitter_s": 0.02
+     }
+    ]
+   }
+  },
+  "capture_tracebacks": true
+ },
+ "decision_rule": {
+  "machine_rule": "scripts/decide_sp_gate_bootstrap.py (sha256 above)",
+  "primary_metric": "start.time_to_start_s (includes TTFB, tail probe and 2 s buffer)",
+  "candidates": [
+   "C2",
+   "C4"
+  ],
+  "key_cells": [
+   "fast/1MiB/30Mbit",
+   "fast/4MiB/30Mbit",
+   "fast/16MiB/30Mbit",
+   "thin/1MiB/30Mbit",
+   "thin/4MiB/30Mbit",
+   "thin/16MiB/30Mbit"
+  ],
+  "pooling": "both series pooled: n = 10 runs per variant and cell; failed runs excluded and counted",
+  "statistic": "difference of means (candidate - C0); 10 000 bootstrap resamples per test, seed 20261110; one-sided bootstrap p-values",
+  "alpha": 0.05,
+  "resamples": 10000,
+  "seed": 20261110,
+  "improved_required": 4,
+  "improvement": "primary metric in a key cell: H0 'difference >= 0' rejected by Holm over the 6 key cells",
+  "regression": "any guard test (start.time_to_start_s, start.ttfb_s, seek.resume_s, start.stall_s in all 12 cells, 48 tests per candidate): H0 'difference <= 0' rejected by Holm over the 48 tests",
+  "pass_if_all": [
+   "at least 4 of 6 key cells improved",
+   "no regression",
+   "failed runs and tracebacks with an application frame: candidate <= C0"
+  ],
+  "traceback_counter": "app_tracebacks",
+  "traceback_note": "asyncio-internal double connection_lost tracebacks (no application frame, present in C0; gsp02-v3 finding) are reported but do not count",
+  "choice": "several passing candidates: larger total mean time-to-start gain over the key cells; tie -> C4",
+  "tie_break": "C4",
+  "otherwise": "FAIL: both policies stay legacy."
+ }
+}

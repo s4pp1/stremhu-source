@@ -30,6 +30,6 @@ def create_users_service(db: Session) -> UsersService:
 
 
 def get_users_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> UsersService:
     return create_users_service(db)

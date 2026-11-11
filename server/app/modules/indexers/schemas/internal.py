@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 
-from app.modules.indexer_accounts.models import IndexerAccountModel
+from app.modules.indexer_accounts.schemas import IndexerAccountRef
 from app.modules.indexer_definitions.schemas.internal import (
     IndexerDefinitionLogin,
 )
@@ -12,9 +12,9 @@ class IndexerLogin(IndexerDefinitionLogin):
 
 
 class IndexerTorrent(BaseModel):
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+    model_config = ConfigDict(arbitrary_types_allowed=True, frozen=True)
 
-    indexer_account: IndexerAccountModel
+    indexer_account: IndexerAccountRef
     torrent_id: str
     download_url: str
     imdb_id: str | None = None

@@ -39,6 +39,10 @@ class UserResponse(BaseModel):
     created_at: datetime
     torrent_seed: int | None
     enable_smart_filter: bool
+    enable_stream_deduplication: bool = True
     smart_filter_grouping_preference_id: str | None
     smart_filter_limit: int
+    enable_fallback_subtitles: bool = False
+    enable_catalog_search: bool = True
+    enable_downloaded_marker: bool
     max_concurrent_streams: int | None

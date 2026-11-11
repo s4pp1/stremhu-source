@@ -1,0 +1,99 @@
+{
+ "status": "PASS",
+ "checks": {
+  "rows_valid": true,
+  "before_reproduces": true,
+  "after_persisted": true,
+  "fresh_unchanged": true
+ },
+ "matrices": {
+  "before-0": {
+   "fresh-host": [
+    1,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "fresh-wide": [
+    1,
+    1,
+    1,
+    1,
+    0,
+    0
+   ],
+   "persisted": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ]
+  },
+  "after-0": {
+   "fresh-host": [
+    1,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "fresh-wide": [
+    1,
+    1,
+    1,
+    1,
+    0,
+    0
+   ],
+   "persisted": [
+    1,
+    1,
+    1,
+    0,
+    0,
+    0
+   ]
+  },
+  "after-1": {
+   "fresh-host": [
+    1,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "fresh-wide": [
+    1,
+    1,
+    1,
+    1,
+    0,
+    0
+   ],
+   "persisted": [
+    1,
+    1,
+    1,
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ "targets": [
+  "relative",
+  "same-origin",
+  "other-port",
+  "subdomain",
+  "other-host",
+  "downgrade"
+ ],
+ "protocol_sha256": "ed86eb5b715ee49538264dbfed0bc17fe5e333225f2f79bd0ee16624ee30dc47",
+ "assessor_sha256": "b8c64fd321121001fd01fa09949625251175e4e055e70890ddf7d0bc9f22bb73"
+}

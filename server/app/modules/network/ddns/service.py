@@ -1,5 +1,6 @@
 import httpx
 
+from app.common.log_safety import network_error_fields
 from app.common.logger import logger
 from app.config import config
 from app.modules.network.ddns import discover_dns_providers
@@ -46,5 +47,5 @@ class DDNSService:
                 response.raise_for_status()
                 return response.text.strip()
         except Exception as e:
-            logger.error("Nem sikerült lekérdezni a publikus IP-t: %s", e)
+            logger.error("operation=public-ip %s", network_error_fields(e))
             raise

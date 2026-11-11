@@ -1,0 +1,59 @@
+{
+ "id": "gsp02-v4-assessment",
+ "protocol": "gsp02-v4",
+ "recorded_at_utc": "2026-11-10T06:13:21.787498+00:00",
+ "decision": "PASS:C2",
+ "consequence": "PASS:C2 under the registered bootstrap/Holm rule: RELAY_START_POLICY=edges and RELAY_READAHEAD_POLICY=upstream become the defaults in a separate commit; the legacy values stay selectable for rollback.",
+ "per_candidate": {
+  "C2": {
+   "pass": true,
+   "improved_key_cells": [
+    "fast/16MiB/30Mbit",
+    "fast/4MiB/30Mbit",
+    "thin/16MiB/30Mbit",
+    "thin/1MiB/30Mbit",
+    "thin/4MiB/30Mbit"
+   ],
+   "improved_count": 5,
+   "regressions": [],
+   "failed_runs": {
+    "C0": 0,
+    "C2": 0
+   },
+   "tracebacks_total": {
+    "C0": 0,
+    "C2": 0
+   },
+   "total_primary_gain_s": 12.339
+  },
+  "C4": {
+   "pass": false,
+   "improved_key_cells": [
+    "fast/16MiB/30Mbit",
+    "fast/1MiB/30Mbit",
+    "fast/4MiB/30Mbit",
+    "thin/16MiB/30Mbit",
+    "thin/1MiB/30Mbit",
+    "thin/4MiB/30Mbit"
+   ],
+   "improved_count": 6,
+   "regressions": [
+    "fast/16MiB/8Mbit seek.resume_s"
+   ],
+   "failed_runs": {
+    "C0": 0,
+    "C4": 0
+   },
+   "tracebacks_total": {
+    "C0": 0,
+    "C4": 0
+   },
+   "total_primary_gain_s": 13.702
+  }
+ },
+ "analysis": [
+  "C2 improves time-to-start in 5 of 6 key cells after Holm (fast/1MiB not significant): fast/16MiB 12.6 -> 9.0 s, fast/4MiB 6.4 -> 4.5 s, thin/16MiB 14.1 -> 11.5 s, thin/4MiB 9.8 -> 6.7 s, thin/1MiB 6.3 -> 5.5 s (means, n=10); also at 8 and 60 Mbit/s on fast (-1.7 to -3.3 s). No regression after Holm over 48 guard tests; 0 failed runs, 0 application-frame tracebacks.",
+  "Residual uncertainty, reported openly: post-seek resume with 16 MiB pieces is +0.2 to +0.7 s on the fast profile (raw one-sided p 0.0015-0.0035 at 8/60 Mbit/s, above the Holm threshold of ~0.001 for 48 tests) and mixed/4MiB +0.57 s (p 0.0035). Upstream (pb1-v1, pb0-v2) shows the same small seek cost with 16 MiB pieces, so this is the known price of the upstream start order, not a new defect.",
+  "C4 (edges alone) improved all 6 key cells but failed on one significant seek regression (fast/16MiB/8Mbit +1.22 s, p 0.0005); C2's upstream deadline formula keeps the seek cost lower."
+ ]
+}

@@ -1,0 +1,12 @@
+{
+  "fixture": "fixed-synthetic-argon2-auth-v1",
+  "argon2_version": "25.1.0",
+  "parameters": {
+    "time_cost": 3,
+    "memory_cost": 65536,
+    "parallelism": 4,
+    "hash_len": 32
+  },
+  "password_hash": "$argon2id$v=19$m=65536,t=3,p=4$c3ludGhldGljLXNhbHQwMQ$kTry/3ojWrlXmXOvgytqd+XBky+L/W9h1F++/bEHImE",
+  "password_hash_sha256": "c779c757055f048927607d654e013df81eb79438a8ff3b545b34374aac08ee81"
+}

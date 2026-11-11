@@ -1,0 +1,13 @@
+{
+ "id": "pb1-v1-assessment",
+ "protocol": "pb1-v1",
+ "recorded_at_utc": "2026-11-10T06:13:21.787498+00:00",
+ "kind": "descriptive reference, no gate",
+ "runs": 120,
+ "failed_runs": 0,
+ "observations": [
+  "At 8 and 60 Mbit/s upstream A starts faster than fork main C0 in every cell (e.g. fast/4MiB/8 3.7 vs 5.9 s, fast/16MiB/8 9.0 vs 13.2 s, thin/4MiB/8 5.0 vs 8.4 s, mixed/4MiB/8 4.4 vs 16.7 s medians), confirming the pb0-v2 finding at 30 Mbit/s for all three bitrates of the UX frame.",
+  "Post-seek resume with 16 MiB pieces is slower on A than on C0 in the fast profile (3.9-4.6 vs 3.1-3.4 s): the same trade-off as the upstream-like candidate C2.",
+  "60 Mbit/s exceeds the thin profile's line rate (descriptive only) and stalls the mixed profile on both versions."
+ ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "g15-slow-body-cancel-functional-v1",
+  "registered_utc": "2026-11-05T10:49:09.346351+00:00",
+  "scope": "Independent G15 before-state preparation.25s drip at0.5s intervals with20s HTTPX read timeout;caller cancel,external1s fixture timeout,queued semaphore waiter cancel.Each A/B/C functional only,not repeated timing or tuning.",
+  "resource": "Client2CPU0,1/1GiB,serverCPU15/256MiB,private internal network,no publishedports or outbound.",
+  "fixture_sha256": {
+    "metadata_sizes.py": "ae4df3ab93935cd8961f7efd36b5d8bd125c57d1a7d56d3858a9f0e5c896ed4c",
+    "probe.py": "a811e3d5196b00bcd2c0824823b4cc86f23aacd8d9fcd01fb8d20dc6b939b95b",
+    "server.py": "3ac4d17d221472be9c524636600e38fd56e54fba7abf89f3ef8e5315ac59a5af"
+  }
+}

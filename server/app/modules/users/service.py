@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from argon2 import PasswordHasher
 from fastapi import HTTPException, status
 
+from app.common.commit_actions import mark_stream_cache_dirty
 from app.modules.attribute_exclusions.models import AttributeExclusionModel
 from app.modules.attribute_exclusions.schemas.api import AttributeExclusionCreateRequest
 from app.modules.attribute_exclusions.schemas.internal import (
@@ -61,6 +62,9 @@ class UsersService:
             api_key=str(uuid.uuid4()),
             torrent_seed=payload.torrent_seed,
             enable_smart_filter=payload.enable_smart_filter,
+            enable_stream_deduplication=payload.enable_stream_deduplication,
+            enable_catalog_search=payload.enable_catalog_search,
+            enable_downloaded_marker=payload.enable_downloaded_marker,
         )
 
         return self._users_repository.create(user)
@@ -94,6 +98,7 @@ class UsersService:
         user = self.get_by_id(user_id)
 
         update_data = payload.model_dump(exclude_unset=True)
+        password_changed = "password" in update_data
 
         if "username" in update_data:
             self._check_exist_username(update_data["username"])
@@ -129,12 +134,19 @@ class UsersService:
         for key, value in update_data.items():
             setattr(user, key, value)
 
-        return self._users_repository.create(user)
+        result = self._users_repository.create(user)
+        if password_changed:
+            self._users_repository.bump_session_epoch(user_id)
+            self._users_repository.db.expire(user, ["session_epoch"])
+        mark_stream_cache_dirty(self._users_repository.db, user_id)
+        return result
 
     def regenerate_api_key(self, user_id: str) -> UserModel:
         user = self.get_by_id(user_id)
         user.api_key = str(uuid.uuid4())
-        return self._users_repository.create(user)
+        result = self._users_repository.create(user)
+        mark_stream_cache_dirty(self._users_repository.db, user_id)
+        return result
 
     def delete(self, user_id: str, current_user: UserModel) -> None:
         if user_id == current_user.id:
@@ -145,6 +157,7 @@ class UsersService:
 
         self.get_by_id(user_id)
         self._users_repository.delete(user_id)
+        mark_stream_cache_dirty(self._users_repository.db, user_id)
 
     def get_attributes(self, user_id: str) -> list["MediaAttributeModel"]:
         return self._media_attributes_service.find_list(

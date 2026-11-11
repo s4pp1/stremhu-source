@@ -1,0 +1,199 @@
+{
+  "fixture": "cr17a-cache-SQL-state-diagnostic-v5",
+  "is_measurement": false,
+  "rows": [
+    {
+      "state": "warm",
+      "concurrency": 1,
+      "sql_statements": 100,
+      "stage_formula_residual": 0,
+      "touch_updates": 0,
+      "cache_observations": {
+        "hit": 100,
+        "miss": 0,
+        "put": 0,
+        "provider": 0
+      },
+      "payload_hashes": [
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19",
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e"
+      ],
+      "result_counts": [
+        30,
+        100
+      ]
+    },
+    {
+      "state": "warm",
+      "concurrency": 4,
+      "sql_statements": 100,
+      "stage_formula_residual": 0,
+      "touch_updates": 0,
+      "cache_observations": {
+        "hit": 100,
+        "miss": 0,
+        "put": 0,
+        "provider": 0
+      },
+      "payload_hashes": [
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19",
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e"
+      ],
+      "result_counts": [
+        30,
+        100
+      ]
+    },
+    {
+      "state": "warm",
+      "concurrency": 8,
+      "sql_statements": 100,
+      "stage_formula_residual": 0,
+      "touch_updates": 0,
+      "cache_observations": {
+        "hit": 100,
+        "miss": 0,
+        "put": 0,
+        "provider": 0
+      },
+      "payload_hashes": [
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19",
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e"
+      ],
+      "result_counts": [
+        30,
+        100
+      ]
+    },
+    {
+      "state": "expired",
+      "concurrency": 1,
+      "sql_statements": 118,
+      "stage_formula_residual": 0,
+      "touch_updates": 0,
+      "cache_observations": {
+        "hit": 98,
+        "miss": 2,
+        "put": 2,
+        "provider": 2
+      },
+      "payload_hashes": [
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19",
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e"
+      ],
+      "result_counts": [
+        30,
+        100
+      ]
+    },
+    {
+      "state": "expired",
+      "concurrency": 4,
+      "sql_statements": 116,
+      "stage_formula_residual": 0,
+      "touch_updates": 0,
+      "cache_observations": {
+        "hit": 96,
+        "miss": 4,
+        "put": 2,
+        "provider": 1
+      },
+      "payload_hashes": [
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19",
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e"
+      ],
+      "result_counts": [
+        30,
+        100
+      ]
+    },
+    {
+      "state": "expired",
+      "concurrency": 8,
+      "sql_statements": 116,
+      "stage_formula_residual": 0,
+      "touch_updates": 0,
+      "cache_observations": {
+        "hit": 92,
+        "miss": 8,
+        "put": 2,
+        "provider": 1
+      },
+      "payload_hashes": [
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19",
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e"
+      ],
+      "result_counts": [
+        30,
+        100
+      ]
+    },
+    {
+      "state": "crossing",
+      "concurrency": 1,
+      "sql_statements": 118,
+      "stage_formula_residual": 0,
+      "touch_updates": 0,
+      "cache_observations": {
+        "hit": 98,
+        "miss": 2,
+        "put": 2,
+        "provider": 2
+      },
+      "payload_hashes": [
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19",
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e"
+      ],
+      "result_counts": [
+        30,
+        100
+      ]
+    },
+    {
+      "state": "crossing",
+      "concurrency": 4,
+      "sql_statements": 116,
+      "stage_formula_residual": 0,
+      "touch_updates": 0,
+      "cache_observations": {
+        "hit": 97,
+        "miss": 3,
+        "put": 2,
+        "provider": 1
+      },
+      "payload_hashes": [
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19",
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e"
+      ],
+      "result_counts": [
+        30,
+        100
+      ]
+    },
+    {
+      "state": "crossing",
+      "concurrency": 8,
+      "sql_statements": 116,
+      "stage_formula_residual": 0,
+      "touch_updates": 0,
+      "cache_observations": {
+        "hit": 92,
+        "miss": 8,
+        "put": 2,
+        "provider": 1
+      },
+      "payload_hashes": [
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19",
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e"
+      ],
+      "result_counts": [
+        30,
+        100
+      ]
+    }
+  ],
+  "scope": "Actual API-key auth/provider/fileDB/filter/sort. Only stream-cache clock is fixture-controlled: TTL60 retained,other clocks untouched. SQL diagnostic counts actual cache refills and shared provider factory starts separately; also stale-touch UPDATE. Candidate accounting100auth+7per-user-refill+2per-provider-execution+touch; residual recorded,not assumed. Semantic diagnostic,not performance measurement or production cachepolicy change.",
+  "protocol": "cr17a-cache-SQL-state-diagnostic-v5",
+  "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+  "source": "cr17a-after-v7-source"
+}

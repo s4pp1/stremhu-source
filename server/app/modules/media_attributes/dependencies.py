@@ -21,6 +21,6 @@ def create_media_attributes_service(db: Session) -> MediaAttributesService:
 
 
 def get_media_attributes_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> MediaAttributesService:
     return create_media_attributes_service(db)

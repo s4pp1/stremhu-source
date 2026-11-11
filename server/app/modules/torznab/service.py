@@ -1,8 +1,11 @@
+import asyncio
 from urllib.parse import parse_qsl, urlencode
 
+from app.common.log_safety import network_error_fields
 from app.common.logger import logger
 from app.common.schemas.internal import SeriesInfo
 from app.modules.settings.service import SettingsService
+from app.modules.stremio.tvdb_resolver import TvdbResolver, tvdb_resolver
 from app.modules.torrent_source_provider.schemas import TorrentSource
 from app.modules.torrent_source_provider.service import TorrentSourceProviderService
 from app.modules.torznab.constants import (
@@ -51,9 +54,11 @@ class TorznabService:
         self,
         settings_service: SettingsService,
         torrent_source_provider_service: TorrentSourceProviderService,
+        tvdb_resolver: TvdbResolver = tvdb_resolver,
     ):
         self._settings_service = settings_service
         self._torrent_source_provider_service = torrent_source_provider_service
+        self._tvdb_resolver = tvdb_resolver
 
     def feed_link(self, path: str, query: str = "") -> str:
         try:
@@ -70,7 +75,32 @@ class TorznabService:
         return f"{link}?{safe_query}" if safe_query else link
 
     async def search(self, query: TorznabQuery) -> tuple[list[FeedItem], int]:
-        if not query.imdb_id:
+        imdb_id = query.imdb_id
+        is_series = bool(
+            query.function is TorznabFunction.TV_SEARCH or query.season is not None
+        )
+
+        resolved_title: str | None = None
+
+        if not imdb_id and query.tvdb_id:
+            resolved_imdb, resolved_title = await self._tvdb_resolver.resolve_tvdb(
+                query.tvdb_id,
+                is_series=is_series,
+            )
+            if resolved_imdb:
+                imdb_id = resolved_imdb
+
+        if not imdb_id and query.tmdb_id:
+            resolved_imdb, resolved_title = await self._tvdb_resolver.resolve_tmdb(
+                query.tmdb_id,
+                is_series=is_series,
+            )
+            if resolved_imdb:
+                imdb_id = resolved_imdb
+
+        search_query = query.q or resolved_title
+
+        if not imdb_id and not search_query:
             return [], 0
 
         series_info = (
@@ -79,10 +109,53 @@ class TorznabService:
             else None
         )
 
-        (
-            candidates,
-            errors,
-        ) = await self._torrent_source_provider_service.find_by_imdb_id(query.imdb_id)
+        if imdb_id:
+            alternate_ids = await self._tvdb_resolver.get_alternate_imdb_ids(imdb_id)
+            all_imdb_ids = [imdb_id] + [aid for aid in alternate_ids if aid != imdb_id]
+
+            if len(all_imdb_ids) > 1:
+                # SP07: az automatizált kliensek (Sonarr/Radarr) régi trackerlistát nem kapnak.
+                results = await asyncio.gather(
+                    *(
+                        self._torrent_source_provider_service.find_by_imdb_id(
+                            iid, allow_stale=False
+                        )
+                        for iid in all_imdb_ids
+                    ),
+                    return_exceptions=True,
+                )
+                seen_keys: set[tuple[str, str]] = set()
+                candidates: list[TorrentSource] = []
+                errors: list[str] = []
+                for res in results:
+                    if isinstance(res, BaseException):
+                        errors.append(str(res))
+                        continue
+                    res_candidates, res_errors = res
+                    errors.extend(res_errors)
+                    for cand in res_candidates:
+                        key = (
+                            cand.indexer_torrent.indexer_account.indexer_id,
+                            cand.indexer_torrent.torrent_id,
+                        )
+                        if key not in seen_keys:
+                            seen_keys.add(key)
+                            candidates.append(cand)
+            else:
+                (
+                    candidates,
+                    errors,
+                ) = await self._torrent_source_provider_service.find_by_imdb_id(
+                    imdb_id, allow_stale=False
+                )
+        else:
+            assert search_query is not None
+            (
+                candidates,
+                errors,
+            ) = await self._torrent_source_provider_service.find_by_query(
+                search_query
+            )
 
         # Részleges hiba elfogadható, pl egyik szolgáltatónál outage van.
         # De ha az összes error-ral válaszol, akkor mi is.
@@ -202,9 +275,7 @@ class TorznabService:
                 items.append(build_feed_item(source, category))
             except Exception as error:
                 logger.warning(
-                    "Torznab: a(z) %s torrent kihagyva: %s",
-                    source.indexer_torrent.torrent_id,
-                    error,
+                    "operation=torznab-item %s", network_error_fields(error),
                 )
 
         return items

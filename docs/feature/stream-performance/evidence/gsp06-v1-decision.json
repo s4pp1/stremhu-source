@@ -1,0 +1,433 @@
+{
+ "protocol": "gsp06-v1",
+ "decision": "FAIL",
+ "improved": [
+  "t02:S1 cold p50",
+  "t10:S1 cold p50",
+  "t20:S1 warm mean steady_tech_enriched"
+ ],
+ "regressions": [],
+ "digest_mismatches": [
+  "t20:S1 ('warm', 0) C6 rep 0",
+  "t20:S1 ('warm', 1) C6 rep 0",
+  "t20:S1 ('warm', 2) C6 rep 0",
+  "t20:S1 ('warm', 3) C6 rep 0",
+  "t20:S1 ('warm', 4) C6 rep 0",
+  "t20:S1 ('warm', 5) C6 rep 0",
+  "t20:S1 ('warm', 6) C6 rep 0",
+  "t20:S1 ('warm', 7) C6 rep 0",
+  "t20:S1 ('warm', 8) C6 rep 0",
+  "t20:S1 ('warm', 9) C6 rep 0",
+  "t20:S1 ('warm', 10) C6 rep 0",
+  "t20:S1 ('warm', 11) C6 rep 0",
+  "t20:S1 ('warm', 12) C6 rep 0",
+  "t20:S1 ('warm', 13) C6 rep 0",
+  "t20:S1 ('warm', 14) C6 rep 0",
+  "t20:S1 ('warm', 15) C6 rep 0",
+  "t20:S1 ('warm', 16) C6 rep 0",
+  "t20:S1 ('warm', 17) C6 rep 0",
+  "t20:S1 ('warm', 18) C6 rep 0",
+  "t20:S1 ('warm', 19) C6 rep 0"
+ ],
+ "enrichment_mismatches": [],
+ "never_open_violations": [],
+ "tech_info_call_checks": {
+  "t02:S1": {
+   "extra_calls_per_cold_request": 0.0,
+   "within_limit": true
+  },
+  "t10:S1": {
+   "extra_calls_per_cold_request": 0.0,
+   "within_limit": true
+  },
+  "t20:S1": {
+   "extra_calls_per_cold_request": -4.0,
+   "within_limit": true
+  },
+  "t10f:S1": {
+   "extra_calls_per_cold_request": 0.0,
+   "within_limit": true
+  }
+ },
+ "failed_runs": [],
+ "tests": {
+  "improve t02:S1 cold p50": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 884.144,
+   "mean_candidate": 682.688,
+   "diff": -201.456,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "improve t10:S1 cold p50": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 1685.168,
+   "mean_candidate": 1472.101,
+   "diff": -213.066,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "improve t20:S1 warm mean steady_tech_enriched": {
+   "metric": "steady_tech_enriched",
+   "better": "higher",
+   "guard_margin": 0.0,
+   "mean_baseline": 0.0,
+   "mean_candidate": 4.0,
+   "diff": 4.0,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "guard t02:S1 cold p50": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 884.144,
+   "mean_candidate": 682.688,
+   "diff": -201.456,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "guard t02:S1 cold p95": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 915.584,
+   "mean_candidate": 714.141,
+   "diff": -201.443,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "guard t02:S1 warm p50": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 10.423,
+   "mean_candidate": 10.433,
+   "diff": 0.01,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 0.5556444355564444,
+   "p_regression_null": 1.0
+  },
+  "guard t02:S1 warm p95": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 11.283,
+   "mean_candidate": 11.25,
+   "diff": -0.033,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 0.42785721427857215,
+   "p_regression_null": 1.0
+  },
+  "guard t02:S1 cold mean steady_tech_enriched": {
+   "metric": "steady_tech_enriched",
+   "better": "higher",
+   "guard_margin": 0.0,
+   "mean_baseline": 4.0,
+   "mean_candidate": 4.0,
+   "diff": 0.0,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 1.0,
+   "p_regression_null": 1.0
+  },
+  "guard t02:S1 warm mean steady_tech_enriched": {
+   "metric": "steady_tech_enriched",
+   "better": "higher",
+   "guard_margin": 0.0,
+   "mean_baseline": 4.0,
+   "mean_candidate": 4.0,
+   "diff": 0.0,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 1.0,
+   "p_regression_null": 1.0
+  },
+  "guard t10:S1 cold p50": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 1685.168,
+   "mean_candidate": 1472.101,
+   "diff": -213.066,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "guard t10:S1 cold p95": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 1716.596,
+   "mean_candidate": 1503.177,
+   "diff": -213.419,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "guard t10:S1 warm p50": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 10.603,
+   "mean_candidate": 10.516,
+   "diff": -0.087,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 0.011998800119988001,
+   "p_regression_null": 1.0
+  },
+  "guard t10:S1 warm p95": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 11.494,
+   "mean_candidate": 11.345,
+   "diff": -0.149,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 0.1571842815718428,
+   "p_regression_null": 1.0
+  },
+  "guard t10:S1 cold mean steady_tech_enriched": {
+   "metric": "steady_tech_enriched",
+   "better": "higher",
+   "guard_margin": 0.0,
+   "mean_baseline": 4.0,
+   "mean_candidate": 4.0,
+   "diff": 0.0,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 1.0,
+   "p_regression_null": 1.0
+  },
+  "guard t10:S1 warm mean steady_tech_enriched": {
+   "metric": "steady_tech_enriched",
+   "better": "higher",
+   "guard_margin": 0.0,
+   "mean_baseline": 4.0,
+   "mean_candidate": 4.0,
+   "diff": 0.0,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 1.0,
+   "p_regression_null": 1.0
+  },
+  "guard t20:S1 cold p50": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 2185.042,
+   "mean_candidate": 1972.763,
+   "diff": -212.279,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "guard t20:S1 cold p95": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 2216.23,
+   "mean_candidate": 2003.818,
+   "diff": -212.413,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "guard t20:S1 warm p50": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 1513.013,
+   "mean_candidate": 10.628,
+   "diff": -1502.385,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "guard t20:S1 warm p95": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 1514.034,
+   "mean_candidate": 11.388,
+   "diff": -1502.646,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "guard t20:S1 cold mean steady_tech_enriched": {
+   "metric": "steady_tech_enriched",
+   "better": "higher",
+   "guard_margin": 0.0,
+   "mean_baseline": 0.0,
+   "mean_candidate": 0.0,
+   "diff": 0.0,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 1.0,
+   "p_regression_null": 1.0
+  },
+  "guard t20:S1 warm mean steady_tech_enriched": {
+   "metric": "steady_tech_enriched",
+   "better": "higher",
+   "guard_margin": 0.0,
+   "mean_baseline": 0.0,
+   "mean_candidate": 4.0,
+   "diff": 4.0,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "guard t10f:S1 cold p50": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 1685.548,
+   "mean_candidate": 1472.448,
+   "diff": -213.1,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "guard t10f:S1 cold p95": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 1716.618,
+   "mean_candidate": 1503.635,
+   "diff": -212.983,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "guard t10f:S1 warm p50": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 10.873,
+   "mean_candidate": 10.81,
+   "diff": -0.063,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 0.2585741425857414,
+   "p_regression_null": 1.0
+  },
+  "guard t10f:S1 warm p95": {
+   "metric": "steady_latency_ms",
+   "better": "lower",
+   "guard_margin": 5.0,
+   "mean_baseline": 1012.719,
+   "mean_candidate": 1009.663,
+   "diff": -3.056,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 9.999000099990002e-05,
+   "p_regression_null": 1.0
+  },
+  "guard t10f:S1 cold mean steady_tech_enriched": {
+   "metric": "steady_tech_enriched",
+   "better": "higher",
+   "guard_margin": 0.0,
+   "mean_baseline": 3.6,
+   "mean_candidate": 3.6,
+   "diff": 0.0,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 0.5084491550844915,
+   "p_regression_null": 0.5068493150684932
+  },
+  "guard t10f:S1 warm mean steady_tech_enriched": {
+   "metric": "steady_tech_enriched",
+   "better": "higher",
+   "guard_margin": 0.0,
+   "mean_baseline": 3.964,
+   "mean_candidate": 3.964,
+   "diff": 0.0,
+   "n": [
+    10,
+    10
+   ],
+   "p_improvement_null": 0.5222477752224778,
+   "p_regression_null": 0.521947805219478
+  }
+ }
+}

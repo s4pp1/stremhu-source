@@ -1,0 +1,178 @@
+{
+ "id": "gsp02-v2-assessment",
+ "protocol": "gsp02-v2",
+ "recorded_at_utc": "2026-11-09T09:53:59.068521+00:00",
+ "decision": "FAIL",
+ "consequence": "Both policies stay legacy. The FAIL is kept; a further attempt is a new registered version.",
+ "per_candidate": {
+  "C1": {
+   "pass": false,
+   "improved_key_cells_both_series": [
+    "fast/4MiB/30Mbit",
+    "fast/16MiB/30Mbit",
+    "thin/4MiB/30Mbit",
+    "thin/16MiB/30Mbit"
+   ],
+   "improved_count": 4,
+   "improved_required": 4,
+   "regressions": [
+    [
+     "fast/16MiB/30Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "fast/16MiB/30Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "fast/16MiB/60Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "fast/16MiB/8Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "fast/1MiB/30Mbit",
+     "series0",
+     "start.time_to_start_s"
+    ],
+    [
+     "fast/1MiB/30Mbit",
+     "series0",
+     "start.ttfb_s"
+    ],
+    [
+     "fast/1MiB/30Mbit",
+     "series1",
+     "start.ttfb_s"
+    ],
+    [
+     "thin/16MiB/30Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "thin/16MiB/30Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "thin/1MiB/30Mbit",
+     "series0",
+     "start.time_to_start_s"
+    ],
+    [
+     "thin/1MiB/30Mbit",
+     "series0",
+     "start.ttfb_s"
+    ],
+    [
+     "thin/1MiB/30Mbit",
+     "series1",
+     "start.time_to_start_s"
+    ],
+    [
+     "thin/1MiB/30Mbit",
+     "series1",
+     "start.ttfb_s"
+    ]
+   ],
+   "failed_runs": {
+    "C0": 0,
+    "C1": 0
+   },
+   "tracebacks_total": {
+    "C0": 4,
+    "C1": 2
+   },
+   "total_primary_gain_s": 22.956
+  },
+  "C2": {
+   "pass": false,
+   "improved_key_cells_both_series": [
+    "fast/4MiB/30Mbit",
+    "fast/16MiB/30Mbit",
+    "thin/1MiB/30Mbit",
+    "thin/4MiB/30Mbit",
+    "thin/16MiB/30Mbit"
+   ],
+   "improved_count": 5,
+   "improved_required": 4,
+   "regressions": [
+    [
+     "fast/16MiB/30Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "fast/16MiB/60Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "fast/16MiB/8Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "fast/16MiB/8Mbit",
+     "series1",
+     "start.ttfb_s"
+    ],
+    [
+     "fast/16MiB/8Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "mixed/4MiB/30Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "mixed/4MiB/30Mbit",
+     "series1",
+     "start.stall_s"
+    ],
+    [
+     "thin/16MiB/30Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "thin/16MiB/30Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "thin/4MiB/30Mbit",
+     "series0",
+     "seek.resume_s"
+    ]
+   ],
+   "failed_runs": {
+    "C0": 0,
+    "C2": 0
+   },
+   "tracebacks_total": {
+    "C0": 4,
+    "C2": 8
+   },
+   "total_primary_gain_s": 27.37
+  }
+ },
+ "analysis": [
+  "Start-up: C2 (upstream-like: first+last piece urgent, 0 / 2000+1000*d ms) improves time-to-start beyond noise in both series in 5 of 6 key cells and is not worse at 1 MiB pieces: fast 4 MiB 6.8 -> 4.8 s, fast 16 MiB 13.2 -> 9.1 s, thin 1 MiB 6.35 -> 5.47 s, thin 4 MiB 9.6 -> 6.7 s, thin 16 MiB 14.5 -> 11.25 s; also at 8 and 60 Mbit/s on fast. C1 (graded) repeats its v1 regression at 1 MiB pieces (TTFB +0.3-0.4 s).",
+  "Blocking regression for both candidates: seek resume with 16 MiB pieces, thin 3.46 -> 6.8-8.2 s (C2) / 8.5-9.0 s (C1), fast +0.4-1.5 s. Legacy (C0) fetches the first post-seek 16 MiB piece in ~3.4 s at 5 MB/s, i.e. at the line-rate minimum; the candidates take about twice as long, so bandwidth is shared with something else.",
+  "Not the priority leak: C2 downloads less unused data than C0 (thin/16MiB 55 vs 88 MB).",
+  "Working hypothesis (static, unmeasured): at a seek the previous stream may still wait for an undownloaded piece and keep it urgent (deadline 0) until it notices the disconnect; with the candidates' looser window deadlines that piece is more often incomplete at seek time. To be measured before any v3.",
+  "Other regressions are at noise level (e.g. fast/16MiB/8Mbit TTFB +0.056 s with J 0.05 s) or in the noisy mixed guard cells.",
+  "Tracebacks (raw logs not kept): C0 4, C1 2, C2 8 in 120 runs each, also present in C0: the same rare fork defect as in pb0-v2, not candidate-specific; diagnosis pending."
+ ],
+ "next": "Diagnose the seek slowdown (stream lifetime and piece deadlines around a seek) and the traceback source with instrumented diagnostic runs; only then a gsp02-v3 candidate."
+}

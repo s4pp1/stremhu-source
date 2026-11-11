@@ -40,6 +40,8 @@ class TorznabAttrName:
     LANGUAGE = "language"
     IMDB = "imdb"
     IMDB_ID = "imdbid"
+    TVDB_ID = "tvdbid"
+    TMDB_ID = "tmdbid"
 
 
 UNIMPLEMENTED_FUNCTIONS = frozenset(
@@ -61,15 +63,15 @@ UNIMPLEMENTED_FUNCTIONS = frozenset(
 )
 
 # A paraméter nélküli `t=search` a legfrissebb találatok listáját kérné (RSS mód),
-# ilyenünk viszont (egyelőre) nincs: a Stremhu csak IMDb azonosítóra tud keresni.
-SEARCH_AVAILABLE = False
-SEARCH_SUPPORTED_PARAMS = "imdbid"
+# ilyenünk nincs: q, imdbid és tmdbid alapú keresést támogatunk.
+SEARCH_AVAILABLE = True
+SEARCH_SUPPORTED_PARAMS = "q,imdbid,tmdbid"
 
 TV_SEARCH_AVAILABLE = True
-TV_SEARCH_SUPPORTED_PARAMS = "imdbid,season,ep"
+TV_SEARCH_SUPPORTED_PARAMS = "q,imdbid,tvdbid,tmdbid,season,ep"
 
 MOVIE_SEARCH_AVAILABLE = True
-MOVIE_SEARCH_SUPPORTED_PARAMS = "imdbid"
+MOVIE_SEARCH_SUPPORTED_PARAMS = "q,imdbid,tmdbid"
 
 
 class Subcategory(NamedTuple):

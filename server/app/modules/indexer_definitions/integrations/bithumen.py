@@ -132,12 +132,10 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
             # IMDB
             imdb_node = cols[1].css_first('a[href*="www.imdb.com/title/"]')
             imdb_url = imdb_node.attributes.get("href") if imdb_node else None
-
-            if not imdb_url:
-                continue
-
-            imdb_id_parts = imdb_url.rstrip("/").split("/")
-            imdb_id = imdb_id_parts[-1] if len(imdb_id_parts) >= 4 else ""
+            imdb_id_parts = imdb_url.rstrip("/").split("/") if imdb_url else []
+            row_imdb_id = (
+                imdb_id_parts[-1] if len(imdb_id_parts) >= 4 else None
+            )
 
             # Torrent ID
             torrent_id_node = cols[1].css_first('a[href*="details.php?id="]')
@@ -157,7 +155,7 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
                     torrent_id=torrent_id,
                     download_url=download_url,
                     seeders=int(seeders) if seeders.isdigit() else 0,
-                    imdb_id=imdb_id,
+                    imdb_id=row_imdb_id,
                     attribute_ids=[
                         self._resolve_language(category_id),
                         self._resolve_resolution(category_id),
@@ -181,6 +179,14 @@ class BithumenIndexerDefinition(BaseIndexerDefinition):
             torrents=torrents,
             next_page=current_page + 1 if has_next_page else None,
         )
+
+    async def _fetch_torrents_by_query(
+        self,
+        query: str,
+        page: int | None = None,
+        media_type: str | None = None,
+    ) -> IndexerDefinitionFindTorrentsResult:
+        return await self._fetch_torrents(query, page)
 
     async def _fetch_torrent(
         self,

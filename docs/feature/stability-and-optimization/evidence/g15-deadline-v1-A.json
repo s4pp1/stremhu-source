@@ -1,0 +1,59 @@
+{
+  "fixture": "g15-slow-body-cancel-functional-v1",
+  "is_measurement": false,
+  "rows": [
+    {
+      "case": "read-timeout-is-not-total-deadline",
+      "client_timeout_seconds": 20,
+      "elapsed_seconds": 25.01190283699998,
+      "bytes": 51200,
+      "stats": {
+        "started": 1,
+        "active": 0,
+        "completed": 1,
+        "closed_early": 0,
+        "sent_bytes": 51200
+      }
+    },
+    {
+      "case": "caller-cancel",
+      "stats": {
+        "started": 1,
+        "active": 0,
+        "completed": 0,
+        "closed_early": 1,
+        "sent_bytes": 2048
+      },
+      "subsequent_native_valid_download": true,
+      "semaphore_available": 1
+    },
+    {
+      "case": "external-timeout",
+      "stats": {
+        "started": 1,
+        "active": 0,
+        "completed": 0,
+        "closed_early": 1,
+        "sent_bytes": 3072
+      },
+      "subsequent_native_valid_download": true,
+      "semaphore_available": 1
+    },
+    {
+      "case": "queued-waiter-cancel",
+      "stats": {
+        "started": 1,
+        "active": 0,
+        "completed": 0,
+        "closed_early": 1,
+        "sent_bytes": 2048
+      },
+      "subsequent_native_valid_download": true,
+      "semaphore_available": 1
+    }
+  ],
+  "client_closed": true,
+  "scope": "Actual IndexerClient, private plaintext tracker, no native parser for deliberately invalid drip bytes. Three functional observations per A/B/C; timings document deadline behavior only, not performance acceptance. External1s timeout is a fixture intervention, not a proposed production limit. No application policy change.",
+  "image": "s4pp1/stremhu-source@sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+  "protocol": "g15-slow-body-cancel-functional-v1"
+}

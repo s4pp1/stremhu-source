@@ -10,6 +10,7 @@ class MediaAttributeKey:
     # Language
     HUN = "hun"
     ENG = "eng"
+    JAP = "jap"
 
     # Video Quality
     DV = "dolby-vision"

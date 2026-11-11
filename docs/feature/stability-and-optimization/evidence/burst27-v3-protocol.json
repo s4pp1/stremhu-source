@@ -1,0 +1,91 @@
+{
+ "id": "burst27-v3",
+ "supersedes": "burst27-v1 (never run; tmpfs DB charged to the memory limit) and burst27-v2 (never run; its source 87dfeba carried the CR15a v1 read path that failed cr15a-after-v1)",
+ "registered_at_utc": "2026-11-07T19:34:15.800922+00:00",
+ "status": "Descriptive packet 27 input (baseline + noise), registered before any measured run. Selects no parameter.",
+ "purpose": "Burst behaviour of the unchanged source-search path before CR15/c: latency, memory, task and retention peaks for N simultaneous unique-IMDb searches. Implementation plan 2.3/Q6: baseline+noise first; the UX/SLO frame (deadline, RAM budget, minimum admitted parallelism) is fixed in writing by the user before any packet 27 gate measurement and never fitted afterwards.",
+ "source": {
+  "commit": "f90e752",
+  "branch": "wip/cr15b-cookie-scope-v2 (CR15a v2 714afa2 + 26a, landing base of packet 27)",
+  "manifest_sha256": "48755d34291deb1c92cdf4245a0ceb6cc5dcf07956d594b031d9681f5e120053",
+  "files": 269
+ },
+ "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+ "fixture_sha256": {
+  "server.py": "15f0ba027699f819ed4f633059a9e67e61408b70f52ba06d19a0fb320b7f7ae5",
+  "harness.py": "5ffdef098139646413843a77412620a1101e589a845192faff64dd225b566154",
+  "metadata_sizes.py": "ae4df3ab93935cd8961f7efd36b5d8bd125c57d1a7d56d3858a9f0e5c896ed4c"
+ },
+ "controller_sha256": "d7f2aac35c02f896e3c4baaadc7907876380267143b0f7b4902d51ab7376952c",
+ "path": "TorrentSourceProviderService.find_by_imdb_id -> IndexerSearchService (12.5 s search timeout, tracker cache) -> shared synthetic BaseIndexerDefinition adapter (default semaphore 5, real IndexerClient, bounded download 48 MiB) -> _sync_torrent_files gather -> create_many (native parse, SQLite WAL on tmpfs). Only the adapter search parser is synthetic (one JSON page, 40 candidates).",
+ "fixture": {
+  "search_delay_s": 0.3,
+  "ttfb_s": 0.08,
+  "rate_bytes_per_s_per_connection": 8000000,
+  "candidates_per_search": 40,
+  "mixes": {
+   "typical": "index 0 season-box (~1.36 MB, 1000 files), 1-5 remux (~410 KB), 6-15 pack (~104 KB), 16-39 movie (~51 KB); ~5.68 MB/search",
+   "heavy": "typical, but every index divisible by 8 is giant-valid (~21.5 MB, 10000 files, natively accepted): stress profile, ~111.5 MB/search"
+  }
+ },
+ "resources": {
+  "client": "2 CPU, cpuset 0,1 (one physical core), 1 GiB memory, no swap; SQLite DB on a fresh anonymous Docker volume per run (page cache, reclaimable)",
+  "server": "1 CPU, cpuset 6, 512 MiB",
+  "coexisting": "G04 gate on cpuset 12-14 may still run; G03/CR15a must have finished before the first measured run"
+ },
+ "cells": [
+  [
+   "typical",
+   1
+  ],
+  [
+   "typical",
+   2
+  ],
+  [
+   "typical",
+   4
+  ],
+  [
+   "typical",
+   8
+  ],
+  [
+   "typical",
+   16
+  ],
+  [
+   "typical",
+   32
+  ],
+  [
+   "heavy",
+   1
+  ],
+  [
+   "heavy",
+   2
+  ],
+  [
+   "heavy",
+   4
+  ]
+ ],
+ "repetitions": 5,
+ "order": "cell order rotated by one position per repetition; one fresh client and server process per run",
+ "warmup": "one unsampled typical-mix search per process before the burst; burst starts all N searches on one event",
+ "metrics": [
+  "per-search wall ms (p50/p95/max per run)",
+  "cgroup anon peak delta over the post-warm-up level (20 ms sampler)",
+  "OOM kill / exit state",
+  "asyncio task peak",
+  "event-loop lag max",
+  "download in-flight peak (client)",
+  "downloaded-but-not-stored bytes peak",
+  "store (create_many) call time max",
+  "server download concurrency peak",
+  "result correctness: 40 sources, 0 indexer errors, 40 unique info hashes per search"
+ ],
+ "summary_rule": "Per cell: median and range over repetitions of run p50/p95/max and anon peak delta; OOM count. Noise: per cell the spread (max-min) of the run p95 over repetitions is reported as the noise estimate. No pass/fail; no parameter is chosen here.",
+ "smoke_note": "v1 wiring smoke and diagnostics, including heavy N=2 at 4 GiB (anon peak +572 MiB, memory.current +876 MiB incl. tmpfs DB) and a v2 volume-DB wiring diagnostic preceded registration and are not data."
+}

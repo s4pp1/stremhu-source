@@ -42,8 +42,15 @@ class FakeTorrentSourceProviderService:
     def __init__(self, sources: list[TorrentSource]):
         self._sources = sources
 
-    async def find_by_imdb_id(self, imdb_id: str):
+    async def find_by_imdb_id(self, imdb_id: str, allow_stale: bool = True):
         _ = imdb_id
+        # SP07: a torznab-kliensek régi trackerlistát nem kapnak (kikapcsolt SP07-nél no-op).
+        assert allow_stale is False
+
+        return self._sources, []
+
+    async def find_by_query(self, query: str):
+        _ = query
 
         return self._sources, []
 
@@ -143,3 +150,13 @@ def test_tv_search_feed(series_client: TestClient, snapshot: SnapshotAssertion):
 
     assert response.status_code == status.HTTP_200_OK
     assert response.text == snapshot
+
+
+def test_search_with_q(movie_client: TestClient):
+    response = movie_client.get(
+        f"/api/torznab/api?t=search&q=Teszt.Film&apikey={API_KEY}"
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert "Teszt.Film" in response.text
+

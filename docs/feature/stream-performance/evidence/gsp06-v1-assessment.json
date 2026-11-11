@@ -1,0 +1,56 @@
+{
+ "id": "gsp06-v1-assessment",
+ "protocol": "gsp06-v1",
+ "recorded_at_utc": "2026-11-10T11:26:51.799704+00:00",
+ "decision": "FAIL",
+ "consequence": "FAIL under the registered rule: tech_info_prefetch stays False. The only failed check is the identical-source-digest hard check; a v2 with a torrent-identity source check is registered before any v2 run.",
+ "checks": {
+  "improved": [
+   "t02:S1 cold p50",
+   "t10:S1 cold p50",
+   "t20:S1 warm mean steady_tech_enriched"
+  ],
+  "regressions": [],
+  "digest_mismatches_total": "see decision (capped list); per variant below",
+  "enrichment_mismatches": 0,
+  "tech_info_call_checks": {
+   "t02:S1": {
+    "extra_calls_per_cold_request": 0.0,
+    "within_limit": true
+   },
+   "t10:S1": {
+    "extra_calls_per_cold_request": 0.0,
+    "within_limit": true
+   },
+   "t20:S1": {
+    "extra_calls_per_cold_request": -4.0,
+    "within_limit": true
+   },
+   "t10f:S1": {
+    "extra_calls_per_cold_request": 0.0,
+    "within_limit": true
+   }
+  },
+  "failed_runs": [],
+  "runs": 80,
+  "external_http_attempts": 0
+ },
+ "source_digest_diagnosis": {
+  "indices_with_more_than_one_source_digest": {
+   "t10f cold": 23,
+   "t10f warm": 7,
+   "t20 warm": 24
+  },
+  "source_digest_determined_by_rendered_streams": true,
+  "sources_by_tracker_everywhere": [
+   "{\"sp-a\": 4, \"sp-b\": 4, \"sp-c\": 4}"
+  ]
+ },
+ "root_cause": "The harness's source_digest hashes the Stremio behaviorHints.filename of each playable stream; stremio/schemas.py _build_behavior_filename appends the stream's media attribute ids, which Tech Info enrichment adds. So the digest changes exactly where enrichment differs: t20 warm (C0 never enriched, C6 enriched from the background-filled cache) and t10f (failure draws differ per repetition seed, in both arms). Every request of every run returned the same 12 torrents (4 per tracker), and the digest is a function of the rendered streams in every (variant, kind, index). The check conflated attributes with source identity; it is a harness defect, not a product difference.",
+ "analysis": [
+  "Improvements significant after Holm: t02 cold steady p50 884 -> 683 ms, t10 1685 -> 1472 ms, t20 warm enriched streams 0.0 -> 4.0 (all one-sided p 0.0001).",
+  "No guard regression after Holm over 24 tests: cold is ~0.2 s faster in every variant (t20 2185 -> 1973 ms, t10f 1686 -> 1472 ms); t20 warm 1513 -> 10.6 ms; enriched streams equal or higher everywhere; rendered streams identical in t02 and t10.",
+  "Tech Info calls per cold request: equal in t02/t10/t10f, t20 8.0 -> 4.0 (legacy refetches what it cancelled).",
+  "FAIL nevertheless, by the registered identical-source check; see root_cause. The result is kept; gsp06-v2 repeats the design with the source check on torrent identity (behaviorHints.bingeGroup = indexer-torrent id)."
+ ]
+}

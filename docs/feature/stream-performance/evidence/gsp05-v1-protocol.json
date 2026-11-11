@@ -1,0 +1,162 @@
+{
+ "id": "gsp05-v1",
+ "registered_at_utc": "2026-11-10T06:28:30.999161+00:00",
+ "status": "Gate GSP05 (SP05/b tracker circuit breaker), registered before any measured run. Derived from the session draft drafts/gsp05-draft.json (harness parameters unchanged); the draft's median/J rule is replaced, before any run, by pooled means with a seeded bootstrap and Holm correction because gsp02-v1..v3 showed the median/J rule under-estimates noise. Fixed; a new attempt is a new version.",
+ "item": "SP05/b: C0 = legacy (indexer_breaker_threshold 0) vs C5 = candidate (threshold 2, cooldown 120 s doubling to 600 s; UX frame row 4).",
+ "source": {
+  "commit": "e61ab390c1ace840d21eff571df0f667ce4b0d26",
+  "server_app_manifest_sha256": "981cecbec6d79a3a0627e4b57df214a6142d6a3ae6404e2e5a5954b4bf5c7267",
+  "server_app_files": 270,
+  "manifest_method": "sha256 over 'path:git-blob-id' lines of git ls-tree -r HEAD server/app",
+  "candidate_contents": "feature/stream-performance after merging SP05/b and SP06/b (both switched off by default) and the C2 default (5c14f1e); the harness sets the breaker policy in-process"
+ },
+ "image": {
+  "tag": "stremhu-source:sp-cand-e61ab39",
+  "id": "sha256:721add08c103d85ffecd0b5c1f5f0b0f942f3015ecd7e7ff0be08817b6a128fe"
+ },
+ "harness": {
+  "what_is_real": "API-key/DB auth, Stremio/provider/repository path, IndexerSearchService (per-tracker timeout, tracker cache, SP05/b breaker), shared source search (singleflight, 15 s deadline, .torrent download/store), Tech Info enrichment, filter/sort/serialization.",
+  "what_is_synthetic": "tracker adapters (per-indexer latency, timeout, connection error, flapping), .torrent download latency, nCore-like Tech Info stub. No real tracker, account or network; external HTTP is blocked and counted.",
+  "sha256": {
+   "scripts/benchmark_sp_search.py": "b00768a93370c54f23f0165777c47eebe5e4dbe5c67c4962721a9933f1a108c0",
+   "scripts/fixtures/synthetic_torrent.py": "49d3640d7c9e105094ddccde829e5a301219089988f4a480fa7cd3363193e87c",
+   "scripts/run_sp_search_gate.py": "2a3e5a1f615dd7b3c940f0d490261361be2865bed346c3250d3317eb68b60b92",
+   "scripts/decide_sp_search_gate.py": "8a619e514718b2133b2be59f9cc93236427fe1947a2e330fdf9792e068499b20"
+  }
+ },
+ "plan_sha256": "26637935970c504723826a61d7563ef7da62738e0f2606cb795c52aea1bda1f7",
+ "plan": {
+  "image": "stremhu-source:sp-cand-e61ab39",
+  "arms": {
+   "C0": "legacy",
+   "C5": "candidate"
+  },
+  "series": 2,
+  "reps_per_series": 5,
+  "harness_args": [
+   "--scenarios",
+   "S1,S2,S3,S4",
+   "--requests",
+   "24",
+   "--interval",
+   "10",
+   "--time-scale",
+   "0.25",
+   "--trackers",
+   "3",
+   "--results-per-tracker",
+   "4",
+   "--latency",
+   "0.4",
+   "--jitter",
+   "0.25",
+   "--slow-latency",
+   "8",
+   "--failure-mode",
+   "timeout",
+   "--flap-down",
+   "90",
+   "--flap-up",
+   "90",
+   "--download-latency",
+   "0.2",
+   "--tech-info-latency",
+   "0.2",
+   "--tech-info-failure-rate",
+   "0",
+   "--breaker-threshold",
+   "2",
+   "--breaker-cooldown",
+   "120",
+   "--breaker-cooldown-max",
+   "600",
+   "--steady-from",
+   "2",
+   "--seed",
+   "20261109"
+  ],
+  "cpuset": "0,1",
+  "cpus": 2,
+  "memory": "1g"
+ },
+ "runner": "scripts/run_sp_search_gate.py: one fresh --network none container per run (cpuset 0,1, 2 CPU, 1 GiB), arms rotated per repetition, sequential; 2 series x 5 repetitions per arm.",
+ "time_scale_note": "0.25 scales every duration (12.5 s timeout -> 3.125 s, 15 s deadline -> 3.75 s, cooldowns, latencies, interval, flap periods) except the product's fixed 1.5 s Tech Info budget; reported numbers are unscaled. Estimated wall time ~6 min per legacy arm and ~4 min per candidate arm for S1-S4, ~20 min per repetition incl. container start, ~3.5 h for 2 x 5 repetitions.",
+ "decision_rule": {
+  "machine_rule": "scripts/decide_sp_search_gate.py (sha256 above)",
+  "baseline": "C0",
+  "candidate": "C5",
+  "statistic": "per-run steady-window latency p50/p95 (ms, unscaled); pooled n = 10 runs per arm; difference of means; 10 000 bootstrap resamples, seed 20261110; one-sided p-values; Holm per family at alpha 0.05",
+  "improve": [
+   [
+    "S2",
+    "cold",
+    "p50"
+   ]
+  ],
+  "guard": [
+   [
+    "S1",
+    "cold",
+    "p50"
+   ],
+   [
+    "S1",
+    "cold",
+    "p95"
+   ],
+   [
+    "S1",
+    "warm",
+    "p50"
+   ],
+   [
+    "S1",
+    "warm",
+    "p95"
+   ],
+   [
+    "S3",
+    "cold",
+    "p50"
+   ],
+   [
+    "S3",
+    "cold",
+    "p95"
+   ],
+   [
+    "S3",
+    "warm",
+    "p50"
+   ],
+   [
+    "S3",
+    "warm",
+    "p95"
+   ]
+  ],
+  "identical_sources": [
+   "S1",
+   "S3"
+  ],
+  "never_open": [
+   "S3"
+  ],
+  "alpha": 0.05,
+  "resamples": 10000,
+  "seed": 20261110,
+  "pass_if_all": [
+   "S2 cold steady p50 improves (H0 diff >= 0 rejected)",
+   "no S1/S3 guard regression after Holm over 8 tests",
+   "identical per-request source digests in S1 and S3 across all runs of both arms",
+   "the candidate's breaker never opens in S3 (slow but answering)",
+   "no failed run"
+  ],
+  "descriptive_only": [
+   "S4 flapping",
+   "S2 subject search calls per minute",
+   "cpu_seconds"
+  ],
+  "otherwise": "FAIL: indexer_breaker_threshold stays 0."
+ }
+}

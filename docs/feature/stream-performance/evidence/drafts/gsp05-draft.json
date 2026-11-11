@@ -1,0 +1,134 @@
+{
+ "id": "gsp05-draft",
+ "registered_at_utc": null,
+ "status": "UNREGISTERED DRAFT, not a gate protocol: no measured run may cite it and no decision may rest on it. Registration = review by the main session/user, then a copy to evidence/gsp05-v1-protocol.json with source commit, server/app manifest, image ids, harness sha256 and plan sha256 filled in, committed before the first measured run. Every parameter below is a proposal.",
+ "item": "SP05/b tracker circuit breaker. C0 = legacy (indexer_breaker_threshold 0, today's behaviour); C5 = candidate (threshold 2, cooldown 120 s, doubling up to 600 s; UX/SLO frame row 4, user decision 2026-11-09).",
+ "plan_reference": [
+  "docs/feature/stream-performance/implementation-plan.md#sp05 (GSP05 kapu)",
+  "docs/feature/stream-performance/implementation-plan.md#doc-23-meroeszkozok (H2)",
+  "docs/feature/stream-performance/implementation-plan.md#doc-24-kozos-meresi-protokoll-es-kapu",
+  "docs/feature/stream-performance.md#doc-ux-slo-keret (row 4)"
+ ],
+ "source": {
+  "commit": "TBD at registration",
+  "server_app_manifest_sha256": "TBD at registration",
+  "manifest_method": "sha256 over 'path:git-blob-id' lines of git ls-tree -r HEAD server/app (as gsp02-v4)",
+  "candidate_contents": "feature/stream-performance + SP05/b (IndexerHealth in server/app/modules/indexers/search.py, config indexer_breaker_*; default 0 = legacy)."
+ },
+ "harness": {
+  "script": "scripts/benchmark_sp_search.py",
+  "fixtures": [
+   "scripts/fixtures/synthetic_torrent.py"
+  ],
+  "sha256": "TBD at registration",
+  "draft_written_against_sha256": {
+   "scripts/benchmark_sp_search.py": "b00768a93370c54f23f0165777c47eebe5e4dbe5c67c4962721a9933f1a108c0",
+   "scripts/fixtures/synthetic_torrent.py": "49d3640d7c9e105094ddccde829e5a301219089988f4a480fa7cd3363193e87c"
+  },
+  "what_is_real": "API-key/DB auth, Stremio/provider/repository path, IndexerSearchService (per-tracker timeout, tracker cache, SP05/b breaker), shared source search (singleflight, 15 s deadline, .torrent download/store), Tech Info enrichment, filter/sort/serialization.",
+  "what_is_synthetic": "tracker adapters (per-indexer latency, timeout, connection error, flapping), .torrent download latency, nCore-like Tech Info stub. No real tracker, account or network; external HTTP is blocked and counted."
+ },
+ "arms": {
+  "C0a": {
+   "harness_policy": "legacy",
+   "equivalent_env": {
+    "INDEXER_BREAKER_THRESHOLD": "0"
+   },
+   "role": "baseline series member 1"
+  },
+  "C0b": {
+   "harness_policy": "legacy",
+   "equivalent_env": {
+    "INDEXER_BREAKER_THRESHOLD": "0"
+   },
+   "role": "baseline series member 2 (noise J)"
+  },
+  "C5": {
+   "harness_policy": "candidate",
+   "equivalent_env": {
+    "INDEXER_BREAKER_THRESHOLD": "2",
+    "INDEXER_BREAKER_COOLDOWN_SECONDS": "120",
+    "INDEXER_BREAKER_COOLDOWN_MAX_SECONDS": "600"
+   },
+   "role": "candidate"
+  },
+  "switch_note": "The harness applies the policy in-process (--policies legacy|candidate) on the same C image; the env column is the equivalent production setting.",
+  "A_B_references": "Descriptive only, proposal N/A: upstream and fork main lack the SP05/a timeout constant, so the harness refuses time scaling there and would need --time-scale 1 (see open_questions)."
+ },
+ "plan": {
+  "runner": "TBD by the gate runner: inside the C image, fresh disposable container and volume per run, 2 CPU / 1 GiB (as burst27/gsp02), sequential arms, order rotated per repetition (C0a,C5,C0b / C5,C0b,C0a / C0b,C0a,C5 ...).",
+  "series": 2,
+  "reps_per_series": 5,
+  "harness_args": [
+   "--scenarios", "S1,S2,S3,S4",
+   "--requests", "24",
+   "--interval", "10",
+   "--time-scale", "0.25",
+   "--trackers", "3",
+   "--results-per-tracker", "4",
+   "--latency", "0.4",
+   "--jitter", "0.25",
+   "--slow-latency", "8",
+   "--failure-mode", "timeout",
+   "--flap-down", "90",
+   "--flap-up", "90",
+   "--download-latency", "0.2",
+   "--tech-info-latency", "0.2",
+   "--tech-info-failure-rate", "0",
+   "--breaker-threshold", "2",
+   "--breaker-cooldown", "120",
+   "--breaker-cooldown-max", "600",
+   "--steady-from", "2",
+   "--seed", "20261109"
+  ],
+  "cold_warm": "cold = fresh IMDb id per request (tracker cache, stored .torrent, stream response cache all cold); warm = same id right after, user's stream response cache invalidated. Reported separately; no warm-up request is part of a sample.",
+  "time_scale_note": "0.25 scales every duration (12.5 s timeout -> 3.125 s, 15 s deadline -> 3.75 s, cooldowns, latencies, interval, flap periods) except the product's fixed 1.5 s Tech Info budget; reported numbers are unscaled. Estimated wall time ~6 min per legacy arm and ~4 min per candidate arm for S1-S4, ~20 min per repetition incl. container start, ~3.5 h for 2 x 5 repetitions."
+ },
+ "metrics": [
+  "runs[].cold.latency_ms.{p50,p95}",
+  "runs[].cold.steady_latency_ms.{p50,p95}",
+  "runs[].warm.steady_latency_ms.{p50,p95}",
+  "runs[].{cold,warm}.sources / steady_sources / healthy_sources",
+  "runs[].requests[].source_digest (per scenario, kind, index)",
+  "runs[].{cold,warm}.partial_rate / steady_partial_rate",
+  "runs[].{cold,warm}.skipped_rate / timeout_error_rate",
+  "runs[].subject_requests.search_calls_per_minute",
+  "runs[].breaker.{openings,probes,opened_at_s}",
+  "runs[].cpu_seconds",
+  "external_http_attempts"
+ ],
+ "decision_rule": {
+  "primary_metric": "S2 cold steady_latency_ms.p50 (cold requests with index >= --steady-from, i.e. after the breaker can have opened; the same window for every arm).",
+  "aggregation": "per arm and series: median over the 5 runs of the per-run value.",
+  "noise": "J(metric, scenario, kind) = max(|median C0a - median C0b| in the same series, resolution); resolution 50 ms (unscaled) for latency, 0 for counts and rates.",
+  "pass_if_all": [
+   "S2: in BOTH series, C5 cold steady p50 < min(C0a, C0b) cold steady p50 - J.",
+   "S1 and S3: in both series, |C5 - C0a| <= J and |C5 - C0b| <= J for cold and warm steady p50 and p95.",
+   "S1 and S3: every C5 source_digest equals the C0a/C0b digest for the same (scenario, kind, index), and sources == trackers x results-per-tracker.",
+   "S3: C5 breaker openings == 0 in every run (slow but answering never opens).",
+   "S2: C5 healthy_sources >= C0 healthy_sources and C5 steady_partial_rate <= C0 (no loss on the answering trackers).",
+   "S2: C5 steady skipped_rate > 0 (the skip is visible as a warning stream, UX row 4).",
+   "All arms: external_http_attempts == 0, every request HTTP 200, no traceback with an application frame."
+  ],
+  "descriptive_only": [
+   "S4 (flapping): sources lost while the tracker is up but still skipped, cold/warm p50/p95, subject requests per minute. The plan sets no S4 acceptance criterion.",
+   "S2 subject_requests.search_calls_per_minute (expected to fall).",
+   "cpu_seconds per arm.",
+   "A/B references."
+  ],
+  "otherwise": "FAIL: indexer_breaker_threshold stays 0 (legacy). The FAIL is kept; a new version gets a new number."
+ },
+ "open_questions": [
+  "Run time: --time-scale 0.25 x 24 requests is ~3.5 h for 2 x 5 repetitions; 0.1 would be ~1.5 h but makes product overhead (DB, parsing) 10x larger in unscaled units. Which one?",
+  "Noise rule: this draft follows the plan text (medians, J from two baselines). gsp02-v1..v3 showed that rule under-estimating noise; should GSP05 use the gsp02-v4 bootstrap/Holm decider for the S1/S3 'unchanged' tests instead?",
+  "S4: descriptive only, or a guard (e.g. healthy sources unchanged and subject sources lost <= X %)? The breaker keeps skipping a tracker that came back until the cooldown ends.",
+  "A/B: report N/A, or run them descriptively at --time-scale 1 (needs a harness compatible with their provider signature)?",
+  "Partial-result effect: with 0.2 s downloads the legacy S2 deadline is not reached (partial_rate 0 in the smoke). Add a cell with slower downloads / more results (e.g. --download-latency 1.0 --results-per-tracker 10) to measure the 2.5 s tail the plan describes?",
+  "Implementation semantics to confirm: an answered error (auth, parse, HTTP status) resets the consecutive-failure count and closes after a probe; tracker-cache hits are still served while the breaker is open (no network call, no warning)."
+ ],
+ "smoke_evidence": {
+  "note": "Wiring smoke only (is_measurement false), Windows host, in-process, while gsp02-v4 ran; not a measurement.",
+  "command": "cd server; PYTHONPATH=. python ../scripts/benchmark_sp_search.py --smoke --out <scratch>",
+  "observed": "8 runs (legacy, candidate x S1-S4), 0 external HTTP attempts, ~13 s wall; S2 candidate opened once after 2 timeouts and then skipped with the warning text; S3 never opened."
+ }
+}

@@ -152,3 +152,17 @@ def test_movie_search_rejects_series_scope(query_string: str, parameter: str):
 
 def test_blank_query_is_dropped():
     assert parse("t=search&q=%20%20").q is None
+
+
+def test_tvdb_id_and_tmdb_id_parsed():
+    query = parse("t=tvsearch&tvdbid=121361&tmdbid=1399")
+    assert query.tvdb_id == "121361"
+    assert query.tmdb_id == "1399"
+
+
+@pytest.mark.parametrize("param", ["tvdbid", "tmdbid"])
+def test_invalid_tvdb_and_tmdb_id(param: str):
+    error = expect_error(f"t=tvsearch&{param}=abc")
+    assert error.code == TorznabErrorCode.INCORRECT_PARAMETER
+    assert error.description == f"Incorrect parameter ({param})"
+

@@ -4,7 +4,8 @@ from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
 from app.modules.indexer_definitions.schemas.api import IndexerDefinitionResponse
-from app.modules.torrents.schemas.internal import TorrentWithRelay
+from app.modules.relay.schemas import RelayTorrent
+from app.modules.torrents.schemas.internal import TorrentListRecord, TorrentWithRelay
 
 
 class TorrentResponse(BaseModel):
@@ -26,6 +27,31 @@ class TorrentResponse(BaseModel):
     full_download: bool | None
     updated_at: datetime
     created_at: datetime
+
+    @classmethod
+    def from_list_record(cls, record: TorrentListRecord, relay: RelayTorrent) -> "TorrentResponse":
+        return cls(
+            info_hash=record.torrent_info_hash,
+            indexer_definition=IndexerDefinitionResponse(
+                id=record.indexer_id,
+                name=record.indexer_name,
+                url=record.indexer_url,
+                details_path=record.indexer_details_path,
+                requires_full_download=record.indexer_requires_full_download,
+                supports_totp=record.indexer_supports_totp,
+            ),
+            torrent_id=record.torrent_id,
+            name=relay.name,
+            download_speed=relay.download_speed,
+            upload_speed=relay.upload_speed,
+            downloaded=relay.downloaded,
+            uploaded=relay.uploaded,
+            total=relay.total,
+            is_persisted=record.is_persisted,
+            full_download=record.full_download,
+            updated_at=record.updated_at,
+            created_at=record.created_at,
+        )
 
     @classmethod
     def from_torrent_with_relay(

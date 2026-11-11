@@ -1,0 +1,200 @@
+{
+ "id": "pb1-v1",
+ "registered_at_utc": "2026-11-09T18:11:24.171392+00:00",
+ "status": "Descriptive A/B reference at 8 and 60 Mbit/s (pb0-v2 covered 30 Mbit/s only), registered before any run. No gate, selects no parameter.",
+ "purpose": "Completes the A (upstream) vs fork-main reference for the UX frame's bitrates 8/30/60 Mbit/s; C0 is the candidate image with every switch on legacy, i.e. fork main's playback path. Thin at 60 Mbit/s is below its line rate (descriptive only).",
+ "source": {
+  "commit": "8c04f920037df090e4909f8edd2c2005df90d7a7"
+ },
+ "images": {
+  "image_ids": {
+   "A": "sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+   "C0": "sha256:138c89746cf740216142d2dfe3224038326c4199e2cc47d01f7295386b5190d1"
+  }
+ },
+ "metrics": [
+  "start.ttfb_s",
+  "ttfb_after_first_handshake_s",
+  "start.tail_probe_s",
+  "start.time_to_start_s",
+  "start.stalls",
+  "start.stall_s",
+  "start.buffer_s_p10",
+  "start.buffer_s_median",
+  "start.time_to_full_buffer_s",
+  "seek.ttfb_s",
+  "seek.resume_s",
+  "seek.stalls",
+  "seek.stall_s",
+  "unused_downloaded_bytes",
+  "app_stats.cpu_pct_mean",
+  "app_stats.mem_mib_max",
+  "app_log.tracebacks",
+  "failed"
+ ],
+ "harness_sha256": {
+  "scripts/benchmark_sp_playback_controller.py": "c77c3b29e1138467ca807d1bf79c121135742dd97d5c4dda48d61f9d8270447a",
+  "scripts/benchmark_sp_playback.py": "06a97427c914e61dc280f2efffcd6c60311305fd8f167ecaf1833a656e7c3df6",
+  "scripts/sp_app_fixture.py": "be5c4157ffc0a3984597524f577349fcfb08db6f7b610e824f927c848bbc97e2",
+  "scripts/sp_seed_service.py": "b670ba1ff04e889dd8e49cc3781f2dc0a3cf7cbe10de785a59309b977127d3ce",
+  "scripts/fixtures/local_bt_seed.py": "f89cb48ef0ad3337e07eea697a57fcce16e4e45e2008bcc5e01d18e03cf123b5",
+  "scripts/fixtures/local_tracker.py": "fb538616f86e0b36ec3ae6d46cc031a9aaf4ff81b3ab738ef7baab50ddb32050",
+  "scripts/fixtures/synthetic_torrent.py": "49d3640d7c9e105094ddccde829e5a301219089988f4a480fa7cd3363193e87c",
+  "scripts/summarize_sp_playback.py": "03860f8a5737120f5e8a83c895c2ae7c2fbfb48f17aaefa68379e48a635764e2"
+ },
+ "plan_sha256": "7b53f03b729914483a3bf750d8b19b5b65583564414aff212d07f4ea92cfbdfa",
+ "plan": {
+  "tool_image": "stremhu-source:sp-base-9984678",
+  "images": {
+   "A": "s4pp1/stremhu-source@sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+   "C0": "stremhu-source:sp-cand-c3d6035"
+  },
+  "app_env": {
+   "C0": {
+    "RELAY_START_POLICY": "legacy",
+    "RELAY_READAHEAD_POLICY": "legacy"
+   }
+  },
+  "reps": 5,
+  "total_size": 1073741824,
+  "client_args": [
+   "--play-s",
+   "10",
+   "--seek-play-s",
+   "8",
+   "--start-buffer-s",
+   "2",
+   "--rebuffer-s",
+   "1",
+   "--max-buffer-s",
+   "30"
+  ],
+  "cells": [
+   {
+    "profile": "fast",
+    "piece_size": 4194304,
+    "bitrate_mbit": 8
+   },
+   {
+    "profile": "fast",
+    "piece_size": 4194304,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "fast",
+    "piece_size": 16777216,
+    "bitrate_mbit": 8
+   },
+   {
+    "profile": "fast",
+    "piece_size": 16777216,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 4194304,
+    "bitrate_mbit": 8
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 4194304,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 16777216,
+    "bitrate_mbit": 8
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 16777216,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "thin",
+    "piece_size": 4194304,
+    "bitrate_mbit": 8
+   },
+   {
+    "profile": "thin",
+    "piece_size": 4194304,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "thin",
+    "piece_size": 16777216,
+    "bitrate_mbit": 8
+   },
+   {
+    "profile": "thin",
+    "piece_size": 16777216,
+    "bitrate_mbit": 60
+   }
+  ],
+  "profiles": {
+   "fast": {
+    "peers": 8,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 4000000,
+      "latency_s": 0.02,
+      "jitter_s": 0.01
+     }
+    ]
+   },
+   "mixed": {
+    "peers": 8,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "stall": true
+     },
+     {
+      "stall": true
+     }
+    ]
+   },
+   "thin": {
+    "peers": 2,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 2500000,
+      "latency_s": 0.06,
+      "jitter_s": 0.02
+     }
+    ]
+   }
+  },
+  "capture_tracebacks": true
+ },
+ "analysis": "per cell and label: n, median, p95, min, max (summarize_sp_playback.py); descriptive only"
+}

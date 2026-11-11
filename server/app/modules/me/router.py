@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 
 from app.modules.attribute_exclusions.dependencies import (
     get_attribute_exclusions_service,
@@ -44,6 +44,7 @@ def get(
 
 @router.put("/", response_model=UserResponse)
 def update(
+    request: Request,
     payload: MeUpdateRequest,
     users_service: Annotated[UsersService, Depends(get_users_service)],
     current_user: Annotated[UserModel, Depends(SessionGuard())],
@@ -51,7 +52,10 @@ def update(
     update_payload = payload.model_dump(exclude_unset=True)
     user_update = UserUpdate(**update_payload)
 
-    return users_service.update(current_user.id, user_update)
+    result = users_service.update(current_user.id, user_update)
+    if "password" in update_payload:
+        request.session.clear()
+    return result
 
 
 @router.put("/api-key/regenerate", response_model=UserResponse)

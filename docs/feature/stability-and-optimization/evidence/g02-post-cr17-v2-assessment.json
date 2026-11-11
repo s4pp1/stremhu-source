@@ -1,0 +1,382 @@
+{
+ "decision": "NO_CHANGE",
+ "correctness": [
+  {
+   "run": 0,
+   "passed": true,
+   "final_checkpoint": [
+    0,
+    424,
+    424
+   ],
+   "final_checkouts": 0
+  },
+  {
+   "run": 1,
+   "passed": true,
+   "final_checkpoint": [
+    0,
+    380,
+    380
+   ],
+   "final_checkouts": 0
+  }
+ ],
+ "repeatable_violations": [],
+ "single_run_violations": [],
+ "ordinary_high_water_bound_bytes": 20801912,
+ "rows": [
+  {
+   "run": 0,
+   "cell": "short/1",
+   "metric": "wal_header_epochs",
+   "value": 8,
+   "limit_min": 4,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "short/1",
+   "metric": "commit_p99_ms",
+   "value": 0.199599,
+   "limit_max": 0.240207,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "short/1",
+   "metric": "transaction_p99_ms",
+   "value": 1.909987,
+   "limit_max": 2.175072,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "short/4",
+   "metric": "wal_header_epochs",
+   "value": 13,
+   "limit_min": 6,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "short/4",
+   "metric": "commit_p99_ms",
+   "value": 0.365449,
+   "limit_max": 0.744935,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "short/4",
+   "metric": "transaction_p99_ms",
+   "value": 4.44676,
+   "limit_max": 7.41705,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "short/8",
+   "metric": "wal_header_epochs",
+   "value": 27,
+   "limit_min": 13,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "short/8",
+   "metric": "commit_p99_ms",
+   "value": 0.407411,
+   "limit_max": 0.591294,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "short/8",
+   "metric": "transaction_p99_ms",
+   "value": 9.326958,
+   "limit_max": 13.515986999999999,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "select-await/1",
+   "metric": "wal_header_epochs",
+   "value": 4,
+   "limit_min": 2,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "select-await/1",
+   "metric": "commit_p99_ms",
+   "value": 0.128406,
+   "limit_max": 0.19627,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "select-await/1",
+   "metric": "transaction_p99_ms",
+   "value": 1.842753,
+   "limit_max": 2.6744689999999998,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "select-await/4",
+   "metric": "wal_header_epochs",
+   "value": 14,
+   "limit_min": 3,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "select-await/4",
+   "metric": "commit_p99_ms",
+   "value": 0.19431,
+   "limit_max": 12.540187,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "select-await/4",
+   "metric": "transaction_p99_ms",
+   "value": 3.211842,
+   "limit_max": 11.038763,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "select-await/8",
+   "metric": "wal_header_epochs",
+   "value": 26,
+   "limit_min": 13,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "select-await/8",
+   "metric": "commit_p99_ms",
+   "value": 0.423931,
+   "limit_max": 0.710947,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "select-await/8",
+   "metric": "transaction_p99_ms",
+   "value": 9.397708,
+   "limit_max": 13.253104,
+   "passed": true
+  },
+  {
+   "run": 0,
+   "cell": "ordinary",
+   "metric": "wal_high_water_bytes",
+   "value": 4643272,
+   "limit_max": 20801912,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "short/1",
+   "metric": "wal_header_epochs",
+   "value": 8,
+   "limit_min": 4,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "short/1",
+   "metric": "commit_p99_ms",
+   "value": 0.207411,
+   "limit_max": 0.240207,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "short/1",
+   "metric": "transaction_p99_ms",
+   "value": 2.116319,
+   "limit_max": 2.175072,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "short/4",
+   "metric": "wal_header_epochs",
+   "value": 13,
+   "limit_min": 6,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "short/4",
+   "metric": "commit_p99_ms",
+   "value": 0.165119,
+   "limit_max": 0.744935,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "short/4",
+   "metric": "transaction_p99_ms",
+   "value": 4.435131,
+   "limit_max": 7.41705,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "short/8",
+   "metric": "wal_header_epochs",
+   "value": 27,
+   "limit_min": 13,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "short/8",
+   "metric": "commit_p99_ms",
+   "value": 0.429125,
+   "limit_max": 0.591294,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "short/8",
+   "metric": "transaction_p99_ms",
+   "value": 9.864342,
+   "limit_max": 13.515986999999999,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "select-await/1",
+   "metric": "wal_header_epochs",
+   "value": 4,
+   "limit_min": 2,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "select-await/1",
+   "metric": "commit_p99_ms",
+   "value": 0.139009,
+   "limit_max": 0.19627,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "select-await/1",
+   "metric": "transaction_p99_ms",
+   "value": 2.048166,
+   "limit_max": 2.6744689999999998,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "select-await/4",
+   "metric": "wal_header_epochs",
+   "value": 14,
+   "limit_min": 3,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "select-await/4",
+   "metric": "commit_p99_ms",
+   "value": 0.510551,
+   "limit_max": 12.540187,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "select-await/4",
+   "metric": "transaction_p99_ms",
+   "value": 4.725765,
+   "limit_max": 11.038763,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "select-await/8",
+   "metric": "wal_header_epochs",
+   "value": 26,
+   "limit_min": 13,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "select-await/8",
+   "metric": "commit_p99_ms",
+   "value": 0.579757,
+   "limit_max": 0.710947,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "select-await/8",
+   "metric": "transaction_p99_ms",
+   "value": 9.760257,
+   "limit_max": 13.253104,
+   "passed": true
+  },
+  {
+   "run": 1,
+   "cell": "ordinary",
+   "metric": "wal_high_water_bytes",
+   "value": 4593832,
+   "limit_max": 20801912,
+   "passed": true
+  }
+ ],
+ "explicit_snapshot_observations": [
+  {
+   "run": 0,
+   "cell": "explicit-snapshot/1",
+   "wal_max_bytes": 6497272,
+   "wal_header_epochs": 3,
+   "commit_p99_ms": 0.140277
+  },
+  {
+   "run": 0,
+   "cell": "explicit-snapshot/4",
+   "wal_max_bytes": 48191672,
+   "wal_header_epochs": 3,
+   "commit_p99_ms": 0.37295
+  },
+  {
+   "run": 0,
+   "cell": "explicit-snapshot/8",
+   "wal_max_bytes": 48191672,
+   "wal_header_epochs": 8,
+   "commit_p99_ms": 0.583032
+  },
+  {
+   "run": 1,
+   "cell": "explicit-snapshot/1",
+   "wal_max_bytes": 4944032,
+   "wal_header_epochs": 4,
+   "commit_p99_ms": 0.16442
+  },
+  {
+   "run": 1,
+   "cell": "explicit-snapshot/4",
+   "wal_max_bytes": 45571352,
+   "wal_header_epochs": 4,
+   "commit_p99_ms": 0.476414
+  },
+  {
+   "run": 1,
+   "cell": "explicit-snapshot/8",
+   "wal_max_bytes": 45571352,
+   "wal_header_epochs": 7,
+   "commit_p99_ms": 0.401102
+  }
+ ],
+ "protocol": "g02-post-cr17-v2-protocol.json",
+ "protocol_sha256": "0ee84ef203bb92103541dc951d70fbeeec7e91cf5a79cf19dea2d341090de8b3",
+ "assessor_sha256": "f0a3e030819786a462a831d650d783937e85b451b0f3eb49e80a63100a60009a",
+ "summarizer_sha256": "59a6418f492f4cae9930f4a8fdee36efe2192c5f2369505bdd2de6dfa5a388e3"
+}

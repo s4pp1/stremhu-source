@@ -5,12 +5,17 @@ from app.common.constants import PRIO_0, PRIO_1
 from app.common.logger import logger
 from app.modules.indexer_accounts.service import IndexerAccountsService
 from app.modules.indexer_definitions.service import IndexerDefinitionsService
+from app.modules.relay.schemas import RelayTorrent
 from app.modules.relay.service import RelayService
 from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrent_files.service import TorrentFilesService
 from app.modules.torrents.models import TorrentModel
 from app.modules.torrents.repository import TorrentRepository
-from app.modules.torrents.schemas.internal import TorrentUpdate, TorrentWithRelay
+from app.modules.torrents.schemas.internal import (
+    TorrentListRecord,
+    TorrentUpdate,
+    TorrentWithRelay,
+)
 
 
 class TorrentsService:
@@ -70,6 +75,11 @@ class TorrentsService:
 
         return result
 
+    def get_torrents_for_list(self) -> list[tuple[TorrentListRecord, RelayTorrent]]:
+        records = self._torrent_repository.find_list_records()
+        relay_torrents = {torrent.info_hash: torrent for torrent in self._relay_service.get_torrents()}
+        return [(record, relay_torrents[record.file_info_hash]) for record in records if record.file_info_hash and record.file_info_hash in relay_torrents]
+
     def find_by_id(
         self,
         indexer_id: str,
@@ -96,6 +106,18 @@ class TorrentsService:
         relay_torrent = self._relay_service.get_torrent_or_raise(info_hash)
 
         return TorrentWithRelay(torrent=torrent, relay=relay_torrent)
+
+    def is_file_downloaded(
+        self,
+        info_hash: str,
+        file_index: int,
+        file_size: int,
+    ) -> bool:
+        return self._relay_service.is_file_downloaded(
+            info_hash=info_hash,
+            file_index=file_index,
+            file_size=file_size,
+        )
 
     def update(
         self,

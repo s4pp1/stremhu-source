@@ -1,0 +1,1273 @@
+{
+  "head": "d2f0d1e5446c26ca56cf611f91e9264aabf9e19b",
+  "source": "cr07-wrappers-after-source, full570/64",
+  "status": "Preparation before CR17a; final G17 decision still follows cleanup package in table order. Positive pre-cleanup trace is preserved; not a production leak claim.",
+  "native_api": {
+    "fixture": "g17-native-public-shutdown-api-v1",
+    "libtorrent": "2.1.1.0",
+    "methods": {
+      "abort": false,
+      "close": false,
+      "set_alert_notify": true,
+      "pause": true,
+      "get_torrents": true,
+      "pop_alerts": true
+    },
+    "two_save_requests_success": 2,
+    "two_save_requests_failure": 0,
+    "all_acknowledged": true,
+    "scope": "Paused synthetic single native torrent, no peer/tracker, no payload restored; no unsupported close/abort call used."
+  },
+  "ownership_trace": {
+    "fixture": "g17-real-provider-file-db-ownership-v1",
+    "traces": [
+      {
+        "case": "owner-cancel-then-rejoin",
+        "events": [
+          {
+            "time_ns": 3830617870083,
+            "session": 1,
+            "thread": 132588316502912,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 3830617938517,
+            "session": 1,
+            "thread": 132588316502912,
+            "kind": "rollback",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 3830617944878,
+            "session": 1,
+            "thread": 132588316502912,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 3830618079646,
+            "session": 2,
+            "thread": 132588316502912,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 3830620082560,
+            "session": 1,
+            "thread": 132588238517952,
+            "kind": "use-begin",
+            "owner_closed": true,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 3830622467873,
+            "session": 1,
+            "thread": 132588238517952,
+            "kind": "use-end",
+            "owner_closed": true,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 3830622615583,
+            "session": 2,
+            "thread": 132588316502912,
+            "kind": "commit",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 3830622677407,
+            "session": 2,
+            "thread": 132588316502912,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          }
+        ],
+        "owner_close_before_use": true,
+        "overlapping_session_calls": false,
+        "pool_checked_out": 1,
+        "metadata_calls": 1,
+        "joined_result_correct": true
+      },
+      {
+        "case": "two-request-same-key",
+        "events": [
+          {
+            "time_ns": 3830622767882,
+            "session": 3,
+            "thread": 132588316502912,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 3830622798774,
+            "session": 4,
+            "thread": 132588316502912,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 3830623022905,
+            "session": 3,
+            "thread": 132588238517952,
+            "kind": "use-begin",
+            "owner_closed": false,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 3830623211067,
+            "session": 3,
+            "thread": 132588238517952,
+            "kind": "use-end",
+            "owner_closed": false,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 3830623360430,
+            "session": 3,
+            "thread": 132588316502912,
+            "kind": "commit",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 3830623412723,
+            "session": 3,
+            "thread": 132588316502912,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 3830623423674,
+            "session": 4,
+            "thread": 132588316502912,
+            "kind": "commit",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 3830623450306,
+            "session": 4,
+            "thread": 132588316502912,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          }
+        ],
+        "owner_close_before_use": false,
+        "overlapping_session_calls": false,
+        "pool_checked_out": 0,
+        "metadata_calls": 1,
+        "results_correct": true
+      },
+      {
+        "case": "two-alias-reads",
+        "events": [
+          {
+            "time_ns": 3830623496628,
+            "session": 5,
+            "thread": 132588316502912,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 3830623841877,
+            "session": 5,
+            "thread": 132588230125248,
+            "kind": "use-begin",
+            "owner_closed": false,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 3830623946074,
+            "session": 5,
+            "thread": 132588238517952,
+            "kind": "use-begin",
+            "owner_closed": false,
+            "active_calls": 2
+          },
+          {
+            "time_ns": 3830624344532,
+            "session": 5,
+            "thread": 132588238517952,
+            "kind": "use-end",
+            "owner_closed": false,
+            "active_calls": 2
+          },
+          {
+            "time_ns": 3830624734047,
+            "session": 5,
+            "thread": 132588230125248,
+            "kind": "use-end",
+            "owner_closed": false,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 3830624872745,
+            "session": 5,
+            "thread": 132588316502912,
+            "kind": "commit",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 3830624926069,
+            "session": 5,
+            "thread": 132588316502912,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          }
+        ],
+        "owner_close_before_use": false,
+        "overlapping_session_calls": true,
+        "pool_checked_out": 0,
+        "results_correct": true,
+        "dbapi_serialized_by_fixture": true
+      },
+      {
+        "case": "shutdown-during-worker",
+        "events": [
+          {
+            "time_ns": 3830624967191,
+            "session": 6,
+            "thread": 132588316502912,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 3830625290492,
+            "session": 6,
+            "thread": 132588316502912,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 3830625453402,
+            "session": 6,
+            "thread": 132588230125248,
+            "kind": "use-begin",
+            "owner_closed": true,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 3830625653115,
+            "session": 6,
+            "thread": 132588230125248,
+            "kind": "use-end",
+            "owner_closed": true,
+            "active_calls": 1
+          }
+        ],
+        "owner_close_before_use": true,
+        "overlapping_session_calls": false,
+        "pool_checked_out": 1,
+        "worker_finished_at_cancel_return": false
+      }
+    ],
+    "fixture_cleanup_final_checkouts": 0,
+    "scope": "Production provider, Singleflight, repository and db_session; gated synthetic indexer. Alias DBAPI calls serialized after detecting overlap. No heap or leak claim."
+  },
+  "static_inventory": {
+    "head": "d2f0d1e5446c26ca56cf611f91e9264aabf9e19b",
+    "state": "current uncommitted tree, including pending logging supplement",
+    "status": "static preparation only; no positive G17 claim",
+    "scope": "Direct attribute/getattr candidate inventory; source review still needed for DTO/UoW boundaries. Runtime owner/overlap traces and pool/heap metrics not yet run.",
+    "files": [
+      {
+        "path": "server/app/modules/stremio/service.py",
+        "sha256": "bc7d56eb7434391420bed2e5e27f41e056feb6aa64187043fb3ede3660cc58de",
+        "references": [
+          {
+            "line": 510,
+            "access": "getattr(torrent_stream, 'indexer_account', None)"
+          },
+          {
+            "line": 515,
+            "access": "getattr(acc, 'indexer_definition', None)"
+          }
+        ]
+      },
+      {
+        "path": "server/app/modules/stremio/catalogs_service.py",
+        "sha256": "711ae6b869c0f3f592e477e2571ac0901c3b034bcc046d8522bd7bbc1379bc2a",
+        "references": [
+          {
+            "line": 79,
+            "access": "tf.info"
+          },
+          {
+            "line": 83,
+            "access": "tf.info"
+          },
+          {
+            "line": 88,
+            "access": "tf.info"
+          },
+          {
+            "line": 91,
+            "access": "tf.info"
+          },
+          {
+            "line": 104,
+            "access": "tf.info"
+          },
+          {
+            "line": 105,
+            "access": "tf.info"
+          },
+          {
+            "line": 112,
+            "access": "ts.indexer_torrent"
+          },
+          {
+            "line": 117,
+            "access": "ts.indexer_torrent"
+          },
+          {
+            "line": 118,
+            "access": "getattr(it, 'indexer_account', None)"
+          },
+          {
+            "line": 123,
+            "access": "it.indexer_account"
+          },
+          {
+            "line": 133,
+            "access": "torrent_source.indexer_torrent"
+          }
+        ]
+      },
+      {
+        "path": "server/app/modules/stremio/schemas.py",
+        "sha256": "041e326dbee754e762b0bde7fe3d45fb8f29ad6015e597aaac7e9cf4482cb61e",
+        "references": [
+          {
+            "line": 221,
+            "access": "torrent_stream.indexer_account.indexer_definition"
+          },
+          {
+            "line": 221,
+            "access": "torrent_stream.indexer_account"
+          },
+          {
+            "line": 327,
+            "access": "torrent_stream.indexer_account.indexer_definition"
+          },
+          {
+            "line": 327,
+            "access": "torrent_stream.indexer_account"
+          },
+          {
+            "line": 510,
+            "access": "torrent_file.info"
+          },
+          {
+            "line": 548,
+            "access": "torrent_file.info"
+          },
+          {
+            "line": 587,
+            "access": "torrent_file.info"
+          }
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "sha256": "21c658d8e2035729364a5e65779e293d2553724d9aaa262c325558d714457775",
+        "references": [
+          {
+            "line": 89,
+            "access": "it.indexer_account"
+          },
+          {
+            "line": 174,
+            "access": "indexer_torrent.indexer_account"
+          },
+          {
+            "line": 198,
+            "access": "indexer_torrent.indexer_account"
+          },
+          {
+            "line": 226,
+            "access": "indexer_torrent.indexer_account"
+          },
+          {
+            "line": 258,
+            "access": "indexer_torrent.indexer_account"
+          },
+          {
+            "line": 263,
+            "access": "indexer_torrent.indexer_account"
+          },
+          {
+            "line": 270,
+            "access": "downloaded_torrent_file.torrent_bytes"
+          },
+          {
+            "line": 274,
+            "access": "indexer_torrent.indexer_account"
+          },
+          {
+            "line": 284,
+            "access": "indexer_torrent.indexer_account"
+          },
+          {
+            "line": 288,
+            "access": "indexer_torrent.indexer_account"
+          },
+          {
+            "line": 296,
+            "access": "indexer_torrent.indexer_account"
+          },
+          {
+            "line": 305,
+            "access": "downloaded_torrent_file.torrent_bytes"
+          },
+          {
+            "line": 309,
+            "access": "indexer_torrent.indexer_account"
+          }
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/schemas.py",
+        "sha256": "223d1a5b44ba73177a5f417fbbe52c3e923971abb93b36b64b6714cb133a4ab6",
+        "references": []
+      },
+      {
+        "path": "server/app/modules/indexers/service.py",
+        "sha256": "ca610874fd446269ede694e0982371a902f8ade86dbc9d1d1c9c0f14cd53056f",
+        "references": [
+          {
+            "line": 217,
+            "access": "indexer_account.indexer_definition"
+          },
+          {
+            "line": 333,
+            "access": "indexer_account.indexer_definition"
+          },
+          {
+            "line": 422,
+            "access": "indexer_account.indexer_definition"
+          },
+          {
+            "line": 515,
+            "access": "logger.info"
+          }
+        ]
+      },
+      {
+        "path": "server/app/modules/indexers/schemas/internal.py",
+        "sha256": "ce3be7260ec0bdccd8ce1bf7ae365425905c876b60bb4a65683efca6c2465229",
+        "references": []
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "sha256": "362e08d94f480cb67fa7027a2c9ec694b716ddad879c6f987e304afebb92a10b",
+        "references": [
+          {
+            "line": 135,
+            "access": "s.indexer_torrent.indexer_account"
+          },
+          {
+            "line": 135,
+            "access": "s.indexer_torrent"
+          },
+          {
+            "line": 136,
+            "access": "s.indexer_torrent"
+          },
+          {
+            "line": 149,
+            "access": "torrent_source.indexer_torrent"
+          },
+          {
+            "line": 184,
+            "access": "src.torrent_file.info"
+          },
+          {
+            "line": 185,
+            "access": "src.torrent_file.info"
+          },
+          {
+            "line": 207,
+            "access": "logger.info"
+          },
+          {
+            "line": 214,
+            "access": "logger.info"
+          },
+          {
+            "line": 229,
+            "access": "s.indexer_torrent"
+          },
+          {
+            "line": 240,
+            "access": "s.torrent_file.info"
+          },
+          {
+            "line": 242,
+            "access": "s.torrent_file.info"
+          },
+          {
+            "line": 248,
+            "access": "s.indexer_torrent"
+          },
+          {
+            "line": 259,
+            "access": "logger.info"
+          },
+          {
+            "line": 266,
+            "access": "getattr(fallback_sources[0].torrent_file, 'info', None)"
+          },
+          {
+            "line": 339,
+            "access": "torrent_source.indexer_torrent"
+          },
+          {
+            "line": 365,
+            "access": "ts.indexer_account"
+          },
+          {
+            "line": 544,
+            "access": "user.attribute_exclusions"
+          },
+          {
+            "line": 631,
+            "access": "user.preference_definitions"
+          },
+          {
+            "line": 637,
+            "access": "sorted_preference.definition.definition_attributes"
+          },
+          {
+            "line": 704,
+            "access": "stream.indexer_account"
+          },
+          {
+            "line": 705,
+            "access": "stream.indexer_account.indexer_definition"
+          },
+          {
+            "line": 705,
+            "access": "stream.indexer_account"
+          },
+          {
+            "line": 727,
+            "access": "primary.indexer_account"
+          },
+          {
+            "line": 727,
+            "access": "stream.indexer_account"
+          }
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "sha256": "9fbeb9fe8436fc1756ba8d2ad8929e7e513b52cb9a38972861f45ce04b5b3b3d",
+        "references": [
+          {
+            "line": 73,
+            "access": "indexer_torrent.indexer_account"
+          },
+          {
+            "line": 77,
+            "access": "torrent_file.info"
+          },
+          {
+            "line": 97,
+            "access": "torrent_file.info"
+          },
+          {
+            "line": 138,
+            "access": "indexer_torrent.indexer_account"
+          },
+          {
+            "line": 141,
+            "access": "torrent_file.info"
+          },
+          {
+            "line": 213,
+            "access": "torrent_file.info"
+          },
+          {
+            "line": 221,
+            "access": "torrent_file.info"
+          },
+          {
+            "line": 226,
+            "access": "indexer_torrent.indexer_account"
+          },
+          {
+            "line": 283,
+            "access": "indexer_torrent.indexer_account.indexer_definition"
+          },
+          {
+            "line": 283,
+            "access": "indexer_torrent.indexer_account"
+          },
+          {
+            "line": 285,
+            "access": "torrent_file.info"
+          },
+          {
+            "line": 286,
+            "access": "getattr(torrent_file, 'info', None)"
+          },
+          {
+            "line": 286,
+            "access": "torrent_file.info"
+          },
+          {
+            "line": 291,
+            "access": "indexer_torrent.indexer_account"
+          },
+          {
+            "line": 295,
+            "access": "torrent_file.info"
+          },
+          {
+            "line": 298,
+            "access": "indexer_torrent.indexer_account.indexer_definition"
+          },
+          {
+            "line": 298,
+            "access": "indexer_torrent.indexer_account"
+          }
+        ]
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "sha256": "4dbb214b27883cc0afee4bc8218175a02e36149d93c328abd0158d6851b6a22f",
+        "references": [
+          {
+            "line": 36,
+            "access": "source.torrent_file.info"
+          },
+          {
+            "line": 52,
+            "access": "source.torrent_file.info"
+          },
+          {
+            "line": 65,
+            "access": "source.indexer_torrent"
+          },
+          {
+            "line": 81,
+            "access": "source.torrent_file.info"
+          },
+          {
+            "line": 82,
+            "access": "source.indexer_torrent"
+          },
+          {
+            "line": 114,
+            "access": "source.torrent_file.info"
+          },
+          {
+            "line": 115,
+            "access": "source.indexer_torrent.indexer_account.indexer_definition"
+          },
+          {
+            "line": 115,
+            "access": "source.indexer_torrent.indexer_account"
+          },
+          {
+            "line": 115,
+            "access": "source.indexer_torrent"
+          },
+          {
+            "line": 122,
+            "access": "source.indexer_torrent"
+          }
+        ]
+      },
+      {
+        "path": "server/app/modules/torznab/service.py",
+        "sha256": "6691b29133270c74c03122c203e59400352489678865b5067d77e6822a5bbfa1",
+        "references": [
+          {
+            "line": 135,
+            "access": "cand.indexer_torrent.indexer_account"
+          },
+          {
+            "line": 135,
+            "access": "cand.indexer_torrent"
+          },
+          {
+            "line": 136,
+            "access": "cand.indexer_torrent"
+          },
+          {
+            "line": 255,
+            "access": "source.indexer_torrent"
+          },
+          {
+            "line": 259,
+            "access": "torrent.indexer_account"
+          }
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_files/models.py",
+        "sha256": "74d0f548d706e78bbd48f595a0202a596f60249fe92ca549a5b2de858f306d9f",
+        "references": [
+          {
+            "line": 84,
+            "access": "self.torrent_bytes"
+          }
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_files/isolated_service.py",
+        "sha256": "9fa95004245f3700e178844783da23c48ca2511f3f399a1e8b581b8183ca03dc",
+        "references": []
+      },
+      {
+        "path": "server/app/modules/users/models.py",
+        "sha256": "e8517a1467c580dc933bfd73758893907a34c9254d7ee4dbab104df8b2ffd78f",
+        "references": []
+      }
+    ]
+  },
+  "native_reference_release": {
+    "fixture": "g17-owned-final-native-reference-v1",
+    "libtorrent": "2.1.1.0",
+    "baseline_threads": {
+      "python": 1
+    },
+    "created_threads": {
+      "python": 4
+    },
+    "final_threads": {
+      "python": 2
+    },
+    "allowed_default_executor_workers": 1,
+    "holder_empty": true,
+    "native_threads_released": true,
+    "release_seconds": 0.004266803000007258,
+    "heartbeat_samples": 1,
+    "heartbeat_max_lag_ms": 0.6514780000088649,
+    "scope": "No torrent, peer, tracker, dotenv, application startup or user data. Native notify replaced with known no-op callable; final session reference cleared in worker. No unsupported close/abort API."
+  },
+  "lifespan_smoke": {
+    "fixture": "cr17-lifespan-smoke-not-measurement-v1",
+    "is_measurement": false,
+    "required_seconds": null,
+    "measured_seconds": 40.01798050599973,
+    "cold": null,
+    "rows": [
+      {
+        "cycle": 0,
+        "startup_seconds": 0.655506771000546,
+        "shutdown_seconds": 1.003112362000138,
+        "concurrency": 1,
+        "http": [
+          {
+            "expected_status": 200,
+            "samples_ms": [
+              46.340807,
+              1.714548,
+              1.612847,
+              1.514946,
+              1.570838,
+              1.58156,
+              2.078923,
+              1.525949,
+              1.539451,
+              1.592542,
+              1.6577,
+              1.615492,
+              1.573678,
+              1.515786,
+              1.564687,
+              1.504063,
+              1.48321,
+              1.77028,
+              1.617977,
+              1.521398,
+              1.500883,
+              1.759605,
+              1.589112,
+              1.544342,
+              1.536761,
+              1.507614,
+              1.548723,
+              1.521607,
+              1.496443,
+              1.563856,
+              1.651152,
+              1.606729,
+              1.707346,
+              1.583295,
+              1.795619,
+              1.502093,
+              1.560926,
+              1.547253,
+              1.508194,
+              1.548553,
+              1.542822,
+              1.544662,
+              1.514905,
+              1.492281,
+              1.496302,
+              1.53523,
+              1.530429,
+              1.506464,
+              1.4867,
+              1.545333,
+              1.514541,
+              1.589926,
+              1.601639,
+              1.659161,
+              1.513186,
+              1.472427,
+              1.552484,
+              1.573128,
+              1.525648,
+              1.500333,
+              1.48383,
+              1.547383,
+              1.564417,
+              1.569547,
+              1.539441,
+              1.568798,
+              1.557644,
+              1.539031,
+              1.514806,
+              1.521707,
+              1.899847,
+              1.614742,
+              1.669008,
+              1.599073,
+              1.680095,
+              1.539521,
+              1.514916,
+              1.619708,
+              1.53467,
+              1.527008,
+              1.53476,
+              1.594432,
+              1.507215,
+              1.480849,
+              1.87257,
+              1.565736,
+              1.503774,
+              1.543132,
+              1.602331,
+              1.533649,
+              1.610095,
+              1.56998,
+              1.621399,
+              1.505144,
+              2.026553,
+              1.842504,
+              1.541662,
+              1.523448,
+              1.508654,
+              1.602805
+            ],
+            "p95_ms": 1.842504
+          },
+          {
+            "expected_status": 401,
+            "samples_ms": [
+              168.479736,
+              4.17187,
+              4.137963,
+              4.163778,
+              4.007446,
+              3.840641,
+              3.83439,
+              4.025059,
+              4.407619,
+              3.995023,
+              3.975409,
+              3.964323,
+              4.473426,
+              3.855754,
+              3.956176,
+              4.047204,
+              4.323278,
+              4.118602,
+              3.856134,
+              3.929529,
+              3.88282,
+              4.084282,
+              3.943392,
+              3.945543,
+              3.998364,
+              4.164129,
+              3.893712,
+              3.83421,
+              3.812235,
+              3.834059,
+              3.866457,
+              3.863385,
+              3.950144,
+              4.055836,
+              4.231502,
+              3.93124,
+              3.943213,
+              3.824587,
+              4.127401,
+              3.990052,
+              4.032328,
+              3.970701,
+              3.973078,
+              3.992753,
+              3.871848,
+              4.089513,
+              3.937881,
+              3.926779,
+              4.417519,
+              4.288887,
+              3.851754,
+              3.909886,
+              3.958925,
+              4.341795,
+              4.536594,
+              4.483365,
+              4.618477,
+              4.080241,
+              4.18663,
+              4.372061,
+              4.262653,
+              4.105623,
+              4.366384,
+              4.058733,
+              4.377645,
+              4.201067,
+              4.078718,
+              4.3961,
+              4.109327,
+              3.937812,
+              4.175401,
+              4.363247,
+              4.127683,
+              4.435515,
+              4.112787,
+              4.26812,
+              4.003114,
+              4.200207,
+              4.233523,
+              4.610941,
+              4.541126,
+              4.080191,
+              4.211239,
+              5.239489,
+              4.899394,
+              4.034569,
+              4.009156,
+              3.945483,
+              4.330916,
+              3.947233,
+              4.126401,
+              3.98069,
+              3.978828,
+              3.940552,
+              3.972468,
+              3.953405,
+              3.895432,
+              4.167359,
+              3.970278,
+              4.041942
+            ],
+            "p95_ms": 4.541126
+          }
+        ],
+        "http_cpu_seconds": 0.775856039,
+        "sql_statements": 100,
+        "errors": [],
+        "worker_finished_at_close": false,
+        "shared_tasks_at_close": 4,
+        "active_adapter_count": 7,
+        "closed_clients_at_start": 0,
+        "closed_clients_after": 7,
+        "resume_callbacks_at_start": 1,
+        "resume_callbacks_after": 0,
+        "relay_reused": false,
+        "definitions_reused": false,
+        "heap_bytes_at_close": 6788843,
+        "heap_bytes_quiescent": 5983572,
+        "python_tasks_quiescent": 1,
+        "pool_checked_out_quiescent": 0,
+        "max_rss_kib": 143628,
+        "external_http_attempts": 0,
+        "elapsed_seconds": 3.7004953779996868
+      },
+      {
+        "cycle": 1,
+        "startup_seconds": 0.2025047019997146,
+        "shutdown_seconds": 1.0018356259997745,
+        "concurrency": 4,
+        "http": [
+          {
+            "expected_status": 200,
+            "samples_ms": [
+              10.855401,
+              5.774075,
+              6.491022,
+              6.995632,
+              10.455453,
+              5.943581,
+              6.34291,
+              6.112905,
+              10.579645,
+              5.725997,
+              4.488881,
+              7.86999,
+              9.627256,
+              5.718003,
+              6.974161,
+              4.93479,
+              6.76306,
+              11.375351,
+              7.586501,
+              4.737053,
+              6.139542,
+              6.907831,
+              7.665469,
+              13.30216,
+              4.432599,
+              5.280941,
+              9.419739,
+              4.838638,
+              8.748156,
+              6.889729,
+              7.114856,
+              6.699921,
+              6.765201,
+              9.18552,
+              5.600155,
+              9.951082,
+              6.3461,
+              7.792108,
+              7.818697,
+              8.261158,
+              6.336368,
+              8.732614,
+              10.108748,
+              6.477272,
+              5.063003,
+              7.410503,
+              6.446539,
+              8.638575,
+              4.214172,
+              7.161966,
+              10.677541,
+              7.920864,
+              4.361449,
+              7.186006,
+              6.709807,
+              7.556264,
+              12.230319,
+              5.807688,
+              6.008112,
+              10.36478,
+              6.102254,
+              9.325391,
+              6.493062,
+              5.585877,
+              3.386299,
+              4.861488,
+              6.451272,
+              7.800848,
+              13.085343,
+              6.197893,
+              6.505592,
+              8.305556,
+              8.542543,
+              7.490792,
+              12.737274,
+              7.228577,
+              6.926274,
+              8.165826,
+              7.23129,
+              7.152496,
+              9.980243,
+              5.838119,
+              8.273658,
+              7.796861,
+              6.112097,
+              7.441778,
+              7.628634,
+              9.224268,
+              6.549123,
+              12.618247,
+              5.413061,
+              5.371699,
+              5.326745,
+              7.098145,
+              9.840684,
+              6.729851,
+              7.926415,
+              4.054572,
+              3.99088,
+              3.078422
+            ],
+            "p95_ms": 11.375351
+          },
+          {
+            "expected_status": 401,
+            "samples_ms": [
+              24.257944,
+              16.560126,
+              23.57395,
+              11.571405,
+              17.052357,
+              17.069848,
+              22.63358,
+              16.451775,
+              26.444429,
+              14.874022,
+              13.72392,
+              17.845503,
+              17.746102,
+              20.227102,
+              15.315881,
+              18.20644,
+              17.914414,
+              17.434004,
+              20.197037,
+              20.063535,
+              17.758088,
+              16.206229,
+              17.177852,
+              23.135011,
+              14.643559,
+              14.69433,
+              18.047378,
+              15.761851,
+              23.763293,
+              14.249997,
+              18.178769,
+              18.032313,
+              19.987646,
+              14.345128,
+              18.105878,
+              19.946899,
+              17.485269,
+              20.660564,
+              17.17937,
+              13.378323,
+              18.13776,
+              21.611949,
+              15.469584,
+              18.763212,
+              17.295271,
+              18.085807,
+              17.675167,
+              16.169245,
+              18.035297,
+              17.143305,
+              16.806092,
+              15.147838,
+              28.641644,
+              15.539831,
+              18.189072,
+              13.96153,
+              17.855671,
+              15.742607,
+              19.74711,
+              15.113767,
+              17.252453,
+              21.203374,
+              21.684651,
+              12.333179,
+              22.61458,
+              13.180509,
+              14.497642,
+              19.928324,
+              19.231671,
+              17.860395,
+              15.588457,
+              15.333312,
+              25.942938,
+              16.17195,
+              19.354274,
+              12.661927,
+              15.608507,
+              15.436824,
+              18.901584,
+              12.217778,
+              23.677214,
+              23.114532,
+              12.783891,
+              13.280209,
+              16.645557,
+              18.840647,
+              21.686361,
+              13.528455,
+              17.673653,
+              19.739331,
+              21.425653,
+              20.481306,
+              17.915164,
+              21.275753,
+              17.341776,
+              22.791923,
+              16.022996,
+              13.979284,
+              12.491643,
+              10.023543
+            ],
+            "p95_ms": 23.677214
+          }
+        ],
+        "http_cpu_seconds": 0.6939823460000003,
+        "sql_statements": 100,
+        "errors": [],
+        "worker_finished_at_close": false,
+        "shared_tasks_at_close": 4,
+        "active_adapter_count": 7,
+        "closed_clients_at_start": 7,
+        "closed_clients_after": 7,
+        "resume_callbacks_at_start": 1,
+        "resume_callbacks_after": 0,
+        "relay_reused": true,
+        "definitions_reused": true,
+        "heap_bytes_at_close": 6900367,
+        "heap_bytes_quiescent": 6095464,
+        "python_tasks_quiescent": 1,
+        "pool_checked_out_quiescent": 0,
+        "max_rss_kib": 144652,
+        "external_http_attempts": 0,
+        "elapsed_seconds": 23.258620867999525
+      }
+    ],
+    "final_checkouts": 0,
+    "external_http_attempts": 0,
+    "scope": "Real application lifespan, synthetic fileDB, no persisted/native torrent restore. Finite injected shared tasks and a2s priority DB worker cross shutdown. No production memory-leak claim. Raw arrays streamed outside measured heap; quiescent GC and immediate-close samples separate."
+  },
+  "long_lifecycle_protocol": {
+    "id": "cr17-finite-owned-work-lifecycle-v1",
+    "registered_before_long_measurement": true,
+    "before_source": "cr07-wrappers-after-source, final570pytest/64snapshots,Ruff/based0",
+    "fixture_sha256": "039cf38b9aa84e148db2833a45a8fa550a3ba239514861c88672c7858842afc3",
+    "resources": "PinnedC runtime,2CPU affinity10,11/1GiB,networknone,read-only sources,tmpfsDB/data,task-owned output mount; no real users/trackers",
+    "sampling": "Two full1800s C before-series, separate warmup and60 measured lifespans each. First full C baseline must be saved before production cleanup edits; second runs same frozen source. Matching C after-series and rotatedABC functional/lifetime controls follow only after checks. No40s smoke substitutes a30minute run.",
+    "stimuli": "4finite shared tasks totaling1MiB controlled payload, owner waiters cancelled; real2s priority-worker-owned DB Session;100health+100rejected-auth HTTP per cycle with1/4/8 concurrency; no persisted/native torrent restores",
+    "correctness_after": "shared_tasks_at_close0; worker_finished_at_close true; closed_clients_at_start0; all active clients closed after; resume callback after0; quiescent pool0 and tasks back to pre-cycle level; no externalHTTP/error; separately nonempty native snapshot ack/deadline/failure and scheduler-owned thread/fault tests",
+    "http_gate": "Each endpoint/concurrency after-series p95 median<=maximum unchanged before-series median+10ms; same status/schema and SQL contract; CPU baseline full range upper+J without repeatable excess.",
+    "memory_gate": "GC quiescent Python heap and processRSS after-series medians<=full unchanged before range upper+J; controlled task retainer chains recorded immediately after close and gone at quiescence. No production memory-leak claim unless repeated growth and a real retainer chain are established.",
+    "lifecycle_timing": "Record cold/startup and shutdown separately from HTTP. A2s worker must be awaited even if original1s fixed wait looked faster; no speed claim from incomplete shutdown. Normal fixture must complete within30s shutdown grace; exact native snapshot deadline is separately tested.",
+    "baseline_noise": "Before-series medians/ranges supplyJ; long series not shortened or post-hoc fabricated.",
+    "scope_limits": "Smoke40.018s already reproduced4shared tasks,unfinished DBworker and7closed clients reused; final checkouts0. Controlled finite work is a lifetime stimulus, not production search throughput or native seeder/restore proof."
+  },
+  "long_lifecycle_status": "Two full1800s unchanged C series running on frozen source/fixture; no completed full baseline yet, production cleanup not edited."
+}

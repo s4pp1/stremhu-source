@@ -1,6 +1,7 @@
 import datetime
 
 from sqlalchemy import and_, false, or_
+from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from sqlalchemy.orm import Session, joinedload
 
 from app.modules.torrent_files.models import TorrentFileModel
@@ -17,6 +18,34 @@ class TorrentFilesRepository:
         self.db.add(model)
         self.db.flush()
         return model
+
+    def create_many(self, models: list[TorrentFileModel]) -> list[TorrentFileModel]:
+        if not models:
+            return []
+        self.db.add_all(models)
+        self.db.flush()
+        return models
+
+    def create_many_ignore_duplicates(self, models: list[TorrentFileModel]) -> None:
+        """M10: Atomi ON CONFLICT DO NOTHING kötegelt beszúrás."""
+        if not models:
+            return
+        values = [
+            {
+                "indexer_id": m.indexer_id,
+                "torrent_id": m.torrent_id,
+                "torrent_bytes": m.torrent_bytes,
+                "info_hash": m.info_hash,
+                "created_at": m.created_at,
+                "last_used_at": m.last_used_at,
+            }
+            for m in models
+        ]
+        stmt = sqlite_insert(TorrentFileModel).values(values).on_conflict_do_nothing(
+            index_elements=["indexer_id", "torrent_id"]
+        )
+        self.db.execute(stmt)
+        self.db.flush()
 
     def find_list(
         self,

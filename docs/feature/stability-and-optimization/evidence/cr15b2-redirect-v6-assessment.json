@@ -1,0 +1,167 @@
+{
+ "status": "PASS",
+ "problems": [],
+ "checks": {
+  "giant_subdomain_success_same_hash": true,
+  "subdomain_used": true,
+  "before_reads_redirect_bodies": true,
+  "before_follows_foreign": true,
+  "after_does_not_read": true,
+  "after_blocks_foreign": true,
+  "no_outbound": true
+ },
+ "summary": {
+  "before-0": [
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 64.0,
+    "anon_peak_delta_mib": 985.046875
+   },
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 4,
+    "redirect_mib_per_request": 64.0,
+    "anon_peak_delta_mib": 872.14453125
+   },
+   {
+    "case": "subdomain",
+    "successes": 10,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 10,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0
+   },
+   {
+    "case": "foreign",
+    "successes": 10,
+    "final_by_host": {
+     "cdn.other.invalid": 10,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0
+   }
+  ],
+  "after-0": [
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.578125,
+    "anon_peak_delta_mib": 0.73046875
+   },
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 4,
+    "redirect_mib_per_request": 3.54375,
+    "anon_peak_delta_mib": 3.24609375
+   },
+   {
+    "case": "subdomain",
+    "successes": 10,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 10,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0
+   },
+   {
+    "case": "foreign",
+    "successes": 0,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0
+   }
+  ],
+  "after-1": [
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.628125,
+    "anon_peak_delta_mib": 0.7265625
+   },
+   {
+    "case": "giant",
+    "successes": 20,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 20
+    },
+    "concurrency": 4,
+    "redirect_mib_per_request": 3.603125,
+    "anon_peak_delta_mib": 3.30078125
+   },
+   {
+    "case": "subdomain",
+    "successes": 10,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 10,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.0
+   },
+   {
+    "case": "foreign",
+    "successes": 0,
+    "final_by_host": {
+     "cdn.other.invalid": 0,
+     "dl.tracker.fixture.invalid": 0,
+     "tracker.fixture.invalid": 0
+    },
+    "concurrency": 1,
+    "redirect_mib_per_request": 0.0,
+    "anon_peak_delta_mib": 0.234375
+   }
+  ]
+ },
+ "protocol_sha256": "81c9e0ebc5b07e028458bef03ad21bd8281dcb3cc398f257592ae7223677d180",
+ "assessor_sha256": "695e09e6fe2d769cdf0c9f25510b0a5b40af7042830665a863d751bd87db340d"
+}

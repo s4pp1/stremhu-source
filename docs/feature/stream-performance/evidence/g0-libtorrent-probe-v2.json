@@ -1,0 +1,147 @@
+{
+ "id": "g0-libtorrent-probe-v2",
+ "is_measurement": false,
+ "kind": "G0 functional probe (implementation plan 2.1 / 2.), n=1 per question; not gate data",
+ "commit": "af653d899dcb73a980da358b12bb18eba3b264fa",
+ "image_id": "sha256:b4c7ea68202391962159de1cd7e14e7e82014402ea96999fccd918cf8ef77e10",
+ "script_sha256": "e3ff3d02df75b0ad0175ef54f3f8982fc68533aea2063b3bd54df9fa79994f3a",
+ "seed_sha256": {
+  "scripts/sp_seed_service.py": "a5706a7342ffbb1af1380747fa74fa34e9f3ae3d01951c67a5340af19c43ce8a",
+  "scripts/fixtures/local_bt_seed.py": "3aa4b7d15c6dd4d726fe3117c10934e2028b780850da4970181cf5d4689a602c",
+  "scripts/fixtures/synthetic_torrent.py": "49d3640d7c9e105094ddccde829e5a301219089988f4a480fa7cd3363193e87c"
+ },
+ "run": "docker run --rm --network none --cpus 2 --memory 1g (probe and seed child process in one container)",
+ "history": "v1 shared one event loop between the seed and the probe (native calls starved the seed); v2 runs the seed in a child process with an accurate token bucket and uTP refusal. Earlier v2 runs used before these fixes are not evidence.",
+ "result": {
+  "fixture": "sp-g0-libtorrent-priorities-v2",
+  "is_measurement": false,
+  "native_version": "2.1.1.0",
+  "piece_size": 262144,
+  "pieces": 200,
+  "seed": {
+   "peers": 4,
+   "rate_bytes_per_s_per_peer": 1000000.0,
+   "latency_s": 0.02,
+   "process": "separate child process"
+  },
+  "A_deadline_on_prio0": {
+   "pieces_before_deadline": 0,
+   "priority_after_set_deadline": 7,
+   "downloaded": false,
+   "seconds": 15.016,
+   "priority_after_finish": 7,
+   "other_pieces_downloaded": 0
+  },
+  "B_reset_deadline": {
+   "priority_after_set": 7,
+   "priority_after_reset": 1,
+   "downloaded_within_10s_after_reset": false
+  },
+  "F_full_priority_first_64_pieces": {
+   "seconds": 15.272,
+   "mb_per_s": 1.1,
+   "ceiling_mb_per_s": 4.0
+  },
+  "E_concurrent_read_piece": {
+   "requested": 8,
+   "completed": 8,
+   "errors": 0
+  },
+  "G_sliding_window_4_pieces": {
+   "window_bytes": 1048576,
+   "first_64_pieces_done": true,
+   "seconds": 6.128,
+   "mb_per_s": 2.74,
+   "mean_update_ms": 0.111
+  },
+  "G_sliding_window_16_pieces": {
+   "window_bytes": 4194304,
+   "first_64_pieces_done": true,
+   "seconds": 6.538,
+   "mb_per_s": 2.57,
+   "mean_update_ms": 0.114
+  },
+  "G_sliding_window_64_pieces": {
+   "window_bytes": 16777216,
+   "first_64_pieces_done": true,
+   "seconds": 10.775,
+   "mb_per_s": 1.56,
+   "mean_update_ms": 0.157
+  },
+  "C_deadlines_background_prio1": {
+   "all_deadline_pieces_done": true,
+   "seconds_until_all_deadline_pieces": 2.383,
+   "non_deadline_pieces_finished_before_last_deadline_piece": 9,
+   "completion_rank_of_deadline_pieces": [
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+   ]
+  },
+  "C_deadlines_background_prio0": {
+   "all_deadline_pieces_done": true,
+   "seconds_until_all_deadline_pieces": 1.898,
+   "non_deadline_pieces_finished_before_last_deadline_piece": 0,
+   "completion_rank_of_deadline_pieces": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ]
+  },
+  "D_call_cost_us_4000_pieces": {
+   "have_piece": 55.58,
+   "status_query_pieces": 65.29,
+   "get_piece_priorities": 89.02,
+   "set_piece_deadline": 0.35,
+   "reset_piece_deadline": 0.21,
+   "prioritize_pieces_full_list": 116.62,
+   "note": "Wall-clock on the probe container; order of magnitude only, not a gate metric."
+  },
+  "seed_stats": {
+   "handshakes": 28,
+   "requests": 8267,
+   "requests_ignored": 0,
+   "cancels": 0,
+   "bytes_sent": 135446528,
+   "peak_connections": 4,
+   "errors": [],
+   "first_handshake_monotonic": {
+    "85367006d39ccd3f55c7a6cb841a9df94207b533": 1119.15730928,
+    "985a3f66fd599fd395ecc284faacb1bd12b9baed": 1146.160659283,
+    "b4c0e1fdffd9fea6e7f36368f39559b2116cb39b": 1161.161891638,
+    "020719ee96bab2122188ca82a21498239906d043": 1168.162526704,
+    "1a7079da038fed8893eff59a037e0bb9cc251e39": 1175.163706708,
+    "df2f2edc7f97d8b5620cf4bdfc2a32f3f64deb40": 1186.164634734,
+    "c142afc0a6d844b4a609b0c10b7e3a8f02e5b508": 1189.164844973
+   },
+   "tracker_announces": null,
+   "tracker_errors": null
+  }
+ },
+ "interpretation": {
+  "stable_across_runs": [
+   "set_piece_deadline on a priority-0 piece reports priority 7; a finished deadline piece reports priority 1.",
+   "reset_piece_deadline leaves an unfinished piece at priority 1, not 0: in the product, deadline pieces dropped from the window (e.g. after a seek) stay wanted at priority 1 until the stream ends. SP01 must restore the intended priority explicitly.",
+   "Native per-call cost is tens of microseconds for have_piece / status(query_pieces) / get_piece_priorities / prioritize_pieces and below 1 us for set/reset_piece_deadline: a larger window must read the piece bitfield once per update instead of one have_piece call per piece.",
+   "The product calls the deprecated piece_priorities() (DeprecationWarning in 2.1.1).",
+   "Background priority 1 delays the deadline pieces (C): SP01 candidate C3 is suspect before measurement."
+  ],
+  "not_stable_or_artefact": [
+   "A (deadline after idle peers connected): downloaded in one run, not within 15 s in another; connections with nothing wanted may be closed as redundant. Scenario 'replay of an idle relay torrent' is worth an H1 run.",
+   "F/G absolute rates are harness-bound (single container, 2 CPUs); only relative hints, not results."
+  ],
+  "repeated_hint_not_result": [
+   "G: with the rest at priority 0, a 64-piece deadline window (far deadlines up to ~32 s) finished the first 64 pieces slower than a 4- or 16-piece window in both v2 runs (1.56-1.78 vs 2.4-2.7 MB/s). Far deadlines may not be requested early by the time-critical picker: SP01 must measure window size and deadline spacing, a larger window is not automatically faster."
+  ]
+ }
+}

@@ -18,11 +18,13 @@ class PairingModel(Base):
     user_code: Mapped[str] = mapped_column(
         sa.String,
         index=True,
+        unique=True,
     )
 
     device_code: Mapped[str] = mapped_column(
         sa.String,
         index=True,
+        unique=True,
     )
 
     id: Mapped[str] = mapped_column(

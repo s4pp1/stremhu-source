@@ -14,6 +14,6 @@ def create_attribute_exclusions_service(db: Session) -> AttributeExclusionsServi
 
 
 def get_attribute_exclusions_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> AttributeExclusionsService:
     return create_attribute_exclusions_service(db)

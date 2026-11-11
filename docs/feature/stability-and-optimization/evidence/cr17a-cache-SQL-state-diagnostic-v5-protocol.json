@@ -1,0 +1,7 @@
+{
+  "id": "cr17a-cache-SQL-state-diagnostic-v5",
+  "registered_utc": "2026-11-05T16:58:23.634065+00:00",
+  "scope": "Original V2 exact SQL invariant failed on baseline itself. Controlled real cache warm/expired/crossing states prove cause;no acceptance threshold change.9states x100requests/source,2frozenC sources. Own clock only,not timing.",
+  "fixture_sha256": "50889551e13751ed4eb01cf5f7e62fa63ee1c47799d20e5f0517bebec94a93d1",
+  "resources": "2CPU8,9/1GiB,networknone,readonlysource,tmpfssyntheticDB. DifferentCPU from coldcontrol;not a timing dataset."
+}

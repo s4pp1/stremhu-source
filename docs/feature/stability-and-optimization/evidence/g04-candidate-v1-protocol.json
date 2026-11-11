@@ -1,0 +1,82 @@
+{
+ "id": "g04-candidate-v1",
+ "registered_at_utc": "2026-11-07T14:02:21.670250+00:00",
+ "status": "CR04 candidate gate (torrent-row React.memo); registered before any candidate measurement",
+ "candidate_commit": "wip/g04-torrent-memo 1b7f89e on aaa9ee5; only client change on the measured route is torrent.tsx memo(TorrentRow)",
+ "candidate_image": "sha256:be97729e2970c1be2f5cdaeba6265285f8a28720450c28ea45ec8bace0097a55",
+ "control_image": "sha256:9a92ca614f3f89793af0ca05c944424d99d34b06a8b8cc6ef4d31ba2493e4e9b",
+ "browser_image": "sha256:948e3846c8caf6a61e29dffaa2f57b29e2373bbe06c3a79243ed53fb007ef644",
+ "fixture_hashes": {
+  "probe.cjs": "01f38b92ceb1a926e8c8d984b950c156bc3b97bb60ce1d4dea30b1939ddc5860",
+  "server.cjs": "794b99d369f6f1dae941a0c1105c8028209304e8a86f075be00ee0cdf8b6d7bd"
+ },
+ "build": "Same g04-profile-build Dockerfile/g04 entry and render-counter transform as the baseline image; client from git archive of 1b7f89e; docker build pinned to CPU 12,13.",
+ "controller_sha256": "ee1e822f153238563b487fd2b5e41e2d693d01e3b309a5102bfffbcac590a45a",
+ "assessor_sha256": "07e8885c29f5afbca61d4a4c7913129f0448156162f8f6e8e7e4263ad4068dfd",
+ "order": [
+  [
+   "after-0",
+   "after",
+   false
+  ],
+  [
+   "control-0",
+   "control",
+   false
+  ],
+  [
+   "after-1",
+   "after",
+   false
+  ],
+  [
+   "after-2",
+   "after",
+   false
+  ],
+  [
+   "after-3",
+   "after",
+   false
+  ],
+  [
+   "control-1",
+   "control",
+   false
+  ],
+  [
+   "after-4",
+   "after",
+   false
+  ],
+  [
+   "heap-after-0",
+   "after",
+   true
+  ]
+ ],
+ "resources": "As baseline v1: browser 2CPU affinity 12,13/2GiB, static server 1CPU affinity 14/512MiB, internal task network, no host ports, synthetic fixed API. Runs concurrently with the G02 post-CR17 control pinned to CPU 0,1 (disjoint cores; noted, shared host).",
+ "references": {
+  "before_a": [
+   "g04-before-a-0-v1",
+   "g04-before-a-1-v1",
+   "g04-before-a-2-v1",
+   "g04-before-a-3-v2",
+   "g04-before-a-4-v2"
+  ],
+  "before_b": [
+   "g04-before-b-0-v1",
+   "g04-before-b-1-v1",
+   "g04-before-b-2-v1",
+   "g04-before-b-3-v2",
+   "g04-before-b-4-v2"
+  ],
+  "heap": [
+   "g04-heap-a-0-v1",
+   "g04-heap-b-0-v1"
+  ]
+ },
+ "rules": "Per cell, J=max(|median_a-median_b|, resolution), envelope=min/max of the 10 baseline runs, after=median of 5 candidate runs. Freshness: requests within [min-J,max+J]. Target (20|100|500 x one): row_render_calls and react_actual_ms < min-J. No regression elsewhere: route_renders, row_render_calls, react_commits, react_actual_ms <= max+J; CPU delta <= max*1.10; anon after <= max+2MiB. Drift control: control-image runs react_actual_ms on target cells within [min-J,max+J], else INVALID_DRIFT. Heap run: 50 navigations, final query count 0, final used heap <= max(baseline heap a,b)+2MiB. Any correctness failure => INVALID.",
+ "decision": "PASS => CR04 memo integrated (packet 29). FAIL/INVALID => documented, no frontend change, user informed. No threshold change after results.",
+ "validation_before_registration": "Assessor on unchanged baselines (a as after, b0-1 as control, heap-a) => FAIL with exactly the 6 target rows; no other rule failed."
+}

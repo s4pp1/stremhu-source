@@ -1,0 +1,2709 @@
+{
+ "diagnostic_only": true,
+ "malloc_env": {
+  "MALLOC_MMAP_THRESHOLD_": "33554432",
+  "MALLOC_TRIM_THRESHOLD_": "134217728"
+ },
+ "results": [
+  {
+   "variant": "before",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.713137,
+   "p95_ms": 1.998524,
+   "cpu_seconds": 0.11151225600000003,
+   "minflt": 2006,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 13107200,
+    "in_use": 11675664,
+    "free": 1431536,
+    "mmapped": 1363968,
+    "keepcost": 442336
+   },
+   "anon_after": 39972864,
+   "anon_peak": 40865792
+  },
+  {
+   "variant": "before",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.279306,
+   "p95_ms": 8.174805,
+   "cpu_seconds": 0.10574583500000001,
+   "minflt": 1157,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 15855616,
+    "in_use": 13307136,
+    "free": 2548480,
+    "mmapped": 1363968,
+    "keepcost": 229520
+   },
+   "anon_after": 42868736,
+   "anon_peak": 41738240
+  },
+  {
+   "variant": "before",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 16.461229,
+   "p95_ms": 20.463201,
+   "cpu_seconds": 0.13329574600000005,
+   "minflt": 538,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 15527936,
+    "in_use": 13156112,
+    "free": 2371824,
+    "mmapped": 1363968,
+    "keepcost": 395024
+   },
+   "anon_after": 42401792,
+   "anon_peak": 41537536
+  },
+  {
+   "variant": "before",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 2.698673,
+   "p95_ms": 3.466595,
+   "cpu_seconds": 0.2728113929999999,
+   "minflt": 33061,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 35627008,
+    "in_use": 31195232,
+    "free": 4431776,
+    "mmapped": 1363968,
+    "keepcost": 133264
+   },
+   "anon_after": 62750720,
+   "anon_peak": 70926336
+  },
+  {
+   "variant": "before",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 12.439846,
+   "p95_ms": 14.550648,
+   "cpu_seconds": 0.27018876599999997,
+   "minflt": 26896,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 51302400,
+    "in_use": 43478848,
+    "free": 7823552,
+    "mmapped": 1363968,
+    "keepcost": 132944
+   },
+   "anon_after": 78483456,
+   "anon_peak": 92360704
+  },
+  {
+   "variant": "before",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 25.005324,
+   "p95_ms": 27.461536,
+   "cpu_seconds": 0.2691734079999999,
+   "minflt": 28668,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 72183808,
+    "in_use": 63941968,
+    "free": 8241840,
+    "mmapped": 1363968,
+    "keepcost": 134576
+   },
+   "anon_after": 99311616,
+   "anon_peak": 92672000
+  },
+  {
+   "variant": "before",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 22.45253,
+   "p95_ms": 31.172233,
+   "cpu_seconds": 3.2853524610000004,
+   "minflt": 524736,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 555110400,
+    "in_use": 526567312,
+    "free": 28543088,
+    "mmapped": 1363968,
+    "keepcost": 132224
+   },
+   "anon_after": 582246400,
+   "anon_peak": 601243648
+  },
+  {
+   "variant": "before",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 114.004308,
+   "p95_ms": 146.639706,
+   "cpu_seconds": 3.06511716,
+   "minflt": 437273,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 803840000,
+    "in_use": 677028816,
+    "free": 126811184,
+    "mmapped": 1363968,
+    "keepcost": 131408
+   },
+   "anon_after": 830885888,
+   "anon_peak": 858537984
+  },
+  {
+   "variant": "before",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 263.569228,
+   "p95_ms": 333.21221,
+   "cpu_seconds": 3.3448898929999995,
+   "minflt": 531406,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 981921792,
+    "in_use": 848974016,
+    "free": 132947776,
+    "mmapped": 1363968,
+    "keepcost": 131712
+   },
+   "anon_after": 1009045504,
+   "anon_peak": 988790784
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.686112,
+   "p95_ms": 1.791367,
+   "cpu_seconds": 0.10580457500000001,
+   "minflt": 1406,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 13295616,
+    "in_use": 11847440,
+    "free": 1448176,
+    "mmapped": 1363968,
+    "keepcost": 443104
+   },
+   "anon_after": 40173568,
+   "anon_peak": 41185280
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.407229,
+   "p95_ms": 8.40159,
+   "cpu_seconds": 0.10785002800000004,
+   "minflt": 1220,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 15364096,
+    "in_use": 12904432,
+    "free": 2459664,
+    "mmapped": 1363968,
+    "keepcost": 229056
+   },
+   "anon_after": 42373120,
+   "anon_peak": 41852928
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 17.02474,
+   "p95_ms": 22.449504,
+   "cpu_seconds": 0.13457674799999997,
+   "minflt": 1010,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 15691776,
+    "in_use": 12089072,
+    "free": 3602704,
+    "mmapped": 1363968,
+    "keepcost": 559296
+   },
+   "anon_after": 42164224,
+   "anon_peak": 42164224
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 2.681529,
+   "p95_ms": 3.387376,
+   "cpu_seconds": 0.265626422,
+   "minflt": 32937,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 37072896,
+    "in_use": 32569808,
+    "free": 4503088,
+    "mmapped": 1363968,
+    "keepcost": 134592
+   },
+   "anon_after": 64221184,
+   "anon_peak": 69672960
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 12.581892,
+   "p95_ms": 14.531424,
+   "cpu_seconds": 0.2776162980000001,
+   "minflt": 32887,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 46968832,
+    "in_use": 39397616,
+    "free": 7571216,
+    "mmapped": 1363968,
+    "keepcost": 132016
+   },
+   "anon_after": 74153984,
+   "anon_peak": 87777280
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 25.207743,
+   "p95_ms": 29.399487,
+   "cpu_seconds": 0.2782236949999999,
+   "minflt": 26835,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 73891840,
+    "in_use": 63950672,
+    "free": 9941168,
+    "mmapped": 1363968,
+    "keepcost": 133856
+   },
+   "anon_after": 101015552,
+   "anon_peak": 85606400
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 22.198746,
+   "p95_ms": 31.129156,
+   "cpu_seconds": 3.2588530710000003,
+   "minflt": 523829,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 200646656,
+    "in_use": 161212848,
+    "free": 39433808,
+    "mmapped": 1363968,
+    "keepcost": 131760
+   },
+   "anon_after": 227778560,
+   "anon_peak": 614629376
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 117.663335,
+   "p95_ms": 153.294714,
+   "cpu_seconds": 3.3116884300000002,
+   "minflt": 515903,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 893202432,
+    "in_use": 784495712,
+    "free": 108706720,
+    "mmapped": 1363968,
+    "keepcost": 134064
+   },
+   "anon_after": 920363008,
+   "anon_peak": 855887872
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 264.535416,
+   "p95_ms": 321.252018,
+   "cpu_seconds": 3.569641070000001,
+   "minflt": 490198,
+   "majflt": 545,
+   "mallinfo": {
+    "arena": 1086791680,
+    "in_use": 956443792,
+    "free": 130347888,
+    "mmapped": 1363968,
+    "keepcost": 131856
+   },
+   "anon_after": 964890624,
+   "anon_peak": 1067638784
+  },
+  {
+   "variant": "after-v5",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.703832,
+   "p95_ms": 1.821006,
+   "cpu_seconds": 0.10794938600000004,
+   "minflt": 35,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12189696,
+    "in_use": 10687904,
+    "free": 1501792,
+    "mmapped": 1363968,
+    "keepcost": 458624
+   },
+   "anon_after": 39088128,
+   "anon_peak": 39088128
+  },
+  {
+   "variant": "after-v5",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.2966,
+   "p95_ms": 8.278582,
+   "cpu_seconds": 0.10592125399999996,
+   "minflt": 30,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 13041664,
+    "in_use": 10757424,
+    "free": 2284240,
+    "mmapped": 1363968,
+    "keepcost": 459632
+   },
+   "anon_after": 39919616,
+   "anon_peak": 39919616
+  },
+  {
+   "variant": "after-v5",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 17.293392,
+   "p95_ms": 21.501952,
+   "cpu_seconds": 0.13884370199999996,
+   "minflt": 54,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 13357056,
+    "in_use": 10771120,
+    "free": 2585936,
+    "mmapped": 1363968,
+    "keepcost": 542976
+   },
+   "anon_after": 40198144,
+   "anon_peak": 40198144
+  },
+  {
+   "variant": "after-v5",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 2.967683,
+   "p95_ms": 3.362778,
+   "cpu_seconds": 0.298761945,
+   "minflt": 62165,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12947456,
+    "in_use": 10756928,
+    "free": 2190528,
+    "mmapped": 1363968,
+    "keepcost": 134416
+   },
+   "anon_after": 40095744,
+   "anon_peak": 41705472
+  },
+  {
+   "variant": "after-v5",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 10.680534,
+   "p95_ms": 12.029721,
+   "cpu_seconds": 0.23042346000000014,
+   "minflt": 6422,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12902400,
+    "in_use": 10766720,
+    "free": 2135680,
+    "mmapped": 1363968,
+    "keepcost": 133680
+   },
+   "anon_after": 40054784,
+   "anon_peak": 46845952
+  },
+  {
+   "variant": "after-v5",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 22.274564,
+   "p95_ms": 24.640702,
+   "cpu_seconds": 0.2391485419999999,
+   "minflt": 5820,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12795904,
+    "in_use": 10781152,
+    "free": 2014752,
+    "mmapped": 1363968,
+    "keepcost": 135136
+   },
+   "anon_after": 39874560,
+   "anon_peak": 48463872
+  },
+  {
+   "variant": "after-v5",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 28.668293,
+   "p95_ms": 29.90524,
+   "cpu_seconds": 3.867209625,
+   "minflt": 1175799,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12808192,
+    "in_use": 10771344,
+    "free": 2036848,
+    "mmapped": 1363968,
+    "keepcost": 135200
+   },
+   "anon_after": 39907328,
+   "anon_peak": 66777088
+  },
+  {
+   "variant": "after-v5",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 93.186289,
+   "p95_ms": 119.147474,
+   "cpu_seconds": 2.6098620830000003,
+   "minflt": 108253,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 35704832,
+    "in_use": 10778480,
+    "free": 24926352,
+    "mmapped": 1363968,
+    "keepcost": 134576
+   },
+   "anon_after": 62824448,
+   "anon_peak": 167432192
+  },
+  {
+   "variant": "after-v5",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 221.34275,
+   "p95_ms": 229.438028,
+   "cpu_seconds": 2.547360072,
+   "minflt": 37421,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12812288,
+    "in_use": 10784224,
+    "free": 2028064,
+    "mmapped": 1363968,
+    "keepcost": 131392
+   },
+   "anon_after": 39968768,
+   "anon_peak": 193212416
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.721854,
+   "p95_ms": 1.972603,
+   "cpu_seconds": 0.10968441699999998,
+   "minflt": 584,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 15593472,
+    "in_use": 13273392,
+    "free": 2320080,
+    "mmapped": 0,
+    "keepcost": 1346784
+   },
+   "anon_after": 41283584,
+   "anon_peak": 41283584
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.510177,
+   "p95_ms": 8.593018,
+   "cpu_seconds": 0.109462173,
+   "minflt": 325,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 17178624,
+    "in_use": 14248448,
+    "free": 2930176,
+    "mmapped": 0,
+    "keepcost": 1049776
+   },
+   "anon_after": 42848256,
+   "anon_peak": 42848256
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 17.381373,
+   "p95_ms": 21.80758,
+   "cpu_seconds": 0.13495281699999995,
+   "minflt": 13,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 17178624,
+    "in_use": 14591440,
+    "free": 2587184,
+    "mmapped": 0,
+    "keepcost": 426240
+   },
+   "anon_after": 42905600,
+   "anon_peak": 42876928
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 2.375547,
+   "p95_ms": 2.803811,
+   "cpu_seconds": 0.22936541399999988,
+   "minflt": 7448,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 51585024,
+    "in_use": 27097904,
+    "free": 24487120,
+    "mmapped": 0,
+    "keepcost": 20574528
+   },
+   "anon_after": 77553664,
+   "anon_peak": 76193792
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 10.982817,
+   "p95_ms": 12.262058,
+   "cpu_seconds": 0.23579624999999993,
+   "minflt": 3933,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 67641344,
+    "in_use": 48921136,
+    "free": 18720208,
+    "mmapped": 0,
+    "keepcost": 6041840
+   },
+   "anon_after": 93663232,
+   "anon_peak": 88317952
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 21.68717,
+   "p95_ms": 24.449139,
+   "cpu_seconds": 0.23198716500000005,
+   "minflt": 1461,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 73584640,
+    "in_use": 63925328,
+    "free": 9659312,
+    "mmapped": 0,
+    "keepcost": 449216
+   },
+   "anon_after": 99647488,
+   "anon_peak": 99647488
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 20.809537,
+   "p95_ms": 28.86039,
+   "cpu_seconds": 3.0344322140000006,
+   "minflt": 502675,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 558034944,
+    "in_use": 527911408,
+    "free": 30123536,
+    "mmapped": 0,
+    "keepcost": 133360
+   },
+   "anon_after": 584101888,
+   "anon_peak": 627081216
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 114.823371,
+   "p95_ms": 148.019715,
+   "cpu_seconds": 3.153111299,
+   "minflt": 424073,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 894996480,
+    "in_use": 785832368,
+    "free": 109164112,
+    "mmapped": 0,
+    "keepcost": 132832
+   },
+   "anon_after": 921092096,
+   "anon_peak": 878108672
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 270.301763,
+   "p95_ms": 336.317764,
+   "cpu_seconds": 3.5556613109999997,
+   "minflt": 484496,
+   "majflt": 1022,
+   "mallinfo": {
+    "arena": 1117323264,
+    "in_use": 979277376,
+    "free": 138045888,
+    "mmapped": 0,
+    "keepcost": 132608
+   },
+   "anon_after": 1015488512,
+   "anon_peak": 1067294720
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.694173,
+   "p95_ms": 1.831137,
+   "cpu_seconds": 0.106561705,
+   "minflt": 25,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 13529088,
+    "in_use": 12047968,
+    "free": 1481120,
+    "mmapped": 0,
+    "keepcost": 475824
+   },
+   "anon_after": 39223296,
+   "anon_peak": 39223296
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.458935,
+   "p95_ms": 8.301213,
+   "cpu_seconds": 0.10819520799999999,
+   "minflt": 99,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 14794752,
+    "in_use": 12109920,
+    "free": 2684832,
+    "mmapped": 0,
+    "keepcost": 656720
+   },
+   "anon_after": 40366080,
+   "anon_peak": 40366080
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 0,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 16.514228,
+   "p95_ms": 21.044144,
+   "cpu_seconds": 0.1322644810000001,
+   "minflt": 27,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 14794752,
+    "in_use": 12126736,
+    "free": 2668016,
+    "mmapped": 0,
+    "keepcost": 490096
+   },
+   "anon_after": 40480768,
+   "anon_peak": 40480768
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 2.282587,
+   "p95_ms": 2.495398,
+   "cpu_seconds": 0.215602269,
+   "minflt": 1,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 17113088,
+    "in_use": 12109664,
+    "free": 5003424,
+    "mmapped": 0,
+    "keepcost": 2808432
+   },
+   "anon_after": 42962944,
+   "anon_peak": 42962944
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 10.635935,
+   "p95_ms": 11.869539,
+   "cpu_seconds": 0.22733245199999996,
+   "minflt": 1063,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 21356544,
+    "in_use": 12124560,
+    "free": 9231984,
+    "mmapped": 0,
+    "keepcost": 7051888
+   },
+   "anon_after": 47316992,
+   "anon_peak": 47316992
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 0,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 21.420275,
+   "p95_ms": 23.188298,
+   "cpu_seconds": 0.22772076399999985,
+   "minflt": 401,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 23089152,
+    "in_use": 12130544,
+    "free": 10958608,
+    "mmapped": 0,
+    "keepcost": 8784496
+   },
+   "anon_after": 48963584,
+   "anon_peak": 48963584
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 14.262856,
+   "p95_ms": 15.19345,
+   "cpu_seconds": 2.2039791650000002,
+   "minflt": 34,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 62418944,
+    "in_use": 12120864,
+    "free": 50298080,
+    "mmapped": 0,
+    "keepcost": 48114288
+   },
+   "anon_after": 88432640,
+   "anon_peak": 88432640
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 93.059269,
+   "p95_ms": 99.597931,
+   "cpu_seconds": 2.49639352,
+   "minflt": 19180,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 141094912,
+    "in_use": 12128512,
+    "free": 128966400,
+    "mmapped": 0,
+    "keepcost": 126790256
+   },
+   "anon_after": 166993920,
+   "anon_peak": 166993920
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 0,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 218.218397,
+   "p95_ms": 226.466372,
+   "cpu_seconds": 2.497640575,
+   "minflt": 6785,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 14438400,
+    "in_use": 12135280,
+    "free": 2303120,
+    "mmapped": 0,
+    "keepcost": 133744
+   },
+   "anon_after": 40497152,
+   "anon_peak": 194789376
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.726365,
+   "p95_ms": 1.856058,
+   "cpu_seconds": 0.110990598,
+   "minflt": 1163,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 13168640,
+    "in_use": 11766816,
+    "free": 1401824,
+    "mmapped": 1363968,
+    "keepcost": 134912
+   },
+   "anon_after": 40394752,
+   "anon_peak": 41111552
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.749493,
+   "p95_ms": 8.922972,
+   "cpu_seconds": 0.11474378900000004,
+   "minflt": 1229,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 15851520,
+    "in_use": 13312736,
+    "free": 2538784,
+    "mmapped": 1363968,
+    "keepcost": 313152
+   },
+   "anon_after": 42786816,
+   "anon_peak": 41566208
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 17.168047,
+   "p95_ms": 21.857621,
+   "cpu_seconds": 0.1338534,
+   "minflt": 8,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 16015360,
+    "in_use": 11846368,
+    "free": 4168992,
+    "mmapped": 1363968,
+    "keepcost": 723376
+   },
+   "anon_after": 42983424,
+   "anon_peak": 42979328
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 2.735219,
+   "p95_ms": 3.162974,
+   "cpu_seconds": 0.26563583199999996,
+   "minflt": 32692,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 44556288,
+    "in_use": 40748080,
+    "free": 3808208,
+    "mmapped": 1363968,
+    "keepcost": 133616
+   },
+   "anon_after": 71692288,
+   "anon_peak": 66240512
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 12.50876,
+   "p95_ms": 13.751585,
+   "cpu_seconds": 0.27148357300000003,
+   "minflt": 31401,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 56377344,
+    "in_use": 48942656,
+    "free": 7434688,
+    "mmapped": 1363968,
+    "keepcost": 131200
+   },
+   "anon_after": 83542016,
+   "anon_peak": 79679488
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 24.613971,
+   "p95_ms": 26.867027,
+   "cpu_seconds": 0.26367831499999994,
+   "minflt": 21961,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 66822144,
+    "in_use": 58493392,
+    "free": 8328752,
+    "mmapped": 1363968,
+    "keepcost": 131504
+   },
+   "anon_after": 94040064,
+   "anon_peak": 89698304
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 20.419243,
+   "p95_ms": 29.597632,
+   "cpu_seconds": 3.044514362,
+   "minflt": 495355,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 189726720,
+    "in_use": 161207648,
+    "free": 28519072,
+    "mmapped": 1363968,
+    "keepcost": 132880
+   },
+   "anon_after": 216948736,
+   "anon_peak": 604061696
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 117.170027,
+   "p95_ms": 147.986285,
+   "cpu_seconds": 3.2148642349999994,
+   "minflt": 551408,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 806756352,
+    "in_use": 698523856,
+    "free": 108232496,
+    "mmapped": 1363968,
+    "keepcost": 131904
+   },
+   "anon_after": 833998848,
+   "anon_peak": 855486464
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 263.223697,
+   "p95_ms": 318.248284,
+   "cpu_seconds": 3.3163262830000004,
+   "minflt": 549957,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 758194176,
+    "in_use": 612567056,
+    "free": 145627120,
+    "mmapped": 1363968,
+    "keepcost": 133952
+   },
+   "anon_after": 785424384,
+   "anon_peak": 978833408
+  },
+  {
+   "variant": "after-v5",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.704648,
+   "p95_ms": 1.912988,
+   "cpu_seconds": 0.10973118699999995,
+   "minflt": 28,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12120064,
+    "in_use": 10691024,
+    "free": 1429040,
+    "mmapped": 1363968,
+    "keepcost": 422112
+   },
+   "anon_after": 39055360,
+   "anon_peak": 39055360
+  },
+  {
+   "variant": "after-v5",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.283235,
+   "p95_ms": 8.530263,
+   "cpu_seconds": 0.10524255100000002,
+   "minflt": 66,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 13176832,
+    "in_use": 10753328,
+    "free": 2423504,
+    "mmapped": 1363968,
+    "keepcost": 395232
+   },
+   "anon_after": 40058880,
+   "anon_peak": 40058880
+  },
+  {
+   "variant": "after-v5",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 16.083571,
+   "p95_ms": 20.565527,
+   "cpu_seconds": 0.13087907799999998,
+   "minflt": 8,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 13176832,
+    "in_use": 10771152,
+    "free": 2405680,
+    "mmapped": 1363968,
+    "keepcost": 574304
+   },
+   "anon_after": 40091648,
+   "anon_peak": 40091648
+  },
+  {
+   "variant": "after-v5",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 3.093259,
+   "p95_ms": 3.273416,
+   "cpu_seconds": 0.310970541,
+   "minflt": 68327,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12734464,
+    "in_use": 10754640,
+    "free": 1979824,
+    "mmapped": 1363968,
+    "keepcost": 131936
+   },
+   "anon_after": 39882752,
+   "anon_peak": 40996864
+  },
+  {
+   "variant": "after-v5",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 10.956408,
+   "p95_ms": 12.602641,
+   "cpu_seconds": 0.23965158099999995,
+   "minflt": 6796,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12701696,
+    "in_use": 10766576,
+    "free": 1935120,
+    "mmapped": 1363968,
+    "keepcost": 134608
+   },
+   "anon_after": 39858176,
+   "anon_peak": 47009792
+  },
+  {
+   "variant": "after-v5",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 22.692837,
+   "p95_ms": 25.192528,
+   "cpu_seconds": 0.245629887,
+   "minflt": 7399,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12832768,
+    "in_use": 10780592,
+    "free": 2052176,
+    "mmapped": 1363968,
+    "keepcost": 131504
+   },
+   "anon_after": 39890944,
+   "anon_peak": 48508928
+  },
+  {
+   "variant": "after-v5",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 28.658707,
+   "p95_ms": 30.282808,
+   "cpu_seconds": 3.8909480289999996,
+   "minflt": 1175984,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12816384,
+    "in_use": 10770624,
+    "free": 2045760,
+    "mmapped": 1363968,
+    "keepcost": 134016
+   },
+   "anon_after": 39899136,
+   "anon_peak": 66899968
+  },
+  {
+   "variant": "after-v5",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 94.304255,
+   "p95_ms": 123.319973,
+   "cpu_seconds": 2.6952793459999995,
+   "minflt": 148947,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12816384,
+    "in_use": 10778096,
+    "free": 2038288,
+    "mmapped": 1363968,
+    "keepcost": 135056
+   },
+   "anon_after": 39940096,
+   "anon_peak": 166846464
+  },
+  {
+   "variant": "after-v5",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 220.088567,
+   "p95_ms": 229.737878,
+   "cpu_seconds": 2.572859826,
+   "minflt": 36618,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12783616,
+    "in_use": 10783600,
+    "free": 2000016,
+    "mmapped": 1363968,
+    "keepcost": 134608
+   },
+   "anon_after": 39944192,
+   "anon_peak": 189931520
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.683443,
+   "p95_ms": 1.834983,
+   "cpu_seconds": 0.10784040499999997,
+   "minflt": 580,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 15708160,
+    "in_use": 13194400,
+    "free": 2513760,
+    "mmapped": 0,
+    "keepcost": 1560192
+   },
+   "anon_after": 41332736,
+   "anon_peak": 41332736
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.386378,
+   "p95_ms": 8.620037,
+   "cpu_seconds": 0.10677826899999998,
+   "minflt": 226,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 16695296,
+    "in_use": 14245360,
+    "free": 2449936,
+    "mmapped": 0,
+    "keepcost": 636656
+   },
+   "anon_after": 42446848,
+   "anon_peak": 42446848
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 17.0043,
+   "p95_ms": 21.495856,
+   "cpu_seconds": 0.12914721099999993,
+   "minflt": 78,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 16928768,
+    "in_use": 14673872,
+    "free": 2254896,
+    "mmapped": 0,
+    "keepcost": 230848
+   },
+   "anon_after": 42512384,
+   "anon_peak": 42512384
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 2.304917,
+   "p95_ms": 2.715923,
+   "cpu_seconds": 0.22189428300000003,
+   "minflt": 7506,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 51855360,
+    "in_use": 27097040,
+    "free": 24758320,
+    "mmapped": 0,
+    "keepcost": 20577728
+   },
+   "anon_after": 77811712,
+   "anon_peak": 76447744
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 10.960531,
+   "p95_ms": 12.612122,
+   "cpu_seconds": 0.234202692,
+   "minflt": 4257,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 69222400,
+    "in_use": 50285376,
+    "free": 18937024,
+    "mmapped": 0,
+    "keepcost": 11364960
+   },
+   "anon_after": 95248384,
+   "anon_peak": 89587712
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 21.97542,
+   "p95_ms": 25.277762,
+   "cpu_seconds": 0.23741389000000002,
+   "minflt": 1462,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 75169792,
+    "in_use": 55745296,
+    "free": 19424496,
+    "mmapped": 0,
+    "keepcost": 9514752
+   },
+   "anon_after": 101236736,
+   "anon_peak": 96305152
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 19.736875,
+   "p95_ms": 28.961234,
+   "cpu_seconds": 2.994053501,
+   "minflt": 506123,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 564207616,
+    "in_use": 527915808,
+    "free": 36291808,
+    "mmapped": 0,
+    "keepcost": 133616
+   },
+   "anon_after": 590286848,
+   "anon_peak": 611774464
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 115.230616,
+   "p95_ms": 151.545213,
+   "cpu_seconds": 3.1847766359999996,
+   "minflt": 489482,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 741449728,
+    "in_use": 635388848,
+    "free": 106060880,
+    "mmapped": 0,
+    "keepcost": 132208
+   },
+   "anon_after": 767561728,
+   "anon_peak": 896831488
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 265.038482,
+   "p95_ms": 326.663184,
+   "cpu_seconds": 3.268472826,
+   "minflt": 497229,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 791388160,
+    "in_use": 656894432,
+    "free": 134493728,
+    "mmapped": 0,
+    "keepcost": 134880
+   },
+   "anon_after": 817430528,
+   "anon_peak": 1010851840
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.678552,
+   "p95_ms": 1.80134,
+   "cpu_seconds": 0.10568911800000003,
+   "minflt": 38,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 13533184,
+    "in_use": 12046336,
+    "free": 1486848,
+    "mmapped": 0,
+    "keepcost": 412224
+   },
+   "anon_after": 39292928,
+   "anon_peak": 39292928
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.167992,
+   "p95_ms": 8.793398,
+   "cpu_seconds": 0.10245873699999997,
+   "minflt": 133,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 14917632,
+    "in_use": 12112064,
+    "free": 2805568,
+    "mmapped": 0,
+    "keepcost": 803984
+   },
+   "anon_after": 40517632,
+   "anon_peak": 40517632
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 16.063912,
+   "p95_ms": 20.50862,
+   "cpu_seconds": 0.129671549,
+   "minflt": 14,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 14917632,
+    "in_use": 12124256,
+    "free": 2793376,
+    "mmapped": 0,
+    "keepcost": 638336
+   },
+   "anon_after": 40574976,
+   "anon_peak": 40574976
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 2.277432,
+   "p95_ms": 2.480366,
+   "cpu_seconds": 0.21562010799999998,
+   "minflt": 33,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 17219584,
+    "in_use": 12111952,
+    "free": 5107632,
+    "mmapped": 0,
+    "keepcost": 2940288
+   },
+   "anon_after": 43069440,
+   "anon_peak": 43069440
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 10.555015,
+   "p95_ms": 11.243161,
+   "cpu_seconds": 0.22295631500000002,
+   "minflt": 967,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 21131264,
+    "in_use": 12122752,
+    "free": 9008512,
+    "mmapped": 0,
+    "keepcost": 6857728
+   },
+   "anon_after": 47030272,
+   "anon_peak": 47030272
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 21.519736,
+   "p95_ms": 23.333467,
+   "cpu_seconds": 0.2285399909999999,
+   "minflt": 439,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 22953984,
+    "in_use": 12128800,
+    "free": 10825184,
+    "mmapped": 0,
+    "keepcost": 8680528
+   },
+   "anon_after": 48832512,
+   "anon_peak": 48832512
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 14.84499,
+   "p95_ms": 15.772114,
+   "cpu_seconds": 2.262484225,
+   "minflt": 30,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 62574592,
+    "in_use": 12116480,
+    "free": 50458112,
+    "mmapped": 0,
+    "keepcost": 48309680
+   },
+   "anon_after": 88453120,
+   "anon_peak": 88453120
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 91.76728,
+   "p95_ms": 94.195362,
+   "cpu_seconds": 2.4671557180000003,
+   "minflt": 19116,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 142540800,
+    "in_use": 12127472,
+    "free": 130413328,
+    "mmapped": 0,
+    "keepcost": 128276080
+   },
+   "anon_after": 168521728,
+   "anon_peak": 168521728
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 220.300533,
+   "p95_ms": 226.330732,
+   "cpu_seconds": 2.5018455399999997,
+   "minflt": 5202,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 14376960,
+    "in_use": 12133040,
+    "free": 2243920,
+    "mmapped": 0,
+    "keepcost": 134976
+   },
+   "anon_after": 40435712,
+   "anon_peak": 189833216
+  },
+  {
+   "variant": "before",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.744622,
+   "p95_ms": 1.881891,
+   "cpu_seconds": 0.11267592700000001,
+   "minflt": 2004,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 13189120,
+    "in_use": 11845200,
+    "free": 1343920,
+    "mmapped": 1363968,
+    "keepcost": 360000
+   },
+   "anon_after": 40189952,
+   "anon_peak": 40914944
+  },
+  {
+   "variant": "before",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.505944,
+   "p95_ms": 8.564326,
+   "cpu_seconds": 0.10872334899999997,
+   "minflt": 1023,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 15273984,
+    "in_use": 12898256,
+    "free": 2375728,
+    "mmapped": 1363968,
+    "keepcost": 229984
+   },
+   "anon_after": 42278912,
+   "anon_peak": 41668608
+  },
+  {
+   "variant": "before",
+   "rep": 1,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 17.284785,
+   "p95_ms": 21.559419,
+   "cpu_seconds": 0.136023534,
+   "minflt": 550,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 15814656,
+    "in_use": 13240784,
+    "free": 2573872,
+    "mmapped": 1363968,
+    "keepcost": 310720
+   },
+   "anon_after": 42790912,
+   "anon_peak": 42160128
+  },
+  {
+   "variant": "before",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 2.71029,
+   "p95_ms": 3.053374,
+   "cpu_seconds": 0.26505993699999997,
+   "minflt": 33083,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 35340288,
+    "in_use": 31197936,
+    "free": 4142352,
+    "mmapped": 1363968,
+    "keepcost": 131920
+   },
+   "anon_after": 62484480,
+   "anon_peak": 72024064
+  },
+  {
+   "variant": "before",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 12.26908,
+   "p95_ms": 14.245007,
+   "cpu_seconds": 0.26964759800000015,
+   "minflt": 31451,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 44453888,
+    "in_use": 36661184,
+    "free": 7792704,
+    "mmapped": 1363968,
+    "keepcost": 133024
+   },
+   "anon_after": 71647232,
+   "anon_peak": 77377536
+  },
+  {
+   "variant": "before",
+   "rep": 1,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 25.087512,
+   "p95_ms": 27.980459,
+   "cpu_seconds": 0.27394366699999995,
+   "minflt": 29700,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 67936256,
+    "in_use": 58483472,
+    "free": 9452784,
+    "mmapped": 1363968,
+    "keepcost": 132720
+   },
+   "anon_after": 95166464,
+   "anon_peak": 87134208
+  },
+  {
+   "variant": "before",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 19.964939,
+   "p95_ms": 29.886262,
+   "cpu_seconds": 2.827078729,
+   "minflt": 344407,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 578048000,
+    "in_use": 548052832,
+    "free": 29995168,
+    "mmapped": 1363968,
+    "keepcost": 133984
+   },
+   "anon_after": 605290496,
+   "anon_peak": 605286400
+  },
+  {
+   "variant": "before",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 114.494975,
+   "p95_ms": 143.046137,
+   "cpu_seconds": 3.1311277639999995,
+   "minflt": 458479,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 894189568,
+    "in_use": 784481344,
+    "free": 109708224,
+    "mmapped": 1363968,
+    "keepcost": 132016
+   },
+   "anon_after": 921452544,
+   "anon_peak": 878469120
+  },
+  {
+   "variant": "before",
+   "rep": 1,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 264.467631,
+   "p95_ms": 318.708153,
+   "cpu_seconds": 3.514578072000001,
+   "minflt": 550792,
+   "majflt": 705,
+   "mallinfo": {
+    "arena": 1112580096,
+    "in_use": 977919216,
+    "free": 134660880,
+    "mmapped": 1363968,
+    "keepcost": 131824
+   },
+   "anon_after": 1018494976,
+   "anon_peak": 1068036096
+  },
+  {
+   "variant": "after-v5",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.689936,
+   "p95_ms": 1.836024,
+   "cpu_seconds": 0.10705746600000005,
+   "minflt": 26,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12222464,
+    "in_use": 10690112,
+    "free": 1532352,
+    "mmapped": 1363968,
+    "keepcost": 524512
+   },
+   "anon_after": 39038976,
+   "anon_peak": 39038976
+  },
+  {
+   "variant": "after-v5",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.318863,
+   "p95_ms": 8.368606,
+   "cpu_seconds": 0.10652073000000001,
+   "minflt": 50,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 13176832,
+    "in_use": 10751440,
+    "free": 2425392,
+    "mmapped": 1363968,
+    "keepcost": 693120
+   },
+   "anon_after": 39981056,
+   "anon_peak": 39981056
+  },
+  {
+   "variant": "after-v5",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 16.311525,
+   "p95_ms": 20.82107,
+   "cpu_seconds": 0.13201530800000005,
+   "minflt": 33,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 13176832,
+    "in_use": 10771664,
+    "free": 2405168,
+    "mmapped": 1363968,
+    "keepcost": 652144
+   },
+   "anon_after": 40116224,
+   "anon_peak": 40116224
+  },
+  {
+   "variant": "after-v5",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 3.05616,
+   "p95_ms": 3.263144,
+   "cpu_seconds": 0.3096470619999999,
+   "minflt": 71602,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12664832,
+    "in_use": 10756144,
+    "free": 1908688,
+    "mmapped": 1363968,
+    "keepcost": 133040
+   },
+   "anon_after": 39813120,
+   "anon_peak": 40730624
+  },
+  {
+   "variant": "after-v5",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 10.715721,
+   "p95_ms": 11.741537,
+   "cpu_seconds": 0.23225003899999996,
+   "minflt": 4896,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12664832,
+    "in_use": 10769312,
+    "free": 1895520,
+    "mmapped": 1363968,
+    "keepcost": 133712
+   },
+   "anon_after": 39817216,
+   "anon_peak": 47108096
+  },
+  {
+   "variant": "after-v5",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 22.35528,
+   "p95_ms": 24.540312,
+   "cpu_seconds": 0.23823833100000003,
+   "minflt": 5859,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12664832,
+    "in_use": 10772992,
+    "free": 1891840,
+    "mmapped": 1363968,
+    "keepcost": 133792
+   },
+   "anon_after": 39841792,
+   "anon_peak": 48504832
+  },
+  {
+   "variant": "after-v5",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 28.902074,
+   "p95_ms": 30.289206,
+   "cpu_seconds": 3.8920228659999996,
+   "minflt": 1175482,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12673024,
+    "in_use": 10765664,
+    "free": 1907360,
+    "mmapped": 1363968,
+    "keepcost": 132272
+   },
+   "anon_after": 39858176,
+   "anon_peak": 66740224
+  },
+  {
+   "variant": "after-v5",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 112.570033,
+   "p95_ms": 129.951332,
+   "cpu_seconds": 2.899394922000001,
+   "minflt": 264907,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12673024,
+    "in_use": 10776704,
+    "free": 1896320,
+    "mmapped": 1363968,
+    "keepcost": 132432
+   },
+   "anon_after": 39878656,
+   "anon_peak": 168599552
+  },
+  {
+   "variant": "after-v5",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 217.730669,
+   "p95_ms": 224.01108,
+   "cpu_seconds": 2.516087356,
+   "minflt": 37249,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 12804096,
+    "in_use": 10784128,
+    "free": 2019968,
+    "mmapped": 1363968,
+    "keepcost": 131248
+   },
+   "anon_after": 39964672,
+   "anon_peak": 192454656
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.685526,
+   "p95_ms": 1.806195,
+   "cpu_seconds": 0.10681498499999997,
+   "minflt": 606,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 15790080,
+    "in_use": 13026640,
+    "free": 2763440,
+    "mmapped": 0,
+    "keepcost": 1790192
+   },
+   "anon_after": 41406464,
+   "anon_peak": 41406464
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.319926,
+   "p95_ms": 9.067126,
+   "cpu_seconds": 0.10655711600000001,
+   "minflt": 243,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 16826368,
+    "in_use": 14245584,
+    "free": 2580784,
+    "mmapped": 0,
+    "keepcost": 541136
+   },
+   "anon_after": 42598400,
+   "anon_peak": 42598400
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 16.621377,
+   "p95_ms": 20.980838,
+   "cpu_seconds": 0.131723225,
+   "minflt": 31,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 17006592,
+    "in_use": 14511216,
+    "free": 2495376,
+    "mmapped": 0,
+    "keepcost": 376304
+   },
+   "anon_after": 42758144,
+   "anon_peak": 42725376
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 2.32004,
+   "p95_ms": 2.709652,
+   "cpu_seconds": 0.22424907399999994,
+   "minflt": 7131,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 50159616,
+    "in_use": 27096608,
+    "free": 23063008,
+    "mmapped": 0,
+    "keepcost": 19278528
+   },
+   "anon_after": 76120064,
+   "anon_peak": 74756096
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 10.724353,
+   "p95_ms": 12.04172,
+   "cpu_seconds": 0.22854695199999986,
+   "minflt": 3074,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 62717952,
+    "in_use": 33929040,
+    "free": 28788912,
+    "mmapped": 0,
+    "keepcost": 18309024
+   },
+   "anon_after": 88711168,
+   "anon_peak": 85962752
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 21.768143,
+   "p95_ms": 24.586797,
+   "cpu_seconds": 0.23269265399999983,
+   "minflt": 2388,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 72433664,
+    "in_use": 62561168,
+    "free": 9872496,
+    "mmapped": 0,
+    "keepcost": 1430112
+   },
+   "anon_after": 98492416,
+   "anon_peak": 98492416
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 19.965519,
+   "p95_ms": 29.124321,
+   "cpu_seconds": 2.9399696630000003,
+   "minflt": 500388,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 552910848,
+    "in_use": 527912480,
+    "free": 24998368,
+    "mmapped": 0,
+    "keepcost": 131664
+   },
+   "anon_after": 578969600,
+   "anon_peak": 600461312
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 117.488167,
+   "p95_ms": 151.952483,
+   "cpu_seconds": 3.202012376,
+   "minflt": 430285,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 808558592,
+    "in_use": 699865360,
+    "free": 108693232,
+    "mmapped": 0,
+    "keepcost": 132640
+   },
+   "anon_after": 834646016,
+   "anon_peak": 875663360
+  },
+  {
+   "variant": "before-malloc",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 240.875163,
+   "p95_ms": 304.301268,
+   "cpu_seconds": 3.1714272599999997,
+   "minflt": 419735,
+   "majflt": 1,
+   "mallinfo": {
+    "arena": 1041039360,
+    "in_use": 893303904,
+    "free": 147735456,
+    "mmapped": 0,
+    "keepcost": 134592
+   },
+   "anon_after": 1065758720,
+   "anon_peak": 1002598400
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.700664,
+   "p95_ms": 1.778441,
+   "cpu_seconds": 0.10701923099999999,
+   "minflt": 29,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 13533184,
+    "in_use": 12045840,
+    "free": 1487344,
+    "mmapped": 0,
+    "keepcost": 477648
+   },
+   "anon_after": 39264256,
+   "anon_peak": 39264256
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.379527,
+   "p95_ms": 9.302825,
+   "cpu_seconds": 0.10826271300000001,
+   "minflt": 30,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 14405632,
+    "in_use": 12115712,
+    "free": 2289920,
+    "mmapped": 0,
+    "keepcost": 542928
+   },
+   "anon_after": 40116224,
+   "anon_peak": 40116224
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 16.516969,
+   "p95_ms": 21.14382,
+   "cpu_seconds": 0.13302673499999995,
+   "minflt": 13,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 14405632,
+    "in_use": 12125424,
+    "free": 2280208,
+    "mmapped": 0,
+    "keepcost": 522224
+   },
+   "anon_after": 40189952,
+   "anon_peak": 40189952
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 2.36651,
+   "p95_ms": 2.546732,
+   "cpu_seconds": 0.22308725899999993,
+   "minflt": 31,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 17076224,
+    "in_use": 12107344,
+    "free": 4968880,
+    "mmapped": 0,
+    "keepcost": 3199584
+   },
+   "anon_after": 42913792,
+   "anon_peak": 42913792
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 10.733325,
+   "p95_ms": 11.492407,
+   "cpu_seconds": 0.22937671400000004,
+   "minflt": 1196,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 21962752,
+    "in_use": 12124080,
+    "free": 9838672,
+    "mmapped": 0,
+    "keepcost": 8073744
+   },
+   "anon_after": 47812608,
+   "anon_peak": 47812608
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 22.329294,
+   "p95_ms": 26.220405,
+   "cpu_seconds": 0.2342309170000001,
+   "minflt": 359,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 23515136,
+    "in_use": 12135696,
+    "free": 11379440,
+    "mmapped": 0,
+    "keepcost": 9491120
+   },
+   "anon_after": 49287168,
+   "anon_peak": 49287168
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 14.593587,
+   "p95_ms": 15.507833,
+   "cpu_seconds": 2.241561951,
+   "minflt": 0,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 62656512,
+    "in_use": 12125696,
+    "free": 50530816,
+    "mmapped": 0,
+    "keepcost": 48629808
+   },
+   "anon_after": 88428544,
+   "anon_peak": 88428544
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 92.014339,
+   "p95_ms": 94.145644,
+   "cpu_seconds": 2.474786211,
+   "minflt": 19508,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 142520320,
+    "in_use": 12134128,
+    "free": 130386192,
+    "mmapped": 0,
+    "keepcost": 128491664
+   },
+   "anon_after": 168333312,
+   "anon_peak": 168333312
+  },
+  {
+   "variant": "after-v5-malloc",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 220.726576,
+   "p95_ms": 230.166027,
+   "cpu_seconds": 2.5055243230000004,
+   "minflt": 5232,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 163966976,
+    "in_use": 12143104,
+    "free": 151823872,
+    "mmapped": 0,
+    "keepcost": 134126752
+   },
+   "anon_after": 189767680,
+   "anon_peak": 189767680
+  },
+  {
+   "variant": "before",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.754539,
+   "p95_ms": 1.946387,
+   "cpu_seconds": 0.11329304800000001,
+   "minflt": 1762,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 13172736,
+    "in_use": 11834144,
+    "free": 1338592,
+    "mmapped": 1363968,
+    "keepcost": 294752
+   },
+   "anon_after": 40132608,
+   "anon_peak": 40783872
+  },
+  {
+   "variant": "before",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.695345,
+   "p95_ms": 8.435634,
+   "cpu_seconds": 0.11071823300000005,
+   "minflt": 1135,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 15265792,
+    "in_use": 12811232,
+    "free": 2454560,
+    "mmapped": 1363968,
+    "keepcost": 230464
+   },
+   "anon_after": 42274816,
+   "anon_peak": 41721856
+  },
+  {
+   "variant": "before",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 16.835857,
+   "p95_ms": 21.643636,
+   "cpu_seconds": 0.13988533200000008,
+   "minflt": 1204,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 15822848,
+    "in_use": 13074304,
+    "free": 2748544,
+    "mmapped": 1363968,
+    "keepcost": 313648
+   },
+   "anon_after": 42786816,
+   "anon_peak": 41041920
+  },
+  {
+   "variant": "before",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 2.710314,
+   "p95_ms": 3.165572,
+   "cpu_seconds": 0.2651248890000001,
+   "minflt": 33083,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 28614656,
+    "in_use": 24379232,
+    "free": 4235424,
+    "mmapped": 1363968,
+    "keepcost": 133344
+   },
+   "anon_after": 55754752,
+   "anon_peak": 77561856
+  },
+  {
+   "variant": "before",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 12.338742,
+   "p95_ms": 13.977516,
+   "cpu_seconds": 0.27088718600000017,
+   "minflt": 33381,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 46018560,
+    "in_use": 38026752,
+    "free": 7991808,
+    "mmapped": 1363968,
+    "keepcost": 131568
+   },
+   "anon_after": 73216000,
+   "anon_peak": 93786112
+  },
+  {
+   "variant": "before",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 24.675615,
+   "p95_ms": 26.790892,
+   "cpu_seconds": 0.26467417299999996,
+   "minflt": 24258,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 69439488,
+    "in_use": 59848144,
+    "free": 9591344,
+    "mmapped": 1363968,
+    "keepcost": 131792
+   },
+   "anon_after": 96555008,
+   "anon_peak": 90836992
+  },
+  {
+   "variant": "before",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 20.268609,
+   "p95_ms": 29.766931,
+   "cpu_seconds": 2.8564782779999995,
+   "minflt": 406628,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 598609920,
+    "in_use": 548055152,
+    "free": 50554768,
+    "mmapped": 1363968,
+    "keepcost": 132736
+   },
+   "anon_after": 625750016,
+   "anon_peak": 625745920
+  },
+  {
+   "variant": "before",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 115.242446,
+   "p95_ms": 147.250276,
+   "cpu_seconds": 3.1769892200000003,
+   "minflt": 503527,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 899993600,
+    "in_use": 784486016,
+    "free": 115507584,
+    "mmapped": 1363968,
+    "keepcost": 132240
+   },
+   "anon_after": 927162368,
+   "anon_peak": 862687232
+  },
+  {
+   "variant": "before",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 265.058093,
+   "p95_ms": 326.910552,
+   "cpu_seconds": 3.2637761380000008,
+   "minflt": 518379,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 1003659264,
+    "in_use": 870457520,
+    "free": 133201744,
+    "mmapped": 1363968,
+    "keepcost": 132736
+   },
+   "anon_after": 1030877184,
+   "anon_peak": 1009385472
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 1,
+   "p50_ms": 1.718309,
+   "p95_ms": 1.890572,
+   "cpu_seconds": 0.11023250099999998,
+   "minflt": 996,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 14217216,
+    "in_use": 11766016,
+    "free": 2451200,
+    "mmapped": 1363968,
+    "keepcost": 642256
+   },
+   "anon_after": 41172992,
+   "anon_peak": 41172992
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 4,
+   "p50_ms": 6.424569,
+   "p95_ms": 8.912491,
+   "cpu_seconds": 0.10802213599999994,
+   "minflt": 723,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 14888960,
+    "in_use": 11585232,
+    "free": 3303728,
+    "mmapped": 1363968,
+    "keepcost": 131728
+   },
+   "anon_after": 42115072,
+   "anon_peak": 42233856
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 2,
+   "kind": "small",
+   "concurrency": 8,
+   "p50_ms": 17.120941,
+   "p95_ms": 21.291109,
+   "cpu_seconds": 0.13247209400000004,
+   "minflt": 671,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 14249984,
+    "in_use": 11845088,
+    "free": 2404896,
+    "mmapped": 1363968,
+    "keepcost": 134752
+   },
+   "anon_after": 41521152,
+   "anon_peak": 42115072
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 1,
+   "p50_ms": 2.653246,
+   "p95_ms": 3.246918,
+   "cpu_seconds": 0.2614900710000001,
+   "minflt": 33578,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 41787392,
+    "in_use": 38023248,
+    "free": 3764144,
+    "mmapped": 1363968,
+    "keepcost": 133440
+   },
+   "anon_after": 68927488,
+   "anon_peak": 66199552
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 4,
+   "p50_ms": 12.037245,
+   "p95_ms": 13.330812,
+   "cpu_seconds": 0.260116762,
+   "minflt": 29091,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 59617280,
+    "in_use": 51667792,
+    "free": 7949488,
+    "mmapped": 1363968,
+    "keepcost": 133520
+   },
+   "anon_after": 86798336,
+   "anon_peak": 82550784
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 2,
+   "kind": "many-files",
+   "concurrency": 8,
+   "p50_ms": 24.241918,
+   "p95_ms": 27.285213,
+   "cpu_seconds": 0.2664675080000001,
+   "minflt": 29528,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 69517312,
+    "in_use": 59861376,
+    "free": 9655936,
+    "mmapped": 1363968,
+    "keepcost": 133088
+   },
+   "anon_after": 96636928,
+   "anon_peak": 88576000
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 1,
+   "p50_ms": 20.198967,
+   "p95_ms": 24.865864,
+   "cpu_seconds": 2.7860018190000004,
+   "minflt": 402321,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 598949888,
+    "in_use": 569560528,
+    "free": 29389360,
+    "mmapped": 1363968,
+    "keepcost": 133952
+   },
+   "anon_after": 626081792,
+   "anon_peak": 584146944
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 4,
+   "p50_ms": 118.718798,
+   "p95_ms": 148.145613,
+   "cpu_seconds": 3.184502125,
+   "minflt": 457559,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 850968576,
+    "in_use": 741512832,
+    "free": 109455744,
+    "mmapped": 1363968,
+    "keepcost": 133632
+   },
+   "anon_after": 878133248,
+   "anon_peak": 835084288
+  },
+  {
+   "variant": "after-v4code",
+   "rep": 2,
+   "kind": "large-valid",
+   "concurrency": 8,
+   "p50_ms": 259.801489,
+   "p95_ms": 291.22211,
+   "cpu_seconds": 3.144663359000001,
+   "minflt": 503256,
+   "majflt": 0,
+   "mallinfo": {
+    "arena": 726999040,
+    "in_use": 591071072,
+    "free": 135927968,
+    "mmapped": 1363968,
+    "keepcost": 134032
+   },
+   "anon_after": 754225152,
+   "anon_peak": 947642368
+  }
+ ]
+}

@@ -3,14 +3,17 @@
 @website https://stremhu.hu
 """
 
+from typing import Any
 from urllib.parse import parse_qs, urljoin, urlparse
 
 import httpx
 from selectolax.lexbor import LexborHTMLParser
 
+from app.common.log_safety import network_error_fields
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
+from app.modules.indexer_definitions.exceptions import TechInfoUnavailableException
 from app.modules.indexer_definitions.schemas.internal import (
     AuthCredentialError,
     AuthError,
@@ -20,6 +23,33 @@ from app.modules.indexer_definitions.schemas.internal import (
     IndexerDefinitionTorrent,
 )
 from app.modules.media_attributes.constants import MediaAttributeKey
+
+
+def _raise_if_unavailable(status_code: int) -> None:
+    """Szerverhiba vagy korlátozás: a Tech Info most nem érhető el (nem „nincs adat”)."""
+    if status_code >= 500 or status_code == 429:
+        raise TechInfoUnavailableException("nCore Tech Info nem érhető el.")
+
+
+_NCORE_MOVIE_CATEGORIES: list[str] = [
+    "xvid_hun",
+    "xvid",
+    "dvd_hun",
+    "dvd",
+    "dvd9_hun",
+    "dvd9",
+    "hd_hun",
+    "hd",
+]
+
+_NCORE_SERIES_CATEGORIES: list[str] = [
+    "xvidser_hun",
+    "xvidser",
+    "dvdser_hun",
+    "dvdser",
+    "hdser_hun",
+    "hdser",
+]
 
 
 class NcoreIndexerDefinition(BaseIndexerDefinition):
@@ -37,6 +67,10 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
 
     @property
     def supports_totp(self) -> bool:
+        return True
+
+    @property
+    def provides_tech_info(self) -> bool:
         return True
 
     @property
@@ -86,18 +120,51 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
     async def _fetch_torrents(
         self, imdb_id: str, page: int | None = None
     ) -> IndexerDefinitionFindTorrentsResult:
+        return await self._query_torrents(mire=imdb_id, miben="imdb", page=page)
+
+    async def _fetch_torrents_by_query(
+        self,
+        query: str,
+        page: int | None = None,
+        media_type: str | None = None,
+    ) -> IndexerDefinitionFindTorrentsResult:
+        return await self._query_torrents(
+            mire=query, miben="nev", page=page, media_type=media_type
+        )
+
+    async def _query_torrents(
+        self,
+        mire: str,
+        miben: str,
+        page: int | None = None,
+        media_type: str | None = None,
+    ) -> IndexerDefinitionFindTorrentsResult:
         current_page = page or 1
+        params: Any = [
+            ("oldal", str(current_page)),
+            ("miben", miben),
+            ("mire", mire),
+            ("miszerint", "seeders"),
+            ("hogyan", "DESC"),
+            ("jsons", "true"),
+        ]
+
+        if media_type == "movie":
+            params.append(("tipus", "kivalasztottak_kozott"))
+            for cat in _NCORE_MOVIE_CATEGORIES:
+                params.append(("kivalasztott_tipus[]", cat))
+        elif media_type == "series":
+            params.append(("tipus", "kivalasztottak_kozott"))
+            for cat in _NCORE_SERIES_CATEGORIES:
+                params.append(("kivalasztott_tipus[]", cat))
+        else:
+            params.append(("tipus", "kivalasztottak_kozott"))
+            for cat in _NCORE_MOVIE_CATEGORIES + _NCORE_SERIES_CATEGORIES:
+                params.append(("kivalasztott_tipus[]", cat))
+
         response = await self._client.get(
             "/torrents.php",
-            params={
-                "oldal": str(current_page),
-                "miben": "imdb",
-                "mire": imdb_id,
-                "miszerint": "seeders",
-                "hogyan": "DESC",
-                "jsons": True,
-                "tipus": "all"
-            },
+            params=params,
         )
 
         try:
@@ -114,9 +181,15 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
 
         for torrent in data.get("results", []):
             category = torrent.get("category", "")
+            raw_imdb = torrent.get("imdb_id")
+            imdb_id = (
+                raw_imdb
+                if isinstance(raw_imdb, str) and raw_imdb.strip()
+                else None
+            )
             torrents.append(
                 IndexerDefinitionTorrent(
-                    imdb_id=torrent.get("imdb_id"),
+                    imdb_id=imdb_id,
                     torrent_id=str(torrent["torrent_id"]),
                     seeders=int(torrent.get("seeders", 0)),
                     download_url=torrent["download_url"],
@@ -202,3 +275,58 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
         if "hun" in category:
             return MediaAttributeKey.HUN
         return MediaAttributeKey.ENG
+
+    async def fetch_tech_info(self, torrent_id: str) -> tuple[str | None, str | None]:
+        nfo_text: str | None = None
+        drop_text: str | None = None
+
+        try:
+            r_nfo = await self._client.get(
+                "/ajax.php",
+                params={"action": "nfo", "id": torrent_id},
+                timeout=1.5,
+            )
+            _raise_if_unavailable(r_nfo.status_code)
+            if r_nfo.status_code == 200 and r_nfo.text.strip():
+                nfo_text = r_nfo.text
+
+            # Ha van NFO, és az tartalmaz MediaInfo blokkot (Video/Audio/General) vagy magyar feliratot,
+            # a technikai adatok már teljesek, nem szükséges egy második lassú webes kérés:
+            need_drop = True
+            if nfo_text:
+                lower_nfo = nfo_text.lower()
+                has_mediainfo = any(
+                    k in lower_nfo
+                    for k in (
+                        "unique id",
+                        "general",
+                        "video #",
+                        "audio #",
+                        "hang #",
+                        "szöveg #",
+                        "text #",
+                        "format :",
+                    )
+                )
+                has_hun = "hungarian" in lower_nfo or "magyar" in lower_nfo
+                if has_mediainfo or has_hun:
+                    need_drop = False
+
+            if need_drop:
+                r_drop = await self._client.get(
+                    "/ajax.php",
+                    params={"action": "torrent_drop", "id": torrent_id},
+                    timeout=1.5,
+                )
+                _raise_if_unavailable(r_drop.status_code)
+                if r_drop.status_code == 200 and r_drop.text.strip():
+                    drop_text = r_drop.text
+        except TechInfoUnavailableException:
+            raise
+        except Exception as e:
+            # SP06/a: a sikertelen lekérés nem „üres Tech Info”; a hívó nem cache-eli 1 órára.
+            self.logger.debug(f"[nCore] fetch_tech_info hiba ({torrent_id}): {network_error_fields(e)}")
+            raise TechInfoUnavailableException("nCore Tech Info nem érhető el.") from None
+
+        return nfo_text, drop_text
+

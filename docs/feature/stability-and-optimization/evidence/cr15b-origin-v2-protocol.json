@@ -1,0 +1,42 @@
+{
+ "id": "cr15b-origin-v2",
+ "previous": "cr15b-origin-v1 PASS on 87dfeba (CR15a v1 read path); rerun because the landing tree changed (CR15a v2 read fix)",
+ "registered_at_utc": "2026-11-07T19:33:15.746964+00:00",
+ "status": "Final packet 26a functional gate (v2, landing tree); registered before any run.",
+ "change": "Persisted name/value cookies restored as Secure (https) domain cookies of the indexer host instead of domain-less jar entries.",
+ "before": "frozen aaa9ee5 server/app",
+ "after": "frozen wip/cr15b-cookie-scope-v2 f90e752 server/app (CR15a v2 714afa2 included)",
+ "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+ "fixture": "Unchanged G15 verified fixture-TLS origin probe/server (g15-tls-origins-v1), fresh ephemeral fixture CA; adapter url = https://tracker.fixture.invalid:8443.",
+ "fixture_sha256": {
+  "server.py": "a1987f9f2c58ed39763ec37d78f8f0673a45081e8493022e36aab6d71c2b90c1",
+  "probe.py": "49f8be0f23493297489c35c2594c6972eb74d1dac9a803b667adbe6c762cfbf4",
+  "metadata_sizes.py": "ae4df3ab93935cd8961f7efd36b5d8bd125c57d1a7d56d3858a9f0e5c896ed4c"
+ },
+ "certificate_sha256": "57902ab6fe5705acc28c48932a8168d2bb7cfd7f9d8f04e491d2e54b2bbf5c41",
+ "controller_sha256": "022f3ef4964184dbf7d839ac84a5304d817d75ec5a0ce3aa97ab13304a11c3ac",
+ "runs": [
+  [
+   "before",
+   0
+  ],
+  [
+   "after",
+   0
+  ],
+  [
+   "after",
+   1
+  ]
+ ],
+ "targets": [
+  "relative",
+  "same-origin",
+  "other-port",
+  "subdomain",
+  "other-host",
+  "downgrade"
+ ],
+ "decision": "PASS iff every run returns 18 verified rows with the valid 82073-byte body; before reproduces persisted = [1,1,1,1,1,1]; both after runs give persisted = [1,1,1,0,0,0] (own host any port over https only; sibling host, foreign host and HTTP downgrade without cookie); fresh-host and fresh-wide rows identical to before. Otherwise FAIL.",
+ "note": "subdomain target here is the sibling host cdn.fixture.invalid, not a subdomain of the indexer host; functional, not a performance gate."
+}

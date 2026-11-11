@@ -1,0 +1,24 @@
+{
+ "id": "gsp05-v1-assessment",
+ "protocol": "gsp05-v1",
+ "recorded_at_utc": "2026-11-10T08:06:33.921522+00:00",
+ "decision": "PASS",
+ "consequence": "PASS under the registered bootstrap/Holm rule: indexer_breaker_threshold becomes 2 (cooldown 120 s doubling to 600 s, UX frame row 4) in a separate commit; 0 stays selectable to switch the breaker off.",
+ "checks": {
+  "improved": [
+   "S2 cold p50"
+  ],
+  "regressions": [],
+  "digest_mismatches": 0,
+  "never_open_violations": 0,
+  "failed_runs": [],
+  "runs": 20,
+  "external_http_attempts": 0
+ },
+ "analysis": [
+  "S2 (one tracker never answers): cold steady p50 12984 -> 907 ms (unscaled means, n=10, one-sided p 0.0001); the warm request too (12555 -> 35 ms), because a failed tracker is not cached and legacy pays the 12.5 s timeout on every uncached request. Subject search calls fall from 4.698 to 0.779 per minute; sources are identical (8, the two healthy trackers).",
+  "S1 (healthy) and S3 (slow 8 s but answering): no regression after Holm over 8 guard tests (all differences within +-2.5 ms); the breaker never opened in S1 or S3 and never on a healthy tracker; per-request source digests identical across all runs of both arms.",
+  "S4 (flapping 90 s down / 90 s up, descriptive only): legacy pays the timeout while the tracker is down (cold steady p95 12988 ms) and the candidate does not (948 ms). The price: with a 120 s cooldown (doubling) against 90 s up periods, the candidate also skips the tracker during 67% of its up-phase requests (sources 9.333 instead of 12), with the 'átmenetileg kihagyva' warning. This matches the user's UX decision (skip for 2 minutes, warn) and is reported, not gated.",
+  "Scope: synthetic trackers in-process on the product search path, time scale 0.25 (12.5 s timeout -> 3.125 s, cooldowns scaled alike), reported unscaled. No real tracker, account or network (0 external HTTP attempts)."
+ ]
+}

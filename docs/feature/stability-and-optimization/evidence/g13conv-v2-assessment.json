@@ -1,0 +1,149 @@
+{
+ "status": "PASS",
+ "problems": [],
+ "failures": [],
+ "rows": [
+  {
+   "fixture": "typical",
+   "metric": "gap",
+   "before_min": 3.4551537998140702,
+   "before_max": 3.739768149989686,
+   "before_series_medians": [
+    3.5672157999215415,
+    3.6055515997759358
+   ],
+   "J": 0.03833579985439428,
+   "after_series_medians": [
+    2.3381992998565693,
+    2.345508000735208
+   ],
+   "within_budget": true,
+   "improved": null,
+   "passed": true
+  },
+  {
+   "fixture": "typical",
+   "metric": "wall",
+   "before_min": 2.342833550164869,
+   "before_max": 3.116652250264451,
+   "before_series_medians": [
+    2.4488855001436605,
+    2.487671649942058
+   ],
+   "J": 0.03878614979839767,
+   "after_series_medians": [
+    2.428278650404536,
+    2.4485881000600784
+   ],
+   "repeatable_regression": false,
+   "passed": true
+  },
+  {
+   "fixture": "typical-cp1250",
+   "metric": "gap",
+   "before_min": 3.4221175499169476,
+   "before_max": 3.7707038002736226,
+   "before_series_medians": [
+    3.4872536497914557,
+    3.5899493504530255
+   ],
+   "J": 0.10269570066156986,
+   "after_series_medians": [
+    2.326892449946172,
+    2.3382034000860585
+   ],
+   "within_budget": true,
+   "improved": null,
+   "passed": true
+  },
+  {
+   "fixture": "typical-cp1250",
+   "metric": "wall",
+   "before_min": 2.30638454986547,
+   "before_max": 2.6315728001918615,
+   "before_series_medians": [
+    2.370960600092076,
+    2.5164818495341024
+   ],
+   "J": 0.14552124944202616,
+   "after_series_medians": [
+    2.4049791504239693,
+    2.4351351504719787
+   ],
+   "repeatable_regression": false,
+   "passed": true
+  },
+  {
+   "fixture": "heavy",
+   "metric": "gap",
+   "before_min": 44.347836000542884,
+   "before_max": 50.94561444989267,
+   "before_series_medians": [
+    45.59184079998886,
+    45.67137274966626
+   ],
+   "J": 0.07953194967740274,
+   "after_series_medians": [
+    2.6411731997995957,
+    2.7537981999557815
+   ],
+   "within_budget": true,
+   "improved": true,
+   "passed": true
+  },
+  {
+   "fixture": "heavy",
+   "metric": "wall",
+   "before_min": 43.21642114982751,
+   "before_max": 49.81773065019297,
+   "before_series_medians": [
+    44.474985750002816,
+    45.30149719980727
+   ],
+   "J": 0.8265114498044568,
+   "after_series_medians": [
+    43.58897364982113,
+    46.0149158997865
+   ],
+   "repeatable_regression": false,
+   "passed": true
+  },
+  {
+   "fixture": "limit",
+   "metric": "gap",
+   "before_min": 123.0727133001892,
+   "before_max": 130.19669070081363,
+   "before_series_medians": [
+    125.73114750025525,
+    127.19316815073398
+   ],
+   "J": 1.4620206504787348,
+   "after_series_medians": [
+    3.9176250495074787,
+    3.9018002999910095
+   ],
+   "within_budget": true,
+   "improved": true,
+   "passed": true
+  },
+  {
+   "fixture": "limit",
+   "metric": "wall",
+   "before_min": 121.94244024967702,
+   "before_max": 129.08040535062355,
+   "before_series_medians": [
+    124.6605491500759,
+    127.0866641997145
+   ],
+   "J": 2.426115049638611,
+   "after_series_medians": [
+    117.68663449993255,
+    120.06205495026734
+   ],
+   "repeatable_regression": false,
+   "passed": true
+  }
+ ],
+ "protocol_sha256": "6118489d5537940a9d63e6c086f17f5d143c814d123c5eed3911943a106acb9f",
+ "assessor_sha256": "e6368f79a78986b89839b9d088da71044e8a0c0e9eacf2215782f2ee5633cf0f"
+}

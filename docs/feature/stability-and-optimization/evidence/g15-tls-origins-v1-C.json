@@ -1,0 +1,172 @@
+{
+  "fixture": "g15-verified-fixtureTLS-origin-cookies-v1",
+  "is_measurement": false,
+  "rows": [
+    {
+      "mode": "fresh-host",
+      "target": "relative",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-host",
+      "target": "same-origin",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-host",
+      "target": "other-port",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:9443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-host",
+      "target": "subdomain",
+      "cookie_present_count": 0,
+      "target_origin": "https://cdn.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-host",
+      "target": "other-host",
+      "cookie_present_count": 0,
+      "target_origin": "https://cdn.other.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-host",
+      "target": "downgrade",
+      "cookie_present_count": 0,
+      "target_origin": "http://tracker.fixture.invalid:8080",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-wide",
+      "target": "relative",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-wide",
+      "target": "same-origin",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-wide",
+      "target": "other-port",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:9443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-wide",
+      "target": "subdomain",
+      "cookie_present_count": 1,
+      "target_origin": "https://cdn.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-wide",
+      "target": "other-host",
+      "cookie_present_count": 0,
+      "target_origin": "https://cdn.other.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-wide",
+      "target": "downgrade",
+      "cookie_present_count": 0,
+      "target_origin": "http://tracker.fixture.invalid:8080",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "persisted",
+      "target": "relative",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "persisted",
+      "target": "same-origin",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "persisted",
+      "target": "other-port",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:9443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "persisted",
+      "target": "subdomain",
+      "cookie_present_count": 1,
+      "target_origin": "https://cdn.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "persisted",
+      "target": "other-host",
+      "cookie_present_count": 1,
+      "target_origin": "https://cdn.other.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "persisted",
+      "target": "downgrade",
+      "cookie_present_count": 1,
+      "target_origin": "http://tracker.fixture.invalid:8080",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    }
+  ],
+  "scope": "Actual IndexerClient/redirect with ephemeral fixtureCA trusted only by this HTTPX SSLContext,hostname verification enabled.18functional cases,synthetic cookies only,presencecounts not values. Not native Stremio/Nuvio trust,G06,productionallowlist or publicSSRF proof.",
+  "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+  "protocol": "g15-fixtureTLS-origin-matrix-v1",
+  "certificate_sha256": "9fd79924271945f9341c331bd6b5559ea81e7cabf2f56fe811f7a61f7df3d33f"
+}

@@ -46,6 +46,8 @@ class UserModel(Base):
         default_factory=lambda: str(uuid.uuid4()),
     )
 
+    session_epoch: Mapped[int] = mapped_column(sa.Integer, default=0, server_default=sa.text("0"))
+
     password_hash: Mapped[str | None] = mapped_column(
         sa.Text,
         default=None,
@@ -72,6 +74,12 @@ class UserModel(Base):
         default=False,
     )
 
+    enable_stream_deduplication: Mapped[bool] = mapped_column(
+        sa.Boolean,
+        default=True,
+        server_default=sa.text("1"),
+    )
+
     smart_filter_grouping_preference_id: Mapped[str | None] = mapped_column(
         sa.ForeignKey("preferences.id", ondelete="SET NULL"),
         default=None,
@@ -85,6 +93,25 @@ class UserModel(Base):
     smart_filter_limit: Mapped[int] = mapped_column(
         sa.Integer,
         default=1,
+    )
+
+    enable_fallback_subtitles: Mapped[bool] = mapped_column(
+        sa.Boolean,
+        default=False,
+        server_default=sa.text("0"),
+    )
+
+    enable_catalog_search: Mapped[bool] = mapped_column(
+        sa.Boolean,
+        default=True,
+        server_default=sa.text("1"),
+    )
+
+    # A helyben már letöltött fájlok „⚡ Letöltve” jelölése és a lista elejére sorolása
+    enable_downloaded_marker: Mapped[bool] = mapped_column(
+        sa.Boolean,
+        default=True,
+        server_default=sa.text("1"),
     )
 
     max_concurrent_streams: Mapped[int | None] = mapped_column(

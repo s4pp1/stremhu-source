@@ -20,6 +20,8 @@ def run_migrations():
     try:
         alembic_ini_path = Path(__file__).resolve().parent.parent.parent / "alembic.ini"
         alembic_cfg = Config(str(alembic_ini_path))
+        # Preserve the application's safe handlers/filters and dev/prod levels.
+        alembic_cfg.attributes["configure_logger"] = False
         command.upgrade(alembic_cfg, "head")
     except Exception:
         logger.exception("Nem sikerült lefutattatni a migrációkat.")

@@ -1,0 +1,14 @@
+{
+    "source":  "cr17a-drain-fix-v2-source",
+    "baseline_head":  "c41eefadf7e91bfeba5cc960b74e7954c2d4a7fe",
+    "checked_utc":  "2026-11-05T17:37:22.6205466Z",
+    "protected_configuration_loaded":  false,
+    "ruff_exit":  0,
+    "basedpyright_exit":  0,
+    "pytest_exit":  0,
+    "pytest_summary":  [
+                           "64 snapshots passed.",
+                           "====================== 604 passed, 20 warnings in 37.75s ======================"
+                       ],
+    "status":  "PASS"
+}

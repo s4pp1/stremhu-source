@@ -1,0 +1,18 @@
+{
+ "diagnostic": "burst27-phase-cost-v1",
+ "is_measurement": false,
+ "giant_bytes": 21491624,
+ "count": 5,
+ "anon_delta_mib": {
+  "bytes_held": 139.8,
+  "models_created": 175.2,
+  "snapshots_built": 175.2,
+  "models_and_bytes_dropped": 72.7,
+  "snapshots_dropped_cache_only": 72.7,
+  "cache_entries": 5,
+  "cache_cleared": 9.8
+ },
+ "source": "frozen f90e752 server/app (cr15b-after-v2 manifest)",
+ "script_sha256": "59a117d4ca798e584c93ca0f6ffeef43d330cca94c737fa416c118d96222b2f2",
+ "note": "Diagnostic only, not gate data: cgroup anon delta per phase for 5 giant (21.5 MB, 10000-file) metadata bodies in one process."
+}

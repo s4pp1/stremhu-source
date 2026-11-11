@@ -1,0 +1,1111 @@
+{
+ "protocol": "gsp02-v4",
+ "decision": "PASS:C2",
+ "candidates": {
+  "C2": {
+   "pass": true,
+   "improved_key_cells": [
+    "fast/16MiB/30Mbit",
+    "fast/4MiB/30Mbit",
+    "thin/16MiB/30Mbit",
+    "thin/1MiB/30Mbit",
+    "thin/4MiB/30Mbit"
+   ],
+   "improved_count": 5,
+   "regressions": [],
+   "failed_runs": {
+    "C0": 0,
+    "C2": 0
+   },
+   "tracebacks_total": {
+    "C0": 0,
+    "C2": 0
+   },
+   "total_primary_gain_s": 12.339,
+   "tests": {
+    "fast/16MiB/30Mbit seek.resume_s": {
+     "mean_c0": 3.324,
+     "mean_candidate": 3.53,
+     "diff": 0.205,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.77002299770023,
+     "p_regression_null": 0.23127687231276872
+    },
+    "fast/16MiB/30Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "fast/16MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 12.559,
+     "mean_candidate": 8.97,
+     "diff": -3.589,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "fast/16MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 8.936,
+     "mean_candidate": 8.875,
+     "diff": -0.061,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.3277672232776722,
+     "p_regression_null": 0.6725327467253275
+    },
+    "fast/16MiB/60Mbit seek.resume_s": {
+     "mean_c0": 3.234,
+     "mean_candidate": 3.785,
+     "diff": 0.551,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.9987001299870013,
+     "p_regression_null": 0.0014998500149985001
+    },
+    "fast/16MiB/60Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.136,
+     "diff": 0.136,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 0.1070892910708929
+    },
+    "fast/16MiB/60Mbit start.time_to_start_s": {
+     "mean_c0": 12.624,
+     "mean_candidate": 9.301,
+     "diff": -3.323,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "fast/16MiB/60Mbit start.ttfb_s": {
+     "mean_c0": 8.829,
+     "mean_candidate": 9.015,
+     "diff": 0.187,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.9965003499650035,
+     "p_regression_null": 0.0036996300369963003
+    },
+    "fast/16MiB/8Mbit seek.resume_s": {
+     "mean_c0": 3.259,
+     "mean_candidate": 3.986,
+     "diff": 0.727,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.9969003099690031,
+     "p_regression_null": 0.0031996800319968005
+    },
+    "fast/16MiB/8Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "fast/16MiB/8Mbit start.time_to_start_s": {
+     "mean_c0": 11.782,
+     "mean_candidate": 8.759,
+     "diff": -3.023,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.00039996000399960006,
+     "p_regression_null": 0.9997000299970003
+    },
+    "fast/16MiB/8Mbit start.ttfb_s": {
+     "mean_c0": 8.454,
+     "mean_candidate": 8.652,
+     "diff": 0.199,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.7012298770122988,
+     "p_regression_null": 0.298970102989701
+    },
+    "fast/1MiB/30Mbit seek.resume_s": {
+     "mean_c0": 1.034,
+     "mean_candidate": 1.034,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.4841515848415158,
+     "p_regression_null": 0.5177482251774822
+    },
+    "fast/1MiB/30Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "fast/1MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 4.237,
+     "mean_candidate": 3.941,
+     "diff": -0.296,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.09219078092190781,
+     "p_regression_null": 0.9082091790820918
+    },
+    "fast/1MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 2.382,
+     "mean_candidate": 2.08,
+     "diff": -0.302,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.00029997000299970003,
+     "p_regression_null": 0.9998000199980002
+    },
+    "fast/4MiB/30Mbit seek.resume_s": {
+     "mean_c0": 1.525,
+     "mean_candidate": 1.429,
+     "diff": -0.096,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.3107689231076892,
+     "p_regression_null": 0.6895310468953104
+    },
+    "fast/4MiB/30Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "fast/4MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 6.414,
+     "mean_candidate": 4.469,
+     "diff": -1.945,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "fast/4MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 5.474,
+     "mean_candidate": 3.444,
+     "diff": -2.03,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "fast/4MiB/60Mbit seek.resume_s": {
+     "mean_c0": 1.911,
+     "mean_candidate": 2.017,
+     "diff": 0.106,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.8352164783521648,
+     "p_regression_null": 0.16498350164983502
+    },
+    "fast/4MiB/60Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "fast/4MiB/60Mbit start.time_to_start_s": {
+     "mean_c0": 8.511,
+     "mean_candidate": 6.736,
+     "diff": -1.774,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.00019998000199980003,
+     "p_regression_null": 0.9999000099990001
+    },
+    "fast/4MiB/60Mbit start.ttfb_s": {
+     "mean_c0": 5.665,
+     "mean_candidate": 3.674,
+     "diff": -1.991,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "fast/4MiB/8Mbit seek.resume_s": {
+     "mean_c0": 2.141,
+     "mean_candidate": 1.77,
+     "diff": -0.371,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.08409159084091591,
+     "p_regression_null": 0.9163083691630837
+    },
+    "fast/4MiB/8Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "fast/4MiB/8Mbit start.time_to_start_s": {
+     "mean_c0": 5.335,
+     "mean_candidate": 3.641,
+     "diff": -1.694,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "fast/4MiB/8Mbit start.ttfb_s": {
+     "mean_c0": 5.254,
+     "mean_candidate": 3.568,
+     "diff": -1.686,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "mixed/16MiB/30Mbit seek.resume_s": {
+     "mean_c0": 6.492,
+     "mean_candidate": 7.836,
+     "diff": 1.344,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.7273272672732727,
+     "p_regression_null": 0.27287271272872715
+    },
+    "mixed/16MiB/30Mbit start.stall_s": {
+     "mean_c0": 1.319,
+     "mean_candidate": 1.193,
+     "diff": -0.125,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.4557544245575442,
+     "p_regression_null": 0.5578442155784421
+    },
+    "mixed/16MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 16.378,
+     "mean_candidate": 19.136,
+     "diff": 2.758,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.8344165583441656,
+     "p_regression_null": 0.16568343165683433
+    },
+    "mixed/16MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 13.935,
+     "mean_candidate": 15.284,
+     "diff": 1.349,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.6861313868613139,
+     "p_regression_null": 0.31396860313968605
+    },
+    "mixed/4MiB/30Mbit seek.resume_s": {
+     "mean_c0": 2.167,
+     "mean_candidate": 2.733,
+     "diff": 0.566,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.9966003399660034,
+     "p_regression_null": 0.0034996500349965005
+    },
+    "mixed/4MiB/30Mbit start.stall_s": {
+     "mean_c0": 0.326,
+     "mean_candidate": 0.161,
+     "diff": -0.165,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.22597740225977403,
+     "p_regression_null": 0.7805219478052194
+    },
+    "mixed/4MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 13.076,
+     "mean_candidate": 10.961,
+     "diff": -2.114,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.17628237176282371,
+     "p_regression_null": 0.8238176182381762
+    },
+    "mixed/4MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 11.762,
+     "mean_candidate": 9.524,
+     "diff": -2.238,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.1785821417858214,
+     "p_regression_null": 0.8215178482151785
+    },
+    "thin/16MiB/30Mbit seek.resume_s": {
+     "mean_c0": 7.855,
+     "mean_candidate": 6.959,
+     "diff": -0.896,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.1337866213378662,
+     "p_regression_null": 0.8663133686631337
+    },
+    "thin/16MiB/30Mbit start.stall_s": {
+     "mean_c0": 0.707,
+     "mean_candidate": 0.0,
+     "diff": -0.707,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "thin/16MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 14.094,
+     "mean_candidate": 11.496,
+     "diff": -2.598,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "thin/16MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 9.957,
+     "mean_candidate": 10.123,
+     "diff": 0.166,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.7659234076592341,
+     "p_regression_null": 0.2343765623437656
+    },
+    "thin/1MiB/30Mbit seek.resume_s": {
+     "mean_c0": 1.736,
+     "mean_candidate": 1.746,
+     "diff": 0.01,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.8375162483751625,
+     "p_regression_null": 0.17648235176482352
+    },
+    "thin/1MiB/30Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "thin/1MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 6.337,
+     "mean_candidate": 5.48,
+     "diff": -0.857,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "thin/1MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 3.344,
+     "mean_candidate": 2.498,
+     "diff": -0.845,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "thin/4MiB/30Mbit seek.resume_s": {
+     "mean_c0": 2.663,
+     "mean_candidate": 2.793,
+     "diff": 0.13,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.6228377162283771,
+     "p_regression_null": 0.3778622137786221
+    },
+    "thin/4MiB/30Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "thin/4MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 9.763,
+     "mean_candidate": 6.709,
+     "diff": -3.054,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "thin/4MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 7.163,
+     "mean_candidate": 5.008,
+     "diff": -2.155,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    }
+   }
+  },
+  "C4": {
+   "pass": false,
+   "improved_key_cells": [
+    "fast/16MiB/30Mbit",
+    "fast/1MiB/30Mbit",
+    "fast/4MiB/30Mbit",
+    "thin/16MiB/30Mbit",
+    "thin/1MiB/30Mbit",
+    "thin/4MiB/30Mbit"
+   ],
+   "improved_count": 6,
+   "regressions": [
+    "fast/16MiB/8Mbit seek.resume_s"
+   ],
+   "failed_runs": {
+    "C0": 0,
+    "C4": 0
+   },
+   "tracebacks_total": {
+    "C0": 0,
+    "C4": 0
+   },
+   "total_primary_gain_s": 13.702,
+   "tests": {
+    "fast/16MiB/30Mbit seek.resume_s": {
+     "mean_c0": 3.324,
+     "mean_candidate": 3.705,
+     "diff": 0.381,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.9359064093590641,
+     "p_regression_null": 0.06419358064193581
+    },
+    "fast/16MiB/30Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "fast/16MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 12.559,
+     "mean_candidate": 8.438,
+     "diff": -4.121,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "fast/16MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 8.936,
+     "mean_candidate": 8.337,
+     "diff": -0.599,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.10178982101789821,
+     "p_regression_null": 0.8983101689831017
+    },
+    "fast/16MiB/60Mbit seek.resume_s": {
+     "mean_c0": 3.234,
+     "mean_candidate": 3.465,
+     "diff": 0.231,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.7723227677232277,
+     "p_regression_null": 0.22807719228077192
+    },
+    "fast/16MiB/60Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.08,
+     "diff": 0.08,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 0.34266573342665735
+    },
+    "fast/16MiB/60Mbit start.time_to_start_s": {
+     "mean_c0": 12.624,
+     "mean_candidate": 8.439,
+     "diff": -4.186,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "fast/16MiB/60Mbit start.ttfb_s": {
+     "mean_c0": 8.829,
+     "mean_candidate": 8.337,
+     "diff": -0.491,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.12378762123787622,
+     "p_regression_null": 0.8764123587641236
+    },
+    "fast/16MiB/8Mbit seek.resume_s": {
+     "mean_c0": 3.259,
+     "mean_candidate": 4.482,
+     "diff": 1.223,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.9996000399960004,
+     "p_regression_null": 0.0004999500049995
+    },
+    "fast/16MiB/8Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "fast/16MiB/8Mbit start.time_to_start_s": {
+     "mean_c0": 11.782,
+     "mean_candidate": 8.869,
+     "diff": -2.913,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "fast/16MiB/8Mbit start.ttfb_s": {
+     "mean_c0": 8.454,
+     "mean_candidate": 8.767,
+     "diff": 0.313,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.8542145785421458,
+     "p_regression_null": 0.145985401459854
+    },
+    "fast/1MiB/30Mbit seek.resume_s": {
+     "mean_c0": 1.034,
+     "mean_candidate": 1.08,
+     "diff": 0.046,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.7597240275972402,
+     "p_regression_null": 0.24067593240675933
+    },
+    "fast/1MiB/30Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "fast/1MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 4.237,
+     "mean_candidate": 3.756,
+     "diff": -0.481,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.025997400259974,
+     "p_regression_null": 0.9741025897410259
+    },
+    "fast/1MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 2.382,
+     "mean_candidate": 2.032,
+     "diff": -0.35,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.00019998000199980003,
+     "p_regression_null": 0.9999000099990001
+    },
+    "fast/4MiB/30Mbit seek.resume_s": {
+     "mean_c0": 1.525,
+     "mean_candidate": 1.65,
+     "diff": 0.125,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.7147285271472853,
+     "p_regression_null": 0.2860713928607139
+    },
+    "fast/4MiB/30Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "fast/4MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 6.414,
+     "mean_candidate": 4.278,
+     "diff": -2.136,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "fast/4MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 5.474,
+     "mean_candidate": 3.255,
+     "diff": -2.219,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "fast/4MiB/60Mbit seek.resume_s": {
+     "mean_c0": 1.911,
+     "mean_candidate": 1.881,
+     "diff": -0.03,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.4226577342265773,
+     "p_regression_null": 0.5788421157884212
+    },
+    "fast/4MiB/60Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "fast/4MiB/60Mbit start.time_to_start_s": {
+     "mean_c0": 8.511,
+     "mean_candidate": 6.596,
+     "diff": -1.915,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.00019998000199980003,
+     "p_regression_null": 0.9999000099990001
+    },
+    "fast/4MiB/60Mbit start.ttfb_s": {
+     "mean_c0": 5.665,
+     "mean_candidate": 3.683,
+     "diff": -1.982,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "fast/4MiB/8Mbit seek.resume_s": {
+     "mean_c0": 2.141,
+     "mean_candidate": 1.775,
+     "diff": -0.366,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.06679332066793321,
+     "p_regression_null": 0.9335066493350664
+    },
+    "fast/4MiB/8Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "fast/4MiB/8Mbit start.time_to_start_s": {
+     "mean_c0": 5.335,
+     "mean_candidate": 3.712,
+     "diff": -1.623,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "fast/4MiB/8Mbit start.ttfb_s": {
+     "mean_c0": 5.254,
+     "mean_candidate": 3.638,
+     "diff": -1.615,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "mixed/16MiB/30Mbit seek.resume_s": {
+     "mean_c0": 6.492,
+     "mean_candidate": 6.793,
+     "diff": 0.301,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.6075392460753924,
+     "p_regression_null": 0.39276072392760725
+    },
+    "mixed/16MiB/30Mbit start.stall_s": {
+     "mean_c0": 1.319,
+     "mean_candidate": 1.223,
+     "diff": -0.095,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.46435356464353567,
+     "p_regression_null": 0.5488451154884512
+    },
+    "mixed/16MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 16.378,
+     "mean_candidate": 19.417,
+     "diff": 3.039,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.8534146585341466,
+     "p_regression_null": 0.1466853314668533
+    },
+    "mixed/16MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 13.935,
+     "mean_candidate": 15.342,
+     "diff": 1.407,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.6923307669233076,
+     "p_regression_null": 0.3077692230776922
+    },
+    "mixed/4MiB/30Mbit seek.resume_s": {
+     "mean_c0": 2.167,
+     "mean_candidate": 2.567,
+     "diff": 0.4,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.9184081591840816,
+     "p_regression_null": 0.0816918308169183
+    },
+    "mixed/4MiB/30Mbit start.stall_s": {
+     "mean_c0": 0.326,
+     "mean_candidate": 0.186,
+     "diff": -0.14,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.29917008299170084,
+     "p_regression_null": 0.7097290270972902
+    },
+    "mixed/4MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 13.076,
+     "mean_candidate": 11.362,
+     "diff": -1.714,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.25407459254074594,
+     "p_regression_null": 0.746025397460254
+    },
+    "mixed/4MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 11.762,
+     "mean_candidate": 8.093,
+     "diff": -3.669,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.044495550444955505,
+     "p_regression_null": 0.9556044395560443
+    },
+    "thin/16MiB/30Mbit seek.resume_s": {
+     "mean_c0": 7.855,
+     "mean_candidate": 7.234,
+     "diff": -0.621,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.20277972202779723,
+     "p_regression_null": 0.7975202479752025
+    },
+    "thin/16MiB/30Mbit start.stall_s": {
+     "mean_c0": 0.707,
+     "mean_candidate": 0.0,
+     "diff": -0.707,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "thin/16MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 14.094,
+     "mean_candidate": 11.282,
+     "diff": -2.813,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "thin/16MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 9.957,
+     "mean_candidate": 10.242,
+     "diff": 0.285,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.9404059594040596,
+     "p_regression_null": 0.05979402059794021
+    },
+    "thin/1MiB/30Mbit seek.resume_s": {
+     "mean_c0": 1.736,
+     "mean_candidate": 1.751,
+     "diff": 0.015,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.936906309369063,
+     "p_regression_null": 0.07039296070392961
+    },
+    "thin/1MiB/30Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "thin/1MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 6.337,
+     "mean_candidate": 5.39,
+     "diff": -0.947,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "thin/1MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 3.344,
+     "mean_candidate": 2.401,
+     "diff": -0.943,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "thin/4MiB/30Mbit seek.resume_s": {
+     "mean_c0": 2.663,
+     "mean_candidate": 3.214,
+     "diff": 0.552,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.9232076792320768,
+     "p_regression_null": 0.0771922807719228
+    },
+    "thin/4MiB/30Mbit start.stall_s": {
+     "mean_c0": 0.0,
+     "mean_candidate": 0.0,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 1.0,
+     "p_regression_null": 1.0
+    },
+    "thin/4MiB/30Mbit start.time_to_start_s": {
+     "mean_c0": 9.763,
+     "mean_candidate": 6.559,
+     "diff": -3.204,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "thin/4MiB/30Mbit start.ttfb_s": {
+     "mean_c0": 7.163,
+     "mean_candidate": 4.856,
+     "diff": -2.307,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    }
+   }
+  }
+ }
+}

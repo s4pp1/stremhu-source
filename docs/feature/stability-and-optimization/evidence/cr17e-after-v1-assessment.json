@@ -1,0 +1,8476 @@
+{
+  "status": "PASS",
+  "evaluated_utc": "2026-11-07T13:35:41.400488+00:00",
+  "protocol": "cr17e-after-v1-protocol.json",
+  "protocol_sha256": "37d7ad83d85b23114a77a0e2bf2c32fc2102438ace3e2655d7b3c2a57b45d54b",
+  "assessor_sha256": "c1bc4490fba3214808cb7ec19130755f58b1a35bf3703fc9c04736c256643c47",
+  "gate_checks": 316,
+  "failures": [],
+  "rows": [
+    {
+      "scope": "smoke",
+      "metric": "after_complete",
+      "passed": true
+    },
+    {
+      "scope": "smoke",
+      "metric": "before_complete",
+      "passed": true
+    },
+    {
+      "scope": "short",
+      "metric": "after_all_attempts_complete",
+      "missing": [],
+      "passed": true
+    },
+    {
+      "scope": "short",
+      "metric": "before_all_attempts_complete",
+      "missing": [],
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 1)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 1)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        2.68127,
+        2.703979
+      ],
+      "after_medians": [
+        2.654349,
+        2.764033
+      ],
+      "J": 0.022708999999999868,
+      "before_range": [
+        2.591806,
+        2.950772
+      ],
+      "limit": 12.703979,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 1)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.2569550279999999,
+        0.25940151199999995
+      ],
+      "after_medians": [
+        0.25849880800000014,
+        0.265721251
+      ],
+      "J": 0.0024464840000000265,
+      "before_range": [
+        0.25447825,
+        0.27936507499999985
+      ],
+      "limit": 0.2853416632,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 1)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        100,
+        100
+      ],
+      "after_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "before_range": [
+        100,
+        100
+      ],
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 1)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        91119616,
+        91136000
+      ],
+      "after_medians": [
+        91168768,
+        91136000
+      ],
+      "J": 16384,
+      "before_range": [
+        91000832,
+        91168768
+      ],
+      "limit": 93233152,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 1)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        96055296,
+        96235520
+      ],
+      "after_medians": [
+        96083968,
+        96059392
+      ],
+      "J": 180224,
+      "before_range": [
+        95539200,
+        96665600
+      ],
+      "limit": 98332672,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 1)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        96305152,
+        96354304
+      ],
+      "after_medians": [
+        96350208,
+        96329728
+      ],
+      "J": 49152,
+      "before_range": [
+        95797248,
+        96931840
+      ],
+      "limit": 98451456,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 1)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        122048,
+        122404
+      ],
+      "after_medians": [
+        122596,
+        122504
+      ],
+      "J": 356,
+      "before_range": [
+        121968,
+        123016
+      ],
+      "limit": 124452,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 4)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 4)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        16.388237,
+        15.191387
+      ],
+      "after_medians": [
+        15.05355,
+        15.309453
+      ],
+      "J": 1.1968499999999995,
+      "before_range": [
+        14.960158,
+        16.821367
+      ],
+      "limit": 26.388237,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 4)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.3305127149999998,
+        0.330843381
+      ],
+      "after_medians": [
+        0.32492202599999986,
+        0.329205411
+      ],
+      "J": 0.0003306660000002015,
+      "before_range": [
+        0.3245629859999999,
+        0.339129346
+      ],
+      "limit": 0.36392771910000005,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 4)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        100,
+        100
+      ],
+      "after_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "before_range": [
+        100,
+        100
+      ],
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 4)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        91742208,
+        91168768
+      ],
+      "after_medians": [
+        91852800,
+        91791360
+      ],
+      "J": 573440,
+      "before_range": [
+        91119616,
+        91758592
+      ],
+      "limit": 93839360,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 4)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        96804864,
+        96915456
+      ],
+      "after_medians": [
+        97128448,
+        96894976
+      ],
+      "J": 110592,
+      "before_range": [
+        96575488,
+        97443840
+      ],
+      "limit": 99012608,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 4)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        96841728,
+        96915456
+      ],
+      "after_medians": [
+        97132544,
+        96894976
+      ],
+      "J": 73728,
+      "before_range": [
+        96579584,
+        97710080
+      ],
+      "limit": 99012608,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 4)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        122688,
+        123068
+      ],
+      "after_medians": [
+        123108,
+        123144
+      ],
+      "J": 380,
+      "before_range": [
+        122608,
+        123528
+      ],
+      "limit": 125116,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 8)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 8)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        29.851385,
+        30.295238
+      ],
+      "after_medians": [
+        30.474625,
+        30.065897
+      ],
+      "J": 0.4438530000000007,
+      "before_range": [
+        28.49507,
+        32.059164
+      ],
+      "limit": 40.295238,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 8)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.3310743760000001,
+        0.32661911499999996
+      ],
+      "after_medians": [
+        0.32753414000000003,
+        0.3296341599999999
+      ],
+      "J": 0.004455261000000155,
+      "before_range": [
+        0.32175485599999987,
+        0.3400115600000002
+      ],
+      "limit": 0.3641818136000002,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 8)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        100,
+        100
+      ],
+      "after_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "before_range": [
+        100,
+        100
+      ],
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 8)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        92921856,
+        92880896
+      ],
+      "after_medians": [
+        92979200,
+        92962816
+      ],
+      "J": 40960,
+      "before_range": [
+        92540928,
+        93003776
+      ],
+      "limit": 95019008,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 8)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        97935360,
+        97955840
+      ],
+      "after_medians": [
+        98455552,
+        98320384
+      ],
+      "J": 20480,
+      "before_range": [
+        97628160,
+        98750464
+      ],
+      "limit": 100052992,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 8)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        98152448,
+        97955840
+      ],
+      "after_medians": [
+        98455552,
+        98320384
+      ],
+      "J": 196608,
+      "before_range": [
+        97632256,
+        98750464
+      ],
+      "limit": 100249600,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'same-result-key', 8)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        123888,
+        124092
+      ],
+      "after_medians": [
+        124212,
+        124168
+      ],
+      "J": 204,
+      "before_range": [
+        123400,
+        124680
+      ],
+      "limit": 126140,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        11.681493,
+        11.833545
+      ],
+      "after_medians": [
+        11.949556,
+        12.091248
+      ],
+      "J": 0.1520520000000012,
+      "before_range": [
+        11.201715,
+        12.093436
+      ],
+      "limit": 21.833545,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.9575189239999999,
+        0.9539022739999998
+      ],
+      "after_medians": [
+        0.974619476,
+        0.962989688
+      ],
+      "J": 0.00361665000000011,
+      "before_range": [
+        0.9220198709999998,
+        0.9659269949999998
+      ],
+      "limit": 1.0532708164,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000,
+        1000
+      ],
+      "after_medians": [
+        1000,
+        1000
+      ],
+      "J": 0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        97038336,
+        96882688
+      ],
+      "after_medians": [
+        97439744,
+        97636352
+      ],
+      "J": 155648,
+      "before_range": [
+        96305152,
+        97402880
+      ],
+      "limit": 99135488,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        102682624,
+        102408192
+      ],
+      "after_medians": [
+        103452672,
+        103297024
+      ],
+      "J": 274432,
+      "before_range": [
+        101822464,
+        103129088
+      ],
+      "limit": 104779776,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        102682624,
+        102408192
+      ],
+      "after_medians": [
+        103452672,
+        103297024
+      ],
+      "J": 274432,
+      "before_range": [
+        101822464,
+        103129088
+      ],
+      "limit": 104779776,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        128112,
+        128316
+      ],
+      "after_medians": [
+        128964,
+        128840
+      ],
+      "J": 204,
+      "before_range": [
+        127680,
+        128808
+      ],
+      "limit": 130364,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        61.880226,
+        61.703878
+      ],
+      "after_medians": [
+        62.655856,
+        62.730428
+      ],
+      "J": 0.17634799999999728,
+      "before_range": [
+        58.694975,
+        66.436019
+      ],
+      "limit": 71.880226,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        1.295783358,
+        1.272585093
+      ],
+      "after_medians": [
+        1.33552932,
+        1.3507127410000002
+      ],
+      "J": 0.023198264999999996,
+      "before_range": [
+        1.2653823539999998,
+        1.3413957240000003
+      ],
+      "limit": 1.4253616938000002,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000,
+        1000
+      ],
+      "after_medians": [
+        1000,
+        1000
+      ],
+      "J": 0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        99536896,
+        100270080
+      ],
+      "after_medians": [
+        100085760,
+        100089856
+      ],
+      "J": 733184,
+      "before_range": [
+        98824192,
+        101232640
+      ],
+      "limit": 102367232,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        105226240,
+        106311680
+      ],
+      "after_medians": [
+        106053632,
+        106176512
+      ],
+      "J": 1085440,
+      "before_range": [
+        104706048,
+        107343872
+      ],
+      "limit": 108408832,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        105226240,
+        106311680
+      ],
+      "after_medians": [
+        106053632,
+        106176512
+      ],
+      "J": 1085440,
+      "before_range": [
+        104706048,
+        107343872
+      ],
+      "limit": 108408832,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        130728,
+        130880
+      ],
+      "after_medians": [
+        131364,
+        131272
+      ],
+      "J": 152,
+      "before_range": [
+        130212,
+        132620
+      ],
+      "limit": 132928,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        128.03129,
+        123.772125
+      ],
+      "after_medians": [
+        129.508197,
+        133.295419
+      ],
+      "J": 4.25916500000001,
+      "before_range": [
+        122.284501,
+        138.640441
+      ],
+      "limit": 138.03129,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        1.2961993289999993,
+        1.2885476679999996
+      ],
+      "after_medians": [
+        1.3706593620000005,
+        1.377172872
+      ],
+      "J": 0.007651660999999699,
+      "before_range": [
+        1.277334981,
+        1.3668981799999997
+      ],
+      "limit": 1.4258192618999994,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000,
+        1000
+      ],
+      "after_medians": [
+        1000,
+        1000
+      ],
+      "J": 0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        104951808,
+        105152512
+      ],
+      "after_medians": [
+        103473152,
+        102801408
+      ],
+      "J": 200704,
+      "before_range": [
+        104169472,
+        105512960
+      ],
+      "limit": 107249664,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        110514176,
+        111038464
+      ],
+      "after_medians": [
+        109449216,
+        108699648
+      ],
+      "J": 524288,
+      "before_range": [
+        109424640,
+        112111616
+      ],
+      "limit": 113135616,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        110514176,
+        111038464
+      ],
+      "after_medians": [
+        109449216,
+        108699648
+      ],
+      "J": 524288,
+      "before_range": [
+        109424640,
+        112111616
+      ],
+      "limit": 113135616,
+      "passed": true
+    },
+    {
+      "scope": "short/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        135688,
+        136124
+      ],
+      "after_medians": [
+        134820,
+        134412
+      ],
+      "J": 436,
+      "before_range": [
+        134768,
+        136844
+      ],
+      "limit": 138172,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 1)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 1)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        2.865598,
+        2.756966
+      ],
+      "after_medians": [
+        2.782721,
+        2.837744
+      ],
+      "J": 0.10863200000000006,
+      "before_range": [
+        2.702255,
+        2.912766
+      ],
+      "limit": 12.865598,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 1)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.3018768230000006,
+        0.29358832099999965
+      ],
+      "after_medians": [
+        0.2961200580000005,
+        0.29838805299999915
+      ],
+      "J": 0.008288502000000975,
+      "before_range": [
+        0.2892922640000002,
+        0.30916856300000006
+      ],
+      "limit": 0.3320645053000007,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 1)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        100,
+        100
+      ],
+      "after_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "before_range": [
+        100,
+        100
+      ],
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 1)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        107749376,
+        107876352
+      ],
+      "after_medians": [
+        106139648,
+        106512384
+      ],
+      "J": 126976,
+      "before_range": [
+        107065344,
+        108437504
+      ],
+      "limit": 109973504,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 1)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        114057216,
+        114294784
+      ],
+      "after_medians": [
+        112734208,
+        113016832
+      ],
+      "J": 237568,
+      "before_range": [
+        113434624,
+        115392512
+      ],
+      "limit": 116391936,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 1)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        114061312,
+        114561024
+      ],
+      "after_medians": [
+        112738304,
+        113025024
+      ],
+      "J": 499712,
+      "before_range": [
+        113700864,
+        115658752
+      ],
+      "limit": 116658176,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 1)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        139072,
+        138556
+      ],
+      "after_medians": [
+        137380,
+        137828
+      ],
+      "J": 516,
+      "before_range": [
+        137584,
+        139560
+      ],
+      "limit": 141120,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 4)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 4)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        16.337612,
+        16.642148
+      ],
+      "after_medians": [
+        16.377383,
+        16.423423
+      ],
+      "J": 0.3045359999999988,
+      "before_range": [
+        15.53891,
+        17.904971
+      ],
+      "limit": 26.642148,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 4)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.3634253680000006,
+        0.35970605899999963
+      ],
+      "after_medians": [
+        0.3590629060000001,
+        0.35930645600000055
+      ],
+      "J": 0.0037193090000009477,
+      "before_range": [
+        0.3549678740000006,
+        0.37020877500000005
+      ],
+      "limit": 0.3997679048000007,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 4)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        100,
+        100
+      ],
+      "after_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "before_range": [
+        100,
+        100
+      ],
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 4)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        107929600,
+        107876352
+      ],
+      "after_medians": [
+        106139648,
+        106512384
+      ],
+      "J": 53248,
+      "before_range": [
+        107065344,
+        108437504
+      ],
+      "limit": 110026752,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 4)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        114057216,
+        114556928
+      ],
+      "after_medians": [
+        112717824,
+        113012736
+      ],
+      "J": 499712,
+      "before_range": [
+        113696768,
+        115650560
+      ],
+      "limit": 116654080,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 4)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        114061312,
+        114561024
+      ],
+      "after_medians": [
+        112738304,
+        113025024
+      ],
+      "J": 499712,
+      "before_range": [
+        113700864,
+        115658752
+      ],
+      "limit": 116658176,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 4)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        139072,
+        138688
+      ],
+      "after_medians": [
+        137412,
+        137828
+      ],
+      "J": 384,
+      "before_range": [
+        137712,
+        139688
+      ],
+      "limit": 141120,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 8)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 8)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        31.42996,
+        33.269718
+      ],
+      "after_medians": [
+        31.556849,
+        31.950502
+      ],
+      "J": 1.8397579999999962,
+      "before_range": [
+        31.213049,
+        35.039263
+      ],
+      "limit": 43.269718,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 8)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.3568311829999997,
+        0.36046160500000024
+      ],
+      "after_medians": [
+        0.353852743,
+        0.3575004909999997
+      ],
+      "J": 0.0036304220000005216,
+      "before_range": [
+        0.3498258640000005,
+        0.37374632900000027
+      ],
+      "limit": 0.3965077655000003,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 8)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        100,
+        100
+      ],
+      "after_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "before_range": [
+        100,
+        100
+      ],
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 8)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        109047808,
+        109068288
+      ],
+      "after_medians": [
+        107044864,
+        107642880
+      ],
+      "J": 20480,
+      "before_range": [
+        108019712,
+        109645824
+      ],
+      "limit": 111165440,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 8)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        115314688,
+        115343360
+      ],
+      "after_medians": [
+        113766400,
+        114020352
+      ],
+      "J": 28672,
+      "before_range": [
+        114561024,
+        116174848
+      ],
+      "limit": 117440512,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 8)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        115314688,
+        115519488
+      ],
+      "after_medians": [
+        113766400,
+        114028544
+      ],
+      "J": 204800,
+      "before_range": [
+        114581504,
+        116174848
+      ],
+      "limit": 117616640,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'same-result-key', 8)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        139584,
+        139528
+      ],
+      "after_medians": [
+        138404,
+        138724
+      ],
+      "J": 56,
+      "before_range": [
+        138608,
+        140840
+      ],
+      "limit": 141632,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        27.097818,
+        26.196747
+      ],
+      "after_medians": [
+        26.270431,
+        28.92435
+      ],
+      "J": 0.9010710000000017,
+      "before_range": [
+        24.15506,
+        29.905271
+      ],
+      "limit": 37.097818000000004,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        2.184572848,
+        2.175423116
+      ],
+      "after_medians": [
+        2.1962636699999996,
+        2.2376555160000002
+      ],
+      "J": 0.009149732000000022,
+      "before_range": [
+        2.15679616,
+        2.2390270689999996
+      ],
+      "limit": 2.4030301328000006,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000,
+        1000
+      ],
+      "after_medians": [
+        1000,
+        1000
+      ],
+      "J": 0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        126521344,
+        126722048
+      ],
+      "after_medians": [
+        125583360,
+        125677568
+      ],
+      "J": 200704,
+      "before_range": [
+        126132224,
+        127139840
+      ],
+      "limit": 128819200,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        132870144,
+        133165056
+      ],
+      "after_medians": [
+        131985408,
+        132100096
+      ],
+      "J": 294912,
+      "before_range": [
+        132669440,
+        133730304
+      ],
+      "limit": 135262208,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        132870144,
+        133165056
+      ],
+      "after_medians": [
+        131985408,
+        132100096
+      ],
+      "J": 294912,
+      "before_range": [
+        132669440,
+        133730304
+      ],
+      "limit": 135262208,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        156608,
+        157064
+      ],
+      "after_medians": [
+        156228,
+        156360
+      ],
+      "J": 456,
+      "before_range": [
+        156452,
+        157992
+      ],
+      "limit": 159112,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        189.38695,
+        186.957985
+      ],
+      "after_medians": [
+        164.986122,
+        159.710931
+      ],
+      "J": 2.428965000000005,
+      "before_range": [
+        175.851735,
+        205.594126
+      ],
+      "limit": 199.38695,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        3.6154466000000003,
+        3.6035020289999995
+      ],
+      "after_medians": [
+        3.414400733999999,
+        3.438302650999999
+      ],
+      "J": 0.011944571000000792,
+      "before_range": [
+        3.4242452740000004,
+        3.723764463
+      ],
+      "limit": 3.9769912600000006,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000,
+        1000
+      ],
+      "after_medians": [
+        1000,
+        1000
+      ],
+      "J": 0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        130191360,
+        129957888
+      ],
+      "after_medians": [
+        127954944,
+        128544768
+      ],
+      "J": 233472,
+      "before_range": [
+        128917504,
+        131948544
+      ],
+      "limit": 132288512,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        136589312,
+        136482816
+      ],
+      "after_medians": [
+        135012352,
+        134975488
+      ],
+      "J": 106496,
+      "before_range": [
+        135770112,
+        138383360
+      ],
+      "limit": 138686464,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        136589312,
+        136482816
+      ],
+      "after_medians": [
+        135012352,
+        134975488
+      ],
+      "J": 106496,
+      "before_range": [
+        135770112,
+        138383360
+      ],
+      "limit": 138686464,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        160292,
+        160676
+      ],
+      "after_medians": [
+        159140,
+        158664
+      ],
+      "J": 384,
+      "before_range": [
+        159040,
+        161856
+      ],
+      "limit": 162724,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        407.913359,
+        414.831406
+      ],
+      "after_medians": [
+        311.737625,
+        308.837494
+      ],
+      "J": 6.918047000000001,
+      "before_range": [
+        398.225875,
+        419.851982
+      ],
+      "limit": 424.831406,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        3.7654620849999993,
+        3.8046946839999993
+      ],
+      "after_medians": [
+        3.514121611,
+        3.516765256000001
+      ],
+      "J": 0.03923259899999998,
+      "before_range": [
+        3.598947345000001,
+        3.875816252999998
+      ],
+      "limit": 4.1851641524,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000,
+        1000
+      ],
+      "after_medians": [
+        1000,
+        1000
+      ],
+      "J": 0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        138604544,
+        140410880
+      ],
+      "after_medians": [
+        134238208,
+        132812800
+      ],
+      "J": 1806336,
+      "before_range": [
+        138170368,
+        142217216
+      ],
+      "limit": 142508032,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        145752064,
+        146763776
+      ],
+      "after_medians": [
+        140947456,
+        139694080
+      ],
+      "J": 1011712,
+      "before_range": [
+        144863232,
+        148848640
+      ],
+      "limit": 148860928,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        145752064,
+        146763776
+      ],
+      "after_medians": [
+        140947456,
+        139694080
+      ],
+      "J": 1011712,
+      "before_range": [
+        144863232,
+        148848640
+      ],
+      "limit": 148860928,
+      "passed": true
+    },
+    {
+      "scope": "short/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        168356,
+        170428
+      ],
+      "after_medians": [
+        164548,
+        163912
+      ],
+      "J": 2072,
+      "before_range": [
+        168048,
+        173320
+      ],
+      "limit": 172476,
+      "passed": true
+    },
+    {
+      "scope": "short/cold0",
+      "metric": "payload_identity",
+      "passed": true
+    },
+    {
+      "scope": "short/cold0",
+      "metric": "wall_seconds",
+      "kind": "strict",
+      "before_medians": [
+        0.06767544100000578,
+        0.06768070700013595
+      ],
+      "after_medians": [
+        0.0672608439999749,
+        0.06776366099995812
+      ],
+      "J": 5.266000130177417e-06,
+      "before_range": [
+        0.06681891599998835,
+        0.06954024399999525
+      ],
+      "limit": 0.06954551000012543,
+      "passed": true
+    },
+    {
+      "scope": "short/cold0",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        10,
+        10
+      ],
+      "after_medians": [
+        10,
+        10
+      ],
+      "J": 0,
+      "before_range": [
+        10,
+        10
+      ],
+      "limit": 10,
+      "passed": true
+    },
+    {
+      "scope": "short/cold1",
+      "metric": "payload_identity",
+      "passed": true
+    },
+    {
+      "scope": "short/cold1",
+      "metric": "wall_seconds",
+      "kind": "strict",
+      "before_medians": [
+        0.01223499399998218,
+        0.012200328999938392
+      ],
+      "after_medians": [
+        0.012614915000085603,
+        0.012537642999973286
+      ],
+      "J": 3.4665000043787586e-05,
+      "before_range": [
+        0.010681121999937204,
+        0.012809944999958134
+      ],
+      "limit": 0.012844610000001921,
+      "passed": true
+    },
+    {
+      "scope": "short/cold1",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        10,
+        10
+      ],
+      "after_medians": [
+        10,
+        10
+      ],
+      "J": 0,
+      "before_range": [
+        10,
+        10
+      ],
+      "limit": 10,
+      "passed": true
+    },
+    {
+      "scope": "short/cold2",
+      "metric": "payload_identity",
+      "passed": true
+    },
+    {
+      "scope": "short/cold2",
+      "metric": "wall_seconds",
+      "kind": "strict",
+      "before_medians": [
+        0.04232162400001016,
+        0.04313172199999826
+      ],
+      "after_medians": [
+        0.04484744600006252,
+        0.04134667099992839
+      ],
+      "J": 0.000810097999988102,
+      "before_range": [
+        0.039702790000092136,
+        0.04928382299999612
+      ],
+      "limit": 0.05009392099998422,
+      "passed": true
+    },
+    {
+      "scope": "short/cold2",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        10,
+        10
+      ],
+      "after_medians": [
+        10,
+        10
+      ],
+      "J": 0,
+      "before_range": [
+        10,
+        10
+      ],
+      "limit": 10,
+      "passed": true
+    },
+    {
+      "scope": "short/cold3",
+      "metric": "payload_identity",
+      "passed": true
+    },
+    {
+      "scope": "short/cold3",
+      "metric": "wall_seconds",
+      "kind": "strict",
+      "before_medians": [
+        0.029007943999999952,
+        0.02330608799991296
+      ],
+      "after_medians": [
+        0.023660903000063627,
+        0.02369675800002824
+      ],
+      "J": 0.005701856000086991,
+      "before_range": [
+        0.02101195400018696,
+        0.031187625000029584
+      ],
+      "limit": 0.036889481000116575,
+      "passed": true
+    },
+    {
+      "scope": "short/cold3",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        10,
+        10
+      ],
+      "after_medians": [
+        10,
+        10
+      ],
+      "J": 0,
+      "before_range": [
+        10,
+        10
+      ],
+      "limit": 10,
+      "passed": true
+    },
+    {
+      "scope": "short/reference",
+      "metric": "B_C_complete",
+      "files": {
+        "A": 5,
+        "B": 5,
+        "C": 5
+      },
+      "passed": true
+    },
+    {
+      "scope": "direct",
+      "metric": "after_all_attempts_complete",
+      "missing": [],
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 1)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 1)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        2.604157,
+        2.616341
+      ],
+      "after_medians": [
+        2.703102,
+        2.690737
+      ],
+      "J": 0.012183999999999973,
+      "before_range": [
+        2.588094,
+        2.861167
+      ],
+      "limit": 12.616341,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 1)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.25087717899999995,
+        0.25024045800000017
+      ],
+      "after_medians": [
+        0.25711856099999997,
+        0.2571999950000001
+      ],
+      "J": 0.0006367209999997847,
+      "before_range": [
+        0.2460075369999999,
+        0.2607426289999999
+      ],
+      "limit": 0.2759648969,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 1)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        100,
+        100
+      ],
+      "after_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "before_range": [
+        100,
+        100
+      ],
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 1)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        90206208,
+        90238976
+      ],
+      "after_medians": [
+        90247168,
+        90259456
+      ],
+      "J": 32768,
+      "before_range": [
+        90161152,
+        90271744
+      ],
+      "limit": 92336128,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 1)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        95170560,
+        95518720
+      ],
+      "after_medians": [
+        95166464,
+        95449088
+      ],
+      "J": 348160,
+      "before_range": [
+        94953472,
+        95924224
+      ],
+      "limit": 97615872,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 1)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        95268864,
+        95698944
+      ],
+      "after_medians": [
+        95432704,
+        95453184
+      ],
+      "J": 430080,
+      "before_range": [
+        95174656,
+        96190464
+      ],
+      "limit": 97796096,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 1)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        121208,
+        121292
+      ],
+      "after_medians": [
+        121640,
+        121608
+      ],
+      "J": 84,
+      "before_range": [
+        121080,
+        121600
+      ],
+      "limit": 123340,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 4)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 4)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        15.328596,
+        15.105766
+      ],
+      "after_medians": [
+        15.268638,
+        15.079848
+      ],
+      "J": 0.22283000000000008,
+      "before_range": [
+        14.604263,
+        15.622836
+      ],
+      "limit": 25.328595999999997,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 4)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.32070853899999996,
+        0.31743519099999995
+      ],
+      "after_medians": [
+        0.32187263300000013,
+        0.3181033580000001
+      ],
+      "J": 0.0032733480000000093,
+      "before_range": [
+        0.31505465900000007,
+        0.329250697
+      ],
+      "limit": 0.3527793929,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 4)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        100,
+        100
+      ],
+      "after_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "before_range": [
+        100,
+        100
+      ],
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 4)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        90800128,
+        90243072
+      ],
+      "after_medians": [
+        90259456,
+        90882048
+      ],
+      "J": 557056,
+      "before_range": [
+        90206208,
+        90853376
+      ],
+      "limit": 92897280,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 4)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        95764480,
+        96239616
+      ],
+      "after_medians": [
+        96198656,
+        95989760
+      ],
+      "J": 475136,
+      "before_range": [
+        95694848,
+        96710656
+      ],
+      "limit": 98336768,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 4)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        96051200,
+        96313344
+      ],
+      "after_medians": [
+        96215040,
+        96235520
+      ],
+      "J": 262144,
+      "before_range": [
+        95694848,
+        96710656
+      ],
+      "limit": 98410496,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 4)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        121720,
+        121892
+      ],
+      "after_medians": [
+        122256,
+        122148
+      ],
+      "J": 172,
+      "before_range": [
+        121592,
+        122220
+      ],
+      "limit": 123940,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 8)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 8)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        29.046781,
+        29.89503
+      ],
+      "after_medians": [
+        29.677744,
+        30.407854
+      ],
+      "J": 0.8482489999999991,
+      "before_range": [
+        27.981665,
+        32.187792
+      ],
+      "limit": 39.89503,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 8)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.31984058299999973,
+        0.3195205210000003
+      ],
+      "after_medians": [
+        0.32257409800000003,
+        0.3183943360000001
+      ],
+      "J": 0.00032006199999945473,
+      "before_range": [
+        0.31393988399999984,
+        0.3295673629999998
+      ],
+      "limit": 0.35182464129999974,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 8)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        100,
+        100
+      ],
+      "after_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "before_range": [
+        100,
+        100
+      ],
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 8)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        91860992,
+        91672576
+      ],
+      "after_medians": [
+        91860992,
+        91840512
+      ],
+      "J": 188416,
+      "before_range": [
+        91492352,
+        92250112
+      ],
+      "limit": 93958144,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 8)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        97075200,
+        97357824
+      ],
+      "after_medians": [
+        97243136,
+        97345536
+      ],
+      "J": 282624,
+      "before_range": [
+        96829440,
+        98181120
+      ],
+      "limit": 99454976,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 8)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        97075200,
+        97361920
+      ],
+      "after_medians": [
+        97243136,
+        97353728
+      ],
+      "J": 286720,
+      "before_range": [
+        96829440,
+        98181120
+      ],
+      "limit": 99459072,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'same-result-key', 8)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        123020,
+        122700
+      ],
+      "after_medians": [
+        123152,
+        122828
+      ],
+      "J": 320,
+      "before_range": [
+        122232,
+        123536
+      ],
+      "limit": 125068,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        5.523951,
+        5.522355
+      ],
+      "after_medians": [
+        5.581988,
+        5.695515
+      ],
+      "J": 0.0015960000000001529,
+      "before_range": [
+        5.41832,
+        5.684427
+      ],
+      "limit": 15.523951,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.292947877,
+        0.2897240229999998
+      ],
+      "after_medians": [
+        0.2935379330000001,
+        0.30217829899999993
+      ],
+      "J": 0.003223854000000248,
+      "before_range": [
+        0.2875900069999999,
+        0.30128296100000007
+      ],
+      "limit": 0.32224266470000007,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        138,
+        138
+      ],
+      "after_medians": [
+        138,
+        138
+      ],
+      "J": 0,
+      "before_range": [
+        138,
+        138
+      ],
+      "limit": 138,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        91860992,
+        91672576
+      ],
+      "after_medians": [
+        91860992,
+        91840512
+      ],
+      "J": 188416,
+      "before_range": [
+        91492352,
+        92250112
+      ],
+      "limit": 93958144,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        97296384,
+        97615872
+      ],
+      "after_medians": [
+        97234944,
+        97501184
+      ],
+      "J": 319488,
+      "before_range": [
+        97001472,
+        98172928
+      ],
+      "limit": 99713024,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        97337344,
+        97619968
+      ],
+      "after_medians": [
+        97505280,
+        97607680
+      ],
+      "J": 282624,
+      "before_range": [
+        97046528,
+        98443264
+      ],
+      "limit": 99717120,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        123148,
+        122700
+      ],
+      "after_medians": [
+        123176,
+        122956
+      ],
+      "J": 448,
+      "before_range": [
+        122360,
+        123536
+      ],
+      "limit": 125196,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        21.465625,
+        21.329614
+      ],
+      "after_medians": [
+        22.080632,
+        22.120841
+      ],
+      "J": 0.13601099999999988,
+      "before_range": [
+        19.74425,
+        22.002418
+      ],
+      "limit": 31.465625,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.36641539199999995,
+        0.3627811940000001
+      ],
+      "after_medians": [
+        0.36776667699999965,
+        0.3678940639999997
+      ],
+      "J": 0.0036341979999998664,
+      "before_range": [
+        0.3572992239999997,
+        0.37292270299999997
+      ],
+      "limit": 0.40305693119999997,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        138,
+        138
+      ],
+      "after_medians": [
+        138,
+        138
+      ],
+      "J": 0,
+      "before_range": [
+        138,
+        138
+      ],
+      "limit": 138,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        92753920,
+        92442624
+      ],
+      "after_medians": [
+        92717056,
+        93032448
+      ],
+      "J": 311296,
+      "before_range": [
+        92291072,
+        93257728
+      ],
+      "limit": 94851072,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        98607104,
+        98799616
+      ],
+      "after_medians": [
+        98562048,
+        98803712
+      ],
+      "J": 192512,
+      "before_range": [
+        97820672,
+        99348480
+      ],
+      "limit": 100896768,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        98607104,
+        98799616
+      ],
+      "after_medians": [
+        98566144,
+        98828288
+      ],
+      "J": 192512,
+      "before_range": [
+        97820672,
+        99348480
+      ],
+      "limit": 100896768,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        123724,
+        123212
+      ],
+      "after_medians": [
+        123816,
+        123852
+      ],
+      "J": 512,
+      "before_range": [
+        123128,
+        124560
+      ],
+      "limit": 125772,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        43.809836,
+        41.987257
+      ],
+      "after_medians": [
+        45.181767,
+        44.602546
+      ],
+      "J": 1.8225789999999975,
+      "before_range": [
+        38.507823,
+        47.190302
+      ],
+      "limit": 53.809836,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.3725104909999999,
+        0.3636722739999998
+      ],
+      "after_medians": [
+        0.36531850899999974,
+        0.36859886200000025
+      ],
+      "J": 0.008838217000000093,
+      "before_range": [
+        0.3600924750000001,
+        0.38118031399999985
+      ],
+      "limit": 0.40976154009999993,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        138,
+        138
+      ],
+      "after_medians": [
+        138,
+        138
+      ],
+      "J": 0,
+      "before_range": [
+        138,
+        138
+      ],
+      "limit": 138,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        94408704,
+        93880320
+      ],
+      "after_medians": [
+        94081024,
+        94007296
+      ],
+      "J": 528384,
+      "before_range": [
+        93782016,
+        94818304
+      ],
+      "limit": 96505856,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        100442112,
+        100139008
+      ],
+      "after_medians": [
+        99868672,
+        99962880
+      ],
+      "J": 303104,
+      "before_range": [
+        99704832,
+        101036032
+      ],
+      "limit": 102539264,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        100442112,
+        100147200
+      ],
+      "after_medians": [
+        99868672,
+        99962880
+      ],
+      "J": 294912,
+      "before_range": [
+        99704832,
+        101040128
+      ],
+      "limit": 102539264,
+      "passed": true
+    },
+    {
+      "scope": "direct/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        125304,
+        124876
+      ],
+      "after_medians": [
+        125604,
+        125192
+      ],
+      "J": 428,
+      "before_range": [
+        124408,
+        125964
+      ],
+      "limit": 127352,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 1)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 1)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        2.645575,
+        2.634689
+      ],
+      "after_medians": [
+        2.697003,
+        2.64874
+      ],
+      "J": 0.010886000000000173,
+      "before_range": [
+        2.553638,
+        2.777014
+      ],
+      "limit": 12.645575000000001,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 1)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.2508827410000003,
+        0.24782911799999985
+      ],
+      "after_medians": [
+        0.252821478,
+        0.25105573000000003
+      ],
+      "J": 0.0030536230000004494,
+      "before_range": [
+        0.24662754499999995,
+        0.25830503699999996
+      ],
+      "limit": 0.2759710151000003,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 1)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        100,
+        100
+      ],
+      "after_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "before_range": [
+        100,
+        100
+      ],
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 1)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        95051776,
+        94400512
+      ],
+      "after_medians": [
+        94736384,
+        94617600
+      ],
+      "J": 651264,
+      "before_range": [
+        94269440,
+        95469568
+      ],
+      "limit": 97148928,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 1)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        101650432,
+        101158912
+      ],
+      "after_medians": [
+        101335040,
+        101400576
+      ],
+      "J": 491520,
+      "before_range": [
+        101052416,
+        102227968
+      ],
+      "limit": 103747584,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 1)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        101654528,
+        101421056
+      ],
+      "after_medians": [
+        101339136,
+        101408768
+      ],
+      "J": 233472,
+      "before_range": [
+        101167104,
+        102232064
+      ],
+      "limit": 103751680,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 1)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        125944,
+        125260
+      ],
+      "after_medians": [
+        126184,
+        125832
+      ],
+      "J": 684,
+      "before_range": [
+        125048,
+        126700
+      ],
+      "limit": 127992,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 4)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 4)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        15.156093,
+        15.290626
+      ],
+      "after_medians": [
+        15.56068,
+        15.045229
+      ],
+      "J": 0.13453299999999935,
+      "before_range": [
+        13.903978,
+        15.605756
+      ],
+      "limit": 25.290626,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 4)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.32359931500000005,
+        0.3178285159999996
+      ],
+      "after_medians": [
+        0.3241993220000001,
+        0.3200817169999999
+      ],
+      "J": 0.005770799000000437,
+      "before_range": [
+        0.309676697,
+        0.328604758
+      ],
+      "limit": 0.3559592465000001,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 4)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        100,
+        100
+      ],
+      "after_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "before_range": [
+        100,
+        100
+      ],
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 4)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        95051776,
+        94400512
+      ],
+      "after_medians": [
+        94736384,
+        94617600
+      ],
+      "J": 651264,
+      "before_range": [
+        94269440,
+        95559680
+      ],
+      "limit": 97148928,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 4)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        101650432,
+        101412864
+      ],
+      "after_medians": [
+        101335040,
+        101396480
+      ],
+      "J": 237568,
+      "before_range": [
+        101158912,
+        102227968
+      ],
+      "limit": 103747584,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 4)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        101654528,
+        101580800
+      ],
+      "after_medians": [
+        101339136,
+        101408768
+      ],
+      "J": 73728,
+      "before_range": [
+        101167104,
+        102232064
+      ],
+      "limit": 103751680,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 4)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        125944,
+        125348
+      ],
+      "after_medians": [
+        126312,
+        126088
+      ],
+      "J": 596,
+      "before_range": [
+        125176,
+        126700
+      ],
+      "limit": 127992,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 8)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 8)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        29.884313,
+        29.206302
+      ],
+      "after_medians": [
+        29.545377,
+        28.512706
+      ],
+      "J": 0.6780109999999979,
+      "before_range": [
+        27.786882,
+        30.170069
+      ],
+      "limit": 39.884313,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 8)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.31998870299999993,
+        0.31650507999999977
+      ],
+      "after_medians": [
+        0.31922046400000026,
+        0.3157623819999995
+      ],
+      "J": 0.003483623000000158,
+      "before_range": [
+        0.31194405800000036,
+        0.3275814549999998
+      ],
+      "limit": 0.35198757329999997,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 8)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        100,
+        100
+      ],
+      "after_medians": [
+        100,
+        100
+      ],
+      "J": 0,
+      "before_range": [
+        100,
+        100
+      ],
+      "limit": 100,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 8)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        95297536,
+        94875648
+      ],
+      "after_medians": [
+        95322112,
+        95141888
+      ],
+      "J": 421888,
+      "before_range": [
+        94810112,
+        96067584
+      ],
+      "limit": 97394688,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 8)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        102133760,
+        101937152
+      ],
+      "after_medians": [
+        101810176,
+        101814272
+      ],
+      "J": 196608,
+      "before_range": [
+        101421056,
+        102420480
+      ],
+      "limit": 104230912,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 8)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        102137856,
+        101937152
+      ],
+      "after_medians": [
+        101814272,
+        101814272
+      ],
+      "J": 200704,
+      "before_range": [
+        101421056,
+        102420480
+      ],
+      "limit": 104235008,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'same-result-key', 8)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        126156,
+        125644
+      ],
+      "after_medians": [
+        126696,
+        126344
+      ],
+      "J": 512,
+      "before_range": [
+        125560,
+        127212
+      ],
+      "limit": 128204,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        5.812158,
+        5.890304
+      ],
+      "after_medians": [
+        5.949208,
+        5.978881
+      ],
+      "J": 0.07814600000000027,
+      "before_range": [
+        5.769399,
+        5.976892
+      ],
+      "limit": 15.890304,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.45965145100000004,
+        0.45611232200000007
+      ],
+      "after_medians": [
+        0.46476590599999934,
+        0.4676500600000004
+      ],
+      "J": 0.003539128999999974,
+      "before_range": [
+        0.45216137700000036,
+        0.47089876099999994
+      ],
+      "limit": 0.5056165961000001,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        298,
+        298
+      ],
+      "after_medians": [
+        298,
+        298
+      ],
+      "J": 0,
+      "before_range": [
+        298,
+        298
+      ],
+      "limit": 298,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        96288768,
+        95715328
+      ],
+      "after_medians": [
+        96149504,
+        96034816
+      ],
+      "J": 573440,
+      "before_range": [
+        95674368,
+        96817152
+      ],
+      "limit": 98385920,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        102694912,
+        102723584
+      ],
+      "after_medians": [
+        102383616,
+        102707200
+      ],
+      "J": 28672,
+      "before_range": [
+        102465536,
+        103669760
+      ],
+      "limit": 104820736,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        102694912,
+        102723584
+      ],
+      "after_medians": [
+        102383616,
+        102707200
+      ],
+      "J": 28672,
+      "before_range": [
+        102465536,
+        103669760
+      ],
+      "limit": 104820736,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        126968,
+        126540
+      ],
+      "after_medians": [
+        127524,
+        127240
+      ],
+      "J": 428,
+      "before_range": [
+        126328,
+        127980
+      ],
+      "limit": 129016,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        23.59439,
+        23.809647
+      ],
+      "after_medians": [
+        24.195344,
+        23.899992
+      ],
+      "J": 0.2152569999999976,
+      "before_range": [
+        21.982157,
+        24.943087
+      ],
+      "limit": 33.809647,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.5479764020000006,
+        0.542285058
+      ],
+      "after_medians": [
+        0.5614323740000007,
+        0.5565485510000006
+      ],
+      "J": 0.005691344000000598,
+      "before_range": [
+        0.5328849330000001,
+        0.5612062289999997
+      ],
+      "limit": 0.6027740422000007,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        298,
+        298
+      ],
+      "after_medians": [
+        298,
+        298
+      ],
+      "J": 0,
+      "before_range": [
+        298,
+        298
+      ],
+      "limit": 298,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        97042432,
+        96698368
+      ],
+      "after_medians": [
+        97206272,
+        97099776
+      ],
+      "J": 344064,
+      "before_range": [
+        95715328,
+        98254848
+      ],
+      "limit": 99139584,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        103960576,
+        103251968
+      ],
+      "after_medians": [
+        103890944,
+        103632896
+      ],
+      "J": 708608,
+      "before_range": [
+        103149568,
+        105238528
+      ],
+      "limit": 106057728,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        103964672,
+        103251968
+      ],
+      "after_medians": [
+        103890944,
+        103632896
+      ],
+      "J": 712704,
+      "before_range": [
+        103149568,
+        105238528
+      ],
+      "limit": 106061824,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        127948,
+        127692
+      ],
+      "after_medians": [
+        128676,
+        128264
+      ],
+      "J": 256,
+      "before_range": [
+        127012,
+        129424
+      ],
+      "limit": 129996,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        46.045686,
+        48.588909
+      ],
+      "after_medians": [
+        51.293537,
+        52.353949
+      ],
+      "J": 2.5432229999999976,
+      "before_range": [
+        44.299107,
+        50.687192
+      ],
+      "limit": 58.588909,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.5462067459999993,
+        0.5573523740000006
+      ],
+      "after_medians": [
+        0.571851906,
+        0.5641198759999995
+      ],
+      "J": 0.011145628000001295,
+      "before_range": [
+        0.5403133540000002,
+        0.5690048339999993
+      ],
+      "limit": 0.6130876114000007,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        298,
+        298
+      ],
+      "after_medians": [
+        298,
+        298
+      ],
+      "J": 0,
+      "before_range": [
+        298,
+        298
+      ],
+      "limit": 298,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        98439168,
+        98541568
+      ],
+      "after_medians": [
+        98926592,
+        98656256
+      ],
+      "J": 102400,
+      "before_range": [
+        97611776,
+        99274752
+      ],
+      "limit": 100638720,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        105271296,
+        105324544
+      ],
+      "after_medians": [
+        105459712,
+        105201664
+      ],
+      "J": 53248,
+      "before_range": [
+        104230912,
+        105988096
+      ],
+      "limit": 107421696,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        105271296,
+        105349120
+      ],
+      "after_medians": [
+        105459712,
+        105201664
+      ],
+      "J": 77824,
+      "before_range": [
+        104230912,
+        106024960
+      ],
+      "limit": 107446272,
+      "passed": true
+    },
+    {
+      "scope": "direct/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        129228,
+        129528
+      ],
+      "after_medians": [
+        129980,
+        129720
+      ],
+      "J": 300,
+      "before_range": [
+        128676,
+        130320
+      ],
+      "limit": 131576,
+      "passed": true
+    },
+    {
+      "scope": "direct/cold0",
+      "metric": "payload_identity",
+      "passed": true
+    },
+    {
+      "scope": "direct/cold0",
+      "metric": "wall_seconds",
+      "kind": "strict",
+      "before_medians": [
+        0.05491884100001698,
+        0.055006325000022116
+      ],
+      "after_medians": [
+        0.055798202000005404,
+        0.055655003000083525
+      ],
+      "J": 8.748400000513357e-05,
+      "before_range": [
+        0.05423939100001007,
+        0.05645416800007297
+      ],
+      "limit": 0.0565416520000781,
+      "passed": true
+    },
+    {
+      "scope": "direct/cold0",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        3,
+        3
+      ],
+      "after_medians": [
+        3,
+        3
+      ],
+      "J": 0,
+      "before_range": [
+        3,
+        3
+      ],
+      "limit": 3,
+      "passed": true
+    },
+    {
+      "scope": "direct/cold1",
+      "metric": "payload_identity",
+      "passed": true
+    },
+    {
+      "scope": "direct/cold1",
+      "metric": "wall_seconds",
+      "kind": "strict",
+      "before_medians": [
+        0.005914235000091139,
+        0.005840755999997782
+      ],
+      "after_medians": [
+        0.0061764099998526945,
+        0.006070893000014621
+      ],
+      "J": 7.347900009335717e-05,
+      "before_range": [
+        0.005721236999988832,
+        0.0061375840000437165
+      ],
+      "limit": 0.006211063000137074,
+      "passed": true
+    },
+    {
+      "scope": "direct/cold1",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        3,
+        3
+      ],
+      "after_medians": [
+        3,
+        3
+      ],
+      "J": 0,
+      "before_range": [
+        3,
+        3
+      ],
+      "limit": 3,
+      "passed": true
+    },
+    {
+      "scope": "direct/cold2",
+      "metric": "payload_identity",
+      "passed": true
+    },
+    {
+      "scope": "direct/cold2",
+      "metric": "wall_seconds",
+      "kind": "strict",
+      "before_medians": [
+        0.008268342999826928,
+        0.008012753000002704
+      ],
+      "after_medians": [
+        0.008146997000039846,
+        0.008308154000133072
+      ],
+      "J": 0.0002555899998242239,
+      "before_range": [
+        0.007689172000027611,
+        0.008724783999923602
+      ],
+      "limit": 0.008980373999747826,
+      "passed": true
+    },
+    {
+      "scope": "direct/cold2",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        3,
+        3
+      ],
+      "after_medians": [
+        3,
+        3
+      ],
+      "J": 0,
+      "before_range": [
+        3,
+        3
+      ],
+      "limit": 3,
+      "passed": true
+    },
+    {
+      "scope": "direct/cold3",
+      "metric": "payload_identity",
+      "passed": true
+    },
+    {
+      "scope": "direct/cold3",
+      "metric": "wall_seconds",
+      "kind": "strict",
+      "before_medians": [
+        0.005487549000008585,
+        0.005636527000206115
+      ],
+      "after_medians": [
+        0.005849783000030584,
+        0.005620815999918705
+      ],
+      "J": 0.0001489780001975305,
+      "before_range": [
+        0.005372937999936767,
+        0.006481569000015952
+      ],
+      "limit": 0.0066305470002134825,
+      "passed": true
+    },
+    {
+      "scope": "direct/cold3",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        3,
+        3
+      ],
+      "after_medians": [
+        3,
+        3
+      ],
+      "J": 0,
+      "before_range": [
+        3,
+        3
+      ],
+      "limit": 3,
+      "passed": true
+    },
+    {
+      "scope": "direct/reference",
+      "metric": "B_C_complete",
+      "files": {
+        "A": 0,
+        "B": 5,
+        "C": 5
+      },
+      "passed": true
+    },
+    {
+      "scope": "kodi",
+      "metric": "after_all_attempts_complete",
+      "missing": [],
+      "passed": true
+    },
+    {
+      "scope": "kodi",
+      "metric": "after_zero_errors_only_200",
+      "before": {
+        "errors": {},
+        "statuses": {
+          "200": 12280
+        },
+        "error_cells": 0
+      },
+      "after": {
+        "errors": {},
+        "statuses": {
+          "200": 12280
+        },
+        "error_cells": 0
+      },
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 1)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 4)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 8)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 1)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 4)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 8)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "payload_order_count_identity",
+      "rows": 20,
+      "passed": true
+    },
+    {
+      "scope": "kodi/reference",
+      "metric": "B_C_complete",
+      "files": {
+        "A": 5,
+        "B": 5,
+        "C": 5
+      },
+      "passed": true
+    },
+    {
+      "scope": "heap",
+      "metric": "before0_complete_quiescent_pool0_background0",
+      "passed": true
+    },
+    {
+      "scope": "heap",
+      "metric": "before1_complete_quiescent_pool0_background0",
+      "passed": true
+    },
+    {
+      "scope": "heap",
+      "metric": "before2_complete_quiescent_pool0_background0",
+      "passed": true
+    },
+    {
+      "scope": "heap",
+      "metric": "after0_complete_quiescent_pool0_background0",
+      "passed": true
+    },
+    {
+      "scope": "heap",
+      "metric": "after1_complete_quiescent_pool0_background0",
+      "passed": true
+    },
+    {
+      "scope": "heap",
+      "metric": "after2_complete_quiescent_pool0_background0",
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 1)",
+      "metric": "payload_order_count_identity",
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 1)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        7.432691,
+        7.523649499999999,
+        7.4658535
+      ],
+      "after_medians": [
+        7.4209885,
+        7.325815,
+        7.383471
+      ],
+      "J": 0.09095849999999928,
+      "before_range": [
+        6.958854,
+        7.784644
+      ],
+      "limit": 17.523649499999998,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 1)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.9833753850000022,
+        1.0500500640000112,
+        1.0335527559999917
+      ],
+      "after_medians": [
+        1.034759287500009,
+        1.0129912739999867,
+        1.0090171129999845
+      ],
+      "J": 0.06667467900000901,
+      "before_range": [
+        0.8653423489999998,
+        1.0802294129999837
+      ],
+      "limit": 1.1550550704000124,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 1)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        109.0,
+        118.0,
+        118.0
+      ],
+      "after_medians": [
+        118.0,
+        113.5,
+        113.5
+      ],
+      "J": 9.0,
+      "before_range": [
+        100,
+        119
+      ],
+      "limit": 119,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 1)",
+      "metric": "heap_bytes_after_gc",
+      "kind": "bytes",
+      "before_medians": [
+        72942171.5,
+        72935906.0,
+        72930844.5
+      ],
+      "after_medians": [
+        73039527.0,
+        73042038.0,
+        73052599.0
+      ],
+      "J": 11327.0,
+      "before_range": [
+        4675463,
+        73262313
+      ],
+      "limit": 75039323.5,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 1)",
+      "metric": "loop_lag_p99_ms",
+      "kind": "strict",
+      "before_medians": [
+        6.5014099996005825,
+        23.547353499452583,
+        25.07751150005788
+      ],
+      "after_medians": [
+        24.45245049989353,
+        15.371383500223601,
+        15.465253999536799
+      ],
+      "J": 18.5761015004573,
+      "before_range": [
+        4.166176999206073,
+        40.675035000276694
+      ],
+      "limit": 59.25113650073399,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 1)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        293187584.0,
+        292173824.0,
+        293146624.0
+      ],
+      "after_medians": [
+        288055296.0,
+        285827072.0,
+        285081600.0
+      ],
+      "J": 1013760.0,
+      "before_range": [
+        102076416,
+        301277184
+      ],
+      "limit": 295284736.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 1)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        299968512.0,
+        299233280.0,
+        300171264.0
+      ],
+      "after_medians": [
+        295079936.0,
+        292659200.0,
+        292315136.0
+      ],
+      "J": 937984.0,
+      "before_range": [
+        107454464,
+        308916224
+      ],
+      "limit": 302268416.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 1)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        300232704.0,
+        299499520.0,
+        300511232.0
+      ],
+      "after_medians": [
+        295424000.0,
+        292870144.0,
+        292530176.0
+      ],
+      "J": 1011712.0,
+      "before_range": [
+        107720704,
+        309039104
+      ],
+      "limit": 302608384.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 1)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        320288.0,
+        319216.0,
+        320236.0
+      ],
+      "after_medians": [
+        314528.0,
+        312356.0,
+        311520.0
+      ],
+      "J": 1072.0,
+      "before_range": [
+        133456,
+        328172
+      ],
+      "limit": 322336.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 1)",
+      "metric": "memory.file_bytes",
+      "kind": "strict",
+      "before_medians": [
+        1359872.0,
+        1359872.0,
+        1359872.0
+      ],
+      "after_medians": [
+        1366016.0,
+        1366016.0,
+        1363968.0
+      ],
+      "J": 0.0,
+      "before_range": [
+        999424,
+        1716224
+      ],
+      "limit": 1716224.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 4)",
+      "metric": "payload_order_count_identity",
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 4)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        90.7098285,
+        95.314256,
+        97.929829
+      ],
+      "after_medians": [
+        90.545411,
+        89.6399005,
+        94.48991899999999
+      ],
+      "J": 7.220000499999998,
+      "before_range": [
+        48.273634,
+        109.341011
+      ],
+      "limit": 107.929829,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 4)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        1.1334877704999826,
+        1.134837121000004,
+        1.1363572475000154
+      ],
+      "after_medians": [
+        1.1217947999999893,
+        1.1331569544999986,
+        1.1258723194999902
+      ],
+      "J": 0.0028694770000328162,
+      "before_range": [
+        1.053915165999996,
+        1.1599375819999977
+      ],
+      "limit": 1.2499929722500172,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 4)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        118.0,
+        118.0,
+        118.0
+      ],
+      "after_medians": [
+        118.0,
+        118.0,
+        118.0
+      ],
+      "J": 0.0,
+      "before_range": [
+        109,
+        118
+      ],
+      "limit": 118,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 4)",
+      "metric": "heap_bytes_after_gc",
+      "kind": "bytes",
+      "before_medians": [
+        72992091.0,
+        72986394.5,
+        72979286.0
+      ],
+      "after_medians": [
+        73045150.0,
+        73041421.5,
+        73049983.5
+      ],
+      "J": 12805.0,
+      "before_range": [
+        38802686,
+        73312125
+      ],
+      "limit": 75089243.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 4)",
+      "metric": "loop_lag_p99_ms",
+      "kind": "strict",
+      "before_medians": [
+        25.534730500112346,
+        29.057779499453318,
+        28.981084499719145
+      ],
+      "after_medians": [
+        27.84870599975875,
+        24.80197200020484,
+        26.429514499795914
+      ],
+      "J": 3.523048999340972,
+      "before_range": [
+        9.47654399988096,
+        41.641387999334256
+      ],
+      "limit": 45.16443699867523,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 4)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        293543936.0,
+        292349952.0,
+        293507072.0
+      ],
+      "after_medians": [
+        289089536.0,
+        286932992.0,
+        286187520.0
+      ],
+      "J": 1193984.0,
+      "before_range": [
+        181903360,
+        301289472
+      ],
+      "limit": 295641088.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 4)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        300480512.0,
+        299513856.0,
+        300564480.0
+      ],
+      "after_medians": [
+        296257536.0,
+        293834752.0,
+        293355520.0
+      ],
+      "J": 1050624.0,
+      "before_range": [
+        188276736,
+        308789248
+      ],
+      "limit": 302661632.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 4)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        300732416.0,
+        299741184.0,
+        300894208.0
+      ],
+      "after_medians": [
+        296308736.0,
+        293842944.0,
+        293550080.0
+      ],
+      "J": 1153024.0,
+      "before_range": [
+        190902272,
+        309039104
+      ],
+      "limit": 302991360.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 4)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        320544.0,
+        319344.0,
+        320620.0
+      ],
+      "after_medians": [
+        315552.0,
+        313316.0,
+        312480.0
+      ],
+      "J": 1276.0,
+      "before_range": [
+        213972,
+        328300
+      ],
+      "limit": 322668.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 4)",
+      "metric": "memory.file_bytes",
+      "kind": "strict",
+      "before_medians": [
+        1382400.0,
+        1382400.0,
+        1382400.0
+      ],
+      "after_medians": [
+        1388544.0,
+        1388544.0,
+        1386496.0
+      ],
+      "J": 0.0,
+      "before_range": [
+        1024000,
+        1740800
+      ],
+      "limit": 1740800.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 8)",
+      "metric": "payload_order_count_identity",
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 8)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        192.30371100000002,
+        187.479964,
+        189.56002999999998
+      ],
+      "after_medians": [
+        163.0126255,
+        171.17420299999998,
+        183.2390435
+      ],
+      "J": 4.823747000000026,
+      "before_range": [
+        90.943921,
+        222.637084
+      ],
+      "limit": 202.30371100000002,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 8)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        1.1384599634999972,
+        1.1392661635000003,
+        1.1356961395000127
+      ],
+      "after_medians": [
+        1.0868222670000165,
+        1.1306952045000003,
+        1.125103624999987
+      ],
+      "J": 0.003570023999987626,
+      "before_range": [
+        0.9514152429999996,
+        1.1781513399999994
+      ],
+      "limit": 1.2531927798500004,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 8)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        118.0,
+        118.0,
+        118.0
+      ],
+      "after_medians": [
+        116.0,
+        118.0,
+        118.0
+      ],
+      "J": 0.0,
+      "before_range": [
+        100,
+        118
+      ],
+      "limit": 118,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 8)",
+      "metric": "heap_bytes_after_gc",
+      "kind": "bytes",
+      "before_medians": [
+        72985511.5,
+        72977537.5,
+        72976306.0
+      ],
+      "after_medians": [
+        73075131.0,
+        73059349.0,
+        73075612.0
+      ],
+      "J": 9205.5,
+      "before_range": [
+        21870619,
+        73300453
+      ],
+      "limit": 75082663.5,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 8)",
+      "metric": "loop_lag_p99_ms",
+      "kind": "strict",
+      "before_medians": [
+        36.73926450028375,
+        30.360338500031503,
+        32.69608549999248
+      ],
+      "after_medians": [
+        16.726226499713448,
+        28.28142799990019,
+        25.662670999736292
+      ],
+      "J": 6.37892600025225,
+      "before_range": [
+        11.593940999773622,
+        48.024257000179205
+      ],
+      "limit": 54.403183000431454,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 8)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        293232640.0,
+        292231168.0,
+        293478400.0
+      ],
+      "after_medians": [
+        288587776.0,
+        286238720.0,
+        285810688.0
+      ],
+      "J": 1247232.0,
+      "before_range": [
+        151363584,
+        301375488
+      ],
+      "limit": 295575552.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 8)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        300726272.0,
+        299739136.0,
+        300806144.0
+      ],
+      "after_medians": [
+        295718912.0,
+        293429248.0,
+        293343232.0
+      ],
+      "J": 1067008.0,
+      "before_range": [
+        158507008,
+        308903936
+      ],
+      "limit": 302903296.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 8)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        300732416.0,
+        299741184.0,
+        300894208.0
+      ],
+      "after_medians": [
+        295723008.0,
+        293429248.0,
+        293347328.0
+      ],
+      "J": 1153024.0,
+      "before_range": [
+        158507008,
+        309039104
+      ],
+      "limit": 302991360.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 8)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        320544.0,
+        319344.0,
+        320620.0
+      ],
+      "after_medians": [
+        315104.0,
+        312932.0,
+        312160.0
+      ],
+      "J": 1276.0,
+      "before_range": [
+        182192,
+        328300
+      ],
+      "limit": 322668.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('same-result-key', 8)",
+      "metric": "memory.file_bytes",
+      "kind": "strict",
+      "before_medians": [
+        1370112.0,
+        1372160.0,
+        1370112.0
+      ],
+      "after_medians": [
+        1376256.0,
+        1376256.0,
+        1374208.0
+      ],
+      "J": 2048.0,
+      "before_range": [
+        1011712,
+        1728512
+      ],
+      "limit": 1730560.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "payload_order_count_identity",
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        90.2842235,
+        90.571098,
+        88.9935625
+      ],
+      "after_medians": [
+        88.563394,
+        89.2114835,
+        88.55649550000001
+      ],
+      "J": 1.5775355000000104,
+      "before_range": [
+        85.614749,
+        94.097659
+      ],
+      "limit": 100.571098,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        8.143701257500005,
+        8.204301610000016,
+        8.133524572999995
+      ],
+      "after_medians": [
+        8.06183957899999,
+        8.202402327000001,
+        8.05432954150001
+      ],
+      "J": 0.07077703700002047,
+      "before_range": [
+        7.9726771859999985,
+        8.374289117999979
+      ],
+      "limit": 9.024731771000019,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000.0,
+        1000.0,
+        1000.0
+      ],
+      "after_medians": [
+        1000.0,
+        1000.0,
+        1000.0
+      ],
+      "J": 0.0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "heap_bytes_after_gc",
+      "kind": "bytes",
+      "before_medians": [
+        72981175.0,
+        72965789.0,
+        72957135.5
+      ],
+      "after_medians": [
+        73032939.5,
+        73020445.0,
+        73031978.5
+      ],
+      "J": 24039.5,
+      "before_range": [
+        38777159,
+        73290694
+      ],
+      "limit": 75078327.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "loop_lag_p99_ms",
+      "kind": "strict",
+      "before_medians": [
+        57.054701499509974,
+        58.45239099971877,
+        56.781805499667826
+      ],
+      "after_medians": [
+        55.02759699993476,
+        56.08311149990186,
+        55.26412299968797
+      ],
+      "J": 1.6705855000509473,
+      "before_range": [
+        53.63401900012832,
+        59.56925699956628
+      ],
+      "limit": 61.239842499617225,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        293531648.0,
+        292337664.0,
+        293500928.0
+      ],
+      "after_medians": [
+        289075200.0,
+        286928896.0,
+        286173184.0
+      ],
+      "J": 1193984.0,
+      "before_range": [
+        180371456,
+        301277184
+      ],
+      "limit": 295628800.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        300349440.0,
+        299382784.0,
+        300576768.0
+      ],
+      "after_medians": [
+        296126464.0,
+        293834752.0,
+        293355520.0
+      ],
+      "J": 1193984.0,
+      "before_range": [
+        187490304,
+        308551680
+      ],
+      "limit": 302673920.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        300732416.0,
+        299741184.0,
+        300894208.0
+      ],
+      "after_medians": [
+        296181760.0,
+        293842944.0,
+        293550080.0
+      ],
+      "J": 1153024.0,
+      "before_range": [
+        190902272,
+        309039104
+      ],
+      "limit": 302991360.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        320544.0,
+        319344.0,
+        320620.0
+      ],
+      "after_medians": [
+        315552.0,
+        313316.0,
+        312480.0
+      ],
+      "J": 1276.0,
+      "before_range": [
+        213972,
+        328300
+      ],
+      "limit": 322668.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "memory.file_bytes",
+      "kind": "strict",
+      "before_medians": [
+        1372160.0,
+        1374208.0,
+        1372160.0
+      ],
+      "after_medians": [
+        1378304.0,
+        1378304.0,
+        1378304.0
+      ],
+      "J": 2048.0,
+      "before_range": [
+        1015808,
+        1732608
+      ],
+      "limit": 1734656.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "payload_order_count_identity",
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        544.15074,
+        541.5663930000001,
+        543.6631195
+      ],
+      "after_medians": [
+        435.519673,
+        444.678896,
+        431.11603149999996
+      ],
+      "J": 2.5843469999999797,
+      "before_range": [
+        484.197942,
+        596.770843
+      ],
+      "limit": 554.15074,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        9.921196699000006,
+        9.919628561500012,
+        9.77653191200001
+      ],
+      "after_medians": [
+        9.435758915499997,
+        9.570230723000023,
+        9.498548750000012
+      ],
+      "J": 0.1446647869999964,
+      "before_range": [
+        9.391255256,
+        10.056748042000038
+      ],
+      "limit": 10.913316368900007,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000.0,
+        1000.0,
+        1000.0
+      ],
+      "after_medians": [
+        1000.0,
+        1000.0,
+        1000.0
+      ],
+      "J": 0.0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "heap_bytes_after_gc",
+      "kind": "bytes",
+      "before_medians": [
+        72983300.0,
+        72975077.0,
+        72964817.0
+      ],
+      "after_medians": [
+        73076183.0,
+        73068847.0,
+        73078070.5
+      ],
+      "J": 18483.0,
+      "before_range": [
+        21889501,
+        73308691
+      ],
+      "limit": 75080452.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "loop_lag_p99_ms",
+      "kind": "strict",
+      "before_medians": [
+        91.13559599927612,
+        91.17117499954475,
+        94.47949549939949
+      ],
+      "after_medians": [
+        61.90501549963301,
+        64.65527350019329,
+        62.782678000075975
+      ],
+      "J": 3.3438995001233707,
+      "before_range": [
+        71.77274199966632,
+        110.88766799912264
+      ],
+      "limit": 114.23156749924601,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        293199872.0,
+        292192256.0,
+        293478400.0
+      ],
+      "after_medians": [
+        288389120.0,
+        286083072.0,
+        285601792.0
+      ],
+      "J": 1286144.0,
+      "before_range": [
+        150691840,
+        301289472
+      ],
+      "limit": 295575552.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        300095488.0,
+        299364352.0,
+        300560384.0
+      ],
+      "after_medians": [
+        295473152.0,
+        293052416.0,
+        292839424.0
+      ],
+      "J": 1196032.0,
+      "before_range": [
+        157224960,
+        308916224
+      ],
+      "limit": 302657536.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        300232704.0,
+        299499520.0,
+        300773376.0
+      ],
+      "after_medians": [
+        295550976.0,
+        293052416.0,
+        292845568.0
+      ],
+      "J": 1273856.0,
+      "before_range": [
+        157224960,
+        309039104
+      ],
+      "limit": 302870528.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        320288.0,
+        319216.0,
+        320492.0
+      ],
+      "after_medians": [
+        314848.0,
+        312484.0,
+        311904.0
+      ],
+      "J": 1276.0,
+      "before_range": [
+        180820,
+        328172
+      ],
+      "limit": 322540.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "memory.file_bytes",
+      "kind": "strict",
+      "before_medians": [
+        1361920.0,
+        1363968.0,
+        1361920.0
+      ],
+      "after_medians": [
+        1368064.0,
+        1368064.0,
+        1366016.0
+      ],
+      "J": 2048.0,
+      "before_range": [
+        1003520,
+        1720320
+      ],
+      "limit": 1722368.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "payload_order_count_identity",
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        1112.499019,
+        1141.2450105,
+        1139.619131
+      ],
+      "after_medians": [
+        797.6363269999999,
+        813.1353815,
+        800.9060515000001
+      ],
+      "J": 28.745991499999946,
+      "before_range": [
+        1069.355031,
+        1249.876725
+      ],
+      "limit": 1151.2450105,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        10.1511320635,
+        10.18070954049999,
+        10.0467551245
+      ],
+      "after_medians": [
+        9.4690490845,
+        9.6043238635,
+        9.550230450000015
+      ],
+      "J": 0.13395441599998925,
+      "before_range": [
+        9.835936859,
+        10.751086286000003
+      ],
+      "limit": 11.19878049454999,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000.0,
+        1000.0,
+        1000.0
+      ],
+      "after_medians": [
+        1000.0,
+        1000.0,
+        1000.0
+      ],
+      "J": 0.0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "heap_bytes_after_gc",
+      "kind": "bytes",
+      "before_medians": [
+        72996779.0,
+        72993553.5,
+        72988753.5
+      ],
+      "after_medians": [
+        73099630.0,
+        73103113.5,
+        73112480.0
+      ],
+      "J": 8025.5,
+      "before_range": [
+        55739758,
+        73319002
+      ],
+      "limit": 75093931.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "loop_lag_p99_ms",
+      "kind": "strict",
+      "before_medians": [
+        167.54518749985436,
+        158.66897549994974,
+        150.71012299995346
+      ],
+      "after_medians": [
+        62.080225999807226,
+        63.67861550006637,
+        64.62857149927004
+      ],
+      "J": 16.83506449990091,
+      "before_range": [
+        118.8278919998993,
+        197.3686949986586
+      ],
+      "limit": 214.20375949855952,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        294619136.0,
+        293992448.0,
+        295155712.0
+      ],
+      "after_medians": [
+        290881536.0,
+        288262144.0,
+        287490048.0
+      ],
+      "J": 1163264.0,
+      "before_range": [
+        217862144,
+        301862912
+      ],
+      "limit": 297252864.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        301647872.0,
+        301441024.0,
+        302645248.0
+      ],
+      "after_medians": [
+        298072064.0,
+        295395328.0,
+        294780928.0
+      ],
+      "J": 1204224.0,
+      "before_range": [
+        224481280,
+        309559296
+      ],
+      "limit": 304742400.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        301647872.0,
+        301441024.0,
+        302645248.0
+      ],
+      "after_medians": [
+        298072064.0,
+        295395328.0,
+        294780928.0
+      ],
+      "J": 1204224.0,
+      "before_range": [
+        224485376,
+        309559296
+      ],
+      "limit": 304742400.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        321504.0,
+        321200.0,
+        322412.0
+      ],
+      "after_medians": [
+        317280.0,
+        314788.0,
+        313760.0
+      ],
+      "J": 1212.0,
+      "before_range": [
+        246536,
+        328684
+      ],
+      "limit": 324460.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "memory.file_bytes",
+      "kind": "strict",
+      "before_medians": [
+        1384448.0,
+        1386496.0,
+        1384448.0
+      ],
+      "after_medians": [
+        1392640.0,
+        1390592.0,
+        1390592.0
+      ],
+      "J": 2048.0,
+      "before_range": [
+        1028096,
+        1744896
+      ],
+      "limit": 1746944.0,
+      "passed": true
+    },
+    {
+      "scope": "heap/cold0",
+      "metric": "payload_identity",
+      "passed": true
+    },
+    {
+      "scope": "heap/cold0",
+      "metric": "wall_seconds",
+      "kind": "strict",
+      "before_medians": [
+        0.3272550530000444,
+        0.33518784700027027,
+        0.3401109370006452
+      ],
+      "after_medians": [
+        0.3384039600000506,
+        0.3357268509998903,
+        0.3299641829999018
+      ],
+      "J": 0.012855884000600781,
+      "before_range": [
+        0.3272550530000444,
+        0.3401109370006452
+      ],
+      "limit": 0.352966821001246,
+      "passed": true
+    },
+    {
+      "scope": "heap/cold0",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        10,
+        10,
+        10
+      ],
+      "after_medians": [
+        10,
+        10,
+        10
+      ],
+      "J": 0,
+      "before_range": [
+        10,
+        10
+      ],
+      "limit": 10,
+      "passed": true
+    },
+    {
+      "scope": "heap/cold1",
+      "metric": "payload_identity",
+      "passed": true
+    },
+    {
+      "scope": "heap/cold1",
+      "metric": "wall_seconds",
+      "kind": "strict",
+      "before_medians": [
+        0.07211980899955961,
+        0.07638008600042667,
+        0.07269098899996607
+      ],
+      "after_medians": [
+        0.07469950600034281,
+        0.07524234899938165,
+        0.07324219499969331
+      ],
+      "J": 0.004260277000867063,
+      "before_range": [
+        0.07211980899955961,
+        0.07638008600042667
+      ],
+      "limit": 0.08064036300129374,
+      "passed": true
+    },
+    {
+      "scope": "heap/cold1",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        10,
+        10,
+        10
+      ],
+      "after_medians": [
+        10,
+        10,
+        10
+      ],
+      "J": 0,
+      "before_range": [
+        10,
+        10
+      ],
+      "limit": 10,
+      "passed": true
+    }
+  ],
+  "observations": [
+    {
+      "scope": "short/cold0",
+      "metric": "gc_collections_per_generation",
+      "before": [
+        [
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ]
+        ],
+        [
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ]
+        ]
+      ],
+      "after": [
+        [
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ]
+        ],
+        [
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ],
+          [
+            25,
+            2,
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "scope": "short/cold1",
+      "metric": "gc_collections_per_generation",
+      "before": [
+        [
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ]
+        ]
+      ],
+      "after": [
+        [
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ],
+          [
+            3,
+            0,
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "scope": "short/cold2",
+      "metric": "gc_collections_per_generation",
+      "before": [
+        [
+          [
+            18,
+            1,
+            0
+          ],
+          [
+            18,
+            1,
+            0
+          ],
+          [
+            17,
+            1,
+            0
+          ],
+          [
+            18,
+            1,
+            0
+          ],
+          [
+            18,
+            1,
+            0
+          ]
+        ],
+        [
+          [
+            18,
+            1,
+            0
+          ],
+          [
+            18,
+            1,
+            0
+          ],
+          [
+            18,
+            1,
+            0
+          ],
+          [
+            18,
+            1,
+            0
+          ],
+          [
+            18,
+            1,
+            0
+          ]
+        ]
+      ],
+      "after": [
+        [
+          [
+            17,
+            1,
+            0
+          ],
+          [
+            17,
+            1,
+            0
+          ],
+          [
+            17,
+            1,
+            0
+          ],
+          [
+            17,
+            1,
+            0
+          ],
+          [
+            17,
+            1,
+            0
+          ]
+        ],
+        [
+          [
+            17,
+            1,
+            0
+          ],
+          [
+            17,
+            1,
+            0
+          ],
+          [
+            17,
+            1,
+            0
+          ],
+          [
+            17,
+            1,
+            0
+          ],
+          [
+            17,
+            1,
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "scope": "short/cold3",
+      "metric": "gc_collections_per_generation",
+      "before": [
+        [
+          [
+            8,
+            0,
+            0
+          ],
+          [
+            8,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            8,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ]
+        ]
+      ],
+      "after": [
+        [
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            8,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            8,
+            0,
+            0
+          ],
+          [
+            9,
+            0,
+            0
+          ],
+          [
+            8,
+            0,
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "scope": "short/reference",
+      "metric": "complete_files",
+      "files": {
+        "A": 5,
+        "B": 5,
+        "C": 5
+      },
+      "A_failed_detached_instance_error": []
+    },
+    {
+      "scope": "direct",
+      "metric": "before_failed_attempts",
+      "failed": 0
+    },
+    {
+      "scope": "direct/cold0",
+      "metric": "gc_collections_per_generation",
+      "before": [
+        [
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ]
+        ],
+        [
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ]
+        ]
+      ],
+      "after": [
+        [
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ]
+        ],
+        [
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ],
+          [
+            20,
+            1,
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "scope": "direct/cold1",
+      "metric": "gc_collections_per_generation",
+      "before": [
+        [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ]
+        ]
+      ],
+      "after": [
+        [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "scope": "direct/cold2",
+      "metric": "gc_collections_per_generation",
+      "before": [
+        [
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ]
+        ]
+      ],
+      "after": [
+        [
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ],
+          [
+            2,
+            0,
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "scope": "direct/cold3",
+      "metric": "gc_collections_per_generation",
+      "before": [
+        [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ]
+        ]
+      ],
+      "after": [
+        [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "scope": "direct/reference",
+      "metric": "complete_files",
+      "files": {
+        "A": 0,
+        "B": 5,
+        "C": 5
+      },
+      "A_failed_detached_instance_error": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 1)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        11.853534,
+        11.834949
+      ],
+      "after_medians": [
+        11.968139,
+        11.794238
+      ],
+      "J": 0.01858499999999985,
+      "before_range": [
+        11.65777,
+        12.197194
+      ],
+      "limit": 21.853534,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 1)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.9829982400000001,
+        0.9597673250000001
+      ],
+      "after_medians": [
+        0.9882315180000001,
+        0.9744051379999998
+      ],
+      "J": 0.023230915000000074,
+      "before_range": [
+        0.933164229,
+        1.0084707280000003
+      ],
+      "limit": 1.0812980640000003,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 1)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000,
+        1000
+      ],
+      "after_medians": [
+        1000,
+        1000
+      ],
+      "J": 0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 1)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        91758592,
+        92008448
+      ],
+      "after_medians": [
+        91783168,
+        91840512
+      ],
+      "J": 249856,
+      "before_range": [
+        91664384,
+        92184576
+      ],
+      "limit": 94105600,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 1)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        96964608,
+        97259520
+      ],
+      "after_medians": [
+        97198080,
+        96944128
+      ],
+      "J": 294912,
+      "before_range": [
+        96620544,
+        97951744
+      ],
+      "limit": 99356672,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 1)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        96964608,
+        97259520
+      ],
+      "after_medians": [
+        97398784,
+        97214464
+      ],
+      "J": 294912,
+      "before_range": [
+        96657408,
+        97959936
+      ],
+      "limit": 99356672,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 1)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        123248,
+        122952
+      ],
+      "after_medians": [
+        123124,
+        123088
+      ],
+      "J": 296,
+      "before_range": [
+        122688,
+        123648
+      ],
+      "limit": 125296,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 4)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        33.942364,
+        33.771609
+      ],
+      "after_medians": [
+        34.79166,
+        33.960615
+      ],
+      "J": 0.17075499999999977,
+      "before_range": [
+        32.542227,
+        38.98468
+      ],
+      "limit": 43.942364,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 4)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.79685732,
+        0.7809263689999999
+      ],
+      "after_medians": [
+        0.7891015719999999,
+        0.7955977669999998
+      ],
+      "J": 0.015930951000000082,
+      "before_range": [
+        0.773538238,
+        0.8137244519999998
+      ],
+      "limit": 0.876543052,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 4)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        854,
+        852
+      ],
+      "after_medians": [
+        852,
+        850
+      ],
+      "J": 2,
+      "before_range": [
+        850,
+        858
+      ],
+      "limit": 858,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 4)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        94654464,
+        94826496
+      ],
+      "after_medians": [
+        94789632,
+        94740480
+      ],
+      "J": 172032,
+      "before_range": [
+        94474240,
+        94994432
+      ],
+      "limit": 96923648,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 4)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        100368384,
+        100843520
+      ],
+      "after_medians": [
+        100679680,
+        100610048
+      ],
+      "J": 475136,
+      "before_range": [
+        100024320,
+        101093376
+      ],
+      "limit": 102940672,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 4)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        100368384,
+        100843520
+      ],
+      "after_medians": [
+        100679680,
+        100610048
+      ],
+      "J": 475136,
+      "before_range": [
+        100028416,
+        101093376
+      ],
+      "limit": 102940672,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 4)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        126192,
+        125768
+      ],
+      "after_medians": [
+        126048,
+        125904
+      ],
+      "J": 424,
+      "before_range": [
+        125596,
+        126520
+      ],
+      "limit": 128240,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 8)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        96.474963,
+        94.691869
+      ],
+      "after_medians": [
+        94.189125,
+        89.760912
+      ],
+      "J": 1.7830940000000055,
+      "before_range": [
+        91.888274,
+        106.611966
+      ],
+      "limit": 106.474963,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 8)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.8842503379999997,
+        0.8518822860000004
+      ],
+      "after_medians": [
+        0.864548074,
+        0.8612207280000002
+      ],
+      "J": 0.03236805199999937,
+      "before_range": [
+        0.8336216939999996,
+        0.9213053149999997
+      ],
+      "limit": 0.9726753717999999,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 8)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        836,
+        834
+      ],
+      "after_medians": [
+        836,
+        836
+      ],
+      "J": 2,
+      "before_range": [
+        832,
+        838
+      ],
+      "limit": 838,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 8)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        99950592,
+        99713024
+      ],
+      "after_medians": [
+        99610624,
+        99307520
+      ],
+      "J": 237568,
+      "before_range": [
+        98275328,
+        100450304
+      ],
+      "limit": 102047744,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 8)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        105857024,
+        105627648
+      ],
+      "after_medians": [
+        105574400,
+        105279488
+      ],
+      "J": 229376,
+      "before_range": [
+        105299968,
+        106336256
+      ],
+      "limit": 107954176,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 8)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        105857024,
+        105627648
+      ],
+      "after_medians": [
+        105574400,
+        105279488
+      ],
+      "J": 229376,
+      "before_range": [
+        105299968,
+        106336256
+      ],
+      "limit": 107954176,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'same-result-key', 8)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        130844,
+        130624
+      ],
+      "after_medians": [
+        130480,
+        130384
+      ],
+      "J": 220,
+      "before_range": [
+        130356,
+        132024
+      ],
+      "limit": 132892,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        11.953304,
+        11.812848
+      ],
+      "after_medians": [
+        11.973422,
+        12.020378
+      ],
+      "J": 0.14045599999999858,
+      "before_range": [
+        11.661619,
+        12.027188
+      ],
+      "limit": 21.953304,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        0.966470035,
+        0.9691215419999994
+      ],
+      "after_medians": [
+        0.9790736960000004,
+        0.9949649420000002
+      ],
+      "J": 0.002651506999999498,
+      "before_range": [
+        0.9332777710000002,
+        1.0082752590000004
+      ],
+      "limit": 1.0660336961999994,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000,
+        1000
+      ],
+      "after_medians": [
+        1000,
+        1000
+      ],
+      "J": 0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        99966976,
+        99844096
+      ],
+      "after_medians": [
+        99717120,
+        99643392
+      ],
+      "J": 122880,
+      "before_range": [
+        99237888,
+        100499456
+      ],
+      "limit": 102064128,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        105848832,
+        105885696
+      ],
+      "after_medians": [
+        105644032,
+        105533440
+      ],
+      "J": 36864,
+      "before_range": [
+        105275392,
+        106455040
+      ],
+      "limit": 107982848,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        105857024,
+        105889792
+      ],
+      "after_medians": [
+        105775104,
+        105545728
+      ],
+      "J": 32768,
+      "before_range": [
+        105529344,
+        106586112
+      ],
+      "limit": 107986944,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        130928,
+        130672
+      ],
+      "after_medians": [
+        130608,
+        130736
+      ],
+      "J": 256,
+      "before_range": [
+        130356,
+        132280
+      ],
+      "limit": 132976,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        61.220211,
+        59.48983
+      ],
+      "after_medians": [
+        60.284494,
+        56.538221
+      ],
+      "J": 1.7303810000000013,
+      "before_range": [
+        57.804865,
+        65.758368
+      ],
+      "limit": 71.220211,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        1.2868373879999995,
+        1.2529479650000006
+      ],
+      "after_medians": [
+        1.3004684980000007,
+        1.3105702199999998
+      ],
+      "J": 0.033889422999998864,
+      "before_range": [
+        1.247955203,
+        1.3161149130000007
+      ],
+      "limit": 1.4155211267999996,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000,
+        1000
+      ],
+      "after_medians": [
+        1000,
+        1000
+      ],
+      "J": 0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        100392960,
+        100413440
+      ],
+      "after_medians": [
+        100462592,
+        100409344
+      ],
+      "J": 20480,
+      "before_range": [
+        99590144,
+        101380096
+      ],
+      "limit": 102510592,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        106110976,
+        106409984
+      ],
+      "after_medians": [
+        106807296,
+        106827776
+      ],
+      "J": 299008,
+      "before_range": [
+        105799680,
+        107241472
+      ],
+      "limit": 108507136,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        106110976,
+        106409984
+      ],
+      "after_medians": [
+        106807296,
+        106827776
+      ],
+      "J": 299008,
+      "before_range": [
+        105799680,
+        107241472
+      ],
+      "limit": 108507136,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        131312,
+        131144
+      ],
+      "after_medians": [
+        131632,
+        131760
+      ],
+      "J": 168,
+      "before_range": [
+        130996,
+        133048
+      ],
+      "limit": 133360,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        123.105059,
+        123.281211
+      ],
+      "after_medians": [
+        132.81026,
+        132.804122
+      ],
+      "J": 0.17615200000000186,
+      "before_range": [
+        117.346901,
+        134.638308
+      ],
+      "limit": 133.28121099999998,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        1.3066955170000005,
+        1.313106972
+      ],
+      "after_medians": [
+        1.344500052,
+        1.3670338189999995
+      ],
+      "J": 0.0064114549999994,
+      "before_range": [
+        1.2693524250000001,
+        1.3394974069999996
+      ],
+      "limit": 1.4444176692000001,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000,
+        1000
+      ],
+      "after_medians": [
+        1000,
+        1000
+      ],
+      "J": 0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        103358464,
+        103038976
+      ],
+      "after_medians": [
+        102916096,
+        102129664
+      ],
+      "J": 319488,
+      "before_range": [
+        102023168,
+        104124416
+      ],
+      "limit": 105455616,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        108994560,
+        109031424
+      ],
+      "after_medians": [
+        108974080,
+        108388352
+      ],
+      "J": 36864,
+      "before_range": [
+        108187648,
+        110551040
+      ],
+      "limit": 111128576,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        108994560,
+        109031424
+      ],
+      "after_medians": [
+        108978176,
+        108388352
+      ],
+      "J": 36864,
+      "before_range": [
+        108199936,
+        110649344
+      ],
+      "limit": 111128576,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(20, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        134128,
+        133832
+      ],
+      "after_medians": [
+        133856,
+        133544
+      ],
+      "J": 296,
+      "before_range": [
+        133360,
+        135480
+      ],
+      "limit": 136176,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 1)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        28.31755,
+        25.267217
+      ],
+      "after_medians": [
+        28.755786,
+        26.966819
+      ],
+      "J": 3.050333000000002,
+      "before_range": [
+        24.284896,
+        28.631756
+      ],
+      "limit": 38.31755,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 1)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        2.2008279579999996,
+        2.1644526830000004
+      ],
+      "after_medians": [
+        2.2482916,
+        2.226342637000001
+      ],
+      "J": 0.03637527499999926,
+      "before_range": [
+        2.1409348469999996,
+        2.2355316370000002
+      ],
+      "limit": 2.4209107538,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 1)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000,
+        1000
+      ],
+      "after_medians": [
+        1000,
+        1000
+      ],
+      "J": 0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 1)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        106831872,
+        106553344
+      ],
+      "after_medians": [
+        106631168,
+        106680320
+      ],
+      "J": 278528,
+      "before_range": [
+        106123264,
+        107585536
+      ],
+      "limit": 108929024,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 1)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        113242112,
+        113278976
+      ],
+      "after_medians": [
+        113516544,
+        113045504
+      ],
+      "J": 36864,
+      "before_range": [
+        112783360,
+        114630656
+      ],
+      "limit": 115376128,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 1)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        113242112,
+        113512448
+      ],
+      "after_medians": [
+        113516544,
+        113049600
+      ],
+      "J": 270336,
+      "before_range": [
+        112791552,
+        114642944
+      ],
+      "limit": 115609600,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 1)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        137564,
+        137584
+      ],
+      "after_medians": [
+        137648,
+        137328
+      ],
+      "J": 20,
+      "before_range": [
+        137152,
+        139192
+      ],
+      "limit": 139632,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 4)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        83.554672,
+        88.539741
+      ],
+      "after_medians": [
+        85.280509,
+        85.521516
+      ],
+      "J": 4.98506900000001,
+      "before_range": [
+        68.64618,
+        92.901521
+      ],
+      "limit": 98.539741,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 4)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        1.6441907820000008,
+        1.6575475569999991
+      ],
+      "after_medians": [
+        1.6491757000000007,
+        1.6370280409999989
+      ],
+      "J": 0.013356774999998322,
+      "before_range": [
+        1.6058779790000006,
+        1.7424465720000004
+      ],
+      "limit": 1.8233023126999992,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 4)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        852,
+        850
+      ],
+      "after_medians": [
+        850,
+        850
+      ],
+      "J": 2,
+      "before_range": [
+        850,
+        852
+      ],
+      "limit": 852,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 4)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        109969408,
+        109449216
+      ],
+      "after_medians": [
+        110374912,
+        109535232
+      ],
+      "J": 520192,
+      "before_range": [
+        108982272,
+        110174208
+      ],
+      "limit": 112066560,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 4)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        116453376,
+        116158464
+      ],
+      "after_medians": [
+        116920320,
+        116359168
+      ],
+      "J": 294912,
+      "before_range": [
+        115675136,
+        116948992
+      ],
+      "limit": 118550528,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 4)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        116453376,
+        116162560
+      ],
+      "after_medians": [
+        116920320,
+        116359168
+      ],
+      "J": 290816,
+      "before_range": [
+        115675136,
+        116948992
+      ],
+      "limit": 118550528,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 4)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        140784,
+        140416
+      ],
+      "after_medians": [
+        141148,
+        140464
+      ],
+      "J": 368,
+      "before_range": [
+        139968,
+        141624
+      ],
+      "limit": 142832,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 8)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        171.610286,
+        157.706772
+      ],
+      "after_medians": [
+        155.362464,
+        153.258324
+      ],
+      "J": 13.903514000000001,
+      "before_range": [
+        141.49431,
+        211.56573
+      ],
+      "limit": 181.610286,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 8)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        1.7116579979999997,
+        1.7572506640000007
+      ],
+      "after_medians": [
+        1.6375543700000001,
+        1.6568122400000007
+      ],
+      "J": 0.045592666000001,
+      "before_range": [
+        1.6949007430000016,
+        1.8455684669999997
+      ],
+      "limit": 1.932975730400001,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 8)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        830,
+        828
+      ],
+      "after_medians": [
+        828,
+        826
+      ],
+      "J": 2,
+      "before_range": [
+        826,
+        832
+      ],
+      "limit": 832,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 8)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        115871744,
+        115163136
+      ],
+      "after_medians": [
+        116834304,
+        115929088
+      ],
+      "J": 708608,
+      "before_range": [
+        114069504,
+        116441088
+      ],
+      "limit": 117968896,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 8)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        122470400,
+        121860096
+      ],
+      "after_medians": [
+        123695104,
+        122650624
+      ],
+      "J": 610304,
+      "before_range": [
+        120844288,
+        122978304
+      ],
+      "limit": 124567552,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 8)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        122736640,
+        121860096
+      ],
+      "after_medians": [
+        123695104,
+        122650624
+      ],
+      "J": 876544,
+      "before_range": [
+        120844288,
+        122978304
+      ],
+      "limit": 124833792,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'same-result-key', 8)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        146332,
+        145792
+      ],
+      "after_medians": [
+        147676,
+        146640
+      ],
+      "J": 540,
+      "before_range": [
+        144948,
+        148024
+      ],
+      "limit": 148380,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        27.075682,
+        28.590539
+      ],
+      "after_medians": [
+        26.625937,
+        28.179777
+      ],
+      "J": 1.5148569999999992,
+      "before_range": [
+        25.631303,
+        29.321008
+      ],
+      "limit": 38.590539,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        2.2051194070000015,
+        2.232538484000001
+      ],
+      "after_medians": [
+        2.227263913,
+        2.2653872350000004
+      ],
+      "J": 0.027419076999999348,
+      "before_range": [
+        2.1760140509999992,
+        2.2873071320000005
+      ],
+      "limit": 2.455792332400001,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000,
+        1000
+      ],
+      "after_medians": [
+        1000,
+        1000
+      ],
+      "J": 0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        116662272,
+        115474432
+      ],
+      "after_medians": [
+        118087680,
+        116682752
+      ],
+      "J": 1187840,
+      "before_range": [
+        114364416,
+        117841920
+      ],
+      "limit": 118759424,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        123514880,
+        122376192
+      ],
+      "after_medians": [
+        124735488,
+        123166720
+      ],
+      "J": 1138688,
+      "before_range": [
+        121094144,
+        124260352
+      ],
+      "limit": 125612032,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        123518976,
+        122384384
+      ],
+      "after_medians": [
+        124755968,
+        123437056
+      ],
+      "J": 1134592,
+      "before_range": [
+        121106432,
+        124268544
+      ],
+      "limit": 125616128,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 1)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        147184,
+        146432
+      ],
+      "after_medians": [
+        148656,
+        147368
+      ],
+      "J": 752,
+      "before_range": [
+        145204,
+        149304
+      ],
+      "limit": 149232,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        189.751078,
+        200.316198
+      ],
+      "after_medians": [
+        159.37824,
+        162.996313
+      ],
+      "J": 10.565120000000007,
+      "before_range": [
+        171.975328,
+        209.976559
+      ],
+      "limit": 210.316198,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        3.620256094,
+        3.6767117580000015
+      ],
+      "after_medians": [
+        3.441005123,
+        3.5224593480000017
+      ],
+      "J": 0.05645566400000135,
+      "before_range": [
+        3.4390378639999994,
+        3.752193619
+      ],
+      "limit": 4.044382933800002,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000,
+        1000
+      ],
+      "after_medians": [
+        1000,
+        1000
+      ],
+      "J": 0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        118480896,
+        117944320
+      ],
+      "after_medians": [
+        119037952,
+        118849536
+      ],
+      "J": 536576,
+      "before_range": [
+        117387264,
+        120565760
+      ],
+      "limit": 120578048,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        125845504,
+        124727296
+      ],
+      "after_medians": [
+        125779968,
+        126050304
+      ],
+      "J": 1118208,
+      "before_range": [
+        123756544,
+        127135744
+      ],
+      "limit": 127942656,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        125845504,
+        124731392
+      ],
+      "after_medians": [
+        125779968,
+        126050304
+      ],
+      "J": 1114112,
+      "before_range": [
+        123756544,
+        127135744
+      ],
+      "limit": 127942656,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 4)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        149404,
+        148608
+      ],
+      "after_medians": [
+        149724,
+        149936
+      ],
+      "J": 796,
+      "before_range": [
+        148080,
+        151992
+      ],
+      "limit": 151452,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "p95_ms",
+      "kind": "http",
+      "before_medians": [
+        407.29791,
+        412.17409
+      ],
+      "after_medians": [
+        374.272575,
+        324.632073
+      ],
+      "J": 4.876179999999977,
+      "before_range": [
+        375.660376,
+        450.267936
+      ],
+      "limit": 422.17409,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "cpu_seconds",
+      "kind": "cpu",
+      "before_medians": [
+        3.7964621590000007,
+        3.694620866000001
+      ],
+      "after_medians": [
+        3.5240824869999976,
+        3.5086467549999973
+      ],
+      "J": 0.10184129299999967,
+      "before_range": [
+        3.6694642250000022,
+        3.9480583609999975
+      ],
+      "limit": 4.176108374900001,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "sql_statements",
+      "kind": "sql",
+      "before_medians": [
+        1000,
+        1000
+      ],
+      "after_medians": [
+        1000,
+        1000
+      ],
+      "J": 0,
+      "before_range": [
+        1000,
+        1000
+      ],
+      "limit": 1000,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.anon_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        126324736,
+        126148608
+      ],
+      "after_medians": [
+        122658816,
+        121999360
+      ],
+      "J": 176128,
+      "before_range": [
+        124678144,
+        130064384
+      ],
+      "limit": 128421888,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.current_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        133701632,
+        132616192
+      ],
+      "after_medians": [
+        129204224,
+        128905216
+      ],
+      "J": 1085440,
+      "before_range": [
+        131072000,
+        136310784
+      ],
+      "limit": 135798784,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.peak_bytes",
+      "kind": "bytes",
+      "before_medians": [
+        133701632,
+        132616192
+      ],
+      "after_medians": [
+        129204224,
+        128905216
+      ],
+      "J": 1085440,
+      "before_range": [
+        131072000,
+        136310784
+      ],
+      "limit": 135798784,
+      "passed": true
+    },
+    {
+      "scope": "kodi/(100, 'unique-result-key-warm-metadata', 8)",
+      "metric": "memory.max_rss_kib",
+      "kind": "kib",
+      "before_medians": [
+        157552,
+        156724
+      ],
+      "after_medians": [
+        153256,
+        152816
+      ],
+      "J": 828,
+      "before_range": [
+        154992,
+        161080
+      ],
+      "limit": 159600,
+      "passed": true
+    },
+    {
+      "scope": "kodi/reference",
+      "metric": "complete_files",
+      "files": {
+        "A": 5,
+        "B": 5,
+        "C": 5
+      },
+      "A_failed_detached_instance_error": []
+    },
+    {
+      "scope": "heap/('same-result-key', 1)",
+      "metric": "p95_contemporaneous_paired_diffs_ms",
+      "diffs": [
+        -0.011702500000000171,
+        -0.19783449999999903,
+        -0.08238249999999958
+      ],
+      "median": -0.08238249999999958
+    },
+    {
+      "scope": "heap/('same-result-key', 4)",
+      "metric": "p95_contemporaneous_paired_diffs_ms",
+      "diffs": [
+        -0.164417499999999,
+        -5.674355500000004,
+        -3.439910000000012
+      ],
+      "median": -3.439910000000012
+    },
+    {
+      "scope": "heap/('same-result-key', 8)",
+      "metric": "p95_contemporaneous_paired_diffs_ms",
+      "diffs": [
+        -29.29108550000001,
+        -16.305761000000018,
+        -6.320986499999975
+      ],
+      "median": -16.305761000000018
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 1)",
+      "metric": "p95_contemporaneous_paired_diffs_ms",
+      "diffs": [
+        -1.7208294999999936,
+        -1.3596145000000064,
+        -0.4370669999999848
+      ],
+      "median": -1.3596145000000064
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 4)",
+      "metric": "p95_contemporaneous_paired_diffs_ms",
+      "diffs": [
+        -108.63106700000003,
+        -96.88749700000005,
+        -112.54708800000003
+      ],
+      "median": -108.63106700000003
+    },
+    {
+      "scope": "heap/('unique-result-key-warm-metadata', 8)",
+      "metric": "p95_contemporaneous_paired_diffs_ms",
+      "diffs": [
+        -314.86269200000015,
+        -328.10962900000004,
+        -338.7130794999998
+      ],
+      "median": -328.10962900000004
+    },
+    {
+      "scope": "heap/cold0",
+      "metric": "gc_collections_per_generation",
+      "before": [
+        [
+          [
+            35,
+            3,
+            0
+          ]
+        ],
+        [
+          [
+            35,
+            3,
+            0
+          ]
+        ],
+        [
+          [
+            35,
+            3,
+            0
+          ]
+        ]
+      ],
+      "after": [
+        [
+          [
+            35,
+            3,
+            0
+          ]
+        ],
+        [
+          [
+            35,
+            3,
+            0
+          ]
+        ],
+        [
+          [
+            35,
+            3,
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "scope": "heap/cold1",
+      "metric": "gc_collections_per_generation",
+      "before": [
+        [
+          [
+            9,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            9,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            9,
+            0,
+            0
+          ]
+        ]
+      ],
+      "after": [
+        [
+          [
+            9,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            9,
+            0,
+            0
+          ]
+        ],
+        [
+          [
+            8,
+            0,
+            0
+          ]
+        ]
+      ]
+    },
+    {
+      "scope": "heap/trend",
+      "run": "before0",
+      "gen2_cold_phases": [],
+      "first12_heap_after_gc": 55710513.0,
+      "last12_heap_after_gc": 73299186.0
+    },
+    {
+      "scope": "heap/trend",
+      "run": "before1",
+      "gen2_cold_phases": [],
+      "first12_heap_after_gc": 55717677.0,
+      "last12_heap_after_gc": 73290770.0
+    },
+    {
+      "scope": "heap/trend",
+      "run": "before2",
+      "gen2_cold_phases": [],
+      "first12_heap_after_gc": 55713491.0,
+      "last12_heap_after_gc": 73289092.5
+    },
+    {
+      "scope": "heap/trend",
+      "run": "after0",
+      "gen2_cold_phases": [],
+      "first12_heap_after_gc": 55816829.0,
+      "last12_heap_after_gc": 73380923.5
+    },
+    {
+      "scope": "heap/trend",
+      "run": "after1",
+      "gen2_cold_phases": [],
+      "first12_heap_after_gc": 55829492.0,
+      "last12_heap_after_gc": 73362549.0
+    },
+    {
+      "scope": "heap/trend",
+      "run": "after2",
+      "gen2_cold_phases": [],
+      "first12_heap_after_gc": 55828316.5,
+      "last12_heap_after_gc": 73375349.5
+    }
+  ],
+  "raw_sha256": {
+    "cr17e-after-v1-direct-A-ref-0-failed.json": "687337d11bb612493dbbe667249c171e98c16a50405481a54fa922adeadccac6",
+    "cr17e-after-v1-direct-A-ref-1-failed.json": "3c966b76ac7f0f8cf1e7660882c01bc5d9c6f817463354b1efd2c4715f804cca",
+    "cr17e-after-v1-direct-A-ref-2-failed.json": "03c027395dbdae72523b8704859d70e121a61962017f9c735469c8d534c619e7",
+    "cr17e-after-v1-direct-A-ref-3-failed.json": "e5a0c5b98be8a3b522d563c19e92a6a00f5a6567abccda15ef578ad926ead2ac",
+    "cr17e-after-v1-direct-A-ref-4-failed.json": "e743122b4becd9475daac4798152ea85bf4348066ffeabfc3d300687a23c9b82",
+    "cr17e-after-v1-direct-B-ref-0.json": "4c8f7dc4ee93d10d35f21d64635a471f821c758f623649d2db1dfcc040f825a7",
+    "cr17e-after-v1-direct-B-ref-1.json": "844fac4d583d1bc65f90d6775a92a32182cb4f1b3e2378d434b3e93ae8efe18f",
+    "cr17e-after-v1-direct-B-ref-2.json": "71ac358589bf12af2ded131efec5a11cb9e12c9e7a9fb182a35f80e1ee340681",
+    "cr17e-after-v1-direct-B-ref-3.json": "638c738af7d3f4eafac0b989d7d78b9e08502fd7f5bbcec4df222584594df072",
+    "cr17e-after-v1-direct-B-ref-4.json": "537eaf182f6f9ffbf6906267e96da9ef0f074722f9f84c7be41304451aa5ada9",
+    "cr17e-after-v1-direct-C-ref-0.json": "1a06f4ce8387c2e6eb303234ac23e0b6d85348e4a827e8260a847f7387fc1814",
+    "cr17e-after-v1-direct-C-ref-1.json": "4eb87d1c837a11990db9896a6dcae77b549ba3432eb3014522e5794ded248027",
+    "cr17e-after-v1-direct-C-ref-2.json": "938288aac3bcc7b49e1d2bd56592188a45e1b857640a81fd24fe2ae1c75330dd",
+    "cr17e-after-v1-direct-C-ref-3.json": "a5fe5a8498651ec032fb46806b912fdf0d21af2b052e1e69a6ba7f1f9f89c526",
+    "cr17e-after-v1-direct-C-ref-4.json": "cadfa3951a9a4bb1cee6a53ed9a5658f55a9a908f81664ac3a1ab775841f628a",
+    "cr17e-after-v1-direct-after-a-0.json": "f97b712d3594fa9232c499b8cb22a07c855b2463f6dbaff153dd8b319759cd98",
+    "cr17e-after-v1-direct-after-a-1.json": "38440dae01a6e0b0f9d4c19643e518e3a3aeaae26549ca3e1442ceca15d83c4d",
+    "cr17e-after-v1-direct-after-a-2.json": "15f839bca20082dc62706969c952733fd013eac2afe1e41595b1c5ff206c5514",
+    "cr17e-after-v1-direct-after-a-3.json": "8f57c0ab3b5c1c9295332e2aecc5c313a06a5b2c1bf9abafcdeb1451fbe26062",
+    "cr17e-after-v1-direct-after-a-4.json": "fb5088f4f2c17c159bb6126c1691022ae1e59db8f215cd6421bf71e23194e26a",
+    "cr17e-after-v1-direct-after-b-0.json": "d927f541cdb5c593dab54832ca96220a0057cbc4b74ec816803b687083fe2c96",
+    "cr17e-after-v1-direct-after-b-1.json": "bbe32a135c01507d311d74d6e191635939bcf8f739413b994284f786d0caa886",
+    "cr17e-after-v1-direct-after-b-2.json": "5c984728c538745f926bdeb5903f581223a9b4091d207a0df9120a3bda2d0532",
+    "cr17e-after-v1-direct-after-b-3.json": "893711e507584cd19f67a5bf21ecdae925ea221ad593efd912818c6ea9f46264",
+    "cr17e-after-v1-direct-after-b-4.json": "5bb4b7105af684d4cf9a60125056bcaf3bb2c493d68e288b6b084bdd7fac7016",
+    "cr17e-after-v1-direct-before-a-0.json": "85e9425a00feb82110da22e3f20da97abcabfc49995bca8d7562595617807fd0",
+    "cr17e-after-v1-direct-before-a-1.json": "479d92f3a8fae243665d37a4f0c19a992c4e52788f23fc3199a0edfde146496b",
+    "cr17e-after-v1-direct-before-a-2.json": "cf0a6a2204277852e5bf932c55fa0376ed9e4fb693ac9e52a96f094d8cdc0b6e",
+    "cr17e-after-v1-direct-before-a-3.json": "ce414fc43b21402de559e340770dc436eeb4232f74f00465df472f2af2472560",
+    "cr17e-after-v1-direct-before-a-4.json": "974bd85c7fa03c6f4b8ab12a84b279a87122fda5bd0cbd7515b5a4a0c3473b3b",
+    "cr17e-after-v1-direct-before-b-0.json": "412e5bc856e5b1f25ae51d36cbe7b644c34de7b8a6cc7bc131649e97c8e6ffad",
+    "cr17e-after-v1-direct-before-b-1.json": "b807c831784ad8f65ce5a096f4500658035752b8143fcc1d70b5c6dc92c4e8f6",
+    "cr17e-after-v1-direct-before-b-2.json": "7dbcdc4f48a2022a8c03693db363377fd50ec5bd83190e4adde4fcc6b6ce41b6",
+    "cr17e-after-v1-direct-before-b-3.json": "6238fe44d464e88bbe4818622d764a9849bdebf62751a95aed12347368bc4ce7",
+    "cr17e-after-v1-direct-before-b-4.json": "dd70d0950402784059ddf0982a747aaca85a84d0deae88f073de5bf43c94d2f7",
+    "cr17e-after-v1-kodi-A-ref-0.json": "1d4a1f26a5a9c756242e9f9481b0b454f7d181012aabacc929dfb162ad3fce60",
+    "cr17e-after-v1-kodi-A-ref-1.json": "028026f1f1dea0b066be8aa1bc3d6434fde7f96d134d1de4548f90453ec4e5c5",
+    "cr17e-after-v1-kodi-A-ref-2.json": "939f9b06f80b6803b6730df2eb8de94551928b096b568bd96eada7aa5fe08265",
+    "cr17e-after-v1-kodi-A-ref-3.json": "c62914d59b930926e502e725503d4c32c9c8f12a757d1b600a8818e734d5a7ab",
+    "cr17e-after-v1-kodi-A-ref-4.json": "8a2366dc7f33ff18fb423dfa217f4f452eb0daea82824fb14596a57d8c068356",
+    "cr17e-after-v1-kodi-B-ref-0.json": "a13511288c7429e6220b116fe036c253b98fae30ba4d80713d1fcd07303fb8d3",
+    "cr17e-after-v1-kodi-B-ref-1.json": "aa5344d96a656d4786d22e8f4c018d10c24295c129b788ec8b3c1a2f06cdb3a2",
+    "cr17e-after-v1-kodi-B-ref-2.json": "16dcade8f713fe3b2f1498116de3caea66d5b305ffc737ae8e528d5186cc17a2",
+    "cr17e-after-v1-kodi-B-ref-3.json": "2ef69f3032739220162575e196ec6d28f38f5f3ae46c29fe17bf2308a248c479",
+    "cr17e-after-v1-kodi-B-ref-4.json": "0aa72df7df71365bb8aea57a8e43f3c6f615e5f82f7abc66146dbab6eefda3ba",
+    "cr17e-after-v1-kodi-C-ref-0.json": "1ed6b750c67f89f8ea053979891eb94a8412313353ada1cd220769fd42495c01",
+    "cr17e-after-v1-kodi-C-ref-1.json": "9e300babfc629b5c4a28f42270b59365221bc66141de131dcc94d3494f097df0",
+    "cr17e-after-v1-kodi-C-ref-2.json": "9531a17fbc0fba86c5e96b636983a928ba1a7f6f07aea03cd569701e5e519ff8",
+    "cr17e-after-v1-kodi-C-ref-3.json": "ea9b6e5191a13614d2864f7e4e55ddfea2c3d1f5730befb3fe422192afab6d3a",
+    "cr17e-after-v1-kodi-C-ref-4.json": "026a390593b4b2d9d87e4e6eaa13181cdd5721abb1520abe15f5ec0ecb544eb6",
+    "cr17e-after-v1-kodi-after-a-0.json": "716762e011dac4094916097f774646dcbeaac864941d264df92c6cc0a5aca4a0",
+    "cr17e-after-v1-kodi-after-a-1.json": "856685b47254f844b7aded121e5494705e1694d92e5555e3ee64501c36465637",
+    "cr17e-after-v1-kodi-after-a-2.json": "5315187e200271cc1f85218d8241126e303487f07636ff36378e7035f2281040",
+    "cr17e-after-v1-kodi-after-a-3.json": "5c1b140612953b16d6051a9e93f3f58c778a16ba0eca02f91056810fe59af61c",
+    "cr17e-after-v1-kodi-after-a-4.json": "0bd1ac952f2391e4d6d88d0405be3a7cd0a740640c7870601b3652f3f48adcd5",
+    "cr17e-after-v1-kodi-after-b-0.json": "5d56b3de934049d2f496e98564afc0aab39975acb2c3caa304c9d37421f59b71",
+    "cr17e-after-v1-kodi-after-b-1.json": "f83fe1d811fc9aa0070cb53be648a7e2a33f47716f653431ce7704c207661244",
+    "cr17e-after-v1-kodi-after-b-2.json": "4606f8bc13f56035e19882876852b96518baf9c5340ce1d32f3f96efc1fa1921",
+    "cr17e-after-v1-kodi-after-b-3.json": "3f6589adfdef14a8c290a800ed090af9bf3493625d10d9292609f375505edab4",
+    "cr17e-after-v1-kodi-after-b-4.json": "095220a890f391b64eec2da1f8ab0abc11141f5855dc0206748f4ce0ea8655af",
+    "cr17e-after-v1-kodi-before-a-0.json": "7b8dad61e25946817ad82dd13d246987a1c8ca65cf0bd2f180e70a877aa183af",
+    "cr17e-after-v1-kodi-before-a-1.json": "360b019c2c424de03dcc101a4e5358c6779f4e47f9f4ce1ac757892ece0fca5c",
+    "cr17e-after-v1-kodi-before-a-2.json": "7feadfcf488dc050063464419bc0f4da43024148b3d280b3fe164ae8d8ef2282",
+    "cr17e-after-v1-kodi-before-a-3.json": "7f07d3cca248659fc2e2a0eb60c4f7959b01128612c57678f028e32c503ba676",
+    "cr17e-after-v1-kodi-before-a-4.json": "c79296a943d946be8a5b5a7542123ff5b4960e52df0eb94ec8fdf4870adf2a69",
+    "cr17e-after-v1-kodi-before-b-0.json": "856d229e98513dac9dde2c4778c4cb93ff3bf585f732f8b2f7c6a0e896705822",
+    "cr17e-after-v1-kodi-before-b-1.json": "73c14ec4dfc1644dc00c2e8cb0f3049068f62a6b46199354a8d45175d42208e5",
+    "cr17e-after-v1-kodi-before-b-2.json": "9212bfd7408b9c003ac04375d19ee9c82e73b0a68157df3d06e39ea122ecffa9",
+    "cr17e-after-v1-kodi-before-b-3.json": "efc454e644976442be85cd167ca3f928ee68a74985486013c998d7b625793149",
+    "cr17e-after-v1-kodi-before-b-4.json": "ac9d1efd0155f5315d57add2bd9f6c10a5c5c0b905669c4786b959e001d63c0a",
+    "cr17e-after-v1-long-after-pair-0.json": "2d5d0c998c8f1f690d77be3eff8d362247c9713ee7121d224040ca0aaaf6a45c",
+    "cr17e-after-v1-long-after-pair-1.json": "2a9f69305db0ef78c4d663e50c986af08e9c5de2e1b4da5c16ef1cf5d3b87d56",
+    "cr17e-after-v1-long-after-pair-2.json": "d66dfed49cf3ed775ba9fb8eca42d5f953126bfbfb9f4272b8f83818a62b1a59",
+    "cr17e-after-v1-long-before-pair-0.json": "17570b6e657375447bd24cdf27861de713ebabec02a24f710f2822dfe19410bd",
+    "cr17e-after-v1-long-before-pair-1.json": "314c3b3866dd6076ad59bab6d6f8a07e4fc6700d8236e2854ccd5fbd98a9a77d",
+    "cr17e-after-v1-long-before-pair-2.json": "a82b6632186443a9c2d0bd871cce112adaefd3e66d128a1a45f066d9190dc24d",
+    "cr17e-after-v1-short-A-ref-0.json": "d06f3b14fecfe40f4091538796c3fd2ac536d36b336889a2d6cc1b1eaddbac1a",
+    "cr17e-after-v1-short-A-ref-1.json": "050a1ca99b385e40275157fe714c4cc52126b924b16aa52abcb6f76a5df29fc4",
+    "cr17e-after-v1-short-A-ref-2.json": "8301c14a6f4210a35ebfe4b5922bc209df88067cf8a6e7cad2bd01aef998e169",
+    "cr17e-after-v1-short-A-ref-3.json": "63e116a1d34a1b2b40e31774ff4270e73c11d4809b9bd24c763784f352d40c23",
+    "cr17e-after-v1-short-A-ref-4.json": "a79e5fde7fba93f12e6f8b00b357af88655b75e1b204dd5aa251c06bd39f1904",
+    "cr17e-after-v1-short-B-ref-0.json": "12afe854daa214085f1212df7e00784cc37308e471a3fa5860f0a18a0d3cf237",
+    "cr17e-after-v1-short-B-ref-1.json": "e26280af08ebd52ea0255449d6f1ee09512c29f0d2bc23ea003c2646c388c632",
+    "cr17e-after-v1-short-B-ref-2.json": "fef72a9fc456f03992a1dee86889d8d9621848fea19cad2b0d9729f4a50a4f91",
+    "cr17e-after-v1-short-B-ref-3.json": "1d41a2effb9c28a19038d04c9ae56c444ac49e7415c5edff640a2b6c51579941",
+    "cr17e-after-v1-short-B-ref-4.json": "b7e25a7c69c84f0a962b3af844fb8df785e69306fc8551b577040efbc8eacc87",
+    "cr17e-after-v1-short-C-ref-0.json": "a95c3516b6ce954faf384fd6281158236a9d86073ea1a82cc6114ccd83626f84",
+    "cr17e-after-v1-short-C-ref-1.json": "f779c7836118e6b1b267f3b0d8ff8fab2ba22e34ccd7387d8bf540920060b771",
+    "cr17e-after-v1-short-C-ref-2.json": "0cc100dc7070d6e788e3a2fa4142b1b9555f8e81cdc83a0a6d4f54a7c2644e37",
+    "cr17e-after-v1-short-C-ref-3.json": "78814b9cd4906d884bfde05f036ee875324f79357aac509fcd640762f4fdfd7d",
+    "cr17e-after-v1-short-C-ref-4.json": "dd3fb2d12dd7a7f857d2421da7786add2506c1de04fcca4de6c1e2b030922620",
+    "cr17e-after-v1-short-after-a-0.json": "dd68a4502671d123fc523142c1afa60b49d4bf18bcb06f0c03227f5d587fd0a0",
+    "cr17e-after-v1-short-after-a-1.json": "f750e5d5073825523736a57d0d46adffb6fa0ab339c6bfbe686fc8c61c05ff69",
+    "cr17e-after-v1-short-after-a-2.json": "7f4764b71171fb5ef1b34ae4839c5855a2ce015944437c37c3b305828ecab9d9",
+    "cr17e-after-v1-short-after-a-3.json": "b8861571aba3085095471e498bfabe64d26509b77c1aab57ca562315f123ff00",
+    "cr17e-after-v1-short-after-a-4.json": "fa7120a90d447f0456fe49d20a964b3cc3731e93236dc258ec86be5c446cba9d",
+    "cr17e-after-v1-short-after-b-0.json": "261ce6f46ffb38d1993a55d942ee4bcf0820b0607aa0becc68fd6f77379872a9",
+    "cr17e-after-v1-short-after-b-1.json": "c5f0bcf5265a9193544af5e809b0d74c93269146fd711d5f0af5dbaf6dac9e5b",
+    "cr17e-after-v1-short-after-b-2.json": "d79e1617b6675abb88f02350c4935820d1eb888134ab2be59ac2ca912b26d8ea",
+    "cr17e-after-v1-short-after-b-3.json": "4cd66e0e34f92d6a67366103ab7c23daf52d49f27a64a28be626f63411f83314",
+    "cr17e-after-v1-short-after-b-4.json": "280d1f23b4e6705522974a2bb11eb9bc5d9463e2c3233092b59e72dfb51297db",
+    "cr17e-after-v1-short-before-a-0.json": "e76fbb42a5444a2c18c77b5c7fb42eb03549b624997281589450502fdfdede1d",
+    "cr17e-after-v1-short-before-a-1.json": "574f0d4dbb9cd3ec44630dedaffa600b9218420ed6a7f43440e2553e488e362a",
+    "cr17e-after-v1-short-before-a-2.json": "69d8bd24e13f96a0894ff17262361efb4fa4e3b3986a0c53f21802c9b6428f08",
+    "cr17e-after-v1-short-before-a-3.json": "54fb5f1bb0f217fbdca5fa792f81d64e7e148966bbec3850b920795c1dcadf0d",
+    "cr17e-after-v1-short-before-a-4.json": "2f62a5c80f671f801f2a411c740d8f1ab842c7243675166ef3c19fb5d3c7acb6",
+    "cr17e-after-v1-short-before-b-0.json": "ff0c9d4918392b54d0d1fe771f6c97d850cecf1063be29b50b43e60883d3d34c",
+    "cr17e-after-v1-short-before-b-1.json": "7f128deb85a9a4b46bc8dba1ef8d5bcdb71b1dbd60c408929237ac7780de4f38",
+    "cr17e-after-v1-short-before-b-2.json": "6a7561b1857bb3bdcfe79cca17b9fcd6235d99859b3d7ffe7344c7c7a8bc4529",
+    "cr17e-after-v1-short-before-b-3.json": "ad6bbd82413e4f594e31d14fe41fccfe5ba1b5148aa06c44c50e3e64ac865fe8",
+    "cr17e-after-v1-short-before-b-4.json": "5139566f9769de4dd262c6bfb80e014d6d8f14432c5d462416fe0c19967a5f58",
+    "cr17e-after-v1-smoke-after-smoke-0.json": "acc45f300b1e5ff5371694ff56da91ea40e0a09c013a4ca7da0f863ca3e09031",
+    "cr17e-after-v1-smoke-before-smoke-0.json": "9075ccce7622e5e961660d0af93fb4325bd5876575d924dacaf2b73bf149e94f"
+  }
+}

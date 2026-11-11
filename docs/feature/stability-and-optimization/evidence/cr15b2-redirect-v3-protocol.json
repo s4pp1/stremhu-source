@@ -1,0 +1,33 @@
+{
+ "id": "cr15b2-redirect-v3",
+ "registered_at_utc": "2026-11-07T20:09:35.816214+00:00",
+ "status": "Final packet 26b functional redirect-body gate; registered before any run (a 2-request wiring smoke preceded it).",
+ "change": "get_bounded follows redirects itself via Response.next_request, closes each redirect body unread, keeps history, max 10 hops; every hop must target the tracker host or a subdomain with the tracker scheme (user decision 2026-11-07), otherwise no request is sent.",
+ "before": "frozen f90e752 server/app (CR15a v2 + 26a; cr15b-after-v2 manifest)",
+ "after": "frozen 51854ca server/app (cr15b2-after-v3 manifest)",
+ "supersedes": "cr15b2-redirect-v1 and -v2 (registered, never run; v2 lacked the host policy decided afterwards)",
+ "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+ "fixture_sha256": {
+  "redirect_server.py": "a3572bfa7f3fe11dbebf2dd8a5337abe166d890a993c4451c117a71ac6b148e8",
+  "redirect_probe.py": "a64b8bcedb52935342ede62e9476d3d9d0ab5318c73569c1c8eea3138b232ed6",
+  "metadata_sizes.py": "ae4df3ab93935cd8961f7efd36b5d8bd125c57d1a7d56d3858a9f0e5c896ed4c"
+ },
+ "controller_sha256": "ffb3a0548516049c729fbc7af5d56b0ebd218166dc41a9e987fa97160df72d92",
+ "runs": [
+  [
+   "before",
+   0
+  ],
+  [
+   "after",
+   0
+  ],
+  [
+   "after",
+   1
+  ]
+ ],
+ "workload": "giant: download_torrent through a 302 (Location: /final) whose chunked body is 64 MiB, 20 sequential then 20 at concurrency 4; subdomain: 10 downloads redirected to dl.tracker.fixture.invalid; foreign: 10 downloads redirected to cdn.other.invalid. Final = one natively valid 1 GiB/1-file metadata-only torrent; one server under three names; fresh client process per run.",
+ "resources": "client 2 CPU on 2,3 / 1 GiB; server 1 CPU on 4 / 512 MiB; internal network, no outbound; runs after G03 has finished.",
+ "decision": "PASS iff every run exits 0 without OOM; giant and subdomain requests all return the same final hash in every run; before reproduces the defects (every 64 MiB redirect body written completely; every foreign redirect followed: foreign /final hit once per request); in both after runs the server wrote at most 16 MiB of redirect body per giant request on average and no redirect body completed, every subdomain download succeeds via the subdomain, every foreign download fails as an indexer error and the foreign host never receives a request. Otherwise FAIL; missing runs INVALID."
+}

@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 
+from app.common.commit_actions import mark_stream_cache_dirty
 from app.modules.indexer_accounts.models import IndexerAccountModel
 from app.modules.indexer_accounts.repository import IndexerAccountsRepository
 from app.modules.indexer_accounts.schemas import (
@@ -26,7 +27,9 @@ class IndexerAccountsService:
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Már létezik indexer account!",
             )
-        return self._indexer_accounts_repository.create(payload)
+        model = self._indexer_accounts_repository.create(payload)
+        mark_stream_cache_dirty(self._indexer_accounts_repository.db)
+        return model
 
     def find_list(self) -> list[IndexerAccountModel]:
         return self._indexer_accounts_repository.find_list()
@@ -44,7 +47,10 @@ class IndexerAccountsService:
         payload: IndexerAccountUpdate,
     ) -> IndexerAccountModel:
         model = self._indexer_accounts_repository.update(indexer_id, payload)
-        return self._ensure_exists(model)
+        model = self._ensure_exists(model)
+        if payload.model_fields_set:
+            mark_stream_cache_dirty(self._indexer_accounts_repository.db)
+        return model
 
     def delete(
         self,
@@ -52,6 +58,7 @@ class IndexerAccountsService:
     ) -> None:
         self._indexer_accounts_repository.delete(indexer_id)
         self._preference_definitions_service.remove_attribute_from_all(indexer_id)
+        mark_stream_cache_dirty(self._indexer_accounts_repository.db)
 
     def _ensure_exists(self, model: IndexerAccountModel | None) -> IndexerAccountModel:
         if model is None:

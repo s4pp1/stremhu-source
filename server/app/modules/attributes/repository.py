@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 
+from app.common.commit_actions import commit_session, mark_stream_cache_dirty
 from app.modules.attributes.models import AttributeModel
 
 
@@ -34,4 +35,5 @@ class AttributesRepository:
 
     def commit(self) -> None:
         """Commits the active database transaction."""
-        self.db.commit()
+        mark_stream_cache_dirty(self.db)
+        commit_session(self.db)

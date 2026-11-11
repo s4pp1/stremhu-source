@@ -15,7 +15,7 @@ def create_torrent_files_service(db: Session) -> TorrentFilesService:
 
 
 def get_torrent_files_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> TorrentFilesService:
     return create_torrent_files_service(db)
 

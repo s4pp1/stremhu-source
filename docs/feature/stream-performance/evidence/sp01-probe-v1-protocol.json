@@ -1,0 +1,221 @@
+{
+ "id": "sp01-probe-v1",
+ "registered_at_utc": "2026-11-11T15:53:58.800646+00:00",
+ "status": "Descriptive probe for SP01 (read-ahead window during playback), registered before any run. Not a gate: it decides only whether a GSP01 gate is worth registering, by the criterion below. Its data are never pooled into a gate.",
+ "item": "SP01",
+ "question": "With the live relay defaults (RELAY_START_POLICY=edges, RELAY_READAHEAD_POLICY=upstream: 4 pieces ahead for 1-16 MiB pieces, i.e. 4-64 MiB), does a longer playback stall, and does the existing byte-based window policy (b794167, never measured) with 16 or 32 MiB reduce it?",
+ "why_now": "gsp02-v4 measured only 10 s of playback: the live policy stalled in 6 of 120 runs. Its average delivery in the fast profile was about 7 MB/s although the swarm can send 32 MB/s, which fits the SP01 hypothesis that the 4-piece window limits throughput at high bitrates.",
+ "source": {
+  "image_commit": "8157b515",
+  "registration_commit": "e624e9360db181728ad5a755bdf034d4818d8b1b",
+  "server_app_manifest_sha256": "f6144e8a26766ef01092f51a93d36cf4fe2a1f12466b8de990b4fdda2620124b",
+  "note": "server/app at the registration commit equals the image source (checked); later feature commits are docs only."
+ },
+ "images": {
+  "tag": "stremhu-source:sp-cand-8157b51",
+  "image_id": "sha256:3a33e7692527a1c995a96bf3f07b2c5629a4d1073f617d2512c33e364527bd51",
+  "tool_image": "stremhu-source:sp-base-9984678",
+  "tool_image_id": "sha256:b4c7ea68202391962159de1cd7e14e7e82014402ea96999fccd918cf8ef77e10"
+ },
+ "arms": {
+  "C0": "image defaults (the live policy: edges + upstream)",
+  "W16": "edges + window, relay_readahead_bytes 16 MiB (max 128 pieces, assumed rate 8 MB/s)",
+  "W32": "edges + window, relay_readahead_bytes 32 MiB"
+ },
+ "harness_sha256": {
+  "scripts/benchmark_sp_playback_controller.py": "50ddf194fc8f9516f935317f00b16e8a8a3afccef108b9fd162ef34f50aa23bf",
+  "scripts/benchmark_sp_playback.py": "06a97427c914e61dc280f2efffcd6c60311305fd8f167ecaf1833a656e7c3df6",
+  "scripts/sp_app_fixture.py": "71c192048beb8fc2ccda0097065069d578db53054f495c2f8a4dc1d0461fd20c",
+  "scripts/sp_seed_service.py": "b670ba1ff04e889dd8e49cc3781f2dc0a3cf7cbe10de785a59309b977127d3ce",
+  "scripts/fixtures/local_bt_seed.py": "f89cb48ef0ad3337e07eea697a57fcce16e4e45e2008bcc5e01d18e03cf123b5",
+  "scripts/fixtures/local_tracker.py": "fb538616f86e0b36ec3ae6d46cc031a9aaf4ff81b3ab738ef7baab50ddb32050",
+  "scripts/fixtures/synthetic_torrent.py": "49d3640d7c9e105094ddccde829e5a301219089988f4a480fa7cd3363193e87c"
+ },
+ "plan_sha256": "3a1144b4f4f7e3e500b22b5cec0238f667d25cbe1cd2a5d8bd0e699ec97d9646",
+ "plan": {
+  "tool_image": "stremhu-source:sp-base-9984678",
+  "images": {
+   "C0": "stremhu-source:sp-cand-8157b51",
+   "W16": "stremhu-source:sp-cand-8157b51",
+   "W32": "stremhu-source:sp-cand-8157b51"
+  },
+  "app_env": {
+   "C0": {},
+   "W16": {
+    "RELAY_READAHEAD_POLICY": "window",
+    "RELAY_READAHEAD_BYTES": "16777216"
+   },
+   "W32": {
+    "RELAY_READAHEAD_POLICY": "window",
+    "RELAY_READAHEAD_BYTES": "33554432"
+   }
+  },
+  "series": [
+   {
+    "labels": [
+     "C0",
+     "W16",
+     "W32"
+    ],
+    "reps": 2
+   }
+  ],
+  "reps": 2,
+  "total_size": 1073741824,
+  "client_args": [
+   "--play-s",
+   "60",
+   "--seek-play-s",
+   "8",
+   "--start-buffer-s",
+   "2",
+   "--rebuffer-s",
+   "1",
+   "--max-buffer-s",
+   "30"
+  ],
+  "cells": [
+   {
+    "profile": "fast",
+    "piece_size": 1048576,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "fast",
+    "piece_size": 4194304,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "fast",
+    "piece_size": 16777216,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 16777216,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 1048576,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 4194304,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 16777216,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "thin",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "thin",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "thin",
+    "piece_size": 16777216,
+    "bitrate_mbit": 30
+   }
+  ],
+  "profiles": {
+   "fast": {
+    "peers": 8,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 4000000,
+      "latency_s": 0.02,
+      "jitter_s": 0.01
+     }
+    ]
+   },
+   "mixed": {
+    "peers": 8,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "stall": true
+     },
+     {
+      "stall": true
+     }
+    ]
+   },
+   "thin": {
+    "peers": 2,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 2500000,
+      "latency_s": 0.06,
+      "jitter_s": 0.02
+     }
+    ]
+   }
+  },
+  "capture_tracebacks": true
+ },
+ "runs": "12 cells x 3 arms x 2 reps = 72 runs, labels rotated per rep; about 2-2.5 h",
+ "metrics": [
+  "start.stall_s and start.stalls over 60 s of playback (primary for this probe)",
+  "start.time_to_start_s, start.ttfb_s, seek.resume_s",
+  "start.buffer_s_p10 and buffer_s_median, start.time_to_full_buffer_s",
+  "delivery rate during playback: (bytes_received - start buffer) / (played_s + stall_s)",
+  "unused_downloaded_bytes, app_stats cpu/memory, app tracebacks"
+ ],
+ "continuation_criterion": {
+  "problem_present": "C0 has a mean start-phase stall time >= 1.0 s in at least 2 of the 12 cells (thin cells count: 5 MB/s of swarm capacity is above the 3.75 MB/s of 30 Mbit/s).",
+  "candidate_promising": "For W16 or W32: in at least 2 of the problem cells its mean stall time is at most half of C0's, and in no cell is its mean time_to_start_s more than 2 s above C0's.",
+  "then": "both true: register GSP01 (pre-registered, new data) for the promising arm(s); otherwise SP01 closes without change, with this probe as descriptive evidence (as SP08).",
+  "n_note": "2 runs per arm and cell: directional only, no inference."
+ },
+ "commands": {
+  "measure": "python scripts/benchmark_sp_playback_controller.py --plan docs/feature/stream-performance/evidence/sp01-probe-v1-plan.json --out <scratch>/sp01probe/results.jsonl --workdir <scratch>/sp01probe/runs"
+ }
+}

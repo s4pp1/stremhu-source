@@ -1,0 +1,78 @@
+{
+ "id": "cr17d-pool-diagnostic-v1",
+ "kind": "diagnostic, not a gate, not a waiver",
+ "created_utc": "2026-11-07T09:45:46.461752+00:00",
+ "question": "Mechanism of the cr17d-after-v1 memory FAIL (35/316, all memory metrics; ownership/timing/CPU/SQL passed).",
+ "method": "cr17d-policy-fixture-v2.py plus SQLAlchemy connect/checkout listeners (cr17d-pool-diagnostic-v1.py), short mode (20 and 100 rows), same image/resources as the gate, before = frozen packet21b, after = frozen packet22, order before/after/after/before. Memory values from these runs are not read or used.",
+ "runs": [
+  {
+   "run": "0-before",
+   "engines": [
+    {
+     "diag_db": 20,
+     "connects": 53,
+     "peak_checked_out": 10
+    },
+    {
+     "diag_db": 100,
+     "connects": 26,
+     "peak_checked_out": 10
+    }
+   ]
+  },
+  {
+   "run": "1-after",
+   "engines": [
+    {
+     "diag_db": 20,
+     "connects": 110,
+     "peak_checked_out": 15
+    },
+    {
+     "diag_db": 100,
+     "connects": 112,
+     "peak_checked_out": 15
+    }
+   ]
+  },
+  {
+   "run": "2-after",
+   "engines": [
+    {
+     "diag_db": 20,
+     "connects": 135,
+     "peak_checked_out": 15
+    },
+    {
+     "diag_db": 100,
+     "connects": 102,
+     "peak_checked_out": 15
+    }
+   ]
+  },
+  {
+   "run": "3-before",
+   "engines": [
+    {
+     "diag_db": 20,
+     "connects": 56,
+     "peak_checked_out": 11
+    },
+    {
+     "diag_db": 100,
+     "connects": 31,
+     "peak_checked_out": 10
+    }
+   ]
+  }
+ ],
+ "finding": "Packet22 saturates the default QueuePool (pool_size 5 + max_overflow 10 = 15): peak simultaneous checkouts 15 in every after engine vs 10-11 before, and 102-135 physical SQLite connections per engine vs 26-56 before (overflow connections are opened and discarded repeatedly). Each extra live SQLite connection carries its own page cache, consistent with the +3-10 MiB anon/RSS increase in the concurrent cells. Inference: the per-shared-task isolated Sessions (account refs and file snapshots) add simultaneous connections on top of the request Sessions. A saturated pool also implies a latent QueuePool wait/timeout risk at higher concurrency (static inference, not measured).",
+ "fixture_sha256": "cea75c78dfa308c6ffc904dbcda838a300ac4f9defce864acb0a2c8fe0340cf4",
+ "runner_sha256": "6e5e0ba39f73e56bf10c0f8801f7937b7de2c2f7daca3ad219ea2bbfbdc84b2f",
+ "raw_stderr_sha256": {
+  "0-before.stderr": "744cec75cf171fae6cbb57cef9c6b4bd081bc21f91c3adb8d1853176272cfb65",
+  "1-after.stderr": "e7494ff5528a2187b0e1d33a6f2b47c2e587de77e9ed3d95dc483856545b5c9b",
+  "2-after.stderr": "6f5846fe5dfd887db3d970591c5a66ca6c3ccb9ca4ce1776d9976463bcb8c718",
+  "3-before.stderr": "cca7e8a95c65ff595e562ff1ded92ea26e4054ed649f72ca0ff77323f0e89df5"
+ }
+}

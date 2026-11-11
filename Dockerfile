@@ -6,8 +6,9 @@ ARG APP_VERSION=0.0.0
 
 # Build Client
 WORKDIR /app/client
-COPY client ./
+COPY client/package.json client/package-lock.json ./
 RUN npm ci
+COPY client ./
 RUN npm run build
 
 # ---- Runtime Stage ----
@@ -37,6 +38,12 @@ ENV VERSION=${APP_VERSION}
 ENV PATH="/opt/venv/bin:${PATH}"
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 ENV SSL_CERT_DIR=/etc/ssl/certs
+# glibc-allokátor: a dinamikus mmap/trim küszöb a glibc saját maximumán (32 MiB / 2× = 64 MiB)
+# rögzítve. Enélkül egy letöltött, azonnal felszabadított torrenttörzs memóriáját a glibc
+# minden kérés végén visszaadja az OS-nek, és a következő letöltés friss lapokon fut
+# (cr15a-after-v5 FAIL, cr15a-diag7/diag8).
+ENV MALLOC_MMAP_THRESHOLD_=33554432
+ENV MALLOC_TRIM_THRESHOLD_=67108864
 
 EXPOSE 7070/tcp
 EXPOSE 6881/tcp 6881/udp

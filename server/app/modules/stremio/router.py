@@ -1,8 +1,9 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Path, status
+from fastapi import APIRouter, Depends, Path, Request, status
 from fastapi.responses import RedirectResponse
 
+from app.common.logger import logger
 from app.modules.auth.dependencies import ApiKeyGuard
 from app.modules.stremio.catalogs_service import StremioCatalogsService
 from app.modules.stremio.dependencies import (
@@ -21,6 +22,7 @@ from app.modules.stremio.schemas import (
     StreamId,
     StremioCatalogResponse,
     StremioStreams,
+    StremioSubtitles,
 )
 from app.modules.stremio.service import StremioService
 from app.modules.users.models import UserModel
@@ -38,9 +40,10 @@ router = APIRouter(
 )
 def manifest(
     stremio_service: Annotated[StremioService, Depends(get_stremio_service)],
-    user: Annotated[UserModel, Depends(ApiKeyGuard())],
+    _: Annotated[UserModel, Depends(ApiKeyGuard())],
 ) -> Manifest:
-    return stremio_service.manifest(user)
+    # Az API-kulcs csak hitelesít: a manifest tartalma szándékosan felhasználófüggetlen.
+    return stremio_service.manifest()
 
 
 @router.get(
@@ -66,8 +69,37 @@ async def streams(
     stremio_service: Annotated[StremioService, Depends(get_stremio_service)],
     user: Annotated[UserModel, Depends(ApiKeyGuard())],
 ) -> StremioStreams:
+    logger.info(f"[StremioRouter] Stream kérés érkezett: {media_type=}, {parsed_id=}")
     streams = await stremio_service.get_streams(user, parsed_id)
     return StremioStreams(streams=streams)
+
+
+@router.get(
+    "/subtitles/{media_type}/{stream_id}.json",
+    response_model=StremioSubtitles,
+    response_model_exclude_none=True,
+)
+@router.get(
+    "/subtitles/{media_type}/{stream_id}/{extra}.json",
+    response_model=StremioSubtitles,
+    response_model_exclude_none=True,
+)
+async def subtitles(
+    request: Request,
+    media_type: Annotated[MediaType, Path(..., description="A média típusa")],
+    parsed_id: Annotated[StreamId, Depends(get_parsed_stream_id)],
+    stremio_service: Annotated[StremioService, Depends(get_stremio_service)],
+    user: Annotated[UserModel, Depends(ApiKeyGuard())],
+    extra: str | None = None,
+) -> StremioSubtitles:
+    stremio_subs = await stremio_service.get_subtitles(
+        user=user,
+        parsed_id=parsed_id,
+        extra=extra,
+        query_params=dict(request.query_params),
+    )
+    return StremioSubtitles(subtitles=stremio_subs)
+
 
 
 @router.get(
@@ -80,11 +112,12 @@ async def catalog(
     stremio_catalogs_service: Annotated[
         StremioCatalogsService, Depends(get_stremio_catalogs_service)
     ],
-    _: Annotated[UserModel, Depends(ApiKeyGuard())],
+    user: Annotated[UserModel, Depends(ApiKeyGuard())],
 ) -> StremioCatalogResponse:
     return await stremio_catalogs_service.get_catalog(
         media_type,
         catalog_id,
+        user=user,
     )
 
 
@@ -99,12 +132,13 @@ async def catalog_with_extra(
     stremio_catalogs_service: Annotated[
         StremioCatalogsService, Depends(get_stremio_catalogs_service)
     ],
-    _: Annotated[UserModel, Depends(ApiKeyGuard())],
+    user: Annotated[UserModel, Depends(ApiKeyGuard())],
 ) -> StremioCatalogResponse:
     return await stremio_catalogs_service.get_catalog(
         media_type,
         catalog_id,
         parsed_extra,
+        user=user,
     )
 
 
@@ -120,12 +154,13 @@ async def meta(
     ],
     _: Annotated[UserModel, Depends(ApiKeyGuard())],
 ) -> MetaResponse:
-    if media_type != MediaType.MOVIE or parsed_id is None:
+    if media_type not in (MediaType.MOVIE, MediaType.SERIES) or parsed_id is None:
         return MetaResponse(meta={})
 
     result = await stremio_catalogs_service.get_meta(
         indexer_id=parsed_id.indexer_id,
         torrent_id=parsed_id.torrent_id,
+        media_type=media_type,
     )
 
     if not result:

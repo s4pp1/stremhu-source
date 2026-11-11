@@ -1,0 +1,51 @@
+{
+  "id": "g01-matrix-edge-wiring-v4",
+  "registered_utc": "2026-11-05T17:34:20.835838+00:00",
+  "cases": [
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 0,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 10,
+      "streams": 1,
+      "piece_bytes": 262144,
+      "ram_mib": 512
+    },
+    {
+      "global": 100,
+      "base": 20,
+      "streams": 4,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    },
+    {
+      "global": 200,
+      "base": 80,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 2048
+    },
+    {
+      "global": 200,
+      "base": 10,
+      "streams": 8,
+      "piece_bytes": 4194304,
+      "ram_mib": 512
+    },
+    {
+      "global": 50,
+      "base": 80,
+      "streams": 1,
+      "piece_bytes": 1048576,
+      "ram_mib": 1024
+    }
+  ],
+  "scope": "V3 idle wiring accidentally registered/destroyed a stream and observed legitimate boundary prefetch; failure retained. V4 never registers idle stream. Six separate actual native/Range edge wiring cases,NOT benchmark or whole432case matrix. Legacy50 preserved.>=100warmRange observations/activecase,not uncachedseeks. Before measurement run must complete this wiring and separately qualify coldseeks/noise/ABC.",
+  "resource": "Client2CPU0,1/RAM512,1024,2048MiB percase;private seedCPU15/256MiB,new own labelled local volume eachcase,total<=1GiBsyntheticpayload,volumes retained. Wait until all cold qualification/reference processes finish;no measurement shortened.",
+  "fixture_sha256": "dab29c3f96a2aabaa37046719c2143a94f2a92bdb2a01a104c98e9b730894aa9"
+}

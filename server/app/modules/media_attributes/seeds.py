@@ -18,6 +18,13 @@ DEFAULT_ATTRIBUTES = [
         preference_id=PreferenceKey.LANGUAGE,
         pattern=r"\b(eng(?:[-_. ]?dub)?|english)\b",
     ),
+    MediaAttributeModel(
+        id=MediaAttributeKey.JAP,
+        name="japán",
+        short_name="Jap",
+        preference_id=PreferenceKey.LANGUAGE,
+        pattern=r"\b(jap(?:[-_. ]?dub)?|japanese|japán|jpn|ja[-_]jp|dual[-_. ]audio|multi[-_. ]audio)\b",
+    ),
     # Resolutions
     MediaAttributeModel(
         id=MediaAttributeKey.R2160P,

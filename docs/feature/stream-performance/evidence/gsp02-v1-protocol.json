@@ -1,0 +1,208 @@
+{
+ "id": "gsp02-v1",
+ "registered_at_utc": "2026-11-09T01:28:00.397631+00:00",
+ "status": "Gate GSP02 (SP02 graded start), registered before any measured run. The rule below is fixed and never fitted afterwards; a new attempt is a new version.",
+ "item": "SP02: RELAY_START_POLICY=graded vs legacy on the same candidate image (C1 vs C0).",
+ "source": {
+  "commit": "f8cc0f269ba21dd4f7d960fab4d7a664538f77d6",
+  "server_app_manifest_sha256": "8918aabd93e0279227ef8426e23c8c6882d536d14e8ce8150d4c310626573bbb",
+  "server_app_files": 269,
+  "manifest_method": "sha256 over 'path:git-blob-id' lines of git ls-tree -r HEAD server/app",
+  "candidate_contents": "main 0515d98 + SP05/a (40d166e) + SP06/a (cd4b0ad) + switched SP01/SP02 code (b794167, defaults legacy); SP03 is NOT included (wip branch), so C0's playback path equals B's."
+ },
+ "images": {
+  "A": "s4pp1/stremhu-source@sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+  "image_ids": {
+   "A": "sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+   "C0": "sha256:f8234d39ad10e0b2e1fd7c6b27dfe4120783adad4d5f770971e526f8b551b068",
+   "C1": "sha256:f8234d39ad10e0b2e1fd7c6b27dfe4120783adad4d5f770971e526f8b551b068"
+  }
+ },
+ "harness_sha256": {
+  "scripts/benchmark_sp_playback_controller.py": "69261780ef8d3b2672fa564df7b835a907646da4621abbd8161e0826f0d6c2ff",
+  "scripts/benchmark_sp_playback.py": "4956e3f3818bf1686d5be81b3f5c80a79f3b60294a27611af8f128a73eb9accd",
+  "scripts/sp_app_fixture.py": "be5c4157ffc0a3984597524f577349fcfb08db6f7b610e824f927c848bbc97e2",
+  "scripts/sp_seed_service.py": "b670ba1ff04e889dd8e49cc3781f2dc0a3cf7cbe10de785a59309b977127d3ce",
+  "scripts/fixtures/local_bt_seed.py": "f89cb48ef0ad3337e07eea697a57fcce16e4e45e2008bcc5e01d18e03cf123b5",
+  "scripts/fixtures/local_tracker.py": "fb538616f86e0b36ec3ae6d46cc031a9aaf4ff81b3ab738ef7baab50ddb32050",
+  "scripts/fixtures/synthetic_torrent.py": "49d3640d7c9e105094ddccde829e5a301219089988f4a480fa7cd3363193e87c",
+  "scripts/summarize_sp_playback.py": "03860f8a5737120f5e8a83c895c2ae7c2fbfb48f17aaefa68379e48a635764e2"
+ },
+ "plan_sha256": "6de28b1b422820579039d6ae4a18c1dd435a8bc4183c8b5df717d99f4636b053",
+ "plan": {
+  "tool_image": "stremhu-source:sp-base-9984678",
+  "images": {
+   "A": "s4pp1/stremhu-source@sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+   "C0": "stremhu-source:sp-cand-f8cc0f2",
+   "C1": "stremhu-source:sp-cand-f8cc0f2"
+  },
+  "app_env": {
+   "C0": {
+    "RELAY_START_POLICY": "legacy"
+   },
+   "C1": {
+    "RELAY_START_POLICY": "graded"
+   }
+  },
+  "series": [
+   {
+    "labels": [
+     "A",
+     "C0",
+     "C1"
+    ],
+    "reps": 5
+   },
+   {
+    "labels": [
+     "C0",
+     "C1"
+    ],
+    "reps": 5
+   }
+  ],
+  "reps": 10,
+  "total_size": 1073741824,
+  "client_args": [
+   "--play-s",
+   "15",
+   "--seek-play-s",
+   "10",
+   "--start-buffer-s",
+   "2",
+   "--rebuffer-s",
+   "1",
+   "--max-buffer-s",
+   "30"
+  ],
+  "cells": [
+   {
+    "profile": "mixed",
+    "piece_size": 4194304,
+    "bitrate_mbit": 8
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 4194304,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 16777216,
+    "bitrate_mbit": 8
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 16777216,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 16777216,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "fast",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "fast",
+    "piece_size": 16777216,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "fast",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   }
+  ],
+  "profiles": {
+   "fast": {
+    "peers": 8,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 4000000,
+      "latency_s": 0.02,
+      "jitter_s": 0.01
+     }
+    ]
+   },
+   "mixed": {
+    "peers": 8,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "stall": true
+     },
+     {
+      "stall": true
+     }
+    ]
+   }
+  }
+ },
+ "ux_frame": "docs/feature/stream-performance.md#doc-ux-slo-keret (2026-11-09): bitrates 8/30/60 Mbit/s; unused download is not a constraint; thin profile at 60 Mbit/s descriptive only (not in this matrix).",
+ "topology": "as pb0-v2 (internal network per run, one container per peer, app cpuset 0,1 / 2 CPU / 1 GiB).",
+ "scenario": "as pb0-v2 but 15 s playback and 10 s after the 50 % seek (start-up gate).",
+ "decision_rule": {
+  "primary_metric": "start.time_to_start_s (includes TTFB, tail probe and 2 s buffer)",
+  "key_cells": [
+   "mixed/4MiB/8Mbit",
+   "mixed/4MiB/30Mbit",
+   "mixed/4MiB/60Mbit",
+   "mixed/16MiB/8Mbit",
+   "mixed/16MiB/30Mbit",
+   "mixed/16MiB/60Mbit"
+  ],
+  "noise_J": "per cell and metric: max(|median C0 series0 - median C0 series1|, pb0-v2 noise J of the same profile/piece at 30 Mbit/s, 0.05 s)",
+  "improvement": "median(C0) - median(C1) > J within a series",
+  "regression": "median(C1) - median(C0) > J within a series",
+  "pass_if_all": [
+   "improvement of the primary metric in BOTH series in at least 4 of the 6 key cells",
+   "no regression in any cell and series for start.time_to_start_s, start.ttfb_s, seek.resume_s, start.stall_s",
+   "C1 has no more failed runs and no more tracebacks than C0 in total"
+  ],
+  "otherwise": "FAIL: RELAY_START_POLICY stays legacy; the result is recorded and analysed, a new candidate is a new protocol version.",
+  "a_reference": "A is descriptive (A/B/C reference), not part of the decision."
+ }
+}

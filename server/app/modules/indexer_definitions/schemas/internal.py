@@ -1,4 +1,6 @@
-from pydantic import BaseModel, ConfigDict
+from typing import Any
+
+from pydantic import BaseModel, ConfigDict, field_validator
 
 
 class IndexerDefinition(BaseModel):
@@ -48,6 +50,15 @@ class IndexerDefinitionTorrent(BaseModel):
     imdb_id: str | None = None
     seeders: int = 0
     attribute_ids: list[str] = []
+
+    @field_validator("imdb_id", mode="before")
+    @classmethod
+    def sanitize_imdb_id(cls, v: Any) -> str | None:
+        if isinstance(v, str):
+            clean = v.strip()
+            return clean if clean else None
+        return None
+
 
 
 class IndexerDefinitionFindTorrentsResult(BaseModel):

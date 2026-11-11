@@ -1,5 +1,6 @@
 from fastapi import HTTPException
 
+from app.common.commit_actions import mark_stream_cache_dirty
 from app.modules.attributes.service import AttributesService
 from app.modules.preference_definitions.service import PreferenceDefinitionsService
 from app.modules.preferences.schemas.internal import PreferenceCreate, PreferenceUpdate
@@ -73,10 +74,12 @@ class SystemPreferenceDefinitionsService:
         system_preference_definitions = self.find_list()
         next_order = len(system_preference_definitions)
 
-        return self._repository.create(
+        model = self._repository.create(
             preference_definition_id=preference_definition.id,
             order=next_order,
         )
+        mark_stream_cache_dirty(self._repository.db)
+        return model
 
     def update(
         self,
@@ -127,4 +130,6 @@ class SystemPreferenceDefinitionsService:
             for idx, item in enumerate(items):
                 updates.append((item, idx))
 
-        return self._repository.reorder(updates)
+        result = self._repository.reorder(updates)
+        mark_stream_cache_dirty(self._repository.db)
+        return result

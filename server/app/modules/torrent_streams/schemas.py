@@ -1,20 +1,40 @@
 import uuid
+from pathlib import Path
+from urllib.parse import quote
 
 from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 
 from app.common.schemas.internal import SeriesInfo
-from app.modules.indexer_accounts.models import IndexerAccountModel
-from app.modules.indexer_definitions.models import IndexerDefinitionModel
+from app.modules.indexer_accounts.schemas import IndexerAccountRef, IndexerDefinitionRef
 from app.modules.indexers.schemas.internal import IndexerTorrent
 from app.modules.media_attributes.models import MediaAttributeModel
 from app.modules.media_attributes.parser import parse_torrent_name
 from app.modules.stream.schemas import StreamToken
 from app.modules.stream.utils.stream_token import generate_stream_token
-from app.modules.torrent_files.models import TorrentFileModel
-from app.modules.torrent_streams.utils.resolver_helpers import is_sample_or_trash
+from app.modules.torrent_files.schemas import TorrentFileSnapshot
+from app.modules.torrent_streams.utils.resolver_helpers import (
+    detect_subtitle_language,
+    is_sample_or_trash,
+)
 from app.modules.torrent_streams.utils.stream_file_resolver import StreamFileResolver
 from app.modules.users.models import UserModel
+
+
+class TorrentStreamSubtitle(BaseModel):
+    model_config = ConfigDict(
+        validate_by_name=True,
+        alias_generator=to_camel,
+    )
+
+    id: str
+    file_name: str
+    file_index: int
+    file_size: int
+    url: str
+    lang: str
+    label: str | None = None
+
 
 
 class TorrentStream(BaseModel):
@@ -24,7 +44,7 @@ class TorrentStream(BaseModel):
         arbitrary_types_allowed=True,
     )
 
-    indexer_account: IndexerAccountModel
+    indexer_account: IndexerAccountRef
     torrent_id: str
     info_hash: str
     torrent_name: str
@@ -33,16 +53,21 @@ class TorrentStream(BaseModel):
     file_index: int
     play_url: str
     seeders: int | None = None
-    attributes: list[MediaAttributeModel | IndexerDefinitionModel] = []
-    is_persisted_torrent: bool
+    attributes: list[MediaAttributeModel | IndexerDefinitionRef] = []
+    subtitles: list[TorrentStreamSubtitle] | None = None
+    has_hungarian_sub: bool = False
+    is_persisted_torrent: bool = False
+    extra_indexer_names: list[str] = []
+    combined_seeders: int | None = None
 
     @classmethod
     def from_torrent_id(
         cls,
         indexer_torrent: IndexerTorrent,
-        torrent_file: TorrentFileModel,
+        torrent_file: TorrentFileSnapshot,
         app_url: str,
         user: UserModel,
+        file_index: int | None = None,
     ) -> list["TorrentStream"]:
         indexer_id = indexer_torrent.indexer_account.indexer_id
 
@@ -55,14 +80,57 @@ class TorrentStream(BaseModel):
             if is_sample_or_trash(file.name):
                 continue
 
+            if file_index is not None and file.index != file_index:
+                continue
+
+            playback_id = str(uuid.uuid4())
             stream_token = generate_stream_token(
                 StreamToken(
                     indexer_id=indexer_id,
                     torrent_id=torrent_file.torrent_id,
                     file_index=file.index,
-                    playback_id=str(uuid.uuid4()),
+                    playback_id=playback_id,
                 )
             )
+
+            matched_subs = StreamFileResolver(torrent_file.info).resolve_subtitles(file)
+            subtitles: list[TorrentStreamSubtitle] = []
+            for sub_file in matched_subs:
+                lang, label = detect_subtitle_language(sub_file.name, sub_file.path)
+                # Csak magyar feliratokat támogatunk
+                if lang != "hun":
+                    continue
+
+                sub_stream_token = generate_stream_token(
+                    StreamToken(
+                        indexer_id=indexer_id,
+                        torrent_id=torrent_file.torrent_id,
+                        file_index=sub_file.index,
+                        playback_id=playback_id,
+                    )
+                )
+
+                # Univerzális feliratformátum: az ASS/SSA feliratokat VTT-re alakítva szolgáltatjuk ki,
+                # így egyetlen, univerzálisan lejátszható feliratpéldány jelenik meg Nuvioban és Stremioban
+                ext = Path(sub_file.name).suffix.lower()
+                target_name = (
+                    Path(sub_file.name).stem + ".vtt"
+                    if ext in (".ass", ".ssa")
+                    else sub_file.name
+                )
+                encoded_name = quote(target_name)
+
+                subtitles.append(
+                    TorrentStreamSubtitle(
+                        id=f"{torrent_file.torrent_id}-{sub_file.index}",
+                        file_name=target_name,
+                        file_index=sub_file.index,
+                        file_size=sub_file.size,
+                        url=f"{app_url}/api/{user.api_key}/subtitles/{sub_stream_token}/{encoded_name}",
+                        lang=lang,
+                        label=label,
+                    )
+                )
 
             torrent_streams.append(
                 cls(
@@ -76,6 +144,8 @@ class TorrentStream(BaseModel):
                     play_url=f"{app_url}/api/{user.api_key}/stream/{stream_token}",
                     seeders=indexer_torrent.seeders,
                     attributes=[],
+                    subtitles=subtitles if subtitles else None,
+                    has_hungarian_sub=bool(subtitles),
                     is_persisted_torrent=False,
                 )
             )
@@ -133,12 +203,14 @@ class TorrentStream(BaseModel):
     def from_imdb_id(
         cls,
         indexer_torrent: IndexerTorrent,
-        torrent_file: TorrentFileModel,
+        torrent_file: TorrentFileSnapshot,
         app_url: str,
         user: UserModel,
         series: SeriesInfo | None = None,
     ) -> "TorrentStream | None":
-        resolver = StreamFileResolver(torrent_file.info, series)
+        resolver = StreamFileResolver(
+            torrent_file.info, series, imdb_id=indexer_torrent.imdb_id
+        )
         torrent_file_info = resolver.resolve()
 
         if torrent_file_info is None:
@@ -155,6 +227,47 @@ class TorrentStream(BaseModel):
         file_index = torrent_file_info.index
         playback_id = str(uuid.uuid4())
 
+        matched_subs = resolver.resolve_subtitles(torrent_file_info)
+        subtitles: list[TorrentStreamSubtitle] = []
+        for sub_file in matched_subs:
+            lang, label = detect_subtitle_language(sub_file.name, sub_file.path)
+            # Csak magyar feliratokat támogatunk
+            if lang != "hun":
+                continue
+
+            sub_stream_token = generate_stream_token(
+                StreamToken(
+                    indexer_id=indexer_id,
+                    torrent_id=torrent_id,
+                    file_index=sub_file.index,
+                    playback_id=playback_id,
+                    imdb_id=indexer_torrent.imdb_id,
+                    series_info=series,
+                )
+            )
+
+            # Univerzális feliratformátum: az ASS/SSA feliratokat VTT-re alakítva szolgáltatjuk ki,
+            # így egyetlen, univerzálisan lejátszható feliratpéldány jelenik meg Nuvioban és Stremioban
+            ext = Path(sub_file.name).suffix.lower()
+            target_name = (
+                Path(sub_file.name).stem + ".vtt"
+                if ext in (".ass", ".ssa")
+                else sub_file.name
+            )
+            encoded_name = quote(target_name)
+
+            subtitles.append(
+                TorrentStreamSubtitle(
+                    id=f"{torrent_id}-{sub_file.index}",
+                    file_name=target_name,
+                    file_index=sub_file.index,
+                    file_size=sub_file.size,
+                    url=f"{app_url}/api/{user.api_key}/subtitles/{sub_stream_token}/{encoded_name}",
+                    lang=lang,
+                    label=label,
+                )
+            )
+
         stream_token = generate_stream_token(
             StreamToken(
                 indexer_id=indexer_id,
@@ -166,10 +279,17 @@ class TorrentStream(BaseModel):
             )
         )
 
+        indexer_name = indexer_torrent.indexer_account.indexer_definition.name
+        real_info_hash = (
+            torrent_file.info.info_hash
+            if getattr(torrent_file, "info", None) and torrent_file.info.info_hash
+            else getattr(torrent_file, "info_hash", "")
+        )
+
         return TorrentStream(
             indexer_account=indexer_torrent.indexer_account,
             torrent_id=torrent_id,
-            info_hash=torrent_file.info_hash,
+            info_hash=real_info_hash,
             seeders=indexer_torrent.seeders,
             torrent_name=torrent_file.info.name,
             attributes=[
@@ -180,5 +300,9 @@ class TorrentStream(BaseModel):
             file_size=torrent_file_info.size,
             file_index=file_index,
             play_url=f"{app_url}/api/{user.api_key}/stream/{stream_token}",
+            subtitles=subtitles if subtitles else None,
+            has_hungarian_sub=bool(subtitles),
             is_persisted_torrent=False,
+            extra_indexer_names=[indexer_name] if indexer_name else [],
+            combined_seeders=indexer_torrent.seeders,
         )

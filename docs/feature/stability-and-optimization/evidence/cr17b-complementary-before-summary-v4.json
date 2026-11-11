@@ -1,0 +1,133 @@
+{
+  "status": "Exact conditional-cleanup SourceV2 complementary before attempts complete; policy20 OPEN",
+  "scope": "Direct TorrentStreamId has no IMDb filtering/newSQL by contract. Direct A failed all5attempts:4DetachedInstanceError and1exit139withoutdiagnostic,causeunestablished.20completefiles and5failures,not missing feature/N/A or25successfulruns. Kodi25complete observation files retain individual residual ownership errors,not successful timing cells. Post-policy comparison and21/22 remain required.",
+  "topics": {
+    "direct": {
+      "files": 20,
+      "failed_attempts": {
+        "cr17b-complementary-before-v4-A-direct-exact-reference-0.stderr": {
+          "error_kind": "DetachedInstanceError",
+          "sha256": "ff38438e2c3f33bb5463e4c6136e5f48ceeae4991f13f9bccc1cf0e4edb324e5",
+          "timing_usable": false
+        },
+        "cr17b-complementary-before-v4-A-direct-exact-reference-1.stderr": {
+          "error_kind": "DetachedInstanceError",
+          "sha256": "4bb427d6104836f6c645f88defded11f946facbb1e55fa982494b7eb07005e02",
+          "timing_usable": false
+        },
+        "cr17b-complementary-before-v4-A-direct-exact-reference-2.stderr": {
+          "error_kind": "ProcessExit139; no stdout/stderr, cause not established",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "timing_usable": false
+        },
+        "cr17b-complementary-before-v4-A-direct-exact-reference-3.stderr": {
+          "error_kind": "DetachedInstanceError",
+          "sha256": "d35521d679adafdb16702f3b84c9c5f068b4542759e4caeb4f1e3fda2c608a6e",
+          "timing_usable": false
+        },
+        "cr17b-complementary-before-v4-A-direct-exact-reference-4.stderr": {
+          "error_kind": "DetachedInstanceError",
+          "sha256": "758ae3adde9154efab64910436655bff345c09aa1f317acd8720ac15cf46c80b",
+          "timing_usable": false
+        }
+      },
+      "cells": {
+        "B": 60,
+        "C": 180
+      },
+      "error_cells": {},
+      "statuses": {
+        "B": {
+          "200": 6000
+        },
+        "C": {
+          "200": 18000
+        }
+      },
+      "exceptions": {
+        "B": {},
+        "C": {}
+      },
+      "raw_sha256": {
+        "cr17b-complementary-before-v4-B-direct-exact-reference-0.json": "46f6cf0c3500ed9521a8b85cad8354494b56ed808db7cb6d3930edf2f69c6e5b",
+        "cr17b-complementary-before-v4-B-direct-exact-reference-1.json": "c94ab3bdce669d9f3338855094446cfd1158e51cf13c0a50f460b49471e5b83a",
+        "cr17b-complementary-before-v4-B-direct-exact-reference-2.json": "7b2a56521a9ac06edd47d493b9e835e05aa51a50e1f0522d2a469559dc5e8bd7",
+        "cr17b-complementary-before-v4-B-direct-exact-reference-3.json": "9610c468d3d6b500ebe57ffdd9b2aa9d461a273af0ae8d2df26e39bd89bf2cfe",
+        "cr17b-complementary-before-v4-B-direct-exact-reference-4.json": "0ee3fb123b37478e03a849fb8fe8c0351193696a496dd8d88ae5d05cea69943c",
+        "cr17b-complementary-before-v4-C-direct-exact-a-0.json": "df609eb20368863d3fe9d718a57512266941d434d3c08bec771883775370a381",
+        "cr17b-complementary-before-v4-C-direct-exact-a-1.json": "99e97883bbb44b3b628c10c4771ce43f33ae2fb937fdf5777380bc62fc0841b2",
+        "cr17b-complementary-before-v4-C-direct-exact-a-2.json": "825a5fcca5c6537224813ad6ddf783246c92d3a1c261fe4a0d0b487697823dca",
+        "cr17b-complementary-before-v4-C-direct-exact-a-3.json": "a18034d1e54989707986c92efaaf3a28dc7d7bc671ac778d5a9ede6a7d3c18a4",
+        "cr17b-complementary-before-v4-C-direct-exact-a-4.json": "948158531229864784580c2f47910a31298d52b901e4ec203c2a7da5f1470629",
+        "cr17b-complementary-before-v4-C-direct-exact-b-0.json": "f9e0d49d90c590fb3646a3d7536261cec5c8c2a70edcc04d3d2ce8e6d50b7425",
+        "cr17b-complementary-before-v4-C-direct-exact-b-1.json": "273263aee08c4fff7e0ecf256cea00fbaf5b6612486a15d25c29aca5bdefb969",
+        "cr17b-complementary-before-v4-C-direct-exact-b-2.json": "e6e77fea79a7dee1403f93501fb847883abf429c26dd56b4ae417832be51ce3c",
+        "cr17b-complementary-before-v4-C-direct-exact-b-3.json": "0868c0ea235be45009355a7b9185ed5efbf6d9c4bf9f2c1a408c17a78529dc89",
+        "cr17b-complementary-before-v4-C-direct-exact-b-4.json": "9c57d29d9b99a6696e1defe239908dc26a2613c35ddd1c029953cd3918355365",
+        "cr17b-complementary-before-v4-C-direct-exact-reference-0.json": "a4444462e9d8fbf0628f664452d55b55386e45b6af09c0d8e5f07e56bf2d1f8f",
+        "cr17b-complementary-before-v4-C-direct-exact-reference-1.json": "84ffbaa7103701c6a47e665e8515d7ece789b50b7ce0a8174ec72088044b9b56",
+        "cr17b-complementary-before-v4-C-direct-exact-reference-2.json": "45c450b0c29cec91ceffd81a62e97860578611b5393888f527cb117ad05588b6",
+        "cr17b-complementary-before-v4-C-direct-exact-reference-3.json": "ea95c03326af0cde9a487853562e3bbfce9cad1f1ff77a54eefec5bc40d0eab4",
+        "cr17b-complementary-before-v4-C-direct-exact-reference-4.json": "5f1f3bb24d71a9cb408cdc590eba49695436d78065b32e886949ff3ae7a87474"
+      }
+    },
+    "kodi": {
+      "files": 25,
+      "failed_attempts": {},
+      "cells": {
+        "A": 60,
+        "B": 60,
+        "C": 180
+      },
+      "error_cells": {
+        "C": 45
+      },
+      "statuses": {
+        "A": {
+          "200": 6000
+        },
+        "B": {
+          "200": 6000
+        },
+        "C": {
+          "200": 17550,
+          "500": 450
+        }
+      },
+      "exceptions": {
+        "A": {},
+        "B": {},
+        "C": {
+          "DetachedInstanceError": 450
+        }
+      },
+      "raw_sha256": {
+        "cr17b-kodi-observation-before-v4-A-kodi-observation-reference-0.json": "3940b7ded21edc08198a58590fac5bb721b82d8ca7ebdb392a3c43efe6fef553",
+        "cr17b-kodi-observation-before-v4-A-kodi-observation-reference-1.json": "f8a2ca53bf4d9b4c0f6575ee9c7c060dc2ec36264b619a70d3c4a1c70119d9ff",
+        "cr17b-kodi-observation-before-v4-A-kodi-observation-reference-2.json": "8d098a95ded881ec7a54b458c526fde96efba5a193da8037ba6d8a57c9fd88ae",
+        "cr17b-kodi-observation-before-v4-A-kodi-observation-reference-3.json": "4de46f9eef6ad5595812a2f40ad237bcf4da7ee1d8ae91e3fd805725dce0c9e0",
+        "cr17b-kodi-observation-before-v4-A-kodi-observation-reference-4.json": "230a2983c734af0d36eacf5796855eb165d361599a72f215594d921ba7d38418",
+        "cr17b-kodi-observation-before-v4-B-kodi-observation-reference-0.json": "631423952866312794eb59bcd4ee7f677f331690f714f6caa387aecbd8558f13",
+        "cr17b-kodi-observation-before-v4-B-kodi-observation-reference-1.json": "6933fcf11b0f67918c34e1d69d2a1a282d78a4e1d0a57fc0546b65338e1b0f58",
+        "cr17b-kodi-observation-before-v4-B-kodi-observation-reference-2.json": "95373551a2e43c5871a7b199aa841a05900ae6c1cca9d28201133bd58aea7c37",
+        "cr17b-kodi-observation-before-v4-B-kodi-observation-reference-3.json": "aa2d7b000385c4207e484e55063ef53b3759c0a7d585ef9f2d009dd2d568881c",
+        "cr17b-kodi-observation-before-v4-B-kodi-observation-reference-4.json": "da2c9d26b7b5f7c0997d4eb26d618b059ca678e03f6cc2f098d1324390289772",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-a-0.json": "2f08d4540e33cd691f65a27043306a0537db676c7d24b6545d49ad9fa7ae48b1",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-a-1.json": "1465b448a27afcfc5a1775faf4a67e07eba58aa9f0d0e278ab759660b7a7055b",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-a-2.json": "6898c356edb669ea0ab94caaf3dd58236be92febe8004e132321b0a7befb19ac",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-a-3.json": "714f242c798385dbec2038370cfce2899a324e84d8069d64c0df35eae6462143",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-a-4.json": "cafc121bb8c02169785e619a652a72e8c6729491aa483462731591a74af0009b",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-b-0.json": "c4b031f2740db73ae3e2e4dc94fc49b75180089db22661c4212daf07dc26a9a4",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-b-1.json": "d1b0854c5e21042f6b6afda8753809a1705dc7e0aae310a004a135b3d2b2ff4c",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-b-2.json": "5146890c891fed571376de6c2b9b6be265fb0f4df01e6c3ea39bb3b2d35927fc",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-b-3.json": "da64aee5b64e9605e0c36e063173af01d98ccbd31a007ad77a4b7130bbdec269",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-b-4.json": "720159b3ca8e329231ec48bb6f63ada9cc86904338247724ed9cf96558753e59",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-reference-0.json": "530a91e7784a9b9eb50c3a4e61b85e7cb65b739fd092240a8a1985e92a7b455e",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-reference-1.json": "c45c3c8ed42a6634e9204ff91152ed8c1003aea1fed800a22bb2ee04c2385e3d",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-reference-2.json": "710b98faea761b3d8f8636cf0abf4e066f8321f7de6d180757ca352d42e6e197",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-reference-3.json": "19ff8f8ccaf911846704a5f891530f8cf738ca120d5168454b1afc412039d56f",
+        "cr17b-kodi-observation-before-v4-C-kodi-observation-reference-4.json": "65c70b062ee79e18cfbda9515276dc23b0efd44a1d592f84595daa96e3910091"
+      }
+    }
+  }
+}

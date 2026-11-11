@@ -1,0 +1,58 @@
+{
+ "id": "default-breaker-docker-smoke",
+ "is_measurement": false,
+ "recorded_at_utc": "2026-11-10T08:13:45.201618+00:00",
+ "purpose": "Local Docker functional check of the new breaker default (no env) and of the rollback via env, H2 harness 'default' policy (the image's own settings, durations scaled), --smoke (time scale 0.02), S1 healthy and S2 one tracker never answers, 8 cold requests each.",
+ "image": {
+  "tag": "stremhu-source:sp-cand-622d802",
+  "id": "sha256:b6dc608ab8c121edf90ab252bab244c9284773c2f5b22c48fece41c6908ad3f3"
+ },
+ "built_from": "2595eaf + merged harness (622d802); server/app identical to HEAD",
+ "result": "Default: threshold 2, the breaker opens once in S2 and skips 87.5% of the cold requests' subject searches, never in S1. Env 0: threshold 0, no opening, S2 pays the scaled timeout on every request.",
+ "runs": [
+  {
+   "label": "no env (code default)",
+   "scenario": "S1",
+   "description": "minden tracker eg\u00e9szs\u00e9ges",
+   "effective_threshold": 2,
+   "breaker_openings": 0,
+   "cold_skipped_rate": 0.0,
+   "cold_latency_p50_ms_unscaled": 1827,
+   "sources_p50": 12.0,
+   "external_http_attempts": 0
+  },
+  {
+   "label": "no env (code default)",
+   "scenario": "S2",
+   "description": "egy tracker nem v\u00e1laszol",
+   "effective_threshold": 2,
+   "breaker_openings": 1,
+   "cold_skipped_rate": 0.875,
+   "cold_latency_p50_ms_unscaled": 1642,
+   "sources_p50": 8.0,
+   "external_http_attempts": 0
+  },
+  {
+   "label": "env INDEXER_BREAKER_THRESHOLD=0 (rollback)",
+   "scenario": "S1",
+   "description": "minden tracker eg\u00e9szs\u00e9ges",
+   "effective_threshold": 0,
+   "breaker_openings": 0,
+   "cold_skipped_rate": 0.0,
+   "cold_latency_p50_ms_unscaled": 1829,
+   "sources_p50": 12.0,
+   "external_http_attempts": 0
+  },
+  {
+   "label": "env INDEXER_BREAKER_THRESHOLD=0 (rollback)",
+   "scenario": "S2",
+   "description": "egy tracker nem v\u00e1laszol",
+   "effective_threshold": 0,
+   "breaker_openings": 0,
+   "cold_skipped_rate": 0.0,
+   "cold_latency_p50_ms_unscaled": 13762,
+   "sources_p50": 8.0,
+   "external_http_attempts": 0
+  }
+ ]
+}

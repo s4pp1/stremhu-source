@@ -1,0 +1,36 @@
+{
+ "id": "default-prefetch-docker-smoke",
+ "is_measurement": false,
+ "recorded_at_utc": "2026-11-10T15:19:03.078469+00:00",
+ "purpose": "Local Docker functional check of the new Tech Info prefetch default (no env) and of the rollback via env, H2 harness 'default' policy (the image's own settings), time scale 1 (the 1.5 s budget is a code constant), S1, 6 cold requests every 6 s with a warm pair 1 s later, nCore-like Tech Info 2.0 s, no failures, seed 20261110; steady window = requests 2..5 (n = 4).",
+ "image": {
+  "tag": "stremhu-source:sp-cand-d645d30",
+  "id": "sha256:f46f341ee1fde9fe23073968b993ae62fe02dd1259bc2c45004a6e90c4b50e79"
+ },
+ "built_from": "d645d30 (feature/stream-performance, clean checkout)",
+ "result": "Default: tech_info_prefetch true; the warm request is served from the background-filled cache in ~11 ms with 4 enriched streams, 4 Tech Info calls per cold request. Env false: tech_info_prefetch false; the warm request waits the 1.5 s budget again with 0 enriched streams, 8 calls per cold request (as C0 in gsp06-v2 t20).",
+ "runs": [
+  {
+   "label": "no env (code default)",
+   "effective_tech_info_prefetch": true,
+   "effective_breaker_threshold": 2,
+   "cold_steady_p50_ms": 1959.4,
+   "warm_steady_p50_ms": 10.8,
+   "warm_enriched_streams_mean": 4.0,
+   "tech_info_calls_per_cold_request": 4.0,
+   "tech_info_failures": 0,
+   "external_http_attempts": 0
+  },
+  {
+   "label": "env TECH_INFO_PREFETCH=false (rollback)",
+   "effective_tech_info_prefetch": false,
+   "effective_breaker_threshold": 2,
+   "cold_steady_p50_ms": 2171.4,
+   "warm_steady_p50_ms": 1513.6,
+   "warm_enriched_streams_mean": 0.0,
+   "tech_info_calls_per_cold_request": 8.0,
+   "tech_info_failures": 0,
+   "external_http_attempts": 0
+  }
+ ]
+}

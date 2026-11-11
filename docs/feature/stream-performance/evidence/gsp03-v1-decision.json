@@ -1,0 +1,190 @@
+{
+ "protocol": "gsp03-v1",
+ "decision": "PASS:C3",
+ "candidates": {
+  "C3": {
+   "pass": true,
+   "improved_key_cells": [
+    "rtt1/dbload",
+    "rtt1/noload",
+    "rtt20/dbload",
+    "rtt20/noload"
+   ],
+   "improved_count": 4,
+   "regressions": [],
+   "failed_runs": {
+    "C0": 0,
+    "C3": 0
+   },
+   "tracebacks_total": {
+    "C0": 0,
+    "C3": 0
+   },
+   "total_primary_gain_s": 0.004,
+   "tests": {
+    "rtt1/dbload series.first_ttfb_s": {
+     "mean_c0": 0.021,
+     "mean_candidate": 0.016,
+     "diff": -0.005,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "rtt1/dbload series.ttfb_s_p50": {
+     "mean_c0": 0.016,
+     "mean_candidate": 0.014,
+     "diff": -0.001,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.0005999400059994001,
+     "p_regression_null": 0.9997000299970003
+    },
+    "rtt1/dbload series.ttfb_s_p95": {
+     "mean_c0": 0.018,
+     "mean_candidate": 0.016,
+     "diff": -0.002,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.00039996000399960006,
+     "p_regression_null": 0.9997000299970003
+    },
+    "rtt1/noload series.first_ttfb_s": {
+     "mean_c0": 0.017,
+     "mean_candidate": 0.017,
+     "diff": 0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.6434356564343565,
+     "p_regression_null": 0.36396360363963604
+    },
+    "rtt1/noload series.ttfb_s_p50": {
+     "mean_c0": 0.016,
+     "mean_candidate": 0.015,
+     "diff": -0.001,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.014598540145985401,
+     "p_regression_null": 0.9864013598640136
+    },
+    "rtt1/noload series.ttfb_s_p95": {
+     "mean_c0": 0.017,
+     "mean_candidate": 0.016,
+     "diff": -0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.20317968203179682,
+     "p_regression_null": 0.8028197180281972
+    },
+    "rtt20/dbload series.first_ttfb_s": {
+     "mean_c0": 0.063,
+     "mean_candidate": 0.054,
+     "diff": -0.01,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 9.999000099990002e-05,
+     "p_regression_null": 1.0
+    },
+    "rtt20/dbload series.ttfb_s_p50": {
+     "mean_c0": 0.053,
+     "mean_candidate": 0.052,
+     "diff": -0.001,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.0245975402459754,
+     "p_regression_null": 0.9772022797720228
+    },
+    "rtt20/dbload series.ttfb_s_p95": {
+     "mean_c0": 0.055,
+     "mean_candidate": 0.054,
+     "diff": -0.001,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.11768823117688232,
+     "p_regression_null": 0.8852114788521148
+    },
+    "rtt20/noload series.first_ttfb_s": {
+     "mean_c0": 0.054,
+     "mean_candidate": 0.054,
+     "diff": -0.0,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.0999900009999,
+     "p_regression_null": 0.904009599040096
+    },
+    "rtt20/noload series.ttfb_s_p50": {
+     "mean_c0": 0.053,
+     "mean_candidate": 0.052,
+     "diff": -0.001,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.00019998000199980003,
+     "p_regression_null": 0.9999000099990001
+    },
+    "rtt20/noload series.ttfb_s_p95": {
+     "mean_c0": 0.054,
+     "mean_candidate": 0.053,
+     "diff": -0.001,
+     "n": [
+      10,
+      10
+     ],
+     "p_improvement_null": 0.0105989401059894,
+     "p_regression_null": 0.9903009699030098
+    }
+   },
+   "zero_required": {
+    "C0": {
+     "history_check.lost_writes": {
+      "sum": 0,
+      "missing": 0
+     },
+     "result.series.non_206": {
+      "sum": 0,
+      "missing": 0
+     },
+     "result.series.error_count": {
+      "sum": 0,
+      "missing": 0
+     }
+    },
+    "C3": {
+     "history_check.lost_writes": {
+      "sum": 0,
+      "missing": 0
+     },
+     "result.series.non_206": {
+      "sum": 0,
+      "missing": 0
+     },
+     "result.series.error_count": {
+      "sum": 0,
+      "missing": 0
+     }
+    }
+   }
+  }
+ }
+}

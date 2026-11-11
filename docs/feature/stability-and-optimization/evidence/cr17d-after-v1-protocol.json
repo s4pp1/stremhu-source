@@ -1,0 +1,32 @@
+{
+ "id": "cr17d-after-v1",
+ "registered_utc": "2026-11-07T05:35:39.991759+00:00",
+ "baseline_commit": "d1da34c5e1ee82a490454cc8c551060dce96c4f9",
+ "before_source": "cr17c-after-v1-source (frozen packet21b; server/app byte-identical to the committed d1da34c packet21b server/app)",
+ "before_manifest_sha256": "8ad38ecb0a2932f933aff8b0cfe9548d7d106c0322c85fddc37948f196424385",
+ "candidate_source": "cr17d-after-v1-source (git archive 22731a4 server, local wip/cr17d-owned-shared-task on the packet21b WIP commit 29118e7 whose server tree equals d1da34c)",
+ "candidate_manifest_sha256": "ca168a479ded6157c34237c333bdadbb5e29b851b0ae4e148b9425ed9fb2708f",
+ "scope": "Packet22 (CR17/d): process-singleton IndexerSearchService reads accounts in its own isolated Session; the provider Singleflight factory closes only over a stateless _SourceSearch (no request self/Session); torrent-file snapshot reads in an isolated Session; provider constructor (indexers_service, isolated_torrent_files_service).",
+ "fixtures_note": "cr17d fixtures = the cr17c-after-v2 fixtures (GC-controlled colds) plus one 7-line adapter: if TorrentSourceProviderService takes 2 parameters (packet22) it is built without the request-Session TorrentFilesService, else as before. Derived by make_cr17d_fixtures.py from cr17d-*-v1.py. Pre-registration wiring smoke (smoke_cr17d_wiring.py, 9 runs: 4 fixtures x before/after --fixture-smoke + after --profile-smoke, scratch outputs): only exit code, gc_collections presence and no external HTTP were checked; timings were not read.",
+ "sampling": "Serial. smoke(after,before) -> short 2x5 paired before/after (AB/BA alternating) + 5 rotated ABC references (reference fixture) -> direct 2x5 paired + 5 rotated ABC -> kodi 2x5 paired + 5 rotated ABC -> long: 3 contemporaneous full1800s/60cycle pairs, order after,before / before,after / after,before. 12 cells x 100 requests per short run. Cold and warmup separate. Every attempt retained; failures recorded, never rerun or replaced.",
+ "acceptance": "PASS only if every gate check passes. Ownership (primary): C Kodi series 0 DetachedInstanceError, only HTTP 200, all 10 runs complete; C direct series all 10 runs complete (fixture aborts on any non-200). Functional: C smoke/short/direct/kodi/long complete, no external HTTP, identical normalized payload/order/count per cell (Kodi on error-free rows), long quiescence/pool0/background0. Timing/resources (V6 thresholds unchanged): short and direct cohort medians, heap run medians each <= HTTP p95 max(before medians)+10ms, CPU max*1.10, memory max+2MiB (RSS +2048KiB), SQL <= max before value; strict metrics (cold wall, loop lag, file bytes) <= max(before values)+J, J=max-min of before group medians. Heap before = the 3 fresh packet21b runs, after = the 3 C runs, every after run median within limit. Observations, not gates: Kodi timing, A/B/C reference timing, A failures (expected preexisting DetachedInstanceError), contemporaneous paired heap p95 differences, gen2 cold phases, heap trend. Any failure stays open; no threshold change or waiver after results.",
+ "resources": "Local desktop-linux npipe, network none, read-only frozen app mount, tmpfs disposable synthetic DB, no dotenv/real credentials. short/direct/kodi/references CPU8,9; long CPU6,7; 2 CPU/1GiB each; strictly serial; no other Docker benchmark during this protocol.",
+ "images": {
+  "A": "s4pp1/stremhu-source@sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+  "B": "stremhu-source@sha256:6ca708d99b8698e6cf116a6183c283922ebd2e53940c366a93a421b4ca974a38",
+  "C": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52"
+ },
+ "fixture_sha256": {
+  "cr17d-policy-fixture-v2.py": "fea4592cade30714c9048dc8411becc5c012154570bb6adf93ab3f397ae94558",
+  "cr17d-policy-reference-fixture-v2.py": "50b53ecb2625705ebee3aab39f6e29236b4e9aadccd487cea6cb1812152d2d69",
+  "cr17d-policy-direct-fixture-v2.py": "49b2289c2e1f813dc6e12b4100f464ad37fb5aaa53b19f7a07855fb11444f4ce",
+  "cr17d-kodi-ownership-observation-v2.py": "f012cb3543ec5c55a5a4a097a2f5311124dcab523ad6f778abac8b14d1af8c80"
+ },
+ "controller_sha256": "dbaaa40a352616bca5f8d73b794df2cfd66346f23f7b770609287db68f27f521",
+ "assessor": "assess_cr17d_after_v1.py",
+ "assessor_sha256": "b4ba700f0ba0e0270dd1123c88480eb147afbc8e1a95ce5ccb47a7e4eeca7888",
+ "assessor_note": "Dry-run on renamed copies of the cr17c-after-v2 raw files before registration reproduced the cr17c-after-v2 status (PASS 316/316); no cr17d-after-v1 results existed.",
+ "generator_sha256": "a1c05f1d3b63720f45d1a0a23551adaaef30e39e87b5c4222222e136180e84b2",
+ "smoke_sha256": "c4a2ea5b1c4edffc0229d69981a8f896a7cde2a500cbe389a16a137db3f60cee",
+ "context": "Follows cr17c-after-v2 PASS (packet21b committed as d1da34c). Standing user mandate 2026-11-07: continue autonomously; gates, thresholds and sampling are those of cr17c-after-v2 (V6), with no change or waiver after results."
+}

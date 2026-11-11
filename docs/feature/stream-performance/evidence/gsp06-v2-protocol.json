@@ -1,0 +1,307 @@
+{
+ "id": "gsp06-v2",
+ "registered_at_utc": "2026-11-10T11:28:23.244150+00:00",
+ "status": "Gate GSP06 (SP06/b Tech Info prefetch), version 2, registered after gsp06-v1 FAIL and before any v2 run. Identical to gsp06-v1 (plan, image, arms, variants, seeds, improve/guard tests, margins) except the identical-source hard check, which now compares torrent identity (source_set_digest over behaviorHints.bingeGroup) instead of the Stremio filenames: those carry the media attribute ids that Tech Info enrichment adds, so in v1 they differed exactly where enrichment differed although every request returned the same 12 torrents (gsp06-v1-assessment.json). Fixed; a new attempt is a new version.",
+ "item": "SP06/b: C0 = legacy (tech_info_prefetch off, breaker off) vs C6 = prefetch (tech_info_prefetch on, top 5, 20 in flight, 10 s background timeout; breaker off).",
+ "source": {
+  "commit": "97b29316144ef61cceac7e93382bdb6ff62aac88",
+  "server_app_manifest_sha256": "1bd16a17e22bb0ad6ef8d776f72ee7cc47237e481035c8253b5f35f4a74e9833",
+  "server_app_files": 270,
+  "manifest_method": "sha256 over 'path:git-blob-id' lines of git ls-tree -r HEAD server/app",
+  "candidate_contents": "feature/stream-performance with the C2 relay default (5c14f1e), the SP05/b breaker on by default (2595eaf; both arms set it to 0 in-process) and SP06/b prefetch off by default; the harness sets tech_info_prefetch per arm in-process"
+ },
+ "image": {
+  "tag": "stremhu-source:sp-cand-622d802",
+  "id": "sha256:b6dc608ab8c121edf90ab252bab244c9284773c2f5b22c48fece41c6908ad3f3"
+ },
+ "harness": {
+  "what_is_real": "API-key/DB auth, Stremio/provider/repository path, IndexerSearchService, shared source search (singleflight, deadline, .torrent download/store, SP06/b prefetch with the definitions registry as in the product DI), Tech Info enrichment (1.5 s budget, shared cache, prefetch flights), filter/sort/serialization.",
+  "what_is_synthetic": "tracker adapters (latency with per-tracker jitter streams), .torrent download latency, nCore-like Tech Info stub (fixed latency per variant, failures a function of seed, torrent and attempt). No real tracker, account or network; external HTTP is blocked and counted.",
+  "enrichment_marker": "the fixture NFO has a Hungarian subtitle track and the torrent names do not, so 'Felirat' in a stream description means Tech Info reached it",
+  "sha256": {
+   "scripts/benchmark_sp_search.py": "d57f06af3db1f493e361fd23277d7c26d7684e61422a4116e062efd1f1dbfebd",
+   "scripts/fixtures/synthetic_torrent.py": "49d3640d7c9e105094ddccde829e5a301219089988f4a480fa7cd3363193e87c",
+   "scripts/run_sp_search_gate.py": "073792af435e8bb009c2cf1d18f353306e0aa2b63281d45484a61c971f3159c3",
+   "scripts/decide_sp_search_gate.py": "48c21e78b2df6f17d919db5459e701bedd93b42d67dcf9e8296f5adcbebb5ce2"
+  }
+ },
+ "plan_sha256": "dddd21f1d9e130ff9c54eb73810d53a9f1145f128217572ccd372b3287bd67b9",
+ "plan": {
+  "image": "stremhu-source:sp-cand-622d802",
+  "arms": {
+   "C0": "legacy",
+   "C6": "prefetch"
+  },
+  "series": 2,
+  "reps_per_series": 5,
+  "harness_args": [
+   "--scenarios",
+   "S1",
+   "--requests",
+   "24",
+   "--interval",
+   "6",
+   "--time-scale",
+   "1",
+   "--trackers",
+   "3",
+   "--results-per-tracker",
+   "4",
+   "--latency",
+   "0.4",
+   "--jitter",
+   "0.25",
+   "--download-latency",
+   "0.2",
+   "--warm-delay",
+   "1",
+   "--steady-from",
+   "2"
+  ],
+  "seed_base": 20261110,
+  "variants": {
+   "t02": [
+    "--tech-info-latency",
+    "0.2",
+    "--tech-info-failure-rate",
+    "0"
+   ],
+   "t10": [
+    "--tech-info-latency",
+    "1.0",
+    "--tech-info-failure-rate",
+    "0"
+   ],
+   "t20": [
+    "--tech-info-latency",
+    "2.0",
+    "--tech-info-failure-rate",
+    "0"
+   ],
+   "t10f": [
+    "--tech-info-latency",
+    "1.0",
+    "--tech-info-failure-rate",
+    "0.1"
+   ]
+  },
+  "cpuset": "0,1",
+  "cpus": 2,
+  "memory": "1g"
+ },
+ "runner": "scripts/run_sp_search_gate.py: one fresh --network none container per run (cpuset 0,1, 2 CPU, 1 GiB); per repetition the variant order rotates and both arms of a variant run back to back (arm order rotated); repetition r uses --seed 20261110 + r for both arms; 2 series x 5 repetitions x 4 variants x 2 arms = 80 runs.",
+ "time_note": "Time scale 1 (the 1.5 s budget is a code constant). 24 cold requests every 6 s, each with a warm pair 1 s later: ~150 s per run plus container start, ~3.5 h in total.",
+ "why_seed_per_rep": "Repetition r runs both arms with --seed 20261110 + r: the arms of a repetition see the same search-jitter sequence (one stream per tracker, untouched by Tech Info lookups) and the same Tech Info failure draws (a function of seed, torrent and attempt), while the repetitions sample different sequences, so the bootstrap over repetitions includes the sequence variance.",
+ "expected_mechanism": {
+  "t02": "C0 waits ~0.2 s for Tech Info after the .torrent downloads; C6 starts it after the tracker phase, parallel with the 0.2 s downloads -> cold ~0.2 s faster, identical attributes.",
+  "t10": "C0 waits ~1.0 s; C6 only the rest of the budget from the prefetch start -> cold ~0.2 s faster, identical attributes.",
+  "t20": "Both time out on the cold request (1.5 s < 2.0 s); C0 cancels the fetch, so the warm request pays 1.5 s again and gets nothing; C6's background fetch completes and fills the cache -> warm request enriched and faster.",
+  "t10f": "10% failed lookups (TechInfoUnavailableException); never cached in either arm (SP06/a), retried on the next request."
+ },
+ "decision_rule": {
+  "machine_rule": "scripts/decide_sp_search_gate.py (sha256 above)",
+  "baseline": "C0",
+  "candidate": "C6",
+  "statistic": "per-run steady-window (cold requests 2..23 and their warm pairs 1 s later) latency p50/p95 (ms) and mean enriched streams per request; pooled n = 10 runs per arm and variant; difference of means; 10 000 bootstrap resamples, seed 20261111; one-sided p-values; Holm per family at alpha 0.05",
+  "improve": [
+   [
+    "t02:S1",
+    "cold",
+    "p50"
+   ],
+   [
+    "t10:S1",
+    "cold",
+    "p50"
+   ],
+   [
+    "t20:S1",
+    "warm",
+    "mean",
+    "steady_tech_enriched",
+    "higher"
+   ]
+  ],
+  "guard": [
+   [
+    "t02:S1",
+    "cold",
+    "p50"
+   ],
+   [
+    "t02:S1",
+    "cold",
+    "p95"
+   ],
+   [
+    "t02:S1",
+    "warm",
+    "p50"
+   ],
+   [
+    "t02:S1",
+    "warm",
+    "p95"
+   ],
+   [
+    "t02:S1",
+    "cold",
+    "mean",
+    "steady_tech_enriched",
+    "higher"
+   ],
+   [
+    "t02:S1",
+    "warm",
+    "mean",
+    "steady_tech_enriched",
+    "higher"
+   ],
+   [
+    "t10:S1",
+    "cold",
+    "p50"
+   ],
+   [
+    "t10:S1",
+    "cold",
+    "p95"
+   ],
+   [
+    "t10:S1",
+    "warm",
+    "p50"
+   ],
+   [
+    "t10:S1",
+    "warm",
+    "p95"
+   ],
+   [
+    "t10:S1",
+    "cold",
+    "mean",
+    "steady_tech_enriched",
+    "higher"
+   ],
+   [
+    "t10:S1",
+    "warm",
+    "mean",
+    "steady_tech_enriched",
+    "higher"
+   ],
+   [
+    "t20:S1",
+    "cold",
+    "p50"
+   ],
+   [
+    "t20:S1",
+    "cold",
+    "p95"
+   ],
+   [
+    "t20:S1",
+    "warm",
+    "p50"
+   ],
+   [
+    "t20:S1",
+    "warm",
+    "p95"
+   ],
+   [
+    "t20:S1",
+    "cold",
+    "mean",
+    "steady_tech_enriched",
+    "higher"
+   ],
+   [
+    "t20:S1",
+    "warm",
+    "mean",
+    "steady_tech_enriched",
+    "higher"
+   ],
+   [
+    "t10f:S1",
+    "cold",
+    "p50"
+   ],
+   [
+    "t10f:S1",
+    "cold",
+    "p95"
+   ],
+   [
+    "t10f:S1",
+    "warm",
+    "p50"
+   ],
+   [
+    "t10f:S1",
+    "warm",
+    "p95"
+   ],
+   [
+    "t10f:S1",
+    "cold",
+    "mean",
+    "steady_tech_enriched",
+    "higher"
+   ],
+   [
+    "t10f:S1",
+    "warm",
+    "mean",
+    "steady_tech_enriched",
+    "higher"
+   ]
+  ],
+  "identical_sources": [
+   "t02:S1",
+   "t10:S1",
+   "t20:S1",
+   "t10f:S1"
+  ],
+  "identical_enrichment": [
+   "t02:S1",
+   "t10:S1"
+  ],
+  "max_extra_tech_info_calls_per_cold_request": {
+   "scenarios": [
+    "t02:S1",
+    "t10:S1",
+    "t20:S1",
+    "t10f:S1"
+   ],
+   "limit": 5.0
+  },
+  "alpha": 0.05,
+  "resamples": 10000,
+  "seed": 20261111,
+  "pass_if_all": [
+   "the three improvements are significant after Holm: t02 and t10 cold steady p50 lower, t20 warm enriched streams higher",
+   "no guard regression after Holm over 24 tests (latency p50/p95 beyond a 5 ms margin, enriched streams with no margin; cold and warm, every variant)",
+   "identical per-request torrent sets (source_set_digest) in every variant and identical rendered streams (attributes) in t02 and t10 across all runs of both arms",
+   "candidate minus baseline Tech Info calls per cold request <= 5 (tech_info_prefetch_top_n) in every variant",
+   "no failed run"
+  ],
+  "descriptive_only": [
+   "cpu_seconds",
+   "Tech Info calls and failures",
+   "t10f enriched streams vs failure draws"
+  ],
+  "otherwise": "FAIL: tech_info_prefetch stays False.",
+  "guard_margin": {
+   "steady_latency_ms": 5.0,
+   "steady_tech_enriched": 0.0
+  },
+  "guard_margin_note": "A latency worsening of at most 5 ms (below perception; warm requests take ~10 ms and the decider detects sub-millisecond systematic differences, cf. gsp05-v1 S1 warm p95) is not a regression; enriched streams have no margin.",
+  "source_digest_field": "source_set_digest"
+ },
+ "v2_smoke": "Not a measurement (same image, --smoke, t20, warm 1 s later, one container per arm): the filename digest differs between the arms on every warm request (4 vs 0 enriched streams), the torrent-identity digest is equal on every request and not empty.",
+ "v1_wiring_smoke": "Not a measurement (image above, --smoke): t10 cold 1710 -> 1498 ms with 4/4 enriched streams in both arms; t20 with an immediate warm request: warm 1513 -> 10 ms but 0 enriched in both; t20 with --warm-delay 1 and 10% failures: warm enriched 0 -> 3-4 per request."
+}

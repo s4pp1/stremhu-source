@@ -1,7 +1,11 @@
+import asyncio
+
 import pydash
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
+from app.common.async_utils import await_owned_task
+from app.common.commit_actions import mark_stream_cache_dirty
 from app.common.logger import logger
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
@@ -21,6 +25,7 @@ class IndexerDefinitionsService:
         indexer_account_storage: IndexerAccountStorage | None = None,
     ):
         self._definitions: dict[str, BaseIndexerDefinition] = {}
+        self._close_task: asyncio.Task[bool] | None = None
 
         for definition_class in discover_indexer_definitions():
             instance = definition_class(indexer_account_storage)
@@ -53,12 +58,35 @@ class IndexerDefinitionsService:
 
         return adapter
 
-    async def close_all(self) -> None:
-        try:
-            for adapter in self._definitions.values():
+    def stop_admission(self) -> None:
+        for adapter in self._definitions.values():
+            adapter.stop_admission()
+
+    async def close_logins(self) -> bool:
+        complete = True
+        for adapter in self._definitions.values():
+            try:
+                await adapter.close_logins()
+            except (Exception, asyncio.CancelledError) as error:
+                complete = False
+                logger.error("Indexer login close failed: kind=%s", type(error).__name__)
+        return complete
+
+    async def _close_definitions(self) -> bool:
+        complete = True
+        for indexer_id, adapter in tuple(self._definitions.items()):
+            try:
                 await adapter.close()
-        except Exception:
-            logger.exception("Hiba történt az indexer definíciók leállításakor.")
+            except (Exception, asyncio.CancelledError) as error:
+                complete = False
+                logger.error("Indexer close failed: provider=%s kind=%s", indexer_id, type(error).__name__)
+        return complete
+
+    async def close_all(self) -> bool:
+        if getattr(self, "_close_task", None) is None:
+            self._close_task = asyncio.create_task(self._close_definitions(), name="indexer-clients-close")
+        assert self._close_task is not None
+        return await await_owned_task(self._close_task)
 
     def sync_to_db(
         self,
@@ -124,3 +152,5 @@ class IndexerDefinitionsService:
                     **instance_data,
                 )
                 db.add(new_definition)
+
+        mark_stream_cache_dirty(db)

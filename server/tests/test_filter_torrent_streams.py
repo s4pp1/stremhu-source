@@ -1,6 +1,7 @@
 from unittest.mock import Mock
 
 from app.modules.indexer_accounts.models import IndexerAccountModel
+from app.modules.indexer_accounts.schemas import IndexerAccountRef, IndexerDefinitionRef
 from app.modules.indexer_definitions.models import IndexerDefinitionModel
 from app.modules.media_attributes.constants import MediaAttributeKey
 from app.modules.media_attributes.models import MediaAttributeModel
@@ -35,9 +36,10 @@ def test_is_torrent_stream_excluded():
     dummy_indexer_account = IndexerAccountModel(
         indexer_id="ncore", username="test", password="pwd"
     )
+    dummy_indexer_account.indexer_definition = attr_ncore
 
     torrent = TorrentStream(
-        indexer_account=dummy_indexer_account,
+        indexer_account=IndexerAccountRef.from_model(dummy_indexer_account),
         torrent_id="1",
         info_hash="hash",
         torrent_name="test",
@@ -77,7 +79,7 @@ def test_is_torrent_stream_excluded():
     )
 
     torrent_with_indexer = TorrentStream(
-        indexer_account=dummy_indexer_account,
+        indexer_account=IndexerAccountRef.from_model(dummy_indexer_account),
         torrent_id="1",
         info_hash="hash",
         torrent_name="test",
@@ -85,7 +87,7 @@ def test_is_torrent_stream_excluded():
         file_size=1,
         file_index=1,
         play_url="",
-        attributes=[attr_ncore],
+        attributes=[IndexerDefinitionRef.from_model(attr_ncore)],
         is_persisted_torrent=False,
     )
     excluded_attribute_ids = {"ncore"}

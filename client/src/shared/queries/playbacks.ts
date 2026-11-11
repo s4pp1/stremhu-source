@@ -8,7 +8,12 @@ import {
 
 export const getPlaybacks = queryOptions({
   queryKey: ['playbacks'],
-  refetchInterval: 1000,
+  refetchIntervalInBackground: false,
+  refetchInterval: (query) => {
+    const list = query.state.data
+    // M15: Aktív lejátszás esetén 1.5s, üres lista esetén kímélő 5s
+    return list && list.length > 0 ? 1500 : 5000
+  },
   queryFn: async () => {
     const response = await playbacksGetList()
     return response

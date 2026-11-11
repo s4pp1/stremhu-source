@@ -1,0 +1,376 @@
+{
+ "id": "pb0-v2-assessment",
+ "protocol": "pb0-v2",
+ "recorded_at_utc": "2026-11-09T01:18:22.458364+00:00",
+ "kind": "descriptive baseline, no gate, selects no parameter",
+ "runs": 135,
+ "failed_runs": 0,
+ "medians": {
+  "fast/16MiB/30Mbit": {
+   "A": {
+    "start.ttfb_s": 8.846,
+    "ttfb_after_first_handshake_s": 7.448,
+    "start.tail_probe_s": 0.049,
+    "start.time_to_start_s": 8.924,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 0.05,
+    "unused_downloaded_bytes": 634093568.0
+   },
+   "B": {
+    "start.ttfb_s": 8.919,
+    "ttfb_after_first_handshake_s": 7.431,
+    "start.tail_probe_s": 4.224,
+    "start.time_to_start_s": 13.188,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 0.05,
+    "unused_downloaded_bytes": 631029760.0
+   },
+   "B2": {
+    "start.ttfb_s": 8.917,
+    "ttfb_after_first_handshake_s": 7.438,
+    "start.tail_probe_s": 4.179,
+    "start.time_to_start_s": 13.184,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 0.05,
+    "unused_downloaded_bytes": 632684544.0
+   },
+   "noise_J": {
+    "start.ttfb_s": 0.05,
+    "ttfb_after_first_handshake_s": 0.05,
+    "start.tail_probe_s": 0.05,
+    "start.time_to_start_s": 0.05,
+    "start.stall_s": 0.05,
+    "seek.resume_s": 0.05,
+    "unused_downloaded_bytes": 1654784.0
+   }
+  },
+  "fast/1MiB/30Mbit": {
+   "A": {
+    "start.ttfb_s": 1.924,
+    "ttfb_after_first_handshake_s": 0.532,
+    "start.tail_probe_s": 0.015,
+    "start.time_to_start_s": 3.766,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 0.051,
+    "unused_downloaded_bytes": 377880576.0
+   },
+   "B": {
+    "start.ttfb_s": 2.567,
+    "ttfb_after_first_handshake_s": 1.079,
+    "start.tail_probe_s": 0.015,
+    "start.time_to_start_s": 4.469,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 0.05,
+    "unused_downloaded_bytes": 410042368.0
+   },
+   "B2": {
+    "start.ttfb_s": 2.547,
+    "ttfb_after_first_handshake_s": 1.06,
+    "start.tail_probe_s": 0.015,
+    "start.time_to_start_s": 4.82,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 0.051,
+    "unused_downloaded_bytes": 398802944.0
+   },
+   "noise_J": {
+    "start.ttfb_s": 0.05,
+    "ttfb_after_first_handshake_s": 0.05,
+    "start.tail_probe_s": 0.05,
+    "start.time_to_start_s": 0.351,
+    "start.stall_s": 0.05,
+    "seek.resume_s": 0.05,
+    "unused_downloaded_bytes": 11239424.0
+   }
+  },
+  "fast/4MiB/30Mbit": {
+   "A": {
+    "start.ttfb_s": 3.504,
+    "ttfb_after_first_handshake_s": 2.124,
+    "start.tail_probe_s": 0.019,
+    "start.time_to_start_s": 4.563,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 0.05,
+    "unused_downloaded_bytes": 524894208.0
+   },
+   "B": {
+    "start.ttfb_s": 5.722,
+    "ttfb_after_first_handshake_s": 4.222,
+    "start.tail_probe_s": 0.02,
+    "start.time_to_start_s": 6.77,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 0.05,
+    "unused_downloaded_bytes": 556843008.0
+   },
+   "B2": {
+    "start.ttfb_s": 5.744,
+    "ttfb_after_first_handshake_s": 4.207,
+    "start.tail_probe_s": 0.019,
+    "start.time_to_start_s": 6.819,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 0.05,
+    "unused_downloaded_bytes": 577159168.0
+   },
+   "noise_J": {
+    "start.ttfb_s": 0.05,
+    "ttfb_after_first_handshake_s": 0.05,
+    "start.tail_probe_s": 0.05,
+    "start.time_to_start_s": 0.05,
+    "start.stall_s": 0.05,
+    "seek.resume_s": 0.05,
+    "unused_downloaded_bytes": 20316160.0
+   }
+  },
+  "mixed/16MiB/30Mbit": {
+   "A": {
+    "start.ttfb_s": 16.491,
+    "ttfb_after_first_handshake_s": 15.127,
+    "start.tail_probe_s": 4.321,
+    "start.time_to_start_s": 24.864,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 6.818,
+    "unused_downloaded_bytes": 368492544.0
+   },
+   "B": {
+    "start.ttfb_s": 16.143,
+    "ttfb_after_first_handshake_s": 14.61,
+    "start.tail_probe_s": 0.369,
+    "start.time_to_start_s": 19.35,
+    "start.stall_s": 0.052,
+    "seek.resume_s": 6.768,
+    "unused_downloaded_bytes": 388104192.0
+   },
+   "B2": {
+    "start.ttfb_s": 15.787,
+    "ttfb_after_first_handshake_s": 14.323,
+    "start.tail_probe_s": 5.371,
+    "start.time_to_start_s": 21.202,
+    "start.stall_s": 1.955,
+    "seek.resume_s": 7.169,
+    "unused_downloaded_bytes": 349831168.0
+   },
+   "noise_J": {
+    "start.ttfb_s": 0.356,
+    "ttfb_after_first_handshake_s": 0.287,
+    "start.tail_probe_s": 5.002,
+    "start.time_to_start_s": 1.852,
+    "start.stall_s": 1.903,
+    "seek.resume_s": 0.401,
+    "unused_downloaded_bytes": 38273024.0
+   }
+  },
+  "mixed/1MiB/30Mbit": {
+   "A": {
+    "start.ttfb_s": 3.63,
+    "ttfb_after_first_handshake_s": 2.232,
+    "start.tail_probe_s": 0.015,
+    "start.time_to_start_s": 9.378,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 1.405,
+    "unused_downloaded_bytes": 51511296.0
+   },
+   "B": {
+    "start.ttfb_s": 2.813,
+    "ttfb_after_first_handshake_s": 1.237,
+    "start.tail_probe_s": 0.017,
+    "start.time_to_start_s": 5.07,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 1.755,
+    "unused_downloaded_bytes": 59293696.0
+   },
+   "B2": {
+    "start.ttfb_s": 7.672,
+    "ttfb_after_first_handshake_s": 6.123,
+    "start.tail_probe_s": 0.139,
+    "start.time_to_start_s": 9.777,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 1.405,
+    "unused_downloaded_bytes": 49528832.0
+   },
+   "noise_J": {
+    "start.ttfb_s": 4.859,
+    "ttfb_after_first_handshake_s": 4.886,
+    "start.tail_probe_s": 0.122,
+    "start.time_to_start_s": 4.707,
+    "start.stall_s": 0.05,
+    "seek.resume_s": 0.35,
+    "unused_downloaded_bytes": 9764864.0
+   }
+  },
+  "mixed/4MiB/30Mbit": {
+   "A": {
+    "start.ttfb_s": 13.541,
+    "ttfb_after_first_handshake_s": 12.155,
+    "start.tail_probe_s": 0.023,
+    "start.time_to_start_s": 17.092,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 3.109,
+    "unused_downloaded_bytes": 225755136.0
+   },
+   "B": {
+    "start.ttfb_s": 17.988,
+    "ttfb_after_first_handshake_s": 16.516,
+    "start.tail_probe_s": 0.021,
+    "start.time_to_start_s": 18.046,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 2.908,
+    "unused_downloaded_bytes": 244154368.0
+   },
+   "B2": {
+    "start.ttfb_s": 13.595,
+    "ttfb_after_first_handshake_s": 12.088,
+    "start.tail_probe_s": 0.165,
+    "start.time_to_start_s": 17.348,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 2.759,
+    "unused_downloaded_bytes": 243269632.0
+   },
+   "noise_J": {
+    "start.ttfb_s": 4.393,
+    "ttfb_after_first_handshake_s": 4.428,
+    "start.tail_probe_s": 0.144,
+    "start.time_to_start_s": 0.698,
+    "start.stall_s": 0.05,
+    "seek.resume_s": 0.149,
+    "unused_downloaded_bytes": 1048576
+   }
+  },
+  "thin/16MiB/30Mbit": {
+   "A": {
+    "start.ttfb_s": 9.964,
+    "ttfb_after_first_handshake_s": 8.673,
+    "start.tail_probe_s": 1.002,
+    "start.time_to_start_s": 11.03,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 6.768,
+    "unused_downloaded_bytes": 53952512.0
+   },
+   "B": {
+    "start.ttfb_s": 10.242,
+    "ttfb_after_first_handshake_s": 8.704,
+    "start.tail_probe_s": 4.314,
+    "start.time_to_start_s": 14.489,
+    "start.stall_s": 0.902,
+    "seek.resume_s": 8.171,
+    "unused_downloaded_bytes": 120225792.0
+   },
+   "B2": {
+    "start.ttfb_s": 10.254,
+    "ttfb_after_first_handshake_s": 8.72,
+    "start.tail_probe_s": 4.137,
+    "start.time_to_start_s": 14.437,
+    "start.stall_s": 0.902,
+    "seek.resume_s": 8.223,
+    "unused_downloaded_bytes": 120193024.0
+   },
+   "noise_J": {
+    "start.ttfb_s": 0.05,
+    "ttfb_after_first_handshake_s": 0.05,
+    "start.tail_probe_s": 0.177,
+    "start.time_to_start_s": 0.052,
+    "start.stall_s": 0.05,
+    "seek.resume_s": 0.052,
+    "unused_downloaded_bytes": 1048576
+   }
+  },
+  "thin/1MiB/30Mbit": {
+   "A": {
+    "start.ttfb_s": 2.346,
+    "ttfb_after_first_handshake_s": 0.938,
+    "start.tail_probe_s": 0.015,
+    "start.time_to_start_s": 5.319,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 1.755,
+    "unused_downloaded_bytes": 13385728.0
+   },
+   "B": {
+    "start.ttfb_s": 3.372,
+    "ttfb_after_first_handshake_s": 1.816,
+    "start.tail_probe_s": 0.015,
+    "start.time_to_start_s": 6.422,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 1.755,
+    "unused_downloaded_bytes": 15138816.0
+   },
+   "B2": {
+    "start.ttfb_s": 3.299,
+    "ttfb_after_first_handshake_s": 1.777,
+    "start.tail_probe_s": 0.015,
+    "start.time_to_start_s": 6.273,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 1.756,
+    "unused_downloaded_bytes": 16433152.0
+   },
+   "noise_J": {
+    "start.ttfb_s": 0.073,
+    "ttfb_after_first_handshake_s": 0.05,
+    "start.tail_probe_s": 0.05,
+    "start.time_to_start_s": 0.149,
+    "start.stall_s": 0.05,
+    "seek.resume_s": 0.05,
+    "unused_downloaded_bytes": 1294336.0
+   }
+  },
+  "thin/4MiB/30Mbit": {
+   "A": {
+    "start.ttfb_s": 4.936,
+    "ttfb_after_first_handshake_s": 3.46,
+    "start.tail_probe_s": 0.018,
+    "start.time_to_start_s": 6.621,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 3.459,
+    "unused_downloaded_bytes": 33374208.0
+   },
+   "B": {
+    "start.ttfb_s": 7.124,
+    "ttfb_after_first_handshake_s": 5.577,
+    "start.tail_probe_s": 1.237,
+    "start.time_to_start_s": 9.577,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 2.107,
+    "unused_downloaded_bytes": 40517632.0
+   },
+   "B2": {
+    "start.ttfb_s": 7.143,
+    "ttfb_after_first_handshake_s": 5.616,
+    "start.tail_probe_s": 1.177,
+    "start.time_to_start_s": 9.627,
+    "start.stall_s": 0.0,
+    "seek.resume_s": 3.059,
+    "unused_downloaded_bytes": 41156608.0
+   },
+   "noise_J": {
+    "start.ttfb_s": 0.05,
+    "ttfb_after_first_handshake_s": 0.05,
+    "start.tail_probe_s": 0.06,
+    "start.time_to_start_s": 0.05,
+    "start.stall_s": 0.05,
+    "seek.resume_s": 0.952,
+    "unused_downloaded_bytes": 1048576
+   }
+  }
+ },
+ "observations": [
+  "Noise: B vs B2 medians agree within the client resolution (0.05 s) in the fast and thin cells; the mixed cells (2 stalled of 8 peers) are noisy (TTFB J up to 4.9 s) because which blocks land on a stalled peer is random.",
+  "Fork regression vs upstream at start (beyond J): fast/4MiB time-to-start B 6.8 s vs A 4.6 s, fast/16MiB 13.2 vs 8.9 s, thin/4MiB 9.6 vs 6.6 s, thin/16MiB 14.5 vs 11.0 s; tail probe at 16 MiB pieces B ~4.2 s vs A 0.05 s. The fork's relay change vs 8c99c7d makes the first and last 3 pieces urgent (6 deadline-0 pieces) where upstream had 1+1, plus tighter window deadlines: the SP02 hypothesis now has measured support (cause attribution still to be shown by GSP02).",
+  "Stalled peers dominate the start on both A and B: mixed/4MiB TTFB ~13.5-18 s, mixed/16MiB ~16 s (12-15 s after the first handshake). Neither version recovers blocks requested from a peer that never answers quickly. New candidate SP10 (measure first).",
+  "Unused download is large on the fast profile (median ~380-630 MB per run incl. seek), consistent with the G0 finding that dropped deadline pieces stay at priority 1. Not a constraint (UX frame Q2), reported only.",
+  "Seek resume is fast where the background download already covered 50 % (fast profile, ~0.05 s) and slow with large pieces on mixed/thin (~6.8-8.2 s).",
+  "Tracebacks: 2 of the 10 fork runs (B rep 0, B2 rep 2) in mixed/4MiB logged 2 tracebacks each (app_log counts; raw logs are not kept by design); A had none; failed runs: 0. A diagnostic with masked traceback capture did not reproduce it in 8 short runs; a full-scenario diagnostic follows."
+ ],
+ "tracebacks": {
+  "runs_with_tracebacks": [
+   {
+    "label": "B",
+    "cell": "mixed/4MiB/30Mbit",
+    "rep": 0,
+    "count": 2
+   },
+   {
+    "label": "B2",
+    "cell": "mixed/4MiB/30Mbit",
+    "rep": 2,
+    "count": 2
+   }
+  ]
+ }
+}

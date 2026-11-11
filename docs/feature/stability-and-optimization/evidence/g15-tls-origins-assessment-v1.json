@@ -1,0 +1,212 @@
+{
+  "status": "54 functional fixture observations complete; full G15 OPEN",
+  "targets": [
+    "relative",
+    "same-origin",
+    "other-port",
+    "subdomain",
+    "other-host",
+    "downgrade"
+  ],
+  "cookie_present_by_mode": {
+    "fresh-host": [
+      1,
+      1,
+      1,
+      0,
+      0,
+      0
+    ],
+    "fresh-wide": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0
+    ],
+    "persisted": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  "observations": [
+    {
+      "mode": "fresh-host",
+      "target": "relative",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-host",
+      "target": "same-origin",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-host",
+      "target": "other-port",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:9443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-host",
+      "target": "subdomain",
+      "cookie_present_count": 0,
+      "target_origin": "https://cdn.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-host",
+      "target": "other-host",
+      "cookie_present_count": 0,
+      "target_origin": "https://cdn.other.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-host",
+      "target": "downgrade",
+      "cookie_present_count": 0,
+      "target_origin": "http://tracker.fixture.invalid:8080",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-wide",
+      "target": "relative",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-wide",
+      "target": "same-origin",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-wide",
+      "target": "other-port",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:9443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-wide",
+      "target": "subdomain",
+      "cookie_present_count": 1,
+      "target_origin": "https://cdn.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-wide",
+      "target": "other-host",
+      "cookie_present_count": 0,
+      "target_origin": "https://cdn.other.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "fresh-wide",
+      "target": "downgrade",
+      "cookie_present_count": 0,
+      "target_origin": "http://tracker.fixture.invalid:8080",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "persisted",
+      "target": "relative",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "persisted",
+      "target": "same-origin",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "persisted",
+      "target": "other-port",
+      "cookie_present_count": 1,
+      "target_origin": "https://tracker.fixture.invalid:9443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "persisted",
+      "target": "subdomain",
+      "cookie_present_count": 1,
+      "target_origin": "https://cdn.fixture.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "persisted",
+      "target": "other-host",
+      "cookie_present_count": 1,
+      "target_origin": "https://cdn.other.invalid:8443",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    },
+    {
+      "mode": "persisted",
+      "target": "downgrade",
+      "cookie_present_count": 1,
+      "target_origin": "http://tracker.fixture.invalid:8080",
+      "decoded_bytes": 82073,
+      "sha256": "cadbdf8e5a280df14c4d6151d6bfecdf7a695c64cabdaffaf2c9e1886f1836e0",
+      "tls_hostname_verification": true
+    }
+  ],
+  "interpretation": [
+    "Cookie host/domain scope does not distinguish ports: fresh Secure host cookie reaches the other HTTPS port.",
+    "Fresh Secure host/domain cookies are absent after the HTTP downgrade; persisted dict has lost that scope and reaches all tested destinations.",
+    "The persisted-cookie path must be included in future per-hop origin enforcement; fresh-login-only testing is insufficient."
+  ],
+  "scope": "Actual adapter constructor and IndexerClient, tiny native-valid body, verified ephemeral fixture TLS, no system/native trust changes. Only synthetic cookie presence counts. No production allowlist/default choice, no public SSRF or speed claim. Not G06.",
+  "raw_sha256": {
+    "g15-tls-origins-v1-A.json": "3afaeded178d8c050051a3dd1ebc38b46e21f492d1e0e53ed3445446c2d00926",
+    "g15-tls-origins-v1-B.json": "d5ed0d00f2e9e178f96a5601c282dcc1ddcf2a8fe86cfc5cbd61474cafdd41a8",
+    "g15-tls-origins-v1-C.json": "06b1ae4670bb0cb756b858b22e96984d4cac3bcecc5c303b910c4b5436d14f5c"
+  }
+}

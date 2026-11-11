@@ -35,7 +35,7 @@ def create_stream_service(db: Session) -> StreamService:
 
 
 def get_stream_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> StreamService:
     return create_stream_service(db)
 

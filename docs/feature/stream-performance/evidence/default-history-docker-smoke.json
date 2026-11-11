@@ -1,0 +1,45 @@
+{
+ "id": "default-history-docker-smoke",
+ "is_measurement": false,
+ "recorded_at_utc": "2026-11-10T22:21:13.797634+00:00",
+ "purpose": "Local Docker functional check of the new playback-history default (no env) and of the rollback via env: an in-container config check of the effective setting, then one H1 range-series run per setting in the gsp03-v1 rtt1/dbload cell (gsp03-v1 plan, 256 MiB, 20 Range GETs, parallel SQLite write load). n = 1 per setting: latencies are descriptive, not a comparison.",
+ "image": {
+  "tag": "stremhu-source:sp-cand-f183b3c",
+  "id": "sha256:5d93db1a0caf785027ddc3863b58238900b4ecd511bf34c27c435d438c4b67d2"
+ },
+ "built_from": "f183b3c (feature/stream-performance, clean checkout)",
+ "config_check": "docker run of the image with only a placeholder HOST_IP: playback_history_background True (no env) / False (PLAYBACK_HISTORY_BACKGROUND=false); tech_info_prefetch True and indexer_breaker_threshold 2 in both (the earlier defaults are intact).",
+ "result": "Default on, rollback off, as configured. Both settings answer 20/20 Range requests with 206, write the expected 2 history rows with 0 lost writes under the parallel write load, without application traceback.",
+ "runs": [
+  {
+   "label": "no env (code default)",
+   "effective_playback_history_background": true,
+   "cell": "rtt1/dbload",
+   "series_ok": "20/20",
+   "non_206": 0,
+   "ttfb_ms_p50": 14.4,
+   "first_ttfb_ms": 16.0,
+   "history_expected": 2,
+   "history_found": 2,
+   "lost_writes": 0,
+   "db_load_lock_duty": 0.52,
+   "db_load_errors": 0,
+   "app_tracebacks": 0
+  },
+  {
+   "label": "env PLAYBACK_HISTORY_BACKGROUND=false (rollback)",
+   "effective_playback_history_background": false,
+   "cell": "rtt1/dbload",
+   "series_ok": "20/20",
+   "non_206": 0,
+   "ttfb_ms_p50": 15.1,
+   "first_ttfb_ms": 35.0,
+   "history_expected": 2,
+   "history_found": 2,
+   "lost_writes": 0,
+   "db_load_lock_duty": 0.519,
+   "db_load_errors": 0,
+   "app_tracebacks": 0
+  }
+ ]
+}

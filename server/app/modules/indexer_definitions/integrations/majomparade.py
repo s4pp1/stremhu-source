@@ -205,6 +205,14 @@ class MajomparadeIndexerDefinition(BaseIndexerDefinition):
             next_page=current_page + 1 if has_next_page else None,
         )
 
+    async def _fetch_torrents_by_query(
+        self,
+        query: str,
+        page: int | None = None,
+        media_type: str | None = None,
+    ) -> IndexerDefinitionFindTorrentsResult:
+        return await self._fetch_torrents(query, page)
+
     async def _fetch_torrent(
         self,
         torrent_id: str,

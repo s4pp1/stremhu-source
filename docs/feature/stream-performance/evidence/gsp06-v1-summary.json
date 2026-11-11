@@ -1,0 +1,135 @@
+{
+ "protocol": "gsp06-v1",
+ "runs": 80,
+ "failed_runs": 0,
+ "image_ids": [
+  "sha256:b6dc608ab8c121edf90ab252bab244c9284773c2f5b22c48fece41c6908ad3f3"
+ ],
+ "script_sha256": [
+  "08ab8040fc6dc1d56c7269ddc9e7ce035c4994d14978357f549ef54f245ed33e"
+ ],
+ "external_http_attempts": 0,
+ "note": "Means over n = 10 runs per arm and variant of the per-run steady-window values (cold requests 2..23 and their warm pairs 1 s later); latencies in ms (time scale 1).",
+ "per_variant": {
+  "t02": {
+   "C0": {
+    "cold_steady_p50_ms": 884.144,
+    "cold_steady_p95_ms": 915.584,
+    "warm_steady_p50_ms": 10.423,
+    "warm_steady_p95_ms": 11.283,
+    "cold_enriched_streams_mean": 4.0,
+    "warm_enriched_streams_mean": 4.0,
+    "tech_info_calls_per_cold_request": 4.0,
+    "tech_info_failures_per_run": 0,
+    "sources_by_tracker_seen": [
+     "{\"sp-a\": 4, \"sp-b\": 4, \"sp-c\": 4}"
+    ],
+    "cpu_seconds": 0.82
+   },
+   "C6": {
+    "cold_steady_p50_ms": 682.688,
+    "cold_steady_p95_ms": 714.141,
+    "warm_steady_p50_ms": 10.433,
+    "warm_steady_p95_ms": 11.25,
+    "cold_enriched_streams_mean": 4.0,
+    "warm_enriched_streams_mean": 4.0,
+    "tech_info_calls_per_cold_request": 4.0,
+    "tech_info_failures_per_run": 0,
+    "sources_by_tracker_seen": [
+     "{\"sp-a\": 4, \"sp-b\": 4, \"sp-c\": 4}"
+    ],
+    "cpu_seconds": 0.818
+   }
+  },
+  "t10": {
+   "C0": {
+    "cold_steady_p50_ms": 1685.168,
+    "cold_steady_p95_ms": 1716.596,
+    "warm_steady_p50_ms": 10.603,
+    "warm_steady_p95_ms": 11.494,
+    "cold_enriched_streams_mean": 4.0,
+    "warm_enriched_streams_mean": 4.0,
+    "tech_info_calls_per_cold_request": 4.0,
+    "tech_info_failures_per_run": 0,
+    "sources_by_tracker_seen": [
+     "{\"sp-a\": 4, \"sp-b\": 4, \"sp-c\": 4}"
+    ],
+    "cpu_seconds": 0.831
+   },
+   "C6": {
+    "cold_steady_p50_ms": 1472.101,
+    "cold_steady_p95_ms": 1503.177,
+    "warm_steady_p50_ms": 10.516,
+    "warm_steady_p95_ms": 11.345,
+    "cold_enriched_streams_mean": 4.0,
+    "warm_enriched_streams_mean": 4.0,
+    "tech_info_calls_per_cold_request": 4.0,
+    "tech_info_failures_per_run": 0,
+    "sources_by_tracker_seen": [
+     "{\"sp-a\": 4, \"sp-b\": 4, \"sp-c\": 4}"
+    ],
+    "cpu_seconds": 0.826
+   }
+  },
+  "t20": {
+   "C0": {
+    "cold_steady_p50_ms": 2185.042,
+    "cold_steady_p95_ms": 2216.23,
+    "warm_steady_p50_ms": 1513.013,
+    "warm_steady_p95_ms": 1514.034,
+    "cold_enriched_streams_mean": 0.0,
+    "warm_enriched_streams_mean": 0.0,
+    "tech_info_calls_per_cold_request": 8.0,
+    "tech_info_failures_per_run": 0,
+    "sources_by_tracker_seen": [
+     "{\"sp-a\": 4, \"sp-b\": 4, \"sp-c\": 4}"
+    ],
+    "cpu_seconds": 0.856
+   },
+   "C6": {
+    "cold_steady_p50_ms": 1972.763,
+    "cold_steady_p95_ms": 2003.818,
+    "warm_steady_p50_ms": 10.628,
+    "warm_steady_p95_ms": 11.388,
+    "cold_enriched_streams_mean": 0.0,
+    "warm_enriched_streams_mean": 4.0,
+    "tech_info_calls_per_cold_request": 4.0,
+    "tech_info_failures_per_run": 0,
+    "sources_by_tracker_seen": [
+     "{\"sp-a\": 4, \"sp-b\": 4, \"sp-c\": 4}"
+    ],
+    "cpu_seconds": 0.841
+   }
+  },
+  "t10f": {
+   "C0": {
+    "cold_steady_p50_ms": 1685.548,
+    "cold_steady_p95_ms": 1716.618,
+    "warm_steady_p50_ms": 10.873,
+    "warm_steady_p95_ms": 1012.719,
+    "cold_enriched_streams_mean": 3.6,
+    "warm_enriched_streams_mean": 3.964,
+    "tech_info_calls_per_cold_request": 4.4,
+    "tech_info_failures_per_run": 10.5,
+    "sources_by_tracker_seen": [
+     "{\"sp-a\": 4, \"sp-b\": 4, \"sp-c\": 4}"
+    ],
+    "cpu_seconds": 0.841
+   },
+   "C6": {
+    "cold_steady_p50_ms": 1472.448,
+    "cold_steady_p95_ms": 1503.635,
+    "warm_steady_p50_ms": 10.81,
+    "warm_steady_p95_ms": 1009.663,
+    "cold_enriched_streams_mean": 3.6,
+    "warm_enriched_streams_mean": 3.964,
+    "tech_info_calls_per_cold_request": 4.4,
+    "tech_info_failures_per_run": 10.5,
+    "sources_by_tracker_seen": [
+     "{\"sp-a\": 4, \"sp-b\": 4, \"sp-c\": 4}"
+    ],
+    "cpu_seconds": 0.837
+   }
+  }
+ }
+}

@@ -1,0 +1,8 @@
+{
+  "status": "Observed oldSourceV3 eight concurrent policySQLreaders; newSourceV4 one, targetedtestsPASS",
+  "old_log_sha256": "794f7dd7479da02bc5283eaaf3209a8914595163860250019cb753af993b0420",
+  "old_source": "cr17b-after-v3-source app byte-identical in separate repro tree",
+  "old_observed_readers": 8,
+  "new_observed_readers": 1,
+  "scope": "Eight distinctIMDb keys,same authenticateduser/key/revision,gatedrealSQLSessions. Unitreadcount/lifetime observation,NOT HTTP speedup or accepted memorygate. Originalrepro firstfailedimport is retained separately; validrepro exits1,records8executions. Newfullsuite626/64,Ruff0,based0."
+}

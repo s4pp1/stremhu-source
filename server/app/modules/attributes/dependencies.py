@@ -14,6 +14,6 @@ def create_attributes_service(db: Session) -> AttributesService:
 
 
 def get_attributes_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> AttributesService:
     return create_attributes_service(db)

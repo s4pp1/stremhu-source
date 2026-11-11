@@ -1,0 +1,7 @@
+{
+  "protocol": "cr17b-policy-after-composite-v6-protocol.json",
+  "assessor": "assess_policy_primary_short_v6.py",
+  "assessor_sha256": "3092e97a8a6b9ca70730147b4be2585c7047e76b396aa4420c4bf7be2d302444",
+  "registered_utc": "2026-11-05T19:07:49.304518+00:00",
+  "criteria": "IdenticalV5:normalHTTP+10ms,CPU10%,allmemory2MiB,SQLnoincrease,coldbeforefullrange+J;two5runcohorts,freshpairedbefore/after. No retrospectivebudgetchange."
+}

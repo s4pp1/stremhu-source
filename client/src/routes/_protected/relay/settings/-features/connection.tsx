@@ -11,7 +11,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/components/ui/card'
-import { Field, FieldError, FieldLabel } from '@/shared/components/ui/field'
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from '@/shared/components/ui/field'
 import { InputGroup, InputGroupInput } from '@/shared/components/ui/input-group'
 import { parseApiError } from '@/shared/lib/utils'
 import { getRelaySettings, useUpdateRelaySetting } from '@/shared/queries/relay'
@@ -96,9 +101,7 @@ export function Connection() {
         <form.Field name="torrentConnectionsLimit">
           {(field) => (
             <Field>
-              <FieldLabel>
-                Torrentenkénti kapcsolatok maximális száma
-              </FieldLabel>
+              <FieldLabel>Torrentenkénti kapcsolatok alapértéke</FieldLabel>
               <InputGroup>
                 <InputGroupInput
                   inputMode="numeric"
@@ -111,6 +114,10 @@ export function Connection() {
                   }}
                 />
               </InputGroup>
+              <FieldDescription>
+                Lejátszás közben a gyors indulás érdekében legalább 50. Az
+                összes kapcsolat felső határa a globális érték.
+              </FieldDescription>
               {field.state.meta.isTouched && (
                 <FieldError errors={field.state.meta.errors} />
               )}

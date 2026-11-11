@@ -2,6 +2,13 @@ import content_types
 import libtorrent as libtorrent
 from pydantic import BaseModel
 
+SUBTITLE_EXTENSIONS = {".srt", ".ass", ".ssa", ".vtt", ".sub"}
+
+
+def is_subtitle_file(filename: str) -> bool:
+    name_lower = filename.lower()
+    return any(name_lower.endswith(ext) for ext in SUBTITLE_EXTENSIONS)
+
 
 class TorrentFileInfo(BaseModel):
     name: str
@@ -12,6 +19,8 @@ class TorrentFileInfo(BaseModel):
     start_piece_index: int
     end_piece_index: int
     is_video: bool
+    is_subtitle: bool = False
+
 
 
 class TorrentInfo(BaseModel):
@@ -55,6 +64,7 @@ def parse_torrent_info(torrent: bytes | libtorrent.torrent_info) -> TorrentInfo:
                 start_piece_index=start_piece_index,
                 end_piece_index=end_piece_index,
                 is_video=content_type is not None and content_type.startswith("video/"),
+                is_subtitle=is_subtitle_file(file_path),
             )
         )
 

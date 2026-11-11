@@ -1,0 +1,549 @@
+{
+  "id": "cr17c-cold-gc-diagnostic-v1",
+  "type": "diagnostic",
+  "is_measurement_gate": false,
+  "purpose": "Explain the single cr17c-after-v1 FAIL row heap/cold1 wall_seconds. Does not change, waive or re-evaluate the registered assessment.",
+  "method": "Fixture cr17c-policy-fixture-v1 with the heap-profile mode cut after the two cold requests (count=100, user0 then user1, tracemalloc on). Same image, cpuset 6,7, 2 CPU, 1 GiB, no network; before=Source2 frozen, after=frozen packet21b source; 3 alternating pairs per mode. Modes: heap = cProfile around each cold request; heapnocp = no cProfile; heapgcnocp = no cProfile plus gc.callbacks recording collections of generation>=1 or >=1 ms.",
+  "fixture_sha256": "2f9ce2ca454bba033a4b38ad62967a7a0b24b2a9728f6ddf4c059db0f864a67e",
+  "runner_sha256": "ac36e330633c99db2b5a2f9e37108258810ab781b04567117b8be998fd6ce4fe",
+  "summaries": {
+    "heap": {
+      "before": {
+        "cold0_median_ms": 751.28,
+        "cold1_median_ms": 162.85,
+        "sum_median_ms": 913.0,
+        "n": 3
+      },
+      "after": {
+        "cold0_median_ms": 757.04,
+        "cold1_median_ms": 165.36,
+        "sum_median_ms": 922.4,
+        "n": 3
+      }
+    },
+    "heapnocp": {
+      "before": {
+        "cold0_median_ms": 366.03,
+        "cold1_median_ms": 74.82,
+        "sum_median_ms": 447.95,
+        "n": 3
+      },
+      "after": {
+        "cold0_median_ms": 334.11,
+        "cold1_median_ms": 103.88,
+        "sum_median_ms": 437.54,
+        "n": 3
+      }
+    },
+    "heapgcnocp": {
+      "before": {
+        "cold0_median_ms": 374.33,
+        "cold1_median_ms": 74.75,
+        "sum_median_ms": 449.08,
+        "n": 3
+      },
+      "after": {
+        "cold0_median_ms": 333.84,
+        "cold1_median_ms": 105.12,
+        "sum_median_ms": 439.97,
+        "n": 3
+      }
+    }
+  },
+  "runs": {
+    "heap-after-0": {
+      "mode": "heap",
+      "label": "after",
+      "cold_ms": [
+        757.04,
+        165.36
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": null,
+      "stdout_sha256": "7972f8db97de68f90d5a447d63bc389bae11af039b1f1ea0508c1e98d351c3d7"
+    },
+    "heap-after-1": {
+      "mode": "heap",
+      "label": "after",
+      "cold_ms": [
+        748.99,
+        163.25
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": null,
+      "stdout_sha256": "a60bd8f77c2c0dfb24fe059d43872a59ab4b0cb3a24bf141df308b630df788f0"
+    },
+    "heap-after-2": {
+      "mode": "heap",
+      "label": "after",
+      "cold_ms": [
+        758.04,
+        169.2
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": null,
+      "stdout_sha256": "6d8ab6d576e0936f20980cfc2a4b55448025f08d13ea00ee76fc2bf37b3fc7d2"
+    },
+    "heap-before-0": {
+      "mode": "heap",
+      "label": "before",
+      "cold_ms": [
+        751.28,
+        161.72
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": null,
+      "stdout_sha256": "3efb25406e4310c4812b31713ac97d847aaab23dffe3ed8929959cba5127378a"
+    },
+    "heap-before-1": {
+      "mode": "heap",
+      "label": "before",
+      "cold_ms": [
+        748.89,
+        163.15
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": null,
+      "stdout_sha256": "9a71e4ffc33c71ff017a4efc5e279b2abf33c32f1bc5038713bbf1e0a96733cd"
+    },
+    "heap-before-2": {
+      "mode": "heap",
+      "label": "before",
+      "cold_ms": [
+        753.34,
+        162.85
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": null,
+      "stdout_sha256": "05bc2e74009f060fb036bfb4529fb644031811b748277de988a2178e8a1e66a0"
+    },
+    "heapnocp-after-0": {
+      "mode": "heapnocp",
+      "label": "after",
+      "cold_ms": [
+        334.11,
+        103.43
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": null,
+      "stdout_sha256": "0ce8f6e49c317c5d999d59d584e677459c08272fbf99479385179d22c49d7837"
+    },
+    "heapnocp-after-1": {
+      "mode": "heapnocp",
+      "label": "after",
+      "cold_ms": [
+        332.58,
+        103.88
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": null,
+      "stdout_sha256": "7e28b9cb827ef48fdf5f122465ade8984e92aed21a38021f389360b6ae1170a4"
+    },
+    "heapnocp-after-2": {
+      "mode": "heapnocp",
+      "label": "after",
+      "cold_ms": [
+        336.82,
+        107.24
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": null,
+      "stdout_sha256": "ae52d0da5b30b3fd13c11f2ac4fe5962de398f405b63c66122387becac38b600"
+    },
+    "heapnocp-before-0": {
+      "mode": "heapnocp",
+      "label": "before",
+      "cold_ms": [
+        373.13,
+        74.82
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": null,
+      "stdout_sha256": "554378b97947b55378f04ca6bef6d72d0c8d4bb498b41d4ebc34ac1cbca96667"
+    },
+    "heapnocp-before-1": {
+      "mode": "heapnocp",
+      "label": "before",
+      "cold_ms": [
+        366.03,
+        82.28
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": null,
+      "stdout_sha256": "9fc81d8b8e6114bee6490c97363b01299bc9509c9f4fbf32498b1809c7be2dfa"
+    },
+    "heapnocp-before-2": {
+      "mode": "heapnocp",
+      "label": "before",
+      "cold_ms": [
+        356.05,
+        74.42
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": null,
+      "stdout_sha256": "63ccc18315c4a4c5cb9e1b0062adf5f43fde13d31901c1498d6ffc86298380b8"
+    },
+    "heapgcnocp-after-0": {
+      "mode": "heapgcnocp",
+      "label": "after",
+      "cold_ms": [
+        336.96,
+        105.12
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": [
+        [
+          "cold-0",
+          1,
+          0.44,
+          11
+        ],
+        [
+          "cold-0",
+          1,
+          0.3,
+          0
+        ],
+        [
+          "cold-0",
+          1,
+          0.51,
+          0
+        ],
+        [
+          "cold-0",
+          1,
+          0.59,
+          27
+        ],
+        [
+          "cold-1",
+          2,
+          27.8,
+          65
+        ]
+      ],
+      "stdout_sha256": "8213d8150f4f0f2ab90aca1e28eabb41852218a00adb7481eb1dac91df737d94"
+    },
+    "heapgcnocp-after-1": {
+      "mode": "heapgcnocp",
+      "label": "after",
+      "cold_ms": [
+        333.72,
+        106.25
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": [
+        [
+          "cold-0",
+          1,
+          0.46,
+          11
+        ],
+        [
+          "cold-0",
+          1,
+          0.32,
+          0
+        ],
+        [
+          "cold-0",
+          1,
+          0.49,
+          0
+        ],
+        [
+          "cold-0",
+          1,
+          0.42,
+          27
+        ],
+        [
+          "cold-1",
+          2,
+          28.19,
+          65
+        ]
+      ],
+      "stdout_sha256": "6eccbd8c934639bd9f7e4935db1bda23b5895c4b475aeb753efc64108c0ca91b"
+    },
+    "heapgcnocp-after-2": {
+      "mode": "heapgcnocp",
+      "label": "after",
+      "cold_ms": [
+        333.84,
+        104.11
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": [
+        [
+          "cold-0",
+          1,
+          0.43,
+          11
+        ],
+        [
+          "cold-0",
+          1,
+          0.3,
+          0
+        ],
+        [
+          "cold-0",
+          1,
+          0.46,
+          0
+        ],
+        [
+          "cold-0",
+          1,
+          0.47,
+          27
+        ],
+        [
+          "cold-1",
+          2,
+          27.62,
+          65
+        ]
+      ],
+      "stdout_sha256": "95f3360d971dc1d8d02795c7d63262cf3fca9b768aaf9e5ee52cdcdfd2422acd"
+    },
+    "heapgcnocp-before-0": {
+      "mode": "heapgcnocp",
+      "label": "before",
+      "cold_ms": [
+        369.66,
+        73.07
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": [
+        [
+          "cold-0",
+          1,
+          0.54,
+          0
+        ],
+        [
+          "cold-0",
+          1,
+          0.44,
+          0
+        ],
+        [
+          "cold-0",
+          1,
+          0.42,
+          0
+        ],
+        [
+          "cold-0",
+          2,
+          28.98,
+          63
+        ]
+      ],
+      "stdout_sha256": "e182ea8e934b944e866924a3290c6c702b3311b36ea69b15eb6af765272f9f5e"
+    },
+    "heapgcnocp-before-1": {
+      "mode": "heapgcnocp",
+      "label": "before",
+      "cold_ms": [
+        375.34,
+        81.7
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": [
+        [
+          "cold-0",
+          1,
+          0.36,
+          0
+        ],
+        [
+          "cold-0",
+          1,
+          0.44,
+          0
+        ],
+        [
+          "cold-0",
+          1,
+          0.44,
+          0
+        ],
+        [
+          "cold-0",
+          2,
+          28.61,
+          63
+        ]
+      ],
+      "stdout_sha256": "126ce12ec4fec3712f26fddcfe676f5341086d1414b9487d31c729c3f7fd161f"
+    },
+    "heapgcnocp-before-2": {
+      "mode": "heapgcnocp",
+      "label": "before",
+      "cold_ms": [
+        374.33,
+        74.75
+      ],
+      "cold_sql": [
+        10,
+        10
+      ],
+      "payload": [
+        "96370cbdb8161db95a4c7445d5d5184e5fa79f959721f887f703a8038be2db2e",
+        "5a4ef555a28f4979596c9d9e7a9c903e3e63172da8ef6b782aac2a854c45ab19"
+      ],
+      "gc_gen1plus_or_ge1ms": [
+        [
+          "cold-0",
+          1,
+          0.34,
+          0
+        ],
+        [
+          "cold-0",
+          1,
+          0.45,
+          0
+        ],
+        [
+          "cold-0",
+          1,
+          0.38,
+          0
+        ],
+        [
+          "cold-0",
+          2,
+          27.59,
+          63
+        ]
+      ],
+      "stdout_sha256": "9acecc7336af5c012e83e09f02f5563dfbffc615aaabb8c2fa68fb8b16f50039"
+    }
+  },
+  "finding": "Reproduced 3/3: without cProfile the after cold0 is ~30-40 ms faster and cold1 ~30 ms slower, the sum is unchanged. In every after run one ~28 ms generation-2 collection fires in cold-1, in every before run in cold-0; after runs an extra generation-1 collection in cold-0. Payloads and SQL (10/10) are identical. Under cProfile the shift disappears and the profiles are equivalent. This is the same gen2-phase mechanism V7 identified for packet20.",
+  "limits": "Diagnostic only: 3 pairs per mode, single fixture, tracemalloc on. It does not show that the after path allocates more or less in general and it is not an acceptance argument; the registered FAIL stands."
+}

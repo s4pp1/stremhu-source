@@ -1,0 +1,55 @@
+{
+ "id": "gsp06-v2-assessment",
+ "protocol": "gsp06-v2",
+ "recorded_at_utc": "2026-11-10T14:40:30.442387+00:00",
+ "decision": "PASS",
+ "consequence": "PASS under the registered rule: tech_info_prefetch may become the product default (top 5, 20 in flight, 10 s background timeout), in a separate commit with a guard test and a local Docker check; TECH_INFO_PREFETCH=false restores the previous behaviour.",
+ "checks": {
+  "improved": [
+   "t02:S1 cold p50",
+   "t10:S1 cold p50",
+   "t20:S1 warm mean steady_tech_enriched"
+  ],
+  "regressions": [],
+  "source_set_digest_mismatches": 0,
+  "enrichment_mismatches": 0,
+  "tech_info_call_checks": {
+   "t02:S1": {
+    "extra_calls_per_cold_request": 0.0,
+    "within_limit": true
+   },
+   "t10:S1": {
+    "extra_calls_per_cold_request": 0.0,
+    "within_limit": true
+   },
+   "t20:S1": {
+    "extra_calls_per_cold_request": -4.0,
+    "within_limit": true
+   },
+   "t10f:S1": {
+    "extra_calls_per_cold_request": 0.0,
+    "within_limit": true
+   }
+  },
+  "failed_runs": [],
+  "runs": 80,
+  "image_ids": [
+   "sha256:b6dc608ab8c121edf90ab252bab244c9284773c2f5b22c48fece41c6908ad3f3"
+  ],
+  "script_sha256": [
+   "d57f06af3db1f493e361fd23277d7c26d7684e61422a4116e062efd1f1dbfebd"
+  ],
+  "external_http_attempts": 0
+ },
+ "analysis": [
+  "Improvements significant after Holm (one-sided p 0.0001 each): t02 cold steady p50 884 -> 683 ms, t10 1685 -> 1473 ms, t20 warm enriched streams 0.0 -> 4.0.",
+  "No guard regression after Holm over 24 tests: cold p50/p95 ~0.2 s lower in every variant (t20 2185 -> 1973 ms, t10f 1685 -> 1472 ms); warm p50 0.05-0.12 ms and p95 0.2-3.2 ms lower in C6 where both arms hit the cache, t20 warm 1513 -> 10.7 ms; enriched streams equal or higher everywhere (t10f equal, 3.964 in both arms).",
+  "Hard checks: identical torrent sets (bingeGroup) per request in all four variants across all 80 runs; identical rendered streams (attributes) in t02 and t10; no failed run; no external HTTP attempt.",
+  "Tech Info calls per cold request: equal in t02/t10/t10f, t20 8.0 -> 4.0 (the legacy path cancels at the 1.5 s budget and refetches on the next request; the prefetch finishes once in the background).",
+  "Same plan, image, arms, seeds and tests as gsp06-v1; every per-variant mean in the summary (latency, enriched streams, Tech Info calls; CPU excluded) reproduces v1 within 0.6 ms, so v1's only failure (the filename-based source check) is confirmed to be the harness defect described in gsp06-v1-assessment.json."
+ ],
+ "limits": [
+  "Synthetic in-process trackers (H2) on cpuset 0,1 with network none; nCore-like Tech Info latency 0.2/1/2 s and a failure variant; no live tracker.",
+  "The 1.5 s Tech Info budget is a code constant, so the scale is 1:1; the warm request follows the cold one after 1 s (--warm-delay 1)."
+ ]
+}

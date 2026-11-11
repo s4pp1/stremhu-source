@@ -1,4 +1,5 @@
 import importlib
+import threading
 import zoneinfo
 from collections.abc import Generator
 from contextlib import contextmanager
@@ -11,6 +12,7 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.orm import DeclarativeBase, MappedAsDataclass, Session, sessionmaker
 from sqlalchemy.types import DateTime, TypeDecorator
 
+from app.common.commit_actions import commit_session, discard_commit_actions
 from app.config import config
 
 # Naming convention is CRITICAL for SQLite migrations in Alembic
@@ -57,7 +59,7 @@ class Base(
 
 
 connect_args = {"check_same_thread": False, "timeout": 10.0}
-engine = create_engine(config.database_url, connect_args=connect_args)
+engine = create_engine(config.database_url, connect_args=connect_args, hide_parameters=True)
 
 
 # Biztosítjuk a Foreign Key megszorítások, a WAL mód és a szinkronizáció beállítását minden SQLite kapcsolatnál
@@ -77,12 +79,15 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 def db_session() -> Generator[Session, None, None]:
     db = SessionLocal()
     try:
-        yield db
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
+        try:
+            yield db
+        except BaseException:
+            db.rollback()
+            raise
+        else:
+            commit_session(db)
     finally:
+        discard_commit_actions(db)
         db.close()
 
 
@@ -90,13 +95,42 @@ def db_session() -> Generator[Session, None, None]:
 def isolated_db_session() -> Generator[Session, None, None]:
     db = SessionLocal(expire_on_commit=False)
     try:
-        yield db
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
+        try:
+            yield db
+        except BaseException:
+            db.rollback()
+            raise
+        else:
+            commit_session(db)
     finally:
+        discard_commit_actions(db)
         db.close()
+
+
+# A megosztott (Singleflight) keresések rövid izolált olvasásai a még nyitott request
+# Sessionök mellé nyitnak kapcsolatot. Korlát nélkül ez párhuzamos keresésnél telíti a
+# QueuePoolt, és folyamatos overflow-kapcsolatnyitást/-zárást okoz (memória);
+# lásd cr17d-pool-diagnostic-v1. Egy hely elég: az olvasások milliszekundumosak.
+_SHARED_READ_SLOTS = threading.BoundedSemaphore(1)
+_shared_read_holder = threading.local()
+
+
+@contextmanager
+def shared_read_session() -> Generator[Session, None, None]:
+    """Rövid, izolált olvasó Session megosztott keresésekhez, folyamatszintű korláttal.
+
+    Workerszálban hívandó (owned_to_thread). Nem ágyazható egymásba: a beágyazott
+    hívás holtpont helyett azonnal hibát ad.
+    """
+    if getattr(_shared_read_holder, "held", False):
+        raise RuntimeError("shared_read_session is not reentrant")
+    with _SHARED_READ_SLOTS:
+        _shared_read_holder.held = True
+        try:
+            with isolated_db_session() as db:
+                yield db
+        finally:
+            _shared_read_holder.held = False
 
 
 def get_db() -> Generator[Session, None, None]:

@@ -1,0 +1,14 @@
+{
+  "id": "cr17a-cold-qualified-v5",
+  "registered_utc": "2026-11-05T17:42:14.560256+00:00",
+  "reason": "Explicit user approval2026-11-05: firstcold+40ms,combinedfirsttwo+10ms,normalHTTPp95+10ms unchanged. V3 failed firstcold+10ms;5pairedGC observations establish gen2cost shift user1->user0,defaultGC unchanged. All old negatives preserved. New registered budget only for freshV5samples,never retrospective. No application edit.",
+  "sampling": "Two5-run paired cohorts,10fresh processes/source/repeat (100before+100after),alternating source order within each repeat;then5rotatedABC references,10fresh processes/label/repeat.Colduser0/1 separate;all completed samples included,failedprocesses failqualification.",
+  "acceptance": "Exact payload/order/count and coldSQL no increase for identical state. Pooled runmedian AND pooledp95: user0<=before+40ms,user1<=before+10ms,combinedtwo<=before+10ms. Also bothcohort effects reported. NormalHTTPp95+10ms,CPU+10%,fixedmemory+2MiB and remaining93passed original long/lifecycle/cold checks unchanged.100freshprocesses/source,150native-scopeABCrefs. DefaultGC enabled,no forcedcollect or threshold change. No blanketPASS fromsubset.",
+  "resources": "Client2CPU6,7/1GiB,networknone,readonlyfrozenapp,tmpfs syntheticDB;all other local controlled workloads finished before start.",
+  "original_fixture_sha256": "100d33e953adf13175b0e594e014309554420b9f7626ee2da950c6ba295c6408",
+  "fixture_sha256": "95afad681108e30985d086350445a12ecab26e9b1acce3dd3f8830d1718860d7",
+  "source_manifest_sha256": {
+    "before": "bb785b7a147735b3d6289379cf8f42b20f9924976f3848488701719e2002dd73",
+    "after": "b22bfd0500a93277146ea341db7c5675aab8e2ab37e4fa112b92b98ecfda5742"
+  }
+}

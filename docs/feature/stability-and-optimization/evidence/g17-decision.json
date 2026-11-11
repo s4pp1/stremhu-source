@@ -1,0 +1,1528 @@
+{
+  "status": "COMPLETE19-G17; POSITIVE ownership trigger, CR17b/c/d required",
+  "head": "d2f0d1e5446c26ca56cf611f91e9264aabf9e19b",
+  "tested_source": "cr17a-after-v7-source",
+  "protocol": {
+    "id": "g17-final-current-owned-cleanup-v2",
+    "head": "d2f0d1e5446c26ca56cf611f91e9264aabf9e19b",
+    "entry": "CR17a accepted Source7/602pytest/64snapshot and full approved gatesPASS",
+    "source_before": "cr07-wrappers-after-source, frozen before cleanup; original historical v1 trace retained",
+    "source_current": "cr17a-after-v7-source",
+    "fixture_sha256": "ae3939d03d94202334e469cf531773678a6ed50ff16e5491bc9bed09a847f27b",
+    "scope": "Four real provider/repository/SQLite cancellation/samekey/alias/shutdown traces; Session create/use/commit/close and activecalls captured. Alias DBAPI calls serialized only after detecting overlapping Session methods. No shared mutable Session concurrently executed in SQLite.",
+    "resource": "PinnedC2CPU6,7/1GiB,networknone,ROsource,tmpfs disposableDB; actual fixturev2 worker release independent of cancellation return.",
+    "decision": "Owner-close-before-use, overlappingSessioncalls, or unreleasedpool at the observation point is a positive ownership trigger. Final fixture cleanup mustreturn0. No heap-growth/leak claim from this trace."
+  },
+  "before": {
+    "fixture": "g17-real-provider-file-db-ownership-v2",
+    "traces": [
+      {
+        "case": "owner-cancel-then-rejoin",
+        "events": [
+          {
+            "time_ns": 9403119140241,
+            "session": 1,
+            "thread": 128836583881600,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9403119199334,
+            "session": 1,
+            "thread": 128836583881600,
+            "kind": "rollback",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9403119204725,
+            "session": 1,
+            "thread": 128836583881600,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9403119407797,
+            "session": 2,
+            "thread": 128836583881600,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9403122716710,
+            "session": 1,
+            "thread": 128836505876160,
+            "kind": "use-begin",
+            "owner_closed": true,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9403124870935,
+            "session": 1,
+            "thread": 128836505876160,
+            "kind": "use-end",
+            "owner_closed": true,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9403125060460,
+            "session": 2,
+            "thread": 128836583881600,
+            "kind": "commit",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9403125119993,
+            "session": 2,
+            "thread": 128836583881600,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          }
+        ],
+        "owner_close_before_use": true,
+        "overlapping_session_calls": false,
+        "pool_checked_out": 1,
+        "metadata_calls": 1,
+        "joined_result_correct": true
+      },
+      {
+        "case": "two-request-same-key",
+        "events": [
+          {
+            "time_ns": 9403125210339,
+            "session": 3,
+            "thread": 128836583881600,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9403125241761,
+            "session": 4,
+            "thread": 128836583881600,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9403125439733,
+            "session": 3,
+            "thread": 128836505876160,
+            "kind": "use-begin",
+            "owner_closed": false,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9403125652676,
+            "session": 3,
+            "thread": 128836505876160,
+            "kind": "use-end",
+            "owner_closed": false,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9403125785615,
+            "session": 3,
+            "thread": 128836583881600,
+            "kind": "commit",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9403125838548,
+            "session": 3,
+            "thread": 128836583881600,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9403125849629,
+            "session": 4,
+            "thread": 128836583881600,
+            "kind": "commit",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9403125876171,
+            "session": 4,
+            "thread": 128836583881600,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          }
+        ],
+        "owner_close_before_use": false,
+        "overlapping_session_calls": false,
+        "pool_checked_out": 0,
+        "metadata_calls": 1,
+        "results_correct": true
+      },
+      {
+        "case": "two-alias-reads",
+        "events": [
+          {
+            "time_ns": 9403125912463,
+            "session": 5,
+            "thread": 128836583881600,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9403126240930,
+            "session": 5,
+            "thread": 128836497483456,
+            "kind": "use-begin",
+            "owner_closed": false,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9403126347397,
+            "session": 5,
+            "thread": 128836505876160,
+            "kind": "use-begin",
+            "owner_closed": false,
+            "active_calls": 2
+          },
+          {
+            "time_ns": 9403126641315,
+            "session": 5,
+            "thread": 128836505876160,
+            "kind": "use-end",
+            "owner_closed": false,
+            "active_calls": 2
+          },
+          {
+            "time_ns": 9403127199653,
+            "session": 5,
+            "thread": 128836497483456,
+            "kind": "use-end",
+            "owner_closed": false,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9403127320271,
+            "session": 5,
+            "thread": 128836583881600,
+            "kind": "commit",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9403127365933,
+            "session": 5,
+            "thread": 128836583881600,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          }
+        ],
+        "owner_close_before_use": false,
+        "overlapping_session_calls": true,
+        "pool_checked_out": 0,
+        "results_correct": true,
+        "dbapi_serialized_by_fixture": true
+      },
+      {
+        "case": "shutdown-during-worker",
+        "events": [
+          {
+            "time_ns": 9403127403076,
+            "session": 6,
+            "thread": 128836583881600,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9403127799770,
+            "session": 6,
+            "thread": 128836583881600,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9403127966861,
+            "session": 6,
+            "thread": 128836497483456,
+            "kind": "use-begin",
+            "owner_closed": true,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9403128247219,
+            "session": 6,
+            "thread": 128836497483456,
+            "kind": "use-end",
+            "owner_closed": true,
+            "active_calls": 1
+          }
+        ],
+        "owner_close_before_use": true,
+        "overlapping_session_calls": false,
+        "pool_checked_out": 1,
+        "worker_finished_at_cancel_return": false,
+        "close_returned_before_worker_release": false
+      }
+    ],
+    "fixture_cleanup_final_checkouts": 0,
+    "scope": "Production provider, Singleflight, repository and db_session; gated synthetic indexer. Alias DBAPI calls serialized after detecting overlap. No heap or leak claim.",
+    "source_overlay": "cr07-wrappers-after-source",
+    "protocol": "g17-final-current-owned-cleanup-v2"
+  },
+  "current": {
+    "fixture": "g17-real-provider-file-db-ownership-v2",
+    "traces": [
+      {
+        "case": "owner-cancel-then-rejoin",
+        "events": [
+          {
+            "time_ns": 9405446720337,
+            "session": 1,
+            "thread": 135288040430464,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9405446774760,
+            "session": 1,
+            "thread": 135288040430464,
+            "kind": "rollback",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9405446780231,
+            "session": 1,
+            "thread": 135288040430464,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9405446886798,
+            "session": 2,
+            "thread": 135288040430464,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9405449132540,
+            "session": 1,
+            "thread": 135287962425024,
+            "kind": "use-begin",
+            "owner_closed": true,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9405451232703,
+            "session": 1,
+            "thread": 135287962425024,
+            "kind": "use-end",
+            "owner_closed": true,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9405451381533,
+            "session": 2,
+            "thread": 135288040430464,
+            "kind": "commit",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9405451449927,
+            "session": 2,
+            "thread": 135288040430464,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          }
+        ],
+        "owner_close_before_use": true,
+        "overlapping_session_calls": false,
+        "pool_checked_out": 1,
+        "metadata_calls": 1,
+        "joined_result_correct": true
+      },
+      {
+        "case": "two-request-same-key",
+        "events": [
+          {
+            "time_ns": 9405451544453,
+            "session": 3,
+            "thread": 135288040430464,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9405451576375,
+            "session": 4,
+            "thread": 135288040430464,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9405451766337,
+            "session": 3,
+            "thread": 135287962425024,
+            "kind": "use-begin",
+            "owner_closed": false,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9405452041264,
+            "session": 3,
+            "thread": 135287962425024,
+            "kind": "use-end",
+            "owner_closed": false,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9405452174133,
+            "session": 3,
+            "thread": 135288040430464,
+            "kind": "commit",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9405452229957,
+            "session": 3,
+            "thread": 135288040430464,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9405452240997,
+            "session": 4,
+            "thread": 135288040430464,
+            "kind": "commit",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9405452269069,
+            "session": 4,
+            "thread": 135288040430464,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          }
+        ],
+        "owner_close_before_use": false,
+        "overlapping_session_calls": false,
+        "pool_checked_out": 0,
+        "metadata_calls": 1,
+        "results_correct": true
+      },
+      {
+        "case": "two-alias-reads",
+        "events": [
+          {
+            "time_ns": 9405452306742,
+            "session": 5,
+            "thread": 135288040430464,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9405452644370,
+            "session": 5,
+            "thread": 135287954032320,
+            "kind": "use-begin",
+            "owner_closed": false,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9405452786029,
+            "session": 5,
+            "thread": 135287962425024,
+            "kind": "use-begin",
+            "owner_closed": false,
+            "active_calls": 2
+          },
+          {
+            "time_ns": 9405452988501,
+            "session": 5,
+            "thread": 135287962425024,
+            "kind": "use-end",
+            "owner_closed": false,
+            "active_calls": 2
+          },
+          {
+            "time_ns": 9405453417732,
+            "session": 5,
+            "thread": 135287954032320,
+            "kind": "use-end",
+            "owner_closed": false,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9405453583922,
+            "session": 5,
+            "thread": 135288040430464,
+            "kind": "commit",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9405453634275,
+            "session": 5,
+            "thread": 135288040430464,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          }
+        ],
+        "owner_close_before_use": false,
+        "overlapping_session_calls": true,
+        "pool_checked_out": 0,
+        "results_correct": true,
+        "dbapi_serialized_by_fixture": true
+      },
+      {
+        "case": "shutdown-during-worker",
+        "events": [
+          {
+            "time_ns": 9405453673228,
+            "session": 6,
+            "thread": 135288040430464,
+            "kind": "create",
+            "owner_closed": false,
+            "active_calls": 0
+          },
+          {
+            "time_ns": 9405454132097,
+            "session": 6,
+            "thread": 135287954032320,
+            "kind": "use-begin",
+            "owner_closed": false,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9405454285907,
+            "session": 6,
+            "thread": 135287954032320,
+            "kind": "use-end",
+            "owner_closed": false,
+            "active_calls": 1
+          },
+          {
+            "time_ns": 9405454408305,
+            "session": 6,
+            "thread": 135288040430464,
+            "kind": "close",
+            "owner_closed": false,
+            "active_calls": 0
+          }
+        ],
+        "owner_close_before_use": false,
+        "overlapping_session_calls": false,
+        "pool_checked_out": 0,
+        "worker_finished_at_cancel_return": true,
+        "close_returned_before_worker_release": false
+      }
+    ],
+    "fixture_cleanup_final_checkouts": 0,
+    "scope": "Production provider, Singleflight, repository and db_session; gated synthetic indexer. Alias DBAPI calls serialized after detecting overlap. No heap or leak claim.",
+    "source_overlay": "cr17a-after-v7-source",
+    "protocol": "g17-final-current-owned-cleanup-v2"
+  },
+  "inventory": {
+    "source": "cr17a-after-v7-source,packet18 accepted,HEADd2f0d1",
+    "scope": [
+      "modules/torrent_source_provider",
+      "modules/indexers",
+      "modules/torrent_files",
+      "modules/torrent_streams",
+      "modules/stremio",
+      "modules/torznab"
+    ],
+    "possible_value_consumers": [
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "line": 104,
+        "attribute": "it.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "line": 241,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "line": 273,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "line": 285,
+        "attribute": "downloaded_torrent_file.torrent_bytes"
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "line": 189,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "line": 213,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "line": 278,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "line": 299,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "line": 303,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "line": 311,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "line": 320,
+        "attribute": "downloaded_torrent_file.torrent_bytes"
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "line": 289,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "line": 324,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/indexers/service.py",
+        "line": 218,
+        "attribute": "indexer_account.indexer_definition"
+      },
+      {
+        "path": "server/app/modules/indexers/service.py",
+        "line": 334,
+        "attribute": "indexer_account.indexer_definition"
+      },
+      {
+        "path": "server/app/modules/indexers/service.py",
+        "line": 423,
+        "attribute": "indexer_account.indexer_definition"
+      },
+      {
+        "path": "server/app/modules/torrent_files/models.py",
+        "line": 84,
+        "attribute": "self.torrent_bytes"
+      },
+      {
+        "path": "server/app/modules/torrent_files/repository.py",
+        "line": 37,
+        "attribute": "m.torrent_bytes"
+      },
+      {
+        "path": "server/app/modules/torrent_files/repository.py",
+        "line": 39,
+        "attribute": "m.created_at"
+      },
+      {
+        "path": "server/app/modules/torrent_files/repository.py",
+        "line": 55,
+        "attribute": "TorrentFileModel.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 73,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 77,
+        "attribute": "torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 213,
+        "attribute": "torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 226,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 283,
+        "attribute": "indexer_torrent.indexer_account.indexer_definition"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 223,
+        "attribute": "indexer_torrent.media_attributes"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 283,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 285,
+        "attribute": "torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 291,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 221,
+        "attribute": "torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 286,
+        "attribute": "torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 295,
+        "attribute": "torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 298,
+        "attribute": "indexer_torrent.indexer_account.indexer_definition"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 97,
+        "attribute": "torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 138,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 298,
+        "attribute": "indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 303,
+        "attribute": "user.api_key"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 141,
+        "attribute": "torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 145,
+        "attribute": "user.api_key"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 266,
+        "attribute": "user.api_key"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "line": 130,
+        "attribute": "user.api_key"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 290,
+        "attribute": "user.enable_smart_filter"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 291,
+        "attribute": "user.smart_filter_limit"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 632,
+        "attribute": "user.preference_definitions"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 293,
+        "attribute": "user.smart_filter_grouping_preference_id"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 340,
+        "attribute": "torrent_source.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 341,
+        "attribute": "torrent_source.torrent_file"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 545,
+        "attribute": "user.attribute_exclusions"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 638,
+        "attribute": "sorted_preference.definition.definition_attributes"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 705,
+        "attribute": "stream.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 706,
+        "attribute": "stream.indexer_account.indexer_definition"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 150,
+        "attribute": "torrent_source.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 151,
+        "attribute": "torrent_source.torrent_file"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 366,
+        "attribute": "ts.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 558,
+        "attribute": "user.torrent_seed"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 706,
+        "attribute": "stream.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 728,
+        "attribute": "primary.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 728,
+        "attribute": "stream.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 560,
+        "attribute": "user.torrent_seed"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 186,
+        "attribute": "src.torrent_file"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 186,
+        "attribute": "src.torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 185,
+        "attribute": "src.torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 186,
+        "attribute": "src.torrent_file"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 185,
+        "attribute": "src.torrent_file"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 230,
+        "attribute": "s.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 241,
+        "attribute": "s.torrent_file"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 241,
+        "attribute": "s.torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 136,
+        "attribute": "s.indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 137,
+        "attribute": "s.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 241,
+        "attribute": "s.torrent_file"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 249,
+        "attribute": "s.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 250,
+        "attribute": "s.torrent_file"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 304,
+        "attribute": "user.smart_filter_grouping_preference_id"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 136,
+        "attribute": "s.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 267,
+        "attribute": "<expression>.torrent_file"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 243,
+        "attribute": "s.torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 243,
+        "attribute": "s.torrent_file"
+      },
+      {
+        "path": "server/app/modules/stremio/catalogs_service.py",
+        "line": 78,
+        "attribute": "ts.torrent_file"
+      },
+      {
+        "path": "server/app/modules/stremio/catalogs_service.py",
+        "line": 117,
+        "attribute": "ts.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/stremio/catalogs_service.py",
+        "line": 160,
+        "attribute": "torrent_source.torrent_file"
+      },
+      {
+        "path": "server/app/modules/stremio/catalogs_service.py",
+        "line": 195,
+        "attribute": "torrent_source.torrent_file"
+      },
+      {
+        "path": "server/app/modules/stremio/catalogs_service.py",
+        "line": 131,
+        "attribute": "torrent_source.torrent_file"
+      },
+      {
+        "path": "server/app/modules/stremio/catalogs_service.py",
+        "line": 133,
+        "attribute": "torrent_source.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/stremio/catalogs_service.py",
+        "line": 112,
+        "attribute": "ts.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/stremio/catalogs_service.py",
+        "line": 123,
+        "attribute": "it.indexer_account"
+      },
+      {
+        "path": "server/app/modules/stremio/schemas.py",
+        "line": 548,
+        "attribute": "torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/stremio/schemas.py",
+        "line": 221,
+        "attribute": "torrent_stream.indexer_account.indexer_definition"
+      },
+      {
+        "path": "server/app/modules/stremio/schemas.py",
+        "line": 327,
+        "attribute": "torrent_stream.indexer_account.indexer_definition"
+      },
+      {
+        "path": "server/app/modules/stremio/schemas.py",
+        "line": 510,
+        "attribute": "torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/stremio/schemas.py",
+        "line": 587,
+        "attribute": "torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/stremio/schemas.py",
+        "line": 221,
+        "attribute": "torrent_stream.indexer_account"
+      },
+      {
+        "path": "server/app/modules/stremio/schemas.py",
+        "line": 327,
+        "attribute": "torrent_stream.indexer_account"
+      },
+      {
+        "path": "server/app/modules/stremio/service.py",
+        "line": 170,
+        "attribute": "user.enable_smart_filter"
+      },
+      {
+        "path": "server/app/modules/stremio/service.py",
+        "line": 170,
+        "attribute": "user.smart_filter_limit"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 65,
+        "attribute": "source.indexer_torrent.media_attributes"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 81,
+        "attribute": "source.torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 82,
+        "attribute": "source.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 114,
+        "attribute": "source.torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 115,
+        "attribute": "source.indexer_torrent.indexer_account.indexer_definition"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 65,
+        "attribute": "source.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 81,
+        "attribute": "source.torrent_file"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 114,
+        "attribute": "source.torrent_file"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 115,
+        "attribute": "source.indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 36,
+        "attribute": "source.torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 115,
+        "attribute": "source.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 36,
+        "attribute": "source.torrent_file"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 52,
+        "attribute": "source.torrent_file.info"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 125,
+        "attribute": "source.torrent_file.created_at"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 52,
+        "attribute": "source.torrent_file"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 125,
+        "attribute": "source.torrent_file"
+      },
+      {
+        "path": "server/app/modules/torznab/items.py",
+        "line": 122,
+        "attribute": "source.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/torznab/service.py",
+        "line": 255,
+        "attribute": "source.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/torznab/service.py",
+        "line": 259,
+        "attribute": "torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torznab/service.py",
+        "line": 135,
+        "attribute": "cand.indexer_torrent.indexer_account"
+      },
+      {
+        "path": "server/app/modules/torznab/service.py",
+        "line": 136,
+        "attribute": "cand.indexer_torrent"
+      },
+      {
+        "path": "server/app/modules/torznab/service.py",
+        "line": 135,
+        "attribute": "cand.indexer_torrent"
+      }
+    ],
+    "runtime_type_checks_to_adapt": [
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 456,
+        "expression": "isinstance(attr, MediaAttributeModel)"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 266,
+        "expression": "isinstance(\n                                getattr(fallback_sources[0].torrent_file, \"info\", None),\n                                TorrentInfo,\n                            )"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 477,
+        "expression": "isinstance(attr, MediaAttributeModel)"
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "line": 377,
+        "expression": "isinstance(a, MediaAttributeModel)"
+      },
+      {
+        "path": "server/app/modules/stremio/schemas.py",
+        "line": 230,
+        "expression": "isinstance(attribute, MediaAttributeModel)"
+      },
+      {
+        "path": "server/app/modules/stremio/schemas.py",
+        "line": 199,
+        "expression": "isinstance(attr, MediaAttributeModel)"
+      }
+    ],
+    "ORM_model_imports": [
+      {
+        "path": "server/app/modules/torrent_source_provider/schemas.py",
+        "module": "app.modules.torrent_files.models",
+        "names": [
+          "TorrentFileModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_source_provider/service.py",
+        "module": "app.modules.torrent_files.models",
+        "names": [
+          "TorrentFileModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/indexers/router.py",
+        "module": "app.modules.users.models",
+        "names": [
+          "UserModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/indexers/schemas/internal.py",
+        "module": "app.modules.indexer_accounts.models",
+        "names": [
+          "IndexerAccountModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/indexers/schemas/internal.py",
+        "module": "app.modules.media_attributes.models",
+        "names": [
+          "MediaAttributeModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/indexers/service.py",
+        "module": "app.modules.indexer_accounts.models",
+        "names": [
+          "IndexerAccountModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_files/isolated_service.py",
+        "module": "app.modules.torrent_files.models",
+        "names": [
+          "TorrentFileModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_files/models.py",
+        "module": "app.modules.indexer_accounts.models",
+        "names": [
+          "IndexerAccountModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_files/models.py",
+        "module": "app.modules.torrents.models",
+        "names": [
+          "TorrentModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_files/repository.py",
+        "module": "app.modules.torrent_files.models",
+        "names": [
+          "TorrentFileModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_files/service.py",
+        "module": "app.modules.torrent_files.models",
+        "names": [
+          "TorrentFileModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "module": "app.modules.indexer_accounts.models",
+        "names": [
+          "IndexerAccountModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "module": "app.modules.indexer_definitions.models",
+        "names": [
+          "IndexerDefinitionModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "module": "app.modules.media_attributes.models",
+        "names": [
+          "MediaAttributeModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "module": "app.modules.torrent_files.models",
+        "names": [
+          "TorrentFileModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_streams/schemas.py",
+        "module": "app.modules.users.models",
+        "names": [
+          "UserModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "module": "app.modules.attributes.models",
+        "names": [
+          "AttributeModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "module": "app.modules.media_attributes.models",
+        "names": [
+          "MediaAttributeModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torrent_streams/service.py",
+        "module": "app.modules.users.models",
+        "names": [
+          "UserModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/stremio/catalogs_service.py",
+        "module": "app.modules.users.models",
+        "names": [
+          "UserModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/stremio/router.py",
+        "module": "app.modules.users.models",
+        "names": [
+          "UserModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/stremio/schemas.py",
+        "module": "app.modules.media_attributes.models",
+        "names": [
+          "MediaAttributeModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/stremio/schemas.py",
+        "module": "app.modules.torrent_files.models",
+        "names": [
+          "TorrentFileModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/stremio/service.py",
+        "module": "app.modules.users.models",
+        "names": [
+          "UserModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torznab/dependencies.py",
+        "module": "app.modules.users.models",
+        "names": [
+          "UserModel"
+        ]
+      },
+      {
+        "path": "server/app/modules/torznab/router.py",
+        "module": "app.modules.users.models",
+        "names": [
+          "UserModel"
+        ]
+      }
+    ],
+    "relationship_declarations": [
+      {
+        "path": "server/app/modules/attributes/models.py",
+        "model": "AttributeModel",
+        "attribute": "preference",
+        "line": 35,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/attribute_exclusions/models.py",
+        "model": "AttributeExclusionModel",
+        "attribute": "attribute",
+        "line": 38,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/attribute_exclusions/models.py",
+        "model": "AttributeExclusionModel",
+        "attribute": "user",
+        "line": 49,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/indexer_accounts/models.py",
+        "model": "IndexerAccountModel",
+        "attribute": "indexer_definition",
+        "line": 22,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/indexer_accounts/models.py",
+        "model": "IndexerAccountModel",
+        "attribute": "torrents",
+        "line": 54,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/pairings/models.py",
+        "model": "PairingModel",
+        "attribute": "user",
+        "line": 46,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/playback_histories/models.py",
+        "model": "PlaybackHistoryModel",
+        "attribute": "user",
+        "line": 41,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/playback_histories/models.py",
+        "model": "PlaybackHistoryModel",
+        "attribute": "indexer_definition",
+        "line": 53,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/preferences/models.py",
+        "model": "PreferenceModel",
+        "attribute": "attributes",
+        "line": 49,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/preference_definitions/models.py",
+        "model": "PreferenceDefinitionModel",
+        "attribute": "preference",
+        "line": 24,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/preference_definitions/models.py",
+        "model": "PreferenceDefinitionModel",
+        "attribute": "definition_attributes",
+        "line": 34,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/preference_definitions/models.py",
+        "model": "PreferenceDefinitionAttributeModel",
+        "attribute": "definition",
+        "line": 65,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/preference_definitions/models.py",
+        "model": "PreferenceDefinitionAttributeModel",
+        "attribute": "attribute",
+        "line": 71,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/system_preference_definitions/models.py",
+        "model": "SystemPreferenceDefinitionModel",
+        "attribute": "definition",
+        "line": 20,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/torrents/models.py",
+        "model": "TorrentModel",
+        "attribute": "indexer_account",
+        "line": 35,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/torrents/models.py",
+        "model": "TorrentModel",
+        "attribute": "torrent_file",
+        "line": 69,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/torrent_files/models.py",
+        "model": "TorrentFileModel",
+        "attribute": "indexer_account",
+        "line": 33,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/torrent_files/models.py",
+        "model": "TorrentFileModel",
+        "attribute": "torrent",
+        "line": 59,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/users/models.py",
+        "model": "UserModel",
+        "attribute": "preference_definitions",
+        "line": 21,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/users/models.py",
+        "model": "UserModel",
+        "attribute": "attribute_exclusions",
+        "line": 30,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/users/models.py",
+        "model": "UserModel",
+        "attribute": "role",
+        "line": 67,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/users/models.py",
+        "model": "UserModel",
+        "attribute": "smart_filter_grouping_preference",
+        "line": 88,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/user_preference_definitions/models.py",
+        "model": "UserPreferenceDefinitionModel",
+        "attribute": "user",
+        "line": 38,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      },
+      {
+        "path": "server/app/modules/user_preference_definitions/models.py",
+        "model": "UserPreferenceDefinitionModel",
+        "attribute": "definition",
+        "line": 44,
+        "lazy_literal": "unspecified; no runtime SQL inferred"
+      }
+    ],
+    "limits": "Static attributes/imports are a converter/lazy-load surface inventory, not counts of actual SQL or proof each access is lazy. Real positive ownership/overlap evidence is in the four traces."
+  },
+  "interpretation": "CR17a fixed shutdown joining: worker finished before cancellation close, pool0. Current owner-cancel/rejoin still uses original requestSession after close and retains1checkout until explicit fixture cleanup; two aliases overlap Session methods. Ordinary samekey requests still deduplicate one metadata call. All final fixture cleanup returns0. Contract violation is proven, no production memory-leak/growth claim.",
+  "next": "20-CR17b SearchPolicySnapshot/filter-sort, after its own saved currentC baseline; then21 file/indexer DTO UoWs and22 stateless provider integration in dependency order. No DTO implementation yet."
+}

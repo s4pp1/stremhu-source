@@ -1,0 +1,6 @@
+{
+  "id": "cr17a-approved-v5-assessor-registration",
+  "registered_utc": "2026-11-05T17:43:23.426893+00:00",
+  "assessor_sha256": "6b4a7cdaa54bf30f091cb1bc62aeaa789ed46c863173b2e49d577d55a63b625a",
+  "scope": "Registered before freshV5samples: userexplicitlyapproved firstcold+40ms,second+10ms,combinedfirsttwo+10ms; pooledrunmedian AND pooledp95.100freshprocesses/Csource,150native-scopeABCrefs. NormalHTTPp95+10ms,CPU+10%,fixedmemory+2MiB and otheroriginal93metrics unchanged. DefaultGCenabled,no forcedcollect/thresholdchange. V1/V2/V3 negatives retained,never relabelled. Same appSourceV2."
+}

@@ -1,0 +1,16 @@
+{
+  "id": "cr17b-noise-gc-diagnostic-v7",
+  "registered_utc": "2026-11-06T11:34:06.638752+00:00",
+  "reason": "cr17b-policy-composite-assessment-v6 FAIL: heap c8 p95 (same-result-key, unique-result-key-warm-metadata) and heap cold user1 wall. Existing five Source2 long runs span 165.5-190.2ms (same c8) and 1120.4-1162.5ms (unique c8); cold user1 is bimodal (Source7 ~106ms, Source2 ~75ms, SourceV4 ~104ms) and resembles the CR17/a gen2 GC phase shift.",
+  "status_rule": "Diagnostic only. The V6 FAIL is never relabelled; no threshold, acceptance or production GC change follows from this protocol. Results inform a separate user decision.",
+  "sampling": "Phase1 GC: five fresh-process pairs S2/S4 with the unchanged published cr17a GC fixture v4, order S2,S4 for even and S4,S2 for odd repetitions. Phase2 long: three contemporaneous full1800s/60cycle pairs with the unchanged cr17b policy fixture v2, order S4,S2 / S2,S4 / S4,S2. All completed runs retained; no truncation or selection.",
+  "analysis": "GC: per run the generation-2 event phase and cold user0/user1/combined wall. GC-shift hypothesis is supported only if in >=4/5 pairs S2 gen2 falls in cold-0 and S4 gen2 in cold-1, and the median paired combined-wall difference S4-S2 is within +-10ms. Long: per (kind,concurrency) run medians of p95_ms, cpu_seconds, heap_bytes_after_gc, memory; per pair S4-S2 difference; S2 pooled range over the five existing plus three new runs and S4 over two V6 plus three new runs. c8 p95 is described as within noise only if the median contemporaneous paired difference is <=+10ms AND every S4 run median is <= max(pooled S2 run medians); otherwise it stays a regression candidate.",
+  "resources": "Pinned C image, 2CPU6,7/1GiB, networknone, read-only frozen app, tmpfs disposable DB, no dotenv/real credentials; strictly serial; no other Docker benchmark during this protocol.",
+  "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+  "gc_fixture_sha256": "c75b939e4536b23d1dbb62ba08125c904a7cbcb3df58f6be0f7ead64593685ef",
+  "long_fixture_sha256": "d4f03a59f1a8e83f23e7965491049019625cd9a4ca8e920ee5e7cef7f8a83ae2",
+  "source_manifest_sha256": {
+    "S2": "b22bfd0500a93277146ea341db7c5675aab8e2ab37e4fa112b92b98ecfda5742",
+    "S4": "685da44bf9836f4c7a38d2440e885dce219aa1d29631a5556500ad197dc2cdc4"
+  }
+}

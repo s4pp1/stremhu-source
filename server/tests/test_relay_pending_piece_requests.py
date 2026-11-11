@@ -4,11 +4,94 @@ from typing import cast
 import libtorrent
 import pytest
 
-from app.modules.relay.service import RelayService
+from app.config import config
+from app.modules.relay.service import PieceReadAbortedError, RelayService
 
 INFO_HASH = "a" * 40
 PIECE_INDEX = 7
 KEY = (INFO_HASH, PIECE_INDEX)
+
+
+def test_missing_read_alert_times_out_and_cleans_up(monkeypatch):
+    monkeypatch.setattr(config, "relay_read_timeout_seconds", 0.01)
+
+    async def scenario():
+        service = make_service(asyncio.get_running_loop())
+        with pytest.raises(TimeoutError):
+            await service.get_piece_data(cast(libtorrent.torrent_handle, FakeHandle()), PIECE_INDEX)
+        assert service._piece_fetch_tasks == {}
+        assert service._pending_piece_reads == {}
+
+    asyncio.run(scenario())
+
+
+def test_torrent_cancellation_and_shutdown_clean_up_waiters():
+    async def scenario():
+        service = make_service(asyncio.get_running_loop())
+        request = asyncio.create_task(service.get_piece_data(
+            cast(libtorrent.torrent_handle, FakeHandle()), PIECE_INDEX
+        ))
+        while KEY not in service._pending_piece_reads:
+            await asyncio.sleep(0)
+        service.cancel_piece_requests(INFO_HASH)
+        # Felismerhető hibát kap, nem vár örökké és nem csendes CancelledError-t
+        with pytest.raises(PieceReadAbortedError):
+            await request
+        await service.close_piece_requests()
+        assert service._piece_fetch_tasks == {}
+        assert service._pending_piece_reads == {}
+
+    asyncio.run(scenario())
+
+
+def test_cancel_other_torrent_does_not_affect_waiter():
+    async def scenario():
+        service = make_service(asyncio.get_running_loop())
+        request = asyncio.create_task(service.get_piece_data(
+            cast(libtorrent.torrent_handle, FakeHandle()), PIECE_INDEX
+        ))
+        while KEY not in service._pending_piece_reads:
+            await asyncio.sleep(0)
+        service.cancel_piece_requests("b" * 40)
+        await deliver_read_piece(service, b"ok")
+        assert await request == b"ok"
+
+    asyncio.run(scenario())
+
+
+def test_late_alert_after_abort_is_harmless():
+    async def scenario():
+        service = make_service(asyncio.get_running_loop())
+        request = asyncio.create_task(service.get_piece_data(
+            cast(libtorrent.torrent_handle, FakeHandle()), PIECE_INDEX
+        ))
+        while KEY not in service._pending_piece_reads:
+            await asyncio.sleep(0)
+        future = service._pending_piece_reads[KEY]
+        service.cancel_piece_requests(INFO_HASH)
+        with pytest.raises(PieceReadAbortedError):
+            await request
+        # A process_alerts mintája: a már lezárt future-re nem hív set_result-ot
+        assert future.done()
+        assert service._pending_piece_reads.pop(KEY, None) is None
+
+    asyncio.run(scenario())
+
+
+def test_retry_series_has_total_deadline(monkeypatch):
+    monkeypatch.setattr(config, "relay_piece_timeout_seconds", 0.05)
+    monkeypatch.setattr(config, "relay_read_timeout_seconds", 10.0)
+
+    async def scenario():
+        service = make_service(asyncio.get_running_loop())
+        with pytest.raises(TimeoutError):
+            await service.get_piece_data(
+                cast(libtorrent.torrent_handle, FakeHandle()), PIECE_INDEX
+            )
+        assert service._piece_fetch_tasks == {}
+        assert service._pending_piece_reads == {}
+
+    asyncio.run(scenario())
 
 
 class FakeHandle:

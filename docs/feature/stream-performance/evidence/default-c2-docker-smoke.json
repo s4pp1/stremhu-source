@@ -1,0 +1,82 @@
+{
+ "id": "default-c2-docker-smoke",
+ "is_measurement": false,
+ "recorded_at_utc": "2026-11-10T06:19:23.725402+00:00",
+ "purpose": "Local Docker functional check of the new defaults (no env) and of the legacy rollback via env, H1 harness, 1 run per cell.",
+ "image_id": "sha256:596e125ae043bcb962befe454b4188cf13ceda40164b6e31cd16726df0fda5f1",
+ "built_from": "working tree = this commit's content",
+ "runs": [
+  {
+   "label": "default (edges+upstream)",
+   "cell": {
+    "profile": "fast",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   "failed": null,
+   "ttfb_s": 4.062,
+   "time_to_start_s": 5.116,
+   "stalls": 0,
+   "seek_resume_s": 2.106,
+   "app_log": {
+    "tracebacks": 0,
+    "app_tracebacks": 0,
+    "error_lines": 1
+   }
+  },
+  {
+   "label": "default (edges+upstream)",
+   "cell": {
+    "profile": "thin",
+    "piece_size": 16777216,
+    "bitrate_mbit": 30
+   },
+   "failed": null,
+   "ttfb_s": 10.256,
+   "time_to_start_s": 11.331,
+   "stalls": 0,
+   "seek_resume_s": 8.973,
+   "app_log": {
+    "tracebacks": 0,
+    "app_tracebacks": 0,
+    "error_lines": 1
+   }
+  },
+  {
+   "label": "default (edges+upstream)",
+   "cell": {
+    "profile": "fast",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   },
+   "failed": null,
+   "ttfb_s": 1.977,
+   "time_to_start_s": 3.814,
+   "stalls": 0,
+   "seek_resume_s": 1.055,
+   "app_log": {
+    "tracebacks": 0,
+    "app_tracebacks": 0,
+    "error_lines": 1
+   }
+  },
+  {
+   "label": "env rollback (legacy/legacy)",
+   "cell": {
+    "profile": "fast",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   "failed": null,
+   "ttfb_s": 5.643,
+   "time_to_start_s": 6.72,
+   "stalls": 0,
+   "seek_resume_s": 0.954,
+   "app_log": {
+    "tracebacks": 0,
+    "app_tracebacks": 0,
+    "error_lines": 1
+   }
+  }
+ ]
+}

@@ -1,0 +1,18 @@
+{
+ "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+ "profiles": ["lan", "wan50", "wan10", "mob2"],
+ "profile_params": {
+  "lan": {"rate_Bps": 0, "one_way_delay_ms": 0, "note": "direct Docker internal network, no shaper"},
+  "wan50": {"rate_Bps": 6250000, "one_way_delay_ms": 10, "note": "50 Mbit/s shared, 20 ms RTT"},
+  "wan10": {"rate_Bps": 1250000, "one_way_delay_ms": 20, "note": "10 Mbit/s shared, 40 ms RTT"},
+  "mob2": {"rate_Bps": 250000, "one_way_delay_ms": 40, "note": "2 Mbit/s shared, 80 ms RTT"}
+ },
+ "payloads": ["streams/0", "streams/1", "streams/10", "streams/40", "streams/200", "meta", "catalog/200"],
+ "variants": ["identity-a", "identity-b", "gzip1", "gzip4", "gzip6"],
+ "modes": ["c1", "c4", "c8", "fresh"],
+ "n_keepalive": 100,
+ "n_fresh": 100,
+ "warmup": 3,
+ "repetitions": 5,
+ "cpusets": {"client": "2,3", "server": "4", "shaper": "5"}
+}

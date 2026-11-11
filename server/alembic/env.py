@@ -21,8 +21,8 @@ def render_item(type_: str, obj: Any, autogen_context: Any) -> str | Literal[Fal
 
 alembic_config = context.config
 
-if alembic_config.config_file_name is not None:
-    fileConfig(alembic_config.config_file_name)
+if alembic_config.config_file_name is not None and alembic_config.attributes.get("configure_logger", True):
+    fileConfig(alembic_config.config_file_name, disable_existing_loggers=False)
 
 target_metadata = Base.metadata
 
@@ -46,22 +46,36 @@ def run_migrations_online() -> None:
     connectable = engine
 
     with connectable.connect() as connection:
+        raw_connection = None
         if connectable.dialect.name == "sqlite":
             raw_connection = connection.connection.dbapi_connection
+
+        try:
             if raw_connection is not None:
                 cursor = raw_connection.cursor()
-                cursor.execute("PRAGMA foreign_keys=OFF")
+                try:
+                    cursor.execute("PRAGMA foreign_keys=OFF")
+                finally:
+                    cursor.close()
+            context.configure(
+                connection=connection,
+                target_metadata=target_metadata,
+                render_as_batch=True,
+                render_item=render_item,
+            )
+            with context.begin_transaction():
+                context.run_migrations()
+            connection.commit()
+        except BaseException:
+            connection.rollback()
+            raise
+        finally:
+            # This connection returns to the application's pool. Do not leave
+            # FK enforcement disabled after either successful or failed DDL.
+            if raw_connection is not None:
+                cursor = raw_connection.cursor()
+                cursor.execute("PRAGMA foreign_keys=ON")
                 cursor.close()
-
-        context.configure(
-            connection=connection,
-            target_metadata=target_metadata,
-            render_as_batch=True,
-            render_item=render_item,
-        )
-
-        with context.begin_transaction():
-            context.run_migrations()
 
 
 if context.is_offline_mode():

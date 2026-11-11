@@ -1,0 +1,69 @@
+{
+ "id": "cr15a-after-v6",
+ "registered_at_utc": "2026-11-08T10:25:49.051954+00:00",
+ "status": "CR15a (packet 25) gate v6; registered before any measured run (only a 4-request smoke of each probe ran). Harness (cr15a-after-v4-fixture with the app.config preload), before, image, workload, resources, rules and thresholds are those of v4/v5; server/app is byte-identical to v5; the after side runs with the glibc ENV of the ff1a39a Dockerfile. The v1-v5 FAILs stand.",
+ "user_decision": "2026-11-08: the user approved v6 (v5 code + Dockerfile ENV MALLOC_MMAP_THRESHOLD_=32 MiB / MALLOC_TRIM_THRESHOLD_=64 MiB) and, if v6 and the 26a/26b/27 re-gates on the v6 runtime all PASS, landing 25 -> 26a -> 26b -> 27 (incl. the v4 harness) without asking again; the earlier v5 approval did not cover v6.",
+ "supersedes": [
+  {
+   "id": "cr15a-after-v1",
+   "status": "FAIL",
+   "failures": 13,
+   "cause": "bytearray growth + bytes() copy (~3.5x CPU per large body)"
+  },
+  {
+   "id": "cr15a-after-v2",
+   "status": "FAIL",
+   "failures": 5,
+   "cause": "own chunk-list buffering: c1 large-body p50/CPU slower, many-files c1 slower, small c1 anon +0.4 MiB; c4/c8 improved"
+  },
+  {
+   "id": "cr15a-after-v3",
+   "status": "FAIL",
+   "failures": 4,
+   "cause": "small-kind anon only; mostly the probe harness confound (app.config not loaded on the before side), fixed in the v4 harness"
+  },
+  {
+   "id": "cr15a-after-v4",
+   "status": "FAIL",
+   "failures": 2,
+   "cause": "many-files anon_after c1 (after medians 63.7/65.5 vs before max 59.9 MiB) and c4 (82.5/73.3 vs 72.4 MiB); peak lower; other 88 checks and giant passed"
+  },
+  {
+   "id": "cr15a-after-v5",
+   "status": "FAIL",
+   "failures": 4,
+   "cause": "c1 only: large-valid p50 (after medians 29.4/28.4 vs before max 21.9 ms) and CPU (3.96/3.88 vs 3.21 s), many-files p50 (3.11/3.06 vs 2.80 ms) and CPU (0.311/0.309 vs 0.281 s); the v4 memory excess gone, c4/c8 faster, other 86 checks and giant passed"
+  }
+ ],
+ "diagnostics_before_registration": "Not gate data. cr15a_diag7 (before, v4 code, v5 code, each also with a fixed glibc mmap 32 MiB / trim 128 MiB as a hypothesis test; 3 reps, same image/fixture/limits/preload): v5 frees each body at once and glibc trims the heap back to the OS after every request (arena 12 MiB), so the next request page-faults the chunks and the joined body afresh: large-valid c1 11 755-11 760 minor faults/request vs before 3 444-5 247; with the fixed thresholds 0 faults, p50 14.3-14.8 vs 20.0-22.5 ms, peak anon 84 vs 573-597 MiB, and faster/lower than before in every row. cr15a_diag8 (4 reps): trim 64 MiB (= 2 x 32 MiB, the state glibc's own dynamic adjustment converges to) also gives 0-1 faults/request at c1, large-valid c1 p50 14.5-16.5 vs before 20.4-21.9 ms, anon after the batch 84 MiB at c1 and 38 MiB at c4 (before 538-571 and 712-815 MiB); selected for v6.",
+ "change": "v5 code unchanged (IndexerClient.get_bounded with the 48 MiB decoded-byte cap, httpx aread() over a counting raw-stream wrapper, then the response stream swapped for a ByteStream so the body is freed by reference counting) plus, in the Docker runtime image (ff1a39a Dockerfile): ENV MALLOC_MMAP_THRESHOLD_=33554432 and MALLOC_TRIM_THRESHOLD_=67108864. The gate passes these two variables to the after-side probe container (runtime_env of cr15a-after-v6-source-manifest), exactly as the image would set them; the before side (aaa9ee5, no such ENV) runs without them.",
+ "before": "frozen aaa9ee5 server/app (g02-post-cr17-v2 manifest)",
+ "after": "frozen wip/cr15a-bounded-download ff1a39a server/app (cr15a-after-v6-source-manifest; = v5 server/app) + its Dockerfile MALLOC_* ENV",
+ "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+ "runtime_env": {
+  "before": {},
+  "after": {
+   "MALLOC_MMAP_THRESHOLD_": "33554432",
+   "MALLOC_TRIM_THRESHOLD_": "67108864"
+  }
+ },
+ "dockerfile_sha256": "f830e56d488e031a074befffdde3bec0c0aefb5b9cc213becaca2081ee109b73",
+ "fixture_sha256": {
+  "expected.json": "53a55d2bc4b2aec110bce050d54ecdbdbe743d18054e5cd1a6cd5f547121c3cc",
+  "giant.py": "4ed566cf3a84c6e58a50e48a1b26f3963225299c5202a94af0b1c854cca02df6",
+  "metadata_sizes.py": "ae4df3ab93935cd8961f7efd36b5d8bd125c57d1a7d56d3858a9f0e5c896ed4c",
+  "preload_giant.py": "acb717e5ed0bc0eb22b5035bff37bfaceab3f17322988945d2660401b035adac",
+  "preload_probe.py": "013d799fb4649dd6bf7f7f8352397ea10e415ccf47a4440be661dbccb4198aeb",
+  "probe.py": "f5834ff71e2f720975b5a123e0e01e86a1e24912a1d8f2a56e7dcb7be7b9e023",
+  "server.py": "6272a2a03bc2446d3413470712f0ef58371abbe46a8ae0550633bd1fc126d55f"
+ },
+ "fixture_note": "cr15a-after-v4-fixture reused unchanged (probe.py, giant.py, server.py, expected.json, metadata_sizes.py, preload_probe.py, preload_giant.py).",
+ "controller_sha256": "cb734e5e2ef43ad41663337d44b8d2f9ed6ef8aeb75403db59924411249f62cb",
+ "assessor_sha256": "38a8d879ceeac8603335d13dcb1d1ebff64df1c92f7ba65b79893b03eb2784f6",
+ "workload": "Normal: unchanged G15 normal-transport v2 probe and private tracker fixture (small, many-files, large-valid 21.5 MB, login-redirect with one relogin, cdn-redirect, 4 s drip) x concurrency 1/4/8 x 100 requests, cold and warmup separate. Giant: chunked-large 64 MiB and gzip-large 585706 B -> 134217728 B decoded, concurrency 1/4/8 x 100 requests, outcome per request. Both run after the app.config preload.",
+ "sampling": "Two series x five before/after pairs, pair order alternating (ABBA); then one giant-after run per series; then one giant-before confirmation (expected OOM). Identical to v4/v5.",
+ "resources": "client 2 CPU on 8,9 / 1 GiB; private HTTP server 1 CPU on 10 / 512 MiB; internal network, no outbound, no real credentials.",
+ "concurrency_note": "The 26b normal v6 (2-4), 27 v4 (0,1,6) and 26a/26b functional (12-14) re-gates on the v6 runtime run on disjoint cpusets; alternating pairs absorb slow drift.",
+ "decision": "Plan 2.3 safety/correctness rule, identical to v1-v5. PASS iff all 20 normal runs complete with the probe checks (hash, relogin count, cookie/outbound boundary), both giant-after runs exit 0 without OOM and every request is rejected as too-large, and no (kind, concurrency) metric among p50/p95, CPU seconds, anon after and per-cell anon peak shows repeatable degradation (both series medians > before max + J). Otherwise FAIL; missing runs INVALID.",
+ "smoke": "v6 smoke (4 requests per cell, both sides, both probes) completed before registration; results in the smoke evidence files."
+}

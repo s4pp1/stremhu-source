@@ -1,8 +1,10 @@
 import asyncio
 import datetime
 import ipaddress
+from collections.abc import Awaitable, Callable
 from typing import cast
 
+import dns.asyncresolver
 import dns.exception
 import dns.resolver
 import httpx
@@ -13,6 +15,7 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.x509.oid import NameOID
 from josepy import jwk
 
+from app.common.log_safety import network_error_fields
 from app.common.logger import logger
 from app.config import config
 from app.modules.network.ddns.schemas.internal import DDNSTxtUpdate
@@ -24,37 +27,51 @@ from app.modules.network.ssl.schemas import (
 )
 
 
-async def wait_for_dns_propagation(
-    host: str,
-    expected_txt: str,
-    timeout: int = 300,
-    delay: int = 10,
-) -> bool:
-    resolver = dns.resolver.Resolver(configure=False)
+async def resolve_txt_async(host: str) -> list[str]:
+    resolver = dns.asyncresolver.Resolver(configure=False)
     # Nyilvános DNS szerverek lekérdezése (elkerülve a helyi cache-elést)
     resolver.nameservers = ["1.1.1.1", "8.8.8.8"]
 
+    answers = await resolver.resolve(host, "TXT")
+    return [segment.decode("utf-8") for record in answers for segment in record.strings]
+
+
+async def wait_for_dns_propagation(
+    host: str,
+    expected_txt: str,
+    timeout: float = 300,
+    delay: float = 10,
+    *,
+    clock: Callable[[], float] | None = None,
+    sleep: Callable[[float], Awaitable[None]] | None = None,
+) -> bool:
+    now = clock or asyncio.get_running_loop().time
+    pause = sleep or asyncio.sleep
+    deadline = now() + timeout
     txt_domain = f"_acme-challenge.{host}"
-    start_time = asyncio.get_event_loop().time()
-
-    while asyncio.get_event_loop().time() - start_time < timeout:
+    while (remaining := deadline - now()) > 0:
         try:
-            # TXT rekordok lekérdezése
-            answers = resolver.resolve(txt_domain, "TXT")
-            for rdata in answers:
-                for txt_segment in rdata.strings:
-                    if txt_segment.decode("utf-8") == expected_txt:
-                        logger.info("✅ A DNS TXT rekord sikeresen propagált!")
-                        return True
-        except (
-            dns.resolver.NoAnswer,
-            dns.resolver.NXDOMAIN,
-            dns.exception.DNSException,
-        ):
+            async with asyncio.timeout(remaining):
+                answers = await resolve_txt_async(txt_domain)
+            if now() >= deadline:
+                break
+            if expected_txt in answers:
+                logger.info("✅ A DNS TXT rekord sikeresen propagált!")
+                return True
+        except dns.exception.DNSException:
             pass
-
-        logger.info("⏳ A DNS rekord még nem elérhető, várakozás (%ss)...", delay)
-        await asyncio.sleep(delay)
+        except TimeoutError:
+            break
+        remaining = deadline - now()
+        if remaining <= 0:
+            break
+        interval = min(delay, remaining)
+        logger.info("⏳ A DNS rekord még nem elérhető, várakozás (%ss)...", interval)
+        try:
+            async with asyncio.timeout(remaining):
+                await pause(interval)
+        except TimeoutError:
+            break
 
     raise TimeoutError(
         f"Időtúllépés: A DNS rekord nem propagált {timeout} másodpercen belül."
@@ -95,10 +112,8 @@ class SslService:
                 privkey=privkey,
                 expires_at=expires_at,
             )
-        except Exception:
-            logger.exception(
-                "‼️ Nem sikerült letölteni a nyilvános local-ip.medicmobile.org tanúsítványt. Visszaesés a helyi self-signed (ön-aláírt) tanúsítvány generálására...",
-            )
+        except Exception as exc:
+            logger.error("operation=local-certificate fallback=self-signed %s", network_error_fields(exc))
             return self._generate_self_signed_certificate_fallback(host_ip)
 
     def _generate_self_signed_certificate_fallback(
@@ -160,6 +175,17 @@ class SslService:
         self,
         payload: AcmeCertificateGenerate,
     ) -> AcmeCertificate:
+        try:
+            return await self._generate_acme_certificate(payload)
+        except TimeoutError:
+            raise TimeoutError("Az ACME tanúsítvány-művelet időtúllépés miatt megszakadt.") from None
+        except Exception as error:
+            raise ValueError(f"ACME certificate operation failed: {network_error_fields(error)}") from None
+
+    async def _generate_acme_certificate(
+        self,
+        payload: AcmeCertificateGenerate,
+    ) -> AcmeCertificate:
         provider_id = payload.ddns_provider_id
         token = payload.ddns_provider_token
         host = payload.host
@@ -200,7 +226,7 @@ class SslService:
                 )
             )
         except Exception as e:
-            raise ValueError(f"Hiba történt az ACME fiók igénylése során: {e}") from e
+            raise ValueError(f"Hiba történt az ACME fiók igénylése során: {network_error_fields(e)}") from None
 
         acme_client.net.account = registration
 
@@ -311,5 +337,5 @@ class SslService:
                 )
             except Exception as cleanup_err:
                 logger.warning(
-                    "Nem sikerült törölni a DNS TXT rekordot: %s", cleanup_err
+                    "operation=acme-txt-cleanup %s", network_error_fields(cleanup_err)
                 )

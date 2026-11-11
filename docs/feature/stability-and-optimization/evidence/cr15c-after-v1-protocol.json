@@ -1,0 +1,62 @@
+{
+ "id": "cr15c-after-v1",
+ "registered_at_utc": "2026-11-07T21:18:50.277698+00:00",
+ "status": "Final packet 27 (CR15/c) gate; registered before any measured run (a wiring smoke of 4 runs preceded it).",
+ "slo": {
+  "source": "User decision 2026-11-07, recorded in the feature doc before this gate",
+  "deadline_s": 15,
+  "max_parallel": 12,
+  "container_memory": "1 GiB"
+ },
+ "change": "Process-wide admission (12 unique source searches, joiners free, the 13th fast SearchOverloadedError -> 503); 15 s overall deadline from owned-task start with partial results; per-indexer download gate (5) admitting only while the process-wide pending-byte budget (32 MiB) has room; one store at a time in chunks of at most 16 MiB; TorrentInfo cache also bounded by 50 000 file entries.",
+ "before": "frozen wip/cr15b-redirect-bodies-v2 51854ca server/app (landing base)",
+ "after": "frozen wip/cr15c-admission-v3 441269b server/app",
+ "image": "stremhu-source@sha256:bb87fa085976141178900796052b026577b3979ab7b9457c91693ef7acc4ae52",
+ "fixture_sha256": {
+  "server.py": "15f0ba027699f819ed4f633059a9e67e61408b70f52ba06d19a0fb320b7f7ae5",
+  "harness.py": "5ffdef098139646413843a77412620a1101e589a845192faff64dd225b566154",
+  "metadata_sizes.py": "ae4df3ab93935cd8961f7efd36b5d8bd125c57d1a7d56d3858a9f0e5c896ed4c"
+ },
+ "controller_sha256": "b6747249bf74080026a98e5df38731fa07e509c2b451d18ea3b42296f8c4ce69",
+ "assessor_sha256": "0bd42e35cef7cd4f064612b54096f966d28d24d53595810036a3fa24dd946f4a",
+ "cells": [
+  [
+   "typical",
+   1
+  ],
+  [
+   "typical",
+   4
+  ],
+  [
+   "typical",
+   8
+  ],
+  [
+   "typical",
+   12
+  ],
+  [
+   "typical",
+   16
+  ],
+  [
+   "heavy",
+   1
+  ],
+  [
+   "heavy",
+   4
+  ],
+  [
+   "heavy",
+   12
+  ]
+ ],
+ "guard_seconds": 300,
+ "workload": "Unchanged burst27 fixture/harness (as burst27-v3): N simultaneous unique IMDb searches, 40 candidates each, typical ~5.7 MB and heavy ~111 MB per search.",
+ "sampling": "Two series x five before/after pairs; within a pair index all cells run, each as an ABBA-ordered before/after pair; fresh client and server per run.",
+ "resources": "client 2 CPU on 0,1 / 1 GiB, no swap, DB on a fresh anonymous volume; server 1 CPU on 6 / 512 MiB; runs alongside the CR15a v2 (8-10), 26b (2-4) and G04 (12-14) gates on disjoint cpusets.",
+ "decision": "PASS iff all of: (A) every after run exits 0 without OOM, guard timeout or outbound call, and every before typical run N<=12 completes; (B) after typical N in {1,4,8,12}: every search returns 40 sources, 0 errors, 40 unique hashes; after typical N=16: exactly 12 searches complete correctly and exactly 4 raise SearchOverloadedError within 100 ms each; after heavy N in {1,4,12}: every search returns either 40 correct sources or a partial result with exactly one error (the deadline message), no exception, and no search exceeds 18 000 ms (15 s deadline + bounded store of already downloaded bytes); (C) after typical N<=12: both series medians of run p95 <= 15 000 ms; (D) no repeatable degradation for typical N in {1,4,8,12} in p50_ms, p95_ms, anon_peak_delta, cpu_seconds: degradation iff both after series medians > before max (all ten) + J, J = max(|median before s1 - median before s2|, resolution 1 ms / 1 ms / 1 MiB / 0.01 s). Before heavy and N=16 cells are descriptive. FAIL otherwise; INVALID if runs are missing or a before typical N<=12 run fails.",
+ "pre_registration_diagnostics": "Candidate tuning on the burst harness (not gate data): heavy N=4 anon peak +745 MiB at 64/32 MiB budget, +497 MiB at 32/16 MiB; typical N=12 p95 9.7 s; heavy N=12 no OOM, searches end by ~15.2 s."
+}

@@ -1,0 +1,6 @@
+{
+  "id": "cr17a-composite-v3-assessor-registration",
+  "registered_utc": "2026-11-05T17:01:40.837661+00:00",
+  "assessor_sha256": "28fc67cce66259ed4d6ab05639a2fa3ef123543054424e2b427f7176dc386a55",
+  "scope": "Frozen before completion of cold controls; all original94metrics retained, single negative cold needs100fresh processes/source with unchanged+10ms pooled median/p95; exactSQL invariant corrected only through controlled TTL/Singleflight per-stage diagnostic,not waived.150native-scopeABC fresh references required. No source/budget change; prior negative results preserved."
+}

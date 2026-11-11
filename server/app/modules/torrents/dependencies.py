@@ -33,6 +33,6 @@ def create_torrents_service(
 
 
 def get_torrents_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> TorrentsService:
     return create_torrents_service(db)

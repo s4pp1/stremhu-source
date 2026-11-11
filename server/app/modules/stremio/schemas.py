@@ -2,14 +2,16 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Annotated
 
 import humanize
-from pydantic import BaseModel, ConfigDict
+from pydantic import AfterValidator, BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 from pydash import compact
 
-from app.common.schemas.internal import ImdbInfo
+from app.common.schemas.internal import ImdbInfo, SeriesInfo
+from app.common.validators import validate_numeric_media_id
+from app.modules.media_attributes.constants import MediaAttributeKey
 from app.modules.media_attributes.models import MediaAttributeModel
 from app.modules.media_attributes.parser import clean_torrent_name
 from app.modules.preferences.constants import PreferenceKey
@@ -23,10 +25,14 @@ from app.modules.stremio.enums import (
     ShortManifestResource,
     StreamIdType,
 )
-from app.modules.torrent_files.models import TorrentFileModel
+from app.modules.torrent_files.schemas import TorrentFileSnapshot
 
 if TYPE_CHECKING:
     from app.modules.torrent_streams.schemas import TorrentStream
+
+# A helyben már letöltött fájl jelölése a stream nevében és leírásában
+DOWNLOADED_MARKER = "⚡ Letöltve"
+DOWNLOADED_BANNER = "⚡ Helyben tárolva (Azonnali lejátszás)"
 
 # ──────────────────────────────────────────────
 # Manifest schemas
@@ -140,6 +146,18 @@ class BehaviorHints(BaseModel):
     video_size: int | None = None
 
 
+class StremioSubtitle(BaseModel):
+    model_config = ConfigDict(
+        validate_by_name=True,
+        alias_generator=to_camel,
+    )
+
+    id: str
+    url: str
+    lang: str
+    label: str | None = None
+
+
 class StremioStream(BaseModel):
     model_config = ConfigDict(
         validate_by_name=True,
@@ -150,16 +168,44 @@ class StremioStream(BaseModel):
     description: str
     url: str | None = None
     external_url: str | None = None
+    subtitles: list[StremioSubtitle] | None = None
     behavior_hints: BehaviorHints | None = None
 
     @classmethod
-    def from_id_torrent_stream(cls, torrent_stream: TorrentStream) -> StremioStream:
+    def from_id_torrent_stream(
+        cls,
+        torrent_stream: TorrentStream,
+        show_downloaded_marker: bool = True,
+    ) -> StremioStream:
         file_size = f"💾 {humanize.naturalsize(torrent_stream.file_size, binary=True, format='%.2f')}"
+        is_marked = show_downloaded_marker and torrent_stream.is_persisted_torrent
+
+        stremio_subtitles = (
+            [
+                StremioSubtitle(
+                    id=sub.id,
+                    url=sub.url,
+                    lang=sub.lang,
+                    label=sub.label,
+                )
+                for sub in torrent_stream.subtitles
+            ]
+            if torrent_stream.subtitles
+            else None
+        )
 
         return cls(
-            name=file_size,
-            description=f"📁 {torrent_stream.file_name}",
+            name=" | ".join(compact([DOWNLOADED_MARKER if is_marked else None, file_size])),
+            description="\n".join(
+                compact(
+                    [
+                        DOWNLOADED_BANNER if is_marked else None,
+                        f"📁 {torrent_stream.file_name}",
+                    ]
+                )
+            ),
             url=torrent_stream.play_url,
+            subtitles=stremio_subtitles,
             behavior_hints=BehaviorHints(
                 filename=cls._build_behavior_filename(
                     file_name=torrent_stream.file_name,
@@ -177,10 +223,22 @@ class StremioStream(BaseModel):
     def from_imdb_torrent_stream(
         cls,
         torrent_stream: TorrentStream,
+        is_series: bool = False,
+        show_downloaded_marker: bool = True,
     ) -> StremioStream:
         file_size = f"💾 {humanize.naturalsize(torrent_stream.file_size, binary=True, format='%.2f')}"
-        seeders = f"👥 {torrent_stream.seeders}"
-        indexer = f"🧲 {torrent_stream.indexer_account.indexer_definition.name}"
+        is_marked = show_downloaded_marker and torrent_stream.is_persisted_torrent
+        effective_seeders = (
+            torrent_stream.combined_seeders
+            if torrent_stream.combined_seeders is not None
+            else torrent_stream.seeders
+        )
+        seeders = f"👥 {effective_seeders}" if effective_seeders is not None else None
+
+        indexer_names = torrent_stream.extra_indexer_names or [
+            torrent_stream.indexer_account.indexer_definition.name
+        ]
+        indexer = f"🧲 {', '.join(indexer_names)}"
 
         description_first_line = " | ".join(compact([indexer, seeders, file_size]))
 
@@ -189,6 +247,17 @@ class StremioStream(BaseModel):
             for attribute in torrent_stream.attributes
             if isinstance(attribute, MediaAttributeModel)
         ]
+
+        flag_map = {
+            MediaAttributeKey.HUN: "🇭🇺",
+            MediaAttributeKey.ENG: "🇬🇧",
+            "jap": "🇯🇵",
+            "ger": "🇩🇪",
+            "fra": "🇫🇷",
+            "ita": "🇮🇹",
+            "esp": "🇪🇸",
+            "rus": "🇷🇺",
+        }
 
         def format_group(pref_key: str) -> str | None:
 
@@ -199,6 +268,15 @@ class StremioStream(BaseModel):
 
             if not attrs:
                 return None
+
+            if pref_key == PreferenceKey.LANGUAGE:
+                parts = []
+                for attr in attrs:
+                    label = attr.short_name or attr.name
+                    flag = flag_map.get(attr.id)
+                    parts.append(f"{flag} {label}" if flag else label)
+                return ", ".join(parts)
+
             joined = ", ".join([attr.short_name or attr.name for attr in attrs])
             emoji = EMOJI_MAP.get(pref_key)
             return f"{emoji} {joined}" if emoji else joined
@@ -213,10 +291,13 @@ class StremioStream(BaseModel):
         readable_video_codecs = format_group(PreferenceKey.VIDEO_CODEC)
         readable_audio_channels = format_group(PreferenceKey.AUDIO_CHANNELS)
 
+        readable_subtitle = "💬 🇭🇺 Felirat" if torrent_stream.has_hungarian_sub else None
+
         description_second_line = " | ".join(
             compact(
                 [
                     readable_language,
+                    readable_subtitle,
                     readable_audio_qualities,
                     readable_audio_spatials,
                     readable_audio_channels,
@@ -234,18 +315,25 @@ class StremioStream(BaseModel):
             )
         )
 
-        readable_is_persisted: str | None = None
-
-        if torrent_stream.is_persisted_torrent:
-            readable_is_persisted = "⭐"
+        readable_is_persisted = DOWNLOADED_MARKER if is_marked else None
 
         name = " | ".join(
             compact(
                 [readable_is_persisted, readable_resolutions, readable_video_qualities]
             )
         )
+        persisted_banner = DOWNLOADED_BANNER if is_marked else None
+        file_name_line = f"📁 {torrent_stream.file_name}" if is_series else None
         description = "\n".join(
-            [description_first_line, description_second_line, description_third_line]
+            compact(
+                [
+                    persisted_banner,
+                    file_name_line,
+                    description_first_line,
+                    description_second_line,
+                    description_third_line,
+                ]
+            )
         )
         binge_group = f"{torrent_stream.indexer_account.indexer_definition.id}-{torrent_stream.torrent_id}"
 
@@ -254,10 +342,25 @@ class StremioStream(BaseModel):
             media_attributes=media_attributes,
         )
 
+        stremio_subtitles = (
+            [
+                StremioSubtitle(
+                    id=sub.id,
+                    url=sub.url,
+                    lang=sub.lang,
+                    label=sub.label,
+                )
+                for sub in torrent_stream.subtitles
+            ]
+            if torrent_stream.subtitles
+            else None
+        )
+
         return cls(
             name=name,
             description=description,
             url=torrent_stream.play_url,
+            subtitles=stremio_subtitles,
             behavior_hints=BehaviorHints(
                 filename=behavior_filename,
                 binge_group=binge_group,
@@ -312,6 +415,16 @@ class StremioStreams(BaseModel):
     )
 
     streams: list[StremioStream]
+
+
+class StremioSubtitles(BaseModel):
+    model_config = ConfigDict(
+        validate_by_name=True,
+        alias_generator=to_camel,
+    )
+
+    subtitles: list[StremioSubtitle] = []
+
 
 
 # ──────────────────────────────────────────────
@@ -388,15 +501,26 @@ class MetaPreview(BaseMeta):
     @classmethod
     def from_torrent_file(
         cls,
-        torrent_file: TorrentFileModel,
+        torrent_file: TorrentFileSnapshot,
+        content_type: ContentType = ContentType.MOVIE,
+        imdb_id: str | None = None,
+        imdb_rating: str | None = None,
     ) -> MetaPreview:
+        poster = (
+            f"https://images.metahub.space/poster/medium/{imdb_id}/img"
+            if imdb_id
+            else None
+        )
         return cls(
             id=cls.build_meta_id(
                 torrent_file.indexer_id,
                 torrent_file.torrent_id,
             ),
-            type=ContentType.MOVIE,
+            imdb_id=imdb_id,
+            type=content_type,
             name=torrent_file.info.name,
+            poster=poster,
+            imdb_rating=imdb_rating,
         )
 
 
@@ -416,15 +540,66 @@ class MetaDetail(BaseMeta):
     @classmethod
     def from_torrent_file(
         cls,
-        torrent_file: TorrentFileModel,
+        torrent_file: TorrentFileSnapshot,
+        content_type: ContentType = ContentType.MOVIE,
+        imdb_id: str | None = None,
     ) -> MetaDetail:
+        videos: list[MetaVideo] | None = None
+        behavior_hints: MetaDetailBehaviorHints | None = None
+
+        if content_type == ContentType.SERIES:
+            from app.modules.torrent_streams.utils.resolver_helpers import (
+                is_sample_or_trash,
+            )
+            from app.modules.torrent_streams.utils.series_parser import SeriesParser
+
+            videos = []
+            default_vid: str | None = None
+            ep_counter = 1
+            for file in torrent_file.info.files:
+                if not file.is_video or is_sample_or_trash(file.name):
+                    continue
+                s_list, e_list = SeriesParser(file.path or file.name).parse()
+                season = s_list[0] if s_list else 1
+                episode = e_list[0] if e_list else ep_counter
+                ep_counter += 1
+                video_id = f"{cls.build_meta_id(torrent_file.indexer_id, torrent_file.torrent_id)}:{file.index}"
+                if not default_vid:
+                    default_vid = video_id
+                videos.append(
+                    MetaVideo(
+                        id=video_id,
+                        title=file.name,
+                        season=season,
+                        episode=episode,
+                    )
+                )
+            if default_vid:
+                behavior_hints = MetaDetailBehaviorHints(default_video_id=default_vid)
+
+        poster = (
+            f"https://images.metahub.space/poster/medium/{imdb_id}/img"
+            if imdb_id
+            else None
+        )
+        background = (
+            f"https://live.metahub.space/background/medium/{imdb_id}/img"
+            if imdb_id
+            else None
+        )
+
         return cls(
             id=cls.build_meta_id(
                 torrent_file.indexer_id,
                 torrent_file.torrent_id,
             ),
-            type=ContentType.MOVIE,
+            imdb_id=imdb_id,
+            type=content_type,
             name=torrent_file.info.name,
+            poster=poster,
+            background=background,
+            videos=videos,
+            behavior_hints=behavior_hints,
         )
 
 
@@ -471,9 +646,47 @@ class TorrentStreamId(BaseModel):
     type: StreamIdType = StreamIdType.TORRENT
     indexer_id: str
     torrent_id: str
+    file_index: int | None = None
 
 
-StreamId = ImdbStreamId | TorrentStreamId
+NumericMediaId = Annotated[str, AfterValidator(validate_numeric_media_id)]
+
+
+class TvdbStreamId(BaseModel):
+    type: StreamIdType = StreamIdType.TVDB
+    tvdb_id: NumericMediaId
+    series_info: SeriesInfo | None = None
+
+
+class KitsuStreamId(BaseModel):
+    type: StreamIdType = StreamIdType.KITSU
+    kitsu_id: NumericMediaId
+    episode: int | None = None
+    series_info: SeriesInfo | None = None
+
+
+class TmdbStreamId(BaseModel):
+    type: StreamIdType = StreamIdType.TMDB
+    tmdb_id: NumericMediaId
+    series_info: SeriesInfo | None = None
+
+
+class MalStreamId(BaseModel):
+    type: StreamIdType = StreamIdType.MAL
+    mal_id: NumericMediaId
+    episode: int | None = None
+    series_info: SeriesInfo | None = None
+
+
+StreamId = (
+    ImdbStreamId
+    | TorrentStreamId
+    | TvdbStreamId
+    | KitsuStreamId
+    | TmdbStreamId
+    | MalStreamId
+)
+
 
 
 class ParsedCatalogId(BaseModel):

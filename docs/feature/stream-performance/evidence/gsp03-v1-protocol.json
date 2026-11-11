@@ -1,0 +1,383 @@
+{
+ "id": "gsp03-v1",
+ "registered_at_utc": "2026-11-10T18:22:14.300231+00:00",
+ "status": "Gate GSP03 (SP03 playback history off the response path), registered before any measured run, after the wiring smoke. Derived from drafts/gsp03-draft.json; the draft's open choices are settled as proposed (decision_rule.registration_choices); image, source and hashes filled in.",
+ "item": "SP03: playback history once per playback, off the response path. C0 = PLAYBACK_HISTORY_BACKGROUND=false (today's path: every GET/HEAD awaits the locked, threaded get_or_create before its headers); C3 = PLAYBACK_HISTORY_BACKGROUND=true (996abd6 candidate: repeated requests skip the DB, the first write is an owned background task, 64 pending max with a synchronous fallback, a failed write is retried by the next request). Same image, the arms differ only by this env value.",
+ "plan_reference": [
+  "docs/feature/stream-performance/implementation-plan.md#sp03 (Kapu: H1 + H3)",
+  "docs/feature/stream-performance/implementation-plan.md#doc-23-meroeszkozok (H1, H3)",
+  "docs/feature/stream-performance/implementation-plan.md#doc-24-kozos-meresi-protokoll-es-kapu",
+  "docs/feature/stream-performance/evidence/gsp02-v4-protocol.json (bootstrap/Holm rule used here instead of the J rule)"
+ ],
+ "source": {
+  "branch": "claude/sp03-history-0cf345 (not merged into feature/stream-performance)",
+  "commit": "e0bd7097fcfbbb37f80c5de0defa5f972af776cf",
+  "server_app_manifest_sha256": "189f5e6d35afa6bc9bfd64cee7628d72c3c98792db82b3e11fbca0bd0c17ea7b",
+  "manifest_method": "sha256 over 'path:git-blob-id' lines of git ls-tree -r HEAD server/app (as gsp02-v4)",
+  "candidate_contents": "feature/stream-performance @ adf4d33 + SP03 (cherry-pick of 996abd6) behind config.playback_history_background (default False = today's path).",
+  "server_app_files": 270,
+  "commit_note": "e0bd709 adds only the H1 controller's single retry of a Docker infrastructure failure (docker run exit 125 or a lost daemon connection) on top of 7032eb9; server/app is the SP03 candidate."
+ },
+ "image": {
+  "tag": "stremhu-source:sp-cand-e0bd709",
+  "id": "sha256:b0cb63eded9d5d34b9ae7cd5ab84e7f77e3fab9afe147a4e0c85b3d6d05dd1a8",
+  "tool_image": "stremhu-source:sp-base-9984678",
+  "tool_image_id": "sha256:b4c7ea68202391962159de1cd7e14e7e82014402ea96999fccd918cf8ef77e10"
+ },
+ "harness": {
+  "what_is_real": "the product image and its normal start, TLS, API-key auth, playback limit, relay and libtorrent, the real stream endpoint with Range, the product's SQLite file (WAL, synchronous=NORMAL) and its playback-history write path in both arms.",
+  "what_is_synthetic": "the swarm (sp_seed_service.py: 8 local seeders + local tracker on an --internal Docker network), the user/indexer/torrent rows and signed tokens (sp_app_fixture.py --playbacks 2), the remote-viewer RTT (H3 latency_proxy.py), the parallel SQLite write load (sp_db_write_load.py: its own scratch table in the product DB, from a second connection in the app container).",
+  "files": [
+   "scripts/benchmark_sp_playback_controller.py",
+   "scripts/benchmark_sp_range_series.py",
+   "scripts/sp_app_fixture.py",
+   "scripts/sp_db_write_load.py",
+   "scripts/sp_history_check.py",
+   "scripts/sp_seed_service.py",
+   "scripts/fixtures/latency_proxy.py",
+   "scripts/fixtures/local_bt_seed.py",
+   "scripts/fixtures/local_tracker.py",
+   "scripts/fixtures/synthetic_torrent.py",
+   "scripts/summarize_sp_playback.py",
+   "scripts/decide_sp_gate_bootstrap.py"
+  ],
+  "sha256": {
+   "scripts/benchmark_sp_playback_controller.py": "50ddf194fc8f9516f935317f00b16e8a8a3afccef108b9fd162ef34f50aa23bf",
+   "scripts/benchmark_sp_range_series.py": "af2d90bb09b57c4cee280b7fd6711aae830db99a9eecb6cf97f835ce1f17cb7c",
+   "scripts/sp_app_fixture.py": "71c192048beb8fc2ccda0097065069d578db53054f495c2f8a4dc1d0461fd20c",
+   "scripts/sp_db_write_load.py": "4fff7f248d2033b797e6546a39b48ad172cc377a8ee09111484fe40a0b288926",
+   "scripts/sp_history_check.py": "0c1fbe90af22a89e3f477f707c3d8fe5bec0fee19ab16240363ba7a2ba98698c",
+   "scripts/sp_seed_service.py": "b670ba1ff04e889dd8e49cc3781f2dc0a3cf7cbe10de785a59309b977127d3ce",
+   "scripts/fixtures/latency_proxy.py": "690b8611791ae6deb8d2f618725ae2fbe4c5212769711886b9c363c4dcc9c700",
+   "scripts/fixtures/local_bt_seed.py": "f89cb48ef0ad3337e07eea697a57fcce16e4e45e2008bcc5e01d18e03cf123b5",
+   "scripts/fixtures/local_tracker.py": "fb538616f86e0b36ec3ae6d46cc031a9aaf4ff81b3ab738ef7baab50ddb32050",
+   "scripts/fixtures/synthetic_torrent.py": "49d3640d7c9e105094ddccde829e5a301219089988f4a480fa7cd3363193e87c",
+   "scripts/summarize_sp_playback.py": "3a02326cbdfec28f6f1d4d7718cc54b484d157360b4443b0c9be145230648cf0",
+   "scripts/decide_sp_gate_bootstrap.py": "6a9aee3a965d1f2fd5ce73bfc11136d6d2fb095dd468e8be14f5e71eeab7d23d"
+  },
+  "new_for_gsp03": "benchmark_sp_range_series.py, sp_db_write_load.py and sp_history_check.py are new; the controller (plan keys 'client', 'fixture_playbacks', 'history_check', 'db_write_load_args'; per cell 'name', 'latency_proxy_one_way_ms', 'db_write_load'), sp_app_fixture.py (--playbacks), summarize_sp_playback.py (named cells) and decide_sp_gate_bootstrap.py ('guard_metrics', 'zero_required', named cells) got opt-in additions only.",
+  "static_checks_done_without_docker": [
+   "old vs new decide_sp_gate_bootstrap.py on gsp02-v4-protocol.json (resamples lowered to 300) + gsp02-v4-complete.json: byte-identical decision output",
+   "old vs new summarize_sp_playback.py on the gsp02-v4 records: byte-identical summary and complete output (and equal to the committed gsp02-v4-summary.json)",
+   "controller run_one with a fake docker (commands recorded, outputs simulated), gsp02-v4 plan with and without latency_proxy_one_way_ms: identical command lists and run records old vs new; this draft's four cells: range-series client, --playbacks 2, history check, proxy one-way per cell, DB load only in the dbload cells",
+   "benchmark_sp_range_series.run against an httpx MockTransport (8 MiB + 12345 B file): warm-up reads the whole file, 20 bounded requests (0, tail, 18 distinct 64 KiB-aligned offsets), non-206 responses counted",
+   "sp_db_write_load.py on a scratch SQLite file (fake app.config): commits, ~0.5 lock duty at hold 5 / pause 5 ms, keeps <= keep-rows rows, stops on the stop file; sp_history_check.py with the product models on a scratch engine: expected 2, found 1 -> lost_writes 1, prints no id",
+   "Ruff (server/pyproject.toml config) on every changed or new script"
+  ]
+ },
+ "arms": {
+  "C0": {
+   "env": {
+    "PLAYBACK_HISTORY_BACKGROUND": "false"
+   },
+   "role": "baseline (today's behaviour, also the code default)"
+  },
+  "C3": {
+   "env": {
+    "PLAYBACK_HISTORY_BACKGROUND": "true"
+   },
+   "role": "candidate"
+  }
+ },
+ "scenario": {
+  "warm_torrent": "per run, playback token 0 reads the whole 256 MiB file (Range bytes=0-) before the series, so every piece is downloaded; not a sample. The DB load (dbload cells) already runs during the warm-up.",
+  "series": "after 2 s settle, a fresh playback token 1 (a new playback_id, so request 1 is the history INSERT in C0 and the background write in C3) sends 20 sequential bounded Range GETs of 1 MiB, 200 ms apart: request 1 at 0, request 2 the tail probe, then 18 golden-ratio spread 64 KiB-aligned offsets (the same in every run). Every stream response is Connection: close, so each request opens a new TCP+TLS connection through the proxy, as a player sees it.",
+  "ttfb": "per request, from the request start (connection setup included) to the first body byte; per run p50 (median) and p95 (nearest rank) over the 20 requests, plus request 1 alone and the repeats 2..20.",
+  "rtt": "H3 latency_proxy.py between client and app in every cell: one-way 0.5 ms (RTT 1 ms) or 10 ms (RTT 20 ms).",
+  "db_write_load": "dbload cells: sp_db_write_load.py in the app container for the whole client run: BEGIN IMMEDIATE, 256 KiB random blob insert, write lock held 20 ms, COMMIT, 20 ms pause (about 50 % write-lock duty), at most 64 scratch rows kept.",
+  "lost_writes": "after the client (and the load stop), sp_history_check.py polls up to 10 s for a playback_histories row of both playback ids of the run: lost_writes = 2 - found."
+ },
+ "plan_sha256": "eb1865dbad35b19f8f0765af0542cd17a20fa899d34c39427c1a3c8e680192e0",
+ "plan": {
+  "tool_image": "stremhu-source:sp-base-9984678",
+  "images": {
+   "C0": "stremhu-source:sp-cand-e0bd709",
+   "C3": "stremhu-source:sp-cand-e0bd709"
+  },
+  "app_env": {
+   "C0": {
+    "PLAYBACK_HISTORY_BACKGROUND": "false"
+   },
+   "C3": {
+    "PLAYBACK_HISTORY_BACKGROUND": "true"
+   }
+  },
+  "client": "range-series",
+  "fixture_playbacks": 2,
+  "history_check": true,
+  "db_write_load_args": [
+   "--payload-bytes",
+   "262144",
+   "--hold-ms",
+   "20",
+   "--pause-ms",
+   "20",
+   "--keep-rows",
+   "64"
+  ],
+  "series": [
+   {
+    "labels": [
+     "C0",
+     "C3"
+    ],
+    "reps": 5
+   },
+   {
+    "labels": [
+     "C0",
+     "C3"
+    ],
+    "reps": 5
+   }
+  ],
+  "reps": 10,
+  "total_size": 268435456,
+  "client_args": [
+   "--requests",
+   "20",
+   "--read-bytes",
+   "1048576",
+   "--gap-ms",
+   "200",
+   "--settle-s",
+   "2",
+   "--warm-playback",
+   "0",
+   "--series-playback",
+   "1"
+  ],
+  "cells": [
+   {
+    "name": "rtt1/noload",
+    "profile": "fast",
+    "piece_size": 4194304,
+    "latency_proxy_one_way_ms": 0.5,
+    "db_write_load": false
+   },
+   {
+    "name": "rtt1/dbload",
+    "profile": "fast",
+    "piece_size": 4194304,
+    "latency_proxy_one_way_ms": 0.5,
+    "db_write_load": true
+   },
+   {
+    "name": "rtt20/noload",
+    "profile": "fast",
+    "piece_size": 4194304,
+    "latency_proxy_one_way_ms": 10,
+    "db_write_load": false
+   },
+   {
+    "name": "rtt20/dbload",
+    "profile": "fast",
+    "piece_size": 4194304,
+    "latency_proxy_one_way_ms": 10,
+    "db_write_load": true
+   }
+  ],
+  "profiles": {
+   "fast": {
+    "peers": 8,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 4000000,
+      "latency_s": 0.02,
+      "jitter_s": 0.01
+     }
+    ]
+   }
+  },
+  "capture_tracebacks": true
+ },
+ "metrics": [
+  "series.ttfb_s_p50",
+  "series.ttfb_s_p95",
+  "series.first_ttfb_s",
+  "series.repeat_ttfb_s_p50",
+  "series.repeat_ttfb_s_p95",
+  "series.headers_s_p50",
+  "series.headers_s_p95",
+  "series.non_206",
+  "series.error_count",
+  "history_check.lost_writes",
+  "warm.seconds",
+  "db_write_load.transactions",
+  "db_write_load.lock_duty",
+  "db_write_load.errors",
+  "app_stats.cpu_pct_mean",
+  "app_stats.mem_mib_max",
+  "app_log.tracebacks",
+  "app_log.app_tracebacks",
+  "failed"
+ ],
+ "expected_mechanism": {
+  "repeats": "C0 pays a thread hop, the per-playback lock, an isolated SQLite session and a joined SELECT (get_or_create read) before every response's headers; C3 skips the DB after the first write -> a small per-request gain in every cell, best visible at RTT 1 ms.",
+  "first_request": "C0 inserts and commits inline; under the parallel write load it waits for the SQLite write lock (busy handler) -> the larger gain is in series.first_ttfb_s of the dbload cells, a single value per run (guard and descriptive, not the primary metric). WAL readers do not wait for the writer, so the repeats are affected by the load mainly through CPU.",
+  "rtt20": "connection setup through the proxy (TCP + TLS + request, about 3 RTT) dominates; the same absolute gain is a smaller share and may stay within the noise."
+ },
+ "wiring_smoke": {
+  "note": "Not a measurement: this image, the plan with series [{C0, C3} x 1], 8 runs (2 arms x 4 cells); the draft's smoke checks all hold (asserted at registration).",
+  "runs": [
+   {
+    "label": "C0",
+    "cell": "rtt1/noload",
+    "warm_s": 22.348,
+    "ttfb_s_p50": 0.0149,
+    "first_ttfb_s": 0.0164,
+    "lost_writes": 0,
+    "db_lock_duty": null,
+    "db_transactions": null,
+    "app_tracebacks": 0,
+    "error_lines": 1
+   },
+   {
+    "label": "C3",
+    "cell": "rtt1/noload",
+    "warm_s": 25.765,
+    "ttfb_s_p50": 0.014,
+    "first_ttfb_s": 0.0251,
+    "lost_writes": 0,
+    "db_lock_duty": null,
+    "db_transactions": null,
+    "app_tracebacks": 0,
+    "error_lines": 1
+   },
+   {
+    "label": "C0",
+    "cell": "rtt1/dbload",
+    "warm_s": 22.228,
+    "ttfb_s_p50": 0.0147,
+    "first_ttfb_s": 0.0171,
+    "lost_writes": 0,
+    "db_lock_duty": 0.52,
+    "db_transactions": 703,
+    "app_tracebacks": 0,
+    "error_lines": 1
+   },
+   {
+    "label": "C3",
+    "cell": "rtt1/dbload",
+    "warm_s": 25.397,
+    "ttfb_s_p50": 0.0138,
+    "first_ttfb_s": 0.016,
+    "lost_writes": 0,
+    "db_lock_duty": 0.518,
+    "db_transactions": 779,
+    "app_tracebacks": 0,
+    "error_lines": 1
+   },
+   {
+    "label": "C0",
+    "cell": "rtt20/noload",
+    "warm_s": 27.003,
+    "ttfb_s_p50": 0.0528,
+    "first_ttfb_s": 0.0524,
+    "lost_writes": 0,
+    "db_lock_duty": null,
+    "db_transactions": null,
+    "app_tracebacks": 0,
+    "error_lines": 1
+   },
+   {
+    "label": "C3",
+    "cell": "rtt20/noload",
+    "warm_s": 26.247,
+    "ttfb_s_p50": 0.0515,
+    "first_ttfb_s": 0.0584,
+    "lost_writes": 0,
+    "db_lock_duty": null,
+    "db_transactions": null,
+    "app_tracebacks": 0,
+    "error_lines": 1
+   },
+   {
+    "label": "C0",
+    "cell": "rtt20/dbload",
+    "warm_s": 26.409,
+    "ttfb_s_p50": 0.0522,
+    "first_ttfb_s": 0.0569,
+    "lost_writes": 0,
+    "db_lock_duty": 0.522,
+    "db_transactions": 815,
+    "app_tracebacks": 0,
+    "error_lines": 1
+   },
+   {
+    "label": "C3",
+    "cell": "rtt20/dbload",
+    "warm_s": 26.232,
+    "ttfb_s_p50": 0.0506,
+    "first_ttfb_s": 0.0536,
+    "lost_writes": 0,
+    "db_lock_duty": 0.519,
+    "db_transactions": 817,
+    "app_tracebacks": 0,
+    "error_lines": 1
+   }
+  ]
+ },
+ "decision_rule": {
+  "machine_rule": "scripts/decide_sp_gate_bootstrap.py (sha256 under harness)",
+  "primary_metric": "series.ttfb_s_p50 (per-run median TTFB of the 20 Range requests, seconds)",
+  "candidates": [
+   "C3"
+  ],
+  "key_cells": [
+   "rtt1/noload",
+   "rtt1/dbload",
+   "rtt20/noload",
+   "rtt20/dbload"
+  ],
+  "improved_required": 2,
+  "guard_metrics": [
+   "series.ttfb_s_p50",
+   "series.ttfb_s_p95",
+   "series.first_ttfb_s"
+  ],
+  "zero_required": [
+   "history_check.lost_writes",
+   "result.series.non_206",
+   "result.series.error_count"
+  ],
+  "pooling": "both series pooled: n = 10 runs per arm and cell; failed runs excluded and counted",
+  "statistic": "difference of means (C3 - C0); 10 000 bootstrap resamples per test, seed 20261112; one-sided bootstrap p-values",
+  "alpha": 0.05,
+  "resamples": 10000,
+  "seed": 20261112,
+  "improvement": "primary metric in a key cell: H0 'difference >= 0' rejected by Holm over the 4 key cells",
+  "regression": "any guard test (series.ttfb_s_p50, series.ttfb_s_p95, series.first_ttfb_s in all 4 cells, 12 tests): H0 'difference <= 0' rejected by Holm over the 12 tests",
+  "pass_if_all": [
+   "at least 2 of 4 key cells improved",
+   "no guard regression",
+   "C3: lost_writes = 0, non-206 responses = 0 and client errors = 0 in every non-failed run (none missing)",
+   "failed runs and tracebacks with an application frame: C3 <= C0"
+  ],
+  "traceback_counter": "app_tracebacks",
+  "tie_break": "C3",
+  "descriptive_only": [
+   "series.repeat_ttfb_s_p50/p95 and series.headers_s_p50/p95",
+   "C0 lost writes, non-206 and errors (reported, not a C3 criterion)",
+   "db_write_load transactions, lock duty and errors (both arms)",
+   "warm-up seconds, app CPU and memory"
+  ],
+  "otherwise": "FAIL: playback_history_background stays False (the SP03 code stays switched off; removing it is a separate package).",
+  "registration_choices": {
+   "improved_required": "2 of 4 key cells, the draft proposal (accepted).",
+   "primary_metric": "series.ttfb_s_p50 with p95 and first TTFB as guards, the draft proposal (accepted).",
+   "db_load_strength": "The draft's 256 KiB / 20 ms hold / 20 ms pause, unchanged: the wiring smoke shows lock duty within 0.3..0.7 and 0 errors in both dbload cells (wiring_smoke).",
+   "total_size": "256 MiB, unchanged (the warm-up is unmeasured)."
+  }
+ },
+ "infra_retry": "The controller reruns a run once when it failed by Docker itself (docker run exit 125, 'error waiting for container', 'error during connect', 'Cannot connect to the Docker daemon'); the record keeps the first failure as infra_retry. Any other failure, or a second infrastructure failure, stays a failed run and counts under 'failed runs C3 <= C0'.",
+ "runner": {
+  "where": "host shell in the SP03 worktree, local Docker Desktop, sequential with every other measurement (no build or other gate while it runs).",
+  "runs_and_time": "2 series x 5 reps x 4 cells x 2 arms = 80 runs, each with fresh network, volume and containers; about 1 min per run (start, warm-up ~10 s, series ~5 s, teardown) -> about 1.5 h; label order rotates per repetition, the two arms of a cell run back to back."
+ },
+ "commands": {
+  "measure": "python scripts/benchmark_sp_playback_controller.py --plan docs/feature/stream-performance/evidence/gsp03-v1-plan.json --out <scratch>/gsp03v1/gsp03-v1-results.jsonl --workdir <scratch>/gsp03v1/gsp03-v1",
+  "summarize": "python scripts/summarize_sp_playback.py <scratch>/gsp03v1/gsp03-v1-results.jsonl docs/feature/stream-performance/evidence/gsp03-v1-protocol.json docs/feature/stream-performance/evidence/gsp03-v1-summary.json docs/feature/stream-performance/evidence/gsp03-v1-complete.json",
+  "decide": "python scripts/decide_sp_gate_bootstrap.py docs/feature/stream-performance/evidence/gsp03-v1-protocol.json docs/feature/stream-performance/evidence/gsp03-v1-complete.json docs/feature/stream-performance/evidence/gsp03-v1-decision.json"
+ }
+}

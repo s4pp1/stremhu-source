@@ -13,7 +13,15 @@ import {
 
 export const getTorrents = queryOptions({
   queryKey: ['torrents'],
-  refetchInterval: 1000,
+  refetchIntervalInBackground: false,
+  refetchInterval: (query) => {
+    const list = query.state.data
+    // M15: Adaptív lekérdezés: aktív letöltésnél sűrűbb (1.5s), nyugalmi állapotban kímélő (5s)
+    const hasActive = list?.some(
+      (t) => t.downloadSpeed > 0 || (t.total > 0 && t.downloaded < t.total),
+    )
+    return hasActive ? 1500 : 5000
+  },
   queryFn: async () => {
     const response = await torrentsGetList()
 

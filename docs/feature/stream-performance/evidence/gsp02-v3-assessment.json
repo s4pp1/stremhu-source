@@ -1,0 +1,363 @@
+{
+ "id": "gsp02-v3-assessment",
+ "protocol": "gsp02-v3",
+ "recorded_at_utc": "2026-11-09T16:35:34.811917+00:00",
+ "decision": "FAIL",
+ "consequence": "Both policies stay legacy under the registered rule. The FAIL is kept.",
+ "per_candidate": {
+  "C3": {
+   "pass": false,
+   "improved_key_cells_both_series": [
+    "fast/16MiB/30Mbit",
+    "thin/4MiB/30Mbit",
+    "thin/16MiB/30Mbit"
+   ],
+   "improved_count": 3,
+   "improved_required": 4,
+   "regressions": [
+    [
+     "fast/16MiB/30Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "fast/16MiB/30Mbit",
+     "series0",
+     "start.stall_s"
+    ],
+    [
+     "fast/16MiB/30Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "fast/16MiB/30Mbit",
+     "series1",
+     "start.stall_s"
+    ],
+    [
+     "fast/16MiB/60Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "fast/16MiB/60Mbit",
+     "series0",
+     "start.stall_s"
+    ],
+    [
+     "fast/16MiB/60Mbit",
+     "series1",
+     "start.ttfb_s"
+    ],
+    [
+     "fast/16MiB/60Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "fast/16MiB/60Mbit",
+     "series1",
+     "start.stall_s"
+    ],
+    [
+     "fast/16MiB/8Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "fast/16MiB/8Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "fast/1MiB/30Mbit",
+     "series0",
+     "start.time_to_start_s"
+    ],
+    [
+     "fast/1MiB/30Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "fast/1MiB/30Mbit",
+     "series0",
+     "start.stall_s"
+    ],
+    [
+     "fast/1MiB/30Mbit",
+     "series1",
+     "start.time_to_start_s"
+    ],
+    [
+     "fast/1MiB/30Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "fast/1MiB/30Mbit",
+     "series1",
+     "start.stall_s"
+    ],
+    [
+     "fast/4MiB/30Mbit",
+     "series0",
+     "start.time_to_start_s"
+    ],
+    [
+     "fast/4MiB/30Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "fast/4MiB/30Mbit",
+     "series0",
+     "start.stall_s"
+    ],
+    [
+     "fast/4MiB/30Mbit",
+     "series1",
+     "start.time_to_start_s"
+    ],
+    [
+     "fast/4MiB/30Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "fast/4MiB/30Mbit",
+     "series1",
+     "start.stall_s"
+    ],
+    [
+     "fast/4MiB/60Mbit",
+     "series0",
+     "start.time_to_start_s"
+    ],
+    [
+     "fast/4MiB/60Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "fast/4MiB/60Mbit",
+     "series0",
+     "start.stall_s"
+    ],
+    [
+     "fast/4MiB/60Mbit",
+     "series1",
+     "start.time_to_start_s"
+    ],
+    [
+     "fast/4MiB/60Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "fast/4MiB/60Mbit",
+     "series1",
+     "start.stall_s"
+    ],
+    [
+     "mixed/16MiB/30Mbit",
+     "series0",
+     "start.time_to_start_s"
+    ],
+    [
+     "mixed/16MiB/30Mbit",
+     "series0",
+     "start.ttfb_s"
+    ],
+    [
+     "mixed/16MiB/30Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "mixed/16MiB/30Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "mixed/4MiB/30Mbit",
+     "series0",
+     "start.stall_s"
+    ],
+    [
+     "mixed/4MiB/30Mbit",
+     "series1",
+     "start.stall_s"
+    ],
+    [
+     "thin/16MiB/30Mbit",
+     "series0",
+     "start.ttfb_s"
+    ],
+    [
+     "thin/16MiB/30Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "thin/16MiB/30Mbit",
+     "series0",
+     "start.stall_s"
+    ],
+    [
+     "thin/16MiB/30Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "thin/16MiB/30Mbit",
+     "series1",
+     "start.stall_s"
+    ],
+    [
+     "thin/1MiB/30Mbit",
+     "series0",
+     "start.time_to_start_s"
+    ],
+    [
+     "thin/1MiB/30Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "thin/1MiB/30Mbit",
+     "series0",
+     "start.stall_s"
+    ],
+    [
+     "thin/1MiB/30Mbit",
+     "series1",
+     "start.time_to_start_s"
+    ],
+    [
+     "thin/1MiB/30Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "thin/1MiB/30Mbit",
+     "series1",
+     "start.stall_s"
+    ],
+    [
+     "thin/4MiB/30Mbit",
+     "series0",
+     "start.stall_s"
+    ],
+    [
+     "thin/4MiB/30Mbit",
+     "series1",
+     "start.stall_s"
+    ]
+   ],
+   "failed_runs": {
+    "C0": 0,
+    "C3": 0
+   },
+   "tracebacks_total": {
+    "C0": 4,
+    "C3": 0
+   },
+   "total_primary_gain_s": -56.338
+  },
+  "C4": {
+   "pass": false,
+   "improved_key_cells_both_series": [
+    "fast/1MiB/30Mbit",
+    "fast/4MiB/30Mbit",
+    "fast/16MiB/30Mbit",
+    "thin/1MiB/30Mbit",
+    "thin/4MiB/30Mbit",
+    "thin/16MiB/30Mbit"
+   ],
+   "improved_count": 6,
+   "improved_required": 4,
+   "regressions": [
+    [
+     "fast/16MiB/30Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "fast/16MiB/30Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "fast/16MiB/60Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "fast/16MiB/8Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "mixed/16MiB/30Mbit",
+     "series0",
+     "seek.resume_s"
+    ],
+    [
+     "mixed/16MiB/30Mbit",
+     "series1",
+     "start.ttfb_s"
+    ],
+    [
+     "mixed/4MiB/30Mbit",
+     "series0",
+     "start.time_to_start_s"
+    ],
+    [
+     "mixed/4MiB/30Mbit",
+     "series0",
+     "start.ttfb_s"
+    ],
+    [
+     "thin/16MiB/30Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "thin/1MiB/30Mbit",
+     "series1",
+     "seek.resume_s"
+    ],
+    [
+     "thin/4MiB/30Mbit",
+     "series0",
+     "seek.resume_s"
+    ]
+   ],
+   "failed_runs": {
+    "C0": 0,
+    "C4": 0
+   },
+   "tracebacks_total": {
+    "C0": 4,
+    "C4": 2
+   },
+   "total_primary_gain_s": 26.679
+  }
+ },
+ "analysis": [
+  "C3 (edges + focus) is clearly worse (48 regressions, net time-to-start loss of 56 s over the key cells): giving only the awaited piece a deadline starves the pipeline. Rejected.",
+  "C4 (edges only: first+last piece urgent as upstream, the fork's window unchanged) improves time-to-start beyond noise in all 6 key cells in both series: fast 16 MiB 13.3 -> 9.1 s, 4 MiB 6.8 -> 4.7 s, 1 MiB 4.8 -> 4.3 s; thin 16 MiB 14.5 -> 11.3 s, 4 MiB 9.6 -> 6.8 s, 1 MiB 6.4 -> 5.8 s; also at 8 and 60 Mbit/s on fast.",
+  "C4's cost: post-seek resume with large pieces, fast 16 MiB +0.35-0.55 s (+1.35 s at 8 Mbit/s), thin 16 MiB +1.25 s, thin 4 MiB +1.85 s (one series each), thin 1 MiB +0.05 s. The mixed guard 'regressions' are noise-driven (mixed/4MiB time-to-start: C4 6.5 s worse in series 0, 6.6 s better in series 1).",
+  "The start/seek trade-off is now quantified; whether a start gain of 0.5-4.2 s per playback is worth a seek cost of up to ~1.9 s with 4-16 MiB pieces is a product decision, outside the registered no-regression rule."
+ ],
+ "tracebacks": {
+  "runs_with_capture": [
+   "C0-fast-16m-9-fe4305",
+   "C0-thin-16m-5-e9521d",
+   "C4-fast-16m-2-09aaf7"
+  ],
+  "finding": "Captured for the first time (masked): asyncio-internal only, no application frame. selector_events _call_connection_lost runs twice for one transport: AttributeError 'NoneType' object has no attribute 'connection_lost', then 'close' in the finally block. It happens around client disconnects over HTTPS (seek/stop), on C0 as well as candidates (C0 4, C3 0, C4 2 per 120 runs), never failed a run. Benign log noise from the server's transport handling; a separate small fix (e.g. suppress/handle in the loop exception handler or update the runtime) can be planned outside this gate."
+ }
+}

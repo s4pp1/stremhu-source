@@ -1,8 +1,8 @@
-import asyncio
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Request, Response
 
+from app.common.async_utils import owned_to_thread
 from app.modules.torznab.constants import FEED_MEDIA_TYPE, XML_MEDIA_TYPE
 from app.modules.torznab.dependencies import (
     get_torznab_service,
@@ -30,7 +30,7 @@ async def torznab_api(
     if query.function is TorznabFunction.CAPS:
         return xml_response(torznab_service.capabilities(), XML_MEDIA_TYPE)
 
-    link = await asyncio.to_thread(
+    link = await owned_to_thread(
         torznab_service.feed_link,
         request.url.path,
         request.url.query,

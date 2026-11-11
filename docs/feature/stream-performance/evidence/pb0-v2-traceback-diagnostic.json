@@ -1,0 +1,118 @@
+{
+ "id": "pb0-v2-traceback-diagnostic",
+ "is_measurement": false,
+ "recorded_at_utc": "2026-11-09T01:43:02.939273+00:00",
+ "question": "Source of the 2+2 tracebacks in two fork runs of pb0-v2 mixed/4MiB/30Mbit.",
+ "method": "Same image (B), cell and harness with masked traceback capture (URLs masked): 8 runs with 15 s + 10 s playback, then 10 runs with the full pb0-v2 scenario (45 s + 15 s).",
+ "result": "Not reproduced: 0 tracebacks in 18 runs, 0 failed runs. The event is rare or timing dependent; it stays open and every later run keeps counting tracebacks.",
+ "runs": [
+  {
+   "diagnostic": "diagtb",
+   "rep": 0,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb",
+   "rep": 1,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb",
+   "rep": 2,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb",
+   "rep": 3,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb",
+   "rep": 4,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb",
+   "rep": 5,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb",
+   "rep": 6,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb",
+   "rep": 7,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb2",
+   "rep": 0,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb2",
+   "rep": 1,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb2",
+   "rep": 2,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb2",
+   "rep": 3,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb2",
+   "rep": 4,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb2",
+   "rep": 5,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb2",
+   "rep": 6,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb2",
+   "rep": 7,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb2",
+   "rep": 8,
+   "failed": null,
+   "tracebacks": 0
+  },
+  {
+   "diagnostic": "diagtb2",
+   "rep": 9,
+   "failed": null,
+   "tracebacks": 0
+  }
+ ]
+}

@@ -27,6 +27,8 @@ class TorznabQuery:
     function: TorznabFunction
     q: str | None = None
     imdb_id: str | None = None
+    tvdb_id: str | None = None
+    tmdb_id: str | None = None
     season: int | None = None
     episode: int | str | None = None
     year: int | None = None
@@ -126,6 +128,34 @@ def _parse_imdb_id(values: dict[str, str]) -> str | None:
         return f"tt{normalized}"
 
     raise _incorrect("imdbid")
+
+
+def _parse_tvdb_id(values: dict[str, str]) -> str | None:
+    raw_tvdb_id = values.get("tvdbid")
+
+    if raw_tvdb_id is None:
+        return None
+
+    normalized = raw_tvdb_id.strip()
+
+    if _NONNEGATIVE_INTEGER.fullmatch(normalized) is None:
+        raise _incorrect("tvdbid")
+
+    return normalized
+
+
+def _parse_tmdb_id(values: dict[str, str]) -> str | None:
+    raw_tmdb_id = values.get("tmdbid")
+
+    if raw_tmdb_id is None:
+        return None
+
+    normalized = raw_tmdb_id.strip()
+
+    if _NONNEGATIVE_INTEGER.fullmatch(normalized) is None:
+        raise _incorrect("tmdbid")
+
+    return normalized
 
 
 def _parse_season(values: dict[str, str]) -> int | None:
@@ -228,6 +258,8 @@ def parse_torznab_query(request: Request) -> TorznabQuery:
         function=function,
         q=q or None,
         imdb_id=_parse_imdb_id(values),
+        tvdb_id=_parse_tvdb_id(values),
+        tmdb_id=_parse_tmdb_id(values),
         season=season,
         episode=episode,
         year=_parse_year(values),

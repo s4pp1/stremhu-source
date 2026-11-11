@@ -1,0 +1,5 @@
+{
+  "encoded_bytes_per_full_gzip_body": 585706,
+  "decoded_bytes_per_full_gzip_body": 134217728,
+  "scope": "Exact private server fixture envelope per fullbody. This is not total transferred wirebytes for an OOM/incomplete response; receivedrequest counts are recorded separately. No production size policy."
+}

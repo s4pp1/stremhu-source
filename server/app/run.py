@@ -8,6 +8,7 @@ from rich.panel import Panel
 from app.boot.network import ensure_network_settings
 from app.boot.settings import ensure_default_settings
 from app.boot.setup import run_migrations, setup_directories
+from app.common.log_safety import SAFE_ACCESS_LOG_FORMAT
 from app.common.logger import setup_logger
 from app.config import NodeEnv, config
 from app.modules.settings.enums import NetworkModeEnum
@@ -61,7 +62,7 @@ def start_server():
 
     hypercorn_config.certfile = boot_config.cert_path
     hypercorn_config.keyfile = boot_config.key_path
-    hypercorn_config.access_log_format = "%(m)s %(U)s%(q)s %(s)s %(L)s"
+    hypercorn_config.access_log_format = SAFE_ACCESS_LOG_FORMAT
     hypercorn_config.accesslog = logging.getLogger("hypercorn.access")
     hypercorn_config.errorlog = logging.getLogger("hypercorn.error")
 

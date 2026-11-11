@@ -29,7 +29,7 @@ def create_stremio_catalogs_service(
     db: Session,
 ) -> StremioCatalogsService:
     torrent_files_service = create_torrent_files_service(db)
-    torrent_source_provider_service = create_torrent_source_provider_service(db)
+    torrent_source_provider_service = create_torrent_source_provider_service()
     isolated_torrent_files_service = create_isolated_torrent_files_service()
 
     return StremioCatalogsService(
@@ -40,7 +40,7 @@ def create_stremio_catalogs_service(
 
 
 def get_stremio_catalogs_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> StremioCatalogsService:
     return create_stremio_catalogs_service(db)
 
@@ -58,14 +58,18 @@ def create_stremio_service(
 
 
 def get_stremio_service(
-    db: Annotated[Session, Depends(get_db)],
+    db: Annotated[Session, Depends(get_db, scope="function")],
 ) -> StremioService:
     return create_stremio_service(db)
 
 
 def get_parsed_stream_id(
     stream_id: Annotated[
-        str, Path(..., description="Stream azonosító (IMDB ID vagy torrent ID)")
+        str,
+        Path(
+            ...,
+            description="Stream azonosító (IMDB ID, TVDB ID vagy torrent ID)",
+        ),
     ],
 ) -> StreamId:
     return parse_stream_id(stream_id)
