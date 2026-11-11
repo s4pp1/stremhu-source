@@ -1,0 +1,68 @@
+{
+ "id": "gsp06-draft",
+ "status": "Session draft for gate GSP06 (SP06/b Tech Info prefetch); NOT registered, no measured run. Registration copies the plan and rule into gsp06-v1-plan.json / gsp06-v1-protocol.json with script hashes, after a non-measurement wiring smoke.",
+ "item": "SP06/b: C0 = legacy (tech_info_prefetch off, breaker off) vs C6 = prefetch (tech_info_prefetch on, top 5, 20 in flight, 10 s background timeout; breaker off).",
+ "plan": {
+  "image": "stremhu-source:sp-cand-e61ab39",
+  "arms": {"C0": "legacy", "C6": "prefetch"},
+  "series": 2,
+  "reps_per_series": 5,
+  "harness_args": ["--scenarios", "S1", "--requests", "24", "--interval", "5", "--time-scale", "1",
+                   "--trackers", "3", "--results-per-tracker", "4", "--latency", "0.4", "--jitter", "0.25",
+                   "--download-latency", "0.2", "--steady-from", "2"],
+  "seed_base": 20261110,
+  "variants": {
+   "t02": ["--tech-info-latency", "0.2", "--tech-info-failure-rate", "0"],
+   "t10": ["--tech-info-latency", "1.0", "--tech-info-failure-rate", "0"],
+   "t20": ["--tech-info-latency", "2.0", "--tech-info-failure-rate", "0"],
+   "t10f": ["--tech-info-latency", "1.0", "--tech-info-failure-rate", "0.1"]
+  },
+  "cpuset": "0,1",
+  "cpus": 2,
+  "memory": "1g"
+ },
+ "why_seed_per_rep": "Repetition r runs both arms with --seed 20261110 + r: the arms of a repetition see the same search-jitter sequence (one stream per tracker, untouched by Tech Info lookups) and the same Tech Info failure draws (a function of seed, torrent and attempt), while the repetitions sample different sequences, so the bootstrap over repetitions includes the sequence variance.",
+ "why_time_scale_1": "The product's 1.5 s Tech Info budget (_TECH_INFO_BUDGET_SECONDS) is a code constant the harness does not scale; the gate is about that budget, so every duration runs unscaled. S1 only: no breaker, flap or deadline behaviour is involved, so a 5 s interval only paces the sequential requests.",
+ "expected_mechanism": {
+  "t02": "C0 waits ~0.2 s for Tech Info after the .torrent downloads; C6 starts it after the tracker phase, parallel with the 0.2 s downloads -> cold ~0.2 s faster, identical attributes.",
+  "t10": "C0 waits ~1.0 s; C6 only the rest of the budget from the prefetch start -> cold ~0.2 s faster, identical attributes.",
+  "t20": "Both time out on the cold request (1.5 s < 2.0 s); C0 cancels the fetch, so the warm request pays 1.5 s again and gets nothing; C6's background fetch completes and fills the cache -> warm request enriched and faster.",
+  "t10f": "10% failed lookups (TechInfoUnavailableException); never cached in either arm (SP06/a), retried on the next request."
+ },
+ "decision_rule": {
+  "machine_rule": "scripts/decide_sp_search_gate.py",
+  "baseline": "C0",
+  "candidate": "C6",
+  "statistic": "per-run steady-window (cold requests 2..23 and their warm pairs) latency p50/p95 (ms) and mean enriched streams per request; pooled n = 10 runs per arm and variant; difference of means; 10 000 bootstrap resamples, seed 20261111; one-sided p-values; Holm per family at alpha 0.05",
+  "improve": [
+   ["t02:S1", "cold", "p50"],
+   ["t10:S1", "cold", "p50"],
+   ["t20:S1", "warm", "mean", "steady_tech_enriched", "higher"]
+  ],
+  "guard": [
+   ["t02:S1", "cold", "p50"], ["t02:S1", "cold", "p95"], ["t02:S1", "warm", "p50"], ["t02:S1", "warm", "p95"],
+   ["t02:S1", "cold", "mean", "steady_tech_enriched", "higher"], ["t02:S1", "warm", "mean", "steady_tech_enriched", "higher"],
+   ["t10:S1", "cold", "p50"], ["t10:S1", "cold", "p95"], ["t10:S1", "warm", "p50"], ["t10:S1", "warm", "p95"],
+   ["t10:S1", "cold", "mean", "steady_tech_enriched", "higher"], ["t10:S1", "warm", "mean", "steady_tech_enriched", "higher"],
+   ["t20:S1", "cold", "p50"], ["t20:S1", "cold", "p95"], ["t20:S1", "warm", "p50"], ["t20:S1", "warm", "p95"],
+   ["t20:S1", "cold", "mean", "steady_tech_enriched", "higher"], ["t20:S1", "warm", "mean", "steady_tech_enriched", "higher"],
+   ["t10f:S1", "cold", "p50"], ["t10f:S1", "cold", "p95"], ["t10f:S1", "warm", "p50"], ["t10f:S1", "warm", "p95"],
+   ["t10f:S1", "cold", "mean", "steady_tech_enriched", "higher"], ["t10f:S1", "warm", "mean", "steady_tech_enriched", "higher"]
+  ],
+  "identical_sources": ["t02:S1", "t10:S1", "t20:S1", "t10f:S1"],
+  "identical_enrichment": ["t02:S1", "t10:S1"],
+  "max_extra_tech_info_calls_per_cold_request": {"scenarios": ["t02:S1", "t10:S1", "t20:S1", "t10f:S1"], "limit": 5.0},
+  "alpha": 0.05,
+  "resamples": 10000,
+  "seed": 20261111,
+  "pass_if_all": [
+   "the three improvements are significant after Holm: t02 and t10 cold steady p50 lower, t20 warm enriched streams higher",
+   "no guard regression after Holm over 24 tests (latency p50/p95 and enriched streams, cold and warm, every variant)",
+   "identical per-request source digests in every variant and identical rendered streams (attributes) in t02 and t10 across all runs of both arms",
+   "candidate minus baseline Tech Info calls per cold request <= 5 (tech_info_prefetch_top_n) in every variant",
+   "no failed run"
+  ],
+  "descriptive_only": ["cpu_seconds", "Tech Info calls and failures", "t10f enriched streams vs failure draws"],
+  "otherwise": "FAIL: tech_info_prefetch stays False."
+ }
+}

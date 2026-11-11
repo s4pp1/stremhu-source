@@ -1,0 +1,70 @@
+{
+ "id": "default-swr-docker-smoke",
+ "is_measurement": false,
+ "recorded_at_utc": "2026-11-11T08:22:29.725245+00:00",
+ "purpose": "Local Docker functional check of the new SP07 default (no env) and of the rollback via env: H2 harness 'default' policy (the image's own settings: breaker 2, Tech Info prefetch on, hard TTL from config), the gsp07-v2 harness arguments with --requests 6, variants m (no new release) and ep (new episode), seed 20261112; steady window = requests 2..5 (n = 4).",
+ "image": {
+  "tag": "stremhu-source:sp-cand-8157b51",
+  "id": "sha256:3a33e7692527a1c995a96bf3f07b2c5629a4d1073f617d2512c33e364527bd51"
+ },
+ "built_from": "8157b51 (feature/stream-performance, clean checkout)",
+ "result": "Default: hard TTL 86400 s; the soft-expired movie request is served from the old list in ~10.5 ms (the warm-path speed) and refreshed in the background. Env 0: the same request waits a synchronous tracker search (~440 ms), as before SP07. The episode missing from the old list is refreshed synchronously in both (~642 ms; lower than gsp07's 870 ms: here the Tech Info prefetch is on, in both gsp07 arms it was off, the likely reason, not measured separately). 3 tracker calls per stale request in every run, 0 external HTTP.",
+ "runs": [
+  {
+   "label": "no env (code default)",
+   "variant": "m",
+   "effective_hard_ttl_seconds": 86400.0,
+   "effective_tech_info_prefetch": true,
+   "effective_breaker_threshold": 2,
+   "stale_steady_p50_ms": 10.5,
+   "warm_steady_p50_ms": 10.4,
+   "followup_steady_p50_ms": 10.3,
+   "stale_tracker_calls_per_request": [
+    3
+   ],
+   "external_http_attempts": 0
+  },
+  {
+   "label": "no env (code default)",
+   "variant": "ep",
+   "effective_hard_ttl_seconds": 86400.0,
+   "effective_tech_info_prefetch": true,
+   "effective_breaker_threshold": 2,
+   "stale_steady_p50_ms": 641.9,
+   "warm_steady_p50_ms": 9.8,
+   "followup_steady_p50_ms": 8.8,
+   "stale_tracker_calls_per_request": [
+    3
+   ],
+   "external_http_attempts": 0
+  },
+  {
+   "label": "env INDEXER_CACHE_HARD_TTL_SECONDS=0 (rollback)",
+   "variant": "m",
+   "effective_hard_ttl_seconds": 0.0,
+   "effective_tech_info_prefetch": true,
+   "effective_breaker_threshold": 2,
+   "stale_steady_p50_ms": 440.1,
+   "warm_steady_p50_ms": 9.7,
+   "followup_steady_p50_ms": 9.4,
+   "stale_tracker_calls_per_request": [
+    3
+   ],
+   "external_http_attempts": 0
+  },
+  {
+   "label": "env INDEXER_CACHE_HARD_TTL_SECONDS=0 (rollback)",
+   "variant": "ep",
+   "effective_hard_ttl_seconds": 0.0,
+   "effective_tech_info_prefetch": true,
+   "effective_breaker_threshold": 2,
+   "stale_steady_p50_ms": 642.5,
+   "warm_steady_p50_ms": 9.7,
+   "followup_steady_p50_ms": 8.9,
+   "stale_tracker_calls_per_request": [
+    3
+   ],
+   "external_http_attempts": 0
+  }
+ ]
+}

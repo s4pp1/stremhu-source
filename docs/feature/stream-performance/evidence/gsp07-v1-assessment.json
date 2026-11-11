@@ -1,0 +1,62 @@
+{
+ "id": "gsp07-v1-assessment",
+ "protocol": "gsp07-v1",
+ "recorded_at_utc": "2026-11-10T18:17:24.691144+00:00",
+ "decision": "FAIL",
+ "consequence": "FAIL under the registered rule, solely because of the 'no failed run' criterion: one run was lost to a Docker infrastructure error. Every other criterion holds (both improvements, no guard regression, every hard check clean). The result is kept; indexer_cache_hard_ttl_seconds stays 0 (today's cache). gsp07-v2 repeats the identical plan, image, arms, variants, seeds, tests and hard checks with one change, registered before any v2 run: the runner retries a run once when docker run exits 125 without a result file, keeping the first failure on the record.",
+ "checks": {
+  "improved": [
+   "m:S1 stale p50",
+   "mu:S1 stale p50"
+  ],
+  "regressions": [],
+  "source_set_digest_mismatches": 0,
+  "enrichment_mismatches": 0,
+  "new_upload_violations": 0,
+  "tracker_call_violations": 0,
+  "tracker_call_checks": {
+   "m:S1 stale": {
+    "extra_tracker_calls_per_request": 0.0,
+    "within_limit": true
+   },
+   "m:S1 followup": {
+    "extra_tracker_calls_per_request": 0.0,
+    "within_limit": true
+   },
+   "mu:S1 stale": {
+    "extra_tracker_calls_per_request": 0.0,
+    "within_limit": true
+   },
+   "mu:S1 followup": {
+    "extra_tracker_calls_per_request": 0.0,
+    "within_limit": true
+   },
+   "ep:S1 stale": {
+    "extra_tracker_calls_per_request": 0.0,
+    "within_limit": true
+   },
+   "ep:S1 followup": {
+    "extra_tracker_calls_per_request": 0.0,
+    "within_limit": true
+   }
+  },
+  "failed_runs": [
+   "C7 rep 6 m"
+  ],
+  "runs": 60,
+  "image_ids": [
+   "sha256:e38c896c76a5f5e56396997802e72206af5d7f0b81f1d48e90fd06b67653a04b"
+  ],
+  "script_sha256": [
+   "8c0aa08089af7d5b9d4f0ba1d89e5c3c2b029cd56ce530f93798fc7549cc39b0"
+  ],
+  "external_http_attempts": 0,
+  "infra_retries": 0
+ },
+ "analysis": [
+  "Improvements significant after Holm (one-sided p 0.0001 each): stale steady p50 m 466 -> 9.5 ms, mu 671 -> 9.5 ms: C7 answers a soft-expired request from the old list at warm-path speed.",
+  "No guard regression after Holm over 20 latency guards: every guarded cold, warm and followup path within 0.89 ms of C0 (mu followup is not a guard: both arms download the new .torrent there, 210.5 vs 214.4 ms, descriptive); stale p95 m 504 -> 11.2 ms, mu 708 -> 11.4 ms; ep stale 870 vs 870 ms (the episode is missing from the old list, so C7 refreshes synchronously, as designed).",
+  "Tracker calls per request equal in both arms (stale m 3 vs 3, followup 0 vs 0); the new release is visible in every mu followup row (C7 1.0) and every ep stale/followup row; the mu stale row of C7 shows it at rate 0.0 (the accepted staleness: the old list is served once, the background refresh lands the release for the next request).",
+  "Failed run: order 37 (C7 rep 6 m), exit 125 after 8.1 s, Docker CLI error 'error waiting for container: unexpected EOF' (a docker run exit 125 is Docker's own error, not the benchmark's exit code). The following run (order 38) took 186.8 s instead of ~170.5 s: its container was created only at 18:13:11, after the last container destroy event in Docker's event log (18:13:10; earlier events were no longer retained), so no two measurement containers overlap in the available log, and its in-container timings are within the range of the other runs (per_run_stale_and_warm_p50 in the summary)."
+ ]
+}

@@ -1,0 +1,169 @@
+{
+ "tool_image": "stremhu-source:sp-base-9984678",
+ "images": {
+  "C0": "stremhu-source:sp-cand-8157b51",
+  "W16": "stremhu-source:sp-cand-8157b51",
+  "W32": "stremhu-source:sp-cand-8157b51"
+ },
+ "app_env": {
+  "C0": {},
+  "W16": {
+   "RELAY_READAHEAD_POLICY": "window",
+   "RELAY_READAHEAD_BYTES": "16777216"
+  },
+  "W32": {
+   "RELAY_READAHEAD_POLICY": "window",
+   "RELAY_READAHEAD_BYTES": "33554432"
+  }
+ },
+ "series": [
+  {
+   "labels": [
+    "C0",
+    "W16",
+    "W32"
+   ],
+   "reps": 2
+  }
+ ],
+ "reps": 2,
+ "total_size": 1073741824,
+ "client_args": [
+  "--play-s",
+  "60",
+  "--seek-play-s",
+  "8",
+  "--start-buffer-s",
+  "2",
+  "--rebuffer-s",
+  "1",
+  "--max-buffer-s",
+  "30"
+ ],
+ "cells": [
+  {
+   "profile": "fast",
+   "piece_size": 1048576,
+   "bitrate_mbit": 60
+  },
+  {
+   "profile": "fast",
+   "piece_size": 4194304,
+   "bitrate_mbit": 60
+  },
+  {
+   "profile": "fast",
+   "piece_size": 16777216,
+   "bitrate_mbit": 60
+  },
+  {
+   "profile": "mixed",
+   "piece_size": 1048576,
+   "bitrate_mbit": 30
+  },
+  {
+   "profile": "mixed",
+   "piece_size": 4194304,
+   "bitrate_mbit": 30
+  },
+  {
+   "profile": "mixed",
+   "piece_size": 16777216,
+   "bitrate_mbit": 30
+  },
+  {
+   "profile": "mixed",
+   "piece_size": 1048576,
+   "bitrate_mbit": 60
+  },
+  {
+   "profile": "mixed",
+   "piece_size": 4194304,
+   "bitrate_mbit": 60
+  },
+  {
+   "profile": "mixed",
+   "piece_size": 16777216,
+   "bitrate_mbit": 60
+  },
+  {
+   "profile": "thin",
+   "piece_size": 1048576,
+   "bitrate_mbit": 30
+  },
+  {
+   "profile": "thin",
+   "piece_size": 4194304,
+   "bitrate_mbit": 30
+  },
+  {
+   "profile": "thin",
+   "piece_size": 16777216,
+   "bitrate_mbit": 30
+  }
+ ],
+ "profiles": {
+  "fast": {
+   "peers": 8,
+   "profiles": [
+    {
+     "rate_bytes_per_s": 4000000,
+     "latency_s": 0.02,
+     "jitter_s": 0.01
+    }
+   ]
+  },
+  "mixed": {
+   "peers": 8,
+   "profiles": [
+    {
+     "rate_bytes_per_s": 3000000,
+     "latency_s": 0.03,
+     "jitter_s": 0.01
+    },
+    {
+     "rate_bytes_per_s": 3000000,
+     "latency_s": 0.03,
+     "jitter_s": 0.01
+    },
+    {
+     "rate_bytes_per_s": 3000000,
+     "latency_s": 0.03,
+     "jitter_s": 0.01
+    },
+    {
+     "rate_bytes_per_s": 500000,
+     "latency_s": 0.1,
+     "jitter_s": 0.05
+    },
+    {
+     "rate_bytes_per_s": 500000,
+     "latency_s": 0.1,
+     "jitter_s": 0.05
+    },
+    {
+     "rate_bytes_per_s": 500000,
+     "latency_s": 0.1,
+     "jitter_s": 0.05
+    },
+    {
+     "stall": true
+    },
+    {
+     "stall": true
+    }
+   ]
+  },
+  "thin": {
+   "peers": 2,
+   "profiles": [
+    {
+     "rate_bytes_per_s": 2500000,
+     "latency_s": 0.06,
+     "jitter_s": 0.02
+    }
+   ]
+  }
+ },
+ "capture_tracebacks": true
+}

@@ -59,9 +59,9 @@
 | **Hangsáv- és feliratjelölés** | Kategóriából becsült nyelv | Tech Info / MediaInfo elemző: valós `🇯🇵 Jap`, `🇬🇧 Eng`, `🇭🇺 Hun` sávok, téves `ENG` eltávolítása, `💬 🇭🇺 Felirat` jelölés |
 | **Külső feliratok** | — | `.srt`, `.vtt`, `.ass`, `.ssa` a torrentből; ASS/SSA → WebVTT, kooperatív (szeletelt) konverzióval |
 | **Aktív lejátszás követése** | — | A felirat a ténylegesen lejátszott torrenthez tartozik; nincs második torrentindítás a felirat miatt |
-| **Lejátszás indítása** | 1 darab prioritás | A fájl eleje és vége `min(3, darabszám/2)` darabbal azonnali prioritást kap (MKV Cues / MP4 moov) |
+| **Lejátszás indítása** | A fájl első és utolsó darabja azonnali | Ugyanígy, az upstream határidő-képletével (SP02, mérve gyorsabb indulás); a korábbi 3+3 darabos indulás `RELAY_START_POLICY=legacy` és `RELAY_READAHEAD_POLICY=legacy` értékkel visszaállítható |
 | **Letöltöttség jelzése** | Torrentszinten | Fájlszintű `file_progress`; csak a kész videófájl kap `⚡ Letöltve` jelzést, a katalógusból megnyitott torrent fájllistájában is; a jelölés és az előresorolás a Preferenciák között kikapcsolható |
-| **Gyorsítótár** | Rövid tracker-cache | IMDb-keresés 1800 s, szöveges keresés 300 s TTL, generációs stream-cache; tech-info cache 3600 s |
+| **Gyorsítótár** | Rövid tracker-cache | IMDb-keresés 1800 s, szöveges keresés 300 s TTL, generációs stream-cache; tech-info cache 3600 s; lejárt trackerlista azonnal, háttérfrissítéssel, 24 órás kemény határig (SP07) |
 | **Webes felület** | Fix 1 s-os frissítés | Adaptív frissítés: 1,5 s aktív letöltésnél, 5 s egyébként, háttérben szünetel |
 
 ### 1.2 Stabilitási és biztonsági munkacsomagok (CR01–CR19)
@@ -89,6 +89,23 @@ A CR-azonosítók a [stabilitási terv](./docs/feature/stability-and-optimizatio
 | CR17 | Lifecycle és Session-élettartam | Rendezett leállítás; Session-mentes megosztott keresési eredmények; `shared_read_session()`; a policy-snapshot (CR17/b) félretéve |
 | CR18 | Bootstrap | Atomikus első admin létrehozás |
 | CR19 | Cache-fejlécek | `Cache-Control: no-store` az érzékeny válaszokon |
+
+### 1.3 Streamgyorsítás (SP01–SP10)
+
+Az SP-azonosítók a [streamgyorsítási terv](./docs/feature/stream-performance/implementation-plan.md) tételei; a végrehajtás menete a stabilitási munkáé: előre rögzített kapu, ugyanazon image-en a kapcsoló előtte/utána állása. Minden élő változás egy környezeti változóval visszaállítható; új kötelező beállítás vagy migráció nincs.
+
+| SP | Terület | `stremhu-source-VibeCodedEdition` állapota |
+| :--- | :--- | :--- |
+| SP01 | Bájtalapú előtöltési ablak | Nem került be: a leíró mérésen a 16 MiB-os ablak a vegyes swarmban csökkentette az akadást, de egy cellában lassabban indult, és több cellában lassabb lett a tekerés utáni újraindulás |
+| SP02 | Indulási darabsorrend és határidők | **Bekapcsolva:** upstream-szerű indulás (`RELAY_START_POLICY=edges`, `RELAY_READAHEAD_POLICY=upstream`); 16 MiB-os darabnál a tekerés +0,2–0,7 s, ahogy az upstreamben |
+| SP03 | Lejátszási előzmény | **Bekapcsolva:** playbackenként egyszer, a háttérben íródik, nem minden Range-kérés előtt (`PLAYBACK_HISTORY_BACKGROUND`) |
+| SP04 | Átfedő darabolvasás | Nem került be: a helyben lévő fájl olvasása mindkét változatban ~1 s / 512 MiB |
+| SP05 | Tracker-időkorlát és rövidzár | Egy közös időkorlát-segéd; **bekapcsolva:** 2 egymás utáni hiba után a tracker 120 s-ig (ismétlődéskor legfeljebb 600 s-ig) kimarad, figyelmeztetéssel (`INDEXER_BREAKER_THRESHOLD=0` kikapcsolja) |
+| SP06 | Tech Info | A hibás lekérés nem kerül a cache-be; **bekapcsolva:** háttér-előtöltés a legtöbb seederű 5 találatra (`TECH_INFO_PREFETCH`) |
+| SP07 | Lejárt trackercache | **Bekapcsolva:** a 30 perces puha TTL után azonnali régi lista háttérfrissítéssel, 24 órás kemény határ (`INDEXER_CACHE_HARD_TTL_SECONDS=0` a korábbi szinkron keresés); a torznab mindig friss listát kap |
+| SP08 | Név szerinti tartalékkeresés | Nem került be: a párhuzamosítás mért felső korlátja sem lényeges, és megduplázná a trackerhívásokat |
+| SP09 | `Connection: close` | Változatlan: a keep-alive mérve gyorsított (HTTP/1.1 kliensnél, mesterséges késleltetéssel), de a kis és bizonytalan nyereség és az upstream ismeretlen oka miatt termékdöntéssel elvetve |
+| SP10 | Beragadó peerek | Nem került be: a watchdog két kapun is elbukott, csak egy cellában javult az indulás, a korábbi 4 MiB-os nyereség nem ismétlődött |
 
 ---
 
@@ -208,6 +225,20 @@ Minden szám a [`docs/feature/stability-and-optimization/evidence/`](./docs/feat
 
 A „/” két független mérési sorozat mediánját választja el. A számok a megnevezett szintetikus profilra érvényesek; élő tracker- vagy hálózati gyorsulást nem állítanak.
 
+**Streamgyorsítás (SP):** a [`docs/feature/stream-performance/evidence/`](./docs/feature/stream-performance/evidence/) alatti, előre rögzített kapukból. A **before** és az **after** ugyanaz az image, a kapcsoló két állásával; szintetikus swarm és tracker belső Docker-hálózaton, az alkalmazás 2 CPU / 1 GiB kerettel. Az értékek karonként és cellánként 10 futás átlagai (a keresési kapuknál a futásonkénti steady-ablak p50-éé).
+
+| Mérés (SP) | Profil | before | after | Bizonyíték |
+| :--- | :--- | :--- | :--- | :--- |
+| Lejátszás indulása (SP02) | gyors swarm, 16 / 4 MiB-os darab, indulási idő | 12,6 / 6,4 s | **9,0 / 4,5 s** | [gsp02-v4](./docs/feature/stream-performance/evidence/gsp02-v4-assessment.json) |
+| ugyanez | vékony swarm, 16 / 4 / 1 MiB-os darab | 14,1 / 9,8 / 6,3 s | **11,5 / 6,7 / 5,5 s** | ugyanott |
+| Keresés nem válaszoló trackerrel (SP05) | hideg / meleg kérés, steady p50 | 12 984 / 12 555 ms | **907 / 35 ms** | [gsp05-v1](./docs/feature/stream-performance/evidence/gsp05-v1-assessment.json) |
+| Hideg keresés Tech Info-val (SP06) | 0,2 s-os Tech Info, hideg kérés p50 | 884 ms | **683 ms** | [gsp06-v2](./docs/feature/stream-performance/evidence/gsp06-v2-assessment.json) |
+| ugyanez, lassú (2 s) Tech Info | 1 s múlva ismételt kérés p50 | 1 513 ms | **11 ms**, dúsítva | ugyanott |
+| Keresés lejárt trackercache-sel (SP07) | új kiadás nélkül / új kiadással, p50 | 467 / 671 ms | **9,6 / 9,6 ms** | [gsp07-v2](./docs/feature/stream-performance/evidence/gsp07-v2-assessment.json) |
+| Első Range-kérés SQLite-írási terhelés alatt (SP03) | 1 / 20 ms RTT, első bájtig eltelt idő | 21,5 / 63,4 ms | **16,1 / 53,8 ms** | [gsp03-v1](./docs/feature/stream-performance/evidence/gsp03-v1-assessment.json) |
+
+A számok a megnevezett szintetikus profilra érvényesek; valós trackeren, valós swarmon és távoli kapcsolaton a nyereség nincs mérve.
+
 **Korábbi funkcionális/cache mérés (történeti kontextus):** a fork korábbi állapotában (a CR01–CR19 munka előtt) élő trackereken futtatott A/B/C összevetés a meleg gyorsítótárból kiszolgált streamválaszra ~3 ms-ot mért, az upstream ~3,3 s-os átlagához képest; a hideg indítás átlaga 3 754 ms (A) és 3 877 ms között volt. Ez nem ismételt, előre rögzített kapu, és élő trackerforgalmat használt, ezért csak tájékoztató jellegű.
 
 ---
@@ -226,7 +257,7 @@ Push-Location server
 Pop-Location
 ```
 
-Utolsó ellenőrzött eredmény: Ruff `All checks passed!`, basedpyright `0 errors, 0 warnings, 0 notes`, pytest **695 passed / 64 snapshot**.
+Utolsó ellenőrzött eredmény: Ruff `All checks passed!`, basedpyright `0 errors, 0 warnings, 0 notes`, pytest **835 passed / 64 snapshot**.
 
 **Frontend** (a `client/` könyvtárban):
 
@@ -243,6 +274,7 @@ npm run build
 - Belépési pont: [docs/README.md](./docs/README.md)
 - Téma- és forrásindex (AI-ágenseknek is): [docs/AI-INDEX.md](./docs/AI-INDEX.md)
 - Stabilitási terv és végrehajtási napló: [docs/feature/stability-and-optimization.md](./docs/feature/stability-and-optimization.md)
+- Streamgyorsítási terv és végrehajtási napló: [docs/feature/stream-performance.md](./docs/feature/stream-performance.md)
 
 ---
 

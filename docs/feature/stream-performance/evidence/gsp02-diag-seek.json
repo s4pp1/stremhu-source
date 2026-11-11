@@ -1,0 +1,143 @@
+{
+ "id": "gsp02-diag-seek",
+ "is_measurement": false,
+ "recorded_at_utc": "2026-11-09T10:41:19.332732+00:00",
+ "image": "stremhu-source:sp-diag-f285f9d (wip/sp-diag-seek: opt-in SPDIAG timeline logging, no behaviour change)",
+ "question": "Why does the post-seek resume with 16 MiB pieces take about twice the line-rate time for the gsp02-v2 candidates?",
+ "method": "thin/16MiB/30Mbit, C0 (legacy) and C2 (edges+upstream), 3 runs each, SPDIAG timelines aligned to the seek request (shared CLOCK_MONOTONIC); plus the gsp02-v2 per-run seek distribution.",
+ "timelines": [
+  {
+   "label": "C0",
+   "rep": 0,
+   "seek_ttfb_s": 3.417,
+   "old_stream_end_rel_s": 0.002,
+   "urgent_after_seek": [
+    "[]",
+    "[32]"
+   ],
+   "seek_piece_32_finished_rel_s": 3.412,
+   "other_pieces_finished_before_32": []
+  },
+  {
+   "label": "C2",
+   "rep": 0,
+   "seek_ttfb_s": 6.524,
+   "old_stream_end_rel_s": 0.0,
+   "urgent_after_seek": [
+    "[32]"
+   ],
+   "seek_piece_32_finished_rel_s": 6.516,
+   "other_pieces_finished_before_32": []
+  },
+  {
+   "label": "C2",
+   "rep": 1,
+   "seek_ttfb_s": 3.441,
+   "old_stream_end_rel_s": 0.0,
+   "urgent_after_seek": [
+    "[32]"
+   ],
+   "seek_piece_32_finished_rel_s": 3.435,
+   "other_pieces_finished_before_32": []
+  },
+  {
+   "label": "C0",
+   "rep": 1,
+   "seek_ttfb_s": 3.407,
+   "old_stream_end_rel_s": 0.0,
+   "urgent_after_seek": [
+    "[]",
+    "[32]"
+   ],
+   "seek_piece_32_finished_rel_s": 3.401,
+   "other_pieces_finished_before_32": []
+  },
+  {
+   "label": "C0",
+   "rep": 2,
+   "seek_ttfb_s": 6.898,
+   "old_stream_end_rel_s": 0.001,
+   "urgent_after_seek": [
+    "[]",
+    "[32]"
+   ],
+   "seek_piece_32_finished_rel_s": 6.893,
+   "other_pieces_finished_before_32": [
+    [
+     3.39,
+     "35"
+    ]
+   ]
+  },
+  {
+   "label": "C2",
+   "rep": 2,
+   "seek_ttfb_s": 7.325,
+   "old_stream_end_rel_s": 0.001,
+   "urgent_after_seek": [
+    "[32]"
+   ],
+   "seek_piece_32_finished_rel_s": 7.319,
+   "other_pieces_finished_before_32": [
+    [
+     3.41,
+     "33"
+    ]
+   ]
+  }
+ ],
+ "gsp02_v2_thin16_seek_distribution": {
+  "C0": {
+   "seek_ttfb_s_sorted": [
+    3.403,
+    3.404,
+    3.407,
+    3.407,
+    3.41,
+    3.411,
+    6.804,
+    6.878,
+    8.758,
+    8.925
+   ],
+   "fast_mode_runs_le_4s": 6
+  },
+  "C1": {
+   "seek_ttfb_s_sorted": [
+    3.44,
+    6.53,
+    6.539,
+    8.146,
+    8.428,
+    8.442,
+    8.955,
+    8.963,
+    8.964,
+    9.564
+   ],
+   "fast_mode_runs_le_4s": 1
+  },
+  "C2": {
+   "seek_ttfb_s_sorted": [
+    3.42,
+    3.447,
+    6.531,
+    6.732,
+    6.78,
+    6.825,
+    8.141,
+    8.469,
+    8.938,
+    9.551
+   ],
+   "fast_mode_runs_le_4s": 2
+  }
+ },
+ "findings": [
+  "Refuted: the previous stream does not hold an urgent piece at a seek. It notices the disconnect at once (~0 ms), ends and is destroyed; right after the seek only the new position's piece (32) is urgent.",
+  "The post-seek time is bimodal for every variant: ~3.4 s (one 16 MiB piece at the 5 MB/s line rate) or ~6.5-9.6 s. In the slow runs another window piece (33 or 35) finished first at full speed: the two peers worked on different pieces, so the piece the player waits for got half the bandwidth.",
+  "The candidates fall into the slow mode more often (gsp02-v2 thin/16MiB fast-mode runs: C0 6/10, C1 1/10, C2 2/10): a systematic effect of the policy on libtorrent's piece/peer assignment, not chance alone.",
+  "Tracebacks: 0 in these 14 runs (8 in the traceback cell fast/4MiB/8Mbit); 32 diagnostic runs without one so far versus ~1.7 % of gate runs. Next gate runs keep the masked traceback capture on (no effect on the measurement)."
+ ],
+ "next": "gsp02-v3 candidate 'focus': while the piece a stream is waiting for is missing, only that piece gets a deadline (all peers on it), then the legacy tight window; dropped deadline pieces return to the background priority (G0 leak fix); start with upstream edges (1+1)."
+}

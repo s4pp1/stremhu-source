@@ -1,0 +1,120 @@
+{
+ "id": "gsp07-draft",
+ "status": "Session draft for gate GSP07 (SP07 stale tracker cache, background refresh), ready for registration; NOT registered, no measured run. Registration (main session): build the candidate image, run the container wiring smoke below, then copy 'plan' into gsp07-v1-plan.json and this document into gsp07-v1-protocol.json with 'registered_at_utc', 'source' (commit, server/app manifest) and 'image' (tag, id) filled and the four script hashes recomputed from the registered commit. Every open question is closed below; 'to_fill_at_registration' lists the only blanks.",
+ "item": "SP07: C0 = legacy (indexer_cache_hard_ttl_seconds 0 = today's tracker cache; breaker off, Tech Info prefetch off) vs C7 = swr (hard TTL 86400 s = 24 h, the user's UX/SLO decision, row 5; indexer_cache_refresh_max_in_flight 4, the code default; breaker off, prefetch off). The soft TTL is the product's 1800 s, shortened in-process to 20 s by the harness (--imdb-cache-ttl) in both arms.",
+ "to_fill_at_registration": {
+  "source.commit": "the commit the image is built from (must contain SP07 commit 1af09cb and the GSP07 harness/decide changes of this branch)",
+  "source.server_app_manifest_sha256": "sha256 over 'path:git-blob-id' lines of git ls-tree -r <commit> server/app (method as in gsp06-v2)",
+  "image.tag / image.id": "stremhu-source:sp-cand-<short commit>, docker image inspect --format {{.Id}}",
+  "harness.sha256": "scripts/benchmark_sp_search.py, scripts/fixtures/synthetic_torrent.py, scripts/run_sp_search_gate.py, scripts/decide_sp_search_gate.py at that commit; the values below are this draft's commit, for reference",
+  "plan.image": "the tag above"
+ },
+ "harness": {
+  "what_is_real": "API-key/DB auth, Stremio/provider/repository path, IndexerSearchService with the SP07 tracker IMDb cache (soft/hard TTL, per-key background refresh, forced refresh on 0 playable streams, owner/lifespan), shared source search (singleflight incl. the imdb-fresh key, deadline, .torrent download/store), Tech Info enrichment, filter/sort/serialization.",
+  "what_is_synthetic": "tracker adapters (latency with per-tracker jitter streams; a new release per tracker after the warm request in mu/ep), .torrent download latency, nCore-like Tech Info stub. No real tracker, account or network; external HTTP is blocked and counted.",
+  "rows": "stale = same IMDb id (ep: S01E02) --stale-after s after its cold request, stream response cache invalidated, tracker entry soft-expired; followup = the same request once every background refresh settled; tracker_calls = synthetic tracker searches from the request start until its background refreshes settled; new_upload_visible = the new release's torrent identity (bingeGroup '<indexer>-<torrent id>' ending in '-new' / containing '-ep2-') is among the playable streams",
+  "sha256_at_draft_commit": {
+   "scripts/benchmark_sp_search.py": "8c0aa08089af7d5b9d4f0ba1d89e5c3c2b029cd56ce530f93798fc7549cc39b0",
+   "scripts/fixtures/synthetic_torrent.py": "49d3640d7c9e105094ddccde829e5a301219089988f4a480fa7cd3363193e87c",
+   "scripts/run_sp_search_gate.py": "073792af435e8bb009c2cf1d18f353306e0aa2b63281d45484a61c971f3159c3",
+   "scripts/decide_sp_search_gate.py": "294fefe7a082c0cc7cfbc2ee38231f229c1a50bfedc6caace9132806d92dc829"
+  }
+ },
+ "plan": {
+  "image": "stremhu-source:sp-cand-<short commit>",
+  "arms": {"C0": "legacy", "C7": "swr"},
+  "series": 2,
+  "reps_per_series": 5,
+  "harness_args": ["--scenarios", "S1", "--requests", "24", "--interval", "6", "--time-scale", "1",
+                   "--trackers", "3", "--results-per-tracker", "4", "--latency", "0.4", "--jitter", "0.25",
+                   "--download-latency", "0.2", "--tech-info-latency", "0.2", "--tech-info-failure-rate", "0",
+                   "--imdb-cache-ttl", "20", "--stale-after", "30", "--hard-ttl", "86400",
+                   "--steady-from", "2"],
+  "seed_base": 20261112,
+  "variants": {
+   "m": ["--new-upload", "none"],
+   "mu": ["--new-upload", "movie"],
+   "ep": ["--new-upload", "episode"]
+  },
+  "cpuset": "0,1",
+  "cpus": 2,
+  "memory": "1g"
+ },
+ "runner": "scripts/run_sp_search_gate.py (unchanged): one fresh --network none container per run (cpuset 0,1, 2 CPU, 1 GiB); per repetition the variant order and the arm order rotate, both arms of a variant back to back; repetition r uses --seed 20261112 + r for both arms; 2 series x 5 repetitions x 3 variants x 2 arms = 60 runs.",
+ "time_note": "Time scale 1 (the product's 1.5 s Tech Info budget is an unscaled code constant). Per run: 24 cold requests every 6 s, each with an immediate warm pair; the stale event of cold i is due at 6 i + 30 s and runs after the pair due at the same time, followed by its followup; the last stale event is due at 168 s. gsp06-v1 (same 24 x 6 s schedule, same image family) took 141-145 s wall per run, so ~172 s per run here and ~2 h 55 min for the 60 runs. Each 6 s slot holds at most one cold+warm pair (~1 s) and one stale+followup pair (C0 ~1 s, C7 ~0.6 s), so the schedule does not drift.",
+ "why_seed_per_rep": "As in GSP06: both arms of a repetition see the same per-tracker jitter sequence (C7's background refresh takes the draw C0's synchronous refresh takes, in the same order; the forced refresh of ep joins it and draws nothing), repetitions sample different sequences, so the bootstrap over repetitions includes the sequence variance.",
+ "expected_mechanism": {
+  "m": "C0 drops the soft-expired entry, so the stale request waits a full tracker search (~0.4 s + jitter); C7 serves the old list at once (~warm path) and refreshes each tracker once in the background. Tracker calls 3 per stale request and 0 per followup in both arms; identical torrents and rendered streams in every row.",
+  "mu": "C0's stale request refetches, sees the new release and downloads its .torrent; C7's stale request serves the old list (no new release, by design: the accepted staleness, bounded by the next request and the 24 h hard TTL), the background refresh lands it and the followup shows it (and downloads it). Stale rows differ by design; cold, warm and followup rows carry the same torrents.",
+  "ep": "C0's synchronous refetch finds S01E02. C7's old list has 0 playable streams for S01E02, so find_by_imdb asks a forced (allow_stale=False) refresh before the name fallback; it joins the background refresh the same request started, so still 3 tracker calls. Identical torrents in every row; the stale request costs C7 one extra pass over the old list (see the margin)."
+ },
+ "wiring_smoke_in_process": "Not a measurement (this branch, in-process, no Docker; --smoke --scenarios S1 --requests 3 --interval 2 --time-scale 0.2 --imdb-cache-ttl 3 --stale-after 4 --steady-from 0, legacy vs swr, n = 3 per kind; ms in unscaled units): one process per policy and variant (as the runner does), --seed 20261112. Steady p50, C0 -> C7: m stale 583 -> 40 ms (warm 40/41), mu stale 796 -> 41 ms, ep stale 916 -> 933 ms (p95 973 -> 1010; at time scale 0.2 the reported ms are 5x the real cost, so the real extra is ~3.5/7.5 ms); cold, warm and followup about equal. The draft rule run through decide_sp_search_gate.py on these 6 runs: 0 digest mismatches (source_set_digest; m and ep every kind, mu cold/warm/followup), 0 enrichment mismatches (m), 0 new_upload_violations, 0 tracker_call_violations (3 per stale, 0 per followup in both arms), no tracker_call_check violation; the improve/guard lists are meaningless at n = 1 and were ignored. 0 external HTTP attempts. Two policies in one process get different IMDb ids (run_index), so identity checks need one policy per process.",
+ "decision_rule": {
+  "machine_rule": "scripts/decide_sp_search_gate.py (sha256 at registration); uses the opt-in keys per-entry margin, identical_sources_by_kind, require_new_upload_visible, max_tracker_calls_per_request and max_extra_tracker_calls_per_request, which leave gsp05-v1 and gsp06-v1 decisions unchanged (checked)",
+  "baseline": "C0",
+  "candidate": "C7",
+  "statistic": "per-run steady-window (cold requests 2..23 and their warm/stale/followup rows) latency p50/p95 (ms); pooled n = 10 runs per arm and variant; difference of means; 10 000 bootstrap resamples, seed 20261113; one-sided p-values; Holm per family at alpha 0.05",
+  "improve": [
+   ["m:S1", "stale", "p50"],
+   ["mu:S1", "stale", "p50"]
+  ],
+  "guard": [
+   ["m:S1", "cold", "p50"], ["m:S1", "cold", "p95"], ["m:S1", "warm", "p50"], ["m:S1", "warm", "p95"],
+   ["m:S1", "stale", "p95"], ["m:S1", "followup", "p50"], ["m:S1", "followup", "p95"],
+   ["mu:S1", "cold", "p50"], ["mu:S1", "cold", "p95"], ["mu:S1", "warm", "p50"], ["mu:S1", "warm", "p95"],
+   ["mu:S1", "stale", "p95"],
+   ["ep:S1", "cold", "p50"], ["ep:S1", "cold", "p95"], ["ep:S1", "warm", "p50"], ["ep:S1", "warm", "p95"],
+   ["ep:S1", "followup", "p50"], ["ep:S1", "followup", "p95"],
+   ["ep:S1", "stale", "p50", "steady_latency_ms", "lower", 50.0],
+   ["ep:S1", "stale", "p95", "steady_latency_ms", "lower", 50.0]
+  ],
+  "guard_margin": {},
+  "guard_margin_reasons": {
+   "default 0 ms": "every other latency guard compares paths both arms run alike (cold, warm, m followup, ep cold/warm/followup) or that C7 must not worsen (m/mu stale p95): no tolerated worsening, as in GSP05/GSP06",
+   "ep stale 50 ms": "by design C7 makes one extra pass over the old list before joining the refresh (account read, cache read, snapshot lookup, stream resolution: about one warm-path request; gsp06-v1, same schedule and time scale: warm p50 10.4-10.9 ms, p95 11.3-11.5 ms). 50 ms allows ~4 such passes and is ~5% of a C0 episode stale request (0.4 s tracker search + 0.2 s downloads + Tech Info); a larger cost means the forced path does more than intended."
+  },
+  "source_digest_field": "source_set_digest",
+  "identical_sources": ["m:S1", "ep:S1"],
+  "identical_sources_by_kind": {"mu:S1": ["cold", "warm", "followup"]},
+  "identical_enrichment": ["m:S1"],
+  "require_new_upload_visible": [["mu:S1", "followup"], ["ep:S1", "stale"], ["ep:S1", "followup"]],
+  "max_tracker_calls_per_request": {"scenarios": ["m:S1", "mu:S1", "ep:S1"], "kinds": ["stale", "followup"], "limit": 3},
+  "max_extra_tracker_calls_per_request": {"scenarios": ["m:S1", "mu:S1", "ep:S1"], "kinds": ["stale", "followup"], "limit": 0.0},
+  "alpha": 0.05,
+  "resamples": 10000,
+  "seed": 20261113,
+  "pass_if_all": [
+   "both improvements significant after Holm: m and mu stale steady p50 lower",
+   "no guard regression after Holm over the 20 latency guards (ep stale p50/p95 with a 50 ms margin, the rest 0)",
+   "identical torrent identity (source_set_digest) per (kind, index) across all runs of both arms in m and ep (every kind) and in mu (cold, warm, followup); identical rendered streams in m",
+   "the new release is visible in every mu followup row and every ep stale and followup row of both arms",
+   "every stale and followup row of both arms makes at most 3 tracker calls (one per tracker), and C7's mean per kind is not above C0's",
+   "no failed run"
+  ],
+  "descriptive_only": [
+   "mu stale new-release visibility (0 in C7 by design)",
+   "mu followup latency and Tech Info enrichment (the new release's .torrent is downloaded at the followup in C7, at the stale request in C0; the product enriches the first 5 torrents in source order, and the new release lands at a different position)",
+   "run-level tracker_requests.search_calls_total, cpu_seconds"
+  ],
+  "otherwise": "FAIL: indexer_cache_hard_ttl_seconds stays 0."
+ },
+ "closed_questions": {
+  "time_scale": "1, as GSP06: the Tech Info budget is unscaled and the reported ms stay comparable with gsp06; ~2 h 55 min.",
+  "ep_stale_latency": "guarded with a 50 ms per-entry margin (reason above), not descriptive.",
+  "hard_checks": "opt-in keys in scripts/decide_sp_search_gate.py; with those keys absent gsp05-v1 and gsp06-v1 decide exactly as before (gsp06-v1 byte-identical to the committed decision; gsp05-v1 decision, lists and all n/p-values identical, the committed file predating the 622d802 output format).",
+  "subject_down_variant": "excluded: an S2 variant makes every C0 stale request wait the 12.5 s tracker timeout and drifts the 6 s schedule; the breaker (SP05/b, on by default) already shortens that case."
+ },
+ "user_decisions": {
+  "hard_ttl": "24 h (86400 s): UX/SLO frame row 5 in docs/feature/stream-performance.md.",
+  "torznab_always_fresh": "Decided by the user on 2026-11-10 ('Mindig friss legyen'), UX/SLO frame row 5b: the torznab path (Sonarr/Radarr) always gets a fresh list, also with SP07 on. Final, not an open question: TorznabService passes allow_stale=False (commit 1af09cb); with SP07 off the flag is ignored, so torznab behaves as today. Outside this gate's measurement (the H2 harness drives the Stremio path only)."
+ },
+ "commands": {
+  "build (main session, clean checkout of source.commit)": "docker build -t stremhu-source:sp-cand-<short commit> .",
+  "in_process_smoke (no Docker, seconds)": "cd server; PYTHONPATH=. python ../scripts/benchmark_sp_search.py --smoke --scenarios S1 --requests 3 --interval 2 --time-scale 0.2 --imdb-cache-ttl 3 --stale-after 4 --new-upload episode --steady-from 0 --policies legacy,swr --out <scratch>/gsp07-inproc-smoke.json",
+  "container_smoke_plan": "the 'plan' above with \"series\": 1, \"reps_per_series\": 1 and \"--requests\", \"6\" (6 runs, ~70 s each, ~7 min); not a measurement",
+  "container_smoke": "python scripts/run_sp_search_gate.py --plan <scratch>/gsp07-smoke-plan.json --out <scratch>/gsp07-smoke/results.jsonl --workdir <scratch>/gsp07-smoke/out",
+  "container_smoke_check": "python -I scripts/decide_sp_search_gate.py docs/feature/stream-performance/evidence/drafts/gsp07-draft.json <scratch>/gsp07-smoke/results.jsonl <scratch>/gsp07-smoke/decision.json  (wiring only: n = 1 per arm makes the bootstrap meaningless; expect 0 digest/enrichment mismatches, 0 new_upload_violations, 0 tracker_call_violations, no tracker_call_check_violations, no failed run)",
+  "gate_run": "python scripts/run_sp_search_gate.py --plan docs/feature/stream-performance/evidence/gsp07-v1-plan.json --out <scratch>/gsp07/results.jsonl --workdir <scratch>/gsp07/out",
+  "gate_decision": "python -I scripts/decide_sp_search_gate.py docs/feature/stream-performance/evidence/gsp07-v1-protocol.json <scratch>/gsp07/results.jsonl docs/feature/stream-performance/evidence/gsp07-v1-decision.json"
+ }
+}

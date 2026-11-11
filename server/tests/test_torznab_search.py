@@ -42,8 +42,10 @@ class FakeTorrentSourceProviderService:
     def __init__(self, sources: list[TorrentSource]):
         self._sources = sources
 
-    async def find_by_imdb_id(self, imdb_id: str):
+    async def find_by_imdb_id(self, imdb_id: str, allow_stale: bool = True):
         _ = imdb_id
+        # SP07: a torznab-kliensek régi trackerlistát nem kapnak (kikapcsolt SP07-nél no-op).
+        assert allow_stale is False
 
         return self._sources, []
 

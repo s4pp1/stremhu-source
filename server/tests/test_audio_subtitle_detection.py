@@ -234,6 +234,10 @@ async def test_enrich_torrent_streams_with_tech_info():
     )
 
     class MockIndexerDef:
+        # Mint a valódi nCore definíció: aki felülírja a fetch_tech_info-t, Tech Info-adónak jelöli magát
+        # (az SP06/b előtöltés, az alapértelmezett út, csak ezeket kéri le).
+        provides_tech_info = True
+
         async def fetch_tech_info(self, torrent_id: str):
             nfo = """
 Audio #1

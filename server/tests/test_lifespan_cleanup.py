@@ -621,6 +621,59 @@ async def test_cancelled_lifespan_owner_waits_for_remaining_cleanup(lifecycle_ha
         await asyncio.gather(task, return_exceptions=True)
 
 
+async def test_lifespan_drains_a_pending_playback_history_write_before_later_stages(lifecycle_harness, monkeypatch):
+    """SP03 on: the background-db step awaits a pending history write; nothing is orphaned or lost."""
+    from app import main
+    from app.common import async_utils
+    from app.modules.playback_histories.schemas.internal import (
+        PlaybackHistoryClientInfo,
+    )
+    from app.modules.stream import service as stream_service
+    from app.modules.stream.schemas import StreamToken
+
+    fixture = lifecycle_harness
+    monkeypatch.setattr(main.config, "playback_history_background", True)
+    stream_service.clear_playback_history_state()
+    entered, release = threading.Event(), threading.Event()
+    written = []
+
+    def persist(payload):
+        entered.set()
+        assert release.wait(5)
+        written.append(payload.playback_id)
+
+    monkeypatch.setattr(stream_service, "_persist_playback_history", persist)
+    service = object.__new__(stream_service.StreamService)
+    token = StreamToken(indexer_id="fixture", torrent_id="1", file_index=0, playback_id="closing-p")
+    file = cast(Any, SimpleNamespace(name="movie.mkv", torrent=SimpleNamespace(name="movie")))
+
+    async def owner():
+        async with fixture.lifespan(fixture.app):
+            await service.save_playback_history(token, PlaybackHistoryClientInfo(), "user", file)
+            assert await asyncio.to_thread(entered.wait, 1)
+
+    task = asyncio.create_task(owner())
+    try:
+        for _ in range(200):
+            if "resume-producer-stopped" in fixture.events or task.done():
+                break
+            await asyncio.sleep(0.01)
+        await asyncio.sleep(0.05)
+        assert not task.done()
+        assert written == [] and "pieces-closed" not in fixture.events
+        release.set()
+        await asyncio.wait_for(task, 5)
+        assert written == ["closing-p"]
+        assert fixture.events.index("resume-producer-stopped") < fixture.events.index("pieces-closed")
+        assert fixture.app.state.shutdown_result["complete"]
+        assert not stream_service._history_state.pending and not stream_service._history_state.recorded
+        assert not async_utils._background_tasks
+    finally:
+        release.set()
+        await asyncio.gather(task, return_exceptions=True)
+        stream_service.clear_playback_history_state()
+
+
 async def test_background_cleanup_is_drained_without_treating_waiter_cancel_as_worker_stop(monkeypatch):
     from app.common import async_utils
 

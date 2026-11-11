@@ -62,6 +62,7 @@ Az audit és a terv régi feladathatárai az eredeti készítés történetét �
 | Hangsáv, japán, magyar, NFO, Tech Info, MediaInfo | [audio/subtitle detection](feature/audio-subtitle-detection.md) | `media_attributes/tech_info_parser.py`, `torrent_streams/service.py` |
 | HTTP pooling, cookie, indexer, login, relogin | [audit/terv](feature/stability-and-optimization/README.md), CR07/11/15 | `indexer_definitions/base_indexer_definition.py`, `indexer_definitions/dependencies.py` |
 | Libtorrent, Relay, peers, piece, prefetch, resume, timeout | [audit/terv](feature/stability-and-optimization/README.md), CR01/13/17 | `relay/service.py`, `relay/entities.py`, `torrents/background_tasks.py` |
+| Streamgyorsítás, readahead, előtöltési ablak, TTFB, indulás, akadás, tracker-időkorlát, rövidzár, Tech Info, stale cache | [eredmény: végrehajtási állapot](feature/stream-performance.md#execution-status), [terv](feature/stream-performance/implementation-plan.md), SP01–SP10 | `relay/entities.py`, `stream/router.py`, `indexers/search.py`, `torrent_streams/service.py` |
 | SQLite, WAL, checkpoint, BLOB, Session, ORM | CR02/12/14/17 | `common/database.py`, `torrents/repository.py`, `torrent_files/isolated_service.py` |
 | Session, auth, pairing, bootstrap, CSRF, TLS, titok, logging | CR05–10/16/18/19 | `auth/`, `pairings/`, `network/ssl/`, `config.py`, `main.py` |
 | React, TanStack Query, poll, observer, render, heap | CR04 | `client/src/shared/queries/torrents.ts`, `client/src/shared/lib/client.ts` |

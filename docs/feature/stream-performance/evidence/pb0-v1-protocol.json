@@ -1,0 +1,203 @@
+{
+ "id": "pb0-v1",
+ "registered_at_utc": "2026-11-08T21:55:01.423714+00:00",
+ "status": "Descriptive packet-0 playback baseline + noise, registered before any measured run. Selects no parameter and has no gate (implementation plan 2.4, 5. sor 0).",
+ "purpose": "Startup, tail-probe, buffer health, stalls and seek of the unchanged playback path on A (upstream) and B (fork main) before SP01-SP04. B is run twice (B, B2) as the noise series. The UX/SLO frame (plan ch. 7) is fixed in writing by the user after this baseline and before any SP gate, never fitted afterwards.",
+ "source": {
+  "commit": "89f9cb70d9ec230ba94ba2ba162c1aa58f9c14bc",
+  "app_tree_equals_main_0515d98": true,
+  "server_app_manifest_sha256": "212ac82ea0dd0a84bfe984e3b8de7d79c2fc020975a47091c055a6e8a7ee7e07",
+  "server_app_files": 269
+ },
+ "images": {
+  "A": "s4pp1/stremhu-source@sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+  "image_ids": {
+   "A": "sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+   "B": "sha256:b4c7ea68202391962159de1cd7e14e7e82014402ea96999fccd918cf8ef77e10",
+   "B2": "sha256:b4c7ea68202391962159de1cd7e14e7e82014402ea96999fccd918cf8ef77e10"
+  },
+  "note": "B and B2 are the same image (fork main code); C == B until a packet changes code. The B image was built at 26c84ca, the pre-rewrite id of f8118a8 (identical tree); its app code equals main 0515d98."
+ },
+ "harness_sha256": {
+  "scripts/benchmark_sp_playback_controller.py": "a0be422d8f024e9e36cf6b0544636b2612b2c32819969b60d28c29ba1e937204",
+  "scripts/benchmark_sp_playback.py": "4956e3f3818bf1686d5be81b3f5c80a79f3b60294a27611af8f128a73eb9accd",
+  "scripts/sp_app_fixture.py": "be5c4157ffc0a3984597524f577349fcfb08db6f7b610e824f927c848bbc97e2",
+  "scripts/sp_seed_service.py": "a5706a7342ffbb1af1380747fa74fa34e9f3ae3d01951c67a5340af19c43ce8a",
+  "scripts/fixtures/local_bt_seed.py": "3aa4b7d15c6dd4d726fe3117c10934e2028b780850da4970181cf5d4689a602c",
+  "scripts/fixtures/local_tracker.py": "fb538616f86e0b36ec3ae6d46cc031a9aaf4ff81b3ab738ef7baab50ddb32050",
+  "scripts/fixtures/synthetic_torrent.py": "49d3640d7c9e105094ddccde829e5a301219089988f4a480fa7cd3363193e87c"
+ },
+ "plan_sha256": "17423d29fa2130d3f99f78d9dc6bf4a8321cebae5f3d8b3180d78e91d3473e3b",
+ "plan": {
+  "tool_image": "stremhu-source:sp-base-9984678",
+  "images": {
+   "A": "s4pp1/stremhu-source@sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+   "B": "stremhu-source:sp-base-9984678",
+   "B2": "stremhu-source:sp-base-9984678"
+  },
+  "reps": 5,
+  "total_size": 1073741824,
+  "client_args": [
+   "--play-s",
+   "45",
+   "--seek-play-s",
+   "15",
+   "--start-buffer-s",
+   "2",
+   "--rebuffer-s",
+   "1",
+   "--max-buffer-s",
+   "30"
+  ],
+  "cells": [
+   {
+    "profile": "fast",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "fast",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "fast",
+    "piece_size": 16777216,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 16777216,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "thin",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "thin",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "thin",
+    "piece_size": 16777216,
+    "bitrate_mbit": 30
+   }
+  ],
+  "profiles": {
+   "fast": {
+    "peers": 8,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 4000000,
+      "latency_s": 0.02,
+      "jitter_s": 0.01
+     }
+    ]
+   },
+   "mixed": {
+    "peers": 8,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "stall": true
+     },
+     {
+      "stall": true
+     }
+    ]
+   },
+   "thin": {
+    "peers": 2,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 2500000,
+      "latency_s": 0.06,
+      "jitter_s": 0.02
+     }
+    ]
+   }
+  }
+ },
+ "topology": {
+  "network": "fresh internal Docker bridge per run (no internet), static addresses",
+  "app": "image under test, normal start (python -m app.run), HOST_IP = its internal address, HTTPS self-signed; cpuset 0,1, --cpus 2, 1 GiB memory, no swap; fresh named data volume per run",
+  "seed": "one container per peer (own address; the product allows one connection per IP), tool image, sp_seed_service.py, cpuset 2,3, 256 MiB each; peer 0 also runs the HTTP announce tracker",
+  "client": "tool image, benchmark_sp_playback.py over real HTTPS, cpuset 4,5",
+  "order": "for rep in 0..4: for cell: labels rotated by rep (A,B,B2 / B,B2,A / B2,A,B ...)"
+ },
+ "scenario": "Range bytes=0-; after 1 MiB a parallel tail probe of the last 1 MiB; playback at the cell bitrate starts when 2 s are buffered and the tail probe is done; stall when the playhead reaches received data, resume after 1 s; reading pauses at 30 s ahead; 45 s playback; then close and seek to 50% (64 KiB aligned), resume after 1 s, 15 s playback.",
+ "metrics": [
+  "start.ttfb_s",
+  "ttfb_after_first_handshake_s",
+  "start.tail_probe_s",
+  "start.time_to_start_s",
+  "start.stalls",
+  "start.stall_s",
+  "start.buffer_s_p10",
+  "start.buffer_s_median",
+  "start.time_to_full_buffer_s",
+  "seek.ttfb_s",
+  "seek.resume_s",
+  "seek.stalls",
+  "seek.stall_s",
+  "unused_downloaded_bytes",
+  "app_stats.cpu_pct_mean",
+  "app_stats.mem_mib_max",
+  "app_log.tracebacks",
+  "failed"
+ ],
+ "analysis": {
+  "per_cell_and_label": "n, median, p95 (nearest rank), min, max; failures and tracebacks counted, never dropped",
+  "noise": "J = max(|median(B) - median(B2)|, resolution) per metric and cell; resolution 0.05 s for times (client tick), 1 for counts, 1 MiB for bytes",
+  "a_vs_b": "descriptive only (A has the upstream deadlines 2000 + 1000*d ms); no decision"
+ },
+ "known_harness_properties": [
+  "Synthetic zero-byte content; piece hashes match, so pieces are natively verified.",
+  "The seed speaks TCP only and refuses uTP SYN with ST_RESET at once; libtorrent then reconnects over TCP on its next tick, a constant ~1 s connect offset for every label (reported as first_handshake_after_start_s; ttfb_after_first_handshake_s removes it).",
+  "'stall' peers accept block requests and never answer (snubbed/dead peer model).",
+  "Raw product logs are not stored (request URLs may carry the API key); only traceback/ERROR line counts.",
+  "Host: Docker Desktop (WSL2) on the local Windows machine; other host load is not controlled beyond cpusets."
+ ]
+}

@@ -1,0 +1,265 @@
+{
+ "id": "gsp02-v2",
+ "registered_at_utc": "2026-11-09T05:38:25.076595+00:00",
+ "status": "Gate GSP02 second version, registered before any measured run. Designed WITH knowledge of gsp02-v1 (FAIL): v1 key cells were all in the stalled-peer mixed profile whose noise masked the start-order effect, and upstream started faster than both fork variants at 1 MiB pieces. The rule below is fixed and never fitted afterwards; a new attempt is a new version.",
+ "item": "SP02: on one candidate image, C0 = legacy/legacy, C1 = graded start (v1 candidate), C2 = upstream-like (RELAY_START_POLICY=edges + RELAY_READAHEAD_POLICY=upstream); each candidate judged against C0.",
+ "supersedes": "gsp02-v1 (FAIL, kept)",
+ "source": {
+  "commit": "e4ad95724ea117513210a3edb43ed40b042910a6",
+  "server_app_manifest_sha256": "d9893c5eed76feba77cd3776ffea7861f0c9ffea46fc3ccf1cbed20cdeb4b707",
+  "server_app_files": 269,
+  "manifest_method": "sha256 over 'path:git-blob-id' lines of git ls-tree -r HEAD server/app",
+  "candidate_contents": "main 0515d98 + SP05/a + SP06/a + switched SP01/SP02 code incl. the C2 policies (e4ad957), defaults legacy; SP03 is NOT included (wip branch), so C0's playback path equals B's."
+ },
+ "images": {
+  "image_ids": {
+   "C0": "sha256:4509319acd4c03d7828b3a434475c1f62211b3b62ec449b6518eb2abb376f5e4",
+   "C1": "sha256:4509319acd4c03d7828b3a434475c1f62211b3b62ec449b6518eb2abb376f5e4",
+   "C2": "sha256:4509319acd4c03d7828b3a434475c1f62211b3b62ec449b6518eb2abb376f5e4"
+  },
+  "reference": "A (upstream) is not re-run; its medians for the 30 Mbit/s cells are in pb0-v2 and gsp02-v1"
+ },
+ "metrics": [
+  "start.ttfb_s",
+  "ttfb_after_first_handshake_s",
+  "start.tail_probe_s",
+  "start.time_to_start_s",
+  "start.stalls",
+  "start.stall_s",
+  "start.buffer_s_p10",
+  "start.buffer_s_median",
+  "start.time_to_full_buffer_s",
+  "seek.ttfb_s",
+  "seek.resume_s",
+  "seek.stalls",
+  "seek.stall_s",
+  "unused_downloaded_bytes",
+  "app_stats.cpu_pct_mean",
+  "app_stats.mem_mib_max",
+  "app_log.tracebacks",
+  "failed"
+ ],
+ "harness_sha256": {
+  "scripts/benchmark_sp_playback_controller.py": "69261780ef8d3b2672fa564df7b835a907646da4621abbd8161e0826f0d6c2ff",
+  "scripts/benchmark_sp_playback.py": "4956e3f3818bf1686d5be81b3f5c80a79f3b60294a27611af8f128a73eb9accd",
+  "scripts/sp_app_fixture.py": "be5c4157ffc0a3984597524f577349fcfb08db6f7b610e824f927c848bbc97e2",
+  "scripts/sp_seed_service.py": "b670ba1ff04e889dd8e49cc3781f2dc0a3cf7cbe10de785a59309b977127d3ce",
+  "scripts/fixtures/local_bt_seed.py": "f89cb48ef0ad3337e07eea697a57fcce16e4e45e2008bcc5e01d18e03cf123b5",
+  "scripts/fixtures/local_tracker.py": "fb538616f86e0b36ec3ae6d46cc031a9aaf4ff81b3ab738ef7baab50ddb32050",
+  "scripts/fixtures/synthetic_torrent.py": "49d3640d7c9e105094ddccde829e5a301219089988f4a480fa7cd3363193e87c",
+  "scripts/summarize_sp_playback.py": "03860f8a5737120f5e8a83c895c2ae7c2fbfb48f17aaefa68379e48a635764e2",
+  "scripts/decide_sp_gate.py": "1b3f69ebc0fc266f55f7d6d39c889dd1f55b3243e59eba94c40c74892a6681d5"
+ },
+ "plan_sha256": "334a3643669c653ab2b2df1b9adad91cfa0ea7c8d05c9756516114eee4a33a5e",
+ "plan": {
+  "tool_image": "stremhu-source:sp-base-9984678",
+  "images": {
+   "C0": "stremhu-source:sp-cand-e4ad957",
+   "C1": "stremhu-source:sp-cand-e4ad957",
+   "C2": "stremhu-source:sp-cand-e4ad957"
+  },
+  "app_env": {
+   "C0": {
+    "RELAY_START_POLICY": "legacy",
+    "RELAY_READAHEAD_POLICY": "legacy"
+   },
+   "C1": {
+    "RELAY_START_POLICY": "graded",
+    "RELAY_READAHEAD_POLICY": "legacy"
+   },
+   "C2": {
+    "RELAY_START_POLICY": "edges",
+    "RELAY_READAHEAD_POLICY": "upstream"
+   }
+  },
+  "series": [
+   {
+    "labels": [
+     "C0",
+     "C1",
+     "C2"
+    ],
+    "reps": 5
+   },
+   {
+    "labels": [
+     "C0",
+     "C1",
+     "C2"
+    ],
+    "reps": 5
+   }
+  ],
+  "reps": 10,
+  "total_size": 1073741824,
+  "client_args": [
+   "--play-s",
+   "10",
+   "--seek-play-s",
+   "8",
+   "--start-buffer-s",
+   "2",
+   "--rebuffer-s",
+   "1",
+   "--max-buffer-s",
+   "30"
+  ],
+  "cells": [
+   {
+    "profile": "fast",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "fast",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "fast",
+    "piece_size": 16777216,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "thin",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "thin",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "thin",
+    "piece_size": 16777216,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "fast",
+    "piece_size": 4194304,
+    "bitrate_mbit": 8
+   },
+   {
+    "profile": "fast",
+    "piece_size": 4194304,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "fast",
+    "piece_size": 16777216,
+    "bitrate_mbit": 8
+   },
+   {
+    "profile": "fast",
+    "piece_size": 16777216,
+    "bitrate_mbit": 60
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 4194304,
+    "bitrate_mbit": 30
+   },
+   {
+    "profile": "mixed",
+    "piece_size": 16777216,
+    "bitrate_mbit": 30
+   }
+  ],
+  "profiles": {
+   "fast": {
+    "peers": 8,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 4000000,
+      "latency_s": 0.02,
+      "jitter_s": 0.01
+     }
+    ]
+   },
+   "mixed": {
+    "peers": 8,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 3000000,
+      "latency_s": 0.03,
+      "jitter_s": 0.01
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "rate_bytes_per_s": 500000,
+      "latency_s": 0.1,
+      "jitter_s": 0.05
+     },
+     {
+      "stall": true
+     },
+     {
+      "stall": true
+     }
+    ]
+   },
+   "thin": {
+    "peers": 2,
+    "profiles": [
+     {
+      "rate_bytes_per_s": 2500000,
+      "latency_s": 0.06,
+      "jitter_s": 0.02
+     }
+    ]
+   }
+  }
+ },
+ "ux_frame": "docs/feature/stream-performance.md#doc-ux-slo-keret (2026-11-09): bitrates 8/30/60 Mbit/s; unused download is not a constraint; thin profile at 60 Mbit/s descriptive only (not in this matrix).",
+ "topology": "as pb0-v2 (internal network per run, one container per peer, app cpuset 0,1 / 2 CPU / 1 GiB).",
+ "scenario": "as pb0-v2 but 15 s playback and 10 s after the 50 % seek (start-up gate).",
+ "decision_rule": {
+  "primary_metric": "start.time_to_start_s (includes TTFB, tail probe and 2 s buffer)",
+  "candidates": [
+   "C1",
+   "C2"
+  ],
+  "key_cells": [
+   "fast/1MiB/30Mbit",
+   "fast/4MiB/30Mbit",
+   "fast/16MiB/30Mbit",
+   "thin/1MiB/30Mbit",
+   "thin/4MiB/30Mbit",
+   "thin/16MiB/30Mbit"
+  ],
+  "improved_required": 4,
+  "noise_J": "per cell and metric: max(|median C0 series0 - median C0 series1|, pb0-v2 noise J of the same profile/piece at 30 Mbit/s, 0.05 s); the mixed guard cells therefore carry the large mixed noise",
+  "improvement": "median(C0) - median(candidate) > J within a series",
+  "regression": "median(candidate) - median(C0) > J within a series",
+  "pass_if_all": [
+   "improvement of the primary metric in BOTH series in at least 4 of the 6 key cells (fast and thin x 1/4/16 MiB at 30 Mbit/s)",
+   "no regression in any of the 12 cells and either series for start.time_to_start_s, start.ttfb_s, seek.resume_s, start.stall_s",
+   "the candidate has no more failed runs and no more tracebacks than C0 in total"
+  ],
+  "choice": "several passing candidates: the larger total primary improvement over the key cells (both series) wins; a tie goes to C2 (closest to upstream, simplest)",
+  "tie_break": "C2",
+  "otherwise": "FAIL: both policies stay legacy; any further candidate or rule is a new version.",
+  "scope_note": "8 and 60 Mbit/s are covered on the fast profile (4/16 MiB); thin at 60 Mbit/s is below the profile's line rate (descriptive only, UX frame) and thin at 8 Mbit/s is not in this matrix.",
+  "machine_rule": "scripts/decide_sp_gate.py (sha256 recorded below)"
+ }
+}

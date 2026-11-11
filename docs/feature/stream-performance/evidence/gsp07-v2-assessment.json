@@ -1,0 +1,60 @@
+{
+ "id": "gsp07-v2-assessment",
+ "protocol": "gsp07-v2",
+ "recorded_at_utc": "2026-11-10T22:21:40.109871+00:00",
+ "decision": "PASS",
+ "consequence": "PASS under the registered rule: the hard TTL may become the product default (indexer_cache_hard_ttl_seconds 86400) in a separate commit after the user approves merging SP07 into feature/stream-performance.",
+ "checks": {
+  "improved": [
+   "m:S1 stale p50",
+   "mu:S1 stale p50"
+  ],
+  "regressions": [],
+  "source_set_digest_mismatches": 0,
+  "enrichment_mismatches": 0,
+  "new_upload_violations": 0,
+  "tracker_call_violations": 0,
+  "tracker_call_checks": {
+   "m:S1 stale": {
+    "extra_tracker_calls_per_request": 0.0,
+    "within_limit": true
+   },
+   "m:S1 followup": {
+    "extra_tracker_calls_per_request": 0.0,
+    "within_limit": true
+   },
+   "mu:S1 stale": {
+    "extra_tracker_calls_per_request": 0.0,
+    "within_limit": true
+   },
+   "mu:S1 followup": {
+    "extra_tracker_calls_per_request": 0.0,
+    "within_limit": true
+   },
+   "ep:S1 stale": {
+    "extra_tracker_calls_per_request": 0.0,
+    "within_limit": true
+   },
+   "ep:S1 followup": {
+    "extra_tracker_calls_per_request": 0.0,
+    "within_limit": true
+   }
+  },
+  "failed_runs": [],
+  "runs": 60,
+  "image_ids": [
+   "sha256:e38c896c76a5f5e56396997802e72206af5d7f0b81f1d48e90fd06b67653a04b"
+  ],
+  "script_sha256": [
+   "8c0aa08089af7d5b9d4f0ba1d89e5c3c2b029cd56ce530f93798fc7549cc39b0"
+  ],
+  "external_http_attempts": 0,
+  "infra_retries": 0
+ },
+ "analysis": [
+  "Improvements significant after Holm (one-sided p 0.0001 each): stale steady p50 m 467 -> 9.6 ms, mu 671 -> 9.6 ms: C7 answers a soft-expired request from the old list at warm-path speed.",
+  "No guard regression after Holm over 20 latency guards: every guarded cold, warm and followup path within 0.59 ms of C0 (mu followup is not a guard: both arms download the new .torrent there, 210.5 vs 214.4 ms, descriptive); stale p95 m 504 -> 11.5 ms, mu 708 -> 11.5 ms; ep stale 871 vs 870 ms (the episode is missing from the old list, so C7 refreshes synchronously, as designed).",
+  "Tracker calls per request equal in both arms (stale m 3 vs 3, followup 0 vs 0); the new release is visible in every mu followup row (C7 1.0) and every ep stale/followup row; the mu stale row of C7 shows it at rate 0.0 (the accepted staleness: the old list is served once, the background refresh lands the release for the next request).",
+  "Reproduction: every per-variant, per-arm, per-kind steady p50/p95 mean of v2 is within 1.03 ms of gsp07-v1 (largest: m C7 cold p50 882.0 vs 883.0 ms), so v1's FAIL was the lost run alone. 60/60 runs, 0 infrastructure retries; wall time 170.1-170.8 s except one run at 174.9 s whose values are within the others' range."
+ ]
+}

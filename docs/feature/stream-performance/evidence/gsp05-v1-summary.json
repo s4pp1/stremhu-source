@@ -1,0 +1,291 @@
+{
+ "protocol": "gsp05-v1",
+ "runs": 20,
+ "failed_runs": 0,
+ "image_ids": [
+  "sha256:721add08c103d85ffecd0b5c1f5f0b0f942f3015ecd7e7ff0be08817b6a128fe"
+ ],
+ "script_sha256": [
+  "b00768a93370c54f23f0165777c47eebe5e4dbe5c67c4962721a9933f1a108c0"
+ ],
+ "external_http_attempts": 0,
+ "note": "Means over n = 10 runs per arm of the per-run steady-window values (cold requests 2..23 and their warm pairs); latencies in unscaled ms.",
+ "per_scenario": {
+  "S1": {
+   "C0": {
+    "cold_steady_p50_ms": 933.304,
+    "cold_steady_p95_ms": 983.146,
+    "warm_steady_p50_ms": 37.85,
+    "warm_steady_p95_ms": 43.611,
+    "cold_steady_sources_p50": 12.0,
+    "cold_skipped_rate": 0.0,
+    "cold_partial_rate": 0.0,
+    "subject_search_calls_per_minute": 6.233,
+    "breaker_openings": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "breaker_openings_other_trackers": 0,
+    "cpu_seconds": 0.786,
+    "cold_by_subject_state": {
+     "up": {
+      "cold_requests": 240,
+      "skipped_share": 0.0,
+      "sources_mean": 12,
+      "latency_ms_mean": 944.865
+     }
+    }
+   },
+   "C5": {
+    "cold_steady_p50_ms": 933.49,
+    "cold_steady_p95_ms": 981.987,
+    "warm_steady_p50_ms": 37.656,
+    "warm_steady_p95_ms": 41.209,
+    "cold_steady_sources_p50": 12.0,
+    "cold_skipped_rate": 0.0,
+    "cold_partial_rate": 0.0,
+    "subject_search_calls_per_minute": 6.233,
+    "breaker_openings": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "breaker_openings_other_trackers": 0,
+    "cpu_seconds": 0.783,
+    "cold_by_subject_state": {
+     "up": {
+      "cold_requests": 240,
+      "skipped_share": 0.0,
+      "sources_mean": 12,
+      "latency_ms_mean": 944.852
+     }
+    }
+   }
+  },
+  "S2": {
+   "C0": {
+    "cold_steady_p50_ms": 12983.714,
+    "cold_steady_p95_ms": 12986.172,
+    "warm_steady_p50_ms": 12554.785,
+    "warm_steady_p95_ms": 12557.696,
+    "cold_steady_sources_p50": 8.0,
+    "cold_skipped_rate": 0.0,
+    "cold_partial_rate": 0.0,
+    "subject_search_calls_per_minute": 4.698,
+    "breaker_openings": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "breaker_openings_other_trackers": 0,
+    "cpu_seconds": 0.658,
+    "cold_by_subject_state": {
+     "down": {
+      "cold_requests": 240,
+      "skipped_share": 0.0,
+      "sources_mean": 8,
+      "latency_ms_mean": 12984.712
+     }
+    }
+   },
+   "C5": {
+    "cold_steady_p50_ms": 906.761,
+    "cold_steady_p95_ms": 969.271,
+    "warm_steady_p50_ms": 35.391,
+    "warm_steady_p95_ms": 39.074,
+    "cold_steady_sources_p50": 8.0,
+    "cold_skipped_rate": 0.917,
+    "cold_partial_rate": 0.0,
+    "subject_search_calls_per_minute": 0.779,
+    "breaker_openings": [
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "breaker_openings_other_trackers": 0,
+    "cpu_seconds": 0.616,
+    "cold_by_subject_state": {
+     "down": {
+      "cold_requests": 240,
+      "skipped_share": 0.917,
+      "sources_mean": 8,
+      "latency_ms_mean": 1907.909
+     }
+    }
+   }
+  },
+  "S3": {
+   "C0": {
+    "cold_steady_p50_ms": 8037.768,
+    "cold_steady_p95_ms": 10364.71,
+    "warm_steady_p50_ms": 38.974,
+    "warm_steady_p95_ms": 42.865,
+    "cold_steady_sources_p50": 12.0,
+    "cold_skipped_rate": 0.0,
+    "cold_partial_rate": 0.0,
+    "subject_search_calls_per_minute": 5.979,
+    "breaker_openings": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "breaker_openings_other_trackers": 0,
+    "cpu_seconds": 0.717,
+    "cold_by_subject_state": {
+     "slow": {
+      "cold_requests": 240,
+      "skipped_share": 0.0,
+      "sources_mean": 12,
+      "latency_ms_mean": 8206.923
+     }
+    }
+   },
+   "C5": {
+    "cold_steady_p50_ms": 8037.946,
+    "cold_steady_p95_ms": 10364.428,
+    "warm_steady_p50_ms": 38.948,
+    "warm_steady_p95_ms": 43.447,
+    "cold_steady_sources_p50": 12.0,
+    "cold_skipped_rate": 0.0,
+    "cold_partial_rate": 0.0,
+    "subject_search_calls_per_minute": 5.979,
+    "breaker_openings": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "breaker_openings_other_trackers": 0,
+    "cpu_seconds": 0.718,
+    "cold_by_subject_state": {
+     "slow": {
+      "cold_requests": 240,
+      "skipped_share": 0.0,
+      "sources_mean": 12,
+      "latency_ms_mean": 8206.747
+     }
+    }
+   }
+  },
+  "S4": {
+   "C0": {
+    "cold_steady_p50_ms": 952.569,
+    "cold_steady_p95_ms": 12988.223,
+    "warm_steady_p50_ms": 38.994,
+    "warm_steady_p95_ms": 12555.977,
+    "cold_steady_sources_p50": 12.0,
+    "cold_skipped_rate": 0.0,
+    "cold_partial_rate": 0.0,
+    "subject_search_calls_per_minute": 6.757,
+    "breaker_openings": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "breaker_openings_other_trackers": 0,
+    "cpu_seconds": 0.684,
+    "cold_by_subject_state": {
+     "down": {
+      "cold_requests": 80,
+      "skipped_share": 0.0,
+      "sources_mean": 8,
+      "latency_ms_mean": 12987.983
+     },
+     "up": {
+      "cold_requests": 160,
+      "skipped_share": 0.0,
+      "sources_mean": 12,
+      "latency_ms_mean": 933.13
+     }
+    }
+   },
+   "C5": {
+    "cold_steady_p50_ms": 902.816,
+    "cold_steady_p95_ms": 948.049,
+    "warm_steady_p50_ms": 36.049,
+    "warm_steady_p95_ms": 42.862,
+    "cold_steady_sources_p50": 8.0,
+    "cold_skipped_rate": 0.792,
+    "cold_partial_rate": 0.0,
+    "subject_search_calls_per_minute": 1.819,
+    "breaker_openings": [
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "breaker_openings_other_trackers": 0,
+    "cpu_seconds": 0.636,
+    "cold_by_subject_state": {
+     "down": {
+      "cold_requests": 150,
+      "skipped_share": 0.867,
+      "sources_mean": 8,
+      "latency_ms_mean": 2497.102
+     },
+     "up": {
+      "cold_requests": 90,
+      "skipped_share": 0.667,
+      "sources_mean": 9.333,
+      "latency_ms_mean": 892.818
+     }
+    }
+   }
+  }
+ }
+}

@@ -26,13 +26,22 @@ from app.config import NodeEnv, config
 from app.exceptions import setup_exception_handlers
 from app.modules.auth.bootstrap import initialize_bootstrap_state
 from app.modules.indexer_definitions.dependencies import get_indexer_definitions_service
+from app.modules.indexers.search import (
+    close_indexer_cache_refresh,
+    open_indexer_cache_refresh,
+)
 from app.modules.indexers.service import invalidate_indexer_cache
+from app.modules.media_attributes.tech_info_cache import (
+    close_tech_info_prefetch,
+    open_tech_info_prefetch,
+)
 from app.modules.network.background_tasks import verify_self_connection
 from app.modules.network.service import close_network_setup
 from app.modules.relay.background_tasks import resume_save_loop
 from app.modules.relay.dependencies import get_relay_service
 from app.modules.relay.service import ResumeSaveResult
 from app.modules.stream.active_playback import clear_active_playbacks
+from app.modules.stream.service import clear_playback_history_state
 from app.modules.stremio.service import (
     close_stream_searches,
     invalidate_stream_cache,
@@ -76,6 +85,8 @@ async def lifespan(app: FastAPI):
     try:
         open_stream_searches()
         open_source_searches()
+        open_tech_info_prefetch()
+        open_indexer_cache_refresh()
         if config.node_env == NodeEnv.DEV:
             config.openapi_dir.mkdir(parents=True, exist_ok=True)
             with (config.openapi_dir / "openapi.json").open("w", encoding="utf-8") as output:
@@ -148,6 +159,10 @@ async def lifespan(app: FastAPI):
             # or native resource. A cancelled await is never a thread-stop ack.
             await step("stream-searches", close_stream_searches)
             await step("source-searches", close_source_searches)
+            # SP06/b: a keresések után nem indul új előtöltés; a futók az indexer-HTTP zárása előtt állnak le.
+            await step("tech-info-prefetch", close_tech_info_prefetch)
+            # SP07: a trackercache háttérfrissítései is az indexer-HTTP zárása előtt állnak le.
+            await step("indexer-cache-refresh", close_indexer_cache_refresh)
             if definitions is not None:
                 await step("relogins", definitions.close_logins)
             await step("producers", lambda: _cancel_producers(producers))
@@ -171,6 +186,7 @@ async def lifespan(app: FastAPI):
             if relay is not None:
                 await step("native-session", relay.close_native)
             sync_step("playbacks", clear_active_playbacks)
+            sync_step("playback-history", clear_playback_history_state)
             sync_step("stream-cache", invalidate_stream_cache)
             sync_step("indexer-cache", invalidate_indexer_cache)
             sync_step("origin-cache", clear_origin_cache)

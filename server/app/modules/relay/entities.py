@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import itertools
 import math
 from collections.abc import AsyncIterator
 from typing import TYPE_CHECKING
@@ -22,6 +23,7 @@ from app.common.constants import (
 )
 from app.common.logger import logger
 from app.common.torrent_info import TorrentFileInfo, TorrentInfo
+from app.config import config
 from app.modules.torrent_streams.utils.resolver_helpers import detect_subtitle_language
 from app.modules.torrent_streams.utils.stream_file_resolver import StreamFileResolver
 
@@ -43,6 +45,7 @@ class Torrent:
         self.total_size = torrent_info.size
 
         self.piece_size = torrent_info.piece_size
+        self.piece_count = math.ceil(self.total_size / self.piece_size) if self.piece_size else 0
 
         self.critical_piece_count = max(
             1,
@@ -89,10 +92,15 @@ class Torrent:
 
             target_deadlines = self.get_deadlines()
 
+            restore_priority = config.relay_readahead_policy in ("window", "focus", "startfocus")
             for piece_index in list(self._active_deadlines.keys()):
                 if piece_index not in target_deadlines:
                     self.torrent_handle.reset_piece_deadline(piece_index)
                     self._active_deadlines.pop(piece_index)
+                    if restore_priority and not self.torrent_handle.have_piece(piece_index):
+                        # G0: a reset_piece_deadline a be nem fejezett darabot 1-es prioritáson hagyja;
+                        # tekerés után a régi ablak így tovább töltődne. Visszaállítjuk a háttérértékre.
+                        self.torrent_handle.piece_priority(piece_index, self._current_piece_priority)
 
             for piece_index, deadline in target_deadlines.items():
                 self.torrent_handle.set_piece_deadline(
@@ -118,6 +126,15 @@ class Torrent:
         self.service.trigger_priority_update(self.info_hash)
 
     def get_deadlines(self) -> dict[int, int]:
+        start_policy = config.relay_start_policy
+        readahead_policy = config.relay_readahead_policy
+        # Az új policy-k frissítésenként egyetlen darabtérkép-lekérdezést használnak (G0: a
+        # darabonkénti have_piece natív hívás ~55 µs); a legacy út változatlan.
+        have = (
+            self._piece_bitfield()
+            if start_policy != "legacy" or readahead_policy != "legacy"
+            else None
+        )
 
         target_deadlines: dict[int, int] = {}
 
@@ -125,55 +142,256 @@ class Torrent:
             if not file.has_active_streams:
                 continue
 
-            self._set_file_boundary_priorities(file, target_deadlines)
+            if start_policy == "graded" and have is not None:
+                self._set_graded_boundary_deadlines(file, have, target_deadlines)
+            elif start_policy == "edges" and have is not None:
+                self._set_edge_deadlines(file, have, target_deadlines)
+            else:
+                self._set_file_boundary_priorities(file, target_deadlines)
             self._set_matched_subtitle_priorities(file, target_deadlines)
 
             for stream in list(file.streams.values()):
                 if stream.is_destroying:
                     continue
-
-                pieces_to_fetch: list[tuple[int, int]] = []
-
-                for piece_index in range(
-                    stream.current_stream_piece, file.end_piece_index + 1
-                ):
-                    if not self.torrent_handle.have_piece(piece_index):
-                        distance = piece_index - stream.current_stream_piece
-                        pieces_to_fetch.append((piece_index, distance))
-                        if len(pieces_to_fetch) >= self.prefetch_piece_count:
-                            break
-
-                if len(pieces_to_fetch) < self.prefetch_piece_count:
-                    distance_to_end_of_file = (
-                        file.end_piece_index - stream.current_stream_piece
-                    ) + 1
-
-                    for piece_index in range(
-                        file.start_piece_index, stream.current_stream_piece
-                    ):
-                        if not self.torrent_handle.have_piece(piece_index):
-                            piece_distance = distance_to_end_of_file + (
-                                piece_index - file.start_piece_index
-                            )
-                            pieces_to_fetch.append((piece_index, piece_distance))
-                            if len(pieces_to_fetch) >= self.prefetch_piece_count:
-                                break
-
-                for piece_index, piece_distance in pieces_to_fetch:
-                    if piece_index == stream.current_stream_piece:
-                        deadline = 0
-                    elif piece_distance == 1:
-                        deadline = 300
-                    else:
-                        deadline = 1000 + (piece_distance * 500)
-
-                    if (
-                        piece_index not in target_deadlines
-                        or deadline < target_deadlines[piece_index]
-                    ):
-                        target_deadlines[piece_index] = deadline
+                if readahead_policy == "window" and have is not None:
+                    self._set_window_deadlines(stream, file, have, target_deadlines)
+                elif readahead_policy == "upstream" and have is not None:
+                    self._set_upstream_stream_deadlines(stream, file, have, target_deadlines)
+                elif readahead_policy == "focus" and have is not None:
+                    self._set_focus_stream_deadlines(stream, file, have, target_deadlines)
+                elif readahead_policy == "startfocus" and have is not None:
+                    self._set_focus_stream_deadlines(
+                        stream, file, have, target_deadlines, only_first_piece=True
+                    )
+                else:
+                    self._set_legacy_stream_deadlines(stream, file, target_deadlines)
 
         return target_deadlines
+
+    def _piece_bitfield(self) -> list[bool] | None:
+        """A torrent darabtérképe egy natív hívással; hibánál vagy eltérő hossznál a legacy út fut."""
+        try:
+            status = self.torrent_handle.status(libtorrent.status_flags_t.query_pieces)
+            pieces = [bool(piece) for piece in status.pieces]
+        except Exception:
+            return None
+        return pieces if len(pieces) == getattr(self, "piece_count", None) else None
+
+    def _set_legacy_stream_deadlines(
+        self,
+        stream: Stream,
+        file: File,
+        target_deadlines: dict[int, int],
+    ) -> None:
+        pieces_to_fetch: list[tuple[int, int]] = []
+
+        for piece_index in range(
+            stream.current_stream_piece, file.end_piece_index + 1
+        ):
+            if not self.torrent_handle.have_piece(piece_index):
+                distance = piece_index - stream.current_stream_piece
+                pieces_to_fetch.append((piece_index, distance))
+                if len(pieces_to_fetch) >= self.prefetch_piece_count:
+                    break
+
+        if len(pieces_to_fetch) < self.prefetch_piece_count:
+            distance_to_end_of_file = (
+                file.end_piece_index - stream.current_stream_piece
+            ) + 1
+
+            for piece_index in range(
+                file.start_piece_index, stream.current_stream_piece
+            ):
+                if not self.torrent_handle.have_piece(piece_index):
+                    piece_distance = distance_to_end_of_file + (
+                        piece_index - file.start_piece_index
+                    )
+                    pieces_to_fetch.append((piece_index, piece_distance))
+                    if len(pieces_to_fetch) >= self.prefetch_piece_count:
+                        break
+
+        for piece_index, piece_distance in pieces_to_fetch:
+            if piece_index == stream.current_stream_piece:
+                deadline = 0
+            elif piece_distance == 1:
+                deadline = 300
+            else:
+                deadline = 1000 + (piece_distance * 500)
+
+            if (
+                piece_index not in target_deadlines
+                or deadline < target_deadlines[piece_index]
+            ):
+                target_deadlines[piece_index] = deadline
+
+    def _set_window_deadlines(
+        self,
+        stream: Stream,
+        file: File,
+        have: list[bool],
+        target_deadlines: dict[int, int],
+    ) -> None:
+        """SP01: bájtalapú, korlátos előtöltési ablak, darabméret-független határidőkkel.
+
+        A sorrend és a fájlvégi körbefordulás a legacy úttal azonos. Az ablak
+        ``relay_readahead_bytes`` (legalább 4, legfeljebb ``relay_readahead_max_pieces`` darab),
+        a határidő a bájtban mért távolságból, ``relay_readahead_assumed_rate_bytes`` sebességgel.
+        """
+        window = min(
+            config.relay_readahead_max_pieces,
+            max(4, math.ceil(config.relay_readahead_bytes / self.piece_size)),
+        )
+        ms_per_byte = 1000 / config.relay_readahead_assumed_rate_bytes
+        current = stream.current_stream_piece
+        distance_to_end_of_file = (file.end_piece_index - current) + 1
+        candidates = itertools.chain(
+            ((index, index - current) for index in range(current, file.end_piece_index + 1)),
+            (
+                (index, distance_to_end_of_file + (index - file.start_piece_index))
+                for index in range(file.start_piece_index, current)
+            ),
+        )
+        fetched = 0
+        for piece_index, distance in candidates:
+            if have[piece_index]:
+                continue
+            if distance == 0:
+                deadline = 0
+            elif distance == 1:
+                deadline = 300
+            else:
+                deadline = 1000 + int(distance * self.piece_size * ms_per_byte)
+            if piece_index not in target_deadlines or deadline < target_deadlines[piece_index]:
+                target_deadlines[piece_index] = deadline
+            fetched += 1
+            if fetched >= window:
+                break
+
+    def _set_upstream_stream_deadlines(
+        self,
+        stream: Stream,
+        file: File,
+        have: list[bool],
+        target_deadlines: dict[int, int],
+    ) -> None:
+        """GSP02-v2 jelölt: a legacy ablak (darabszám, körbefordulás), az upstream határidő-képletével.
+
+        ``s4pp1/stremhu-source@8c99c7d``: az aktuális darab 0 ms, a többi ``2000 + 1000·d`` ms.
+        """
+        current = stream.current_stream_piece
+        distance_to_end_of_file = (file.end_piece_index - current) + 1
+        candidates = itertools.chain(
+            ((index, index - current) for index in range(current, file.end_piece_index + 1)),
+            (
+                (index, distance_to_end_of_file + (index - file.start_piece_index))
+                for index in range(file.start_piece_index, current)
+            ),
+        )
+        fetched = 0
+        for piece_index, distance in candidates:
+            if have[piece_index]:
+                continue
+            deadline = 0 if piece_index == current else 2000 + distance * 1000
+            if piece_index not in target_deadlines or deadline < target_deadlines[piece_index]:
+                target_deadlines[piece_index] = deadline
+            fetched += 1
+            if fetched >= self.prefetch_piece_count:
+                break
+
+    def _set_focus_stream_deadlines(
+        self,
+        stream: Stream,
+        file: File,
+        have: list[bool],
+        target_deadlines: dict[int, int],
+        only_first_piece: bool = False,
+    ) -> None:
+        """GSP02-v3/v4 jelölt: a lejátszó által várt darab kizárólagos elsőbbsége.
+
+        ``only_first_piece`` (``startfocus``): csak a stream első darabjára (indulás, illetve
+        tekerés utáni első darab) érvényes; a ``focus`` minden várt darabra, ami a gsp02-v3
+        szerint egyesével töltéshez és akadáshoz vezet.
+
+        Ha a stream aktuális darabja még hiányzik, csak az kap határidőt (0 ms), így minden
+        peer azon dolgozik (a diagnózis szerint különben a következő darabbal osztozik a
+        sávszélességen). Ha megvan, a legacy ablak fut (azonos darabszám, körbefordulás és
+        határidők: 300 ms, majd ``1000 + 500·d``). Az ablakból kieső darab a háttérprioritásra
+        áll vissza (``priority_manager``).
+        """
+        current = stream.current_stream_piece
+        exclusive = not have[current] and (
+            not only_first_piece or current == stream.stream_start_piece_index
+        )
+        if exclusive:
+            target_deadlines[current] = 0
+            return
+        distance_to_end_of_file = (file.end_piece_index - current) + 1
+        candidates = itertools.chain(
+            ((index, index - current) for index in range(current, file.end_piece_index + 1)),
+            (
+                (index, distance_to_end_of_file + (index - file.start_piece_index))
+                for index in range(file.start_piece_index, current)
+            ),
+        )
+        fetched = 0
+        for piece_index, distance in candidates:
+            if have[piece_index]:
+                continue
+            if distance == 0:
+                deadline = 0
+            elif distance == 1:
+                deadline = 300
+            else:
+                deadline = 1000 + distance * 500
+            if piece_index not in target_deadlines or deadline < target_deadlines[piece_index]:
+                target_deadlines[piece_index] = deadline
+            fetched += 1
+            if fetched >= self.prefetch_piece_count:
+                break
+
+    def _set_edge_deadlines(
+        self,
+        file: File,
+        have: list[bool],
+        target_deadlines: dict[int, int],
+    ) -> None:
+        """GSP02-v2 jelölt: csak a fájl első és utolsó darabja sürgős (az upstream 1+1 viselkedése)."""
+        for piece_index in {file.start_piece_index, file.end_piece_index}:
+            if not have[piece_index]:
+                target_deadlines[piece_index] = 0
+
+    def _set_graded_boundary_deadlines(
+        self,
+        file: File,
+        have: list[bool],
+        target_deadlines: dict[int, int],
+    ) -> None:
+        """SP02: a fájl eleje és vége bájtkorlátosan, fokozatos határidővel.
+
+        Csak az aktuális streamdarab kap 0 ms-ot (az ablakból). A fájl elejét az ablak
+        adja, ha a stream ott indul; különben 1000 ms-tól fokozatos. A fájl vége: az utolsó
+        darab 200 ms, a többi 1000 ms-tól fokozatosan, ``relay_tail_bytes`` erejéig.
+        """
+        total = file.end_piece_index - file.start_piece_index + 1
+        head = min(total, max(1, math.ceil(config.relay_head_bytes / self.piece_size)))
+        tail = min(total, max(1, math.ceil(config.relay_tail_bytes / self.piece_size)))
+        starts_in_head = any(
+            not stream.is_destroying
+            and stream.current_stream_piece < file.start_piece_index + head
+            for stream in file.streams.values()
+        )
+
+        def offer(piece_index: int, deadline: int) -> None:
+            if have[piece_index]:
+                return
+            if piece_index not in target_deadlines or deadline < target_deadlines[piece_index]:
+                target_deadlines[piece_index] = deadline
+
+        if not starts_in_head:
+            for i in range(head):
+                offer(file.start_piece_index + i, 1000 + 200 * i)
+        for i in range(tail):
+            offer(file.end_piece_index - i, 200 if i == 0 else 1000 + 200 * i)
 
     def _set_file_boundary_priorities(
         self,

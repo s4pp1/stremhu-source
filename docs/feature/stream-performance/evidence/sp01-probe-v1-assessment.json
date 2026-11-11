@@ -1,0 +1,85 @@
+{
+ "id": "sp01-probe-v1-assessment",
+ "protocol": "sp01-probe-v1",
+ "recorded_at_utc": "2026-11-11T17:51:58.377664+00:00",
+ "outcome": "criterion not met: no GSP01 gate is registered; SP01 closes without change",
+ "consequence": "RELAY_READAHEAD_POLICY stays upstream (the gsp02-v4 default). The byte-based window policy stays in the code behind its switch, unmeasured as a gate. This probe is descriptive evidence only and its data are never pooled into a gate.",
+ "checks": {
+  "runs": 72,
+  "failed_runs": 0,
+  "infra_retries": 0,
+  "image_ids": [
+   "sha256:3a33e7692527a1c995a96bf3f07b2c5629a4d1073f617d2512c33e364527bd51"
+  ],
+  "app_tracebacks": 0,
+  "app_error_lines_per_run": [
+   1
+  ],
+  "client_errors": [
+   {
+    "label": "W16",
+    "cell": "mixed/16MiB/60Mbit",
+    "errors": [
+     "seek-reader:TimeoutError"
+    ]
+   },
+   {
+    "label": "W32",
+    "cell": "mixed/16MiB/30Mbit",
+    "errors": [
+     "seek-reader:TimeoutError"
+    ]
+   },
+   {
+    "label": "W16",
+    "cell": "thin/16MiB/30Mbit",
+    "errors": [
+     "seek-reader:TimeoutError"
+    ]
+   }
+  ],
+  "measure_window_local": "2026-11-11 16:54:39 - 18:49:54 (chain log)"
+ },
+ "criterion_result": {
+  "problem_cells": [
+   "mixed/1MiB/30Mbit",
+   "mixed/4MiB/30Mbit",
+   "mixed/16MiB/30Mbit",
+   "mixed/1MiB/60Mbit",
+   "mixed/4MiB/60Mbit"
+  ],
+  "problem_present": true,
+  "arms": {
+   "W16": {
+    "halved_cells": [
+     "mixed/4MiB/30Mbit",
+     "mixed/16MiB/30Mbit",
+     "mixed/1MiB/60Mbit",
+     "mixed/4MiB/60Mbit"
+    ],
+    "start_cost_cells": [
+     "mixed/16MiB/60Mbit"
+    ],
+    "promising": false
+   },
+   "W32": {
+    "halved_cells": [],
+    "start_cost_cells": [
+     "fast/1MiB/60Mbit",
+     "mixed/16MiB/60Mbit"
+    ],
+    "promising": false
+   }
+  },
+  "register_gate": false
+ },
+ "analysis": [
+  "Problem present: C0 has a mean start-phase stall time >= 1 s in 5 of 12 cells, all in the mixed profile (mixed/1MiB/30Mbit C0 4.59 / W16 3.86 / W32 3.84; mixed/4MiB/30Mbit C0 1.88 / W16 0.65 / W32 3.06; mixed/16MiB/30Mbit C0 3.13 / W16 0.0 / W32 3.46; mixed/1MiB/60Mbit C0 7.53 / W16 2.69 / W32 5.07; mixed/4MiB/60Mbit C0 3.03 / W16 0.78 / W32 5.54 s). Fast and thin cells do not stall with C0.",
+  "W16 halves the mean stall time in 4 of the 5 problem cells, but its mean time_to_start_s is more than 2 s above C0's in mixed/16MiB/60Mbit (mixed/16MiB/60Mbit C0 25.9 / W16 29.48 / W32 34.02 s), so the pre-registered criterion fails for W16. W32 halves no problem cell and has the start cost in fast/1MiB/60Mbit, mixed/16MiB/60Mbit. With 2 runs per arm and cell the start-cost cell may be noise (gsp10-v2 saw series means up to 4.1 s apart in that cell), but the rule was fixed before the run and is applied as written.",
+  "Descriptive, supporting the SP01 throughput hypothesis in one cell only: in mixed/1MiB/60Mbit the live policy delivers below the bitrate (mixed/1MiB/60Mbit C0 6.63 / W16 9.24 / W32 8.84 MB/s against 7.5 MB/s needed; C0 10 stalls per run, buffer median 1.21 s). Elsewhere delivery is at the bitrate in every arm (fast about 11.0 MB/s for 60 Mbit/s plus the buffer fill, thin and mixed/30 about 4.6-5.5 MB/s).",
+  "Side effects seen in the window arms (descriptive): the seek resume is slower by more than 2 s in mixed/1MiB/30Mbit, mixed/4MiB/60Mbit, thin/1MiB/30Mbit, thin/4MiB/30Mbit, thin/16MiB/30Mbit (mixed/1MiB/30Mbit C0 1.71 / W16 5.49 / W32 0.05; mixed/4MiB/60Mbit C0 1.43 / W16 9.35 / W32 0.05; thin/1MiB/30Mbit C0 1.76 / W16 7.57 / W32 8.53; thin/4MiB/30Mbit C0 2.56 / W16 7.32 / W32 8.52; thin/16MiB/30Mbit C0 9.02 / W16 10.28 / W32 11.36 s); 3 seek reads timed out, all in window arms and 16 MiB cells (W16 mixed/16MiB/60Mbit, W32 mixed/16MiB/30Mbit, W16 thin/16MiB/30Mbit), against 0 in C0; those runs have no resume time, so the seek means above leave out the worst cases. W16 also stalls where C0 does not (thin/1MiB/30Mbit C0 0.0 / W16 1.86 / W32 4.19 s; fast/16MiB/60Mbit C0 0.0 / W16 0.43 / W32 0.0 s).",
+  "The window arms fill the 30 s buffer faster in the fast profile (time_to_full_buffer_s, fast/1MiB/60Mbit C0 [39.585, 40.346], W16 [25.717, 29.985]), but C0 does not stall in any fast cell, so the faster fill buys nothing measurable there; the window arms even stall briefly in two fast cells (fast/4MiB/60Mbit C0 0.0 / W16 0.0 / W32 0.73 s; fast/16MiB/60Mbit C0 0.0 / W16 0.43 / W32 0.0 s).",
+  "unused_downloaded_bytes is seed bytes sent minus bytes the client received. At 60 Mbit/s the start phase (60 s of playback plus up to 30 s of buffer) reads past the seek target, the middle of the 1 GiB file, so the seek re-reads bytes already counted and the value can go negative (4 arm-cells, all at 60 Mbit/s). It is reported but not interpreted. CPU and memory are within a few percent and tens of MiB between arms; 0 app tracebacks; app error lines per run: 1 in every arm, C0 included.",
+  "A narrower hypothesis for later, not tested and not registered: a window measured in bytes helps only where pieces are small and the bitrate is high (1 MiB at 60 Mbit/s, where 4 pieces are 4 MiB, about 0.5 s of video). A candidate would also have to remove the slower seek resume seen above, whose cause is not diagnosed."
+ ]
+}

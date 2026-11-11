@@ -1,0 +1,103 @@
+{
+ "tool_image": "stremhu-source:sp-base-9984678",
+ "images": {
+  "C0": "stremhu-source:sp-cand-e0bd709",
+  "C3": "stremhu-source:sp-cand-e0bd709"
+ },
+ "app_env": {
+  "C0": {
+   "PLAYBACK_HISTORY_BACKGROUND": "false"
+  },
+  "C3": {
+   "PLAYBACK_HISTORY_BACKGROUND": "true"
+  }
+ },
+ "client": "range-series",
+ "fixture_playbacks": 2,
+ "history_check": true,
+ "db_write_load_args": [
+  "--payload-bytes",
+  "262144",
+  "--hold-ms",
+  "20",
+  "--pause-ms",
+  "20",
+  "--keep-rows",
+  "64"
+ ],
+ "series": [
+  {
+   "labels": [
+    "C0",
+    "C3"
+   ],
+   "reps": 5
+  },
+  {
+   "labels": [
+    "C0",
+    "C3"
+   ],
+   "reps": 5
+  }
+ ],
+ "reps": 10,
+ "total_size": 268435456,
+ "client_args": [
+  "--requests",
+  "20",
+  "--read-bytes",
+  "1048576",
+  "--gap-ms",
+  "200",
+  "--settle-s",
+  "2",
+  "--warm-playback",
+  "0",
+  "--series-playback",
+  "1"
+ ],
+ "cells": [
+  {
+   "name": "rtt1/noload",
+   "profile": "fast",
+   "piece_size": 4194304,
+   "latency_proxy_one_way_ms": 0.5,
+   "db_write_load": false
+  },
+  {
+   "name": "rtt1/dbload",
+   "profile": "fast",
+   "piece_size": 4194304,
+   "latency_proxy_one_way_ms": 0.5,
+   "db_write_load": true
+  },
+  {
+   "name": "rtt20/noload",
+   "profile": "fast",
+   "piece_size": 4194304,
+   "latency_proxy_one_way_ms": 10,
+   "db_write_load": false
+  },
+  {
+   "name": "rtt20/dbload",
+   "profile": "fast",
+   "piece_size": 4194304,
+   "latency_proxy_one_way_ms": 10,
+   "db_write_load": true
+  }
+ ],
+ "profiles": {
+  "fast": {
+   "peers": 8,
+   "profiles": [
+    {
+     "rate_bytes_per_s": 4000000,
+     "latency_s": 0.02,
+     "jitter_s": 0.01
+    }
+   ]
+  }
+ },
+ "capture_tracebacks": true
+}

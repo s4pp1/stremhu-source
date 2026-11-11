@@ -39,8 +39,8 @@ class FakeSettingsService:
 
 
 class FakeTorrentSourceProviderService:
-    async def find_by_imdb_id(self, imdb_id: str):
-        _ = imdb_id
+    async def find_by_imdb_id(self, imdb_id: str, allow_stale: bool = True):
+        _ = imdb_id, allow_stale
 
         return [], []
 

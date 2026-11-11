@@ -955,8 +955,14 @@ async def test_batch_torrent_download_and_save_single_transaction():
     assert [item[1] for item in batch_arg] == ["101", "102", "103"]
 
 
-def test_relay_tighter_piece_deadlines():
+def test_relay_tighter_piece_deadlines(monkeypatch):
+    # The fork's legacy start/readahead contract (selectable for rollback since gsp02-v4 made the
+    # upstream-like policy the default).
     from app.common.torrent_info import TorrentFileInfo
+    from app.config import config
+
+    monkeypatch.setattr(config, "relay_start_policy", "legacy")
+    monkeypatch.setattr(config, "relay_readahead_policy", "legacy")
     from app.modules.relay.entities import File, Stream, Torrent
 
     mock_handle = MagicMock()

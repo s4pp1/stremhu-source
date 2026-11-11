@@ -1,0 +1,153 @@
+{
+ "tool_image": "stremhu-source:sp-base-9984678",
+ "images": {
+  "A": "s4pp1/stremhu-source@sha256:a3a2012893d689795f958ccec666fef6277f8677f24efebe9568cb44ec7a0621",
+  "C0": "stremhu-source:sp-cand-c3d6035"
+ },
+ "app_env": {
+  "C0": {
+   "RELAY_START_POLICY": "legacy",
+   "RELAY_READAHEAD_POLICY": "legacy"
+  }
+ },
+ "reps": 5,
+ "total_size": 1073741824,
+ "client_args": [
+  "--play-s",
+  "10",
+  "--seek-play-s",
+  "8",
+  "--start-buffer-s",
+  "2",
+  "--rebuffer-s",
+  "1",
+  "--max-buffer-s",
+  "30"
+ ],
+ "cells": [
+  {
+   "profile": "fast",
+   "piece_size": 4194304,
+   "bitrate_mbit": 8
+  },
+  {
+   "profile": "fast",
+   "piece_size": 4194304,
+   "bitrate_mbit": 60
+  },
+  {
+   "profile": "fast",
+   "piece_size": 16777216,
+   "bitrate_mbit": 8
+  },
+  {
+   "profile": "fast",
+   "piece_size": 16777216,
+   "bitrate_mbit": 60
+  },
+  {
+   "profile": "mixed",
+   "piece_size": 4194304,
+   "bitrate_mbit": 8
+  },
+  {
+   "profile": "mixed",
+   "piece_size": 4194304,
+   "bitrate_mbit": 60
+  },
+  {
+   "profile": "mixed",
+   "piece_size": 16777216,
+   "bitrate_mbit": 8
+  },
+  {
+   "profile": "mixed",
+   "piece_size": 16777216,
+   "bitrate_mbit": 60
+  },
+  {
+   "profile": "thin",
+   "piece_size": 4194304,
+   "bitrate_mbit": 8
+  },
+  {
+   "profile": "thin",
+   "piece_size": 4194304,
+   "bitrate_mbit": 60
+  },
+  {
+   "profile": "thin",
+   "piece_size": 16777216,
+   "bitrate_mbit": 8
+  },
+  {
+   "profile": "thin",
+   "piece_size": 16777216,
+   "bitrate_mbit": 60
+  }
+ ],
+ "profiles": {
+  "fast": {
+   "peers": 8,
+   "profiles": [
+    {
+     "rate_bytes_per_s": 4000000,
+     "latency_s": 0.02,
+     "jitter_s": 0.01
+    }
+   ]
+  },
+  "mixed": {
+   "peers": 8,
+   "profiles": [
+    {
+     "rate_bytes_per_s": 3000000,
+     "latency_s": 0.03,
+     "jitter_s": 0.01
+    },
+    {
+     "rate_bytes_per_s": 3000000,
+     "latency_s": 0.03,
+     "jitter_s": 0.01
+    },
+    {
+     "rate_bytes_per_s": 3000000,
+     "latency_s": 0.03,
+     "jitter_s": 0.01
+    },
+    {
+     "rate_bytes_per_s": 500000,
+     "latency_s": 0.1,
+     "jitter_s": 0.05
+    },
+    {
+     "rate_bytes_per_s": 500000,
+     "latency_s": 0.1,
+     "jitter_s": 0.05
+    },
+    {
+     "rate_bytes_per_s": 500000,
+     "latency_s": 0.1,
+     "jitter_s": 0.05
+    },
+    {
+     "stall": true
+    },
+    {
+     "stall": true
+    }
+   ]
+  },
+  "thin": {
+   "peers": 2,
+   "profiles": [
+    {
+     "rate_bytes_per_s": 2500000,
+     "latency_s": 0.06,
+     "jitter_s": 0.02
+    }
+   ]
+  }
+ },
+ "capture_tracebacks": true
+}

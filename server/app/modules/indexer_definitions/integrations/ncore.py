@@ -13,6 +13,7 @@ from app.common.log_safety import network_error_fields
 from app.modules.indexer_definitions.base_indexer_definition import (
     BaseIndexerDefinition,
 )
+from app.modules.indexer_definitions.exceptions import TechInfoUnavailableException
 from app.modules.indexer_definitions.schemas.internal import (
     AuthCredentialError,
     AuthError,
@@ -22,6 +23,13 @@ from app.modules.indexer_definitions.schemas.internal import (
     IndexerDefinitionTorrent,
 )
 from app.modules.media_attributes.constants import MediaAttributeKey
+
+
+def _raise_if_unavailable(status_code: int) -> None:
+    """Szerverhiba vagy korlátozás: a Tech Info most nem érhető el (nem „nincs adat”)."""
+    if status_code >= 500 or status_code == 429:
+        raise TechInfoUnavailableException("nCore Tech Info nem érhető el.")
+
 
 _NCORE_MOVIE_CATEGORIES: list[str] = [
     "xvid_hun",
@@ -59,6 +67,10 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
 
     @property
     def supports_totp(self) -> bool:
+        return True
+
+    @property
+    def provides_tech_info(self) -> bool:
         return True
 
     @property
@@ -274,6 +286,7 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
                 params={"action": "nfo", "id": torrent_id},
                 timeout=1.5,
             )
+            _raise_if_unavailable(r_nfo.status_code)
             if r_nfo.status_code == 200 and r_nfo.text.strip():
                 nfo_text = r_nfo.text
 
@@ -305,10 +318,15 @@ class NcoreIndexerDefinition(BaseIndexerDefinition):
                     params={"action": "torrent_drop", "id": torrent_id},
                     timeout=1.5,
                 )
+                _raise_if_unavailable(r_drop.status_code)
                 if r_drop.status_code == 200 and r_drop.text.strip():
                     drop_text = r_drop.text
+        except TechInfoUnavailableException:
+            raise
         except Exception as e:
+            # SP06/a: a sikertelen lekérés nem „üres Tech Info”; a hívó nem cache-eli 1 órára.
             self.logger.debug(f"[nCore] fetch_tech_info hiba ({torrent_id}): {network_error_fields(e)}")
+            raise TechInfoUnavailableException("nCore Tech Info nem érhető el.") from None
 
         return nfo_text, drop_text
 

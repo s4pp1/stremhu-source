@@ -320,6 +320,15 @@ class BaseIndexerDefinition(ABC):
         """Támogatja-e az indexer a TOTP (2FA) bejelentkezést."""
         return False
 
+    @property
+    def provides_tech_info(self) -> bool:
+        """Ad-e az indexer Tech Info-t (``fetch_tech_info`` felülírva).
+
+        Az SP06/b előtöltés csak ezeknek a találatait kéri le; aki felülírja a
+        ``fetch_tech_info``-t, ezt is igazra állítja.
+        """
+        return False
+
     # --- Absztrakt üzleti metódusok ---
 
     @abstractmethod

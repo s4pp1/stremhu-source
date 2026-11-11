@@ -1,0 +1,42 @@
+{
+ "id": "pb0-v1-aborted",
+ "protocol": "pb0-v1",
+ "recorded_at_utc": "2026-11-08T22:02:05.300244+00:00",
+ "status": "ABORTED after 3 of 135 runs; not evidence for any metric.",
+ "reason": "Harness defect: the seed service closed its listening servers with Server.wait_closed() before closing the open peer connections; on Python 3.12 that waits for every connection, so the seed hung on SIGTERM, docker stop killed it and no seed statistics were written. ttfb_after_first_handshake_s and unused_downloaded_bytes were therefore missing (unused bytes even negative). The smoke run did not show it. Fixed in the harness (close order; statistics written before closing; unused bytes only with complete statistics) and re-registered as pb0-v2.",
+ "runs": [
+  {
+   "label": "A",
+   "cell": {
+    "profile": "fast",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   },
+   "rep": 0,
+   "failed": null,
+   "seed_peers_with_stats": 0
+  },
+  {
+   "label": "B",
+   "cell": {
+    "profile": "fast",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   },
+   "rep": 0,
+   "failed": null,
+   "seed_peers_with_stats": 0
+  },
+  {
+   "label": "B2",
+   "cell": {
+    "profile": "fast",
+    "piece_size": 1048576,
+    "bitrate_mbit": 30
+   },
+   "rep": 0,
+   "failed": null,
+   "seed_peers_with_stats": 0
+  }
+ ]
+}

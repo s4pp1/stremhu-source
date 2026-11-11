@@ -1491,6 +1491,305 @@
       ]
     },
     {
+      "path": "docs/feature/stream-performance/README.md",
+      "doc_id": "feature-stream-performance-readme",
+      "title": "Streamgyorsítás — munkacsomag",
+      "kind": "navigation",
+      "status": "navigation",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "SP01-SP09",
+        "performance",
+        "implementation-plan",
+        "evidence"
+      ],
+      "source_commit": "0515d989c764bb4103d6f7286d703b98ec859ce6",
+      "baseline": null,
+      "verification": "structure-only",
+      "structure_reviewed": "2026-11-11",
+      "related_docs": [
+        "docs/feature/stream-performance/implementation-plan.md",
+        "docs/feature/stream-performance.md"
+      ],
+      "source_paths": [],
+      "sections": [
+        {
+          "title": "Olvasási sorrend és állapot",
+          "anchor": "doc-olvasasi-sorrend-es-allapot",
+          "level": 2
+        },
+        {
+          "title": "A terv szerepe",
+          "anchor": "doc-a-terv-szerepe",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/stream-performance/implementation-plan.md",
+      "doc_id": "feature-stream-performance-implementation-plan",
+      "title": "Streamgyorsítás — kódszintű implementációs terv",
+      "kind": "implementation-plan",
+      "status": "planning-only",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "SP01-SP09",
+        "performance",
+        "gates",
+        "work-packages",
+        "tests",
+        "rollback"
+      ],
+      "source_commit": "0515d989c764bb4103d6f7286d703b98ec859ce6",
+      "baseline": "s4pp1/stremhu-source@8c99c7d (feature origin); main@0515d98 (PR); pinned A/B/C + C legacy/candidate toggle (measurement)",
+      "verification": "static source reading at source_commit; no tests, benchmarks or Docker runs",
+      "structure_reviewed": "2026-11-08",
+      "related_docs": [
+        "docs/feature/stream-performance/README.md",
+        "docs/feature/stream-performance.md",
+        "docs/feature/stability-and-optimization/implementation-plan.md"
+      ],
+      "source_paths": [
+        "server/app/modules/relay/",
+        "server/app/modules/stream/",
+        "server/app/modules/indexers/search.py",
+        "server/app/modules/torrent_source_provider/service.py",
+        "server/app/modules/torrent_streams/service.py",
+        "server/app/modules/indexer_definitions/integrations/ncore.py",
+        "server/app/modules/stremio/service.py",
+        "server/app/config.py",
+        "scripts/fixtures/local_bt_seed.py"
+      ],
+      "sections": [
+        {
+          "title": "0. Bemenet, állapot, használati szabály",
+          "anchor": "doc-0-bemenet-allapot-hasznalati-szabaly",
+          "level": 2
+        },
+        {
+          "title": "Rövid belépési térkép",
+          "anchor": "doc-rovid-belepesi-terkep",
+          "level": 3
+        },
+        {
+          "title": "1. Kiinduló megállapítások és értékelés",
+          "anchor": "doc-1-kiindulo-megallapitasok-es-ertekeles",
+          "level": 2
+        },
+        {
+          "title": "2. Közös végrehajtási szerződés",
+          "anchor": "doc-2-kozos-vegrehajtasi-szerzodes",
+          "level": 2
+        },
+        {
+          "title": "2.1. G0 — Előfeltételek",
+          "anchor": "doc-21-g0-elofeltetelek",
+          "level": 3
+        },
+        {
+          "title": "2.2. Ellenőrzési sorrend az AGENTS szerint",
+          "anchor": "doc-22-ellenorzesi-sorrend-az-agents-szerint",
+          "level": 3
+        },
+        {
+          "title": "2.3. Mérőeszközök",
+          "anchor": "doc-23-meroeszkozok",
+          "level": 3
+        },
+        {
+          "title": "2.4. Közös mérési protokoll és kapu",
+          "anchor": "doc-24-kozos-meresi-protokoll-es-kapu",
+          "level": 3
+        },
+        {
+          "title": "2.5. Konfiguráció és visszaállítás",
+          "anchor": "doc-25-konfiguracio-es-visszaallitas",
+          "level": 3
+        },
+        {
+          "title": "3. Lejátszás: relay és streamválasz",
+          "anchor": "doc-3-lejatszas-relay-es-streamvalasz",
+          "level": 2
+        },
+        {
+          "title": "SP01 — Előtöltési ablak és prioritáspolitika lejátszás közben",
+          "anchor": "sp01",
+          "level": 3
+        },
+        {
+          "title": "SP02 — Indulási darabsorrend",
+          "anchor": "sp02",
+          "level": 3
+        },
+        {
+          "title": "SP03 — Lejátszási előzmény a válasz előtt",
+          "anchor": "sp03",
+          "level": 3
+        },
+        {
+          "title": "SP04 — Darabolvasás átfedése a küldéssel",
+          "anchor": "sp04",
+          "level": 3
+        },
+        {
+          "title": "SP10 — Beragadó peerek indulási büntetése",
+          "anchor": "sp10",
+          "level": 3
+        },
+        {
+          "title": "SP09 — `Connection: close` minden streamválaszon",
+          "anchor": "sp09",
+          "level": 3
+        },
+        {
+          "title": "4. Találatlista: keresés",
+          "anchor": "doc-4-talalatlista-kereses",
+          "level": 2
+        },
+        {
+          "title": "SP05 — Tracker-egészség és rövidzár",
+          "anchor": "sp05",
+          "level": 3
+        },
+        {
+          "title": "SP06 — Tech Info a kritikus úton",
+          "anchor": "sp06",
+          "level": 3
+        },
+        {
+          "title": "SP07 — Lejárt trackercache: régi találat azonnal, frissítés a háttérben",
+          "anchor": "sp07",
+          "level": 3
+        },
+        {
+          "title": "SP08 — A név szerinti tartalékkeresés soros lánca",
+          "anchor": "sp08",
+          "level": 3
+        },
+        {
+          "title": "Meleg út profilja (GSP-W, nem tétel)",
+          "anchor": "doc-meleg-ut-profilja-gsp-w-nem-tetel",
+          "level": 3
+        },
+        {
+          "title": "5. Munkacsomag-tábla",
+          "anchor": "doc-5-munkacsomag-tabla",
+          "level": 2
+        },
+        {
+          "title": "Csomagonkénti készültség minimuma",
+          "anchor": "doc-csomagonkenti-keszultseg-minimuma",
+          "level": 3
+        },
+        {
+          "title": "6. Kockázatok",
+          "anchor": "doc-6-kockazatok",
+          "level": 2
+        },
+        {
+          "title": "7. Nyitott kérdések és döntési pontok",
+          "anchor": "doc-7-nyitott-kerdesek-es-dontesi-pontok",
+          "level": 2
+        },
+        {
+          "title": "8. Végrehajtási ellenőrzőlista",
+          "anchor": "doc-8-vegrehajtasi-ellenorzolista",
+          "level": 2
+        },
+        {
+          "title": "A terv átadása — ennek a feladatnak a vége",
+          "anchor": "doc-a-terv-atadasa-ennek-a-feladatnak-a-vege",
+          "level": 3
+        },
+        {
+          "title": "Csak későbbi, külön engedélyezett végrehajtáskor",
+          "anchor": "doc-csak-kesobbi-kulon-engedelyezett-vegrehajtaskor",
+          "level": 3
+        }
+      ]
+    },
+    {
+      "path": "docs/feature/stream-performance.md",
+      "doc_id": "feature-stream-performance",
+      "title": "Streamgyorsítás — branch-összefoglaló",
+      "kind": "feature-overview",
+      "status": "implemented",
+      "audience": [
+        "developer",
+        "ai-agent"
+      ],
+      "tags": [
+        "SP01-SP09",
+        "performance",
+        "relay",
+        "search",
+        "playback"
+      ],
+      "source_commit": "8157b515c81b9409054379e4c831cf568becab4a",
+      "baseline": "s4pp1/stremhu-source@8c99c7d (feature origin); main@0515d98 (PR)",
+      "verification": "source at source_commit; pre-registered gates on local Docker (synthetic swarm and trackers); user's manual client test; execution record below",
+      "structure_reviewed": "2026-11-11",
+      "related_docs": [
+        "docs/feature/stream-performance/README.md",
+        "docs/feature/stream-performance/implementation-plan.md",
+        "docs/AI-INDEX.md"
+      ],
+      "source_paths": [
+        "server/app/modules/relay/",
+        "server/app/modules/stream/",
+        "server/app/modules/indexers/search.py",
+        "server/app/modules/torrent_source_provider/service.py",
+        "server/app/modules/torrent_streams/service.py",
+        "server/app/modules/indexer_definitions/integrations/ncore.py",
+        "server/app/modules/stremio/service.py",
+        "server/app/config.py",
+        "scripts/fixtures/local_bt_seed.py"
+      ],
+      "sections": [
+        {
+          "title": "Cél és tényleges státusz",
+          "anchor": "doc-cel-es-tenyleges-statusz",
+          "level": 2
+        },
+        {
+          "title": "Kanonikus dokumentumok",
+          "anchor": "doc-kanonikus-dokumentumok",
+          "level": 2
+        },
+        {
+          "title": "Upstream-diffmátrix (tervezett)",
+          "anchor": "doc-upstream-diffmatrix-tervezett",
+          "level": 2
+        },
+        {
+          "title": "Érintett modulok és kritikus invariánsok",
+          "anchor": "doc-erintett-modulok-es-kritikus-invariansok",
+          "level": 2
+        },
+        {
+          "title": "Végrehajtási állapot",
+          "anchor": "execution-status",
+          "level": 2
+        },
+        {
+          "title": "UX/SLO-keret (felhasználói döntés, 2026-11-09)",
+          "anchor": "doc-ux-slo-keret",
+          "level": 2
+        },
+        {
+          "title": "Korlátok",
+          "anchor": "doc-korlatok",
+          "level": 2
+        }
+      ]
+    },
+    {
       "path": "docs/feature/stremio-catalog-search.md",
       "doc_id": "feature-stremio-catalog-search",
       "title": "Fejlesztői Dokumentáció: feature/stremio-catalog-search",

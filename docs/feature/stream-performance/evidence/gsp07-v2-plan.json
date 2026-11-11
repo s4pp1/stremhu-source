@@ -1,0 +1,59 @@
+{
+ "image": "stremhu-source:sp-cand-f5e8410",
+ "arms": {
+  "C0": "legacy",
+  "C7": "swr"
+ },
+ "series": 2,
+ "reps_per_series": 5,
+ "harness_args": [
+  "--scenarios",
+  "S1",
+  "--requests",
+  "24",
+  "--interval",
+  "6",
+  "--time-scale",
+  "1",
+  "--trackers",
+  "3",
+  "--results-per-tracker",
+  "4",
+  "--latency",
+  "0.4",
+  "--jitter",
+  "0.25",
+  "--download-latency",
+  "0.2",
+  "--tech-info-latency",
+  "0.2",
+  "--tech-info-failure-rate",
+  "0",
+  "--imdb-cache-ttl",
+  "20",
+  "--stale-after",
+  "30",
+  "--hard-ttl",
+  "86400",
+  "--steady-from",
+  "2"
+ ],
+ "seed_base": 20261112,
+ "variants": {
+  "m": [
+   "--new-upload",
+   "none"
+  ],
+  "mu": [
+   "--new-upload",
+   "movie"
+  ],
+  "ep": [
+   "--new-upload",
+   "episode"
+  ]
+ },
+ "cpuset": "0,1",
+ "cpus": 2,
+ "memory": "1g"
+}

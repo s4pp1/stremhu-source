@@ -47,6 +47,7 @@ A dokumentumok az egyes funkciók eredetét és technikai összefüggéseit muta
 | Külső torrentfelirat | [Torrent subtitles](torrent-subtitles.md) | SRT, ASS, SSA, VTT, active playback, fallback, Range | [stream/router.py](../../server/app/modules/stream/router.py), [subtitles.py](../../server/app/modules/stream/utils/subtitles.py) |
 | Hangsáv- és feliratattribútum | [Audio/subtitle detection](audio-subtitle-detection.md) | Tech Info, NFO, MediaInfo, japán hangsáv, magyar felirat | [tech_info_parser.py](../../server/app/modules/media_attributes/tech_info_parser.py) |
 | Stabilitás és biztonsági audit | [Branch-összefoglaló](stability-and-optimization.md) → [munkacsomag](stability-and-optimization/README.md) | CR01–CR19, auth, TLS, cache, WAL, cancellation | Audit és értékelt terv; [aktuális végrehajtás](stability-and-optimization.md#execution-status) |
+| Streamgyorsítás | [Branch-összefoglaló](stream-performance.md) → [munkacsomag](stream-performance/README.md) | SP01–SP10, előtöltési ablak, TTFB, tracker-időkorlát, Tech Info, trackercache | Kész, mért kapukkal (PR a `main` felé); [végrehajtási állapot](stream-performance.md#execution-status) |
 
 <!-- doc-anchor:doc-torteneti-munkak-es-azonositok -->
 <a id="doc-torteneti-munkak-es-azonositok"></a>

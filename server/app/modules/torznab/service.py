@@ -114,9 +114,12 @@ class TorznabService:
             all_imdb_ids = [imdb_id] + [aid for aid in alternate_ids if aid != imdb_id]
 
             if len(all_imdb_ids) > 1:
+                # SP07: az automatizált kliensek (Sonarr/Radarr) régi trackerlistát nem kapnak.
                 results = await asyncio.gather(
                     *(
-                        self._torrent_source_provider_service.find_by_imdb_id(iid)
+                        self._torrent_source_provider_service.find_by_imdb_id(
+                            iid, allow_stale=False
+                        )
                         for iid in all_imdb_ids
                     ),
                     return_exceptions=True,
@@ -143,7 +146,7 @@ class TorznabService:
                     candidates,
                     errors,
                 ) = await self._torrent_source_provider_service.find_by_imdb_id(
-                    imdb_id
+                    imdb_id, allow_stale=False
                 )
         else:
             assert search_query is not None

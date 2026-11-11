@@ -1,0 +1,70 @@
+{
+ "id": "gsp02-v1-assessment",
+ "protocol": "gsp02-v1",
+ "recorded_at_utc": "2026-11-09T05:35:23.617083+00:00",
+ "decision": "FAIL",
+ "consequence": "RELAY_START_POLICY default stays legacy. The FAIL is kept; any new candidate or rule is a new, separately registered version.",
+ "checks": {
+  "improved_key_cells_both_series": [],
+  "improved_count": 0,
+  "improved_required": 4,
+  "regressions": [
+   [
+    "fast/16MiB/30Mbit",
+    "series0",
+    "seek.resume_s"
+   ],
+   [
+    "fast/16MiB/30Mbit",
+    "series1",
+    "seek.resume_s"
+   ],
+   [
+    "fast/1MiB/30Mbit",
+    "series0",
+    "start.ttfb_s"
+   ],
+   [
+    "fast/1MiB/30Mbit",
+    "series1",
+    "start.ttfb_s"
+   ],
+   [
+    "mixed/16MiB/30Mbit",
+    "series1",
+    "start.ttfb_s"
+   ],
+   [
+    "mixed/16MiB/30Mbit",
+    "series1",
+    "seek.resume_s"
+   ],
+   [
+    "mixed/4MiB/60Mbit",
+    "series0",
+    "start.stall_s"
+   ],
+   [
+    "mixed/4MiB/8Mbit",
+    "series1",
+    "seek.resume_s"
+   ]
+  ],
+  "failed_runs": {
+   "C0": 0,
+   "C1": 0
+  },
+  "tracebacks_total": {
+   "C0": 2,
+   "C1": 0
+  }
+ },
+ "analysis": [
+  "Fast profile (low noise, J 0.05 s): C1 (graded) improves time-to-start in both series, 4 MiB 6.82 -> 4.66 s and 16 MiB 13.2 -> 9.07 s, matching upstream A (4.71 / 8.98 s); the 16 MiB tail probe drops from ~4.2 s to ~0.05 s. The start-order effect is real where the stalled-peer effect is absent.",
+  "Mixed profile (2 stalled of 8 peers): noise J 1.9-11.7 s; C1 medians are mostly lower but no key cell clears J in both series. The registered key cells were all mixed cells, so the stalled-peer effect (SP10) masked the start-order effect: a gate design error, not evidence for C1 being neutral.",
+  "Real C1 regressions beyond J: fast/1MiB TTFB +0.20-0.27 s (time-to-start unchanged; graded tail of 4 MiB = 4 urgent-ish tail pieces at 1 MiB pieces), fast/16MiB seek resume +0.25-0.50 s. Mixed-cell regressions are within the noise band of the mixed profile but count under the registered rule.",
+  "Upstream A is better than both fork variants in fast/1MiB (TTFB 1.98 s vs 2.6-2.8 s, time-to-start 3.86 vs 4.7 s): the fork's start changes (3+3 urgent boundary pieces, deadlines 0/300/1000+500*d vs upstream 1+1 and 0/2000+1000*d) cost start-up time also at small pieces.",
+  "0 failed runs, 0 tracebacks in 250 runs."
+ ],
+ "next": "gsp02-v2: add an upstream-like candidate (first+last piece only, upstream deadline formula), key cells in the low-noise fast and thin profiles at 8/30/60 Mbit/s, mixed as a guard with its own noise; designed with knowledge of v1 and registered as such."
+}
