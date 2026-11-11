@@ -14,6 +14,9 @@ from app.modules.relay.schemas import (
 )
 from app.modules.settings.enums import RelayEncryptionEnum
 
+# Ennyi időnként ellenőrizzük újra a várt darabot, ha nem érkezett rá alert.
+PIECE_READ_RECHECK_INTERVAL = 5.0
+
 
 def encryption_settings(mode: RelayEncryptionEnum) -> "libtorrent.settings_pack":
     """A BitTorrent protokoll-titkosítás (MSE/PE) libtorrent beállításai.
@@ -96,6 +99,7 @@ class RelayService:
 
         self._piece_fetch_tasks: dict[tuple[str, int], asyncio.Task[bytes]] = {}
         self._pending_piece_reads: dict[tuple[str, int], asyncio.Future[bytes]] = {}
+        self._piece_fetch_waiters: dict[tuple[str, int], int] = {}
 
         # Event hooks for resume data management (Observer Pattern)
         self.on_save_resume: list[Callable[[str, bytes], None]] = []
@@ -208,7 +212,22 @@ class RelayService:
             )
             self._piece_fetch_tasks[request_key] = task
 
-        return await asyncio.shield(task)
+        self._piece_fetch_waiters[request_key] = (
+            self._piece_fetch_waiters.get(request_key, 0) + 1
+        )
+        try:
+            return await asyncio.shield(task)
+        finally:
+            waiters = self._piece_fetch_waiters[request_key] - 1
+            if waiters > 0:
+                self._piece_fetch_waiters[request_key] = waiters
+            else:
+                self._piece_fetch_waiters.pop(request_key, None)
+                # Ha már senki sem vár a darabra, ne maradjon árva háttértask.
+                if not task.done():
+                    if self._piece_fetch_tasks.get(request_key) is task:
+                        self._piece_fetch_tasks.pop(request_key, None)
+                    task.cancel()
 
     async def _fetch_piece_with_retry(
         self,
@@ -241,16 +260,50 @@ class RelayService:
         future: asyncio.Future[bytes] = self._loop.create_future()
         self._pending_piece_reads[request_key] = future
 
-        if torrent_handle.have_piece(piece_index):
-            torrent_handle.read_piece(piece_index)
+        read_requested = False
 
         try:
-            return await future
+            while True:
+                # Ha a torrentet közben törölték, a have_piece kivételt dob,
+                # így a várakozó nem ragad be örökre. Az olvasást csak egyszer
+                # kérjük, hogy lassú lemeznél ne halmozzunk újabb olvasásokat.
+                if not read_requested and torrent_handle.have_piece(piece_index):
+                    torrent_handle.read_piece(piece_index)
+                    read_requested = True
+
+                # A piece_finished_alert elveszhet (pl. megtelt alert sor), ezért
+                # nem várunk rá korlátlanul: időnként újra ellenőrizzük a darabot.
+                done, _ = await asyncio.wait(
+                    {future}, timeout=PIECE_READ_RECHECK_INTERVAL
+                )
+                if done:
+                    return future.result()
         finally:
             if self._pending_piece_reads.get(request_key) is future:
                 self._pending_piece_reads.pop(request_key, None)
             if not future.done():
                 future.cancel()
+
+    def _resolve_piece_read(
+        self,
+        request_key: tuple[str, int],
+        data: bytes | None = None,
+        error: Exception | None = None,
+    ) -> None:
+        """Lezárja a darabra várakozó futuret.
+
+        A process_alerts mindig az event loop szálán fut, ezért az eredményt
+        közvetlenül állítjuk be. Késleltetett (call_soon_threadsafe) beállításnál
+        a future a két lépés között megszakadhat, ami InvalidStateError-t okoz.
+        """
+        future = self._pending_piece_reads.pop(request_key, None)
+        if future is None or future.done():
+            return
+
+        if error is not None:
+            future.set_exception(error)
+        else:
+            future.set_result(data or b"")
 
     def add_torrent(
         self,
@@ -395,32 +448,32 @@ class RelayService:
                         info_hash = str(alert.handle.info_hash())
                         request_key = (info_hash, alert.piece)
 
-                        if future := self._pending_piece_reads.pop(request_key, None):
-                            has_error = alert.error and alert.error.value() != 0
+                        if request_key not in self._pending_piece_reads:
+                            continue
 
-                            if has_error:
-                                error_msg = alert.error.message()
-                                error_code = alert.error.value()
+                        if alert.error and alert.error.value() != 0:
+                            error_msg = alert.error.message()
+                            error_code = alert.error.value()
 
-                                logger.error(
-                                    f"Hiba a libtorrent.read_piece_alert során: {error_msg} (Kód: {error_code})"
-                                )
+                            logger.error(
+                                f"Hiba a libtorrent.read_piece_alert során: {error_msg} (Kód: {error_code})"
+                            )
 
-                                if error_code in (2, 3):
-                                    err = FileNotFoundError(error_msg)
-                                else:
-                                    err = Exception(error_msg)
-
-                                if not future.done():
-                                    self._loop.call_soon_threadsafe(
-                                        future.set_exception, err
-                                    )
+                            if error_code in (2, 3):
+                                err = FileNotFoundError(error_msg)
                             else:
-                                piece_data = bytes(alert.buffer)
-                                if not future.done():
-                                    self._loop.call_soon_threadsafe(
-                                        future.set_result, piece_data
-                                    )
+                                err = Exception(error_msg)
+
+                            self._resolve_piece_read(request_key, error=err)
+                        else:
+                            self._resolve_piece_read(
+                                request_key, data=bytes(alert.buffer)
+                            )
+
+                    case libtorrent.alerts_dropped_alert():
+                        logger.warning(
+                            f"A libtorrent alert sora megtelt, alertek vesztek el: {alert.message()}"
+                        )
 
             except Exception as e:
                 logger.error(f"Hiba a {type(alert).__name__} feldolgozása közben: {e}")

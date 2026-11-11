@@ -4,6 +4,7 @@ from typing import cast
 import libtorrent
 import pytest
 
+from app.modules.relay import service as relay_service_module
 from app.modules.relay.service import RelayService
 
 INFO_HASH = "a" * 40
@@ -12,17 +13,21 @@ KEY = (INFO_HASH, PIECE_INDEX)
 
 
 class FakeHandle:
-    """Minimális torrent_handle: a darab megvan, a read_piece csak számolja a hívásokat."""
+    """Minimális torrent_handle: a read_piece csak számolja a hívásokat."""
 
-    def __init__(self) -> None:
+    def __init__(self, have: bool = True) -> None:
         self.read_calls = 0
+        self.have = have
+        self.removed = False
 
     def info_hash(self) -> str:
         return INFO_HASH
 
     def have_piece(self, piece_index: int) -> bool:
         _ = piece_index
-        return True
+        if self.removed:
+            raise RuntimeError("invalid torrent handle used")
+        return self.have
 
     def read_piece(self, piece_index: int) -> None:
         _ = piece_index
@@ -36,6 +41,7 @@ def make_service(loop: asyncio.AbstractEventLoop) -> RelayService:
     service._loop = loop
     service._piece_fetch_tasks = {}
     service._pending_piece_reads = {}
+    service._piece_fetch_waiters = {}
     return service
 
 
@@ -47,12 +53,7 @@ async def deliver_read_piece(
     """A process_alerts read_piece_alert ágát utánozza."""
     while KEY not in service._pending_piece_reads:
         await asyncio.sleep(0)
-    future = service._pending_piece_reads.pop(KEY, None)
-    if future and not future.done():
-        if error:
-            service._loop.call_soon_threadsafe(future.set_exception, error)
-        else:
-            service._loop.call_soon_threadsafe(future.set_result, data or b"")
+    service._resolve_piece_read(KEY, data=data, error=error)
 
 
 def test_concurrent_waiters_share_same_task_and_deduplicate():
@@ -158,5 +159,117 @@ def test_retry_on_file_not_found_error():
         await deliver_read_piece(service, data=b"recovered_data")
         assert await req == b"recovered_data"
         assert service._piece_fetch_tasks == {}
+
+    asyncio.run(scenario())
+
+
+def test_fetch_cancelled_after_alert_does_not_raise_invalid_state():
+    """Ha a darab olvasása megérkezik, de a fetch task közben megszakad (pl. leállás),
+    nem keletkezhet "Exception in callback Future.set_result ... InvalidStateError"."""
+
+    async def scenario() -> None:
+        loop = asyncio.get_running_loop()
+        loop_errors: list[dict[str, object]] = []
+        loop.set_exception_handler(lambda _loop, context: loop_errors.append(context))
+
+        service = make_service(loop)
+        handle = cast(libtorrent.torrent_handle, FakeHandle())
+
+        waiter = asyncio.create_task(service.get_piece_data(handle, PIECE_INDEX))
+        while KEY not in service._pending_piece_reads:
+            await asyncio.sleep(0)
+
+        fetch_task = service._piece_fetch_tasks[KEY]
+        fetch_task.cancel()
+        service._resolve_piece_read(KEY, data=b"late")
+
+        with pytest.raises(asyncio.CancelledError):
+            await waiter
+        await asyncio.sleep(0)
+
+        assert loop_errors == []
+        assert service._piece_fetch_tasks == {}
+        assert service._pending_piece_reads == {}
+
+    asyncio.run(scenario())
+
+
+def test_fetch_task_is_cancelled_when_last_waiter_leaves():
+    """Ha az utolsó várakozó is bont, a háttértask nem marad árván futva."""
+
+    async def scenario() -> None:
+        service = make_service(asyncio.get_running_loop())
+        handle = cast(libtorrent.torrent_handle, FakeHandle(have=False))
+
+        waiter = asyncio.create_task(service.get_piece_data(handle, PIECE_INDEX))
+        while KEY not in service._pending_piece_reads:
+            await asyncio.sleep(0)
+        fetch_task = service._piece_fetch_tasks[KEY]
+
+        waiter.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await waiter
+        await asyncio.sleep(0)
+
+        assert fetch_task.cancelled()
+        assert service._piece_fetch_tasks == {}
+        assert service._pending_piece_reads == {}
+        assert service._piece_fetch_waiters == {}
+
+    asyncio.run(scenario())
+
+
+def test_lost_piece_finished_alert_is_recovered_by_recheck(monkeypatch):
+    """Ha a darab letöltődik, de a piece_finished_alert elveszik, a kérés nem lóg
+    örökké: az időszakos újraellenőrzés elindítja az olvasást."""
+
+    monkeypatch.setattr(relay_service_module, "PIECE_READ_RECHECK_INTERVAL", 0.01)
+
+    async def scenario() -> None:
+        service = make_service(asyncio.get_running_loop())
+        fake_handle = FakeHandle(have=False)
+        handle = cast(libtorrent.torrent_handle, fake_handle)
+
+        request = asyncio.create_task(service.get_piece_data(handle, PIECE_INDEX))
+        await asyncio.sleep(0.03)
+        assert fake_handle.read_calls == 0
+
+        # A darab megérkezett, de erről nem jött alert
+        fake_handle.have = True
+
+        async def wait_for_read() -> None:
+            while fake_handle.read_calls == 0:
+                await asyncio.sleep(0.005)
+
+        await asyncio.wait_for(wait_for_read(), 1)
+
+        await deliver_read_piece(service, b"recovered")
+        assert await asyncio.wait_for(request, 1) == b"recovered"
+        assert service._piece_fetch_tasks == {}
+        assert service._pending_piece_reads == {}
+
+    asyncio.run(scenario())
+
+
+def test_removed_torrent_fails_waiter_instead_of_hanging(monkeypatch):
+    """Ha a torrentet törlik, miközben egy kérés a darabra vár, a kérés hibával
+    lezárul, és nem marad beragadt task, amihez a későbbi kérések csatlakoznának."""
+
+    monkeypatch.setattr(relay_service_module, "PIECE_READ_RECHECK_INTERVAL", 0.01)
+
+    async def scenario() -> None:
+        service = make_service(asyncio.get_running_loop())
+        fake_handle = FakeHandle(have=False)
+        handle = cast(libtorrent.torrent_handle, fake_handle)
+
+        request = asyncio.create_task(service.get_piece_data(handle, PIECE_INDEX))
+        await asyncio.sleep(0.03)
+
+        fake_handle.removed = True
+
+        with pytest.raises(RuntimeError):
+            await asyncio.wait_for(request, 1)
+        assert service._piece_fetch_tasks == {}
+        assert service._pending_piece_reads == {}
 
     asyncio.run(scenario())
