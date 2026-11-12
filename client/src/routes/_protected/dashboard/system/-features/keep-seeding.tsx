@@ -38,6 +38,9 @@ import {
   useSystemIndexersCleanup,
   useSystemSettingsUpdate,
 } from '@/shared/queries/system'
+import { formatFilesize } from '@/shared/utils/file.util'
+
+import { StorageCleanupSection } from './storage-cleanup'
 
 const schema = z.object({
   hitAndRun: z.boolean(),
@@ -106,13 +109,39 @@ export function KeepSeeding() {
     e.stopPropagation()
 
     await confirmDialog.confirm({
-      title: 'Biztos letuttatod a manuális ellenőrzést?',
+      title: 'Biztos lefuttatod a takarítást?',
       description:
-        'A futtatás ellenére a hajnalban időzített futtatás is le fog futni.',
+        "Lefut a Hit'n'Run takarítás, majd a tárhely alapú törlés is, ha a kapcsoló be van kapcsolva. A hajnali időzített futás ettől még le fog futni.",
+      confirmText: 'Futtatás',
       onConfirm: async () => {
         try {
-          await cleanupIndexers()
-          toast.success('A manuális ellenőrzés sikeresen lefutott.')
+          const summary = await cleanupIndexers()
+
+          if (summary === null) {
+            toast.success(
+              "A Hit'n'Run takarítás lefutott. A tárhely alapú törlés ki van kapcsolva.",
+            )
+          } else if (summary.deletedCount > 0) {
+            if (summary.error) {
+              toast.warning(
+                `A tárhely szabály ${summary.deletedCount} torrentet törölt, de hiba történt. Szabad hely: ${formatFilesize(summary.freeAfter)}. A részletek a beállítások alatt olvashatók.`,
+              )
+            } else {
+              toast.success(
+                `A tárhely szabály ${summary.deletedCount} torrentet törölt, szabad hely: ${formatFilesize(summary.freeAfter)}.`,
+              )
+            }
+          } else if (summary.error) {
+            toast.error(
+              'A tárhely takarítás hibával fejeződött be. A részletek a beállítások alatt olvashatók.',
+            )
+          } else if (!summary.thresholdReached) {
+            toast.warning(
+              'A takarítás lefutott, de a szabad hely továbbra is a küszöb alatt van.',
+            )
+          } else {
+            toast.success('A takarítás lefutott, a szabad hely rendben van.')
+          }
         } catch (error) {
           const message = parseApiError(error)
           toast.error(message)
@@ -127,8 +156,10 @@ export function KeepSeeding() {
       <CardHeader>
         <CardTitle>Automatikus torrent törlés</CardTitle>
         <CardDescription>
-          Minden nap hajnalban lefut az ellenőrzés, de torrent csak akkor kerül
-          törlésre, ha a beállított feltételek mindegyike teljesül.
+          A torrentek két szabály alapján törlődhetnek: a napi Hit'n'Run és
+          lejátszás alapú ellenőrzés, valamint a tárhely alapú, pontszám
+          szerinti törlés. A rögzített torrentek és az aktív streamek mindig
+          érintetlenek.
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-6">
@@ -205,6 +236,8 @@ export function KeepSeeding() {
           </form.Field>
         </div>
         <Separator />
+        <StorageCleanupSection />
+        <Separator />
         <Item variant="default" className="p-0">
           <ItemContent>
             <ItemTitle>Torrentek ellenőrzése</ItemTitle>
@@ -217,6 +250,7 @@ export function KeepSeeding() {
               size="icon-sm"
               variant="destructive"
               className="rounded-full"
+              aria-label="Takarítás futtatása"
               onClick={handleCleanup}
             >
               <BrushCleaningIcon />

@@ -1,17 +1,27 @@
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
 import { CircleCheckBigIcon, InfoIcon } from 'lucide-react'
+import { useMemo } from 'react'
 
 import {
   Alert,
   AlertDescription,
   AlertTitle,
 } from '@/shared/components/ui/alert'
-import { getTorrents } from '@/shared/queries/torrents'
+import { getStorageCleanupQueue, getTorrents } from '@/shared/queries/torrents'
 
 import { Torrent } from '../-components/torrent'
 
 export function Torrents() {
   const { data: torrents } = useSuspenseQuery(getTorrents)
+  const { data: queue } = useQuery(getStorageCleanupQueue)
+
+  const queueByInfoHash = useMemo(
+    () =>
+      new Map(
+        (queue?.items ?? []).map((item) => [item.infoHash, item] as const),
+      ),
+    [queue],
+  )
 
   if (torrents.length === 0) {
     return (
@@ -28,7 +38,11 @@ export function Torrents() {
   return (
     <div className="grid gap-4">
       {torrents.map((torrent) => (
-        <Torrent key={torrent.infoHash} torrent={torrent} />
+        <Torrent
+          key={torrent.infoHash}
+          torrent={torrent}
+          queueItem={queueByInfoHash.get(torrent.infoHash)}
+        />
       ))}
       <Alert>
         <InfoIcon />

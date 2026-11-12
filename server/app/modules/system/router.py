@@ -8,11 +8,18 @@ from app.modules.indexers.service import IndexersService
 from app.modules.roles.constants import UserRoleKey
 from app.modules.roles.schemas.api import RoleResponse
 from app.modules.settings.dependencies import get_settings_service
+from app.modules.settings.enums import StorageCleanupTriggerEnum
 from app.modules.settings.schemas.api import (
     SystemSettingsResponse,
     SystemSettingsUpdateRequest,
 )
+from app.modules.settings.schemas.internal import (
+    StorageCleanupLastRun,
+    SystemSettings,
+)
 from app.modules.settings.service import SettingsService
+from app.modules.storage_cleanup.dependencies import get_storage_cleanup_service
+from app.modules.storage_cleanup.service import StorageCleanupService
 from app.modules.system.dependencies import get_system_service
 from app.modules.system.schemas.api import SystemStatusResponse
 from app.modules.system.service import SystemService
@@ -83,12 +90,24 @@ def torrent_files_cleanup(
 
 @router.post(
     "/indexers/cleanup",
+    response_model=StorageCleanupLastRun | None,
 )
 async def indexers_cleanup(
     indexers_service: Annotated[IndexersService, Depends(get_indexers_service)],
+    storage_cleanup_service: Annotated[
+        StorageCleanupService, Depends(get_storage_cleanup_service)
+    ],
+    settings_service: Annotated[SettingsService, Depends(get_settings_service)],
     _: Annotated[UserModel, Depends(SessionGuard([UserRoleKey.ADMIN]))],
 ):
+    """A karbantartás manuális futtatása: Hit'n'Run takarítás, majd tárhely alapú törlés, ha be van kapcsolva."""
     await indexers_service.cleanup_torrents_by_rules()
+
+    system_settings = settings_service.find_system() or SystemSettings()
+    if not system_settings.storage_cleanup_enabled:
+        return None
+
+    return await storage_cleanup_service.run(StorageCleanupTriggerEnum.MANUAL)
 
 
 @router.post(

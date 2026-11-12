@@ -5,6 +5,9 @@ from fastapi import APIRouter, Depends
 
 from app.modules.auth.dependencies import SessionGuard
 from app.modules.roles.constants import UserRoleKey
+from app.modules.storage_cleanup.dependencies import get_storage_cleanup_service
+from app.modules.storage_cleanup.schemas.api import StorageCleanupQueueResponse
+from app.modules.storage_cleanup.service import StorageCleanupService
 from app.modules.torrents.dependencies import get_torrents_service
 from app.modules.torrents.schemas.api import TorrentResponse, TorrentUpdateRequest
 from app.modules.torrents.schemas.internal import TorrentUpdate
@@ -25,11 +28,24 @@ def get_list(
     torrents_service: Annotated[TorrentsService, Depends(get_torrents_service)],
     _: Annotated[UserModel, Depends(SessionGuard([UserRoleKey.ADMIN]))],
 ):
-    torrent_pairs = torrents_service.get_torrents()
     return [
         TorrentResponse.from_torrent_with_relay(torrent_pair)
-        for torrent_pair in torrent_pairs
+        for torrent_pair in torrents_service.get_torrents()
     ]
+
+
+@router.get(
+    "/queue",
+    response_model=StorageCleanupQueueResponse,
+)
+def get_queue(
+    storage_cleanup_service: Annotated[
+        StorageCleanupService, Depends(get_storage_cleanup_service)
+    ],
+    _: Annotated[UserModel, Depends(SessionGuard([UserRoleKey.ADMIN]))],
+):
+    """A tárhely alapú törlési sor megtekintése törlés nélkül."""
+    return storage_cleanup_service.get_queue()
 
 
 @router.get(

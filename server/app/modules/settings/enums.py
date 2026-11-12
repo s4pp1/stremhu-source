@@ -22,3 +22,13 @@ class RelayEncryptionEnum(str, Enum):
 class NetworkConnectionEnum(str, Enum):
     LOCAL = "local"
     PUBLIC = "public"
+
+
+class StorageCleanupThresholdUnitEnum(str, Enum):
+    PERCENT = "percent"
+    GB = "gb"
+
+
+class StorageCleanupTriggerEnum(str, Enum):
+    SCHEDULED = "scheduled"
+    MANUAL = "manual"

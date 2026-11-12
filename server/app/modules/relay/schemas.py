@@ -71,3 +71,17 @@ class RelayTorrent(BaseModel):
 class PieceOrFileAvailable(BaseModel):
     piece_available: bool
     file_available: bool
+
+
+class RelayTorrentStats(BaseModel):
+    model_config = ConfigDict(
+        validate_by_name=True,
+        alias_generator=to_camel,
+    )
+
+    name: str
+    downloaded: int
+    uploaded: int
+    seeders: int
+    leechers: int
+    swarm_known: bool

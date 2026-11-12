@@ -11,6 +11,7 @@ from app.modules.relay.entities import File, Stream, Torrent
 from app.modules.relay.schemas import (
     RelaySettingsUpdate,
     RelayTorrent,
+    RelayTorrentStats,
 )
 from app.modules.settings.enums import RelayEncryptionEnum
 
@@ -172,6 +173,34 @@ class RelayService:
             RelayTorrent.from_libtorrent_handle(torrent_handle)
             for torrent_handle in torrent_handlers
         ]
+
+    def get_torrent_stats(self) -> dict[str, RelayTorrentStats]:
+        """Élő swarm és forgalmi adatok az aktuális libtorrent munkamenetből."""
+        stats: dict[str, RelayTorrentStats] = {}
+
+        for torrent_handle in self._get_torrents():
+            status = torrent_handle.status()
+
+            # A libtorrent -1-gyel jelöli az ismeretlen swarm adatot.
+            num_complete = status.num_complete
+            num_incomplete = status.num_incomplete
+            num_peers = status.num_peers
+            num_seeds = status.num_seeds
+
+            stats[str(status.info_hash)] = RelayTorrentStats(
+                name=status.name,
+                downloaded=status.total_done,
+                uploaded=status.all_time_upload,
+                seeders=num_seeds if num_complete <= 0 else num_complete,
+                leechers=(
+                    max(0, num_peers - num_seeds)
+                    if num_incomplete <= 0
+                    else num_incomplete
+                ),
+                swarm_known=(num_complete > 0 or num_incomplete > 0 or num_peers > 0),
+            )
+
+        return stats
 
     def get_active_streams(self) -> list[Stream]:
         streams = []

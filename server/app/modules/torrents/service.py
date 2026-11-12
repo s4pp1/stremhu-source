@@ -10,7 +10,11 @@ from app.modules.torrent_files.models import TorrentFileModel
 from app.modules.torrent_files.service import TorrentFilesService
 from app.modules.torrents.models import TorrentModel
 from app.modules.torrents.repository import TorrentRepository
-from app.modules.torrents.schemas.internal import TorrentUpdate, TorrentWithRelay
+from app.modules.torrents.schemas.internal import (
+    TorrentUpdate,
+    TorrentWithLastPlayed,
+    TorrentWithRelay,
+)
 
 
 class TorrentsService:
@@ -165,6 +169,9 @@ class TorrentsService:
         )
         for torrent in torrents:
             self.delete(torrent.info_hash)
+
+    def get_torrents_with_last_played(self) -> list[TorrentWithLastPlayed]:
+        return self._torrent_repository.find_with_last_played()
 
     def parse_info_hash(self, info_hash_str: str) -> libtorrent.sha1_hash:
         sha1_hash = libtorrent.sha1_hash(bytes.fromhex(info_hash_str))

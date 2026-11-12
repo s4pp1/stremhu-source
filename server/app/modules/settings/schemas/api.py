@@ -8,10 +8,12 @@ from app.modules.settings.enums import (
     NetworkConnectionEnum,
     NetworkModeEnum,
     RelayEncryptionEnum,
+    StorageCleanupThresholdUnitEnum,
 )
 from app.modules.settings.schemas.internal import (
     NetworkManualSettings,
     RelaySettingsUpdate,
+    StorageCleanupLastRun,
     SystemSettingsUpdate,
 )
 
@@ -25,6 +27,11 @@ class SystemSettingsResponse(BaseModel):
     hit_and_run: bool
     keep_seed_seconds: int
     cache_retention_seconds: int
+    storage_cleanup_enabled: bool
+    storage_cleanup_threshold_value: int
+    storage_cleanup_threshold_unit: StorageCleanupThresholdUnitEnum
+    storage_cleanup_min_score: int
+    storage_cleanup_last_run: StorageCleanupLastRun | None
 
 
 class SystemSettingsUpdateRequest(SystemSettingsUpdate):
