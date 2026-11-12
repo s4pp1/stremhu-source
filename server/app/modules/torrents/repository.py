@@ -68,18 +68,59 @@ class TorrentRepository:
             cutoff = datetime.datetime.now() - datetime.timedelta(
                 seconds=keep_seed_seconds
             )
-
-            last_played_subquery = (
-                self.db.query(func.max(PlaybackHistoryModel.created_at))
-                .filter(
-                    PlaybackHistoryModel.indexer_id == TorrentModel.indexer_id,
-                    PlaybackHistoryModel.torrent_id == TorrentModel.torrent_id,
-                )
-                .correlate(TorrentModel)
-                .scalar_subquery()
-            )
-
-            last_played = func.coalesce(last_played_subquery, TorrentModel.created_at)
-            query = query.filter(last_played < cutoff)
+            query = query.filter(self._last_activity_expression() < cutoff)
 
         return query.all()
+
+    def set_evictable(self, indexer_id: str, info_hashes: list[str]) -> None:
+        """Az indexer torrentjei közül pontosan a megadottak legyenek törölhetőként
+        megjelölve. A már megjelölteknél megtartja az eredeti időpontot."""
+        now = datetime.datetime.now()
+
+        clear_query = self.db.query(TorrentModel).filter(
+            TorrentModel.indexer_id == indexer_id,
+            TorrentModel.evictable_at.is_not(None),
+        )
+        if info_hashes:
+            clear_query = clear_query.filter(TorrentModel.info_hash.not_in(info_hashes))
+        clear_query.update({TorrentModel.evictable_at: None}, synchronize_session=False)
+
+        if info_hashes:
+            self.db.query(TorrentModel).filter(
+                TorrentModel.indexer_id == indexer_id,
+                TorrentModel.info_hash.in_(info_hashes),
+                TorrentModel.evictable_at.is_(None),
+            ).update({TorrentModel.evictable_at: now}, synchronize_session=False)
+
+        self.db.flush()
+
+    def find_evictable(self) -> list[TorrentModel]:
+        """Törölhetőként megjelölt torrentek, a legrégebben használttal kezdve.
+
+        Kimarad az, amit a megjelölés óta lejátszottak (az a következő hajnali
+        ellenőrzésig újra védett), illetve a megtartottként jelölt torrent."""
+        last_activity = self._last_activity_expression()
+
+        return (
+            self.db.query(TorrentModel)
+            .filter(
+                TorrentModel.evictable_at.is_not(None),
+                TorrentModel.is_persisted.is_(False),
+                last_activity <= TorrentModel.evictable_at,
+            )
+            .order_by(last_activity.asc())
+            .all()
+        )
+
+    def _last_activity_expression(self):
+        last_played_subquery = (
+            self.db.query(func.max(PlaybackHistoryModel.created_at))
+            .filter(
+                PlaybackHistoryModel.indexer_id == TorrentModel.indexer_id,
+                PlaybackHistoryModel.torrent_id == TorrentModel.torrent_id,
+            )
+            .correlate(TorrentModel)
+            .scalar_subquery()
+        )
+
+        return func.coalesce(last_played_subquery, TorrentModel.created_at)

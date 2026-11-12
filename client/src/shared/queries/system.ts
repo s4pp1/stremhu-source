@@ -9,6 +9,7 @@ import {
   systemGetRoles,
   systemGetSettings,
   systemGetStatus,
+  systemGetStorage,
   systemIndexersCleanup,
   systemRestart,
   systemTorrentFilesCleanup,
@@ -42,6 +43,15 @@ export const getSystemSettings = queryOptions({
   },
 })
 
+export const getSystemStorage = queryOptions({
+  queryKey: ['system', 'storage'],
+  refetchInterval: 30_000,
+  queryFn: async () => {
+    const response = await systemGetStorage()
+    return response
+  },
+})
+
 export function useSystemSettingsUpdate() {
   const queryClient = useQueryClient()
   return useMutation({
@@ -53,6 +63,7 @@ export function useSystemSettingsUpdate() {
       await Promise.all([
         queryClient.fetchQuery({ ...getSystemSettings, staleTime: 0 }),
         queryClient.fetchQuery({ ...getSystemStatus, staleTime: 0 }),
+        queryClient.invalidateQueries({ queryKey: getSystemStorage.queryKey }),
       ])
     },
   })

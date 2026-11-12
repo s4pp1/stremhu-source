@@ -41,6 +41,7 @@ import {
 
 const schema = z.object({
   hitAndRun: z.boolean(),
+  seedUntilSpaceNeeded: z.boolean(),
   keepSeed: z.coerce
     .number<string>('Csak szám adható meg')
     .positive('Csak pozitív szám adható meg.')
@@ -68,6 +69,7 @@ export function KeepSeeding() {
     defaultValues: {
       hitAndRun: systemSetting.hitAndRun,
       keepSeed: keepSeedDays,
+      seedUntilSpaceNeeded: systemSetting.seedUntilSpaceNeeded,
     },
     validators: {
       onChange: schema,
@@ -92,6 +94,7 @@ export function KeepSeeding() {
         await updateSetting({
           keepSeedSeconds,
           hitAndRun: value.hitAndRun,
+          seedUntilSpaceNeeded: value.seedUntilSpaceNeeded,
         })
       } catch (error) {
         formApi.reset()
@@ -204,6 +207,28 @@ export function KeepSeeding() {
             )}
           </form.Field>
         </div>
+        <form.Field name="seedUntilSpaceNeeded">
+          {(field) => (
+            <div className="grid gap-1">
+              <Label htmlFor={field.name} className="flex items-start gap-3">
+                <p className="flex-1 text-sm leading-none font-medium">
+                  Seedben tartás, amíg nem kell a hely
+                </p>
+                <Switch
+                  id={field.name}
+                  checked={field.state.value}
+                  onCheckedChange={field.handleChange}
+                />
+              </Label>
+              <p className="text-muted-foreground text-sm">
+                A feltételeknek már megfelelő torrentek hajnalban nem törlődnek,
+                hanem tovább seedelnek. Csak akkor törlődnek (a legrégebben
+                használttal kezdve), ha a tárhely alapján helyre van szükség egy
+                új letöltéshez.
+              </p>
+            </div>
+          )}
+        </form.Field>
         <Separator />
         <Item variant="default" className="p-0">
           <ItemContent>

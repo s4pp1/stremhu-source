@@ -11,6 +11,7 @@ from app.modules.relay.entities import File, Stream, Torrent
 from app.modules.relay.schemas import (
     RelaySettingsUpdate,
     RelayTorrent,
+    RelayTorrentStorage,
 )
 from app.modules.settings.enums import RelayEncryptionEnum
 
@@ -172,6 +173,24 @@ class RelayService:
             RelayTorrent.from_libtorrent_handle(torrent_handle)
             for torrent_handle in torrent_handlers
         ]
+
+    def get_storage_usage(self) -> list[RelayTorrentStorage]:
+        result: list[RelayTorrentStorage] = []
+        for torrent_handle in self._get_torrents():
+            status = torrent_handle.status()
+            result.append(
+                RelayTorrentStorage(
+                    info_hash=str(status.info_hash),
+                    downloaded=status.total_done,
+                    remaining_wanted=max(
+                        0, status.total_wanted - status.total_wanted_done
+                    ),
+                )
+            )
+        return result
+
+    def get_active_info_hashes(self) -> set[str]:
+        return {str(stream.torrent.info_hash) for stream in self.get_active_streams()}
 
     def get_active_streams(self) -> list[Stream]:
         streams = []

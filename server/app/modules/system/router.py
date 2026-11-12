@@ -13,6 +13,10 @@ from app.modules.settings.schemas.api import (
     SystemSettingsUpdateRequest,
 )
 from app.modules.settings.service import SettingsService
+from app.modules.storage.background_tasks import run_storage_check
+from app.modules.storage.dependencies import get_storage_service
+from app.modules.storage.schemas.api import StorageStatusResponse
+from app.modules.storage.service import StorageService
 from app.modules.system.dependencies import get_system_service
 from app.modules.system.schemas.api import SystemStatusResponse
 from app.modules.system.service import SystemService
@@ -63,10 +67,29 @@ def get_settings(
 )
 def update_settings(
     payload: SystemSettingsUpdateRequest,
+    background_tasks: BackgroundTasks,
     settings_service: Annotated[SettingsService, Depends(get_settings_service)],
     _: Annotated[UserModel, Depends(SessionGuard([UserRoleKey.ADMIN]))],
 ):
-    return settings_service.save_system(payload)
+    system_settings = settings_service.save_system(payload)
+
+    # Tárhely korlát vagy seed mód változásakor azonnal ellenőrizzük a helyet,
+    # nem várjuk meg az 5 percenkénti ellenőrzést.
+    if payload.model_fields_set & {"storage_limit_bytes", "seed_until_space_needed"}:
+        background_tasks.add_task(run_storage_check)
+
+    return system_settings
+
+
+@router.get(
+    "/storage",
+    response_model=StorageStatusResponse,
+)
+def get_storage(
+    storage_service: Annotated[StorageService, Depends(get_storage_service)],
+    _: Annotated[UserModel, Depends(SessionGuard([UserRoleKey.ADMIN]))],
+):
+    return storage_service.get_status()
 
 
 @router.post(

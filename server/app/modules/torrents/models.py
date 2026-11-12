@@ -55,6 +55,13 @@ class TorrentModel(Base):
         default=None,
     )
 
+    # Mikor jelölte meg a hajnali takarítás törölhetőként úgy, hogy a
+    # "seed amíg nem kell a hely" mód miatt seedben maradt. None = nem törölhető.
+    evictable_at: Mapped[datetime.datetime | None] = mapped_column(
+        sa.DateTime,
+        default=None,
+    )
+
     updated_at: Mapped[datetime.datetime] = mapped_column(
         sa.DateTime,
         default_factory=datetime.datetime.now,

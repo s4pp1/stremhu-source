@@ -364,6 +364,11 @@ class IndexersService:
                 keep_seed_seconds = indexer_account.keep_seed_seconds
 
             if not_completed_torrent_ids is None and keep_seed_seconds is None:
+                # Nincs aktív takarítási szabály: semmi sem törölhető.
+                await asyncio.to_thread(
+                    self._torrents_service.clear_evictable,
+                    indexer_account.indexer_id,
+                )
                 return
 
             # Futtatjuk a letöltött torrentek takarítását
@@ -372,6 +377,7 @@ class IndexersService:
                 indexer_id=indexer_account.indexer_id,
                 keep_seed_seconds=keep_seed_seconds,
                 not_completed_torrent_ids=not_completed_torrent_ids,
+                seed_until_space_needed=system_settings.seed_until_space_needed,
             )
             logger.info(
                 f"✅ Sikeres takarítás lefutott az indexerhez: {indexer_account.indexer_id}"

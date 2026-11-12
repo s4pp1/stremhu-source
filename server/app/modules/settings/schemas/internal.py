@@ -50,12 +50,20 @@ class SystemSettings(BaseModel):
     hit_and_run: bool = True
     keep_seed_seconds: int = 0
     cache_retention_seconds: int = 14 * 24 * 60 * 60  # 14 nap másodpercekben
+    # A letöltésekre használható tárhely felső korlátja bájtban.
+    # None = automatikus felismerés a letöltési könyvtár lemezének szabad helye alapján.
+    storage_limit_bytes: int | None = None
+    # Ha True, a takarítási feltételeknek már megfelelő torrentek nem törlődnek
+    # hajnalban, hanem seedben maradnak, amíg nem kell a hely új letöltésnek.
+    seed_until_space_needed: bool = False
 
 
 class SystemSettingsUpdate(BaseModel):
     hit_and_run: bool | None = None
     keep_seed_seconds: int | None = None
     cache_retention_seconds: int | None = None
+    storage_limit_bytes: int | None = Field(default=None, gt=0)
+    seed_until_space_needed: bool | None = None
 
 
 class RelaySettings(BaseModel):

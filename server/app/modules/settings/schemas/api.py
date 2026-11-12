@@ -25,6 +25,8 @@ class SystemSettingsResponse(BaseModel):
     hit_and_run: bool
     keep_seed_seconds: int
     cache_retention_seconds: int
+    storage_limit_bytes: int | None
+    seed_until_space_needed: bool
 
 
 class SystemSettingsUpdateRequest(SystemSettingsUpdate):

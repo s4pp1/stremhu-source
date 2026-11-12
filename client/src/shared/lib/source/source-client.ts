@@ -495,16 +495,42 @@ export interface SuccessResponse {
   message?: string | null
 }
 
+export type StorageModeEnum =
+  (typeof StorageModeEnum)[keyof typeof StorageModeEnum]
+
+export const StorageModeEnum = {
+  auto: 'auto',
+  manual: 'manual',
+} as const
+
+export interface StorageStatusResponse {
+  mode: StorageModeEnum
+  capacityBytes: number
+  usedBytes: number
+  freeBytes: number
+  pendingBytes: number
+  reserveBytes: number
+  diskTotalBytes: number
+  diskFreeBytes: number
+  evictableCount: number
+  evictableBytes: number
+}
+
 export interface SystemSettingsResponse {
   hitAndRun: boolean
   keepSeedSeconds: number
   cacheRetentionSeconds: number
+  storageLimitBytes: number | null
+  seedUntilSpaceNeeded: boolean
 }
 
 export interface SystemSettingsUpdateRequest {
   hitAndRun?: boolean | null
   keepSeedSeconds?: number | null
   cacheRetentionSeconds?: number | null
+  /** @exclusiveMinimum 0 */
+  storageLimitBytes?: number | null
+  seedUntilSpaceNeeded?: boolean | null
 }
 
 export interface SystemStatusResponse {
@@ -1276,6 +1302,18 @@ export const systemUpdateSettings = (
       headers: { 'Content-Type': 'application/json' },
       data: systemSettingsUpdateRequest,
     },
+    options,
+  )
+}
+
+/**
+ * @summary Get Storage
+ */
+export const systemGetStorage = (
+  options?: SecondParameter<typeof sourceClientInstance<StorageStatusResponse>>,
+) => {
+  return sourceClientInstance<StorageStatusResponse>(
+    { url: `/api/system/storage`, method: 'GET' },
     options,
   )
 }
