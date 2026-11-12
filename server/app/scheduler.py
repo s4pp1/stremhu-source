@@ -6,6 +6,7 @@ from app.modules.network.background_tasks import (
     run_network_ip_sync,
 )
 from app.modules.pairings.background_tasks import run_expired_pairings_cleanup
+from app.modules.storage_cleanup.background_tasks import run_storage_cleanup
 from app.modules.torrent_files.background_tasks import (
     run_torrent_files_retention_cleanup,
 )
@@ -33,6 +34,16 @@ def setup_scheduler() -> AsyncIOScheduler:
         hour=4,
         minute=0,
         id="indexers_cleanup",
+        replace_existing=True,
+    )
+
+    # Tárhely alapú torrent takarítás (naponta hajnali 4:30-kor, a HnR takarítás után)
+    scheduler.add_job(
+        run_storage_cleanup,
+        trigger="cron",
+        hour=4,
+        minute=30,
+        id="storage_cleanup",
         replace_existing=True,
     )
 

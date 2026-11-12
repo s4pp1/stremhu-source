@@ -17,17 +17,13 @@ function SystemRoute() {
     <div className="grid gap-8">
       <Indexers />
       <Separator />
-      <div className="columns-1 md:columns-2 gap-4">
-        <div className="break-inside-avoid mb-4">
+      <div className="grid items-start gap-4 md:grid-cols-2">
+        <div className="grid gap-4">
           <NetworkAccessInfo />
-        </div>
-        <div className="break-inside-avoid mb-4">
           <TorrentFilesCache />
         </div>
-        <div className="break-inside-avoid mb-4">
+        <div className="grid gap-4">
           <KeepSeeding />
-        </div>
-        <div className="break-inside-avoid mb-4">
           <Restart />
         </div>
       </div>

@@ -490,6 +490,81 @@ export interface StremioStreams {
   streams: StremioStream[]
 }
 
+export interface StorageCleanupLastRun {
+  at: number
+  trigger: StorageCleanupTriggerEnum
+  freeBefore: number
+  freeAfter: number
+  deletedCount: number
+  thresholdReached: boolean
+  error?: string | null
+}
+
+export type StorageCleanupProtectedReasonEnum =
+  (typeof StorageCleanupProtectedReasonEnum)[keyof typeof StorageCleanupProtectedReasonEnum]
+
+export const StorageCleanupProtectedReasonEnum = {
+  pinned: 'pinned',
+  active_stream: 'active_stream',
+  hnr_pending: 'hnr_pending',
+  hnr_unknown: 'hnr_unknown',
+  keep_seed: 'keep_seed',
+} as const
+
+export interface StorageCleanupQueueItem {
+  infoHash: string
+  name: string
+  score: number
+  components: StorageCleanupScoreComponent[]
+  protectedReason: StorageCleanupProtectedReasonEnum | null
+  wouldDelete: boolean
+  downloadedBytes: number
+}
+
+export interface StorageCleanupQueueResponse {
+  freeBytes: number
+  totalBytes: number
+  thresholdBytes: number
+  belowThreshold: boolean
+  minScore: number
+  hnrKnown: boolean
+  items: StorageCleanupQueueItem[]
+}
+
+export interface StorageCleanupScoreComponent {
+  key: StorageCleanupScoreComponentKeyEnum
+  points: number
+  maxPoints: number
+}
+
+export type StorageCleanupScoreComponentKeyEnum =
+  (typeof StorageCleanupScoreComponentKeyEnum)[keyof typeof StorageCleanupScoreComponentKeyEnum]
+
+export const StorageCleanupScoreComponentKeyEnum = {
+  first_played: 'first_played',
+  last_played: 'last_played',
+  downloaded: 'downloaded',
+  seeders: 'seeders',
+  leechers: 'leechers',
+  uploaded: 'uploaded',
+} as const
+
+export type StorageCleanupThresholdUnitEnum =
+  (typeof StorageCleanupThresholdUnitEnum)[keyof typeof StorageCleanupThresholdUnitEnum]
+
+export const StorageCleanupThresholdUnitEnum = {
+  percent: 'percent',
+  gb: 'gb',
+} as const
+
+export type StorageCleanupTriggerEnum =
+  (typeof StorageCleanupTriggerEnum)[keyof typeof StorageCleanupTriggerEnum]
+
+export const StorageCleanupTriggerEnum = {
+  scheduled: 'scheduled',
+  manual: 'manual',
+} as const
+
 export interface SuccessResponse {
   success: boolean
   message?: string | null
@@ -499,12 +574,21 @@ export interface SystemSettingsResponse {
   hitAndRun: boolean
   keepSeedSeconds: number
   cacheRetentionSeconds: number
+  storageCleanupEnabled: boolean
+  storageCleanupThresholdValue: number
+  storageCleanupThresholdUnit: StorageCleanupThresholdUnitEnum
+  storageCleanupMinScore: number
+  storageCleanupLastRun: StorageCleanupLastRun | null
 }
 
 export interface SystemSettingsUpdateRequest {
   hitAndRun?: boolean | null
   keepSeedSeconds?: number | null
   cacheRetentionSeconds?: number | null
+  storageCleanupEnabled?: boolean | null
+  storageCleanupThresholdValue?: number | null
+  storageCleanupThresholdUnit?: StorageCleanupThresholdUnitEnum | null
+  storageCleanupMinScore?: number | null
 }
 
 export interface SystemStatusResponse {
@@ -1293,12 +1377,15 @@ export const systemTorrentFilesCleanup = (
 }
 
 /**
+ * A karbantartás manuális futtatása: Hit'n'Run takarítás, majd tárhely alapú törlés, ha be van kapcsolva.
  * @summary Indexers Cleanup
  */
 export const systemIndexersCleanup = (
-  options?: SecondParameter<typeof sourceClientInstance<unknown>>,
+  options?: SecondParameter<
+    typeof sourceClientInstance<StorageCleanupLastRun | null>
+  >,
 ) => {
-  return sourceClientInstance<unknown>(
+  return sourceClientInstance<StorageCleanupLastRun | null>(
     { url: `/api/system/indexers/cleanup`, method: 'POST' },
     options,
   )
@@ -1440,6 +1527,21 @@ export const torrentsGetList = (
 ) => {
   return sourceClientInstance<TorrentResponse[]>(
     { url: `/api/torrents/`, method: 'GET' },
+    options,
+  )
+}
+
+/**
+ * A tárhely alapú törlési sor megtekintése törlés nélkül.
+ * @summary Get Queue
+ */
+export const torrentsGetQueue = (
+  options?: SecondParameter<
+    typeof sourceClientInstance<StorageCleanupQueueResponse>
+  >,
+) => {
+  return sourceClientInstance<StorageCleanupQueueResponse>(
+    { url: `/api/torrents/queue`, method: 'GET' },
     options,
   )
 }
@@ -1924,6 +2026,9 @@ export type NetworkSetupResult = NonNullable<
 >
 export type TorrentsGetListResult = NonNullable<
   Awaited<ReturnType<typeof torrentsGetList>>
+>
+export type TorrentsGetQueueResult = NonNullable<
+  Awaited<ReturnType<typeof torrentsGetQueue>>
 >
 export type TorrentsGetOneResult = NonNullable<
   Awaited<ReturnType<typeof torrentsGetOne>>

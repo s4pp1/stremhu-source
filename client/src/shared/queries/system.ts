@@ -53,6 +53,7 @@ export function useSystemSettingsUpdate() {
       await Promise.all([
         queryClient.fetchQuery({ ...getSystemSettings, staleTime: 0 }),
         queryClient.fetchQuery({ ...getSystemStatus, staleTime: 0 }),
+        queryClient.invalidateQueries({ queryKey: ['storage-cleanup'] }),
       ])
     },
   })
@@ -67,9 +68,17 @@ export function useSystemTorrentFilesCleanup() {
 }
 
 export function useSystemIndexersCleanup() {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: async () => {
-      await systemIndexersCleanup()
+      const response = await systemIndexersCleanup()
+      return response
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['system', 'settings'] })
+      queryClient.invalidateQueries({ queryKey: ['storage-cleanup'] })
+      queryClient.invalidateQueries({ queryKey: ['torrents'] })
     },
   })
 }

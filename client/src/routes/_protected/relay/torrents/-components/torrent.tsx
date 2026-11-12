@@ -5,6 +5,7 @@ import {
   ExternalLinkIcon,
   FileDownIcon,
   FolderDownIcon,
+  GaugeIcon,
   HardDriveDownloadIcon,
   HardDriveIcon,
   HardDriveUploadIcon,
@@ -35,13 +36,23 @@ import {
   ItemContent,
   ItemTitle,
 } from '@/shared/components/ui/item'
-import type { TorrentResponse } from '@/shared/lib/source/source-client'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/shared/components/ui/tooltip'
+import type {
+  StorageCleanupQueueItem,
+  TorrentResponse,
+} from '@/shared/lib/source/source-client'
 import { formatDateTime, parseApiError } from '@/shared/lib/utils'
 import { useDeleteTorrent, useUpdateTorrent } from '@/shared/queries/torrents'
 import { formatFilesize } from '@/shared/utils/file.util'
+import { STORAGE_CLEANUP_SCORE_COMPONENT_LABELS } from '@/shared/utils/storage-cleanup.util'
 
 interface TorrentProps {
   torrent: TorrentResponse
+  queueItem?: StorageCleanupQueueItem
 }
 
 interface TorrentDetailProps {
@@ -61,7 +72,7 @@ function TorrentDetail(props: TorrentDetailProps) {
 }
 
 export function Torrent(props: TorrentProps) {
-  const { torrent } = props
+  const { torrent, queueItem } = props
 
   const confirmDialog = useConfirmDialog()
 
@@ -241,6 +252,33 @@ export function Torrent(props: TorrentProps) {
           <LayersPlusIcon />
           {formatDateTime(torrent.createdAt)}
         </Badge>
+        {queueItem && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Badge variant="secondary">
+                <GaugeIcon />
+                {queueItem.score}
+              </Badge>
+            </TooltipTrigger>
+            <TooltipContent>
+              <div className="grid gap-1">
+                {queueItem.components.map((component) => (
+                  <div
+                    key={component.key}
+                    className="flex justify-between gap-4"
+                  >
+                    <span>
+                      {STORAGE_CLEANUP_SCORE_COMPONENT_LABELS[component.key]}
+                    </span>
+                    <span className="font-medium">
+                      {component.points.toFixed(1)} / {component.maxPoints}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        )}
         {torrent.isPersisted && (
           <Badge
             variant="secondary"

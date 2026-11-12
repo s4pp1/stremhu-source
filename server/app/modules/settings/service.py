@@ -23,16 +23,20 @@ class SettingsService:
     # System Settings
 
     def save_system(self, payload: SystemSettingsUpdate) -> SystemSettings:
-        system_settings = self.find_system()
-        if not system_settings:
-            system_settings = SystemSettings()
+        return self.update_system(**payload.model_dump(exclude_unset=True))
 
-        data = payload.model_dump(exclude_unset=True)
-        updated_data = system_settings.model_copy(update=data).model_dump()
+    def update_system(self, **values: object) -> SystemSettings:
+        system_settings = self.find_system() or SystemSettings()
 
-        self._settings_repository.save(SettingsKeyEnum.SYSTEM, updated_data)
+        updated_settings = SystemSettings.model_validate(
+            {**system_settings.model_dump(), **values}
+        )
 
-        return SystemSettings.model_validate(updated_data)
+        self._settings_repository.save(
+            SettingsKeyEnum.SYSTEM, updated_settings.model_dump()
+        )
+
+        return updated_settings
 
     def find_system(self) -> SystemSettings | None:
         record = self._settings_repository.find_one(SettingsKeyEnum.SYSTEM.value)

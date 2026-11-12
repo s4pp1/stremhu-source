@@ -1,3 +1,4 @@
+import datetime
 from typing import NamedTuple
 
 from pydantic import BaseModel
@@ -13,6 +14,11 @@ class TorrentWithRelay(NamedTuple):
     @property
     def info_hash(self) -> str:
         return self.torrent.info_hash
+
+
+class TorrentWithLastPlayed(NamedTuple):
+    torrent: TorrentModel
+    last_played_at: datetime.datetime
 
 
 class TorrentCreate(BaseModel):

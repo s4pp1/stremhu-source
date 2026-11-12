@@ -1,11 +1,11 @@
 import datetime
 
-from sqlalchemy import func
+from sqlalchemy import ColumnElement, func
 from sqlalchemy.orm import Session
 
 from app.modules.playback_histories.models import PlaybackHistoryModel
 from app.modules.torrents.models import TorrentModel
-from app.modules.torrents.schemas.internal import TorrentUpdate
+from app.modules.torrents.schemas.internal import TorrentUpdate, TorrentWithLastPlayed
 
 
 class TorrentRepository:
@@ -69,17 +69,33 @@ class TorrentRepository:
                 seconds=keep_seed_seconds
             )
 
-            last_played_subquery = (
-                self.db.query(func.max(PlaybackHistoryModel.created_at))
-                .filter(
-                    PlaybackHistoryModel.indexer_id == TorrentModel.indexer_id,
-                    PlaybackHistoryModel.torrent_id == TorrentModel.torrent_id,
-                )
-                .correlate(TorrentModel)
-                .scalar_subquery()
-            )
-
-            last_played = func.coalesce(last_played_subquery, TorrentModel.created_at)
-            query = query.filter(last_played < cutoff)
+            query = query.filter(self._last_played_at() < cutoff)
 
         return query.all()
+
+    def _last_played_at(self) -> ColumnElement[datetime.datetime]:
+        """Az utolsó lejátszás ideje, lejátszás hiányában a torrent létrehozásának ideje."""
+        last_played_subquery = (
+            self.db.query(func.max(PlaybackHistoryModel.created_at))
+            .filter(
+                PlaybackHistoryModel.indexer_id == TorrentModel.indexer_id,
+                PlaybackHistoryModel.torrent_id == TorrentModel.torrent_id,
+            )
+            .correlate(TorrentModel)
+            .scalar_subquery()
+        )
+
+        return func.coalesce(last_played_subquery, TorrentModel.created_at)
+
+    def find_with_last_played(self) -> list[TorrentWithLastPlayed]:
+        last_played = self._last_played_at()
+
+        rows = self.db.query(
+            TorrentModel,
+            last_played.label("last_played_at"),
+        ).all()
+
+        return [
+            TorrentWithLastPlayed(torrent=torrent, last_played_at=last_played_at)
+            for torrent, last_played_at in rows
+        ]
