@@ -16,6 +16,7 @@ from app.modules.playback_histories.schemas.internal import (
 )
 from app.modules.relay.entities import File
 from app.modules.relay.service import RelayService
+from app.modules.storage.background_tasks import run_storage_check
 from app.modules.stream.schemas import (
     ParsedRangeHeader,
     StreamToken,
@@ -153,9 +154,18 @@ class StreamService:
         self._validate_file(torrent_file, file_index)
 
         with isolated_db_session() as local_db:
-            return create_torrents_service(local_db).create_from_torrent_file(
-                torrent_file
-            )
+            torrent_with_relay = create_torrents_service(
+                local_db
+            ).create_from_torrent_file(torrent_file)
+
+        # Ha kell, hely felszabadítása az új letöltésnek (a seedben tartott,
+        # már törölhető torrentek közül, legrégebben használttal kezdve).
+        run_storage_check(
+            extra_bytes=torrent_file.info.files[file_index].size,
+            protected_info_hashes={torrent_with_relay.info_hash},
+        )
+
+        return torrent_with_relay
 
     def _validate_file(
         self,

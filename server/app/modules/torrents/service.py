@@ -157,14 +157,33 @@ class TorrentsService:
         indexer_id: str,
         keep_seed_seconds: int | None,
         not_completed_torrent_ids: list[str] | None,
+        seed_until_space_needed: bool = False,
     ) -> None:
         torrents = self._torrent_repository.find_for_cleanup(
             indexer_id=indexer_id,
             keep_seed_seconds=keep_seed_seconds,
             not_completed_torrent_ids=not_completed_torrent_ids,
         )
+
+        if seed_until_space_needed:
+            # Nem töröljük azonnal: seedben marad, amíg nem kell a hely.
+            self._torrent_repository.set_evictable(
+                indexer_id=indexer_id,
+                info_hashes=[torrent.info_hash for torrent in torrents],
+            )
+            if torrents:
+                logger.info(
+                    "🌱 %s torrent seedben marad, amíg nem kell a hely (%s).",
+                    len(torrents),
+                    indexer_id,
+                )
+            return
+
         for torrent in torrents:
             self.delete(torrent.info_hash)
+
+    def clear_evictable(self, indexer_id: str) -> None:
+        self._torrent_repository.set_evictable(indexer_id=indexer_id, info_hashes=[])
 
     def parse_info_hash(self, info_hash_str: str) -> libtorrent.sha1_hash:
         sha1_hash = libtorrent.sha1_hash(bytes.fromhex(info_hash_str))

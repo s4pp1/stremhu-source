@@ -68,6 +68,14 @@ class RelayTorrent(BaseModel):
         )
 
 
+class RelayTorrentStorage(BaseModel):
+    info_hash: str
+    # Lemezen lévő (letöltött) bájtok
+    downloaded: int
+    # Kijelölt (letöltendő), de még hiányzó bájtok
+    remaining_wanted: int
+
+
 class PieceOrFileAvailable(BaseModel):
     piece_available: bool
     file_available: bool

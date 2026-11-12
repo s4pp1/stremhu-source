@@ -6,6 +6,7 @@ from app.modules.network.background_tasks import (
     run_network_ip_sync,
 )
 from app.modules.pairings.background_tasks import run_expired_pairings_cleanup
+from app.modules.storage.background_tasks import run_storage_check
 from app.modules.torrent_files.background_tasks import (
     run_torrent_files_retention_cleanup,
 )
@@ -43,6 +44,16 @@ def setup_scheduler() -> AsyncIOScheduler:
         hour="*",
         minute=0,
         id="expired_pairings_cleanup",
+        replace_existing=True,
+    )
+
+    # Tárhely ellenőrzése: ha fogy a hely, a seedben tartott, már törölhető
+    # torrentek közül törli a legrégebben használtakat (5 percenként)
+    scheduler.add_job(
+        run_storage_check,
+        trigger="interval",
+        minutes=5,
+        id="storage_check",
         replace_existing=True,
     )
 
