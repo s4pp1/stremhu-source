@@ -1,0 +1,121 @@
+    # ==============================================================================
+    #  StremHU Source + a saját indexer definícióink és attribútumaink
+    #
+    #  MIÉRT SAJÁT IMAGE: a StremHU-nak NINCS plugin-betöltője. A definíciókat a
+    #  discover_indexer_definitions() pkgutil-lal szedi össze az
+    #      app/modules/indexer_definitions/integrations/
+    #  csomagból, az image-en BELÜL — nincs se környezeti változó, se data könyvtár,
+    #  ahonnan külső fájlt beolvasna (a szerver kódjában egyetlen os.getenv sincs).
+    #  A konténer ráadásul read_only, tehát futás közbeni másolás (docker cp) sem
+    #  járható út, és az újralétrehozást úgysem élné túl. Marad az image.
+    #
+    #  MI KERÜL BELE
+    #
+    #  1. integrations/*.py — indexer definíciók. Új definícióhoz elég oda betenni a
+    #     fájlt, ezt a Dockerfile-t nem kell hozzányúlni. Azonos nevű gyári fájlt a
+    #     másolás FELÜLÍR — így lehet egy gyári definíciót helyben lecserélni
+    #     (pl. ha az upstream disabled=True-val szállítja).
+    #
+    #  2. patches/*.append.py — a gyári seed fájlok VÉGÉHEZ fűzött kiegészítések.
+    #     Nem cserélik le a gyári tartalmat, csak hozzáadnak, tehát egy upstream
+    #     frissítés új preferenciái és attribútumai is megmaradnak:
+    #         preferences_seeds.append.py       "Kedvezmény" kategória, 🎁 ikonnal
+    #         media_attributes_seeds.append.py  freeleech, halfleech + 18 nyelv
+    #         stremio_schemas.append.py         a kedvezmény a stream leírásába
+    #         torrents_service.append.py        kötelező megtartási idő (seedpool
+    #                                           240 óra)
+    #
+    #  FRISSÍTÉS (a hivatalos image új verziójára VAGY megváltozott definícióra):
+    #      cd /opt/docker/stremhu
+    #      docker compose build --pull stremhu-source
+    #      docker compose up -d --force-recreate stremhu-source
+    #
+    #  FIGYELEM: a `docker compose pull` erre a szolgáltatásra nem működik többé (a
+    #  stremhu/stremhu-source:local tag nincs a Docker Hubon) — a frissítés útja a
+    #  fenti build. Az install.sh mindkét fázisban magától újraépíti.
+    # ==============================================================================
+    FROM s4pp1/stremhu-source:latest
+
+    # A célfájloknak LÉTEZNIÜK kell. Ha az upstream átrendezi a fájlstruktúrát, a
+    # COPY némán létrehozná az új útvonalat, a cat pedig új fájlt írna — az app
+    # pedig soha nem látná a definícióinkat: az indexer és a kedvezmény egyszerűen
+    # nem jelenne meg, hibaüzenet nélkül. Inkább a build hasaljon el, ott látszik.
+    RUN test -f /app/app/modules/indexer_definitions/integrations/__init__.py \
+        && test -f /app/app/modules/preferences/seeds.py \
+        && test -f /app/app/modules/media_attributes/seeds.py \
+        && test -f /app/app/modules/stremio/schemas.py \
+        && test -f /app/app/modules/torrents/service.py \
+        || { echo "HIBA: a StremHU forrásfájljai nincsenek a várt helyen az image-ben"; exit 1; }
+
+    # Előbb külön könyvtárba, hogy az ellenőrzés tudja, MIT hoztunk mi: a gyári
+    # definíciók épségét nem a mi dolgunk számonkérni.
+    COPY integrations/*.py /tmp/integrations/
+    COPY patches/*.append.py /tmp/patches/
+
+    # A másolás és a hozzáfűzés után build közbeni ellenőrzés. Enélkül egy elgépelt
+    # import vagy egy upstream séma-átnevezés (pl. IndexerDefinitionLogin ->
+    # ...LoginPayload) csak a konténer indulásakor derülne ki, ott viszont már csak
+    # annyi látszik, hogy az indexer nincs a listában.
+    #
+    # Két dolog kell hozzá, ami az alkalmazás indulásakor magától teljesül, itt
+    # viszont nem:
+    #   · HOST_IP — az app.config enélkül kilép. Csak a build idejére állítjuk,
+    #     nem marad az image-ben.
+    #   · az attributes.models ELŐBB — a preferences/seeds.py a betöltésekor
+    #     PreferenceModel példányokat hoz létre, ami elindítja a SQLAlchemy
+    #     mapper-konfigurálást; a PreferenceModel.attributes reláció pedig csak
+    #     akkor oldható fel, ha az AttributeModel már regisztrálva van.
+    RUN cp /tmp/integrations/*.py /app/app/modules/indexer_definitions/integrations/ \
+        && cat /tmp/patches/preferences_seeds.append.py >> /app/app/modules/preferences/seeds.py \
+        && cat /tmp/patches/media_attributes_seeds.append.py >> /app/app/modules/media_attributes/seeds.py \
+        && cat /tmp/patches/stremio_schemas.append.py >> /app/app/modules/stremio/schemas.py \
+        && cat /tmp/patches/torrents_service.append.py >> /app/app/modules/torrents/service.py \
+        && HOST_IP=10.0.0.1 python -c "\
+    import pathlib; \
+    from app.modules.indexer_definitions.integrations import discover_indexer_definitions as discover; \
+    shipped = {path.stem for path in pathlib.Path('/tmp/integrations').glob('*.py')}; \
+    found = {definition.__module__.rsplit('.', 1)[-1]: definition for definition in discover()}; \
+    missing = sorted(shipped - set(found)); \
+    print('Sajat definiciok:', ', '.join(sorted(found[module]().id for module in shipped if module in found))); \
+    print('Osszes betoltott definicio:', len(found)); \
+    assert not missing, 'nem toltodott be: ' + ', '.join(missing)" \
+        && HOST_IP=10.0.0.1 python -c "\
+    import app.modules.attributes.models; \
+    from app.modules.media_attributes.utils import ATTRIBUTES_MAP; \
+    from app.modules.preferences.seeds import DEFAULT_PREFERENCES, DISCOUNT_PREFERENCE_ID; \
+    from app.modules.stremio.schemas import EMOJI_MAP, StremioStream; \
+    required = {'freeleech', 'halfleech', 'fra', 'ger', 'ita', 'spa', 'por', 'rus', 'pol', 'cze', 'rom', 'tur', 'gre', 'nld', 'swe', 'dan', 'nor', 'jpn', 'kor', 'zho'}; \
+    missing = sorted(required - set(ATTRIBUTES_MAP)); \
+    assert not missing, 'hianyzo attributum: ' + ', '.join(missing); \
+    patternless = sorted(key for key in required if not ATTRIBUTES_MAP[key].pattern); \
+    assert not patternless, 'minta nelkuli attributum (kategoria-fallback lenne): ' + ', '.join(patternless); \
+    assert DISCOUNT_PREFERENCE_ID in {preference.id for preference in DEFAULT_PREFERENCES}, 'nincs kedvezmeny kategoria'; \
+    assert EMOJI_MAP.get(DISCOUNT_PREFERENCE_ID), 'a kedvezmeny kategorianak nincs ikonja'; \
+    assert StremioStream.from_imdb_torrent_stream.__func__.__name__ == '_stremhu_from_imdb_torrent_stream', 'a stream leiro burkolo nincs a helyen'; \
+    print('Patchek rendben:', len(required), 'uj attributum, kedvezmeny ikon:', EMOJI_MAP[DISCOUNT_PREFERENCE_ID])" \
+        && HOST_IP=10.0.0.1 python -c "\
+    from app.modules.torrents.service import TorrentsService, STREMHU_KEEP_SEED_FLOOR; \
+    from app.modules.indexer_definitions.integrations.seedpool import SeedpoolIndexerDefinition; \
+    assert TorrentsService.cleanup_tracker_torrents.__name__ == '__cleanup_tracker_torrents', 'a megtartasi ido burkoloja nincs a helyen'; \
+    expected = {'seedpool': 864000}; \
+    wrong = {key: STREMHU_KEEP_SEED_FLOOR.get(key) for key, value in expected.items() if STREMHU_KEEP_SEED_FLOOR.get(key) != value}; \
+    assert not wrong, 'rossz megtartasi ido: ' + repr(wrong); \
+    blind = [definition().id for definition in (SeedpoolIndexerDefinition,) if definition()._keep_seed_floor_seconds() != expected[definition().id]]; \
+    assert not blind, 'a definicio nem latja a megtartasi padlot: ' + ', '.join(blind); \
+    assert SeedpoolIndexerDefinition.download_torrent.__qualname__.startswith('Seedpool'), 'a seedpool nem uetemezi a .torrent letolteseket (429) - REGI seedpool.py van a build kontextusban'; \
+    print('Megtartasi ido rendben:', ', '.join(f'{key}={value // 3600}h' for key, value in sorted(expected.items())))" \
+        && HOST_IP=10.0.0.1 python -c "\
+    from math import ceil; \
+    from app.modules.torrents.service import STREMHU_SEED_TIME_RULES, STREMHU_PARTIAL_DOWNLOAD_SECONDS, _stremhu_required_seed_seconds; \
+    from app.modules.indexer_definitions.integrations.cinemaz import CinemazIndexerDefinition, _required_seed_hours; \
+    assert 'cinemaz' in STREMHU_SEED_TIME_RULES, 'nincs meret-alapu szabaly a cinemazhoz'; \
+    table = {5: 82, 20: 112, 50: 172, 100: 241, 500: 402, 1000: 472}; \
+    wrong = {gb: round(_required_seed_hours(gb)) for gb, h in table.items() if round(_required_seed_hours(gb)) != h}; \
+    assert not wrong, 'a kepletek elternek a tracker tablazatatol: ' + repr(wrong); \
+    sec = _stremhu_required_seed_seconds('cinemaz', 100_000_000_000, True); \
+    assert ceil(241 * 3600) <= sec <= 242 * 3600, 'rossz masodperc a 100 GB-os agra: ' + repr(sec); \
+    assert _stremhu_required_seed_seconds('cinemaz', 1, False) == STREMHU_PARTIAL_DOWNLOAD_SECONDS, 'a reszleges letoltes nem a 60 napos agra megy'; \
+    assert _stremhu_required_seed_seconds('nincs-ilyen-indexer', 1, True) is None, 'ismeretlen indexerre nem szabad szabalyt adni'; \
+    assert CinemazIndexerDefinition()._seed_time_rule_active() is True, 'a cinemaz definicio nem latja a meret-alapu szabalyt'; \
+    print('Meret-alapu megtartas rendben: cinemaz 100 GB =', sec // 3600, 'ora')" \
+        && rm -rf /tmp/integrations /tmp/patches
