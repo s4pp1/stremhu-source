@@ -25,10 +25,10 @@ def get_list(
     torrents_service: Annotated[TorrentsService, Depends(get_torrents_service)],
     _: Annotated[UserModel, Depends(SessionGuard([UserRoleKey.ADMIN]))],
 ):
-    torrent_pairs = torrents_service.get_torrents()
+    torrent_pairs = torrents_service.get_torrents_for_list()
     return [
-        TorrentResponse.from_torrent_with_relay(torrent_pair)
-        for torrent_pair in torrent_pairs
+        TorrentResponse.from_list_record(record, relay)
+        for record, relay in torrent_pairs
     ]
 
 
