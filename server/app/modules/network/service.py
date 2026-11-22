@@ -5,6 +5,7 @@ import httpx
 import pydash
 from cryptography import x509
 
+from app.common.log_safety import network_error_fields
 from app.common.logger import logger
 from app.config import config
 from app.modules.network.ddns.schemas.internal import DDNSIpUpdate
@@ -310,8 +311,8 @@ class NetworkService:
                     network_settings,
                 )
 
-        except Exception:
-            logger.exception("‼️ Sikertelen IP / SSL szinkronizáció háttérfeladat.")
+        except Exception as exc:
+            logger.error("‼️ Sikertelen IP / SSL szinkronizáció háttérfeladat: %s", network_error_fields(exc))
 
     async def check_ssl_certificate(self):
         network_settings = await asyncio.to_thread(self._settings_service.get_network)
@@ -355,10 +356,8 @@ class NetworkService:
                     )
 
                     ssl_renewed = True
-                except Exception:
-                    logger.exception(
-                        "‼️ Sikertelen Let's Encrypt SSL megújítás a háttérben"
-                    )
+                except Exception as exc:
+                    logger.error("‼️ Sikertelen Let's Encrypt SSL megújítás a háttérben: %s", network_error_fields(exc))
 
         if ssl_renewed:
             logger.info("🔄 SSL megújítás sikeres, újraindítás...")

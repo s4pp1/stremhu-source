@@ -57,7 +57,7 @@ class Base(
 
 
 connect_args = {"check_same_thread": False, "timeout": 10.0}
-engine = create_engine(config.database_url, connect_args=connect_args)
+engine = create_engine(config.database_url, connect_args=connect_args, hide_parameters=True)
 
 
 # Biztosítjuk a Foreign Key megszorítások, a WAL mód és a szinkronizáció beállítását minden SQLite kapcsolatnál
