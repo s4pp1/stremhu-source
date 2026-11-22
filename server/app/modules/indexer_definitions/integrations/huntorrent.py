@@ -216,6 +216,10 @@ class HunTorrentIndexerDefinition(BaseIndexerDefinition):
                 "sort": "7",
                 "type": "desc",
                 "page": str(current_page),
+                # A /browse/ alapból csak üres vázat ad, a találatokat a böngésző
+                # tölti be kódolt formában. A server_search=1 kérésre a szerver a
+                # találatokat a megszokott táblázatos/poszter HTML-ben rendereli.
+                "server_search": "1",
             },
         )
 
