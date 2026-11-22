@@ -106,7 +106,10 @@ class StreamService:
             file_index=file_index,
         )
 
-        parsed_range_header = self._parse_range_header(
+        # A már relayben lévő torrentnél is ugyanaz a típusszabály érvényes.
+        validate_file_type(is_video=file.is_video)
+
+        parsed_range_header = parse_range_header(
             file_size=file.size,
             range_header=range_header,
         )
@@ -166,56 +169,107 @@ class StreamService:
             raise HTTPException(400, "Érvénytelen fájl index.")
 
         file_info = torrent_file.info.files[file_index]
-        if not file_info.is_video:
-            raise HTTPException(400, "A megadott fájl nem videó.")
+        validate_file_type(is_video=file_info.is_video)
 
     def _parse_range_header(
         self,
         file_size: int,
         range_header: str | None = None,
     ) -> ParsedRangeHeader:
-        if range_header is None:
-            return ParsedRangeHeader(
-                start_byte=0,
-                end_byte=file_size - 1,
-                content_length=file_size,
-            )
+        return parse_range_header(file_size=file_size, range_header=range_header)
 
-        if not range_header.startswith("bytes="):
-            raise HTTPException(416, "Érvénytelen range header.")
 
-        range_value = range_header.replace("bytes=", "", 1).strip()
-        if "," in range_value:
-            raise HTTPException(416, "A több tartomány nem támogatott.")
+def validate_file_type(
+    is_video: bool,
+) -> None:
+    """Minden kérésre (új és már relayben lévő torrentnél is) azonos típusszabály."""
+    if not is_video:
+        raise HTTPException(400, "A megadott fájl nem videó.")
 
-        start_byte_str, end_byte_str = range_value.split("-", 1)
 
-        if start_byte_str == "":
-            if not end_byte_str:
-                raise HTTPException(416, "Érvénytelen range header.")
+def _range_not_satisfiable(file_size: int, detail: str) -> HTTPException:
+    return HTTPException(
+        416,
+        detail,
+        headers={"Content-Range": f"bytes */{file_size}"},
+    )
 
-            suffix_length = int(end_byte_str)
-            if suffix_length <= 0:
-                raise HTTPException(416, "Érvénytelen range header.")
 
-            start_byte = max(file_size - suffix_length, 0)
-            end_byte = file_size - 1
-        else:
-            start_byte = int(start_byte_str)
-            end_byte = int(end_byte_str) if end_byte_str else file_size - 1
+def _parse_ascii_uint_capped(text: str, cap: int) -> int:
+    if not text or not text.isascii() or not text.isdecimal():
+        raise ValueError("Invalid ASCII decimal")
+    digits = text.lstrip("0") or "0"
+    ceiling = str(cap)
+    if len(digits) > len(ceiling) or (len(digits) == len(ceiling) and digits > ceiling):
+        return cap
+    return int(digits)
 
-        if (
-            start_byte < 0
-            or end_byte < 0
-            or start_byte > end_byte
-            or end_byte >= file_size
-        ):
-            raise HTTPException(416, "A kért tartomány kívül esik a fájlon.")
 
-        content_length = end_byte - start_byte + 1
+def parse_range_header(
+    file_size: int,
+    range_header: str | None = None,
+) -> ParsedRangeHeader:
+    """HTTP Range (RFC 9110 14.1.2 / 14.2) feldolgozása egyetlen byte-tartományra.
 
+    - Hiányzó fejléc: teljes fájl.
+    - `bytes=a-b`: a végpont a fájlvégre vágódik (`b >= N` esetén `N-1`).
+    - `bytes=a-`: a-tól a fájl végéig. `a >= N` nem kielégíthető (416).
+    - `bytes=-n`: utolsó n bájt; `n == 0` nem kielégíthető (416).
+    - Szintaktikailag hibás vagy többtartományos kérés: szabályozott 416
+      (`Content-Range: bytes */N`), soha nem kezeletlen 500. Multipart nem támogatott.
+    """
+    if range_header is None:
         return ParsedRangeHeader(
-            start_byte=start_byte,
-            end_byte=end_byte,
-            content_length=content_length,
+            start_byte=0,
+            end_byte=file_size - 1,
+            content_length=file_size,
         )
+
+    unit, sep, range_value = range_header.strip().partition("=")
+    if not sep or unit.strip().lower() != "bytes":
+        raise _range_not_satisfiable(file_size, "Érvénytelen range header.")
+
+    range_value = range_value.strip()
+    if "," in range_value:
+        raise _range_not_satisfiable(file_size, "A több tartomány nem támogatott.")
+
+    start_str, dash, end_str = range_value.partition("-")
+    start_str, end_str = start_str.strip(), end_str.strip()
+    if not dash or (not start_str and not end_str):
+        raise _range_not_satisfiable(file_size, "Érvénytelen range header.")
+    if file_size <= 0:
+        raise _range_not_satisfiable(file_size, "A kért tartomány kívül esik a fájlon.")
+
+    try:
+        start_value = _parse_ascii_uint_capped(start_str, file_size) if start_str else None
+        end_value = (
+            _parse_ascii_uint_capped(
+                end_str, file_size if start_value is None else file_size - 1
+            )
+            if end_str
+            else None
+        )
+    except ValueError:
+        raise _range_not_satisfiable(file_size, "Érvénytelen range header.") from None
+
+    if not start_str:
+        suffix_length = end_value or 0
+        if suffix_length <= 0:
+            raise _range_not_satisfiable(file_size, "A kért tartomány kívül esik a fájlon.")
+        start_byte = max(file_size - suffix_length, 0)
+        end_byte = file_size - 1
+    else:
+        assert start_value is not None
+        start_byte = start_value
+        end_byte = end_value if end_value is not None else file_size - 1
+        if start_byte > end_byte:
+            raise _range_not_satisfiable(file_size, "Érvénytelen range header.")
+        if start_byte >= file_size:
+            raise _range_not_satisfiable(file_size, "A kért tartomány kívül esik a fájlon.")
+        end_byte = min(end_byte, file_size - 1)
+
+    return ParsedRangeHeader(
+        start_byte=start_byte,
+        end_byte=end_byte,
+        content_length=end_byte - start_byte + 1,
+    )
