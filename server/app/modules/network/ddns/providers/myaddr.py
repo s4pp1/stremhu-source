@@ -1,5 +1,6 @@
 import httpx
 
+from app.common.log_safety import network_error_fields
 from app.common.logger import logger
 from app.modules.network.ddns.base import BaseDDNSProvider
 from app.modules.network.ddns.schemas.internal import DDNSIpUpdate, DDNSTxtUpdate
@@ -39,9 +40,10 @@ class MyAddrProvider(BaseDDNSProvider):
                 response = await client.get(f"{self.website_url}/update", params=params)
                 response.raise_for_status()
         except httpx.HTTPError as e:
-            logger.error("MyAddr hálózati hiba: %s", e)
-            raise RuntimeError(f"MyAddr hálózati hiba: {e}") from e
+            summary = network_error_fields(e)
+            logger.error("provider=myaddr operation=update %s", summary)
+            raise RuntimeError(f"MyAddr hálózati hiba ({summary.kind}, status={summary.status_code})") from None
 
         if "OK" not in response.text:
-            logger.error("MyAddr API hiba: %s", response.text)
-            raise RuntimeError(f"MyAddr DDNS frissítése sikertelen: {response.text}")
+            logger.error("provider=myaddr operation=update invalid-response status=%s", response.status_code)
+            raise RuntimeError("MyAddr DDNS frissítése sikertelen: érvénytelen szolgáltatói válasz.")

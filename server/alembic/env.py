@@ -21,8 +21,8 @@ def render_item(type_: str, obj: Any, autogen_context: Any) -> str | Literal[Fal
 
 alembic_config = context.config
 
-if alembic_config.config_file_name is not None:
-    fileConfig(alembic_config.config_file_name)
+if alembic_config.config_file_name is not None and alembic_config.attributes.get("configure_logger", True):
+    fileConfig(alembic_config.config_file_name, disable_existing_loggers=False)
 
 target_metadata = Base.metadata
 

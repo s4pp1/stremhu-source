@@ -1,5 +1,6 @@
 from urllib.parse import parse_qsl, urlencode
 
+from app.common.log_safety import network_error_fields
 from app.common.logger import logger
 from app.common.schemas.internal import SeriesInfo
 from app.modules.settings.service import SettingsService
@@ -202,9 +203,7 @@ class TorznabService:
                 items.append(build_feed_item(source, category))
             except Exception as error:
                 logger.warning(
-                    "Torznab: a(z) %s torrent kihagyva: %s",
-                    source.indexer_torrent.torrent_id,
-                    error,
+                    "operation=torznab-item %s", network_error_fields(error),
                 )
 
         return items

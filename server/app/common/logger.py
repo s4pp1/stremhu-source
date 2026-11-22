@@ -4,6 +4,7 @@ import shutil
 from rich.console import Console
 from rich.logging import RichHandler
 
+from app.common.log_safety import SensitiveNetworkLogFilter
 from app.config import NodeEnv, config
 
 
@@ -32,6 +33,7 @@ def setup_logger():
         console=console,
     )
     handler.addFilter(IgnoreHypercornDisconnectErrorFilter())
+    handler.addFilter(SensitiveNetworkLogFilter())
 
     logging.basicConfig(
         level=logging.WARNING if is_prod else logging.INFO,
