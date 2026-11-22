@@ -30,11 +30,9 @@ class StreamFileResolver:
         self,
         torrent_info: TorrentInfo,
         series: SeriesInfo | None = None,
-        imdb_id: str | None = None,
     ):
         self.torrent_info = torrent_info
         self.series = series
-        self.imdb_id = imdb_id
 
         self.valid_files = [
             file for file in torrent_info.files if not is_sample_or_trash(file.name)

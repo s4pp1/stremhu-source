@@ -204,12 +204,8 @@ def test_one_piece_series_parser_and_resolver():
         size=5000,
         piece_size=1000,
         files=[
-            make_file(
-                "One Piece S01 480p/[HorribleSubs] One Piece - 01 [480p].mkv", 0
-            ),
-            make_file(
-                "One Piece S01 480p/[HorribleSubs] One Piece - 09 [480p].mkv", 1
-            ),
+            make_file("One Piece S01 480p/[HorribleSubs] One Piece - 01 [480p].mkv", 0),
+            make_file("One Piece S01 480p/[HorribleSubs] One Piece - 09 [480p].mkv", 1),
         ],
     )
     res_op_s2e1 = StreamFileResolver(
@@ -226,12 +222,8 @@ def test_one_piece_series_parser_and_resolver():
         size=5000,
         piece_size=1000,
         files=[
-            make_file(
-                "One Piece S02 720p/[HorribleSubs] One Piece - 62 [720p].mkv", 0
-            ),
-            make_file(
-                "One Piece S02 720p/[HorribleSubs] One Piece - 63 [720p].mkv", 1
-            ),
+            make_file("One Piece S02 720p/[HorribleSubs] One Piece - 62 [720p].mkv", 0),
+            make_file("One Piece S02 720p/[HorribleSubs] One Piece - 63 [720p].mkv", 1),
         ],
     )
     res_op_s5e1 = StreamFileResolver(

@@ -177,7 +177,7 @@ def test_noragami_bdbox_real_structure():
     assert v_s0e1.name == "[ReinForce] Noragami OAD1 (DVDRip).mkv"
 
 
-def test_movie_selects_largest_actual_video_excluding_samples_and_menus():
+def test_movie_selects_largest_actual_video_excluding_samples():
     t_movie = TorrentInfo(
         info_hash="hash_movie",
         name="Feature.Film.2024.1080p.BluRay",
@@ -185,7 +185,6 @@ def test_movie_selects_largest_actual_video_excluding_samples_and_menus():
         piece_size=1000,
         files=[
             make_file("Feature.Film.2024/sample-clip.mkv", 0, size=9000),
-            make_file("Feature.Film.2024/BD Menu.mkv", 1, size=8500),
             make_file("Feature.Film.2024/feature_part.mkv", 2, size=2000),
             make_file("Feature.Film.2024/feature_main.mkv", 3, size=6000),
             make_file("Feature.Film.2024/info.nfo", 4, size=9500, is_video=False),
@@ -209,9 +208,7 @@ def test_root_torrent_name_disallows_standalone_episode_number():
     )
     # S01E02 keresésekor a gyökérnév "02" száma nem okozhat téves találatot az egyetlen S01E01 fájlra
     assert (
-        StreamFileResolver(
-            t_pack, series=SeriesInfo(season=1, episode=2)
-        ).resolve()
+        StreamFileResolver(t_pack, series=SeriesInfo(season=1, episode=2)).resolve()
         is None
     )
     # S01E01 keresésekor a fa bejárása megtalálja a valódi S01E01 fájlt
@@ -232,9 +229,7 @@ def test_empty_or_extra_only_metadata_never_selects_arbitrary_extra():
     )
     assert StreamFileResolver(t_empty, series=None).resolve() is None
     assert (
-        StreamFileResolver(
-            t_empty, series=SeriesInfo(season=1, episode=1)
-        ).resolve()
+        StreamFileResolver(t_empty, series=SeriesInfo(season=1, episode=1)).resolve()
         is None
     )
 
@@ -256,3 +251,81 @@ def test_empty_or_extra_only_metadata_never_selects_arbitrary_extra():
         ).resolve()
         is None
     )
+
+
+def test_menu_and_sample_words_in_titles_are_not_extras():
+    # Menü-/mintafájl: a szó a fájlnév végén áll
+    assert is_extra_file("BD Menu.mkv") is True
+    assert is_extra_file("Menu 01.mkv") is True
+    assert is_extra_file("[Group] Show Menü 2.mkv") is True
+    assert is_extra_file("Show - Sample.mkv") is True
+
+    # Cím- vagy epizódcímszó: nem extra
+    assert is_extra_file("The.Menu.2022.1080p.BluRay.x264-GRP.mkv") is False
+    assert is_extra_file("A.menu.2022.1080p.WEB-DL.HUN-GRP.mkv") is False
+    assert is_extra_file("Show.S01E05.The.Menu.1080p.WEB.mkv") is False
+    assert is_extra_file("Show - S01E05 - The Menu.mkv") is False
+    assert is_extra_file("Show - S01E06 - Free Sample.mkv") is False
+
+
+def test_movie_with_menu_in_title_is_resolved():
+    t_folder = TorrentInfo(
+        info_hash="hash_the_menu",
+        name="The.Menu.2022.1080p.BluRay.x264-GRP",
+        size=10000,
+        piece_size=1000,
+        files=[
+            make_file(
+                "The.Menu.2022.1080p.BluRay.x264-GRP/The.Menu.2022.1080p.BluRay.x264-GRP.mkv",
+                0,
+                size=9000,
+            ),
+            make_file(
+                "The.Menu.2022.1080p.BluRay.x264-GRP/the.menu.2022.1080p-grp-sample.mkv",
+                1,
+                size=500,
+            ),
+        ],
+    )
+    resolved = StreamFileResolver(t_folder, series=None).resolve()
+    assert resolved is not None
+    assert resolved.name == "The.Menu.2022.1080p.BluRay.x264-GRP.mkv"
+
+    t_single = TorrentInfo(
+        info_hash="hash_a_menu",
+        name="A.menu.2022.1080p.WEB-DL.HUN-GRP.mkv",
+        size=8000,
+        piece_size=1000,
+        files=[make_file("A.menu.2022.1080p.WEB-DL.HUN-GRP.mkv", 0, size=8000)],
+    )
+    resolved = StreamFileResolver(t_single, series=None).resolve()
+    assert resolved is not None
+    assert resolved.name == "A.menu.2022.1080p.WEB-DL.HUN-GRP.mkv"
+
+
+def test_episode_with_menu_title_is_resolved():
+    t_pack = TorrentInfo(
+        info_hash="hash_menu_episode",
+        name="Show.S01.1080p.WEB",
+        size=12000,
+        piece_size=1000,
+        files=[
+            make_file("Show.S01.1080p.WEB/Show.S01E04.1080p.WEB.mkv", 0, size=3000),
+            make_file(
+                "Show.S01.1080p.WEB/Show.S01E05.The.Menu.1080p.WEB.mkv", 1, size=3000
+            ),
+            make_file("Show.S01.1080p.WEB/Show - S01E06 - The Menu.mkv", 2, size=3000),
+            make_file("Show.S01.1080p.WEB/BD Menu.mkv", 3, size=3000),
+        ],
+    )
+    resolved = StreamFileResolver(
+        t_pack, series=SeriesInfo(season=1, episode=5)
+    ).resolve()
+    assert resolved is not None
+    assert resolved.name == "Show.S01E05.The.Menu.1080p.WEB.mkv"
+
+    resolved = StreamFileResolver(
+        t_pack, series=SeriesInfo(season=1, episode=6)
+    ).resolve()
+    assert resolved is not None
+    assert resolved.name == "Show - S01E06 - The Menu.mkv"

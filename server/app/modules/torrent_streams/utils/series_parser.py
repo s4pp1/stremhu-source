@@ -108,9 +108,7 @@ class SeriesParser:
             range_match = cls.PATTERN_SEASON_TOKEN_RANGE.match(token)
             if range_match:
                 seasons.extend(
-                    cls._expand_range(
-                        range_match.group(1), range_match.group(2)
-                    )
+                    cls._expand_range(range_match.group(1), range_match.group(2))
                 )
             else:
                 num_match = cls.PATTERN_SEASON_TOKEN_NUM.match(token)
@@ -234,7 +232,9 @@ class SeriesParser:
             range_match = self.PATTERN_NUMERIC_RANGE.search(text)
             if range_match:
                 start_n, end_n = int(range_match.group(1)), int(range_match.group(2))
-                if 0 < end_n - start_n <= 250 and not (1900 <= start_n <= 2050 and end_n <= 31):
+                if 0 < end_n - start_n <= 250 and not (
+                    1900 <= start_n <= 2050 and end_n <= 31
+                ):
                     episodes = self._expand_range(str(start_n), str(end_n))
                     text = self.PATTERN_NUMERIC_RANGE.sub(" ", text)
 

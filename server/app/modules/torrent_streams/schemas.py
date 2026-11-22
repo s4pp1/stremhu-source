@@ -138,9 +138,7 @@ class TorrentStream(BaseModel):
         user: UserModel,
         series: SeriesInfo | None = None,
     ) -> "TorrentStream | None":
-        resolver = StreamFileResolver(
-            torrent_file.info, series, imdb_id=indexer_torrent.imdb_id
-        )
+        resolver = StreamFileResolver(torrent_file.info, series)
         torrent_file_info = resolver.resolve()
 
         if torrent_file_info is None:
