@@ -57,6 +57,7 @@
 | **Fájlszintű feloldás** | Legnagyobb videófájl | `StreamFileResolver` + `SeriesParser`: évad/epizód (abszolút és szezonális számozás), évadcsomagok, extrák és menük kiszűrése |
 | **Deduplikáció** | Indexerenként külön találat | `(info_hash, file_index)` kulcs, összesített seeder, több tracker jelölése, forráskonzisztens lejátszási URL (kikapcsolható) |
 | **Tracker-sorrend** | Seeder szerinti top-lista | Trackerenként váltakozó (fair) kiválasztás, legfeljebb 40 jelöltig |
+| **HunTorrent keresés** | A `/browse/` oldal HTML-jéből olvas; a HunTorrent ma már csak üres vázat ad, a találatokat a böngésző tölti be kódolva, így minden keresés hibaüzenet nélkül 0 találatot ad (az upstream mai `main`-jén, `f3ffff3`-on is) | `server_search=1`: a HunTorrent a találatokat szerveroldalon, a megszokott táblázatos vagy poszter HTML-ben adja; IMDb- és szöveges keresés, lapozás, regressziós teszttel |
 | **Hangsáv- és feliratjelölés** | Kategóriából becsült nyelv | Tech Info / MediaInfo elemző: valós `🇯🇵 Jap`, `🇬🇧 Eng`, `🇭🇺 Hun` sávok, téves `ENG` eltávolítása, `💬 🇭🇺 Felirat` jelölés |
 | **Külső feliratok** | — | `.srt`, `.vtt`, `.ass`, `.ssa` a torrentből; ASS/SSA → WebVTT, kooperatív (szeletelt) konverzióval |
 | **Aktív lejátszás követése** | — | A felirat a ténylegesen lejátszott torrenthez tartozik; nincs második torrentindítás a felirat miatt |
@@ -258,7 +259,7 @@ Push-Location server
 Pop-Location
 ```
 
-Utolsó ellenőrzött eredmény: Ruff `All checks passed!`, basedpyright `0 errors, 0 warnings, 0 notes`, pytest **842 passed / 64 snapshot**.
+Utolsó ellenőrzött eredmény: Ruff `All checks passed!`, basedpyright `0 errors, 0 warnings, 0 notes`, pytest **844 passed / 64 snapshot**.
 
 **Frontend** (a `client/` könyvtárban):
 
