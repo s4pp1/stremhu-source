@@ -47,5 +47,5 @@ class DDNSService:
                 response.raise_for_status()
                 return response.text.strip()
         except Exception as e:
-            logger.error("operation=public-ip %s", network_error_fields(e))
+            logger.error("Nem sikerült lekérdezni a publikus IP-t: %s", network_error_fields(e))
             raise

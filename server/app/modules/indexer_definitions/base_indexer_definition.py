@@ -101,7 +101,7 @@ class BaseIndexerDefinition(ABC):
                     self._client.cookies.update(account.cookies)
             except Exception as e:
                 self.logger.error(
-                    "Failed to load persisted cookies for %s: %s", self.id, network_error_fields(e)
+                    "Failed to load persisted cookies for %s: %s", self.name, network_error_fields(e)
                 )
 
     @property
@@ -240,7 +240,12 @@ class BaseIndexerDefinition(ABC):
             )
         except httpx.HTTPError as exc:
             summary = network_error_fields(exc)
-            self.logger.error("%s %s", safe_endpoint_label(self.id, "login"), summary)
+            self.logger.error(
+                "‼️ %s bejelentkezés közben hálózati hiba történt: %s [%s]",
+                self.name,
+                summary,
+                safe_endpoint_label(self.id, "login"),
+            )
             raise IndexerDefinitionException(f"{self.name} hálózati bejelentkezési hiba ({summary.kind}).") from None
 
         if not is_first_login and self._indexer_account_storage:
@@ -252,7 +257,7 @@ class BaseIndexerDefinition(ABC):
                 )
             except Exception as e:
                 self.logger.error(
-                    "Failed to save persisted cookies for %s: %s", self.id, network_error_fields(e)
+                    "Failed to save persisted cookies for %s: %s", self.name, network_error_fields(e)
                 )
 
     async def find_torrents_by_imdb_id(
@@ -267,7 +272,7 @@ class BaseIndexerDefinition(ABC):
             return await self._fetch_torrent(torrent_id)
         except Exception as e:
             error_msg = f"{self.name} nem érhető el vagy megváltozott a struktúrája."
-            self.logger.error("%s %s", safe_endpoint_label(self.id, "details"), network_error_fields(e))
+            self.logger.error("%s %s [%s]", error_msg, network_error_fields(e), safe_endpoint_label(self.id, "details"))
             raise IndexerDefinitionException(error_msg) from None
 
     async def download_torrent(self, download_url: str) -> bytes:
@@ -277,7 +282,12 @@ class BaseIndexerDefinition(ABC):
             return response.content
         except Exception as e:
             summary = network_error_fields(e)
-            self.logger.error("%s %s", safe_endpoint_label(self.id, "download"), summary)
+            self.logger.error(
+                '‼️ Hiba történt a(z) "%s" torrent letöltése közben: %s [%s]',
+                self.name,
+                summary,
+                safe_endpoint_label(self.id, "download"),
+            )
             raise IndexerDefinitionException(f"{self.name} torrent letöltése sikertelen ({summary.kind}).") from None
 
     async def find_hit_and_run_ids(self) -> list[str]:
@@ -285,7 +295,7 @@ class BaseIndexerDefinition(ABC):
             return await self._fetch_hit_and_run_ids()
         except Exception as e:
             error_msg = f"{self.name} nem érhető el vagy megváltozott a struktúrája."
-            self.logger.error("%s %s", safe_endpoint_label(self.id, "hit-and-run"), network_error_fields(e))
+            self.logger.error("%s %s [%s]", error_msg, network_error_fields(e), safe_endpoint_label(self.id, "hit-and-run"))
             raise IndexerDefinitionException(error_msg) from None
 
     async def _find_all(
@@ -310,7 +320,7 @@ class BaseIndexerDefinition(ABC):
             )
         except Exception as e:
             error_msg = f"{self.name} nem érhető el vagy megváltozott a struktúrája."
-            self.logger.error("%s %s", safe_endpoint_label(self.id, "search"), network_error_fields(e))
+            self.logger.error("%s %s [%s]", error_msg, network_error_fields(e), safe_endpoint_label(self.id, "search"))
             raise IndexerDefinitionException(error_msg) from None
 
     async def relogin(self) -> None:

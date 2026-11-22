@@ -12,6 +12,12 @@ class NetworkErrorSummary:
     kind: str
     status_code: int | None
 
+    def __str__(self) -> str:
+        # Olvasható naplóforma; csak a hibatípus és a HTTP-státusz, soha nem a hibaszöveg.
+        if self.status_code is None:
+            return f"kind={self.kind}"
+        return f"kind={self.kind} status={self.status_code}"
+
 
 def network_error_fields(exc: BaseException) -> NetworkErrorSummary:
     """Never stringify exceptions: HTTP errors may embed credentials and bodies."""

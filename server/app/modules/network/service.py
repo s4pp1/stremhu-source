@@ -312,7 +312,7 @@ class NetworkService:
                 )
 
         except Exception as exc:
-            logger.error("operation=ip-ssl-sync %s", network_error_fields(exc))
+            logger.error("‼️ Sikertelen IP / SSL szinkronizáció háttérfeladat: %s", network_error_fields(exc))
 
     async def check_ssl_certificate(self):
         network_settings = await asyncio.to_thread(self._settings_service.get_network)
@@ -357,7 +357,7 @@ class NetworkService:
 
                     ssl_renewed = True
                 except Exception as exc:
-                    logger.error("operation=ssl-renewal %s", network_error_fields(exc))
+                    logger.error("‼️ Sikertelen Let's Encrypt SSL megújítás a háttérben: %s", network_error_fields(exc))
 
         if ssl_renewed:
             logger.info("🔄 SSL megújítás sikeres, újraindítás...")

@@ -44,9 +44,9 @@ class DuckDnsProvider(BaseDDNSProvider):
                 response.raise_for_status()
         except httpx.HTTPError as e:
             summary = network_error_fields(e)
-            logger.error("provider=duckdns operation=update %s", summary)
+            logger.error("DuckDNS hálózati hiba: %s", summary)
             raise RuntimeError(f"DuckDNS hálózati hiba ({summary.kind}, status={summary.status_code})") from None
 
         if "OK" not in response.text:
-            logger.error("provider=duckdns operation=update invalid-response status=%s", response.status_code)
+            logger.error("DuckDNS API hiba: érvénytelen szolgáltatói válasz (HTTP %s).", response.status_code)
             raise RuntimeError("DuckDNS frissítése sikertelen: érvénytelen szolgáltatói válasz.")

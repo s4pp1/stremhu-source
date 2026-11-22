@@ -203,7 +203,9 @@ class TorznabService:
                 items.append(build_feed_item(source, category))
             except Exception as error:
                 logger.warning(
-                    "operation=torznab-item %s", network_error_fields(error),
+                    # A torrent-azonosító a trackertől jön, ezért nem kerül a naplóba.
+                    "Torznab: egy torrent kihagyva (operation=torznab-item): %s",
+                    network_error_fields(error),
                 )
 
         return items

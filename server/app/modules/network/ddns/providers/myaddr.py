@@ -41,9 +41,9 @@ class MyAddrProvider(BaseDDNSProvider):
                 response.raise_for_status()
         except httpx.HTTPError as e:
             summary = network_error_fields(e)
-            logger.error("provider=myaddr operation=update %s", summary)
+            logger.error("MyAddr hálózati hiba: %s", summary)
             raise RuntimeError(f"MyAddr hálózati hiba ({summary.kind}, status={summary.status_code})") from None
 
         if "OK" not in response.text:
-            logger.error("provider=myaddr operation=update invalid-response status=%s", response.status_code)
+            logger.error("MyAddr API hiba: érvénytelen szolgáltatói válasz (HTTP %s).", response.status_code)
             raise RuntimeError("MyAddr DDNS frissítése sikertelen: érvénytelen szolgáltatói válasz.")
