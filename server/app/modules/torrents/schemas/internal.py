@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+from datetime import datetime
 from typing import NamedTuple
 
 from pydantic import BaseModel
@@ -13,6 +15,23 @@ class TorrentWithRelay(NamedTuple):
     @property
     def info_hash(self) -> str:
         return self.torrent.info_hash
+
+
+@dataclass(frozen=True)
+class TorrentListRecord:
+    torrent_info_hash: str
+    file_info_hash: str
+    indexer_id: str
+    torrent_id: str
+    is_persisted: bool
+    full_download: bool | None
+    updated_at: datetime
+    created_at: datetime
+    indexer_name: str
+    indexer_url: str
+    indexer_details_path: str
+    indexer_requires_full_download: bool
+    indexer_supports_totp: bool
 
 
 class TorrentCreate(BaseModel):
