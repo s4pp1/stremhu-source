@@ -1,4 +1,5 @@
 import asyncio
+import threading
 from collections.abc import Callable
 
 import libtorrent as libtorrent
@@ -84,6 +85,7 @@ class RelayService:
             }
         )
 
+        self._connection_policy_lock = threading.RLock()
         self._torrent_connections_limit = 20
         self._torrents: dict[libtorrent.sha1_hash, Torrent] = {}
         self._loop = asyncio.get_event_loop()
@@ -146,10 +148,10 @@ class RelayService:
             apply_settings["enable_natpmp"] = payload.enable_upnp_and_natpmp
 
         if payload.torrent_connections_limit is not None:
-            self._torrent_connections_limit = payload.torrent_connections_limit
-            for torrent_handle in self._libtorrent_session.get_torrents():
-                if torrent_handle.is_valid():
-                    torrent_handle.set_max_connections(self._torrent_connections_limit)
+            with self._connection_policy_lock:
+                self._torrent_connections_limit = payload.torrent_connections_limit
+                for torrent in list(self._torrents.values()):
+                    self.apply_torrent_connection_policy(torrent)
 
         if payload.encryption is not None:
             apply_settings.update(encryption_settings(payload.encryption))
@@ -164,6 +166,40 @@ class RelayService:
             )
 
         self._libtorrent_session.apply_settings(apply_settings)
+
+    def apply_torrent_connection_policy(self, torrent: Torrent) -> None:
+        with self._connection_policy_lock:
+            handle = torrent.torrent_handle
+            try:
+                owned = (
+                    self._torrents.get(self._parse_info_hash(torrent.info_hash))
+                    is torrent
+                )
+                if not owned or not handle.is_valid():
+                    torrent._last_applied_limit = None
+                    torrent._last_applied_handle = None
+                    return
+                target = (
+                    max(self._torrent_connections_limit, 50)
+                    if torrent.has_active_streams
+                    else self._torrent_connections_limit
+                )
+                if (
+                    torrent._last_applied_limit == target
+                    and torrent._last_applied_handle is handle
+                ):
+                    return
+                # A failed native call leaves the actual value unknown. A later
+                # call must retry even if the policy returns to the old target.
+                torrent._last_applied_limit = None
+                torrent._last_applied_handle = None
+                handle.set_max_connections(target)
+            except Exception:
+                torrent._last_applied_limit = None
+                torrent._last_applied_handle = None
+                raise
+            torrent._last_applied_limit = target
+            torrent._last_applied_handle = handle
 
     def get_torrents(self) -> list[RelayTorrent]:
         torrent_handlers = self._get_torrents()
@@ -277,7 +313,6 @@ class RelayService:
         params.storage_mode = libtorrent.storage_mode_t.storage_mode_sparse
 
         torrent_handle = self._libtorrent_session.add_torrent(params)
-        torrent_handle.set_max_connections(self._torrent_connections_limit)
         torrent_handle.unset_flags(libtorrent.torrent_flags.disable_pex)
 
         priorities = torrent_handle.piece_priorities()
@@ -292,7 +327,9 @@ class RelayService:
             default_priority=priority,
         )
 
-        self._torrents[torrent_info.info_hash()] = torrent
+        with self._connection_policy_lock:
+            self._torrents[torrent_info.info_hash()] = torrent
+            self.apply_torrent_connection_policy(torrent)
 
         return RelayTorrent.from_libtorrent_handle(torrent_handle)
 
@@ -335,7 +372,8 @@ class RelayService:
         if torrent_handle is None:
             return False
 
-        self._torrents.pop(info_hash, None)
+        with self._connection_policy_lock:
+            self._torrents.pop(info_hash, None)
 
         self._libtorrent_session.remove_torrent(
             torrent_handle,

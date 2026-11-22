@@ -54,7 +54,8 @@ class Torrent:
 
         self._current_piece_priority = default_priority
 
-        self._max_connections = self.service._torrent_connections_limit
+        self._last_applied_limit: int | None = None
+        self._last_applied_handle: libtorrent.torrent_handle | None = None
 
         self._active_deadlines: dict[int, int] = {}
 
@@ -80,15 +81,7 @@ class Torrent:
             if self.has_active_streams and self._current_piece_priority != PRIO_0:
                 self._update_prioritize_pieces(PRIO_0)
 
-            target_max_connections = (
-                50
-                if self.has_active_streams
-                else self.service._torrent_connections_limit
-            )
-
-            if target_max_connections != self._max_connections:
-                self.torrent_handle.set_max_connections(target_max_connections)
-                self._max_connections = target_max_connections
+            self.service.apply_torrent_connection_policy(self)
 
             target_deadlines = self.get_deadlines()
 
