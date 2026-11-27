@@ -36,6 +36,17 @@ class IndexerLoginRequest(BaseModel):
     totp_secret: str | None = None
 
 
+class IndexerCredentialsUpdateRequest(BaseModel):
+    model_config = ConfigDict(
+        populate_by_name=True,
+        alias_generator=to_camel,
+    )
+
+    username: str
+    password: str
+    totp_secret: str | None = None
+
+
 class IndexerUpdateRequest(IndexerAccountUpdate):
     model_config = ConfigDict(
         populate_by_name=True,

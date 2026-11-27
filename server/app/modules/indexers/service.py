@@ -6,9 +6,13 @@ from app.common.logger import logger
 from app.modules.indexer_accounts.models import IndexerAccountModel
 from app.modules.indexer_accounts.schemas import (
     IndexerAccountCreate,
+    IndexerAccountCredentialsUpdate,
     IndexerAccountUpdate,
 )
 from app.modules.indexer_accounts.service import IndexerAccountsService
+from app.modules.indexer_definitions.base_indexer_definition import (
+    BaseIndexerDefinition,
+)
 from app.modules.indexer_definitions.exceptions import (
     AuthenticationException,
     AuthenticationOtherException,
@@ -59,28 +63,67 @@ class IndexersService:
                 detail=f"A megadott '{indexer_definition.name}' már be van jelentkezve!",
             )
 
+        await self._login_indexer_definition(
+            indexer_definition,
+            IndexerDefinitionLogin(
+                username=payload.username,
+                password=payload.password,
+                totp_secret=payload.totp_secret,
+            ),
+        )
+
+        indexer_account = await asyncio.to_thread(
+            self._indexer_accounts_service.create,
+            IndexerAccountCreate(
+                indexer_id=indexer_definition.id,
+                username=payload.username,
+                password=payload.password,
+                totp_secret=payload.totp_secret,
+                download_full_torrent=indexer_definition.requires_full_download,
+                cookies=indexer_definition.cookies,
+            ),
+        )
+
+        return indexer_account
+
+    async def update_credentials(
+        self,
+        indexer_id: str,
+        payload: IndexerDefinitionLogin,
+    ) -> IndexerAccountModel:
+        """
+        Egy meglévő indexer fiók belépési adatainak cseréje.
+
+        Az új adatokkal előbb bejelentkezik, és csak sikeres bejelentkezés után
+        menti azokat, így a fiók, a beállításai és a torrentjei megmaradnak.
+        """
+        indexer_definition = self._indexer_definitions_service.get_by_id(indexer_id)
+        await asyncio.to_thread(self._indexer_accounts_service.get_by_id, indexer_id)
+
         try:
-            await indexer_definition.login(
-                IndexerDefinitionLogin(
-                    username=payload.username,
-                    password=payload.password,
-                    totp_secret=payload.totp_secret,
-                )
-            )
+            await self._login_indexer_definition(indexer_definition, payload)
+        except HTTPException:
+            await self._restore_indexer_session(indexer_definition)
+            raise
 
-            indexer_account = await asyncio.to_thread(
-                self._indexer_accounts_service.create,
-                IndexerAccountCreate(
-                    indexer_id=indexer_definition.id,
-                    username=payload.username,
-                    password=payload.password,
-                    totp_secret=payload.totp_secret,
-                    download_full_torrent=indexer_definition.requires_full_download,
-                    cookies=indexer_definition.cookies,
-                ),
-            )
+        return await asyncio.to_thread(
+            self._indexer_accounts_service.update_credentials,
+            indexer_id,
+            IndexerAccountCredentialsUpdate(
+                username=payload.username,
+                password=payload.password,
+                totp_secret=payload.totp_secret,
+                cookies=indexer_definition.cookies,
+            ),
+        )
 
-            return indexer_account
+    async def _login_indexer_definition(
+        self,
+        indexer_definition: BaseIndexerDefinition,
+        credential: IndexerDefinitionLogin,
+    ) -> None:
+        try:
+            await indexer_definition.login(credential)
         except CredentialsRequiredException as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -101,6 +144,19 @@ class IndexersService:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Bejelentkezés közben hiba történt, próbáld újra!",
+            )
+
+    async def _restore_indexer_session(
+        self,
+        indexer_definition: BaseIndexerDefinition,
+    ) -> None:
+        # Sikertelen próbabejelentkezés után a kliens session-je az új
+        # (hibás) adatokkal maradna, ezért a tárolt adatokkal visszaállítjuk.
+        try:
+            await indexer_definition.login()
+        except Exception as e:
+            logger.warning(
+                f"{indexer_definition.name} session visszaállítása sikertelen: {e}"
             )
 
     async def update(

@@ -25,6 +25,13 @@ class IndexerAccount(IndexerAccountBase):
     created_at: datetime.datetime
 
 
+class IndexerAccountCredentialsUpdate(BaseModel):
+    username: str
+    password: str
+    totp_secret: str | None = None
+    cookies: dict[str, str] | None = None
+
+
 class IndexerAccountUpdate(BaseModel):
     download_full_torrent: bool | None = None
     hit_and_run: bool | None = None

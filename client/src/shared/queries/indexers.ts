@@ -5,6 +5,7 @@ import {
 } from '@tanstack/react-query'
 
 import type {
+  IndexerCredentialsUpdateRequest,
   IndexerLoginRequest,
   IndexerUpdateRequest,
 } from '../lib/source/source-client'
@@ -14,6 +15,7 @@ import {
   indexersGetList,
   indexersLogin,
   indexersUpdate,
+  indexersUpdateCredentials,
 } from '../lib/source/source-client'
 import { getMePreferences } from './me'
 import { getPreferences } from './preferences'
@@ -61,6 +63,18 @@ export function useIndexerUpdate(indexerId: string) {
           getPreferences.queryKey,
         ].map((queryKey) => queryClient.invalidateQueries({ queryKey })),
       )
+    },
+  })
+}
+
+export function useIndexerUpdateCredentials(indexerId: string) {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (payload: IndexerCredentialsUpdateRequest) => {
+      await indexersUpdateCredentials(indexerId, payload)
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: getIndexers.queryKey })
     },
   })
 }
