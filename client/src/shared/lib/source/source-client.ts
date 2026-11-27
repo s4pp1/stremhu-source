@@ -80,6 +80,12 @@ export interface HTTPValidationError {
   detail?: ValidationError[]
 }
 
+export interface IndexerCredentialsUpdateRequest {
+  username: string
+  password: string
+  totpSecret?: string | null
+}
+
 export interface IndexerDefinitionResponse {
   id: string
   name: string
@@ -1733,6 +1739,26 @@ export const indexersDelete = (
 }
 
 /**
+ * Indexer fiók belépési adatainak módosítása (újra-bejelentkezéssel).
+ * @summary Update Credentials
+ */
+export const indexersUpdateCredentials = (
+  indexerId: string,
+  indexerCredentialsUpdateRequest: IndexerCredentialsUpdateRequest,
+  options?: SecondParameter<typeof sourceClientInstance<IndexerResponse>>,
+) => {
+  return sourceClientInstance<IndexerResponse>(
+    {
+      url: `/api/indexers/${indexerId}/credentials`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: indexerCredentialsUpdateRequest,
+    },
+    options,
+  )
+}
+
+/**
  * @summary Get List
  */
 export const playbacksGetList = (
@@ -1978,6 +2004,9 @@ export type IndexersUpdateResult = NonNullable<
 >
 export type IndexersDeleteResult = NonNullable<
   Awaited<ReturnType<typeof indexersDelete>>
+>
+export type IndexersUpdateCredentialsResult = NonNullable<
+  Awaited<ReturnType<typeof indexersUpdateCredentials>>
 >
 export type PlaybacksGetListResult = NonNullable<
   Awaited<ReturnType<typeof playbacksGetList>>

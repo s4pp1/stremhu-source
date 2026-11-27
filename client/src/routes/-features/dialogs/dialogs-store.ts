@@ -7,6 +7,7 @@ import type { AddUserDialog } from '@/features/add-user/add-user.types'
 import type { ChangePasswordDialog } from '@/features/change-password/change-password.types'
 import type { ChangeUsernameDialog } from '@/features/change-username/change-username.types'
 import type { ConfirmDialog } from '@/features/confirm/confirm.types'
+import type { EditIndexerCredentialsDialog } from '@/features/edit-indexer-credentials/edit-indexer-credentials.types'
 import type { EditIndexerDialog } from '@/features/edit-indexer/edit-indexer.type'
 
 type BaseOpenDialog = {
@@ -21,6 +22,7 @@ export type OpenDialog = BaseOpenDialog &
     | ChangePasswordDialog
     | AddUserDialog
     | EditIndexerDialog
+    | EditIndexerCredentialsDialog
   )
 
 type BaseDialogContent = {

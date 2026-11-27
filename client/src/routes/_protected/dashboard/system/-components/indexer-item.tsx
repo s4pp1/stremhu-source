@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import {
   CircleCheckBigIcon,
   DownloadIcon,
+  KeyRoundIcon,
   PenIcon,
   TimerIcon,
   TrashIcon,
@@ -48,6 +49,18 @@ export function IndexerItem(props: IndexerItemProps) {
 
     dialogs.openDialog({
       type: 'EDIT_INDEXER',
+      options: {
+        indexer,
+      },
+    })
+  }
+
+  const handleEditCredentials: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    dialogs.openDialog({
+      type: 'EDIT_INDEXER_CREDENTIALS',
       options: {
         indexer,
       },
@@ -135,6 +148,15 @@ export function IndexerItem(props: IndexerItemProps) {
           onClick={handleEditIndexer}
         >
           <PenIcon />
+        </Button>
+        <Button
+          size="icon-sm"
+          variant="secondary"
+          className="rounded-full"
+          title="Belépési adatok módosítása"
+          onClick={handleEditCredentials}
+        >
+          <KeyRoundIcon />
         </Button>
         <Button
           size="icon-sm"

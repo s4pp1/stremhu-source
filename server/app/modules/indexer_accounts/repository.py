@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session, joinedload
 from app.modules.indexer_accounts.models import IndexerAccountModel
 from app.modules.indexer_accounts.schemas import (
     IndexerAccountCreate,
+    IndexerAccountCredentialsUpdate,
     IndexerAccountUpdate,
 )
 
@@ -54,6 +55,22 @@ class IndexerAccountsRepository:
             update_data = payload.model_dump(exclude_unset=True)
             for key, value in update_data.items():
                 setattr(model, key, value)
+            self.db.flush()
+
+        return model
+
+    def update_credentials(
+        self,
+        indexer_id: str,
+        payload: IndexerAccountCredentialsUpdate,
+    ) -> IndexerAccountModel | None:
+        model = self.find_by_id(indexer_id)
+
+        if model:
+            model.username = payload.username
+            model.password = payload.password
+            model.totp_secret = payload.totp_secret
+            model.cookies = payload.cookies
             self.db.flush()
 
         return model

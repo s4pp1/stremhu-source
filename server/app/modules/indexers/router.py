@@ -7,9 +7,11 @@ from app.modules.indexer_accounts.dependencies import get_indexer_accounts_servi
 from app.modules.indexer_accounts.service import IndexerAccountsService
 from app.modules.indexer_definitions.dependencies import get_indexer_definitions_service
 from app.modules.indexer_definitions.schemas.api import IndexerDefinitionResponse
+from app.modules.indexer_definitions.schemas.internal import IndexerDefinitionLogin
 from app.modules.indexer_definitions.service import IndexerDefinitionsService
 from app.modules.indexers.dependencies import get_indexers_service
 from app.modules.indexers.schemas.api import (
+    IndexerCredentialsUpdateRequest,
     IndexerLoginRequest,
     IndexerResponse,
     IndexerUpdateRequest,
@@ -96,6 +98,27 @@ async def update(
     _: Annotated[UserModel, Depends(SessionGuard([UserRoleKey.ADMIN]))],
 ):
     return await indexers_service.update(indexer_id, payload)
+
+
+@router.put(
+    "/{indexer_id}/credentials",
+    response_model=IndexerResponse,
+)
+async def update_credentials(
+    indexer_id: str,
+    payload: IndexerCredentialsUpdateRequest,
+    indexers_service: Annotated[IndexersService, Depends(get_indexers_service)],
+    _: Annotated[UserModel, Depends(SessionGuard([UserRoleKey.ADMIN]))],
+):
+    """Indexer fiók belépési adatainak módosítása (újra-bejelentkezéssel)."""
+    return await indexers_service.update_credentials(
+        indexer_id,
+        IndexerDefinitionLogin(
+            username=payload.username,
+            password=payload.password,
+            totp_secret=payload.totp_secret,
+        ),
+    )
 
 
 @router.delete(

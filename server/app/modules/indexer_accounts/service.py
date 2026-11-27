@@ -4,6 +4,7 @@ from app.modules.indexer_accounts.models import IndexerAccountModel
 from app.modules.indexer_accounts.repository import IndexerAccountsRepository
 from app.modules.indexer_accounts.schemas import (
     IndexerAccountCreate,
+    IndexerAccountCredentialsUpdate,
     IndexerAccountUpdate,
 )
 from app.modules.preference_definitions.service import PreferenceDefinitionsService
@@ -44,6 +45,16 @@ class IndexerAccountsService:
         payload: IndexerAccountUpdate,
     ) -> IndexerAccountModel:
         model = self._indexer_accounts_repository.update(indexer_id, payload)
+        return self._ensure_exists(model)
+
+    def update_credentials(
+        self,
+        indexer_id: str,
+        payload: IndexerAccountCredentialsUpdate,
+    ) -> IndexerAccountModel:
+        model = self._indexer_accounts_repository.update_credentials(
+            indexer_id, payload
+        )
         return self._ensure_exists(model)
 
     def delete(
