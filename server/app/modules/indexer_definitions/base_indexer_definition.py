@@ -155,6 +155,16 @@ class BaseIndexerDefinition(ABC):
         """Támogatja-e az indexer a TOTP (2FA) bejelentkezést."""
         return False
 
+    @property
+    def uses_api_key(self) -> bool:
+        """
+        API kulccsal hitelesít-e az indexer felhasználónév + jelszó helyett.
+
+        Ilyenkor a felület egyetlen "API kulcs" mezőt jelenít meg, a kulcs a
+        _login() payload password mezőjében érkezik (a username nem használt).
+        """
+        return False
+
     # --- Absztrakt üzleti metódusok ---
 
     @abstractmethod

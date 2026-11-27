@@ -15,3 +15,4 @@ class IndexerDefinitionResponse(BaseModel):
     details_path: str
     requires_full_download: bool
     supports_totp: bool
+    uses_api_key: bool

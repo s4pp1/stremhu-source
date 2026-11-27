@@ -87,6 +87,7 @@ export interface IndexerDefinitionResponse {
   detailsPath: string
   requiresFullDownload: boolean
   supportsTotp: boolean
+  usesApiKey: boolean
 }
 
 export interface IndexerLoginRequest {
