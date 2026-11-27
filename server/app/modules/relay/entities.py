@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import math
+import time
 from collections.abc import AsyncIterator
 from typing import TYPE_CHECKING
 from uuid import uuid4
@@ -260,7 +261,21 @@ class Stream:
 
         self.is_destroying = False
 
+        # Mióta vár a stream arra, hogy a kliens átvegye az utoljára átadott
+        # chunkot (None, ha épp nem vár a kliensre).
+        self._client_wait_started_at: float | None = None
+
         self.file.streams[self.id] = self
+
+    def is_client_stalled(self, timeout_seconds: float) -> bool:
+        """Igaz, ha a kliens legalább `timeout_seconds` ideje nem vesz át adatot.
+
+        A kapcsolat ilyenkor nyitva van, de a válasz írása blokkol (pl. a lejátszó
+        szünetel és a puffere tele van). A torrentre várakozás nem számít."""
+        wait_started_at = self._client_wait_started_at
+        if wait_started_at is None:
+            return False
+        return time.monotonic() - wait_started_at >= timeout_seconds
 
     @property
     def stream_pieces_range(self) -> range:
@@ -359,7 +374,11 @@ class Stream:
                     if await request.is_disconnected():
                         disconnected = True
                         break
+                    # A yield és a folytatás között a válasz írója adja le a chunkot
+                    # a kliensnek; ha a kliens nem olvas, itt áll meg a generátor.
+                    self._client_wait_started_at = time.monotonic()
                     yield view[chunk_start : chunk_start + CHUNK_SIZE].tobytes()
+                    self._client_wait_started_at = None
 
                 if disconnected:
                     break

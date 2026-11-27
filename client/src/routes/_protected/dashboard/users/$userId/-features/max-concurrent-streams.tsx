@@ -66,7 +66,8 @@ export function MaxConcurrentStreams(props: MaxConcurrentStreamsProps) {
       <CardHeader>
         <CardTitle>Egyidejű stream-ek korlátozása</CardTitle>
         <CardDescription>
-          Egyidejű stream-ek maximális számának limitálása. Ha üresen hagyod
+          Egyidejű stream-ek maximális számának limitálása. Az 5 perce nem
+          olvasó (pl. szüneteltetett) stream nem számít bele. Ha üresen hagyod
           korlátlan lesz.
         </CardDescription>
       </CardHeader>

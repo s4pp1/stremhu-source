@@ -12,3 +12,7 @@ PREFETCH_CRITICAL_PIECES = 4
 METADATA_FETCH_SIZE = 5 * 1024 * 1024
 
 CHUNK_SIZE = 1024 * 1024
+
+# Ennyi ideje nem olvas a kliens a streamből, mielőtt az egyidejű lejátszások
+# limitjénél már nem számít aktívnak (pl. szüneteltetett lejátszás tele pufferrel).
+STALLED_STREAM_TIMEOUT_SECONDS = 300

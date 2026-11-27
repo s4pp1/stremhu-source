@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 
+from app.common.constants import STALLED_STREAM_TIMEOUT_SECONDS
 from app.modules.playback_histories.service import PlaybackHistoriesService
 from app.modules.playbacks.schemas.internal import Playback
 from app.modules.relay.service import RelayService
@@ -46,10 +47,14 @@ class PlaybacksService:
 
         active_streams = self._relay_service.get_active_streams()
 
+        # A megállt (nem olvasó, de nyitva maradt) kapcsolatok nem foglalnak helyet,
+        # különben egy szüneteltetett vagy elhagyott lejátszás blokkolná az újat.
         user_playback_ids = {
             stream.playback_id
             for stream in active_streams
-            if stream.user_id == user.id and stream.playback_id != current_playback_id
+            if stream.user_id == user.id
+            and stream.playback_id != current_playback_id
+            and not stream.is_client_stalled(STALLED_STREAM_TIMEOUT_SECONDS)
         }
 
         if len(user_playback_ids) >= user.max_concurrent_streams:
