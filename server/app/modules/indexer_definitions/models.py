@@ -41,3 +41,8 @@ class IndexerDefinitionModel(AttributeModel, kw_only=True):
         sa.Boolean,
         default=False,
     )
+
+    uses_api_key: Mapped[bool] = mapped_column(
+        sa.Boolean,
+        default=False,
+    )

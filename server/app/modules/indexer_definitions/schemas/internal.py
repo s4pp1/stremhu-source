@@ -12,6 +12,7 @@ class IndexerDefinition(BaseModel):
     details_path: str
     requires_full_download: bool
     supports_totp: bool = False
+    uses_api_key: bool = False
 
 
 class AuthSessionError(BaseModel):

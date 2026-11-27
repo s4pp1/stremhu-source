@@ -33,18 +33,42 @@ import {
 
 import type { AddIndexerDialog } from './add-indexer.types'
 
+// API kulcsos indexereknél a felhasználónevet a szerver nem használja,
+// de a bejelentkezési kérés megköveteli, ezért egy fix értéket küldünk.
+const API_KEY_USERNAME = 'api-key'
+
 const schema = z
   .object({
     indexer: z.custom<IndexerDefinitionResponse>(
       (val) => Boolean(val && typeof val === 'object'),
       'A torrent oldal kiválasztása kötelező',
     ),
-    username: z.string().trim().nonempty('A felhasználónév kitöltése kötelező'),
-    password: z.string().trim().nonempty('A jelszó kitöltése kötelező'),
+    username: z.string(),
+    password: z.string(),
     useTotp: z.boolean(),
     totpSecret: z.string(),
   })
   .superRefine((data, ctx) => {
+    const usesApiKey = data.indexer.usesApiKey
+
+    if (!usesApiKey && !data.username.trim()) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'A felhasználónév kitöltése kötelező',
+        path: ['username'],
+      })
+    }
+
+    if (!data.password.trim()) {
+      ctx.addIssue({
+        code: 'custom',
+        message: usesApiKey
+          ? 'Az API kulcs kitöltése kötelező'
+          : 'A jelszó kitöltése kötelező',
+        path: ['password'],
+      })
+    }
+
     if (data.useTotp && !data.totpSecret.trim()) {
       ctx.addIssue({
         code: 'custom',
@@ -84,7 +108,9 @@ export function AddIndexerDialog(dialog: OpenedDialog & AddIndexerDialog) {
       try {
         await loginIndexer({
           indexerId: value.indexer.id,
-          username: value.username,
+          username: value.indexer.usesApiKey
+            ? API_KEY_USERNAME
+            : value.username,
           password: value.password,
           totpSecret:
             value.indexer.supportsTotp &&
@@ -157,18 +183,37 @@ export function AddIndexerDialog(dialog: OpenedDialog & AddIndexerDialog) {
                 </Field>
               )}
             </form.Field>
-            <form.AppField
-              name="username"
-              children={(field) => (
-                <field.AppTextField label="Felhasználónév" />
-              )}
-            />
-            <form.AppField
-              name="password"
-              children={(field) => (
-                <field.AppTextField label="Jelszó" type="password" />
-              )}
-            />
+            <form.Subscribe selector={(state) => state.values.indexer}>
+              {(indexer) =>
+                indexer.usesApiKey ? (
+                  <form.AppField
+                    name="password"
+                    children={(field) => (
+                      <field.AppTextField
+                        label="API kulcs"
+                        type="password"
+                        description="Az API kulcsot a torrent oldalon, a profilod beállításai között találod."
+                      />
+                    )}
+                  />
+                ) : (
+                  <>
+                    <form.AppField
+                      name="username"
+                      children={(field) => (
+                        <field.AppTextField label="Felhasználónév" />
+                      )}
+                    />
+                    <form.AppField
+                      name="password"
+                      children={(field) => (
+                        <field.AppTextField label="Jelszó" type="password" />
+                      )}
+                    />
+                  </>
+                )
+              }
+            </form.Subscribe>
             <form.Subscribe
               selector={(state) =>
                 [state.values.indexer, state.values.useTotp] as const
